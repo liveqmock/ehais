@@ -1,0 +1,3 @@
+@CHARSET "UTF-8";
+#is_default_li em.checkbox{margin: 15px 0 0 15px;}
+.list li.dn{display: none;}

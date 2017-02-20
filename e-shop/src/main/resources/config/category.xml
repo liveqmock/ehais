@@ -1,0 +1,955 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml>
+	<group role="admin" manager="" code="" table="hai_category">
+		<BootStrapModel>
+			<control>text</control>
+			<name>catId</name>
+			<label>catId</label>
+			<prompt>请输入catId</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>catName</name>
+			<label>catName</label>
+			<prompt>请输入catName</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>storeId</name>
+			<label>storeId</label>
+			<prompt>请输入storeId</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>select</control>
+			<name>parentId</name>
+			<label>上级分类</label>
+			<prompt>请选择上级分类</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>catCode</name>
+			<label>catCode</label>
+			<prompt>请输入catCode</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>keywords</name>
+			<label>keywords</label>
+			<prompt>请输入keywords</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>subCatName</name>
+			<label>subCatName</label>
+			<prompt>请输入subCatName</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>catDesc</name>
+			<label>catDesc</label>
+			<prompt>请输入catDesc</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>sortOrder</name>
+			<label>sortOrder</label>
+			<prompt>请输入sortOrder</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>templateFile</name>
+			<label>templateFile</label>
+			<prompt>请输入templateFile</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>measureUnit</name>
+			<label>measureUnit</label>
+			<prompt>请输入measureUnit</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>showInNav</name>
+			<label>showInNav</label>
+			<prompt>请输入showInNav</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>style</name>
+			<label>style</label>
+			<prompt>请输入style</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>isShow</name>
+			<label>isShow</label>
+			<prompt>请输入isShow</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>grade</name>
+			<label>grade</label>
+			<prompt>请输入grade</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>filterAttr</name>
+			<label>filterAttr</label>
+			<prompt>请输入filterAttr</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>hidden</control>
+			<name>subParentId</name>
+			<label>subParentId</label>
+			<prompt>请输入subParentId</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>brandId</name>
+			<label>brandId</label>
+			<prompt>请输入brandId</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>thumb</name>
+			<label>thumb</label>
+			<prompt>请输入thumb</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>image</name>
+			<label>image</label>
+			<prompt>请输入image</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>userId</name>
+			<label>userId</label>
+			<prompt>请输入userId</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>recommend</name>
+			<label>recommend</label>
+			<prompt>请输入recommend</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+	</group>
+	
+	<group role="lijess" manager="" code="" table="hai_category">
+		<BootStrapModel>
+			<control>hidden</control>
+			<name>catId</name>
+			<label>catId</label>
+			<prompt>请输入catId</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>catName</name>
+			<label>分类名称</label>
+			<prompt>请输入分类名称</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>hidden</control>
+			<name>storeId</name>
+			<label>storeId</label>
+			<prompt>请输入storeId</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>select_tree</control>
+			<name>parentId</name>
+			<label>隶属分类</label>
+			<prompt>请选择隶属分类</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+			<treeKey>categoryTree</treeKey>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>catCode</name>
+			<label>唯一识别码</label>
+			<prompt>请输入用户自定义唯一的识别码</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>keywords</name>
+			<label>关键词</label>
+			<prompt>请输入关键词</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>subCatName</name>
+			<label>名称补充说明</label>
+			<prompt>请输入分类名称补充说明</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>catDesc</name>
+			<label>描述</label>
+			<prompt>请输入描述</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>sortOrder</name>
+			<label>排序</label>
+			<prompt>请输入排序</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>hidden</control>
+			<name>templateFile</name>
+			<label>templateFile</label>
+			<prompt>请输入templateFile</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>hidden</control>
+			<name>measureUnit</name>
+			<label>measureUnit</label>
+			<prompt>请输入measureUnit</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+
+		<BootStrapModel>
+			<control>hidden</control>
+			<name>style</name>
+			<label>style</label>
+			<prompt>请输入style</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+
+
+		<BootStrapModel>
+			<control>hidden</control>
+			<name>grade</name>
+			<label>grade</label>
+			<prompt>请输入grade</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>hidden</control>
+			<name>filterAttr</name>
+			<label>filterAttr</label>
+			<prompt>请输入filterAttr</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>hidden</control>
+			<name>subParentId</name>
+			<label>subParentId</label>
+			<prompt>请输入subParentId</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+			<optionKey>parentid</optionKey>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>select</control>
+			<name>brandId</name>
+			<label>品牌</label>
+			<prompt>请选择品牌</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+			<optionKey>brand</optionKey>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>images</control>
+			<name>thumb</name>
+			<label>商品分类图片</label>
+			<prompt>请输入输入商品分类图片</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>hidden</control>
+			<name>image</name>
+			<label>image</label>
+			<prompt>请输入image</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>hidden</control>
+			<name>userId</name>
+			<label>userId</label>
+			<prompt>请输入userId</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>hidden</control>
+			<name>recommend</name>
+			<label>recommend</label>
+			<prompt>请输入recommend</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+	</group>
+
+
+	<group role="vanas" manager="" code="" table="hai_category">
+		<BootStrapModel>
+			<control>hidden</control>
+			<name>catId</name>
+			<label>catId</label>
+			<prompt>请输入catId</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>catName</name>
+			<label>分类名称</label>
+			<prompt>请输入分类名称</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>hidden</control>
+			<name>storeId</name>
+			<label>storeId</label>
+			<prompt>请输入storeId</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>select_tree</control>
+			<name>parentId</name>
+			<label>隶属分类</label>
+			<prompt>请选择隶属分类</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+			<treeKey>category</treeKey>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>catCode</name>
+			<label>唯一识别码</label>
+			<prompt>请输入用户自定义唯一的识别码</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>keywords</name>
+			<label>关键词</label>
+			<prompt>请输入关键词</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>subCatName</name>
+			<label>名称补充说明</label>
+			<prompt>请输入分类名称补充说明</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>catDesc</name>
+			<label>描述</label>
+			<prompt>请输入描述</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>sortOrder</name>
+			<label>排序</label>
+			<prompt>请输入排序</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>hidden</control>
+			<name>templateFile</name>
+			<label>templateFile</label>
+			<prompt>请输入templateFile</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>hidden</control>
+			<name>measureUnit</name>
+			<label>measureUnit</label>
+			<prompt>请输入measureUnit</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+
+		<BootStrapModel>
+			<control>hidden</control>
+			<name>style</name>
+			<label>style</label>
+			<prompt>请输入style</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+
+
+		<BootStrapModel>
+			<control>hidden</control>
+			<name>grade</name>
+			<label>grade</label>
+			<prompt>请输入grade</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>hidden</control>
+			<name>filterAttr</name>
+			<label>filterAttr</label>
+			<prompt>请输入filterAttr</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>hidden</control>
+			<name>subParentId</name>
+			<label>subParentId</label>
+			<prompt>请输入subParentId</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+			<optionKey>parentid</optionKey>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>select</control>
+			<name>brandId</name>
+			<label>品牌</label>
+			<prompt>请选择品牌</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+			<optionKey>brand</optionKey>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>images</control>
+			<name>thumb</name>
+			<label>商品分类图片</label>
+			<prompt>请输入输入商品分类图片</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>hidden</control>
+			<name>image</name>
+			<label>image</label>
+			<prompt>请输入image</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>hidden</control>
+			<name>userId</name>
+			<label>userId</label>
+			<prompt>请输入userId</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>hidden</control>
+			<name>recommend</name>
+			<label>recommend</label>
+			<prompt>请输入recommend</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+	</group>
+
+
+	<group role="runxing" manager="" code="" table="hai_category">
+		<BootStrapModel>
+			<control>hidden</control>
+			<name>catId</name>
+			<label>catId</label>
+			<prompt>请输入catId</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>catName</name>
+			<label>分类名称</label>
+			<prompt>请输入分类名称</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>hidden</control>
+			<name>storeId</name>
+			<label>storeId</label>
+			<prompt>请输入storeId</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>select_tree</control>
+			<name>parentId</name>
+			<label>隶属分类</label>
+			<prompt>请选择隶属分类</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+			<treeKey>category</treeKey>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>catCode</name>
+			<label>唯一识别码</label>
+			<prompt>请输入用户自定义唯一的识别码</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+	      <control>checkbox</control>
+	      <name>showInNav</name>
+	      <label>是否热门产品</label>
+	      <prompt>请输入商品名称</prompt>
+	      <oksign></oksign>
+	      <errorsign></errorsign>
+	      <listshow>0</listshow>
+	      <tabno>0</tabno>
+	      <checkboxs>
+		    <checkbox>
+		      <key>1</key>
+		      <value>首页显示</value>
+		    </checkbox>
+		  </checkboxs>
+	    </BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>keywords</name>
+			<label>关键词</label>
+			<prompt>请输入关键词</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>subCatName</name>
+			<label>名称补充说明</label>
+			<prompt>请输入分类名称补充说明</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>catDesc</name>
+			<label>描述</label>
+			<prompt>请输入描述</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>sortOrder</name>
+			<label>排序</label>
+			<prompt>请输入排序</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>hidden</control>
+			<name>templateFile</name>
+			<label>templateFile</label>
+			<prompt>请输入templateFile</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>hidden</control>
+			<name>measureUnit</name>
+			<label>measureUnit</label>
+			<prompt>请输入measureUnit</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+
+		<BootStrapModel>
+			<control>hidden</control>
+			<name>style</name>
+			<label>style</label>
+			<prompt>请输入style</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+
+
+		<BootStrapModel>
+			<control>hidden</control>
+			<name>grade</name>
+			<label>grade</label>
+			<prompt>请输入grade</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>hidden</control>
+			<name>filterAttr</name>
+			<label>filterAttr</label>
+			<prompt>请输入filterAttr</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>hidden</control>
+			<name>subParentId</name>
+			<label>subParentId</label>
+			<prompt>请输入subParentId</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+			<optionKey>parentid</optionKey>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>select</control>
+			<name>brandId</name>
+			<label>品牌</label>
+			<prompt>请选择品牌</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+			<optionKey>brand</optionKey>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>images</control>
+			<name>thumb</name>
+			<label>商品分类图片</label>
+			<prompt>请输入输入商品分类图片</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>hidden</control>
+			<name>image</name>
+			<label>image</label>
+			<prompt>请输入image</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>hidden</control>
+			<name>userId</name>
+			<label>userId</label>
+			<prompt>请输入userId</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>hidden</control>
+			<name>recommend</name>
+			<label>recommend</label>
+			<prompt>请输入recommend</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+	</group>
+	
+</xml>
+

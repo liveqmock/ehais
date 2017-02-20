@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include  "/include/Matrix_Include.html" />
+<title>学校信息列表信息</title>
+
+<script src="/ehais/js/ehais.datagird.js"></script>
+
+</head>
+<body>
+
+
+<!--main-container-part-->
+<div id="content">
+
+<!--breadcrumbs-->
+  <div id="content-header">
+    <div id="breadcrumb"> 
+    	<a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 控制台</a>
+    	<a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 学校信息系统</a>
+    </div>
+  </div>
+<!--End-breadcrumbs-->
+
+
+  <div class="container-fluid">
+<hr>
+	<div class="row-fluid">
+		<div class="span12">
+			
+			<!-- begin template -->
+			<div class="widget-box">
+          <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+            <h5>学校信息列表信息</h5>
+          </div>
+          <div class="widget-content nopadding">
+            <table id="mydata" class="table table-bordered data-table"></table>
+          </div>
+
+        </div>
+			<!-- end template -->
+		</div>
+	</div>
+
+  </div>
+  
+  
+</div>
+
+<!--end-main-container-part-->
+
+<script type="text/javascript">
+var myDataGird ;
+$(function(){
+	$( ".datepicker" ).datepicker({ dateFormat: "yy-mm-dd"});
+
+	myDataGird = $("#mydata").eHaisDatagrid({
+		columns : [
+				{ field: 'id', title: '编号', width: 80 },
+				{ field: 'name', title: '姓名', width: 400 },
+				{ field: 'action', title: '编辑', width: 100, align:'center' ,formatter:function(value,row,index){  
+		        		var e = '<a href="school_update?keyId='+row.id+'">编辑</a> ';  
+		            	var d = '<a href="school_delete?keyId='+row.id+'" onclick="return myConfirm();">删除</a> ';  
+		            	return e+d;   
+		         	}
+		         },
+		       ],
+		page : 1 , len : 10
+	});
+	myDataGird.setDataFunc(loadData);
+
+});
+
+
+
+function loadData(){
+
+	$.ajax({        
+        url : "${action}",
+        data : {
+        	"page":myDataGird.page,
+        	"len":myDataGird.len,
+        },
+		method : 'POST',
+        traditional : true,
+        async : false,
+        dataType : 'json',
+        beforeSend : function(jqXHR) {
+            
+        },
+        success : function(data) {
+        	//console.log(JSON.stringify(data));
+        	if(data.code != 1){
+        		return ;
+        	}
+        	//cat_list = data.map.cat_list;
+        	
+        	myDataGird.loadData(data);
+        },
+        error : function(e) {
+			console.log(JSON.stringify(data));
+            alert(JSON.stringify(data));
+        }
+    });
+}
+
+</script> 
+
+
+
+</body>
+</html>

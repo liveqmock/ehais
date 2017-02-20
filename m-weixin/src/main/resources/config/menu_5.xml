@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml>
+	
+	<menu>
+
+		
+		<Parent>
+			<id>message</id>
+			<title>公众号功能</title>
+			<className></className>
+			<url></url>
+			<module></module>
+			<iconClassName></iconClassName>
+			<roles></roles>	
+			<MenuItems>
+				<MenuItem>
+					<id></id>
+					<title>公众号设置</title>
+					<url>/public/public_update</url>
+					<module></module>
+					<className></className>
+					<iconClassName></iconClassName>
+					<roles></roles>
+				</MenuItem>
+				<MenuItem>
+					<id></id>
+					<title>欢迎语设置</title>
+					<url>/public/wecome</url>
+					<module></module>
+					<className></className>
+					<iconClassName></iconClassName>
+					<roles></roles>
+				</MenuItem>
+				<MenuItem>
+					<id></id>
+					<title>创建微信菜单</title>
+					<url>/custom_menu/custom_menu_insert</url>
+					<module></module>
+					<className></className>
+					<iconClassName></iconClassName>
+					<roles></roles>
+				</MenuItem>
+				<MenuItem>
+					<id></id>
+					<title>微信菜单列表</title>
+					<url>/custom_menu/custom_menu_list</url>
+					<module></module>
+					<className></className>
+					<iconClassName></iconClassName>
+					<roles></roles>
+				</MenuItem>
+			</MenuItems>
+		</Parent>
+		
+		
+		<Parent>		
+			<id></id>
+			<title>资讯管理</title>	
+			<url></url>
+			<module></module>
+			<className></className>
+			<iconClassName></iconClassName>
+			<roles></roles>
+			<MenuItems>
+				<MenuItem>
+					<id></id>
+					<title>添加资讯分类</title>
+					<url>/member/articlecat_insert</url>
+					<module></module>
+					<className></className>
+					<iconClassName></iconClassName>
+					<roles></roles>
+				</MenuItem>
+				<MenuItem>
+					<id></id>
+					<title>资讯分类信息</title>
+					<url>/member/articlecat_list</url>
+					<module></module>
+					<className></className>
+					<iconClassName></iconClassName>
+					<roles></roles>
+				</MenuItem>
+				
+				<MenuItem>
+					<id></id>
+					<title>添加资讯</title>
+					<url>/article/article_insert_v2</url>
+					<module></module>
+					<className></className>
+					<iconClassName></iconClassName>
+					<roles></roles>
+				</MenuItem>
+				<MenuItem>
+					<id></id>
+					<title>资讯信息</title>
+					<url>/article/article_list_v2</url>
+					<module></module>
+					<className></className>
+					<iconClassName></iconClassName>
+					<roles></roles>
+				</MenuItem>
+				
+			</MenuItems>
+		</Parent>
+		
+		
+		<Parent>		
+			<id></id>
+			<title>图片管理</title>	
+			<url></url>
+			<module></module>
+			<className></className>
+			<iconClassName></iconClassName>
+			<roles></roles>
+			<MenuItems>
+				<MenuItem>
+					<id></id>
+					<title>添加图片位置</title>
+					<url>/member/adposition_insert</url>
+					<module></module>
+					<className></className>
+					<iconClassName></iconClassName>
+					<roles></roles>
+				</MenuItem>
+				<MenuItem>
+					<id></id>
+					<title>图片位置信息</title>
+					<url>/member/adposition_list</url>
+					<module></module>
+					<className></className>
+					<iconClassName></iconClassName>
+					<roles></roles>
+				</MenuItem>
+				
+				<MenuItem>
+					<id></id>
+					<title>添加图片</title>
+					<url>/member/ad_insert</url>
+					<module></module>
+					<className></className>
+					<iconClassName></iconClassName>
+					<roles></roles>
+				</MenuItem>
+				<MenuItem>
+					<id></id>
+					<title>图片信息</title>
+					<url>/member/ad_list</url>
+					<module></module>
+					<className></className>
+					<iconClassName></iconClassName>
+					<roles></roles>
+				</MenuItem>
+				
+				
+			</MenuItems>
+		</Parent>
+		
+		<Parent>		
+			<id></id>
+			<title>微信用户管理</title>	
+			<url></url>
+			<module></module>
+			<className></className>
+			<iconClassName></iconClassName>
+			<roles></roles>
+			<MenuItems>				
+				<MenuItem>
+					<id></id>
+					<title>创建分组</title>
+					<url>/member/authgroup_insert</url>
+					<module></module>
+					<className></className>
+					<iconClassName></iconClassName>
+					<roles></roles>
+				</MenuItem>
+				<MenuItem>
+					<id></id>
+					<title>分组列表</title>
+					<url>/member/authgroup_list</url>
+					<module></module>
+					<className></className>
+					<iconClassName></iconClassName>
+					<roles></roles>
+				</MenuItem>
+			</MenuItems>
+		</Parent>
+		
+		<Parent>		
+			<id></id>
+			<title>系统功能管理</title>	
+			<url></url>
+			<module></module>
+			<className></className>
+			<iconClassName></iconClassName>
+			<roles></roles>
+			<MenuItems>				
+				<MenuItem>
+					<id></id>
+					<title>修改密码</title>
+					<url>/member/users/modifyPassword</url>
+					<module></module>
+					<className></className>
+					<iconClassName></iconClassName>
+					<roles></roles>
+				</MenuItem>
+			</MenuItems>
+		</Parent>
+	    
+	    
+	    
+		    
+	</menu>
+
+</xml>

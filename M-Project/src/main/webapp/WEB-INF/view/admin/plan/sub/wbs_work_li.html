@@ -1,0 +1,20 @@
+<li class="level_${val.level} plan_hide" id="wbs_id_${val.wbsId }" level="${val.level}" wbsParentId="${val.wbsParentId }">
+	<span class="lable">├</span><span class="title">${val.wbsName?default('') }</span>
+	<#include "dropdown_menu.html">
+	<div class="plan container">
+		<div class="row">
+			<div class="col_1"><input id="planStartDate_${val.wbsId }" name="planStartDate_${val.wbsId }" data-val="${val.wbsId }" type="text" class="f_input datepicker" value="${(val.planStartDate?string('yyyy-MM-dd'))!}" readonly="readonly"></div>
+			<div class="col_1"><input id="planEndDate_${val.wbsId }" name="planEndDate_${val.wbsId }" data-val="${val.wbsId }" type="text" class="f_input datepicker" value="${(val.planEndDate?string('yyyy-MM-dd'))!}" readonly="readonly"></div>
+			<div class="col_1"><input id="truthStartDate_${val.wbsId }" name="truthStartDate_${val.wbsId }" data-val="${val.wbsId }" type="text" class="f_input datepicker" value="${(val.truthStartDate?string('yyyy-MM-dd'))!}" readonly="readonly"></div>
+			<div class="col_1"><input id="truthEndDate_${val.wbsId }" name="truthEndDate_${val.wbsId }" data-val="${val.wbsId }" type="text" class="f_input datepicker" value="${(val.truthEndDate?string('yyyy-MM-dd'))!}" readonly="readonly"></div>
+			<div class="col_2"><input id="progress_${val.wbsId }" name="progress_${val.wbsId }" data-val="${val.wbsId }" type="text" class="f_input" value="${val.progress?default('0')}"></div>
+			<div class="col_2"><span id="Participate_${val.wbsId }" class="Participate_Span" data-value="${val.userId?default('0')}"></span></div>
+			<div class="col_2">
+				<button type="button" class="btn btn-default btn-xs " data-val="${val.wbsId }" onclick="save_wbs_work_date_event(this);">
+				 	<span class="glyphicon glyphicon-saved" aria-hidden="true"></span>
+				 	保存
+				</button>
+			</div>
+		</div>
+	</div>
+</li>

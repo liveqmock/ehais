@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml>
+  <config>
+    <parent code="info1" text="配置1" sort="1" type="text" isvoid="1">
+      <item>
+        <sub code="info" text="配置" sort="1" type="text" isvoid="1"/>
+        <sub code="info1" text="配置1" sort="1" type="text" isvoid="1"/>
+      </item>
+    </parent>
+  </config>
+</xml>

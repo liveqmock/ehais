@@ -1,0 +1,118 @@
+@CHARSET "UTF-8";
+.side-widget {
+    background: rgba(0, 0, 0, 0.05) none repeat scroll 0 0;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    position: fixed;
+    right: 0;
+    top: 60%;
+    width: 40px;
+    z-index: 999;
+}
+
+.side-widget .item {
+    background: #fff none repeat scroll 0 0;
+    display: block;
+    font-size: 0;
+    height: 38px;
+    line-height: 0;
+    margin-top: 1px;
+    outline: 0 none;
+    position: relative;
+    width: 38px;
+}
+
+.side-widget .item::after {
+    background-image: url("../images/index_sidebar_line.jpg");
+    content: "";
+    display: block;
+    height: 1px;
+    left: 0;
+    position: absolute;
+    top: -1px;
+    width: 100%;
+}
+
+.side-widget #backTop.item, .side-widget .item.item-top::after, .side-widget .item:hover .widget-icon {
+    display: none;
+}
+
+.side-widget .icon, .side-widget .widget-des {
+    height: 38px;
+    outline: 0 none;
+    text-align: center;
+    vertical-align: middle;
+    width: 100%;
+}
+
+.side-widget .item.item-top {
+    margin-top: 0;
+}
+
+.side-widget .item:hover {
+    background: #ec4141 none repeat scroll 0 0;
+    text-decoration: none;
+}
+.side-widget .item:hover .icon {
+    background: #ec4141 none repeat scroll 0 0;
+    color: #fff;
+}
+.side-widget .item:hover .widget-des {
+    display: block;
+}
+.side-widget .item:hover .iframe {
+    left: -172px;
+    visibility: visible;
+}
+
+.side-widget .icon {
+    color: #bebebe;
+    display: inline-block;
+    font-size: 0.16rem;
+    line-height: 38px;
+}
+.side-widget .icon.noBorder {
+    border-bottom: medium none transparent;
+}
+.side-widget .widget-des {
+    color: #fff;
+    display: none;
+    font-size: 0.12rem;
+    line-height: 0.13rem;
+    padding: 6px 0;
+}
+.side-widget .iframe {
+    background: #fff none repeat scroll 0 0;
+    border: 1px solid #e9e9e9;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    height: 180px;
+    left: -200px;
+    padding: 15px 0;
+    position: absolute;
+    top: -65px;
+    transition: all 0.15s ease-in 0s;
+    visibility: hidden;
+    width: 160px;
+}
+.side-widget .iframe::after, .side-widget .iframe::before {
+    border: 7px solid transparent;
+    content: "";
+    display: block;
+    margin-top: -7px;
+    position: absolute;
+    top: 50%;
+    width: 0;
+}
+.side-widget .iframe::before {
+    border-left: 7px solid #e9e9e9;
+    right: -14px;
+}
+.side-widget .iframe::after {
+    border-left: 7px solid #fff;
+    right: -13px;
+}
+.side-widget .iframe .tip {
+    color: #666;
+    font-size: 0.12rem;
+    line-height: 0.17rem;
+    margin-top: 10px;
+}

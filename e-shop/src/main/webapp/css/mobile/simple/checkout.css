@@ -1,0 +1,11 @@
+@CHARSET "UTF-8";
+#checkout_ul li{border: 0;}
+#checkout_ul #add_address{padding: 18px 5px;}
+#checkout_ul #address_li div.info div{padding: 0 10px 8px 0;}
+#pay_ul.list li,#shipping_ul.list li{border: 0; margin-bottom: 5px;}
+.ul_goods .cart_quantity_div{right: 10px;bottom: 2px;}
+#checkout_ul #cart_list{margin: 10px 0;}
+#checkout_ul #cart_list #cart_title{margin: 10px 0;}
+#checkout_ul #cart_list .ul_goods li{margin-bottom: 5px;}
+footer #amount{width: 66.66%;line-height: 50px;padding-left: 10px;}
+footer #done{width: 33.33%;}

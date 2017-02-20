@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include  "/include/Matrix_Include.html" />
+<title>学校信息列表信息</title>
+
+<script src="/ehais/js/ehais.datagird.js"></script>
+<link rel="stylesheet" href="/css/admin/school.css" />
+</head>
+<body>
+
+
+<!--main-container-part-->
+<div id="content">
+
+<!--breadcrumbs-->
+  <div id="content-header">
+    <div id="breadcrumb"> 
+    	<a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 控制台</a>
+    	<a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 学校信息系统</a>
+    	<a href="javascript:;" title="Go to Home" class="tip-bottom" onclick="addDepartment();"><i class="icon-home"></i> 添加院系</a>
+    </div>
+  </div>
+<!--End-breadcrumbs-->
+
+
+  <div class="container-fluid">
+<hr>
+	<div class="row-fluid">
+		<div class="span12">
+			
+			<!-- begin template -->
+			<div class="widget-box">
+          <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+            <h5>学校信息列表信息</h5>
+          </div>
+          <div class="widget-content nopadding school" >
+            <table id="mydepartment" class="table table-bordered data-table fl" style="width:30%;"></table>
+            <table id="myprofessional" class="table table-bordered data-table fl" style="width:30%;"></table>
+            <table id="mygrades" class="table table-bordered data-table fl" style="width:30%;"></table>
+          </div>
+
+        </div>
+			<!-- end template -->
+		</div>
+	</div>
+
+  </div>
+  
+  
+</div>
+
+<!--end-main-container-part-->
+
+<div id="win"></div>
+
+<script type="text/javascript">
+var myDepartmentDataGird ;
+var myProfessionalDataGird ;
+var myGradesDataGird ;
+var myDialog ;
+var dialog_url = '/admin/department_insert';
+$(function(){
+	$( ".datepicker" ).datepicker({ dateFormat: "yy-mm-dd"});
+
+	
+	myDialog = $('#win').dialog({
+
+	    title: "数据设置窗口",
+	    width: 800,
+	    height: 400,
+	    cache: false,
+	    href: dialog_url,
+	    collapsible: true,
+	    maximizable: true,
+	    resizable: true,
+	    modal: true,
+	    closed: true
+	    
+	});
+	
+	
+	myDepartmentDataGird = $("#mydepartment").eHaisDatagrid({
+		columns : [
+				{ field: 'id', title: '编号', width: 80 },
+				{ field: 'name', title: '姓名', width: 400 },
+				{ field: 'action', title: '编辑', width: 100, align:'center' ,formatter:function(value,row,index){  
+		        		var e = '<a href="javascript:;" onclick="editDepartment('+row.id+');">编辑</a> ';  
+		            	var d = '<a href="school_delete?keyId='+row.id+'" onclick="return myConfirm();">删除</a> ';  
+		            	return e+d;   
+		         	}
+		         },
+		       ],
+		page : 1 , len : 10
+	});
+	myDepartmentDataGird.setDataFunc(loadDepartmentData);
+	
+	
+	myProfessionalDataGird = $("#myprofessional").eHaisDatagrid({
+		columns : [
+				{ field: 'id', title: '编号', width: 80 },
+				{ field: 'name', title: '姓名', width: 400 },
+				{ field: 'action', title: '编辑', width: 100, align:'center' ,formatter:function(value,row,index){  
+		        		var e = '<a href="school_update?keyId='+row.id+'">编辑</a> ';  
+		            	var d = '<a href="school_delete?keyId='+row.id+'" onclick="return myConfirm();">删除</a> ';  
+		            	return e+d;   
+		         	}
+		         },
+		       ],
+		page : 1 , len : 10
+	});
+	myProfessionalDataGird.setEventFunc(loadProfessionalData);
+	
+	
+	myGradesDataGird = $("#mygrades").eHaisDatagrid({
+		columns : [
+				{ field: 'id', title: '编号', width: 80 },
+				{ field: 'name', title: '姓名', width: 400 },
+				{ field: 'action', title: '编辑', width: 100, align:'center' ,formatter:function(value,row,index){  
+		        		var e = '<a href="school_update?keyId='+row.id+'">编辑</a> ';  
+		            	var d = '<a href="school_delete?keyId='+row.id+'" onclick="return myConfirm();">删除</a> ';  
+		            	return e+d;   
+		         	}
+		         },
+		       ],
+		page : 1 , len : 10
+	});
+	myGradesDataGird.setEventFunc(loadGradesData);
+	
+	
+	
+
+});
+
+var school_id = "${school_id}";
+var department_id = "";
+var professional_id = "";
+
+
+function loadDepartmentData(){
+	$.post("/admin/department_list_json",{school_id : school_id,"page":myDepartmentDataGird.page, "len":myDepartmentDataGird.len},function(data){
+		myDepartmentDataGird.loadData(data);
+		
+		$("#mydepartment tbody tr").unbind();
+		$("#mydepartment tbody tr").click(function(){
+			$("#mygrades tbody tr").remove();
+			department_id = $(this).children("td").first().text();
+			loadProfessionalData();
+		});
+		
+		
+	},"json");
+}
+
+function loadProfessionalData(){
+	$.post("/admin/professional_list_json",{department_id : department_id,"page":myProfessionalDataGird.page, "len":myProfessionalDataGird.len},function(data){
+		myProfessionalDataGird.loadData(data);
+		
+		$("#myprofessional tbody tr").unbind();
+		$("#myprofessional tbody tr").click(function(){
+			professional_id = $(this).children("td").first().text();
+			loadGradesData();
+		});
+		
+	},"json");
+}
+
+function loadGradesData(){
+	$.post("/admin/grades_list_json",{professional_id : professional_id,"page":myGradesDataGird.page, "len":myGradesDataGird.len},function(data){
+		myGradesDataGird.loadData(data);
+	},"json");
+}
+
+function addDepartment(){
+	myDialog.dialog("open");
+}
+
+function editDepartment(id){
+	dialog_url = "/admin/department_update?id="+id;
+	myDialog.dialog('options').href = dialog_url;
+	myDialog.dialog("open");
+}
+
+</script> 
+
+
+
+</body>
+</html>

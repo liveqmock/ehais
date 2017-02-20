@@ -1,0 +1,16 @@
+@CHARSET "UTF-8";
+
+.list.lbl .oval{display: block;}
+.list.lbl .txt{display: none;}
+.list.txt li.cStatic{display: none;}
+.list.txt .oval,.list.txt i{display: none;}
+.list.txt .txt,.list.txt .oval_region,.list.lbl .oval_region{display: block;width: 70%;}
+.list.txt .txt input{width: 80%;}
+.list.txt .lbl{width: 30%;min-width: 30px;text-align: right;padding-right: 5px;line-height: 40px;}
+.list #region div{float:left; margin-right: 5px;}
+.list.txt .txt .rdo_sex{float: left;width: 25%;height: 28px;border: 1px solid #ccc;line-height:28px;text-align: center;margin-top: 6px;}
+.list.txt .txt .rdo_sex.cur{font-weight: bold;color: red;}
+.list.txt .txt .rdo_sex.middle{border-left: 0;border-right: 0;}
+.list.txt .txt .rdo_sex.left{border-top-left-radius:3px;border-bottom-left-radius:3px;}
+.list.txt .txt .rdo_sex.right{border-top-right-radius:3px;border-bottom-right-radius:3px;}
+

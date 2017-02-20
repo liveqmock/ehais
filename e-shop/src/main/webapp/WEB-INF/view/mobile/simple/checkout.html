@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/include/EJQ_Include.html">
+<title>商品结算</title>
+<link rel="stylesheet" type="text/css" href="/css/mobile/simple/ul_goods.css" />
+<link rel="stylesheet" type="text/css" href="/css/mobile/form_list.css" />
+<link rel="stylesheet" type="text/css" href="/css/mobile/simple/checkout.css" />
+<script type="text/javascript" charset="utf-8" src="/js/ejq.mobile.js"></script>
+<script type="text/javascript" src="/js/mobile/checkout.js"></script>
+
+</head>
+<body class="jqmobi">
+
+
+		<div class="view active" id="mainview">
+			<header>
+            	<h1>商城首页</h1>
+        	</header>
+        	<div class="pages">
+        		<div  class="panel active" id="main" data-title="商城首页" data-selected="true">
+        			<ul id="checkout_ul" class="list eform">
+        			
+        			<li id="add_address" class="flw">
+        				<em class="plus">+</em>添加新送货地址
+        			</li>
+        			
+        			<li id="address_li" class="flw">
+        				<label class="lbl">收货人：</label>
+        				
+        				<div class="info">
+	        				<div id="consignee" class="fl ml5"></div>
+	        				<div id="mobile" class="fl ml5"></div>
+	        				<div id="user_address" class="flw">	        					
+	        					<span id="country" class="region dn"></span>
+	        					<span id="province" class="region"></span>
+	        					<span id="city" class="region"></span>
+	        					<span id="county" class="region"></span>
+	        					<span id="district" class="region"></span>
+	        					<span id="street" class="region"></span>
+	        					<span id="address"></span>
+	        				</div>
+        				</div>
+        				<input type="hidden" id="addressId" value="">
+        			</li>
+        			
+        			<li id="pay" class="flw">
+        				<label class="lbl">支付方式:</label>
+        				
+        				<div class="info" id="pay_list">
+        					<ul id="pay_ul" class="list"></ul>
+        				</div>
+        			</li>
+        			
+        			<li id="shipping" class="flw">
+        				<label class="lbl">运送方式:</label>
+        				
+        				<div class="info" id="shipping_list">
+        					<ul id="shipping_ul" class="list"></ul>
+        				</div>
+        			</li>
+        			
+        			
+        			<li id="cart_list" class="flw">
+        				<div id="cart_title" class="flw">
+	        				<div class="fl">购物清单</div>
+	        				<div class="fr" id="change_cart_list">更改购物清单</div>
+        				</div>
+    					<ul class="list ul_goods" id="goods_ul"></ul>
+        			</li>
+        			
+        			
+        			<li id="message_li" class="flw">
+        				<textarea id="message" placeholder="给商家留言"></textarea>
+        			</li>
+        			
+        			</ul>
+        			
+        		</div>
+        		<div  class="panel" id="user_address_info" data-title="商城首页" >
+        		</div>
+        	</div>
+        	
+        	<footer>
+	            <div id="amount">
+	            	<div>结算金额：<span id="total">￥00.00</span></div>
+	            </div>
+	            <div id="done" class="done">
+	            	提交订单
+	            </div>
+	        </footer>
+	        
+        </div>
+        		
+        
+</body>
+</html>

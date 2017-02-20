@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration >
+
+<classPathEntry  location="D:/MavenRepository/mysql/mysql-connector-java/5.1.16/mysql-connector-java-5.1.16.jar"/> 
+ 
+ 
+  <context id="context1" >
+  <!--  -->
+  	<plugin type="org.mybatis.generator.plugins.CaseInsensitiveLikePlugin"></plugin>  
+    <plugin type="org.mybatis.generator.plugins.SerializablePlugin"></plugin> 
+     
+    <!-- Pagination -->  
+    
+    
+    <plugin type="org.ehais.mybatis.plugin.PaginationPlugin"></plugin>
+    <!--  -->   
+     
+      
+    <jdbcConnection driverClass="com.mysql.jdbc.Driver" 
+    connectionURL="jdbc:mysql://127.0.0.1:3306/weiphp" 
+    userId="root" password="42016048" />
+    <javaModelGenerator targetPackage="org.ehais.weixin.model.generator" targetProject="m-weixin" />
+    <sqlMapGenerator targetPackage="org.ehais.weixin.mapper.xml.generator" targetProject="m-weixin" />
+    <javaClientGenerator targetPackage="org.ehais.weixin.mapper.generator" targetProject="m-weixin" type="XMLMAPPER" />
+    
+<!-- 
+
+    <table schema="weiphp" tableName="wp_member" >
+    	<generatedKey column="uid" sqlStatement="MySql" identity="true" />
+    </table>
+    
+    <table schema="weiphp" tableName="wp_member_public" >
+    	<generatedKey column="id" sqlStatement="MySql" identity="true" />
+    </table>
+    
+    <table schema="weiphp" tableName="wp_ucenter_member" >
+    	<generatedKey column="id" sqlStatement="MySql" identity="true" />
+    </table>
+    
+    <table schema="weiphp" tableName="wp_custom_menu" >
+    	<generatedKey column="id" sqlStatement="MySql" identity="true" />
+    </table>
+    
+    <table schema="weiphp" tableName="wp_user" >
+    	<generatedKey column="uid" sqlStatement="MySql" identity="true" />
+    </table>
+    
+    <table schema="weiphp" tableName="hai_users" >
+    	<generatedKey column="user_id" sqlStatement="MySql" identity="true" />
+    </table>
+    <table schema="weiphp" tableName="wx_unifiedorder" >
+    	<generatedKey column="wx_order_id" sqlStatement="MySql" identity="true" />
+    </table>
+    <table schema="weiphp" tableName="wx_unifiedorder_result" >
+    	<generatedKey column="wx_order_result_id" sqlStatement="MySql" identity="true" />
+    </table>  
+    <table schema="weiphp" tableName="e_order" >
+    	<generatedKey column="order_id" sqlStatement="MySql" identity="true" />
+    </table>
+    <table schema="weiphp" tableName="wx_notity_pay" >
+    	<generatedKey column="notify_pay_id" sqlStatement="MySql" identity="true" />
+    </table> 
+    <table schema="weiphp" tableName="hai_article" >
+    	<generatedKey column="article_id" sqlStatement="MySql" identity="true" />
+    </table>
+    <table schema="weiphp" tableName="hai_article_cat" >
+    	<generatedKey column="cat_id" sqlStatement="MySql" identity="true" />
+    </table>  
+    <table schema="weiphp" tableName="wp_public" >
+    	<generatedKey column="id" sqlStatement="MySql" identity="true" />
+    </table>   
+    <table schema="weiphp" tableName="hai_article" >
+    	<generatedKey column="article_id" sqlStatement="MySql" identity="true" />
+    </table>       
+    <table schema="weiphp" tableName="hai_suggest" >
+    	<generatedKey column="sug_id" sqlStatement="MySql" identity="true" />
+    </table>
+    <table schema="weiphp" tableName="hai_activity" >
+    	<generatedKey column="act_id" sqlStatement="MySql" identity="true" />
+    </table>
+    <table schema="weiphp" tableName="hai_activity_apply" >
+    	<generatedKey column="apply_id" sqlStatement="MySql" identity="true" />
+    </table>    
+     <table schema="weiphp" tableName="hai_activity_type" >
+    	<generatedKey column="act_type_id" sqlStatement="MySql" identity="true" />
+    </table> 
+    
+    
+ -->       
+
+    <table schema="weiphp" tableName="wp_public" >
+    	<generatedKey column="id" sqlStatement="MySql" identity="true" />
+    </table> 
+
+
+   
+    
+  </context>
+</generatorConfiguration>
+

@@ -1,0 +1,409 @@
+
+<#switch bootstrap.control>
+
+<#case "hidden">
+<input type="hidden" id="${bootstrap.field_name}" name="${bootstrap.field_name}" value="${bootstrap.value?default('')}" />
+<#break>
+
+<#case "label">
+<div id="bs_div_${bootstrap.field_name}" class="field-box form-group">
+    <label id="bs_label_${bootstrap.field_name}" class="col-sm-2 control-label">${bootstrap.field_label}</label>
+    <div class="col-sm-7">
+    	<p class="form-control-static">${bootstrap.value?default('')}</p>   
+    </div>                        
+</div>
+<#break>
+
+<#case "text">
+<div id="bs_div_${bootstrap.field_name}" class="field-box form-group">
+    <label id="bs_label_${bootstrap.field_name}" class="col-sm-2 control-label">${bootstrap.field_label}</label>
+    <div class="col-sm-7 controls">
+    	<input type="text" id="${bootstrap.field_name}" name="${bootstrap.field_name}" value="${bootstrap.value?default('')}" data-placement="right" title="" data-trigger="focus" data-toggle="tooltip" class="form-control" data-original-title="${bootstrap.prompt}" placeholder="${bootstrap.prompt}">
+    	<span id="bs_ok_sign_${bootstrap.field_name}" class="dn"><i class="icon-ok-sign"></i>${bootstrap.ok_sign}</span>
+    	<span id="bs_error_sign_${bootstrap.field_name}" class="dn"><i class="icon-remove-sign"></i>${bootstrap.error_sign}</span>
+    	<span id="bs_option_icon_${bootstrap.field_name}" class="dn">
+    	<a id="a_edit_sign_${bootstrap.field_name}" data-original-title="Edit" class="tip edit" href="javascript:;" ><i class="icon-pencil"></i></a> 
+		<a id="a_delete_sign_${bootstrap.field_name}" data-original-title="Delete" class="tip delete" href="javascript:;" ><i class="icon-remove"></i></a> 
+ 		</span>
+    </div>                                
+</div>
+<#break>
+
+
+<#case "text_icon">
+<div id="bs_div_${bootstrap.field_name}" class="field-box form-group">
+    <label id="bs_label_${bootstrap.field_name}" class="col-sm-2 control-label">${bootstrap.field_label}</label>
+    <div class="col-sm-7 controls">
+    	<input type="text" id="${bootstrap.field_name}" name="${bootstrap.field_name}" value="${bootstrap.value?default('')}" data-placement="right" title="" data-trigger="focus" data-toggle="tooltip" class="form-control" data-original-title="${bootstrap.prompt}" placeholder="${bootstrap.prompt}">
+    	
+    	<a id="a_edit_sign_${bootstrap.field_name}" data-original-title="Edit" class="tip edit dn" href="javascript:;" ><i class="icon-pencil"></i></a> 
+		<a id="a_delete_sign_${bootstrap.field_name}" data-original-title="Delete" class="tip delete dn" href="javascript:;" ><i class="icon-remove"></i></a> 
+ 		
+ 		<a id="a_up_sign_${bootstrap.field_name}" data-original-title="Up" class="tip up dn" href="javascript:;" ><i class="icon-arrow-up"></i></a> 
+ 		<a id="a_down_sign_${bootstrap.field_name}" data-original-title="Down" class="tip down dn" href="javascript:;" ><i class="icon-arrow-down"></i></a> 
+
+    </div>                                
+</div>
+<#break>
+
+<#case "password">
+<div id="bs_div_${bootstrap.field_name}" class="field-box form-group">
+    <label id="bs_label_${bootstrap.field_name}" class="col-sm-2 control-label">${bootstrap.field_label}</label>
+    <div class="col-sm-7 controls">
+    	<input type="password" id="${bootstrap.field_name}" name="${bootstrap.field_name}" value="${bootstrap.value?default('')}" data-placement="right" title="" data-trigger="focus" data-toggle="tooltip" class="form-control" data-original-title="${bootstrap.prompt}" placeholder="${bootstrap.prompt}">
+    	<span id="bs_ok_sign_${bootstrap.field_name}" class="dn"><i class="icon-ok-sign"></i>${bootstrap.ok_sign}</span>
+    	<span id="bs_error_sign_${bootstrap.field_name}" class="dn"><i class="icon-remove-sign"></i>${bootstrap.error_sign}</span>
+    </div>                                
+</div>
+<#break>
+
+<#case "price">
+<div id="bs_div_${bootstrap.field_name}" class="field-box form-group">
+    <label id="bs_label_${bootstrap.field_name}" class="col-sm-2 control-label">${bootstrap.field_label}</label>
+    <div class="col-sm-3 input-group controls" style="padding-left:15px;">
+
+		<div class="input-group-addon">$</div>
+		<input type="text" class="form-control" id="${bootstrap.field_name}" name="${bootstrap.field_name}" value="${bootstrap.value?default('')}" placeholder="${bootstrap.prompt}">
+		<div class="input-group-addon">.00</div>
+      
+    </div>                                
+</div>
+<#break>
+
+<#case "datepicker">
+<div id="bs_div_${bootstrap.field_name}" class="field-box form-group">
+    <label class="col-sm-2 control-label">${bootstrap.field_label}</label>
+    <div class="ui-select col-sm-7 controls">
+	    <input type="text" id="${bootstrap.field_name}" name="${bootstrap.field_name}" class="input-large datepicker" data-date-format="yyyy-MM-dd" value="${(bootstrap.value?string('yyyy-MM-dd'))!''}">
+	    <span class="help-block ">${bootstrap.prompt}</span>
+	    <span id="bs_ok_sign_${bootstrap.field_name}" class="dn"><i class="icon-ok-sign"></i>${bootstrap.ok_sign}</span>
+	    <span id="bs_error_sign_${bootstrap.field_name}" class="dn"><i class="icon-remove-sign"></i>${bootstrap.error_sign}</span>
+    </div>
+</div>
+<#break>
+
+<#case "datepicker-ymdhms">
+<div id="bs_div_${bootstrap.field_name}" class="field-box form-group">
+    <label class="col-sm-2 control-label">${bootstrap.field_label}</label>
+    <div class="ui-select col-sm-7 controls">
+	    <input type="text" id="${bootstrap.field_name}" name="${bootstrap.field_name}" class="input-large datepicker" data-date-format="yyyy-MM-dd HH:mm:ss" value="${(bootstrap.value?string('yyyy-MM-dd HH:mm:ss'))!''}">
+	    <span class="help-block ">${bootstrap.prompt}</span>
+	    <span id="bs_ok_sign_${bootstrap.field_name}" class="dn"><i class="icon-ok-sign"></i>${bootstrap.ok_sign}</span>
+	    <span id="bs_error_sign_${bootstrap.field_name}" class="dn"><i class="icon-remove-sign"></i>${bootstrap.error_sign}</span>
+    </div>
+</div>
+<#break>
+
+
+<#case "select">
+<div id="bs_div_${bootstrap.field_name}" class="field-box form-group">
+    <label class="col-sm-2 control-label">${bootstrap.field_label}</label>
+    <div class="ui-select col-sm-7 controls">
+        <select id="${bootstrap.field_name}" name="${bootstrap.field_name}" class="form-control">
+            <option selected="" value="">--请选择--</option>            
+            <#if bootstrap.option??>
+            <#list bootstrap.option?keys as key>
+			    <option value="${key}" <#if (bootstrap.value?default('')?string == key)>selected="selected"</#if>>${bootstrap.option[key]}</option>
+			</#list>
+            </#if>
+        </select>
+    </div>
+</div>
+<#break>
+
+
+<#case "select_tree">
+<div id="bs_div_${bootstrap.field_name}" class="field-box form-group">
+    <label class="col-sm-2 control-label">${bootstrap.field_label}</label>
+    <div class="ui-select col-sm-7 controls">
+        <select id="${bootstrap.field_name}" name="${bootstrap.field_name}" class="form-control">
+            <option selected="" value="">--请选择--</option>            
+            <#if bootstrap.treeList??>
+            <#list bootstrap.treeList as tree>
+			    <option value="${tree.id}" <#if (bootstrap.value?default(0)?int == tree.id)>selected="selected"</#if> class="level${tree.level!''}">${tree.title}</option>
+			</#list>
+            </#if>
+        </select>
+    </div>
+</div>
+<#break>
+
+<#case "select_format">
+<div id="bs_div_${bootstrap.field_name}" class="field-box form-group">
+    <label class="col-sm-2 control-label">${bootstrap.field_label}</label>
+    <div class="ui-select col-sm-7 controls">
+        <select id="${bootstrap.field_name}" name="${bootstrap.field_name}" class="form-control">
+            <option selected="">--请选择--</option>            
+            <#if bootstrap.option??>${bootstrap.option}</#if>
+        </select>
+    </div>
+</div>
+<#break>
+
+
+<#case "radio">
+<div id="bs_div_${bootstrap.field_name}" class="field-box form-group">
+    <label class="col-sm-2 control-label">${bootstrap.field_label}</label>
+    <div class="ui-select col-sm-7 controls">
+        <#if bootstrap.option??>
+        <#list bootstrap.option?keys as key>
+        <label class="radio ">
+            <input type="radio" <#if (bootstrap.value?default('')?string == key)>checked="checked"</#if> value="${key}" id="bs_radio_${bootstrap.field_name}_${key}" name="${bootstrap.field_name}">
+            ${bootstrap.option[key]}
+        </label>
+        </#list>
+        </#if>
+    </div>                                
+</div>
+<#break>
+
+
+<#case "checkbox">
+<div id="bs_div_${bootstrap.field_name}" class="field-box form-group">
+    <label class="col-sm-2 control-label">${bootstrap.field_label}</label>
+		<div class="col-sm-7 controls">
+        <#if bootstrap.option??>
+	        <#list bootstrap.option?keys as key>
+	        <label class="checkbox-inline">
+	        	<#assign checked="">
+	        	<#if bootstrap.value??>
+	        	<#if (bootstrap.value?string('1','0') == key)><#assign checked="checked='checked'"></#if>
+	        	</#if>
+	            <input type="checkbox" ${checked} value="${key}" data-value="${(bootstrap.value?string('1','0'))?default('0')}" id="bs_checkbox_${bootstrap.field_name}_${key_index}" name="${bootstrap.field_name}" >
+	            ${bootstrap.option[key]}
+	        </label>
+	        </#list>
+        </#if>
+        </div>                                  
+</div>
+<#break>
+
+
+<#case "area">
+<!-- 地图区域的五个select控件 -->
+<div id="bs_div_${bootstrap.field_name}" class="field-box form-group">
+    <label class="col-sm-2 control-label">${bootstrap.field_label}</label>
+		<div class="col-sm-7 controls">
+			<include file="Public/Tpl/Library/area_include.html" />
+        </div>
+                                  
+</div>
+<#break>
+
+<#case "file">
+<!-- -->
+<div id="bs_div_${bootstrap.field_name}" class="field-box form-group">
+    <label class="col-sm-2 control-label">${bootstrap.field_label}</label>
+		<div class="span8 controls">
+
+        </div>
+                                  
+</div>
+<#break>
+
+
+<#case "gallery">
+<div id="bs_div_${bootstrap.field_name}" class="field-box form-group">
+    <label  class="col-sm-2 control-label">${bootstrap.field_label}</label>
+    <div class="wysi-column col-sm-7 controls">
+    	<ul id="gallery_ul_${bootstrap.field_name}">
+
+    		<#if bootstrap.optionList??>
+            <#list bootstrap.optionList as gallery>
+			    <#include "gallery_li_sub.html"/>
+			</#list>
+            </#if>
+
+    		<li class="gallery_li image_div rel pointer " id="li_add_action_${bootstrap.field_name}">
+    			<input type="file" accept="image/*" id="add_upload_file_${bootstrap.field_name}" data-updateid="" data-action="add" class="item_img_input pointer" name="imgs_${bootstrap.field_name}" style="opacity : 0;">
+    			<em class="abs over_hidden img_add_a" >&nbsp;</em>
+				<em class="abs over_hidden img_add_b" >&nbsp;</em>
+				
+				<img id="add_loading_${bootstrap.field_name}" alt="" src="/ehais/js/loading/images/progress.gif" class="abs img_loading hide">
+	  
+    		</li>
+    		
+    	</ul>
+    </div>
+</div>
+
+<script type="text/javascript" >
+$(function(){
+
+	var li_count_${bootstrap.field_name} = $("#gallery_ul_${bootstrap.field_name} li").length;
+    $("#add_upload_file_${bootstrap.field_name}").fileupload({
+        url: "/upload/image.upd",
+        formData : { "file_path":"goods",
+			"is_thumb":true,
+			"field_name":"${bootstrap.field_name}",
+			"index" : li_count_${bootstrap.field_name}
+		},
+        dataType: 'html',
+        done: function (e, data) {
+        	
+        },
+        success : function(result, textStatus, jqXHR){
+        	$("#add_upload_file_${bootstrap.field_name}").parent().before(result);
+        },
+        progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#progress .progress-bar').css(
+                'width',
+                progress + '%'
+            );
+        }
+    }).prop('disabled', !$.support.fileInput)
+        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+    
+    
+});
+
+
+</script>
+<#break>
+
+
+<#case "images">
+<!-- 单一的 -->
+<div id="bs_div_${bootstrap.field_name}" class="field-box form-group">
+    <label class="col-sm-2 control-label">${bootstrap.field_label}</label>
+		<div class="image_div rel pointer col-sm-7 controls" id="imgdiv_${bootstrap.field_name}" style="margin-left: 15px;">
+			<input type="file" accept="image/*" id="upload_file_${bootstrap.field_name}" multiple="" data-updateid="" data-action="add" class="item_img_input pointer" name="imgs_${bootstrap.field_name}" style="opacity : 0;">
+			
+			<em class="abs over_hidden img_add_a" >&nbsp;</em>
+			<em class="abs over_hidden img_add_b" >&nbsp;</em>
+			
+			<img alt="" src="${bootstrap.value?default('')}" class="abs img_source <#if (bootstrap.value??)>hide</#if>" id="img_source_${bootstrap.field_name}" name="img_source_${bootstrap.field_name}" onclick="$('#upload_file_${bootstrap.field_name}').click();">
+			<img alt="" src="" class="abs img_preview hide" id="img_preview_${bootstrap.field_name}" name="img_preview_${bootstrap.field_name}" onclick="$('#upload_file_${bootstrap.field_name}').click();">
+
+			<div id="div_edit_${bootstrap.field_name}" onclick="$('#upload_file_${bootstrap.field_name}').click();" class="abs img_div_edit img_div_ed pointer hide">编辑</div>
+			<div id="div_delete_${bootstrap.field_name}" onclick="img_delete_${bootstrap.field_name}();" class="abs img_div_delete img_div_ed pointer hide">删除</div>
+        
+        	<img id="loading_${bootstrap.field_name}" alt="" src="/ehais/js/loading/images/progress.gif" class="abs img_loading hide">
+        	<div class="prompt">${bootstrap.prompt}</div>
+        </div>
+        
+        
+		<input type="hidden" id="${bootstrap.field_name}" name="${bootstrap.field_name}" value="${bootstrap.value?default('')}" />
+        
+        <div class="clear"></div>          
+</div>
+
+<script type="text/javascript" >
+$(function(){
+	
+	$("#upload_file_${bootstrap.field_name}").fileupload({
+        url: "/upload/image.upd",
+        formData : { //"file_path":"goods",
+			//"is_thumb":<if condition="$bootstrap.is_thumb eq true">true<else />false</if>,
+			//"field_name":"${bootstrap.field_name}"
+		},
+        dataType: 'json',
+        done: function (e, data) {
+        	
+        },
+        beforeSend: function(jqXHR) {
+        	$("#loading_${bootstrap.field_name}").removeClass("hide");
+        },complete: function() {
+        	$("#loading_${bootstrap.field_name}").addClass("hide");
+        },
+        success : function(data, textStatus, jqXHR){
+        	console.log(JSON.stringify(data));
+        	if(parseInt(data.code) != 1){
+				alert(data.info);
+				return;
+			}
+			$("#${bootstrap.field_name}").val(data.msg);
+			$("#img_source_${bootstrap.field_name}").addClass("hide");
+			$("#img_preview_${bootstrap.field_name}").removeClass("hide");
+			$("#img_preview_${bootstrap.field_name}").attr("src",data.msg);
+			
+        },
+        progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#progress .progress-bar').css(
+                'width',
+                progress + '%'
+            );
+        }
+    }).prop('disabled', !$.support.fileInput)
+        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+	
+	/**
+	new uploadPreview({ UpBtn: "upload_file_${bootstrap.field_name}", DivShow: "imgdiv_${bootstrap.field_name}", ImgShow: "img_preview_${bootstrap.field_name}" });
+	**/
+	
+	$("#img_preview_${bootstrap.field_name}").click(function(){
+		$("#upload_file_${bootstrap.field_name}").click();
+	});
+
+	$("#upload_file_${bootstrap.field_name}").change(function(){ 
+		$("#img_preview_${bootstrap.field_name}").removeClass("hide");
+		$("#div_upload_${bootstrap.field_name}").removeClass("hide");	
+		$("#div_reset_${bootstrap.field_name}").removeClass("hide");	
+		
+		$("#div_edit_${bootstrap.field_name}").addClass("hide");	
+		$("#div_delete_${bootstrap.field_name}").addClass("hide");		
+	});
+
+	$("#imgdiv_${bootstrap.field_name}").mouseover(function(){
+		if($("#img_source_${bootstrap.field_name}").attr("src")!=""){
+			$("#div_edit_${bootstrap.field_name}").removeClass("hide");	
+			$("#div_delete_${bootstrap.field_name}").removeClass("hide");	
+		}
+	}).mouseout(function(){
+		$("#div_edit_${bootstrap.field_name}").addClass("hide");	
+		$("#div_delete_${bootstrap.field_name}").addClass("hide");	
+	});
+	
+	//init
+	if($("#img_source_${bootstrap.field_name}").attr("src")!=""){		
+		$("#img_source_${bootstrap.field_name}").removeClass("hide");	
+	}
+});
+
+function img_delete_${bootstrap.field_name}(){
+	 if(confirm("确定要删除${bootstrap.field_label}数据吗？"))
+	 {
+		 $("#img_source_${bootstrap.field_name}").attr("src","");
+		 $("#img_source_${bootstrap.field_name}").addClass("hide");
+		 $("#img_preview_${bootstrap.field_name}").attr("src","");
+		 $("#${bootstrap.field_name}").val("");
+	 }
+}
+</script>
+<#break>
+
+
+
+<#case "textarea">
+<div class="field-box form-group">
+    <label  class="col-sm-2 control-label">${bootstrap.field_label}</label>
+    <div class="wysi-column col-sm-7 controls">
+    	<textarea rows="5" class="" id="${bootstrap.field_name}" name="${bootstrap.field_name}" style="height: 300px;width: 100%;">${bootstrap.value?default('')}</textarea>
+    </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('#${bootstrap.field_name}').xheditor({tools:'full',
+		upImgUrl: "/upload/image.upd", 
+				upImgExt: "jpg,jpeg,gif,png",upMultiple:true,
+				html5Upload:false,onUpload:null});
+});
+</script>
+<#break>
+
+
+<#case "textareaV1">
+<div class="field-box form-group">
+    <label  class="col-sm-2 control-label">${bootstrap.field_label}</label>
+    <div class="wysi-column col-sm-7 controls">
+    	<textarea rows="5" class="" id="${bootstrap.field_name}" name="${bootstrap.field_name}" >${bootstrap.value?default('')}</textarea>
+    </div>
+</div>
+<#break>
+
+
+<#default >
+
+</#switch>

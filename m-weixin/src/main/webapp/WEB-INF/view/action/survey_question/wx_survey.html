@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/include/Jqmobi_Include.html">
+<title>调查问卷</title>
+<link href="/css/weixin/survey.css" type="text/css" rel="stylesheet"></link>
+<script type="text/javascript" src="/js/jquery/jquery.scrollTo.js"></script>
+</head>
+<body class="jqmobi">
+
+<div class="view " id="mainview">
+	<header>
+      	<h1></h1>
+  	</header>
+  	<div class="pages">
+  		<div  class="panel active" id="main" data-title="" data-selected="true">
+  			<section id="question_main">
+  				
+  			</section>
+  		</div>        		
+  	</div>
+      	
+</div>
+
+
+<div id="demo" class="dn">
+	<section id="section_demo">
+		
+<section data-id="_Id" class="flwh item" id="survey_question_id__index" index="_index">
+	<div class="flw">_title</div>
+	<ul class="flw" data-type="_type" data-value="">_li</ul>
+	<div class="flw">
+	<button class="next_survey dn" data-id="_Id" index="_index" data-submit-type="_submitType">_buttonTitle</button>
+	</div>
+</section>
+
+	</section>
+</div>
+
+<script type="text/javascript">
+var survey_id = "${survey_id}";
+var wxid = "${wxid}";
+var openid = "${openid}";
+
+var window_h = 0;
+var window_w = 0;
+
+$(function(){
+	window_h = $(window).height() - 44;
+	window_w = $(window).width();
+	
+	getInfo();
+	
+});
+
+
+function getInfo(){
+		$.ajax({
+			type:"post",
+			url:"${action}",
+			data:{
+				wxid : wxid, surveyId : survey_id 
+				},
+			async:true,
+			dataType : "json",
+			success : function(data){
+				console.log(JSON.stringify(data));	
+				if(data.code != 1){
+					$.afui.showMask(data.msg);
+					return ;
+				}
+				var section_demo = $("#section_demo").html();
+				
+				var list = data.rows;
+				if(list == null )list = [];
+				for(var i = 0 ; i < list.length ; i++){
+					list[i].extra = list[i].extra.replaceAll("  "," ");
+					var li_extra = list[i].extra.split(" ");
+					var _li = "";
+					if(list[i].type == "radio" || list[i].type == "checkbox"){
+						for(var j = 0 ; j < li_extra.length ; j++){
+							_li += "<li index='"+j+"'><i>"+(j+1)+"</i><span>"+li_extra[j]+"</span></li>";
+						}
+					}else if(list[i].type == "textarea"){
+						_li += "<li index='0'><input type='text' id='txt_"+i+"'></li>";
+					}
+					
+					$("#question_main").append(
+							section_demo
+							.replaceAll("_Id",list[i].id)
+							.replaceAll("_title",list[i].title)
+							.replaceAll("_type",list[i].type)
+							.replaceAll("_li",_li)
+							.replaceAll("_index",i)
+							.replaceAll("_buttonTitle",(i < (list.length - 1))?"下一题":"提交调查问卷")
+							
+							);
+				}
+				
+				$("#question_main").css("width", window_w * list.length);
+				$("#question_main").css("height", window_h);
+				$(".flwh").css("width", window_w);
+				$(".flwh").css("height", window_h);
+
+				$("#question_main .item ul li").click(function(){
+					if($(this).parent().attr("data-type") == "radio"){
+						$(this).parent().children("li").children("i").removeClass("cur");
+						$(this).children("i").addClass("cur");
+						click_item_li_deal(this);//设置点击事件后的处理
+					}else if($(this).parent().attr("data-type") == "checkbox"){
+						$(this).children("i").toggleClass("cur");
+						click_item_li_deal(this);//设置点击事件后的处理
+					}					
+				});
+				
+				$("#question_main .item ul li input[type='text']").bind('input propertychange',function(){
+					if($(this).val() != ""){
+						$(this).parent().parent().parent().children("div").children(".next_survey").removeClass("dn");
+					}else{
+						$(this).parent().parent().parent().children("div").children(".next_survey").addClass("dn");						
+					}
+				});
+				
+				$(".next_survey").click(function(){
+					//console.log($('#question_main').css('left') + " "+ $('#question_main').position().left + " "+ $("#question_main").width() + " " + window_w);
+					if($(this).parent().parent().children("ul").attr("data-type") == "radio" || $(this).parent().parent().children("ul").attr("data-type") == "checkbos"){
+						if($(this).parent().parent().children("ul").attr("data-value") == ""){
+							$.afui.showMask("请选择项目");return ;
+						}
+					}else if($(this).parent().parent().children("ul").attr("data-type") == "textarea"){
+						if($(this).parent().parent().children("ul").children("li").children("input[text]").val() == ""){
+							$.afui.showMask("请填定相应的信息");return ;
+						}
+					}
+					
+					if((Math.abs($('#question_main').position().left) + parseFloat(window_w)) < (parseFloat($("#question_main").width()) ) ){
+						$("#question_main").animate({ left: '-'+(window_w * (parseInt($(this).attr("index"))+1) )+'px' }, "slow");
+					}else{
+						survey_submit();//console.log("提交调查问卷");
+					}
+					
+				});
+				
+			},
+			error : function(e,m){
+				console.log(JSON.stringify(e));
+			},beforeSend:function(jqXHR){
+			},complete : function(){
+			}
+		});
+}
+
+function click_item_li_deal(_this){
+	
+	var aValue = new Array();
+	$(_this).parent().parent().children("div").children(".next_survey").addClass("dn");
+	$(_this).parent().children("li").each(function(){
+		if($(this).children("i").hasClass("cur")){
+			aValue.push($(this).attr("index"));
+			$(_this).parent().parent().children("div").children(".next_survey").removeClass("dn");
+		}
+	});
+	
+	$(_this).parent().attr("data-value",aValue.join(","));
+	
+	/**
+	if($("#question_main .item").index($(_this).parent().parent()) + 1 == $("#question_main .item").length){
+		$(_this).parent().parent().children("div").children(".next_survey").html("提交调查问卷");
+	}
+	**/
+}
+
+function survey_submit(){
+	var aExtend = new Array();
+	$("#question_main section.item").each(function(){
+		//console.log($(this).html());
+		//console.log($(this).attr("data-Id"));
+		if($(this).children("ul").attr("data-type") == "radio" || $(this).children("ul").attr("data-type") == "checkbox"){
+			aExtend.push($(this).attr("data-Id")+":"+$(this).children("ul").attr("data-value"));
+		}else if($(this).children("ul").attr("data-type") == "textarea"){
+			aExtend.push($(this).attr("data-Id")+":"+$(this).children("ul").children("li").children("input").val());
+		}
+	});
+	//console.log(aExtend.join("|"));
+	
+	$.ajax({
+		url : "${wx_survey_answer_action}",
+		type:"post",
+		data:{
+			wxid : wxid, surveyId : survey_id ,openid : openid ,extend : aExtend.join("|")
+			},
+		async:true,
+		dataType : "json",
+		success : function(data){
+			console.log(JSON.stringify(data));	
+			if(data.code != 1){
+				$.afui.showMask(data.msg);
+				return ;
+			}
+		},
+		error : function(e,m){
+			console.log(JSON.stringify(e));
+		},beforeSend:function(jqXHR){
+		},complete : function(){
+		}
+	});
+}
+
+
+</script>
+
+</body>
+</html>

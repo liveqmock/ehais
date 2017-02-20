@@ -1,0 +1,441 @@
+<div id="content">
+     
+
+	<div data-spm="2016004" class="main-nav">
+	<div class="inner-con0">
+		<div class="inner-con1">
+			<div class="inner-con2 clearfix">
+				<#list navList as nav>
+				<#if nav.type == 'nav'>
+					<a href="${nav.url?default('javascript:;')}">
+					${nav.name}
+					</a>
+				</#if>
+				</#list>
+			</div>
+		</div>
+	</div>
+</div>
+
+	<div class="j_category category-con">
+	<div class="category-inner-con j_categoryInnerCon j_categoryTab">
+	<div data-spm="2015002" class="j_logo logo-con">
+	<div class="doodle-con j_doodleCon" style="">
+	<a href="https://chowsangsang.tmall.com/campaign-3734-22.htm?acm=201603169.1003.2.1001935&amp;aldid=WXqVAikb&amp;scm=1003.2.201603169.ITEM_1470129566299_1001935&amp;pos=1" style="display:block;height:100%;width:100%;" class="j_doodleLink">
+	<img data-src="https://img.alicdn.com/imgextra/i1/366168414/TB2oQR7tFXXXXcoXpXXXXXXXXXX-366168414.gif" src="https://img.alicdn.com/imgextra/i1/366168414/TB2oQR7tFXXXXcoXpXXXXXXXXXX-366168414.gif" class="doodle hide j_doodle">
+	</a>
+	</div>
+	</div>
+
+
+
+    <div class="category-type">
+        <i class="fp-iconfont"></i>
+        <div class="text">商品分类</div>
+    </div>
+
+<div class="category-tab-content">
+    <div class="nav-con j_tabPannel category-tab-pannel pannel-normal">
+        <ul class="normal-nav clearfix">
+            <#list cateList as cate>
+            <#if (cate.parentId == 0)>           
+            <li class="j_MenuNav nav-item nav-item-${cate_index} category-loaded">
+                <i class="fp-iconfont nav-item-icon icon"></i><i class="dot fp-iconfont"></i>
+                <a href="/cate-${cate.catId}.html">${cate.catName}</a>                
+                <b class="arrow"></b>
+            </li>
+            </#if>    
+            </#list>            
+        </ul>
+    </div>
+    
+</div>
+	<div class="content-con j_categoryContent">
+	
+	
+    
+	<#list cateList as cate>
+	<#if (cate.parentId == 0)>  
+	<div class="pannel-con j_CategoryMenuPannel" style="display: none;">
+    <div class="pannel-${cate_index}">
+	<div  class="hot-word-con">
+	
+	
+		<#list cateList as cate2>
+			<#if cate.catId == cate2.parentId>
+			<div class="hot-word-line">
+		        <div class="line-title">
+		          <div class="title-text">${cate2.catName}</div><i class="fp-iconfont"></i>
+		        </div>
+		        <div class="line-con">
+		        <#list cateList as cate3>
+			        <#if cate2.catId == cate3.parentId>
+			        <a href="cate-${cate3.catId}.html" class="hot-word  highlight ">${cate3.catName}</a>
+			        </#if>
+		        </#list>
+		        <div class="seprate clearfix"></div>
+		        </div>	        
+	        </div>
+	        </#if>
+        </#list>
+
+        </div>
+       
+       
+       	<div class="sub-logo-con">
+    <div data-spm="subpannel2016026">
+    <#list brandList as brand>
+    <#if (brand.catId?? && brand.catId == cate.catId)>
+        <a href="${brand.siteUrl}" class="logo">
+          <img src="${brand.brandLogo}">
+        </a>
+	</#if>        
+    </#list>
+    
+    </div>
+    
+<!--      
+    <div data-spm="subpannel2016027">
+    
+      
+      <a href="https://nvzhuang.tmall.com/?acm=201603010.1003.2.735220&amp;aldid=dqo3UuJR&amp;scm=1003.2.201603010.OTHER_1470476828102_735220&amp;pos=1" class="activity clearfix">
+        <img src="https://img.alicdn.com/tps/TB1xnkQKVXXXXaJXXXXXXXXXXXX-378-174.jpg">
+        <div class="title"></div>
+        <div class="sub-title"></div>
+      </a>
+      
+    
+    </div>
+    -->
+    
+  </div>
+   
+        
+        </div>
+        
+
+    
+  </div>
+
+     </#if>
+	</#list>
+
+
+</div>
+
+	</div>
+	<div data-spm="2016006" class="banner-con j_mainBanner loading"><div class="slider-decoration left"></div>
+<div class="slider-decoration right"></div>
+
+<div class="banner-slider j_bannerSlider">
+    <div class="slider-content loading swiper-container">
+        
+
+            <div class="swiper-wrapper">
+            	<#list adList as ad>
+            	<#if ad.positionId?? && ad.positionId == 1>
+		        <div class="swiper-slide">
+		        	<img src="${ad.adCode}" />
+		        </div>
+		        </#if>
+		        </#list>
+		    </div>
+		    
+		        <!-- 如果需要分页器 -->
+		    <div class="swiper-pagination"></div>		    
+		    <!-- 如果需要导航按钮 -->
+		    <div class="swiper-button-prev"></div>
+		    <div class="swiper-button-next"></div>		    
+		    <!-- 如果需要滚动条 -->
+		    <div class="swiper-scrollbar"></div>
+		    
+        
+    </div>
+
+<script type="text/javascript">
+$(document).ready(function () {
+	  var mySwiper = new Swiper ('.swiper-container', {
+		    direction: 'horizontal',
+		    loop: true,
+		    speed : 4000,
+		    autoplay : 4000,
+		    // 如果需要分页器
+		    pagination: '.swiper-pagination',
+		    
+		    // 如果需要前进后退按钮
+		    nextButton: '.swiper-button-next',
+		    prevButton: '.swiper-button-prev',
+		    
+		    // 如果需要滚动条
+		    scrollbar: '.swiper-scrollbar',
+		  });
+});
+</script>
+
+
+    <div class="vip-outcon">
+      <div class="j_vipCon vip-con" style="display: block;">
+<div data-spm="2016070">
+<div class="avatar-con">
+	
+		<div class="avatar-default">
+		</div>
+	
+</div>
+<div class="login-info">
+	
+		<div>Hi~你好!</div>
+		<a class="login-button" href="//login.tmall.com/" target="_self"><i class="fp-iconfont"></i>请登录</a>
+		<a href="//register.tmall.com/" class="register">免费注册 &gt;</a>
+	
+</div>
+<div class="seprate"></div>
+<div class="more-info-con">
+	
+		<div class="more-info">
+			<ul>
+				<li><i class="fp-iconfont"></i><span>退货保障</span></li>
+				<li><i class="fp-iconfont"></i><span>花呗分期</span></li>
+				<li><i class="fp-iconfont"></i><span>极速退款</span></li>
+				<li><a href="//vip.tmall.com/privilege/all" class="get-more">更多特权 &gt;</a></li>
+			</ul>
+		</div>
+	
+</div>
+<div class="recommends-con">
+	<div class="con-title">推荐活动</div>
+	
+	<a data-spm="d1" href="https://vip.tmall.com/tm-member/point/exchange/index?acm=2016030417.1003.2.1004330&amp;aldid=r9s9MI3e&amp;spm=875.7931836/A.2016070.d1.6Zw1dQ&amp;scm=1003.2.2016030417.OTHER_1471160790513_1004330&amp;pos=1#floor_jj">
+		<img src="https://img.alicdn.com/tps/i4/TB1BjjpLXXXXXXEXXXXSutbFXXX.jpg" class="pic">
+		<div class="title">缩袋3个装</div>
+		<div class="sub-title">590积分兑</div>
+	</a>
+	
+</div>
+</div>
+</div>
+    </div>
+</div>
+
+
+</div>
+</div>
+	
+	
+
+
+	
+	<div class="j_newHotBrand new-hot-brand-con j_exposureCon">
+  <div class="module-title">
+    热门品牌 <span>HOT BRANDS</span>
+  </div>
+	<div class="module-body j_newHotBrandBody" style="opacity: 1;">
+  <div data-spm="2016072">
+  
+  <#list brandList as brand>
+  <#if brand.recommend?? &&  brand.recommend == '1'>
+    <a class="poster" href="${brand.siteUrl}">
+      <img src="${brand.brandLogo}">
+    </a>
+  <#break>
+  </#if>
+  </#list>
+  
+  
+  </div>
+
+  <div class="brand-list">
+    <ul  class="init j_newHotBrandItemBody">
+
+  <#list brandList as brand>
+  <#if brand.recommend?? && brand.recommend == '2'>
+    
+  <li class="brand-item">
+      <div class="brand-img">
+        <a href="${brand.siteUrl}"><img src="${brand.brandLogo}"></a>
+      </div>
+  </li>
+  
+  
+  </#if>
+  </#list>
+  
+  
+  
+
+</ul>
+    <div data-spm="fpBrandFresh">
+      <a data-spm-click="gostr=/tmallfp;locaid=d99;" class="refresh-btn" href="#">
+        <i class="rotate-icon fp-iconfont"></i>
+        <span class="btn-text">更多...</span>
+      </a>
+    </div>
+  </div>
+  <ul  class="recommend-list">
+
+  <#list brandList as brand>
+  <#if brand.recommend?? && brand.recommend == '3'>
+    
+    <li>
+      <a href="${brand.siteUrl}">
+        <div class="logo">
+          <img src="${brand.brandLogo}">
+        </div>
+        <div class="meta">
+          <p class="title">${brand.brandName}</p>
+          <p class="desc">${brand.brandDesc!''}</p>
+        </div>
+      </a>
+    </li>
+    
+  
+  </#if>
+  </#list>
+  
+
+    
+    
+  </ul>
+</div>
+</div>
+
+
+	<div class="j_floor floor-con">
+	
+	<#list cateList as cate>
+		<#if (cate.parentId == 0 && cate.recommend?? && cate.recommend == '4')> 
+		<div id="J_FloorJJSH" class="floor-line-con ${cate.style!'color-type-green'}">
+			<i class="color-mark"></i><div class="floor-name">${cate.catName}</div>
+			<div class="floor-sub-name">${cate.subCatName}</div>
+			<div data-appid="201603204,09052,201603213" data-goldlog="/tmallfp.5108.3" class="j_lineBody line-body fp-content-loading" style="opacity: 1;">
+				<div data-spm="2016080" class="hot-word-con">
+					<#list cateList as cate2>
+						<#if (cate2.parentId == cate.catId && cate2.recommend?? && cate2.recommend == '4')> 
+						<a href="cate-${cate2.catId}.html" class="hot-word">${cate2.catName}</a>
+						</#if>
+					</#list>
+				</div>
+				<div>
+				
+					<a href="cate-${cate.catId}.html" class="big-banner-con">
+					<img src="${cate.image}">
+					<div class="act-title-ctn">
+						<div class="slide-item" style="margin-top: 0px; display: block;">${cate.catName} &gt;</div>
+					</div>
+				
+					<div class="title-con">
+						<div class="title">${cate.keywords!''}</div>
+						<div class="sub-title">${cate.subCatName!''}</div>
+						<div class="decoration"></div>
+					</div>
+					</a>
+				
+					<div class="middle-column-con">
+						<#assign i=0 />
+						<#list cateList as cate2>
+						<#if (cate2.parentId == cate.catId && cate2.recommend?? && cate2.recommend == '4')>
+						<a href="cate-${cate2.catId}.html" class="grid one-grid">
+							<div class="title">${cate2.catName!''}</div>
+							<div class="sub-title">${cate2.subCatName!''}</div>
+							<img src="${cate2.image!''}">
+						</a>
+						<#if i gte 5><#break></#if>
+						<#assign i=i+1 />
+						</#if>
+						</#list>
+					</div><!-- middle-column-con end -->
+					<div class="right-column-con">
+					<#assign i=0 />
+					<#list cateList as cate2>
+						<#if (cate2.parentId == cate.catId && cate2.recommend?? && cate2.recommend == '5')>
+						<a href="cate-${cate2.catId}.html" class="grid second-grid">
+							<div class="title">${cate2.catName!''}</div>
+							<div class="sub-title">${cate2.subCatName!''}</div>
+							<img src="${cate2.image!''}">
+							
+						</a>
+						<#if i gte 2><#break></#if>
+						<#assign i=i+1 />
+						</#if>
+					</#list>
+					</div><!-- right-column-con end -->
+				</div>
+							
+			</div>
+		</div>
+		</#if>
+	</#list>
+
+
+</div>
+	
+		
+	
+
+	<div id="J_FloorCNXH" class="j_wonderful wonderful-con">
+	<h2 class="wonderful-title">
+        <span class="text-ctn">
+            <i class="fp-iconfont nav-item-icon icon"></i>猜你喜欢
+        </span>
+    </h2>
+	<div class="module-content j_wonderfulList">
+	
+
+
+<div data-spm="20161011">
+
+
+<ul class="wonderful-line  j_exposureExtra1 ">
+    
+    <#list goodsList as goods>
+    
+    
+    <li class="wonderful-item <#if goods_index % 5 == 0>last</#if>">
+        <a href="goods-${goods.goodsId}.html" class="card-item  ">
+            <span class="item-pic">
+            <img width="100%" src="${goods.goodsThumb}">
+                </span>
+                <span class="item-info">
+                    <span class="item-desc">
+                        <em title="${goods.goodsName}" class="item-name">${goods.goodsName}</em>
+                    </span>
+                    <span class="item-detail">
+                        <span class="item-price">
+
+						<span class="mui-price  ">
+						    <i class="mui-price-rmb">¥</i>
+						    <span class="mui-price-integer">${(goods.shopPrice / 100)?floor }</span>
+						    
+						    <span class="mui-price-decimal">.${(goods.shopPrice % 100)?string("00") }</span>
+						    
+						</span>
+						
+						</span>
+                        
+                    </span>
+                </span>
+        </a>
+    </li>
+    
+    
+    </#list>
+    
+    
+</ul>
+
+
+
+</div>
+
+
+
+
+<div class="j_exposureEnd"></div>
+</div>
+	
+</div>
+
+
+
+
+</div>

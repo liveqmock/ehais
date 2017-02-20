@@ -1,0 +1,88 @@
+@CHARSET "UTF-8";
+
+#cartUl{border: 1px solid #ccc;width: 1190px; margin: 0 auto;margin-top: 30px;}
+#cartUl li {border-bottom: 1px solid #e8e8e8; min-height:119px;padding-top: 20px;}
+#cartUl li dl dt,#cartUl li dl dd{float: left;}
+#cartUl li dl dd.cart-checkbox{
+	width: 25px;
+	padding: 0 0 0 30px;
+}
+#cartUl li dl dd.cart-checkbox input[type="checkbox"]{
+	width: 15px; height: 15px;
+}
+#cartUl li dl dd.cart-img{
+	margin: 0 20px;
+}
+
+#cartUl li dl dd.cart-img a {
+    display: table-cell;
+    height: 80px;
+    text-align: center;
+    vertical-align: middle;
+    width: 80px;
+}
+#cartUl li dl dd.cart-img img {
+    max-height: 80px;
+    max-width: 80px;
+    vertical-align: middle;
+}
+
+#cartUl li dl dd.cart-info{
+	width: 300px;
+}
+#cartUl li dl dd.cart-info a{
+	color: #3c3c3c;
+}
+#cartUl li dl dd.cart-price{
+	width: 200px;text-align: center;
+}
+#cartUl li dl dd.cart-price span{display: none;}
+#cartUl li dl dd.cart-quantity{
+	width: 150px;
+}
+#cartUl li dl dd.cart-quantity div{width: 25px; height: 25px;line-height: 22px;border: 1px #666 solid;text-align: center;float: left;cursor:pointer;}
+#cartUl li dl dd.cart-quantity div.quantity{border-left: 0;border-right: 0;width: 40px;}
+#cartUl li dl dd.cart-sum{
+	width: 200px;text-align: center;color: #f40;font-weight: bold;
+}
+#cartUl li dl dd.cart-opt{
+	width: 150px;text-align: center;
+}
+#cartUl li dl dd.cart-opt a{margin-top: 20px;color: #3c3c3c;}
+#cartUl li.totalLi{
+	min-height:50px; height: 50px;background: #e5e5e5;padding-top : 0;
+}
+#cartUl li.totalLi dd{
+	line-height: 50px;
+}
+#cartUl li.totalLi dd.allcheckbox{
+	width: 80px;padding-left: 20px;
+}
+#cartUl li.totalLi dd.allcheckbox input[type='checkbox']{margin: 0 10px;}
+
+#cartUl li.totalLi dd.checkout{
+	float: right;height: 50px;width: 120px;text-align: center;background: #b0b0b0;color: #fff;font-size: 18px;font-weight: bold;
+}
+#cartUl li.totalLi dd#gTotal,#cartUl li.totalLi dd#gNumber,#cartUl li.totalLi dd.checkout,#cartUl li.totalLi dd#go_back{
+	float: right;
+}
+#cartUl li.totalLi dd#gTotal,#cartUl li.totalLi dd#gNumber,#cartUl li.totalLi dd#go_back{
+	width: 150px;text-align: center;
+}
+
+#cartUl li.totalLi dd.checkout.go-btn{
+	height: 50px;text-align: center;
+	font-weight: bold;
+    background: #b10000 none repeat scroll 0 0;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    float: right;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 50px;
+    position: relative;
+    text-align: center;
+    vertical-align: middle;
+    width: 182px;
+}

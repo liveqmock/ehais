@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml>
+	
+	<menu>
+
+		
+		<Parent>		
+			<id></id>
+			<title>系统功能管理</title>	
+			<url></url>
+			<module></module>
+			<className></className>
+			<iconClassName></iconClassName>
+			<roles></roles>
+			<MenuItems>				
+				<MenuItem>
+					<id></id>
+					<title>扩展字段</title>
+					<url>/admin/extends_field</url>
+					<module></module>
+					<className></className>
+					<iconClassName></iconClassName>
+					<roles></roles>
+				</MenuItem>
+			</MenuItems>
+		</Parent>
+	    
+	    
+	    
+		    
+	</menu>
+
+</xml>

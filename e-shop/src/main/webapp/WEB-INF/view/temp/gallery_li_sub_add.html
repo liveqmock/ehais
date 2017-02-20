@@ -1,0 +1,65 @@
+<li class="gallery_li image_div rel pointer " id="li_add_action_${bootstrap.field_name}">
+<input type="file" accept="image/*" id="add_upload_file_${bootstrap.field_name}" data-updateid="" data-action="add" class="item_img_input pointer" name="imgs_${bootstrap.field_name}" style="opacity : 0;">
+<em class="abs over_hidden img_add_a" >&nbsp;</em>
+<em class="abs over_hidden img_add_b" >&nbsp;</em>
+
+<img id="add_loading_${bootstrap.field_name}" alt="" src="/ehais/js/loading/images/progress.gif" class="abs img_loading hide">
+
+</li>
+
+<script type="text/javascript" >
+$(function(){
+
+	var li_count_${bootstrap.field_name} = $("#gallery_ul_${bootstrap.field_name} li").length;
+    $("#add_upload_file_${bootstrap.field_name}").fileupload({
+        url: "/upload/image.upd",
+        formData : { "file_path":"goods",
+			"is_thumb":true,
+			"field_name":"${bootstrap.field_name}",
+			"index" : li_count_${bootstrap.field_name}
+		},
+        dataType: 'json',
+        done: function (e, data) {
+        	
+        },
+        success : function(result, textStatus, jqXHR){
+        	withGallery${bootstrap.field_name}(result);
+        },
+        progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#progress .progress-bar').css(
+                'width',
+                progress + '%'
+            );
+        }
+    }).prop('disabled', !$.support.fileInput)
+        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+    
+    
+    
+    function withGallery${bootstrap.field_name}(data){
+    	li_count_${bootstrap.field_name} = $("#gallery_ul_${bootstrap.field_name} li").length;
+    	
+    	$.post("goods_gallery_add",{
+    		fieldLabel : "${bootstrap.field_label}",
+    		fieldName : "${bootstrap.field_name}",
+    		goodsId : "0",
+    		tableName : "hai_goods",
+    		thumbUrl : data.msg,
+    		imgUrl : data.msg,
+    		imgOriginal : data.msg,
+    		"gallery_index" : li_count_${bootstrap.field_name},
+    	},function(result){
+    		$("#add_upload_file_${bootstrap.field_name}").parent().before(result);
+    	},"html");
+    	
+    	
+    	
+    	
+    }
+    
+});
+
+
+</script>
+

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml>
+	
+	<menu>
+
+		
+		<Parent>
+			<id>goods</id>
+			<title>功能</title>
+			<className></className>
+			<url></url>
+			<module></module>
+			<iconClassName></iconClassName>
+			<roles>
+				<string>zkef</string>
+			</roles>	
+			<MenuItems>
+				<MenuItem>
+					<id></id>
+					<title>捐款项目</title>
+					<url>/admin/donation_list</url>
+					<module></module>
+					<className></className>
+					<iconClassName></iconClassName>
+					<roles><string>zkef</string></roles>
+				</MenuItem>
+				<MenuItem>
+					<id></id>
+					<title>捐款项目添加</title>
+					<url>/admin/donation_insert</url>
+					<module></module>
+					<className></className>
+					<iconClassName></iconClassName>
+					<roles><string>zkef</string></roles>
+				</MenuItem>
+				
+				<MenuItem>
+					<id></id>
+					<title>捐款记录查询</title>
+					<url>/admin/orderpayrecord_list</url>
+					<module></module>
+					<className></className>
+					<iconClassName></iconClassName>
+					<roles><string>zkef</string></roles>
+				</MenuItem>
+				
+				<MenuItem>
+					<id></id>
+					<title>捐款赠言记录</title>
+					<url></url>
+					<module></module>
+					<className></className>
+					<iconClassName></iconClassName>
+					<roles><string></string></roles>
+				</MenuItem>
+				
+				
+			</MenuItems>
+		</Parent>
+		
+		
+		
+		
+		
+	    
+	    
+	    
+	    <Parent>		
+			<id></id>
+			<title>功能管理</title>	
+			<url></url>
+			<module></module>
+			<className></className>
+			<iconClassName></iconClassName>
+			<roles></roles>
+			<MenuItems>				
+				
+				<MenuItem>
+					<id></id>
+					<title>修改密码</title>
+					<url></url>
+					<module></module>
+					<className></className>
+					<iconClassName></iconClassName>
+					<roles></roles>
+				</MenuItem>
+			</MenuItems>
+		</Parent>
+	    
+		    
+	</menu>
+
+</xml>

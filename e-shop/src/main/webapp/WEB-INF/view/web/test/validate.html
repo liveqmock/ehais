@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>js验证</title>
+<#include "/include/BootStrap_Include.html">
+<script src="/ehais/js/jquery/jquery-validate.min.js"></script>
+</head>
+<body>
+
+<script>
+
+$(function() {
+    $("#commentForm").validate();
+});
+</script>
+
+<form class="cmxform" id="commentForm" method="get" action="">
+  <fieldset>
+    <legend>输入您的名字，邮箱，URL，备注。</legend>
+    <p>
+      <label for="cname">Name (必需, 最小两个字母)</label>
+      <input id="cname" name="name" minlength="3" type="text" required>
+    </p>
+    <p>
+      <label for="cemail">E-Mail (必需)</label>
+      <input id="cemail" type="email" name="email" required>
+    </p>
+    <p>
+      <label for="curl">URL (可选)</label>
+      <input id="curl" type="url" name="url">
+    </p>
+    <p>
+      <label for="ccomment">备注 (必需)</label>
+      <textarea id="ccomment" name="comment" required></textarea>
+    </p>
+    <p>
+      <input class="submit" type="submit" value="Submit">
+    </p>
+  </fieldset>
+</form>
+
+
+</body>
+</html>

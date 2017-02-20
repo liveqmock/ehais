@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/include/Jqmobi_Include.html">
+<title>${model.title}</title>
+<link rel="stylesheet" type="text/css" href="/css/weixin/form_list.css" />
+
+</head>
+<body class="jqmobi">
+
+<div class="view " id="mainview">
+	<header>
+       	<h1>${model.title}</h1>
+   	</header>
+   	<div class="pages">
+   		<div  class="panel active" id="main" data-title="${model.title}" data-selected="true">
+   			<h1 class="detail title">${model.title}</h1>
+   			<div class="detail intro" id="intro">${model.intro?default('')}</div>
+   			<div class="detail content" id="content">${model.content?default('')}</div>
+   			<ul class="list ul_goods form" id="ul_goods">
+   				<li class="">
+	   				<div class="fl lbl">真实姓名：</div>
+	   				<div class="fl txt" ><input type="text" id="realname" name="realname" placeholder="请输入真实姓名" value=""></div>
+	   			</li>
+	   			<li class="">
+	 				<div class="fl lbl">手机号码：</div>
+	 				<div class="fl txt" ><input type="text" id="mobile" name="mobile" placeholder="请输入手机号码" value=""></div>
+	   			</li>
+	   			<li class="">
+	 				<div class="fl lbl">单位名称：</div>
+	 				<div class="fl txt" ><input type="text" id="company" name="company" placeholder="请输入公司名称" value=""></div>
+	   			</li>
+	   			<li class="">
+	 				<div class="fl lbl">备注：</div>
+	 				<div class="fl txt" ><input type="text" id="remark" name="remark" placeholder="请输入备注" value=""></div>
+	   			</li>
+	   			<li class="submit">
+	    			<button type="button" id="submit" name="submit"  class="btn btn-bs btn-outline w100">报名</button>
+	    		</li>
+   			</ul>
+   		</div>
+   	</div>
+</div>
+<input type="hidden" id="openid" name="openid" value="${openid}">
+<input type="hidden" id="wxid" name="wxid" value="${wxid}">
+
+<script type="text/javascript">
+$(function(){
+	$(".view header").prepend("<a href='javascript:;' class='backButton back goBackClick'>返回</a>");
+	goBackClickEvent();
+
+	$("#submit").click(function(){apply_submit();});
+});
+
+
+
+function apply_submit(){
+	if($("#realname").val().trim() == ""){
+		$.afui.toast("请输入真实姓名");
+		return ;
+	}
+	if($("#mobile").val().trim() == ""){
+		$.afui.toast("请输入手机号码");
+		return ;
+	}
+	$.ajax({
+		url : "${action}",
+		data : {
+			wxid:$("#wxid").val(),
+			act_id:"${model.actId}",
+			openid:$("#openid").val(),
+			realname:$("#realname").val(),
+			mobile:$("#mobile").val(),
+			company:$("#company").val(),
+			remark:$("#remark").val()
+			},
+		type : "post",
+		dataType : "json",
+		success : function(data){
+			$.afui.toast(data.msg);
+			if(data.code != 1){				
+				return ;
+			}
+			$("#realname").val("");
+			$("#mobile").val("");
+			$("#company").val("");
+			$("#remark").val("");
+		},
+		error : function(e,t){},
+		beforeSend: function() {
+			$.afui.showMask("提交处理中...");
+			$("#submit").attr('disabled',"true");
+		},
+		complete: function() {
+			// Handle the complete event
+			$.afui.hideMask();
+			$('#submit').removeAttr("disabled");
+		}
+		
+	});
+}
+</script>
+</body>
+</html>

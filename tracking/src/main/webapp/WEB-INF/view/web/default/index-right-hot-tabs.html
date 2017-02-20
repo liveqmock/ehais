@@ -1,0 +1,12 @@
+<div class="cp-panel hot-tags">
+    <div class="cp-panel-heading">
+        <h2>热门订阅资讯</h2>
+    </div>
+    <div class="cp-panel-body clearfix">
+    	<#if rm.map.listInfoType??>
+    	<#list rm.map.listInfoType as req>
+			<a href="javascript:;"  class="tag">${req.content?default('')}</a>
+		</#list>
+		</#if>
+    </div>
+</div>

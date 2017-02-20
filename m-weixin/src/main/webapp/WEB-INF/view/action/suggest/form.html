@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/include/Jqmobi_Include.html">
+<title>投诉与建议</title>
+
+<link rel="stylesheet" type="text/css" href="/css/weixin/form_list.css" />
+
+</head>
+<body class="jqmobi">
+
+<div class="view " id="mainview">
+	<header>
+       	<h1>投诉与建议</h1>
+   	</header>
+   	<div class="pages">
+   		<div  class="panel" id="main" data-title="投诉与建议" data-selected="true">
+   			<ul class="list lbl" style="padding:16px;">
+            
+            
+   			<li style="padding:12px 0 6px 0; color:#666">真实姓名：</li>
+   			<li><input type="text" id="realname" name="realname" placeholder="请输入真实姓名" value=""></li>
+   				
+   			<li style="padding:12px 0 6px 0; color:#666">手机号码：</li>
+   			<li><input type="text" id="mobile" name="mobile" placeholder="请输入手机号码" value=""></li>
+            
+   			<li style="padding:12px 0 6px 0; color:#666">投诉建议：</li>
+   			<li><textarea id="content" rows="4" cols="60" placeholder="请输入投诉或建议内容"></textarea></li>
+
+
+			<li class="submit">
+                <button type="button" id="submit" name="submit"  class="btn btn-bs btn-outline w100">提交信息</button>
+    		</li>
+                		
+ 			</ul>
+   		</div>        		
+   	</div>
+</div>        	
+
+<input type="hidden" id="openid" name="openid" value="${openid}">
+<input type="hidden" id="wxid" name="wxid" value="${wxid}">
+
+<script type="text/javascript">
+$(function(){
+	$("#submit").click(function(){suggest_submit();});
+});
+
+
+
+function suggest_submit(){
+	if($("#realname").val().trim() == ""){
+		$.afui.toast("请输入真实姓名");
+		return ;
+	}
+	if($("#mobile").val().trim() == ""){
+		$.afui.toast("请输入手机号码");
+		return ;
+	}
+	if($("#content").val().trim() == ""){
+		$.afui.toast("请输入投诉建议内容");
+		return ;
+	}
+	$.ajax({
+		url : "${action}",
+		data : {
+			wxid:$("#wxid").val(),
+			openid:$("#openid").val(),
+			realname:$("#realname").val(),
+			mobile:$("#mobile").val(),
+			content:$("#content").val()
+			},
+		type : "post",
+		dataType : "json",
+		success : function(data){
+			$.afui.toast(data.msg);
+			if(data.code != 1){				
+				return ;
+			}
+			$("#realname").val("");
+			$("#mobile").val("");
+			$("#content").val("");
+		},
+		error : function(e,t){},
+		beforeSend: function() {
+			$.afui.showMask("提交处理中...");
+			$("#submit").attr('disabled',"true");
+		},
+		complete: function() {
+			// Handle the complete event
+			$.afui.hideMask();
+			$('#submit').removeAttr("disabled");
+		}
+		
+	});
+}
+</script>
+</body>
+</html>

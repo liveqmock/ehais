@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" >
+	function goPayBill(){  
+		document.myform.submit();  
+	}
+</script>
+</head>
+<body onload="goPayBill()">  
+<form action="https://www.99bill.com/webapp/receiveMerchantInfoAction.do" method="post" name="myform">  
+<input type="hidden" name="merchant_id" value="${pay.merchant_id}">  
+<input type="hidden" name="merchant_key" value="${pay.merchant_key}">  
+<input type="hidden" name="orderid" value="${pay.orderid}">  
+<input type="hidden" name="amount" value="${pay.amount}">  
+<input type="hidden" name="curr" value="${pay.curr}">  
+<input type="hidden" name="isSupportDES" value="${pay.isSupportDES}">  
+<input type="hidden" name="merchant_url" value="${pay.merchant_url}">  
+<input type="hidden" name="pname" value="${pay.pname}">  
+<input type="hidden" name="commodity_info" value="${pay.commodity_info}">  
+<input type="hidden" name="merchant_param" value="${pay.merchant_param}">  
+<input type="hidden" name="pemail" value="${pay.pemail}">  
+<input type="hidden" name="pid" value="${pay.pid}">  
+<input type="hidden" name="mac" value="${pay.mac}">  
+</form> 
+
+</body>
+</html>

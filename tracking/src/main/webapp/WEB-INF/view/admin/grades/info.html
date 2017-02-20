@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include  "/include/Matrix_Include.html" />
+<#include "/include/JqueryFileUpload_Include.html">
+<title>信息页</title>
+</head>
+<body>
+
+
+<!--main-container-part-->
+<div id="content">
+
+<!--breadcrumbs-->
+  <div id="content-header">
+    <div id="breadcrumb"> 
+    	<a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 控制台</a>
+    	<a href="index.html" title="Go to Home" class="tip-bottom"> 系统</a>
+    	<a href="index.html" title="Go to Home" class="tip-bottom"> 操作</a>
+    </div>
+    
+  </div>
+<!--End-breadcrumbs-->
+<hr>
+
+  <div class="container-fluid">
+
+	<div class="row-fluid">
+		<div class="span12">
+			
+			<div class="widget-box">
+			<!-- begin grades -->
+			  	<form id="myForm" class="form-horizontal" action="${rm.action?default('')}" method="post">
+			  	<#list rm.bootStrapList as bootstrap>
+			  		<#if bootstrap.tab_no == 0>
+			  			<#include "/BootStrap/BootStrapHtml_Sub.html">
+			  		</#if>
+			  	</#list>
+			  	
+			  	
+			  	
+			  	<div class="field-box actions form-group">
+
+				    <label  class="col-sm-2 control-label"></label>
+				    <div class="wysi-column col-sm-7 controls">
+				    	<input id="submit" type="submit" value="提交" class="btn btn-lg btn-primary fl">
+				    	<input id="cancel" type="button" class="fl btn btn-default btn-lg" value="取消" onclick="javascript:history.back(-1);" style="margin-left: 30px;">
+				    </div>
+				   <div class="clear"></div>  
+				</div>
+			</form>
+			<!-- end grades -->			
+			</div>
+
+			
+		</div>
+	</div>
+
+  </div>
+  
+  
+</div>
+
+<!--end-main-container-part-->
+
+
+<script type="text/javascript">
+
+$(function(){
+	$( ".datepicker" ).datepicker({ dateFormat: "yy-mm-dd"});
+
+});
+</script> 
+
+
+</body>
+</html>

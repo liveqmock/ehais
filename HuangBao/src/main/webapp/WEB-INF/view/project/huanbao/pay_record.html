@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/include/Jqmobi_Include.html">
+<link rel="stylesheet" type="text/css" href="/css/weixin/goods_list.css" />
+<title>捐款名单</title>
+<style type="text/css">
+.ul_goods li{color: #888;font-weight: bold;}
+.ul_goods li span{color: #000000;}
+.ul_goods li span.y{color: red;}
+.ul_goods li span.c{color: #333;}
+.ul_goods li div{padding: 5px 0;}
+</style>
+</head>
+<body>
+<body class="jqmobi">
+
+<div class="view " id="mainview">
+	<header>
+      	<h1></h1>
+  	</header>
+  	<div class="pages">
+  		<div  class="panel active" id="main" data-title="基金捐款名单" data-selected="true">
+  			<ul class="list ul_goods" id="ul_goods">
+  				
+  			</ul>
+  		</div>
+  	</div>
+</div>
+
+
+<div id="demo" class="dn">
+	<ul id="li_demo">
+		
+<li data-id="_orderId">
+
+	<div class="flw">捐款号：<span>_orderSn</span> </div>
+	<div class="flw">捐款者：<span>_realname</span>&nbsp;&nbsp; 金额：<span class="y">￥_amount</span>元</div>
+	<div class="flw"><span class="c">_orderBody</span></div>
+	
+</li>
+	</ul>
+</div>
+
+
+<script type="text/javascript">
+var wxid = ${wxid};
+var openid = "${openid}";
+var order_sys_code = "${order_sys_code}";
+var page = 1;
+var len = 20;
+var winH = 0;
+var pageH = 0;
+var scrollT = 0;
+var ulH = 0;
+
+function getRecordList(){
+		$.ajax({
+			type:"post",
+			url:"${action}",
+			data:{
+				openid : openid ,order_sys_code : order_sys_code , wxid : wxid, page : page , len : len
+				},
+			async:true,
+			dataType : "json",
+			success : function(data){
+				console.log(JSON.stringify(data));	
+				
+				var list = data.rows;
+				if(list == null )list = [];
+				var li_cart_demo = $("#li_demo").html();
+				for(var i = 0 ; i < list.length ; i++){
+					$("#ul_goods").append(
+							li_cart_demo
+							.replaceAll("_orderId",list[i].orderId)
+							.replaceAll("_orderSn",list[i].orderSn)
+							.replaceAll("_orderBody",list[i].orderBody)
+							.replaceAll("_realname",list[i].realname)
+							.replaceAll("_amount",(parseFloat(list[i].amount) / 100 ).toFixed(2) )
+							
+							);
+				}
+				
+				
+			},
+			error : function(e,m){
+				console.log(JSON.stringify(e));
+			},beforeSend:function(jqXHR){
+			},complete : function(){
+			}
+		});
+}
+
+
+
+$(function(){
+	
+	getRecordList();
+});
+
+</script>
+</body>
+</html>

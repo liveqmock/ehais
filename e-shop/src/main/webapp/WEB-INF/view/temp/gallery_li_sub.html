@@ -1,0 +1,143 @@
+<li class="gallery_li image_div rel pointer " id="gallery_li_action_${bootstrap.field_name}_${gallery_index}" data-index="${gallery_index}">
+    			
+	<input type="file" accept="image/*" id="upload_file_${bootstrap.field_name}_${gallery_index}" multiple="" data-updateid="" data-action="add" class="item_img_input pointer" name="imgs_${bootstrap.field_name}_${gallery_index}" style="opacity : 0;">
+	
+	<em class="abs over_hidden img_add_a" >&nbsp;</em>
+	<em class="abs over_hidden img_add_b" >&nbsp;</em>
+	
+	<img alt="" src="${gallery.original}" class="abs img_source" id="img_source_${bootstrap.field_name}_${gallery_index}" name="img_source_${bootstrap.field_name}_${gallery_index}">
+	<img alt="" src="" class="abs img_preview hide" id="img_preview_${bootstrap.field_name}_${gallery_index}" name="img_preview_${bootstrap.field_name}_${gallery_index}">
+	
+	<div id="div_edit_${bootstrap.field_name}_${gallery_index}" onclick="$('#upload_file_${bootstrap.field_name}_${gallery_index}').click();" class="abs img_div_edit img_div_ed pointer hide">编辑</div>
+	<div id="div_delete_${bootstrap.field_name}_${gallery_index}" onclick="img_delete_${bootstrap.field_name}_${gallery_index}();" class="abs img_div_delete img_div_ed pointer hide gallery_delete">删除</div>
+	   
+	<img id="loading_${bootstrap.field_name}_${gallery_index}" alt="" src="/js/loading/images/progress.gif" class="abs img_loading hide">
+	
+	<input type="hidden" id="hid_id_${bootstrap.field_name}_${gallery_index}" name="hid_id_${bootstrap.field_name}_${gallery_index}" value="${gallery.imgId}">
+	<input type="hidden" id="hid_gallery_thumb_${bootstrap.field_name}_${gallery_index}" name="hid_gallery_thumb_${bootstrap.field_name}_${gallery_index}" value="${gallery.thumb}">
+	<input type="hidden" id="hid_gallery_img_${bootstrap.field_name}_${gallery_index}" name="hid_gallery_img_${bootstrap.field_name}_${gallery_index}" value="${gallery.img}">
+	<input type="hidden" id="hid_gallery_original_${bootstrap.field_name}_${gallery_index}" name="hid_gallery_original_${bootstrap.field_name}_${gallery_index}" value="${gallery.original}">
+	
+	
+</li>
+
+<script type="text/javascript" >
+$(function(){
+	
+	$("#upload_file_${bootstrap.field_name}_${gallery_index}").fileupload({
+        url: "/upload/image.upd",
+        formData : { //"file_path":"goods",
+			//"is_thumb":<if condition="$bootstrap.is_thumb eq true">true<else />false</if>,
+			//"field_name":"${bootstrap.field_name}_${gallery_index}"
+		},
+        dataType: 'json',
+        done: function (e, data) {
+        	
+        },
+        beforeSend: function(jqXHR) {
+        	$("#loading_${bootstrap.field_name}_${gallery_index}").removeClass("hide");
+        },complete: function() {
+        	$("#loading_${bootstrap.field_name}_${gallery_index}").addClass("hide");
+        },
+        success : function(data, textStatus, jqXHR){
+        	console.log(JSON.stringify(data));
+        	if(parseInt(data.code) != 1){
+				alert(data.info);
+				return;
+			}
+			$("#${bootstrap.field_name}_${gallery_index}").val(data.msg);
+			$("#img_source_${bootstrap.field_name}_${gallery_index}").addClass("hide");
+			$("#img_preview_${bootstrap.field_name}_${gallery_index}").removeClass("hide");
+			$("#img_preview_${bootstrap.field_name}_${gallery_index}").attr("src",data.msg);
+			
+			
+			
+			$("#hid_gallery_thumb_${bootstrap.field_name}_${gallery_index}").val(data.msg);
+			$("#hid_gallery_img_${bootstrap.field_name}_${gallery_index}").val(data.msg);
+			$("#hid_gallery_original_${bootstrap.field_name}_${gallery_index}").val(data.msg);
+			
+			<#if gallery.goodsId != "0">
+			
+			//同时调用保存相册的记录
+			$.post("goods_gallery_update",
+					{
+						imgId: ${gallery.imgId}, 
+						goodsId : ${gallery.goodsId},
+						thumbUrl : data.msg,
+						imgUrl : data.msg,
+						imgOriginal : data.msg
+					},
+					function(data,status){
+				 console.log(data);
+				 if(data.code != 1)return ;
+				 
+			 },"json");
+			
+			</#if>
+			
+        },
+        progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#progress .progress-bar').css(
+                'width',
+                progress + '%'
+            );
+        }
+    }).prop('disabled', !$.support.fileInput)
+        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+	
+	/**
+	new uploadPreview({ UpBtn: "upload_file_${bootstrap.field_name}_${gallery_index}", DivShow: "imgdiv_${bootstrap.field_name}_${gallery_index}", ImgShow: "img_preview_${bootstrap.field_name}_${gallery_index}" });
+	**/
+	
+	$("#img_preview_${bootstrap.field_name}_${gallery_index}").click(function(){
+		$("#upload_file_${bootstrap.field_name}_${gallery_index}").click();
+	});
+
+	$("#upload_file_${bootstrap.field_name}_${gallery_index}").change(function(){ 
+		$("#img_preview_${bootstrap.field_name}_${gallery_index}").removeClass("hide");
+		$("#div_upload_${bootstrap.field_name}_${gallery_index}").removeClass("hide");	
+		$("#div_reset_${bootstrap.field_name}_${gallery_index}").removeClass("hide");	
+		
+		$("#div_edit_${bootstrap.field_name}_${gallery_index}").addClass("hide");	
+		$("#div_delete_${bootstrap.field_name}_${gallery_index}").addClass("hide");		
+	});
+
+	$("#gallery_li_action_${bootstrap.field_name}_${gallery_index}").mouseover(function(){
+		if($("#img_source_${bootstrap.field_name}_${gallery_index}").attr("src")!=""){
+			$("#div_edit_${bootstrap.field_name}_${gallery_index}").removeClass("hide");	
+			$("#div_delete_${bootstrap.field_name}_${gallery_index}").removeClass("hide");	
+		}
+	}).mouseout(function(){
+		$("#div_edit_${bootstrap.field_name}_${gallery_index}").addClass("hide");	
+		$("#div_delete_${bootstrap.field_name}_${gallery_index}").addClass("hide");	
+	});
+	
+	//init
+	if($("#img_source_${bootstrap.field_name}_${gallery_index}").attr("src")!=""){		
+		$("#img_source_${bootstrap.field_name}_${gallery_index}").removeClass("hide");	
+	}
+});
+
+function img_delete_${bootstrap.field_name}_${gallery_index}(){
+	 if(confirm("确定要删除${bootstrap.field_label}_${gallery_index}数据吗？"))
+	 {
+		 $("#img_source_${bootstrap.field_name}_${gallery_index}").attr("src","");
+		 $("#img_source_${bootstrap.field_name}_${gallery_index}").addClass("hide");
+		 $("#img_preview_${bootstrap.field_name}_${gallery_index}").attr("src","");
+		 $("#${bootstrap.field_name}_${gallery_index}").val("");
+		 
+		 <#if gallery.goodsId != "0">
+		 $.post("goods_gallery_delete",{img_id: ${gallery.imgId}, goods_id : ${gallery.goodsId}},function(data,status){
+			 console.log(data);
+			 if(data.code != 1)return ;
+			 $("#gallery_li_action_${bootstrap.field_name}_${gallery_index}").remove();
+			 
+		 },"json");
+		 <#else>		 
+		 $("#gallery_li_action_${bootstrap.field_name}_${gallery_index}").remove();
+		 </#if>
+	 }
+}
+</script>
+

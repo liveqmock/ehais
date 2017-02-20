@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>购物车信息</title>
+<link rel="stylesheet" href="/themes/tianmao/style/detail.css">
+<link rel="stylesheet" href="/themes/tianmao/style/checkout.css">
+<link rel="stylesheet" href="/themes/tianmao/style/cart.css">
+<script src="/ehais/js/jquery/jquery-2.1.4.min.js"></script>
+<script src="/themes/tianmao/js/cart_list.js"></script>
+<script src="/themes/tianmao/js/checkout.js"></script>
+
+</head>
+<body class="w1230 w1190 enableHover" style="min-width:1230px;">
+
+<div id="mallPage" class="mui-global-biz-mallfp">
+	<#include "library/site-nav.html">
+	<#include "library/header-goods-detail.html">
+	
+	<div id="page">
+		<ul id="checkoutUL" class="shipping-address jet">
+			<li class="address">
+				<dl>
+					<dt>选择收货地址</dt>
+					<#if addressList??>
+					<#list addressList as address>
+					<dd class="addr addr-def address-option-binded <#if address.isDefault == '1'>addr-cur</#if>" data-addressId="${address.addressId}">
+					
+						<div class="inner">
+						<div class="addr-hd" title="广东 江门 (Tyler收)">
+						<span class="prov region" data-regid="${address.province}">广东</span>
+						<span class="city" data-regid="${address.city}">江门</span>
+						<span>（</span>
+						<span class="name">${address.consignee}</span>
+						<span> 收）</span>
+						</div>
+						<div title="${address.address}" class="addr-bd">
+						<span class="dist" data-id="${address.county}">恩平</span>
+						<span class="town" data-id="${address.district}">东成</span>
+						<span class="j_4tip"></span>
+						<span class="street">${address.address}</span>
+						<br>
+						<span class="phone">${address.mobile}</span>
+						<span class="last">&nbsp;</span>
+						</div>
+						<div class="addr-toolbar">
+						<a title="修改地址" href="javascript:void(0);"  class="modify abtn" >修改</a>
+						</div>
+						</div>
+						<ins class="curmarker"></ins>
+						<a class="setdefault" href="javascript:void(0);" >设为默认</a>
+						<ins class="deftip">默认地址</ins>
+						<div class="floater"></div>
+						<div class="option">
+						<div class="container"></div>
+						</div>
+					
+					</dd>
+					</#list>
+					</#if>
+					<dd>
+						<div>+</div>
+						添加新地址
+					</dd>
+				</dl>
+			</li>
+			<li class="pay">
+				<dl>
+					<dt>支付方式</dt>
+					<dd data-val="1" class="selected">支付宝</dd>
+					<dd data-val="2">同城货到付款</dd>
+				</dl>			
+			</li>
+			<li class="shipping">
+				<dl>
+					<dt>运输方式</dt>
+					<dd data-val="1">快递</dd>
+					<dd data-val="2">自提</dd>
+					<dd data-val="3" class="selected">商家配送</dd>
+				</dl>			
+			</li>
+			<li class="">
+				<dl>
+					<dt>购物车信息</dt>
+					<dd>
+					
+					<ul id="cartUl">
+		<#if cartList??>
+		<#list cartList as cart>
+			<li class="goodsinfo" data-recid="${cart.recId}" data-goodsid="${cart.goodsId}" >
+			<dl>
+				<dt></dt>
+				
+				<dd class="cart-checkbox">
+					<input type="checkbox" checked="checked">
+				</dd>
+				<dd class="cart-img">
+					<a><img alt="" src="${cart.goodsThumb}"></a>
+				</dd>
+				<dd class="cart-info">
+					<a href="goods-3167.html">${cart.goodsName}</a>
+				</dd>
+				<dd class="cart-price">￥${(cart.goodsPrice / 100)?string('0.00')}<span>${cart.goodsPrice}</span></dd>
+				<dd class="cart-quantity">
+					<div class="subtract">-</div>
+					<div class="quantity">${cart.goodsNumber}</div>
+					<div class="plus">+</div>
+				</dd>
+				<dd class="cart-sum">￥${(cart.goodsPrice * cart.goodsNumber / 100)?string('0.00')}</dd>
+				<dd class="cart-opt">
+					<a href="javascript:;">收藏</a>
+					<br>
+					<a href="javascript:;">删除</a>
+				</dd>
+			</dl>			
+			</li>
+			</#list>
+			</#if>
+			
+			<li class="totalLi">
+				<dl>
+					<dt></dt>
+					<dd class="allcheckbox"><input type="checkbox" >全选</dd>
+					
+					
+					<dd id="checkout" class="checkout go-btn">提交订单</dd>
+					<dd id="gTotal">共元</dd>
+					<dd id="gNumber">共件商品</dd>
+					<dd id="go_back"><a class="back-cart" href="javascript:void(0);">返回购物车修改</a></dd>
+					
+				</dl>
+			</li>
+			
+		</ul>
+					</dd>
+				</dl>			
+			</li>
+
+		</ul>
+	</div><!-- id = 'page' end -->
+	
+	<#include "library/footer.html">
+</div>
+
+
+</body>
+</html>

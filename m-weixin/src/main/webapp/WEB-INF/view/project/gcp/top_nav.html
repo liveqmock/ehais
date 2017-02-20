@@ -1,0 +1,58 @@
+<!--顶部开始-->
+	<div id="top">
+		<!--频道导航 开始-->
+		<script>
+			window.onload = function () {
+
+				var oWin = document.getElementById("window");
+
+				var oLay = document.getElementById("overlay");
+
+				var oBtn = document.getElementById("popmenu");
+
+				var oClose = document.getElementById("close");
+
+				oBtn.onclick = function () {
+					oLay.style.display = "block";
+					oWin.style.display = "block"
+				};
+
+				oLay.onclick = function () {
+					oLay.style.display = "none";
+					oWin.style.display = "none"
+				}
+
+			};
+		</script>
+		<div style="margin-bottom:55px;">
+			<div id="toolbar">
+				<div class="fixed"><a class="ui-title" id="popmenu">${title}</a><a class="ui-btn-back" href="javascript:history.go(-1)"></a>
+					<a class="ui-btn-home" href="index.html"></a>
+				</div>
+			</div>
+			<div id="overlay"></div>
+			<div id="window">
+				<ul class="windowlist">
+					<li><a href="ac-7-school_intro.html"><span>学校简介</span></a>
+					</li>
+					<li><a href="al-7-department.html"><span>院/系部</span></a>
+					</li>
+					<li><a href="al-7-teacher.html"><span>名师风采</span></a>
+					</li>
+					<li><a href="al-7-leader.html"><span>领导简介</span></a>
+					</li>
+					<li><a href="al-7-news.html"><span>新闻中心</span></a>
+					</li>
+					<li><a href="al-7-company.html"><span>校企合作</span></a>
+					</li>
+					<li><a href="javascript:;"><span>调查问卷</span></a>
+					</li>
+					<li><a href="contactus.html"><span>联系我们</span></a>
+					</li>
+					<div class="clear"></div>
+				</ul>
+			</div>
+		</div>
+		<!--频道导航 结束-->
+	</div>
+	<!--顶部结束-->

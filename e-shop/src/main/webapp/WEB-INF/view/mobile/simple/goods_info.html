@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+	<head>
+<#include "/include/EJQ_Include.html">
+
+<title>首页</title>
+
+<script type="text/javascript" charset="utf-8" src="/js/ejq.mobile.js"></script>
+
+<link rel="stylesheet" href="/ehais/js/swiper/swiper-3.3.1.min.css">
+<script src="/ehais/js/swiper/swiper-3.3.1.jquery.min.js"></script>
+<link href="/ehais/font_awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+<link href="/css/mobile/simple/goods_info.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/js/mobile/goods_info.js"></script>
+
+	</head>
+	<body class="jqmobi">
+		<div class="view active" id="mainview">
+			<header>
+            	<h1>首页</h1>
+        	</header>
+        	<div class="pages">
+        		<div  class="panel active" id="main" data-title="商品详情" data-selected="true">
+        			<div class="swiper-container">
+					    <div class="swiper-wrapper"></div>
+					    
+					    <!-- 如果需要分页器 -->
+					    <div class="swiper-pagination"></div>				    
+					    <!-- 如果需要导航按钮 -->
+					    
+					    <div class="swiper-button-prev"></div>
+					    <div class="swiper-button-next"></div>					    
+					    
+					    <!-- 如果需要滚动条 -->
+					    <!-- 
+					    <div class="swiper-scrollbar"></div>
+					     -->
+				    </div>
+        			<section class="info_basic section_body" remark="详表信息">
+        				<div class="title" id="label_title">
+	        				<span id="goods_name"></span>
+	        				<span id="goods_brief"></span>
+        				</div>
+        			</section>
+        			<section class="tbox price_and_fav section_body" remark="价格">
+        				<div class="price fl">
+        					<p>价格：￥<span class="span_price" id="shop_price"><b>00</b>.00</span></p>
+        				</div>
+        				<div id="div_goods_number" class="fl">库存：<span id="goods_number">0</span></div>
+        				<div id="collect" class="fr" isFavorites="0">
+        				<i class="fa fa-heart-o"></i>
+        				<br>
+        				收藏
+        				</div>
+        			</section>
+        			
+					<section class="clear"></section>
+					
+        			<section class="goodsinfo " remark="图文详情">
+        				<div class="pic_header">
+                            <span>商品描述</span>
+                            <span class="pull-right">
+                            	<i class="fa fa-chevron-right"></i>
+                            </span>
+                        </div>
+                        
+                        <div data-widget="img_prev_view" class="goods_det dn" id="app_desc"><!--商品头部--><!--商品头部结束--></div>
+                                    
+        			</section>
+        		</div>
+        		
+        	</div>
+        	
+
+			<footer>
+	            <ul class="icon i3">
+	            	<li id="cartStatus">
+	            		<span id="cart_quantity">0</span>
+	            		<div id="goCart"></div>
+	            	</li>
+	            	<li id="addCart">加入购物车</li>
+	            </ul>
+	        </footer>
+	        
+	        
+	        <div id="popup_layer" class="dn">
+	        	<div class="popuplayer_bg"></div>
+	        	<div class="popuplayer_container">
+	        		<div class="popuplayer_contet">
+	        			<div class="popuplayer_div">
+	        				<div class="popuplayer_header_bar">
+	        				&nbsp;
+	        					<span id="close_popup_layer" class="pull-right">
+	                            	<i  class="fa fa-times-circle"></i>
+	                            </span>
+	        				</div>
+	        				<div class="popuplayer_body">
+	        					<ul>
+	        						<li>
+	        							<div class="fl">购买数量：</div>
+	        							<div>
+	        								 
+	        								<span class="subtract fa fa-minus isvoid"></span>
+	        								<span id="quantity">1</span>
+	        								<span class="plus fa fa-plus"></span>
+	        								
+	        								
+	        							</div>
+	        						</li>
+	        					</ul>
+	        				</div>
+	        				<div class="popuplayer_footer_bar"><button id="addCartSubmit" class="btn w100">加入购物车</button></div>
+	        			</div>
+	        		</div>
+	        	</div>
+	        </div>
+	        
+        </div>
+<script type="text/javascript">
+var store_id = "${store_id}";
+var goods_id = "${goods_id}";
+
+$(function () {
+
+});
+</script>
+    
+	</body>
+</html>

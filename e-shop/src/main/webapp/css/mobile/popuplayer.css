@@ -1,0 +1,12 @@
+@CHARSET "UTF-8";
+
+.popuplayer_bg{background: #000;top: 0;bottom: 0;left: 0;right: 0;z-index: 501;position: absolute;
+	filter:alpha(opacity=70);-moz-opacity:0.7;-khtml-opacity: 0.7;opacity: 0.7;  
+}
+.popuplayer_container{background: 0;top: 0;bottom: 0;left: 0;right: 0;z-index: 502;position: absolute;}
+.popuplayer_contet{background: 0;width:100%;height:100%;z-index: 503;position: relative;}
+.popuplayer_div{position: absolute;bottom: 0;width: 100%;background: #fff;}
+.popuplayer_header_bar{padding: 10px 15px;border-bottom: #ccc 1px solid;}
+.popuplayer_header_bar span i{font-size: 1.5rem;}
+.popuplayer_footer_bar{padding: 10px 15px;border-top: #ccc 1px solid;}
+.popuplayer_body{padding: 10px 15px;}

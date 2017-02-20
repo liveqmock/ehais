@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml>
+	<apiParameter>
+		<api>
+			<name>/api/login</name>
+			<mustParameter>
+				<string>username</string>
+				<string>password</string>
+			</mustParameter>
+		</api>
+		<api>
+			<name>/api/register</name>
+			<mustParameter>
+				<string>username</string>
+				<string>password</string>
+				<string>confirmPassword</string>
+			</mustParameter>
+		</api>
+		<api>
+			<name>/api/admin_login</name>
+			<mustParameter>
+				<string>username</string>
+				<string>password</string>
+			</mustParameter>
+		</api>
+	</apiParameter>
+	
+	
+</xml>

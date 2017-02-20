@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/include/Jqmobi_Include.html">
+<title>微信主页</title>
+
+<link rel="stylesheet" type="text/css" href="/css/weixin/index.css" />
+
+</head>
+<body class="jqmobi">
+
+<div class="view " id="mainview">
+			<header>
+            	<h1>微信主页</h1>
+        	</header>
+        	<div class="pages">
+        		<div  class="panel active page_msg" id="main" data-title="微信主页" data-selected="true">
+        			
+        			<div class="inner">
+        			<span class="msg_icon_wrp"><i class="icon80_smile"></i></span>
+        			<div class="msg_content"><h4>此客户端仅用于微信功能演示</h4></div></div>
+        			
+        			
+        		</div>        		
+        	</div>
+        	
+        	<footer>
+	            <ul>
+	            <#if menu_list??>
+				<#assign menu_i = 0 />
+				<#list menu_list as menu>
+					<#if menu.pid == 0>
+					
+					<li index="${menu_i}">${menu.title}</li>
+					
+					<#assign menu_i = menu_i + 1 />	
+					</#if>
+				</#list>
+				</#if>
+				</ul>
+	        </footer>
+	        
+	        
+        </div>
+<section class="menu">
+	<dl>
+		<#if menu_list??>
+		<#assign menu_i = 0 />
+		<#list menu_list as menu>
+			<#if menu.pid == 0>
+				<dd class="dd${menu_i} dn">
+					<ul>
+						<#list menu_list as menu2>
+							<#if menu2.pid == menu.id>
+								<li href="${menu2.url?default('')}">${menu2.title}</li>
+							</#if>
+						</#list>
+					</ul>
+				</dd>
+			<#assign menu_i = menu_i + 1 />	
+			</#if>
+		</#list>
+		</#if>
+	</dl>
+</section>     
+
+<script type="text/javascript">
+$(function(){
+	//console.log(JSON.stringify(data));
+	$("footer ul li").click(function(){
+		menuClick(this);
+	});
+	
+	$("section.menu dl dd ul li").click(function(){
+		menuLiClick(this);
+	});
+});
+
+function menuClick(_this){
+	$("section.menu dl dd").addClass("dn");
+	$("section.menu dl dd.dd"+$(_this).attr("index")).removeClass("dn");
+}
+
+function menuLiClick(_this){
+	if($(_this).attr("href")!=""){
+		window.location.href = $(_this).attr("href");
+	}
+}
+
+</script>   
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<#include "/include/BootStrap_Include.html">
+<title></title>
+</head>
+<body class="easyui-layout">
+	<div data-options="region:'center',border:false" style="overflow: hidden;">
+		<table id="datagrid" data-options="fit:true"></table>
+	</div>
+<script type="text/javascript">
+var myDataGird ;
+var myPager;
+var page = 1;
+var len = 50;
+var cat_list;
+$(function(){
+	myDataGird = $('#datagrid').datagrid({ 
+        title:'列表', 
+        iconCls:'icon-edit',//图标 
+        height: 'auto', 
+        nowrap: false, 
+        striped: true, 
+        border: true, 
+        collapsible:false,//是否可折叠的 
+        fit: true,//自动大小 
+        pageSize:50,
+        pageList:[10,20,30,40,50,60,70,80,90,100],
+        columns: [[
+         { field: 'id', title: '编号', width: 80 },
+         { field: 'keyword', title: '标题', width: 400 },
+         
+         { field: 'action', title: '编辑', width: 100, align:'center' ,formatter:function(value,row,index){  
+        		var e = '<a href="keyword_update?id='+row.id+'">编辑</a> ';  
+            	var d = '<a href="keyword_delete?id='+row.id+'" onclick="return myConfirm();">删除</a> ';  
+            	return e+d;   
+         	}
+         },
+         
+        ]], 
+        
+        remoteSort:false,  
+        idField:'fldId', 
+        singleSelect:true,//是否单选 
+        pagination:true,//分页控件 
+        rownumbers:true,//行号 
+    });  
+	
+	myPager = myDataGird.datagrid('getPager');  
+	
+	if(myPager)  
+	{  
+		$(myPager).pagination({  
+	       onBeforeRefresh:function(){  
+	           //alert('before refresh');  
+	    },  
+	       onRefresh:function(pageNumber,pageSize){  
+	    	   page = pageNumber;
+	           len = pageSize;
+	           
+	           loadData(); 
+	        },  
+	       onChangePageSize:function(){},  
+	       onSelectPage:function(pageNumber,pageSize){  
+	           
+	           page = pageNumber;
+	           len = pageSize;
+	           
+	           loadData();
+	           
+	           
+	        }  
+	   });  
+	} 
+	
+	
+	loadData();
+	
+	$("#btn_search").click(function(){
+		page = 1;
+		loadData();
+	});
+});
+
+
+function loadData(){
+
+	$.ajax({
+        
+        url : "${action}",
+        data : {
+        	"page":page,
+        	"len":len,
+        },
+		method : 'POST',
+        traditional : true,
+        async : false,
+        dataType : 'json',
+        beforeSend : function(jqXHR) {
+            jqXHR.setRequestHeader('Authorization', 'www.ehais.com-tyler');
+            jqXHR.setRequestHeader('Ehais-User-Agent', 'ehais');
+            
+        },
+        success : function(data) {
+        	if(data.code != 1){
+        		myDataGird.datagrid('loadData', []);
+        		return ;
+        	}
+        	//cat_list = data.map.cat_list;
+        	
+        	myDataGird.datagrid('loadData', data);
+        },
+        error : function(e) {
+			console.log(JSON.stringify(data));
+            alert(JSON.stringify(data));
+        }
+    });
+}
+
+function myConfirm()
+{
+	if(confirm("确定要删除记录吗？"))
+	{
+		return true;
+	}
+	return false;
+}
+
+function DateFormatter (value, rec, index) {
+	if(value == null || value=="")return "";
+	var date = new Date(value);
+    return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+}
+
+function catNameFormatter (value, rec, index) {
+	var val = "";
+	$.each(cat_list,function(n,v){
+		if(parseInt(v.catId) == parseInt(value)){
+			val = v.catName;
+			return false;
+		}
+	});
+	
+	return val;
+}
+
+</script>
+
+</body>
+</html>

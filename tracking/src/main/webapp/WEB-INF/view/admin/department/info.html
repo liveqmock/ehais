@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>信息页</title>
+</head>
+<body>
+
+
+<!--main-container-part-->
+<div id="content">
+
+
+  <div class="container-fluid">
+
+	<div class="row-fluid">
+		<div class="span12">
+			
+			<div class="widget-box">
+			<!-- begin department -->
+			  	<form id="myForm" class="form-horizontal" action="${rm.action?default('')}" method="post">
+			  	<#list rm.bootStrapList as bootstrap>
+			  		<#if bootstrap.tab_no == 0>
+			  			<#include "/BootStrap/BootStrapHtml_Sub.html">
+			  		</#if>
+			  	</#list>
+			  	
+			  	
+			  	
+			  	<div class="field-box actions form-group">
+
+				    <label  class="col-sm-2 control-label"></label>
+				    <div class="wysi-column col-sm-7 controls">
+				    	<input id="submit" type="submit" value="提交" class="btn btn-lg btn-primary fl">
+				    </div>
+				   <div class="clear"></div>  
+				</div>
+			</form>
+			<!-- end department -->			
+			</div>
+
+			
+		</div>
+	</div>
+
+  </div>
+  
+  
+</div>
+
+<!--end-main-container-part-->
+
+
+<script type="text/javascript">
+
+$(function(){
+	$( ".datepicker" ).datepicker({ dateFormat: "yy-mm-dd"});
+
+});
+</script> 
+
+
+</body>
+</html>

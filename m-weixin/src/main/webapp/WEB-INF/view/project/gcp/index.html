@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>广东省城市建设高级技工学校</title>
+<#include "head_include.html">
+
+</head>
+<body>
+
+<!--页眉开始-->
+<div id="header">
+	<!--幻灯片 开始-->
+	<script type="text/javascript" src="/project/gcp/js/jquery.flexslider-min.js"></script>
+	<script type="text/javascript">
+	$(document).ready(function() {
+
+		$('.flexslider').flexslider({
+		
+			controlNav: true, 
+			
+			directionNav: false,
+			
+			animation: "slide",
+			
+			//manualControls: ".myflexslider .slidenav"
+		
+		});
+
+	});
+	</script>
+	<div id="banner" class="flexslider" >
+		<ul class="slides">
+			<#list ad_list as ad>
+			<li><img src="${ad.adCode}" /></li>
+			</#list>
+		</ul>
+	</div>
+	<!--幻灯片 结束-->
+</div>
+		
+<div id="content">
+	<!--导航开始-->
+	<ul class="channellist1">
+		<li><a href="ac-7-school_intro.html" style="background:#ff6564; " class="ChannelName1"><img src="/project/gcp/images/1418289799.png" class="ChannelIcon1" />学院简介</a></li>
+		<li><a href="al-7-department.html" style="background:#52cb41;"  class="ChannelName2"><img src="/project/gcp/images/1418290014.png"  class="ChannelIcon2" />院/系部</a></li>
+		<li><a href="al-7-teacher.html" style="background:#00b6dc;"  class="ChannelName2"><img src="/project/gcp/images/1418290303.png"  class="ChannelIcon1" />名师风采</a></li>
+		<li><a href="al-7-leader.html" style="background:#d468aa;"  class="ChannelName1"><img src="/project/gcp/images/1418290447.png"  class="ChannelIcon2"  />领导简介</a></li>
+	</ul>
+	<!--导航结束-->
+	<!--导航开始-->
+	<ul class="channellist2">
+		<li><a href="al-7-news.html"><img src="/project/gcp/images/1418348781.png"  />新闻中心</a></li>
+		<li><a href="al-7-company.html"><img src="/project/gcp/images/1418348796.png"  />校企合作</a></li>
+		<li><a href="javascript:;"><img src="/project/gcp/images/1418348810.png"  />调查问卷</a></li>
+		<li><a href="contactus.html"><img src="/project/gcp/images/1418348821.png"  />联系我们</a></li>
+	</ul>
+	<!--导航结束-->
+	<div class="clear"></div>
+</div>
+
+<#include "footer_include.html">
+
+</body>
+</html>

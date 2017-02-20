@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml>
+  <config>
+
+    <parent code="basic" text="基本设置" sort="1" type="group" isvoid="1" role="vanas">
+      <item>
+        <sub code="shop_name" text="网站名称" sort="1" type="text" isvoid="1" role="" />
+        <sub code="shop_title" text="标题" sort="2" type="text" isvoid="1" role="" />
+      	<sub code="shop_desc" text="描述" sort="3" type="text" isvoid="1" role="" />
+      	<sub code="shop_keywords" text="关键字" sort="4" type="text" isvoid="1" role="" />
+      	<sub code="shop_logo" text="LOGO" sort="5" type="images" isvoid="1" role="" />
+      	<sub code="customer" text="400客服电话" sort="6" type="text" isvoid="1" role="" />
+      	<sub code="footer" text="底部信息" sort="9" type="textarea" isvoid="1" role="" />
+      </item>
+    </parent>
+    
+    
+  </config>
+</xml>

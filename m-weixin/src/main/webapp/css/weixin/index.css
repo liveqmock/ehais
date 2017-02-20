@@ -1,0 +1,110 @@
+@CHARSET "UTF-8";
+
+
+*, *::before, *::after {
+    -moz-user-select: none;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+*, *::before, *::after {
+    -moz-user-select: none;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body, ul, li {
+    border: 0 none;
+    margin: 0;
+    padding: 0;
+}
+body {
+    background: #e1e0de none repeat scroll 0 0;
+    color: #000000;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    overflow-x: hidden;
+}
+
+body, html {
+    height: 100%;
+    overflow: hidden;
+    width: 100%;
+}
+* {
+    box-sizing: border-box;
+}
+*, *::before, *::after {
+    -moz-user-select: none;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+body, h1, h2, h3, h4 {
+    margin: 0;
+}
+.page_msg {
+    font-size: 16px;
+    text-align: center;
+}
+
+.page_msg .inner {
+    padding-bottom: 40px;
+    padding-top: 40px;
+}
+
+.page_msg .msg_icon_wrp {
+    display: block;
+    padding-bottom: 22px;
+}
+
+
+.icon80_smile {
+    background: transparent url("images/icon80.png") no-repeat scroll 0 0;
+    display: inline-block;
+    height: 80px;
+    vertical-align: middle;
+    width: 80px;
+}
+
+
+.page_msg .msg_content h4 {
+    color: #000000;
+    font-weight: 400;
+}
+
+
+
+.jqmobi footer ul li{float: left;width: 33.33%;line-height: 49px;}
+.jqmobi section.menu{
+	position:  fixed;
+	left:0; right: 0;bottom : 49px;	
+	z-index: 200;
+}
+.jqmobi section.menu dl{
+	position : relative;
+	width: 100%;
+	border-top: 1px #ccc solid;
+}
+.jqmobi section.menu dl dd{
+	position: absolute;
+	float: left;
+	width: 33.33%;
+	text-align: center;
+	bottom: 0;
+	background: #fff;
+}
+.jqmobi section.menu dl dd.dd0{left: 0;}
+.jqmobi section.menu dl dd.dd1{left: 33.33%;}
+.jqmobi section.menu dl dd.dd2{left: 66.66%;}
+
+.jqmobi section.menu dl dd ul li{
+	padding:15px 0px;
+	border-top: 1px #ccc solid;
+	border-left: 1px #ccc solid;
+	border-right: 1px #ccc solid;
+}
+
+

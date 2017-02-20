@@ -1,0 +1,46 @@
+<ul id="tt" class="tree_menu">
+    <li>
+        <span>菜单</span>
+        <ul>
+            <#list menux.menu as parent>
+            <li>
+                <span>${parent.title?default('')}</span>
+                <ul>
+                	<#list parent.menuItems as MenuItem>
+            			<li>
+	                        <span><a href="javascript:;" onclick="addTab('${MenuItem.title?default('')}','${MenuItem.url}')">${MenuItem.title?default('')}</a></span>
+	                    </li>
+            		</#list>
+                </ul>
+            </li>
+            </#list>
+            
+			
+        </ul>
+    </li>
+    
+   
+</ul>
+
+<script type="text/javascript">
+$(function(){
+	//var tt = $('#tt').tree({"state":"closed"});
+	$('.tree_menu').tree();
+
+});
+
+function addTab(title, url){
+	if ($('#web_main').tabs('exists', title)){
+		$('#web_main').tabs('select', title);
+	} else {
+		var mHeight = $('#web_main').children(".tabs-panels").height();
+		var content = '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:'+mHeight+'px;"></iframe>';
+		$('#web_main').tabs('add',{
+			title:title,
+			content:content,
+			closable:true
+		});
+	}
+}
+
+</script>

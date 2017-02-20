@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>环保基金</title>
+<#include "/include/Jqmobi_Include.html">
+<link rel="stylesheet" type="text/css" href="/css/weixin/form_list.css?d=0.1" />
+
+</head>
+<body>
+<div class="view" id="mainview">
+	<header>
+        <h1>环保基金捐款</h1>
+    </header>
+	<div class="pages">
+   		<div  class="panel active" id="main" data-title="${title?default('')}" data-selected="true">
+   			<form action="${action}" method="post">
+   			<ul class="list nobline form p5">
+   				<li class="fullimg">
+   					<img src="/images/huanbao.png"/>
+   				</li>
+   				<#if payMap?? && payMap?size gt 0>
+				<li class="">
+					<div class="fl lbl">&nbsp;&nbsp;&nbsp;&nbsp;捐款项：</div>
+					<div class="fl txt" >
+						<select id="select_order_sys_code">
+							<option value="">请选择捐款项</option>
+							<#list payMap?keys as key>
+							    <option value="${key}">${payMap[key]}</option>
+							</#list>
+						</select>
+					</div>
+   				</li>
+   				</#if>
+   				
+   				<li class="">
+   					<div class="fl lbl">捐款金额：</div>
+   					<div class="fl txt" ><input type="text" id="txt_amount" name="amount" placeholder="请输入整数捐款金额(元)" value=""></div>
+   				</li>
+   				<li class="">
+   					<div class="fl lbl">&nbsp;&nbsp;&nbsp;&nbsp;捐款者：</div>
+   					<div class="fl txt" ><input type="text" id="txt_realname" name="realname" placeholder="请输入捐款者姓名" value=""></div>
+   				</li>
+   				<li class="">
+   					<div class="fl lbl">手机号码：</div>
+   					<div class="fl txt" ><input type="text" id="txt_mobile" name="mobile" placeholder="请输入联系人手机号码" value=""></div>
+   				</li>
+   				<li class="submit">
+     				<button type="button" id="submit" name="submit"  class="btn btn-bs btn-outline w100">我要捐款</button>
+     			</li>
+        	</ul>
+        	
+        	<input type="hidden" id="openid" name="openid" value="${openid}">
+        	<input type="hidden" id="order_sys_code" name="order_sys_code" value="${order_sys_code?default('')}">
+        	
+        	</form>
+   		</div>
+    </div>
+</div>
+<script type="text/javascript">
+var wxid = ${wxid};
+$(function(){
+	$("#submit").click(function(){weixinPay();});
+	$("#select_order_sys_code").change(function(){changeOrderSysCode(this);});
+});
+
+function changeOrderSysCode(_this){
+	$("#order_sys_code").val($(_this).val());
+}
+
+function weixinPay(){
+	if($("#order_sys_code").val() == ""){
+		$.afui.toast("请选择捐款项目");
+		return ;
+	}
+	
+	if($("#txt_amount").val().trim() == ""){
+		$.afui.toast("请输入正确的整数金额!");
+		return ;
+	}
+	
+	if($("#txt_realname").val().trim() == ""){
+		$.afui.toast("请输入您的姓名!");
+		return ;
+	}
+	
+	var numAmount = /^[0-9]*$/ ;
+	if (!numAmount.test($("#txt_amount").val().trim())) {  
+		$.afui.toast("请输入正确的整数金额!");
+        return ;  
+    } 
+	
+	
+	var pattern = /^1[34578]\d{9}$/;  
+    if (!pattern.test($("#txt_mobile").val().trim())) {
+    	$.afui.toast("请输入正确的手机号码!");
+        return ;  
+    } 
+	
+	$.ajax({
+		url : "${action}",
+		data : {
+			openid:$("#openid").val(),
+			amount:$("#txt_amount").val(),
+			realname:$("#txt_realname").val(),
+			mobile:$("#txt_mobile").val(),
+			order_sys_code:$("#order_sys_code").val(), 
+			wxid : wxid
+			},
+		type : "post",
+		dataType : "json",
+		success : function(data){
+			if(data.code != 1){
+				$.afui.toast(data.msg);
+				return ;
+			}
+			WeixinJSBridge.invoke(
+				       'getBrandWCPayRequest', {
+				           "appId" :  data.model.appId,     //公众号名称，由商户传入     
+				           "timeStamp" : data.model.timeStamp,         //时间戳，自1970年以来的秒数     
+				           "nonceStr" :  data.model.nonceStr, //随机串     
+				           "package" :  data.model.pack_age,     
+				           "signType" : data.model.signType,         //微信签名方式：     
+				           "paySign" : data.model.paySign //微信签名 
+				       },
+				       function(res){
+				           if(res.err_msg == "get_brand_wcpay_request：ok" || res.err_msg == "get_brand_wcpay_request:ok" ) {
+				        	   $.afui.toast("完成捐款");
+				        	   $("#submit").html("完成捐款，感谢您的支持！");
+				        	   $("#submit").attr("disabled",true);
+				           }      
+				       }
+				   ); 
+		},
+		error : function(e,t){},
+		beforeSend: function() {
+			$.afui.showMask("支付处理中...");
+			$("#submit").attr('disabled',"true");
+		},
+		complete: function() {
+			// Handle the complete event
+			$.afui.hideMask();
+			$('#submit').removeAttr("disabled");
+		}
+		
+	});
+}
+</script>
+</body>
+</html>

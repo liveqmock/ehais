@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include  "/include/Matrix_Include.html" />
+<title>毕业生服务系统</title>
+
+
+</head>
+<body class="easyui-layout">
+    <div region="north" style="height: 39px;"><#include  "/admin/navbar.html" /></div>
+    <div region="west" style="width:225px" ><#include  "/admin/menu_xml.html" /></div>
+    <div region="center" id="web_main" class="easyui-tabs" data-options="{tools:'#tab-tools'}">
+        <div title="控制面版" style="padding:0px;">
+	        <iframe scrolling="yes" frameborder="0"  src="/admin/main" style="width:100%;height:100%;" data-options="fit:true"></iframe>
+	    </div> 
+    </div>
+    <!-- <div region="east" style="width:100px" title="常用" split="true">右侧</div> -->
+    <div region="south" style="height: 20px;">底部</div>
+
+<div id="tab-tools">
+	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'" onclick="reloadPanel()">刷新</a>
+</div>
+
+
+<script type="text/javascript">
+
+$(function(){
+	
+});
+
+function reloadPanel(){
+	var currTab =  $('#web_main').tabs('getSelected'); //获得当前tab
+	if (currTab){
+		var index = $('#web_main').tabs('getTabIndex', currTab);
+	    if(index > 0){
+	    	var url = $(currTab.panel('options').content).attr('src');
+	    	$('#web_main').tabs('update', {
+	    	      tab : currTab,
+	    	      options : {
+	    	       content : '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:100%;"></iframe>'
+	    	      }
+	    	     });
+	    }
+	}
+    
+}
+
+function addTab(title, url){
+	if(url == 'javascript:;') return ;
+	if ($('#web_main').tabs('exists', title)){
+		$('#web_main').tabs('select', title);
+	} else {
+		var content = '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:100%;"></iframe>';
+		$('#web_main').tabs('add',{
+			title:title,
+			content:content,
+			closable:true
+		});
+	}
+}
+
+</script>
+
+</body>
+
+</html>

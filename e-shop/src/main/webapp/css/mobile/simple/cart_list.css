@@ -1,0 +1,13 @@
+@CHARSET "UTF-8";
+
+.ul_goods .cart_quantity_div{right: 10px;bottom: 2px;}
+.ul_goods .cart_quantity_div div{width: 25px; height: 25px;line-height: 22px;border: 1px #666 solid;text-align: center;}
+.ul_goods .cart_quantity_div div.quantity{border-left: 0;border-right: 0;width: 40px;}
+.ul_goods .cart_quantity_div div.isvoid{border: 1px #bbb solid;}
+.ul_goods .cart_quantity_div div.price{border: 0;width: auto;padding-right: 8px;}
+
+.cart_list li em.checkbox{bottom: 40px;right: 10px;}
+.all_choose div{line-height: 48px;}
+.cart_footer .div_footer{width: 33.33%;height: 100%;line-height: 48px;}
+.cart_footer .div_footer.cart_total{text-align: right;padding-right: 5px;}
+footer .all_choose em.checkbox{margin: 15px 0px 5px 15px;}

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>  
+
+	<WatchedResource>WEB-INF/web.xml</WatchedResource> 
+
+    <Resource name="jndi/ehais"   
+                auth="Container"   
+                type="javax.sql.DataSource"   
+                driverClassName="com.mysql.jdbc.Driver"   
+                url="jdbc:mysql://127.0.0.1:3306/sqlehaismall?useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull"   
+                username="root"   
+                password="42016048"   
+                maxActive="20"   
+                maxIdle="10"   
+                maxWait="10000"/>  
+                 
+    <Resource name="jndi/tracking"   
+                auth="Container"   
+                type="javax.sql.DataSource"   
+                driverClassName="com.mysql.jdbc.Driver"   
+                url="jdbc:mysql://127.0.0.1:3306/tracking?useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull"   
+                username="root"   
+                password="42016048"   
+                maxActive="20"   
+                maxIdle="10"   
+                maxWait="10000"/> 
+                   
+</Context> 

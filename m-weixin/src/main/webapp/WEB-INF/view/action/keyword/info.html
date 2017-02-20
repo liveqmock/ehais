@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+<#include "/include/BootStrap_Include.html">
+<#include "/include/XhEditor_Include.html">
+<#include "/include/JqueryFileUpload_Include.html">
+<title>Insert title here</title>
+</head>
+<body>
+
+<div style="width: 100%;height: 20px;"></div>
+<div class="container-fluid">
+<form class="form-horizontal" action="${rm.action?default('')}" method="post" onsubmit="return beforeSaveKeyword();">
+
+<ul id="myTab" class="nav nav-tabs">
+  <li role="presentation" class="active"><a href="#base" data-toggle="tab">基本资料</a></li>
+</ul>
+
+    
+
+<div id="myTabContent" class="tab-content">
+  <div class="tab-pane fade in active" id="base" style="padding-top: 20px;">
+
+<input type="hidden" id="id" name="id" value="${rm.model.id}">
+<input type="hidden" id="multIds" name="multIds" value="${rm.model.multIds?default('')}">
+
+<div id="bs_div_${bootstrap.field_name}" class="field-box form-group">
+    <label id="bs_label_${bootstrap.field_name}" class="col-sm-2 control-label">${bootstrap.field_label}</label>
+    <div class="col-sm-7 controls">
+    	<input type="text" id="${bootstrap.field_name}" name="${bootstrap.field_name}" value="${bootstrap.value?default('')}" data-placement="right" title="" data-trigger="focus" data-toggle="tooltip" class="form-control" data-original-title="${bootstrap.prompt}" placeholder="${bootstrap.prompt}">
+    	<span id="bs_ok_sign_${bootstrap.field_name}" class="dn"><i class="icon-ok-sign"></i>${bootstrap.ok_sign}</span>
+    	<span id="bs_error_sign_${bootstrap.field_name}" class="dn"><i class="icon-remove-sign"></i>${bootstrap.error_sign}</span>
+    	<span id="bs_option_icon_${bootstrap.field_name}" class="dn">
+    	<a id="a_edit_sign_${bootstrap.field_name}" data-original-title="Edit" class="tip edit" href="javascript:;" ><i class="icon-pencil"></i></a> 
+		<a id="a_delete_sign_${bootstrap.field_name}" data-original-title="Delete" class="tip delete" href="javascript:;" ><i class="icon-remove"></i></a> 
+ 		</span>
+    </div>
+    
+</div>
+
+
+  </div>  
+  <div class="tab-pane fade in active" id="article" >
+  	<select multiple="multiple" id="sel_article" style="width: 300px; height: 300px;" class="fl" ondblclick="fun_move_right();"></select>
+  	<div style="width: 70px; height: 300px;" class="fl">
+  	<button id="move_right" type="button">向右&gt;&gt;</button>
+  	<button id="move_left" type="button">&lt;&lt;向左</button>  	
+  	</div>
+  	<select multiple="multiple" id="choose_article" style="width: 300px; height: 300px;" class="fl" ondblclick="fun_move_left();"></select>
+  </div>	
+  	
+<div class="field-box actions form-group">
+
+     
+    <label  class="col-sm-2 control-label"></label>
+    <div class="wysi-column col-sm-7 controls">
+    	<input type="submit" value="保存" class="btn btn-lg btn-primary fl">
+    	<input type="button" class="fl btn btn-default btn-lg" value="取消" onclick="javascript:history.back(-1);" style="margin-left: 30px;">
+    </div>
+    
+</div>
+       
+       
+       
+ 
+</div>
+
+
+
+</form>
+</div>                 
+<script type="text/javascript">
+var page = 1;
+var len = 50;
+$(function(){
+	$("#move_left").click(function(){fun_move_left();});
+	$("#move_right").click(function(){fun_move_right();});
+	
+	
+	loadData();
+});
+
+
+function loadData(){
+
+	$.ajax({
+        method : 'POST',
+        url : '${action}',
+        data : {
+        	"page":page,
+        	"len":len,
+        	"cat_id" : null
+        },
+        traditional : true,
+        async : false,
+        dataType : 'json',
+        beforeSend : function(jqXHR) {
+            jqXHR.setRequestHeader('Authorization', 'www.ehais.com-tyler fuck');
+            jqXHR.setRequestHeader('User-Agent-', 'tylerfuckyou');
+        },
+        success : function(data) {
+        	if(data.code != 1){
+        		return ;
+        	}
+        	
+        	$.each(data.rows,function(index,ele){
+        		$("#sel_article").append("<option id='"+ele.articleId+"' value='"+ele.articleId+"'>"+ele.title+"</option>");
+        	});
+        	loadMultIds(data.rows);
+        },
+        error : function() {
+            alert('error');
+        }
+    });
+}
+
+function fun_move_right(){
+	var sel = $("#sel_article").find("option:selected")[0];
+	if(sel == undefined || sel == "undefined")return ;
+	$("#choose_article").append("<option id='"+sel.value+"' value='"+sel.value+"'>"+sel.text+"</option>");
+	sel.remove();
+}
+
+function fun_move_left(){
+	var sel = $("#choose_article").find("option:selected")[0];
+	if(sel == undefined || sel == "undefined")return ;
+	$("#sel_article").append("<option id='"+sel.value+"' value='"+sel.value+"'>"+sel.text+"</option>");
+	sel.remove();
+}
+
+function loadMultIds(list){
+	var multIds = $("#multIds").val();
+	if(multIds == undefined || multIds == "undefined" || multIds == "")return ;
+	var multid = multIds.split(",");
+	
+	$.each(list,function(index,ele){
+		$.each(multid,function(index1,ele1){
+			if(ele.articleId == ele1){
+				$("#choose_article").append("<option id='"+ele.articleId+"' value='"+ele.articleId+"'>"+ele.title+"</option>");
+				$("#sel_article option[value='"+ele.articleId+"']").remove();
+			}			
+		});		
+	});	
+}
+
+function beforeSaveKeyword(){
+	var multid = new Array();	
+	$("#choose_article option").each(function(){
+		multid.push($(this).attr("value"));
+	});
+	$("#multIds").val(multid.join(","));
+	return true;
+}
+
+</script>
+
+</body>
+</html>

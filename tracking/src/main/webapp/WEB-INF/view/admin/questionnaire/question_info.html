@@ -1,0 +1,26 @@
+<div class="form-horizontal questions_item questions_item__Index">
+<div class="border rel">
+<#list bootStrapList as bootstrap>
+	<#if bootstrap.tab_no == 0>
+		<#include "/BootStrap/BootStrapHtml_Sub.html">
+	</#if>
+</#list>
+
+<div id="questions_answer_item__Index" class="questions_answer_items"></div>
+
+<div class="controls dn aqnd__Index"  >
+	<a href="javascript:;" class="addQuestionAnswer" data-index="_Index">+添加答题</a>		    	
+</div>
+
+<div class="pabs controls option" data-index="_Index">
+	<input id="questionEdit__Index" type="button" value="完成编辑" class="btn btn-lg btn-primary fl questionEdit">
+	<input id="questionDelete__Index" type="button" value="删除记录" class="btn btn-lg btn-primary fl questionDelete">					    	
+</div>
+
+<div class="clear"></div>
+
+</div>
+
+<hr/>
+
+</div>

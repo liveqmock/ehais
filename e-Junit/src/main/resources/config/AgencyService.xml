@@ -1,0 +1,12 @@
+<agency>
+  <company adminId="1" adminName="andy1" companyName="AA">
+    <introService>业务介绍：@#$$%FSDFSDFGG%^*&amp;^&amp;**(&amp;*9785645%#$!@~#!~!@</introService>
+    <profession professionCode="profession-adminName-WDdwSg13Df" professionName="专利检索" isVoid="1">
+      <scope scopeCode="scope-profession-adminName-Wdf32Dse" scopeName="技术类型" isVoid="1">
+      </scope>
+    </profession>
+  </company>
+  <company adminId="2" adminName="tyler" companyName="BB">
+    <introService>业务介绍：@#$$%FSDFSDFGG%^*&amp;^&amp;**(&amp;*9785645%#$!@~#!~!@</introService>
+  </company>
+</agency>

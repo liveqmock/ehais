@@ -1,0 +1,4 @@
+@CHARSET "UTF-8";
+#user_address_ul.list{padding: 5px 10px;}
+#user_address_ul.list li{margin: 5px 0;}
+#user_address_ul.list li .info,#user_address_ul.list li .user_address{padding-bottom: 10px;}

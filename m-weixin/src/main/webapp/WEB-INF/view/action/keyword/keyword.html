@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+<#include "/include/BootStrap_Include.html">
+<#include "/include/XhEditor_Include.html">
+<#include "/include/JqueryFileUpload_Include.html">
+<title>Insert title here</title>
+</head>
+<body>
+
+<div style="width: 100%;height: 20px;"></div>
+<div class="container-fluid">
+<form class="form-horizontal" action="${rm.action?default('')}" method="post">
+
+<ul id="myTab" class="nav nav-tabs">
+  <li role="presentation" class="active"><a href="#base" data-toggle="tab">基本资料</a></li>
+</ul>
+
+    
+
+<div id="myTabContent" class="tab-content">
+  <div class="tab-pane fade in active" id="base" style="padding-top: 20px;">
+  	<#list rm.bootStrapList as bootstrap>
+  		<#if bootstrap.tab_no == 0>
+  			<#include "/BootStrap/BootStrapHtml_Sub.html">
+  		</#if>
+  	</#list>
+  </div>  
+  <div class="tab-pane fade in active" id="article" style="width: 400px; height: 300px;">
+  	<table id="datagrid" data-options="fit:true" width="300" height="150"></table>
+  	<table id="datagrid_2" data-options="fit:true" width="300"></table>
+  </div>	
+  	
+<div class="field-box actions form-group">
+
+     
+    <label  class="col-sm-2 control-label"></label>
+    <div class="wysi-column col-sm-7 controls">
+    	<input type="submit" value="提交" class="btn btn-lg btn-primary fl">
+    	<input type="button" class="fl btn btn-default btn-lg" value="取消" onclick="javascript:history.back(-1);" style="margin-left: 30px;">
+    </div>
+    
+</div>
+       
+       
+       
+ 
+</div>
+
+
+
+</form>
+</div>                 
+<script type="text/javascript">
+var myDataGird ;
+var myPager;
+var page = 1;
+var len = 50;
+var cat_list;
+$(function(){
+	myDataGird = $('#datagrid').datagrid({ 
+        title:'列表', 
+        iconCls:'icon-edit',//图标 
+        height: 'auto', 
+        nowrap: false, 
+        striped: true, 
+        border: true, 
+        collapsible:false,//是否可折叠的 
+        fit: true,//自动大小 
+        pageSize:50,
+        pageList:[10,20,30,40,50,60,70,80,90,100],
+        columns: [[
+         { field: 'articleId', title: '编号', width: 80 },
+         { field: 'title', title: '标题', width: 200 },
+        ]], 
+        
+        remoteSort:false,  
+        idField:'fldId', 
+        singleSelect:true,//是否单选 
+        pagination:true,//分页控件 
+        rownumbers:true,//行号 
+    });  
+	
+	myPager = myDataGird.datagrid('getPager');  
+	
+	if(myPager)  
+	{  
+		$(myPager).pagination({  
+	       onBeforeRefresh:function(){  
+	           //alert('before refresh');  
+	    },  
+	       onRefresh:function(pageNumber,pageSize){  
+	    	   page = pageNumber;
+	           len = pageSize;
+	           
+	           loadData(); 
+	        },  
+	       onChangePageSize:function(){},  
+	       onSelectPage:function(pageNumber,pageSize){  
+	           
+	           page = pageNumber;
+	           len = pageSize;
+	           
+	           loadData();
+	           
+	           
+	        }  
+	   });  
+	} 
+	
+	
+	loadData();
+	
+	$("#btn_search").click(function(){
+		page = 1;
+		loadData();
+	});
+});
+
+
+function loadData(){
+
+	$.ajax({
+        method : 'POST',
+        url : '${action}',
+        data : {
+        	"page":page,
+        	"len":len,
+        	"cat_id" : null
+        },
+        traditional : true,
+        async : false,
+        dataType : 'json',
+        beforeSend : function(jqXHR) {
+            jqXHR.setRequestHeader('Authorization', 'www.ehais.com-tyler fuck');
+            jqXHR.setRequestHeader('User-Agent-', 'tylerfuckyou');
+            
+        },
+        success : function(data) {
+        	if(data.code != 1){
+        		myDataGird.datagrid('loadData', []);
+        		return ;
+        	}
+        	cat_list = data.map.cat_list;
+        	
+        	myDataGird.datagrid('loadData', data);
+        },
+        error : function() {
+            alert('error');
+        }
+    });
+}
+
+
+</script>
+
+</body>
+</html>

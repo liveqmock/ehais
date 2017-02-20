@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/include/Jqmobi_Include.html">
+<title>${article.title?default("")}</title>
+<link rel="stylesheet" type="text/css" href="/css/weixin/form_list.css" />
+
+</head>
+<body>
+<body class="jqmobi">
+
+<div class="view " id="mainview">
+	<header>
+      	<h1></h1>
+  	</header>
+  	<div class="pages">
+  		<div  class="panel active" id="main" data-title="${article.title?default('')}" data-selected="true">
+  			<h1 class="detail title">${article.title?default('')}</h1>
+  			
+  			<div class="detail content">${article.content?default('')}</div>
+  			
+  		</div>        		
+  	</div>
+      	
+</div> 
+<script type="text/javascript">
+$(function(){
+	$(".view header").prepend("<a href='javascript:;' class='backButton back goBackClick'>返回</a>");
+	goBackClickEvent();
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<#include "include/head_inc.html">
+<title>毕业生综合服务平台</title>
+
+<link rel="stylesheet" href="/ehais/js/swiper/swiper-3.3.1.min.css">
+<script src="/ehais/js/swiper/swiper-3.3.1.jquery.min.js"></script>
+<script src="themes/${themes?default('default')}/js/jquery.mCustomScrollbar.js"></script>
+
+<link rel="stylesheet" href="themes/${themes?default('default')}/css/main2.css" />
+<script src="themes/${themes?default('default')}/js/index2.js"></script>
+
+<link rel="stylesheet" href="themes/${themes?default('default')}/css/jquery.mCustomScrollbar.min.css">
+<script src="themes/${themes?default('default')}/js/jquery.mCustomScrollbar.js"></script>
+
+<script src="themes/${themes?default('default')}/js/patents_swiper.js"></script>
+<script src="themes/${themes?default('default')}/js/myCustomScrollbar.js"></script>
+
+
+</head>
+<body>
+
+<#include "include/header.html">
+
+<div class="container1200 clearfix">
+	<div class="container860 fl home-container">
+		<div class="home-banner clearfix">
+			<div class="menu-banner"><#include "index-menu-banner.html"></div>
+			<div class="main-banner"><#include "index-main-banner.html"></div>		
+		</div>		
+	</div>
+	<div class="container320 fr"><#include "index-right-speech-forecast.html"></div>
+</div>
+
+<div class="container1200 clearfix">
+	<div class="container860 fl home-container">	
+		<#include "index-topic-recommend.html">
+		
+	</div>
+	<div class="container320 fr">
+		<!-- 实习平台 -->
+		<#include "index-right-practice.html">
+	</div>
+</div>
+
+<div class="container1200 clearfix">
+	<div class="container860 fl home-container">
+		<#include "index-activity.html">
+		<#include "index-article-list-container.html">
+	</div>
+	<div class="container320 fr">
+		<#include "index-right-comment-wall-1.html">
+		<#include "index-right-comment-wall-2.html">
+		<#include "index-right-hot-articles.html">
+		<#include "index-right-hot-tabs.html">
+		<#include "index-right-agencys.html">
+	</div>
+</div>
+
+
+<div class="container1200 clearfix">
+<#include "index-lecture-recommend.html">
+</div>
+
+<div class="container1200 clearfix">
+<!-- 高新区产品展示 -->
+<#include "index-activity-review.html">
+</div>
+
+<div class="container1200 clearfix">
+<!--  -->
+<#include "index-newbie.html">
+</div>
+
+
+
+<div class="container1200 clearfix">
+<!-- 加盟企业 -->
+<#include "index-volunteer.html">
+</div>
+
+<div class="container1200 clearfix">
+<#include "index-extra.html">
+</div>
+
+<#include "include/footer2.html">
+
+<!--include "side-widget.html" -->
+
+</body>
+</html>

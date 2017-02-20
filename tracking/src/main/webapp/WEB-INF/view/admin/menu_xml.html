@@ -1,0 +1,63 @@
+<!--sidebar-menu-->
+<div id="sidebar">
+<a href="javascript:;" class="visible-phone">
+<i class="icon icon-home"></i> 控制台
+</a>
+  <ul>
+    
+    <#list menux.menu as parent>
+    <#assign role="false"/>
+    
+    <#if (parent.roles?size = 0)>
+    	<#assign role="true"/>
+    <#else>
+    	<#list parent.roles as role>
+    		<#if (session_role_type = role)>
+    			<#assign role="true"/>
+    		</#if>
+    	</#list>
+    </#if>
+    
+    <#if (role = "true")>
+    
+	    <li id="${parent.id?default('')}" class="${parent.className?default('')}">
+	    <a href="javascript:;" <#if ( parent.menuItems?size = 0 )>onclick="addTab('${parent.title}','${parent.url}');"</#if> >
+	    <i class="${parent.iconClassName?default('')}"></i> 
+	    <span>${parent.title?default('')}</span>
+	    <span class="label label-important"></span>
+	    </a>
+	    
+	    <#if (parent.menuItems?? && parent.menuItems?size > 0 )>
+	    	<ul>
+	    		
+	    		<#list parent.menuItems as MenuItem>	    		
+		    		<#assign subrole="false"/>	    
+				    <#if (MenuItem.roles?size = 0)>
+				    	<#assign subrole="true"/>
+				    <#else>
+				    	<#list MenuItem.roles as role>
+				    		<#if (session_role_type = role)>
+				    			<#assign subrole="true"/>
+				    		</#if>
+				    	</#list>
+				    </#if>
+				    
+				    <#if (subrole = "true")>
+	    				<li class=""><a href="javascript:;" onclick="addTab('${MenuItem.title}','${MenuItem.url}');">${MenuItem.title?default('')}</a></li>
+	    			</#if>
+	    			
+	    		</#list>
+	    	</ul>
+	    </#if>
+	    
+	    </li>
+    
+    </#if>
+    
+    </#list>
+    
+    
+  </ul>
+
+</div>
+<!--sidebar-menu-->

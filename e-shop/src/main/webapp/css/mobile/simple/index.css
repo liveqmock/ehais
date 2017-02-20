@@ -1,0 +1,35 @@
+@CHARSET "UTF-8";
+@IMPORT url("include.css");
+#category_ul{width:70px; position: fixed;left: 0;z-index: 100;}
+#category_ul li{border: 0;padding: 5px 0 5px 3px;overflow: hidden;height: 30px;}
+#category_ul li.selected{background: #ccc;color: #fff;border-left: 3px solid #343545;padding-left: 0px;font-weight: bold;}
+#goods_ul{width: 100%;padding-left: 71px;}
+
+.jqmobi footer .i5 li{
+	width: 20%;float: left;
+}
+
+.ejq-icon{
+	background : rgba(0, 0, 0, 0) url("images/iconall.png") no-repeat scroll 0 0 / 15em auto
+}
+.ejq-icon-home{
+	background-position : -6.45em -0.2em;
+}
+
+.ejq-icon-cate{
+	background-position : -0.1em 0;
+}
+.ejq-icon-cart{
+	background-position : -2.7em -0.15em;
+}
+.ejq-icon-search{background-position : -10.8em -0.2em;}
+.ejq-icon-user{
+	background-position : -12.98em -0.15em;
+}
+
+.jqmobi footer .i5 li i{display: block;
+    height: 1.9em;
+    margin: 0.1em auto;
+    width: 1.9em;
+}
+

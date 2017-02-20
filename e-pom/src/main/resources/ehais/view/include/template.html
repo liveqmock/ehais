@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include  "/include/header_include.html" />
+<title>Insert title here</title>
+</head>
+<body>
+
+
+<#include  "/admin/header.html" />
+
+
+<#include  "/admin/menu.html" />
+
+
+
+<!--main-container-part-->
+<div id="content">
+
+<!--breadcrumbs-->
+  <div id="content-header">
+    <div id="breadcrumb"> 
+    	<a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 控制台</a>
+    	<a href="index.html" title="Go to Home" class="tip-bottom"> 调查问卷系统</a>
+    </div>
+  </div>
+<!--End-breadcrumbs-->
+
+
+  <div class="container-fluid">
+
+	<div class="row-fluid">
+		<div class="span12">
+			<div class="widget-box">
+			<!-- begin template -->
+			<form id="myForm" class="form-horizontal" action="${rm.action?default('')}" method="post">
+			  	<#list rm.bootStrapList as bootstrap>
+			  		<#if bootstrap.tab_no == 0>
+			  			<#include "/BootStrap/BootStrapHtml_Sub.html">
+			  		</#if>
+			  	</#list>
+			  	
+			  	
+			  	
+			  	<div class="field-box actions form-group">
+
+				    <label  class="col-sm-2 control-label"></label>
+				    <div class="wysi-column col-sm-7 controls">
+				    	<input type="submit" value="提交" class="btn btn-lg btn-primary fl">
+				    	<input type="button" class="fl btn btn-default btn-lg" value="取消" onclick="javascript:history.back(-1);" style="margin-left: 30px;">
+				    </div>
+				   <div class="clear"></div>  
+				</div>
+			</form>
+			<!-- end template -->			
+			</div>
+		</div>
+	</div>
+
+  </div>
+  
+  
+</div>
+
+<!--end-main-container-part-->
+
+
+<#include  "/admin/footer.html" />
+
+
+
+
+
+</body>
+</html>

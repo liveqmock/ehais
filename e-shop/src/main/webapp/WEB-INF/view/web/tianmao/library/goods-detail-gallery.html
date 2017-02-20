@@ -1,0 +1,60 @@
+
+<!-- 
+<div class="tb-gallery" data-spm="1997427645">							
+
+<div class="tb-booth">
+	<a href="javascript:void(0);">
+		<span class="zoomIcon" style=""></span>
+		<span class="ks-imagezoom-wrap">
+		<img data-haszoom="700" src="https://img.alicdn.com/imgextra/i1/746267782/TB2YopLlFXXXXcLXXXXXXXXXXXX_!!746267782.jpg_430x430q90.jpg" alt="贝妍秋季新款女士纯棉睡衣可爱女人韩版睡裙宽松七分袖全棉家居服" id="J_ImgBooth">
+		<span class="ks-imagezoom-lens" style="position: absolute; top: 200.595px; left: 153.298px; width: 218.405px; height: 218.405px; display: none;"></span>
+		</span>
+	</a>
+</div>
+<ul class="tb-thumb tm-clear con-FangDa-ImgList" id="J_UlThumb">
+			<li class="">
+				 <a href="#"><img src="//img.alicdn.com/bao/uploaded/i1/TB1Khz.LVXXXXawaXXXXXXXXXXX_!!0-item_pic.jpg_60x60q90.jpg" alt="商品预览图"></a>
+			</li>
+			<li class="">
+				<a href="#"><img src="//img.alicdn.com/imgextra/i1/746267782/TB2UuX2lFXXXXasXXXXXXXXXXXX_!!746267782.jpg_60x60q90.jpg" alt="商品预览图"></a>
+			</li>
+			<li class="">
+				<a href="#"><img src="//img.alicdn.com/imgextra/i3/TB1XmrNLVXXXXaaXXXXXXXXXXXX_!!0-item_pic.jpg_60x60q90.jpg" alt="商品预览图"></a>
+			</li>
+			<li class="tb-selected">
+				<a href="#"><img src="//img.alicdn.com/imgextra/i1/746267782/TB2YopLlFXXXXcLXXXXXXXXXXXX_!!746267782.jpg_60x60q90.jpg" alt="商品预览图"></a>
+			</li>
+			<li class="">
+				<a href="#"><img src="//img.alicdn.com/imgextra/i1/746267782/TB2nzlQlFXXXXcmXXXXXXXXXXXX_!!746267782.jpg_60x60q90.jpg" alt="商品预览图"></a>
+			</li>
+			</ul>
+</div>
+ -->
+
+<div class="tb-gallery">
+	<div class="tb-booth tb-pic tb-s310 tb-booth">
+		<a href="javascript:;">
+		<img src="${goods.goodsImg}" alt="" rel="${goods.originalImg}" class="jqzoom" />
+		</a>
+	</div>
+	<ul id="thumblist" class="tb-thumb tm-clear con-FangDa-ImgList" >
+		<li class="tb-selected"><a href="javascript:;"><img src="${goods.goodsThumb}" mid="${goods.goodsImg}" big="${goods.originalImg}"></a></li>
+		<#if galleryList??><#list galleryList as gallery>
+		<li><a href="javascript:;"><img src="${gallery.thumbUrl}" mid="${gallery.imgUrl}" big="${gallery.imgOriginal}"></a></li>
+		</#list></#if>
+		
+	</ul>
+</div>
+		
+<script type="text/javascript">
+$(document).ready(function(){
+	$(".jqzoom").imagezoom();
+	$("#thumblist li a").click(function(){
+		//增加点击的li的class:tb-selected，去掉其他的tb-selecte
+		$(this).parents("li").addClass("tb-selected").siblings().removeClass("tb-selected");
+		//赋值属性
+		$(".jqzoom").attr('src',$(this).find("img").attr("mid"));
+		$(".jqzoom").attr('rel',$(this).find("img").attr("big"));
+	});
+});
+</script>	

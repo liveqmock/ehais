@@ -1,0 +1,11 @@
+@CHARSET "UTF-8";
+@import "ul_goods.css";
+
+
+.goods_event{bottom: 1px; right: 2px;width: 100%;padding-right: 20px;}
+.goods_event .goods_price{margin-left: 30%;}
+
+#consoleId{position: fixed;right: 0 ; top: 50px; width: 150px; height: 50px;background: #ccc; color: #fff;z-index: 500;}
+
+.ul_goods li.more_goods{text-align: center;padding: 30px;border-bottom : 0;}
+.ul_goods li.more_goods div{border: 1px solid #ccc;padding: 10px 0;}

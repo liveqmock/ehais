@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/include/Jqmobi_Include.html">
+<title>${title}</title>
+<link rel="stylesheet" type="text/css" href="/css/weixin/goods_list.css" />
+</head>
+<body class="jqmobi">
+
+<div class="view " id="mainview">
+	<header>
+      	<h1></h1>
+  	</header>
+  	<div class="pages">
+  		<div  class="panel active" id="main" data-title="${title}" data-selected="true">
+  			<ul class="list ul_goods" id="ul_goods">
+  				
+  			</ul>
+  		</div>        		
+  	</div>
+      	
+</div>        	
+
+<div id="consoleId" class=""></div>
+
+<div id="demo" class="dn">
+	<ul id="li_demo">
+			
+<li data-id="_articleId" class="goodsinfo">
+
+<img class="_dn" src="_articleImages" />
+
+<div class="item">
+    <h2>_title</h2>
+    <p class="c">_description</p>
+</div>
+            
+            
+            
+</li>
+
+	</ul>
+</div>
+
+<script type="text/javascript">
+var wxid = ${wxid};
+var cat_code = "${cat_code}";
+var page = 1;
+var len = 20;
+var winH = 0;
+var pageH = 0;
+var scrollT = 0;
+var ulH = 0;
+var isLoading = false;
+
+function getGoodsList(){
+		$.ajax({
+			type:"post",
+			url:"/weixin/article_code_list_json",
+			data:{
+				cat_code : cat_code , wxid : wxid, page : page , len : len
+				},
+			async:true,
+			dataType : "json",
+			success : function(data){
+				//console.log(JSON.stringify(data));	
+				
+				var list = data.rows;
+				if(list == null )list = [];
+				var li_cart_demo = $("#li_demo").html();
+				$("#ul_goods li:last").remove();
+				for(var i = 0 ; i < list.length ; i++){
+					$("#ul_goods").append(
+							li_cart_demo
+							.replaceAll("_articleId",list[i].articleId)
+							.replaceAll("_title",list[i].title)
+							.replaceAll("_description",list[i].description)
+							.replaceAll("_articleImages",list[i].articleImages)
+							.replaceAll("_dn",(list[i].articleImages != "")?"":"dn")
+							);
+				}
+				
+				addMoreEvent("ul_goods");
+				
+				winH = $(window).height();
+				pageH = $(document.body).height();
+				scrollT = $(window).scrollTop(); //滚动条top 
+				ulH = $("#ul_goods").height();
+				
+				
+				console.log("页面高度2："+winH+" / "+ pageH + " / "+scrollT + " / "+ulH);
+				
+				$(".goodsinfo").unbind();
+				//查看详情
+				$(".goodsinfo").click(function(){
+					var goods_id = $(this).attr("data-id");
+					window.location.href = "/weixin/ai-"+wxid+"-"+goods_id+".html";
+					//window.location.href = "/wxDev/gowx?wxid="+wxid+"&order_sys_code=contribution_detail&extend="+goods_id+"";
+				});
+				
+				$("#ul_goods li.more_event").unbind();
+				$("#ul_goods li.more_event").click(function(){
+					getGoodsList();
+				});
+			},
+			error : function(e,m){
+				console.log(JSON.stringify(e));
+			},beforeSend:function(jqXHR){
+				$.afui.showMask("加载中...");
+			},complete : function(){
+				$.afui.hideMask();
+				isLoading = false;
+			}
+		});
+}
+
+
+$(function(){
+//	console.log(goods_id);
+//	$.afui.toast("商品编号"+goods_id);
+	winH = $(window).height();
+	pageH = $(document.body).height();
+	scrollT = $(window).scrollTop(); //滚动条top 
+	ulH = $("#ul_goods").height();
+	
+	console.log("页面高度1："+winH+" / "+ pageH + " / "+scrollT + " / "+ulH);
+
+	getGoodsList();
+	
+	
+	$("#main").scroll(function (){
+		pageH = $(this).height();
+		scrollT = $(this).scrollTop();
+		$("#consoleId").html(""+winH+" / "+ pageH + " / "+scrollT + " / "+ulH);
+		if(isLoading) return ;
+		if((pageH + scrollT ) >= (ulH + 10) ){
+			isLoading = true;
+			getGoodsList();
+		}
+	});
+
+	
+	
+});
+
+function addMoreEvent(gid){
+	$("#"+gid).append("<li class='more_event'>点击获取更多...</li>");
+}
+
+
+
+</script>
+   
+</body>
+</html>

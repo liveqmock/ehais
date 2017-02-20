@@ -1,0 +1,8 @@
+[
+{"id":1,"title":"公众号功能","parent_id":0,"url":"","note":"project"},
+{"id":2,"title":"素材管理","parent_id":0,"url":"","note":"work_log"},
+{"id":3,"title":"用户管理","parent_id":0,"url":"","note":"idea"},
+{"id":4,"title":"互动管理","parent_id":0,"url":"","note":"idea"},
+{"id":11,"title":"添加问卷","parent_id":4,"url":"/weixin/survey/survey_insert","note":"survey"},
+{"id":12,"title":"调查问卷","parent_id":4,"url":"/weixin/survey/survey_list","note":"survey"}
+]

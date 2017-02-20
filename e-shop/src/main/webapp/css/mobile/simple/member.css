@@ -1,0 +1,15 @@
+@CHARSET "UTF-8";
+@import url('include.css');
+#member_ul{padding: 10px;}
+.user_info{background: #D84C29 ; height: 80px;}
+.user_info .face_img{width: 30%; min-width: 5rem;}
+.user_info .face_img img{width: 4rem;height: 4rem;}
+.user_info .username{width: 30%; font-size: 1rem;}
+.user_info .manager{width: 20%;}
+.shop_info{height: 10px;}
+
+.member_item{border-bottom: 1px #C8C7CC solid; padding: 5px; margin-top:10px;}
+.member_item .title{ padding: 5px;}
+.shopping {height: 55px;}
+.shopping .shopping_cat .item{float: left;width: 30%; text-align: center;font-size: 0.8rem;}
+.shopping .shopping_cat .item img{width: 30px;height: 30px;}

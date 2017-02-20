@@ -1,0 +1,107 @@
+<div class="header-nav">
+    <div class="block">
+        <a style="margin-right:15px;" class="fl gotoindex" href="index.php"><i class="iconfont"></i> 天猫首页</a>
+        
+        <p class="header-login-info">
+             
+  
+欢迎光临本店，<a href="user.php">登录</a> | <a href="user.php?act=register">注册</a> |
+ 
+ 
+         </p>
+        
+        <ul class="ul-quick-menu">
+            <li class="li-my menu-item">
+                <a class="menu-hd my_user" href="user.php">我的天猫<b></b></a>
+                <div class="menu-bd">
+                    <a href="user.php?act=order_list">我的订单</a>
+                    <a href="user.php?act=account_log">我的余额</a>
+                    <a href="user.php?act=collection_list">我的收藏</a>
+                    <a href="user.php?act=bonus">我的红包</a>
+                </div>
+            </li>
+            <li id="ECS_CARTINFO" class="li-cart">
+                <a href="flow.php">购物车</a>&nbsp;<a title="查看购物车" href="flow.php">您的购物车中有 0 件商品，总计金额 ￥0.00元。</a>            </li>
+            <li class="li-sep"></li>
+            <li class="li-mobile">
+                <i class="iconfont"></i>
+                <a href="">手机版</a>
+                <div class="mobile-qr">
+                    <div class="qrcode-bg"></div>
+                    <p>扫一扫，访问手机版</p>
+                    <b></b>
+                </div>
+            </li>
+                                    <li class="li-home">
+                <a href="flow.php">查看购物车</a>
+            </li>
+                        <li class="li-home">
+                <a href="pick_out.php">选购中心</a>
+            </li>
+                        <li class="li-home">
+                <a href="tag_cloud.php">标签云</a>
+            </li>
+                        <li class="li-home">
+                <a href="quotation.php">报价单</a>
+            </li>
+                                    <li class="li-sitemap menu-item">
+                <h3 class="menu-hd"><i class="iconfont"></i><span>网站导航</span><b></b></h3>
+                <div class="menu-bd block">
+                    <div class="site-cate site-hot">
+                        <h2>热点推荐<span>Hot</span></h2>
+                        <ul>
+                            <li><a target="_blank" href="group_buy.php">最新团购</a></li>
+                            <li><a target="_blank" href="auction.php">拍卖会</a></li>
+                            <li><a target="_blank" href="snatch.php">夺宝岛<i class="sitemap-icon sitemap-icon-new"></i></a></li>
+                            <li><a target="_blank" href="activity.php">优惠活动<i class="sitemap-icon sitemap-icon-hot"></i></a></li>
+                            <li><a target="_blank" href="package.php">超值礼包</a></li>
+                            <li><a target="_blank" href="brand.php">品牌街<i class="sitemap-icon sitemap-icon-hot"></i></a></li>
+                            <li><a target="_blank" href="search.php">随便看看</a></li>
+                            <li><a target="_blank" href="message.php">喵言喵语</a></li>
+                            <li><a target="_blank" href="user.php">会员中心</a></li>
+                            <li><a target="_blank" href="">商创国际</a></li>
+                        </ul>
+                    </div>
+                    <div class="site-cate site-market">
+                        <h2>行业市场<span>Market</span></h2>
+                        <ul>
+                                                    <li><a href="category.php?id=1">手机类型</a></li>
+                                                    <li><a href="category.php?id=6">手机配件</a></li>
+                                                    <li><a href="category.php?id=12">充值卡</a></li>
+                                                </ul>
+                    </div>
+                    <div class="site-cate site-brand">
+                        <h2>品牌风尚<span>Brand</span></h2>
+                        <ul>
+                            <li><a href="">尚天猫</a></li>
+                            <li><a href="">大牌街</a></li>
+                            <li><a href="">潮牌街</a></li>
+                            <li><a href="">天猫原创</a></li>
+                            <li><a href="">什么牌子好</a></li>
+                        </ul>
+                    </div>
+                    <div class="site-cate site-help">
+                        <h2>服务指南<span>Help</span></h2>
+                        <ul>
+                            <li><a href="">帮助中心</a></li>
+                            <li><a href="">品质保障</a></li>
+                            <li><a href="">特色服务</a></li>
+                            <li><a href="">7天退换货</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<script type="text/javascript">
+  $(function(){
+      //如果是首页，让分类树直接显示
+      $(".cate-tree").each(function(){
+        var _this = $(this);
+        _this.removeClass("none").addClass("cate-tree-index");
+      });
+  });
+</script>
+

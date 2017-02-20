@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-4.1.xsd 
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop-4.1.xsd">
+
+<!-- 
+	<bean id="mybatisDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="${driverClassName}" />
+		<property name="jdbcUrl" value="${ehais_jdbc_url}" />
+		<property name="user" value="${ehais_jdbc_username}" />
+		<property name="password" value="${ehais_jdbc_password}" />
+
+		请求超时时间
+		<property name="checkoutTimeout" value="30000" />
+		每60秒检查所有连接池中的空闲连接。默认值: 0，不检查
+		<property name="idleConnectionTestPeriod" value="30" />
+		连接数据库连接池最大空闲时间
+		<property name="maxIdleTime" value="30" />
+		连接池初始化连接数
+		<property name="initialPoolSize" value="5" />
+		<property name="minPoolSize" value="5" />
+		<property name="maxPoolSize" value="20" />
+		当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。默认值: 3
+		<property name="acquireIncrement" value="5" />
+	</bean>
+	 -->
+	 
+	 <bean id="mybatisDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+       <property name="jndiName">
+           <value>java:comp/env/jndi/ehais</value>
+       </property>
+	</bean>
+	
+	<!-- 事务管理器 -->
+	<bean id="mybatisTransactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="mybatisDataSource" />
+	</bean>
+
+	<!-- 创建SqlSessionFactory -->
+	<bean id="mybatisSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="mybatisDataSource" />
+		<property name="typeAliasesPackage" value="org.ehais.tracking.model,org.ehais.epublic.model" />
+		<property name="mapperLocations" value="classpath*:mapper/**/*Mapper.xml" />
+	</bean>
+	
+	<!-- 定义事务通知 -->  
+<tx:advice id="txAdvice" transaction-manager="mybatisTransactionManager">  
+    <!-- 定义方法的过滤规则 -->  
+    <tx:attributes>  
+        <!-- 所有方法都使用事务 -->  
+        <tx:method name="*" propagation="REQUIRED"/>  
+        <!-- 定义所有get,find,list开头的方法都是只读的 -->  
+        <tx:method name="get*" read-only="true"/>  
+        <tx:method name="find*" read-only="true"/>
+        <tx:method name="list*" read-only="true"/>
+    </tx:attributes>  
+</tx:advice>  
+
+<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+	<property name="basePackage" value="com.ehais.tracking.mapper,org.ehais.epublic.mapper" />
+</bean>
+		
+</beans>

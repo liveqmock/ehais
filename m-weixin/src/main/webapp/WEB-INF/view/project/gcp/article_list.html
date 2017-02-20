@@ -1,0 +1,39 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>${title}</title>
+<#include "head_include.html">
+
+</head>
+
+<body class="body_article">
+	<#include "top_nav.html">
+	<div id="content">
+		<div class="article">
+			<!--子频道样式有三种（图文、文字、橱窗），默认均为微信样式 0：默认,1：图文,2：文字,3：橱窗,4：相册-->
+			<!--0|默认为图文 -->
+			<!--子频道显示 开始-->
+			<ul class="wxlist">
+				<#list rm.rows as model>
+				<li>
+					<a href="ai-7-${model.articleId}.html">
+						<div class="ChannelName">${model.title}</div>
+						<#if (model.articleImages?? && model.articleImages != 'null' && model.articleImages != '' ) >
+						<div class="ChannelPicture"><img src="${model.articleImages}"  /></div>
+						<div class="ChannelSContent"></div>
+						<div class="ShowInfo">点击查看详情>></div>
+						</#if>
+					</a>
+				</li>
+				</#list>
+			</ul>
+			<!--子频道显示 结束-->
+			<div class="clear"></div>
+		</div>
+	</div>
+<#include "footer_include.html">
+</body>
+
+</html>

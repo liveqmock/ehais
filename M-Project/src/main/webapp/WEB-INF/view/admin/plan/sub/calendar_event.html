@@ -1,0 +1,57 @@
+<div class="simple-popover calendar-event-popover direction-right-bottom hidden"
+	style="top: 178px; left: 862.583px;">
+	<div class="simple-popover-content">
+		<div class="cal-event-popover">
+			<div class="cal-event-form">
+				<form accept-charset="utf-8" method="post"
+					action="/teams/e79c319ec7054f149c91e5ddf523441b/calendar_events/"
+					class="form form-event">
+					<div class="form-item">
+						<textarea data-validate-msg="请填写日程内容" data-validate="required"
+							placeholder="在这里输入日程内容" rows="1" class="no-border"
+							id="txt-event-content" name="content"
+							style="overflow: hidden; word-wrap: break-word; resize: none; height: 20px;">新的日程安排</textarea>
+					</div>
+					<div class="form-item">
+						<label>日历</label> <select id="select-cal" name="caleventable_guid"><option
+								disabled="">---日历---</option>
+							<option value="e8e5552bb9b98126ecb16685cfc21f4a" data-color="1"
+								data-members="01283984e57847c09d328330148ce7ef,ef7c3ebbc1234aeda51abbe0678137cd">默认日历</option>
+							<option disabled="">---项目---</option>
+							<option value="9dfb543dc9b546b29f6a5efb589fbe2c" data-color="1"
+								data-project="true"
+								data-members="ef7c3ebbc1234aeda51abbe0678137cd,01283984e57847c09d328330148ce7ef">熟悉Tower</option>
+							<option value="8320a131f5de4f16a66dfaa0297d2500" data-color="1"
+								data-project="true"
+								data-members="ef7c3ebbc1234aeda51abbe0678137cd">hoyoyo
+								balance</option></select> <input type="hidden" value="Calendar"
+							name="caleventable_type">
+					</div>
+					
+					<div class="form-item event-time">
+						<label>开始</label>  
+						<input type="text" class="momentpicker-input date-input datepicker">
+						
+					</div>
+					<div class="form-item event-time">
+						<label>结束</label> 
+						<input type="text" class="momentpicker-input date-input datepicker">
+					</div>
+
+
+
+					<div class="popover-buttons">
+						<button data-disable-with="正在提交..."
+							class="btn btn-primary btn-save-event" type="submit">添加</button>
+						<a class="link-hide-popover" href="javascript:;">取消</a>
+					</div>
+				</form>
+			</div>
+			<div class="cal-event-confirm collapsed"></div>
+		</div>
+	</div>
+	<div class="simple-popover-arrow">
+		<i class="arrow arrow-shadow-1"></i> <i class="arrow arrow-shadow-0"></i>
+		<i class="arrow arrow-border"></i> <i class="arrow arrow-basic"></i>
+	</div>
+</div>

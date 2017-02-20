@@ -1,0 +1,37 @@
+<div class="cp-panel comment-wall">
+	<div class="cp-panel-heading">
+		<h2>最新交流信息</h2>
+	</div>
+	<div id="comment-wall-wrapper"
+		class="scroll-wrapper-auto mCustomScrollbar maxh633"
+		style="overflow: visible;">
+		
+		<ul class="list comment-wall-list ">
+					<#if rm.map.listRequirement??>
+					<#list rm.map.listRequirement as requirement>
+					<li class="comment ">
+						<div class="media">
+							<div class="media-left media-top">
+								<a href="javascript:;" class="avatar"> 
+									<span class="glyphicon glyphicon-user"></span>									
+								</a>
+							</div>
+							<div class="media-body">
+								<div class="author-header">
+									<p class="user-name">
+										<a href="javascript:;">${requirement.userName?default('')}&nbsp;</a> <small
+											class="publish-time pull-right">${(requirement.createTime?default(''))?string("yyyy-MM-dd")}</small>
+									</p>
+								</div>
+							</div>
+							<div class="comment-content">
+								<p><a href="/member_demand_detail.html?id=${requirement.id?default('0')}" >${requirement.title?default('')}</a></p>								
+							</div>							
+						</div>
+					</li>
+					</#list>
+					</#if>
+				</ul>
+		
+	</div>
+</div>

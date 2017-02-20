@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/include/Jqmobi_Include.html">
+<title>网费支付</title>
+<link rel="stylesheet" type="text/css" href="/css/weixin/form_list.css" />
+</head>
+<body class="jqmobi">
+
+<div class="view " id="mainview">
+	<header>
+      	<h1></h1>
+  	</header>
+  	<div class="pages">
+  		<div  class="panel active" id="main" data-title="校园网费支付" data-selected="true">
+  			
+  			<form action="${action}" method="post">
+   			<ul class="list nobline form">
+   				<li class="">
+   					<div class="fl lbl">充值金额：</div>
+   					<div class="fl txt" ><input type="text" id="txt_amount" name="amount" placeholder="请输入捐款金额" value=""></div>
+   				</li>
+   				<li class="">
+   					<div class="fl lbl">网络帐号：</div>
+   					<div class="fl txt" ><input type="text" id="txt_realname" name="realname" placeholder="请输入捐款者姓名" value=""></div>
+   				</li>   				
+   				<li class="submit">
+     				<button type="button" id="submit" name="submit"  class="btn btn-bs btn-outline w100">提交支付</button>
+     			</li>
+        	</ul>
+        	
+        	<input type="hidden" id="openid" name="openid" value="${openid}">
+        	<input type="hidden" id="order_sys_code" name="order_sys_code" value="${order_sys_code}">
+        	
+        	</form>
+  			
+  		</div>        		
+  	</div>
+      	
+</div> 
+<script type="text/javascript">
+var wxid = ${wxid};
+$(function(){
+	$("#submit").click(function(){weixinPay();});
+});
+
+function weixinPay(){
+	
+	$.ajax({
+		url : "${action}",
+		data : {
+			wxid : wxid,
+			openid:$("#openid").val(),
+			amount:$("#txt_amount").val(),
+			realname:$("#txt_realname").val(),
+			order_sys_code:$("#order_sys_code").val()
+			},
+		type : "post",
+		dataType : "json",
+		success : function(data){
+			if(data.code != 1){
+				$.afui.toast(data.msg);
+				return ;
+			}
+			WeixinJSBridge.invoke(
+				       'getBrandWCPayRequest', {
+				           "appId" :  data.model.appId,     //公众号名称，由商户传入     
+				           "timeStamp" : data.model.timeStamp,         //时间戳，自1970年以来的秒数     
+				           "nonceStr" :  data.model.nonceStr, //随机串     
+				           "package" :  data.model.pack_age,     
+				           "signType" : data.model.signType,         //微信签名方式：     
+				           "paySign" : data.model.paySign //微信签名 
+				       },
+				       function(res){     
+				           if(res.err_msg == "get_brand_wcpay_request：ok" ) {
+				        	   $.afui.toast("完成充值");
+				           }     // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。 
+				       }
+				   ); 
+		},
+		error : function(e,t){},
+		beforeSend: function() {
+			$.afui.showMask("支付处理中...");
+			$("#submit").attr('disabled',"true");
+		},
+		complete: function() {
+			// Handle the complete event
+			$.afui.hideMask();
+			$('#submit').removeAttr("disabled");
+		}
+		
+	});
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="/ehais/css/matrix/bootstrap.min.css" />
+<link rel="stylesheet" href="/ehais/css/matrix/bootstrap-responsive.min.css" />
+<script src="/ehais/js/jquery/jquery-2.1.4.min.js"></script>
+<script src="/ehais/js/matrix/bootstrap.min.js"></script> 
+<title>调果问卷--毕业生服务系统--by ehais</title>
+<link href="/css/web/questionnaire.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="eContent">
+	<div class="eMain" id="questionnaire">
+		<div class="detail">
+			<h2>${rm.model.title?default('')}</h2>
+			<div class="instructions">${rm.model.instructions?default('')}</div>
+		</div>
+		<div class="questions">
+			<form id="myForm" class="form-horizontal" action="${rm.action?default('')}" method="post">
+			<ul>
+				<#list questionsList as question>
+				<li>
+					<dl>
+						<dt>${question_index + 1}.${question.title?default('')}</dt>
+						
+						<#if (question.type == 1 || question.type == 2)>
+							<#list answerList as answer>
+								<#if (question.id == answer.questionsId)>
+									<dd>
+										<#if (question.type == 1)>
+											<input type="radio" value="${answer.id}" id="rdo_${answer.id}" name="rdo_${question.id}" />
+										<#elseif (question.type == 2)>
+											<input type="checkbox" value="${answer.id}" id="cbx_${answer.id}" name="cbx_${question.id}_${answer.id}" />
+										</#if>
+										${answer.name?default('')}
+									</dd>
+								</#if>
+							</#list>
+						
+						<#elseif (question.type == 3)> 
+						
+							<dd><input type="text" id="txt_${question.id}" name="txt_${question.id}" /></dd>
+						
+						</#if>
+						
+						
+					</dl>
+				</li>
+				</#list>
+			</ul>
+			
+			<div class="btn_question_div">
+			<button type="submit" id="submit" name="submit" class="submitbutton" >提交调查问卷</button>
+			</div>
+			<input type="hidden" id="questionnaireId" name="questionnaireId" value="${rm.model.id?default('')}" />
+			</form>
+		</div>
+	</div>
+</div>
+
+
+</body>
+</html>

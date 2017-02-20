@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include  "/include/Matrix_Include.html" />
+<#include  "/include/JqueryFileUpload_Include.html" />
+<title>教师信息列表信息</title>
+
+<script src="/ehais/js/ehais.datagird.js"></script>
+
+</head>
+<body>
+
+
+<!--main-container-part-->
+<div id="content">
+
+<!--breadcrumbs-->
+  <div id="content-header">
+    <div id="breadcrumb"> 
+    	<a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 控制台</a>
+    	<a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 教师信息系统</a>
+    	<a href="javascript:;" title="Go to Home" class="tip-bottom" id="a-upload_file"><i class="icon-home"></i> 导入教师信息excel</a>
+    	<input type="file" id="upload_file" name="upload_file" value="上传文档" class="dn">
+    </div>
+  </div>
+<!--End-breadcrumbs-->
+
+
+  <div class="container-fluid">
+<hr>
+	<div class="row-fluid">
+		<div class="span12">
+			
+			<!-- begin template -->
+			<div class="widget-box">
+          <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+            <h5>教师信息列表信息</h5>
+          </div>
+          <div class="widget-content nopadding">
+            <table id="mydata" class="table table-bordered data-table"></table>
+          </div>
+
+        </div>
+			<!-- end template -->
+		</div>
+	</div>
+
+  </div>
+  
+  
+</div>
+
+<!--end-main-container-part-->
+
+
+<script type="text/javascript">
+var myDataGird ;
+var school ; 
+var politicalArray = ["其它","党员","团员","群众","其它"];
+$(function(){
+	$( ".datepicker" ).datepicker({ dateFormat: "yy-mm-dd"});
+
+	myDataGird = $("#mydata").eHaisDatagrid({
+		columns : [
+				{ field: 'jobNumber', title: '工号', width: 80 },
+				{ field: 'name', title: '姓名', width: 80 },
+				{ field: 'mobile', title: '手机号码', width: 80 },
+				{ field: 'email', title: '邮箱', width: 100 },
+				{ field: 'idcard', title: '身份证号', width: 100 },
+				{ field: 'educationBackground', title: '教育背景', width: 50 },
+				{ field: 'politicalStatus', title: '政治面貌', width: 50 ,formatter:function(value,row,index){ 
+					return politicalArray[value];
+				}},
+				{ field: 'schoolId', title: '学校', width: 100 ,formatter:function(value,row,index){ 					
+					return (typeof(school[value]) == "undefined")?"":school[value];
+				}},
+				{ field: 'action', title: '编辑', width: 100, align:'center' ,formatter:function(value,row,index){  
+		        		var e = '<a href="teacher_update?keyId='+row.id+'">编辑</a> ';  
+		            	var d = '<a href="teacher_delete?keyId='+row.id+'" onclick="return myConfirm();">删除</a> ';  
+		            	return e+d;   
+		         	}
+		         },
+		       ],
+		page : 1 , len : 10
+	});
+	myDataGird.setDataFunc(loadData);
+
+	
+	
+	
+	
+	$("#uniform-upload_file").addClass("dn");
+	$("#a-upload_file").click(function(){
+		$("#upload_file").click();
+	});
+	
+	$("#upload_file").fileupload({
+        url: "teacher_file.upd",
+        formData : {},
+        dataType: 'json',
+        done: function (e, data) {
+        	
+        },
+        success : function(result, textStatus, jqXHR){
+        	$.gritter.add({
+                title: '毕业生服务系统提示',
+                text: '数据导入成功',
+                time: 6000,
+                position: 'center'
+           });
+        	myDataGird.page = 1;
+        	loadData();
+        },
+        progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#progress .progress-bar').css(
+                'width',
+                progress + '%'
+            );
+        }
+    }).prop('disabled', !$.support.fileInput)
+        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+	
+	
+	
+});
+
+
+
+function loadData(){
+
+	$.ajax({        
+        url : "${action}",
+        data : {
+        	"page":myDataGird.page,
+        	"len":myDataGird.len,
+        },
+		method : 'POST',
+        traditional : true,
+        async : false,
+        dataType : 'json',
+        beforeSend : function(jqXHR) {
+            
+        },
+        success : function(data) {
+        	//console.log(JSON.stringify(data));
+        	if(data.code != 1){
+        		return ;
+        	}
+        	school = data.map.school;
+        	
+        	myDataGird.loadData(data);
+        },
+        error : function(e) {
+			console.log(JSON.stringify(data));
+            alert(JSON.stringify(data));
+        }
+    });
+}
+
+</script> 
+
+
+
+</body>
+</html>

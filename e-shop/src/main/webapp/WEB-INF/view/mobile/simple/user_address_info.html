@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+	<head>
+<#include "/include/Jqmobi_Include.html">
+
+<title>首页</title>
+<link rel="stylesheet" type="text/css" href="/css/mobile/form_list.css" />
+<link href="/css/mobile/simple/user_address_info.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="/ehais/css/region.css" />
+<script type="text/javascript" src="/js/mobile/user_address_info.js"></script>
+
+<script type="text/javascript" src="/js/regionH5.js"></script>
+
+	</head>
+	<body>
+		<div class="view" id="mainview">
+			<header>
+            	<h1>首页</h1>
+        	</header>
+        	<div class="pages">
+        		<div  class="panel active" id="main" data-title="首页" data-selected="true">
+        			<ul id="user_address_ul" class="list eform">
+        				<li>
+        					<label class="lbl">收货人</label>
+        					<div class="input"><input type="text" id="consignee" name="consignee" placeholder="请输入收货人姓名"></div>
+        				</li>
+        				<li>
+        					<label class="lbl">手机号码</label>
+        					<div class="input"><input type="text" id="mobile" name="mobile" placeholder="请输入手机号码"></div>
+        				</li>
+        				<li id="userRegionLi">
+        					<label class="lbl">地区</label>
+        					<div id="user_address" class="info">
+        						<span id="country" class="region dn"></span>
+        						<span id="province" class="region"></span>
+        						<span id="city" class="region"></span>
+        						<span id="county" class="region"></span>
+        						<span id="district" class="region"></span>
+        						<span id="street" class="region"></span>				
+        					</div>
+        				</li>
+        				<li>
+        					<label class="lbl">详细地址</label>
+        					<div class="input"><input type="text" id="address" name="address" placeholder="请输入详细地址"></div>
+        				</li>
+        				<li id="is_default_li">
+        					<label class="lbl">设置为默认</label>
+        					<div class="input">
+        					<em class="checkbox selected"></em>
+        					<input type="checkbox" id="isDefault" name="isDefault">
+        					</div>
+        				</li>
+        				<li class="submit">
+		     				<button type="button" id="submit_event" name="submit_event"  class="btn btn-bs btn-outline w100">提交</button>
+		     			</li>
+		     			<li class="delete dn">
+		     				<button type="button" id="delete_event" name="delete_event"  class="btn btn-bs btn-outline w100">删除</button>
+		     			</li>
+        			</ul>
+        		</div>
+        		
+        	</div>
+        	
+
+	        <input type="hidden" id="addressId" name="addressId">
+	        
+        </div>
+        
+        <#include "/include/region.html">
+        
+<script type="text/javascript">
+$(function(){
+	${init_js_event}
+	$("#submit_event").click(function(){
+		${submit_event}
+	});
+
+});
+
+
+</script>        
+	</body>
+</html>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<!-- ======================================================================== -->
+	<!-- Spring bootstrap config, only use this file in code should be sufficient -->
+	<!-- ======================================================================== -->
+
+	<context:property-placeholder location="classpath:${system.config}"
+		ignore-unresolvable="true" />
+
+	<import resource="classpath*:spring/appContext-*.xml" />
+
+	<context:component-scan base-package="${component.package}"
+		use-default-filters="false">
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Service" />
+	</context:component-scan>
+
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="104857600" />
+		<property name="maxInMemorySize" value="4096" />
+		<property name="defaultEncoding" value="UTF-8"></property>
+	</bean>
+
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="${mapper.package}" />
+	</bean>
+
+	<!-- Enable handling of java.util.logging through SLF4J -->
+	<!-- <bean id="slf4JBridgeHandler" class="org.slf4j.bridge.SLF4JBridgeHandler" 
+		init-method="removeHandlersForRootLogger"/> <bean class="org.slf4j.bridge.SLF4JBridgeHandler" 
+		init-method="install" depends-on="slf4JBridgeHandler"/> <bean class="mvc.gdrc.common.config.SystemConfig"> 
+		<property name="publicKeyPath" value="/encryptkey/publickey"></property> 
+		<property name="privateKeyPath" value="/encryptkey/privatekey"></property> 
+		<property name="resUploadPath" value="/upload/images"></property> </bean> -->
+
+	<!-- ContentNegotiatingViewResolver视图解析器,利用他就可以配置多种返回值 -->
+	<bean
+		class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+
+		<!-- 这里是否忽略掉accept header，默认就是false -->
+		<!-- 
+		<property name="ignoreAcceptHeader" value="true" />
+		 -->
+		<!-- 如果所有的mediaType都没匹配上，就会使用defaultContentType -->
+		<!-- 
+		<property name="defaultContentType" value="text/html" />
+		
+		<property name="mediaTypes">
+			<map>
+				<entry key="json" value="application/json" />
+				<entry key="xml" value="application/xml" />
+			</map>
+		</property>
+		 -->
+		 
+		<!-- 默认使用MappingJacksonJsonView生成jsonview -->
+		<property name="defaultViews">
+			<list>
+				<!-- 
+				<bean
+					class="org.springframework.web.servlet.view.json.MappingJacksonJsonView">
+					<property name="extractValueFromSingleKeyModel" value="true" />
+				</bean>
+				<bean class="org.springframework.web.servlet.view.xml.MarshallingView">
+					<property name="marshaller">
+						<bean class="org.springframework.oxm.xstream.XStreamMarshaller" />
+					</property>
+				</bean>
+				 -->
+			</list>
+		</property>
+	</bean>
+
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"/>
+
+	<bean id="evn" class="org.ehais.util.Environments">
+		<property name="jdbcUrl" value="${jdbc_url}" />
+	</bean>
+
+ 
+</beans>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<!-- IE 兼容模式 -->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<!-- 国产浏览器高速模式 -->
+		<meta name="renderer" content="webkit">
+		<!-- 新 Bootstrap 核心 CSS 文件 -->
+		<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		<!-- 可选的Bootstrap主题文件（一般不用引入） -->
+		<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+		<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+		<script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+		<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+		<script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+		
+<title>Insert title here</title>
+</head>
+<body>
+请空成功<br>
+${req?default("")}
+<br>
+
+<ul>
+	
+	<#if Session.session_store_id ?? && Session.session_store_id == 9001>
+	<li><a href="/admin/cache/clear-submit?url=www.lijess.com">立洁士</a></li>
+	</#if>
+	<#if Session.session_store_id ?? && Session.session_store_id == 10006>
+	<li><a href="/admin/cache/clear-submit?url=www.vanas.com.cn">威耐仕</a></li>
+	</#if>
+	<#if Session.session_store_id ?? && Session.session_store_id == 9003>
+	<li><a href="/admin/cache/clear-submit?url=www.runxing888.com">润星</a></li>
+	</#if>
+	
+</ul>
+
+</body>
+</html>

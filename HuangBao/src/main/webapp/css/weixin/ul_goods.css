@@ -1,0 +1,21 @@
+@CHARSET "UTF-8";
+
+.ul_goods li {float:left;width:100%; padding: 5px;}
+
+.ul_goods li .goods_img{float: left;width: 30%;}
+.ul_goods li .goods_info{float: left;width: 60%;}
+.ul_goods li .goods_img a{width:5rem;height:5rem; background: #fff none repeat scroll 0 0;border: 0;display: table-cell;text-align: center;vertical-align: middle;}
+.ul_goods li .goods_img a img{max-width:5rem;max-height:5rem;border: 0 none;display: inline;text-align: center;vertical-align: middle;}
+footer .goods_total{float: left;width: 70%;}
+footer .goods_checkout{float: left;width: 30%;}
+.goods_number_div{margin-bottom: 5px;}
+.goods_number_div div.item{float:left; border: 1px solid #cccccc; width: 30px; height: 30px;text-align: center;line-height: 30px;}
+.goods_number_div div.goods_number{width: 50px;border-left: 0px; border-right: 0px;}
+.goods_number_div div.subtotal{line-height: 30px;margin-left: 5px;}
+
+.ml5{margin-left: 5px;}
+.mr5{margin-right: 5px;}
+
+.ul_goods li img{float: left; margin-right: 10px;width: 80px; height: 60px;}
+.ul_goods li .item h2{font-size: 0.9rem;font-weight: normal;padding:0 0 2px 0;margin:0; color: #000;height:auto;}
+.ul_goods li .item p.c{font-size: 0.75rem;color: #555;line-height: 1rem;margin: 2px 0;}

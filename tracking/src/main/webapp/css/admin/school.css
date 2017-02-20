@@ -1,0 +1,5 @@
+@CHARSET "UTF-8";
+
+.school table tbody tr {background: #fff;}
+.school table tbody tr:HOVER {background: #f6f6f6;}
+.school table {margin-right: 10px;border-right: 1px solid #ddd;}

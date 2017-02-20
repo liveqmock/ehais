@@ -1,0 +1,345 @@
+<div class="cp-panel article-list-container">
+	
+	<div class="cp-panel-heading">
+		<!-- 
+		<h2>
+			最新专利资讯 <small>关注实时热点专利信息，第一时间把握竞争动态！</small> <a
+				class="publish more pull-right" href="article.html">更多专利资讯</a>
+		</h2>
+		 -->
+		 <!--  -->
+		<ul class="list inline-list tabs">
+			<li class="tab active"><a data-type="home">最新资讯</a></li>
+			<li class="tab custom"><a data-type="feature">人社厅资讯</a></li>
+			<li class="tab custom"><a data-type="pm">创业指导</a></li>
+			<li class="tab custom"><a data-type="analysis">就职资讯</a></li>
+			<li class="tab custom"><a data-type="po">面试指导</a></li>
+			<li class="tab custom"><a data-type="design">劳动法规</a></li>
+			<li class="tab custom"><a data-type="news">政策</a></li>
+			<li class="tab custom"><a data-type="ue">专题</a></li>			
+		</ul>
+		
+	</div>
+	
+	
+	
+	
+	<div class="article-list">
+		<div class="article-container">
+			<#if rm.map.ListInfo??>
+			<#list rm.map.ListInfo as info>
+			<div class="item">
+				<div class="media">
+					<div class="media-left">
+						<a href="/member_subscribe_detail.html?id=${info.id?default('')}" >
+							<div class="cover-container">
+								<img class="lazy media-object"
+									src="${info.thumbnail?default('')}"
+									alt="${info.name}"
+									style="display: block;">
+							</div>
+						</a>
+					</div>
+					<div class="media-body">
+						<h4 class="media-heading">
+							<a href="/member_subscribe_detail.html?id=${info.id?default('')}" data-etrack="点击文章列表－标题">
+							${info.name}
+							</a>
+						</h4>
+
+						<div class="article-info">
+							<ul>
+								<li class="author">
+								<a data-user-pop="58715" 
+									href="/member_subscribe_detail.html?id=${info.id?default('')}" class="avatar"> 
+									<span class="glyphicon glyphicon-user"></span>
+									<!-- 
+									<img class="lazy"
+										src="${info.picture?default('')}"
+										 style="display: inline;">
+									 -->
+								</a> 
+								<a class="nickname" href="/member_subscribe_detail.html?id=${info.id?default('')}" >
+								${info.agencies?default('')}
+								</a>
+								</li>
+								<li class="date"><#if info.releaseTime??>${info.releaseTime?string("yyyy-MM-dd")?default('')}</#if></li>
+								<li class="category dni">标签： <span class="tags"> <a
+										href="/tag/QQ" >QQ</a> <a href="/tag/微信"
+										>微信</a>
+								</span>
+								</li>
+								<!--<li class="category">分类：阅读时光</li>-->
+							</ul>
+						</div>
+						<p class="article-summary">
+							<#if (info.summary?default(''))?length lt 150>   
+								${info.summary?default('')}
+							<#else>
+							     ${info.summary[0..149]}... 
+							</#if>
+						</p>
+
+						<ul class="list-unstyled article-data dn">
+							<li><a href="/member_subscribe_detail.html?id=${info.id?default('')}" 
+								data-etrack="点击文章列表－阅读数">阅读<span class="data">620</span></a></li>
+							<li><a href="/member_subscribe_detail.html?id=${info.id?default('')}#article-comments"
+								 data-etrack="点击文章列表－评论数">评论<span
+									class="data">0</span></a></li>
+							<li class="last">喜欢<span class="data">0</span></li>
+						</ul>
+
+						<span class="mobile-article-data dn"><a href="/member_subscribe_detail.html?id=${info.id?default('')}"
+							>阅读620</a></span>
+					</div>
+					<a class="category-tag dn" href="/pm" >产品经理</a>
+				</div>
+			</div>
+			</#list>
+			</#if>
+			
+			<!-- demo start -->
+			
+			<div class="item">
+                        <div class="media">
+                            <div class="media-left">
+                                <a href="/article/101554" target="_blank" data-etrack="点击文章列表－图片">
+                                    <div class="cover-container">
+                                        <img class="lazy media-object" src="http://i.chanpin100.com/147644997474947234-256x160" data-original="http://i.chanpin100.com/147644997474947234-256x160" alt="风雨17年，阿里帝国成长之路，马云的操盘与做局" title="风雨17年，阿里帝国成长之路，马云的操盘与做局" style="display: block;">
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading"><a href="/article/101554" target="_blank" data-etrack="点击文章列表－标题">风雨17年，阿里帝国成长之路，马云的操盘与做局</a></h4>
+                    
+                                <div class="article-info">
+                                    <ul>
+                                        <li class="author">
+                                            <a data-user-pop="58307" target="_blank" href="/profile/58307" class="avatar">
+                                                <img class="lazy" src="http://i.chanpin100.com/147644943901468777-crop-90x90" data-original="http://i.chanpin100.com/147644943901468777-crop-90x90" alt="Zoran" style="display: inline;">
+                                            </a>
+                                            <a class="nickname" href="/profile/58307" target="_blank">Zoran</a>
+                                        </li>
+                                            <li class="date">1天前</li>
+                                        <!--<li class="category">分类：阅读时光</li>-->
+                                    </ul>
+                                </div>
+                                <p class="article-summary">
+                                    一位瘦小的英语老师跳出来振臂一呼：我要辞职，干 Intenet ……
+                                </p>
+                    
+                                <ul class="list-unstyled article-data">
+                                    <li><a href="/article/101554" target="_blank" data-etrack="点击文章列表－阅读数">阅读<span class="data">1308</span></a></li>
+                                    <li><a href="/article/101554#article-comments" target="_blank" data-etrack="点击文章列表－评论数">评论<span class="data">0</span></a></li>
+                                    <li class="last">喜欢<span class="data">2</span></li>
+                                </ul>
+                    
+                                <span class="mobile-article-data"><a href="/article/101554" target="_blank">阅读1308</a></span>
+                            </div>
+                            <a class="category-tag" href="/news" target="_blank">行业动态</a>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="media">
+                            <div class="media-left">
+                                <a href="/article/101554" target="_blank" data-etrack="点击文章列表－图片">
+                                    <div class="cover-container">
+                                        <img class="lazy media-object" src="http://i.chanpin100.com/147644997474947234-256x160" data-original="http://i.chanpin100.com/147644997474947234-256x160" alt="风雨17年，阿里帝国成长之路，马云的操盘与做局" title="风雨17年，阿里帝国成长之路，马云的操盘与做局" style="display: block;">
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading"><a href="/article/101554" target="_blank" data-etrack="点击文章列表－标题">风雨17年，阿里帝国成长之路，马云的操盘与做局</a></h4>
+                    
+                                <div class="article-info">
+                                    <ul>
+                                        <li class="author">
+                                            <a data-user-pop="58307" target="_blank" href="/profile/58307" class="avatar">
+                                                <img class="lazy" src="http://i.chanpin100.com/147644943901468777-crop-90x90" data-original="http://i.chanpin100.com/147644943901468777-crop-90x90" alt="Zoran" style="display: inline;">
+                                            </a>
+                                            <a class="nickname" href="/profile/58307" target="_blank">Zoran</a>
+                                        </li>
+                                            <li class="date">1天前</li>
+                                        <!--<li class="category">分类：阅读时光</li>-->
+                                    </ul>
+                                </div>
+                                <p class="article-summary">
+                                    一位瘦小的英语老师跳出来振臂一呼：我要辞职，干 Intenet ……
+                                </p>
+                    
+                                <ul class="list-unstyled article-data">
+                                    <li><a href="/article/101554" target="_blank" data-etrack="点击文章列表－阅读数">阅读<span class="data">1308</span></a></li>
+                                    <li><a href="/article/101554#article-comments" target="_blank" data-etrack="点击文章列表－评论数">评论<span class="data">0</span></a></li>
+                                    <li class="last">喜欢<span class="data">2</span></li>
+                                </ul>
+                    
+                                <span class="mobile-article-data"><a href="/article/101554" target="_blank">阅读1308</a></span>
+                            </div>
+                            <a class="category-tag" href="/news" target="_blank">行业动态</a>
+                        </div>
+                    </div>
+            <div class="item">
+                        <div class="media">
+                            <div class="media-left">
+                                <a href="/article/101554" target="_blank" data-etrack="点击文章列表－图片">
+                                    <div class="cover-container">
+                                        <img class="lazy media-object" src="http://i.chanpin100.com/147644997474947234-256x160" data-original="http://i.chanpin100.com/147644997474947234-256x160" alt="风雨17年，阿里帝国成长之路，马云的操盘与做局" title="风雨17年，阿里帝国成长之路，马云的操盘与做局" style="display: block;">
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading"><a href="/article/101554" target="_blank" data-etrack="点击文章列表－标题">风雨17年，阿里帝国成长之路，马云的操盘与做局</a></h4>
+                    
+                                <div class="article-info">
+                                    <ul>
+                                        <li class="author">
+                                            <a data-user-pop="58307" target="_blank" href="/profile/58307" class="avatar">
+                                                <img class="lazy" src="http://i.chanpin100.com/147644943901468777-crop-90x90" data-original="http://i.chanpin100.com/147644943901468777-crop-90x90" alt="Zoran" style="display: inline;">
+                                            </a>
+                                            <a class="nickname" href="/profile/58307" target="_blank">Zoran</a>
+                                        </li>
+                                            <li class="date">1天前</li>
+                                        <!--<li class="category">分类：阅读时光</li>-->
+                                    </ul>
+                                </div>
+                                <p class="article-summary">
+                                    一位瘦小的英语老师跳出来振臂一呼：我要辞职，干 Intenet ……
+                                </p>
+                    
+                                <ul class="list-unstyled article-data">
+                                    <li><a href="/article/101554" target="_blank" data-etrack="点击文章列表－阅读数">阅读<span class="data">1308</span></a></li>
+                                    <li><a href="/article/101554#article-comments" target="_blank" data-etrack="点击文章列表－评论数">评论<span class="data">0</span></a></li>
+                                    <li class="last">喜欢<span class="data">2</span></li>
+                                </ul>
+                    
+                                <span class="mobile-article-data"><a href="/article/101554" target="_blank">阅读1308</a></span>
+                            </div>
+                            <a class="category-tag" href="/news" target="_blank">行业动态</a>
+                        </div>
+                    </div>
+            <div class="item">
+                        <div class="media">
+                            <div class="media-left">
+                                <a href="/article/101554" target="_blank" data-etrack="点击文章列表－图片">
+                                    <div class="cover-container">
+                                        <img class="lazy media-object" src="http://i.chanpin100.com/147644997474947234-256x160" data-original="http://i.chanpin100.com/147644997474947234-256x160" alt="风雨17年，阿里帝国成长之路，马云的操盘与做局" title="风雨17年，阿里帝国成长之路，马云的操盘与做局" style="display: block;">
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading"><a href="/article/101554" target="_blank" data-etrack="点击文章列表－标题">风雨17年，阿里帝国成长之路，马云的操盘与做局</a></h4>
+                    
+                                <div class="article-info">
+                                    <ul>
+                                        <li class="author">
+                                            <a data-user-pop="58307" target="_blank" href="/profile/58307" class="avatar">
+                                                <img class="lazy" src="http://i.chanpin100.com/147644943901468777-crop-90x90" data-original="http://i.chanpin100.com/147644943901468777-crop-90x90" alt="Zoran" style="display: inline;">
+                                            </a>
+                                            <a class="nickname" href="/profile/58307" target="_blank">Zoran</a>
+                                        </li>
+                                            <li class="date">1天前</li>
+                                        <!--<li class="category">分类：阅读时光</li>-->
+                                    </ul>
+                                </div>
+                                <p class="article-summary">
+                                    一位瘦小的英语老师跳出来振臂一呼：我要辞职，干 Intenet ……
+                                </p>
+                    
+                                <ul class="list-unstyled article-data">
+                                    <li><a href="/article/101554" target="_blank" data-etrack="点击文章列表－阅读数">阅读<span class="data">1308</span></a></li>
+                                    <li><a href="/article/101554#article-comments" target="_blank" data-etrack="点击文章列表－评论数">评论<span class="data">0</span></a></li>
+                                    <li class="last">喜欢<span class="data">2</span></li>
+                                </ul>
+                    
+                                <span class="mobile-article-data"><a href="/article/101554" target="_blank">阅读1308</a></span>
+                            </div>
+                            <a class="category-tag" href="/news" target="_blank">行业动态</a>
+                        </div>
+                    </div>
+              <div class="item">
+                        <div class="media">
+                            <div class="media-left">
+                                <a href="/article/101554" target="_blank" data-etrack="点击文章列表－图片">
+                                    <div class="cover-container">
+                                        <img class="lazy media-object" src="http://i.chanpin100.com/147644997474947234-256x160" data-original="http://i.chanpin100.com/147644997474947234-256x160" alt="风雨17年，阿里帝国成长之路，马云的操盘与做局" title="风雨17年，阿里帝国成长之路，马云的操盘与做局" style="display: block;">
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading"><a href="/article/101554" target="_blank" data-etrack="点击文章列表－标题">风雨17年，阿里帝国成长之路，马云的操盘与做局</a></h4>
+                    
+                                <div class="article-info">
+                                    <ul>
+                                        <li class="author">
+                                            <a data-user-pop="58307" target="_blank" href="/profile/58307" class="avatar">
+                                                <img class="lazy" src="http://i.chanpin100.com/147644943901468777-crop-90x90" data-original="http://i.chanpin100.com/147644943901468777-crop-90x90" alt="Zoran" style="display: inline;">
+                                            </a>
+                                            <a class="nickname" href="/profile/58307" target="_blank">Zoran</a>
+                                        </li>
+                                            <li class="date">1天前</li>
+                                        <!--<li class="category">分类：阅读时光</li>-->
+                                    </ul>
+                                </div>
+                                <p class="article-summary">
+                                    一位瘦小的英语老师跳出来振臂一呼：我要辞职，干 Intenet ……
+                                </p>
+                    
+                                <ul class="list-unstyled article-data">
+                                    <li><a href="/article/101554" target="_blank" data-etrack="点击文章列表－阅读数">阅读<span class="data">1308</span></a></li>
+                                    <li><a href="/article/101554#article-comments" target="_blank" data-etrack="点击文章列表－评论数">评论<span class="data">0</span></a></li>
+                                    <li class="last">喜欢<span class="data">2</span></li>
+                                </ul>
+                    
+                                <span class="mobile-article-data"><a href="/article/101554" target="_blank">阅读1308</a></span>
+                            </div>
+                            <a class="category-tag" href="/news" target="_blank">行业动态</a>
+                        </div>
+                    </div>
+                <div class="item">
+                        <div class="media">
+                            <div class="media-left">
+                                <a href="/article/101554" target="_blank" data-etrack="点击文章列表－图片">
+                                    <div class="cover-container">
+                                        <img class="lazy media-object" src="http://i.chanpin100.com/147644997474947234-256x160" data-original="http://i.chanpin100.com/147644997474947234-256x160" alt="风雨17年，阿里帝国成长之路，马云的操盘与做局" title="风雨17年，阿里帝国成长之路，马云的操盘与做局" style="display: block;">
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading"><a href="/article/101554" target="_blank" data-etrack="点击文章列表－标题">风雨17年，阿里帝国成长之路，马云的操盘与做局</a></h4>
+                    
+                                <div class="article-info">
+                                    <ul>
+                                        <li class="author">
+                                            <a data-user-pop="58307" target="_blank" href="/profile/58307" class="avatar">
+                                                <img class="lazy" src="http://i.chanpin100.com/147644943901468777-crop-90x90" data-original="http://i.chanpin100.com/147644943901468777-crop-90x90" alt="Zoran" style="display: inline;">
+                                            </a>
+                                            <a class="nickname" href="/profile/58307" target="_blank">Zoran</a>
+                                        </li>
+                                            <li class="date">1天前</li>
+                                        <!--<li class="category">分类：阅读时光</li>-->
+                                    </ul>
+                                </div>
+                                <p class="article-summary">
+                                    一位瘦小的英语老师跳出来振臂一呼：我要辞职，干 Intenet ……
+                                </p>
+                    
+                                <ul class="list-unstyled article-data">
+                                    <li><a href="/article/101554" target="_blank" data-etrack="点击文章列表－阅读数">阅读<span class="data">1308</span></a></li>
+                                    <li><a href="/article/101554#article-comments" target="_blank" data-etrack="点击文章列表－评论数">评论<span class="data">0</span></a></li>
+                                    <li class="last">喜欢<span class="data">2</span></li>
+                                </ul>
+                    
+                                <span class="mobile-article-data"><a href="/article/101554" target="_blank">阅读1308</a></span>
+                            </div>
+                            <a class="category-tag" href="/news" target="_blank">行业动态</a>
+                        </div>
+                    </div>
+			<!-- demo end -->
+			
+		</div>
+		<a class="load-more btn-block text-center dn" data-toggle="loadmore"
+			data-api="/home/cached_list" data-extra="{end_id: '101273'}"
+			data-max-page="10" data-template="#articleTemplate"
+			data-container=".article-container">点击查看更多</a>
+	</div>
+</div>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include  "/include/Matrix_Include.html" />
+<#include  "/include/JqueryFileUpload_Include.html" />
+<title>调查问卷列表</title>
+</head>
+<body class="main">
+
+
+
+<!--main-container-part-->
+<div id="content">
+
+<!--breadcrumbs-->
+  <div id="content-header">
+    <div id="breadcrumb"> 
+    	<a href="javascript:;" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 控制台</a>
+    	<a href="javascript:;" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 调查问卷系统</a>
+    	<a href="javascript:;" id="a-upload_file" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 导入调查问卷</a>
+    	<input type="file" id="upload_file" name="upload_file" value="上传文档" class="dn">
+    </div>
+  </div>
+<!--End-breadcrumbs-->
+
+<hr>
+  <div class="container-fluid">
+
+	<div class="row-fluid">
+		<div class="span12">
+			
+			<!-- begin template -->
+			<div class="widget-box">
+          <div class="widget-title"> <span class="icon"><i class="icon-th"></i></span>
+            <h5>调查问卷列表信息</h5>
+          </div>
+          <div class="widget-content nopadding">
+            <table id="mydata" class="table table-bordered data-table"></table>
+          </div>
+
+        </div>
+			<!-- end template -->
+		</div>
+	</div>
+
+  </div>
+  
+  
+</div>
+
+<!--end-main-container-part-->
+
+
+<div id="divQCode"
+	style="position: fixed; bottom: 50px; right: 260px; width: 260px; display: none;">
+	<div style="width: 260px; height: 260px; float: left;" id="qcode"></div>
+	<div onclick="closeQCode();"
+		style="width: 260px; height: 30px; float: left;">关闭</div>
+</div>
+			
+
+
+<script type="text/javascript">
+
+$(function(){
+	$( ".datepicker" ).datepicker({ dateFormat: "yy-mm-dd"});
+	$("#uniform-upload_file").addClass("dn");
+	$("#a-upload_file").click(function(){
+		$("#upload_file").click();
+	});
+	
+	/* 
+	$("#upload_file").change(function(){
+		console.log($(this).val());
+	});
+	 */
+	
+	$("#upload_file").fileupload({
+        url: "questionnaire_file.upd",
+        formData : {},
+        dataType: 'json',
+        done: function (e, data) {
+        	
+        },
+        success : function(result, textStatus, jqXHR){
+        	$.gritter.add({
+                title: '毕业生服务系统提示',
+                text: '问卷信息导入成功',
+                time: 2000,
+                position: 'center'
+           });
+        	myDataGird.page = 1;
+        	loadData();
+        },
+        progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#progress .progress-bar').css(
+                'width',
+                progress + '%'
+            );
+        }
+    }).prop('disabled', !$.support.fileInput)
+        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+	
+	
+});
+</script> 
+<script type="text/javascript" src="/ehais/js/jquery/jquery.qrcode.min.js"></script>
+<script src="/ehais/js/ehais.datagird.js"></script>
+<script src="/js/admin/questionnaire_list.js"></script>
+
+</body>
+</html>

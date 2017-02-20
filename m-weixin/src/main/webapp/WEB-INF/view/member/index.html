@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>易微-管理平台</title>
+
+<#include "/include/BootStrap_Include.html">
+<style type="text/css">
+.tree_project .select{background: #cccccc;}
+</style>
+
+</head>
+<body class="easyui-layout" fit="true">
+<div region="north" title="" split="false" style="height:60px;">
+<div style="float: right;">
+
+<#if session_admin_id??>管理编号：${session_admin_id }</#if>
+<#if session_user_id??>编号：${session_user_id }</#if>
+&nbsp;&nbsp;&nbsp;
+
+<#if session_admin_name??>管理帐号：${session_admin_name }</#if>
+<#if session_user_name??>用户帐号：${session_user_name }</#if>
+&nbsp;&nbsp;&nbsp;
+<a href="/logout">退出</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</div>
+</div>
+<div region="south" title="" split="false" style="height:40px;"></div>
+<div region="east" iconCls="icon-reload" title="常用" split="false" style="width:100px;">
+
+	  <ul class="tree_project">
+		<#if projectList??>
+		<#list projectList as project>
+			<li ><span><a href="javascript:;" onclick="ChangeProject(this);" data-value="${project.proId}" class="<#if project.proId == session_project_id>select</#if>">${project.proName}</a></span></li>
+		</#list>
+		</#if>
+	  </ul>
+	  
+</div>
+
+<div region="west" split="false" title="菜单" style="width:150px;">
+	<#include "menu.html">
+</div>
+
+
+<div id="web_main" region="center" title="" style="padding:0px;background:#eee;" class="easyui-tabs" data-options="{tools:'#tab-tools' , fit : false}">
+    <div title="首页" style="padding:0px;">
+        <iframe scrolling="yes" frameborder="0"  src="main" style="width:100%;height:100%;" ></iframe>
+    </div>    
+</div>
+
+<div id="tab-tools">
+	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'" onclick="reloadPanel()"></a>
+</div>
+	
+
+<script type="text/javascript">
+
+$(function(){
+	$('.tree_project').tree();
+});
+
+function reloadPanel(){
+	var currTab =  $('#web_main').tabs('getSelected'); //获得当前tab
+	if (currTab){
+		var index = $('#web_main').tabs('getTabIndex', currTab);
+	    if(index > 0){
+	    	var url = $(currTab.panel('options').content).attr('src');
+	    	$('#web_main').tabs('update', {
+	    	      tab : currTab,
+	    	      options : {
+	    	       content : '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:100%;"></iframe>'
+	    	      }
+	    	     });
+	    }
+	}
+    
+}
+
+function ChangeProject(_this){
+	
+	var proId = $(_this).attr("data-value");
+	
+	
+	$.ajax({
+		url:"/admin/P_ChangeProject",
+		data : {"proId" : proId},
+		type:"post",
+		dataType:"text",
+		success:function(data){
+
+			$("#web_main .tabs-wrap li").each(function(index, obj) {
+                //获取所有可关闭的选项卡
+            	var tab = $(".tabs-closable", this).text();
+                $("#web_main").tabs('close', tab);
+         	});
+			
+			$('.tree_project a').each(function(index,obj){$(this).removeClass("select")});
+            $(_this).addClass("select");
+		},
+		error:function(e){}
+	});
+}
+
+</script>
+</body>
+</html>

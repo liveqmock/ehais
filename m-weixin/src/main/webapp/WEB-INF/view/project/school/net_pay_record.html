@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/include/Jqmobi_Include.html">
+<title>费用清单</title>
+</head>
+<body>
+<body class="jqmobi">
+
+<div class="view " id="mainview">
+	<header>
+      	<h1></h1>
+  	</header>
+  	<div class="pages">
+  		<div  class="panel active" id="main" data-title="校园网费支付清单" data-selected="true">
+  			<ul class="list ul_goods" id="ul_goods">
+  				
+  			</ul>
+  		</div>
+  	</div>
+</div>
+
+
+
+<div id="demo" class="dn">
+	<ul id="li_demo">
+		
+<li data-id="_orderId">
+
+	<div class="flw">订单号：_orderSn &nbsp;&nbsp; 金额：_amount</div>
+	<div class="flw">_orderBody</div>
+	
+</li>
+	</ul>
+</div>
+
+
+<script type="text/javascript">
+var wxid = ${wxid};
+var openid = "${openid}";
+var order_sys_code = "${order_sys_code}";
+var page = 1;
+var len = 20;
+var winH = 0;
+var pageH = 0;
+var scrollT = 0;
+var ulH = 0;
+
+function getRecordList(){
+		$.ajax({
+			type:"post",
+			url:"${action}",
+			data:{
+				openid : openid ,order_sys_code : order_sys_code , wxid : wxid, page : page , len : len
+				},
+			async:true,
+			dataType : "json",
+			success : function(data){
+				console.log(JSON.stringify(data));	
+				
+				var list = data.rows;
+				if(list == null )list = [];
+				var li_cart_demo = $("#li_demo").html();
+				for(var i = 0 ; i < list.length ; i++){
+					$("#ul_goods").append(
+							li_cart_demo
+							.replaceAll("_orderSn",list[i].orderSn)
+							.replaceAll("_orderBody",list[i].orderBody)
+							.replaceAll("_amount",(parseFloat(list[i].amount) / 100 ).toFixed(2) )
+							
+							);
+				}
+				
+				
+			},
+			error : function(e,m){
+				console.log(JSON.stringify(e));
+			},beforeSend:function(jqXHR){
+			},complete : function(){
+			}
+		});
+}
+
+
+
+$(function(){
+	
+	getRecordList();
+});
+
+</script>
+</body>
+</html>

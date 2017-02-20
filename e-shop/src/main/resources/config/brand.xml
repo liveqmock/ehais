@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml>
+	<group role="admin" manager="lijess" code="" table="hai_brand">
+		<BootStrapModel>
+			<control>hidden</control>
+			<name>brandId</name>
+			<label>brandId</label>
+			<prompt>请输入brandId</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>brandName</name>
+			<label>品牌名称</label>
+			<prompt>请输入品牌名称</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>images</control>
+			<name>brandLogo</name>
+			<label>品牌图片</label>
+			<prompt>请输入品牌图片</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+		<BootStrapModel>
+			<control>text</control>
+			<name>siteUrl</name>
+			<label>品牌网址</label>
+			<prompt>请输入品牌网址</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+		<BootStrapModel>
+			<control>textarea</control>
+			<name>brandDesc</name>
+			<label>品牌描述</label>
+			<prompt>请输入描述</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+		
+		<BootStrapModel>
+			<control>text</control>
+			<name>recommend</name>
+			<label>标题扩展信息</label>
+			<prompt>请输入标题扩展信息</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+	</group>
+
+
+	<group role="" manager="vanas" code="" table="hai_brand">
+		<BootStrapModel>
+			<control>hidden</control>
+			<name>brandId</name>
+			<label>brandId</label>
+			<prompt>请输入brandId</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>brandName</name>
+			<label>品牌名称</label>
+			<prompt>请输入品牌名称</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>images</control>
+			<name>brandLogo</name>
+			<label>品牌图片</label>
+			<prompt>请输入品牌图片</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>textarea</control>
+			<name>brandDesc</name>
+			<label>品牌描述</label>
+			<prompt>请输入描述</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+		
+		<BootStrapModel>
+			<control>text</control>
+			<name>recommend</name>
+			<label>标题扩展信息</label>
+			<prompt>请输入标题扩展信息</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+	</group>
+
+
+	<group role="runxing" manager="" code="" table="hai_brand">
+		<BootStrapModel>
+			<control>hidden</control>
+			<name>brandId</name>
+			<label>brandId</label>
+			<prompt>请输入brandId</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>text</control>
+			<name>brandName</name>
+			<label>品牌名称</label>
+			<prompt>请输入品牌名称</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>images</control>
+			<name>brandLogo</name>
+			<label>品牌图片</label>
+			<prompt>请输入品牌图片</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+		<BootStrapModel>
+			<control>textarea</control>
+			<name>brandDesc</name>
+			<label>品牌描述</label>
+			<prompt>请输入描述</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+		
+		<BootStrapModel>
+			<control>text</control>
+			<name>recommend</name>
+			<label>标题扩展信息</label>
+			<prompt>请输入标题扩展信息</prompt>
+			<oksign></oksign>
+			<errorsign></errorsign>
+			<listshow>0</listshow>
+			<tabno>0</tabno>
+		</BootStrapModel>
+
+	</group>
+	
+	
+
+
+
+</xml>

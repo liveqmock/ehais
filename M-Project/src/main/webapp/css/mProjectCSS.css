@@ -1,0 +1,255 @@
+@CHARSET "UTF-8";
+
+body {
+    /* background-color: #f2f5e9; 
+    font-family: "Helvetica Neue",Helvetica,Arial;
+    font-size: 14px;
+    */
+}
+
+label{font-size:14px;}
+
+.mProjectCalendar {
+    transition-duration: 200ms;
+    transition-property: top, margin-top, opacity, transform, box-shadow;
+    background: #ffffff none repeat scroll 0 0;
+    border: 1px solid #dbdfd6;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+    min-height: 600px;
+    opacity: 1;
+    position: relative;
+    transform: none;
+    transform-origin: 50% 0 0;
+    width: 100%;
+    margin: 20px 0px 10px 0px;
+}
+
+.mProjectCalendar .calendar-topbar{
+    height: 33px;
+    margin: 20px 0 15px;
+    padding: 0 20px;
+    position: relative;
+}
+
+.mProjectCalendar .calendar-topbar h3 {
+    left: 50%;
+    line-height: 30px;
+    margin: 0 0 0 0px;
+    position: absolute;
+    text-align: center;
+    top: 0;
+    width: 200px;
+    color: #84a099;
+    font-size: 20px;
+
+}
+
+.mProjectCalendar .simple-calendar .week-title {
+    width: 100%;
+}
+.mProjectCalendar .simple-calendar .week-title .weekdays {
+    width: 100%;
+}
+
+
+.mProjectCalendar .simple-calendar .week-title .weekdays .weekday {
+    border-bottom: 2px solid #cccccc;
+    color: #aaaaaa;
+    font-size: 14px;
+    height: 25px;
+    line-height: 20px;
+    padding: 0 0 5px;
+    text-align: center;
+    width: 14.286%;
+    float: left;
+}
+
+
+
+.simple-calendar .weeks .week {
+    border-bottom: 1px solid #dddddd;
+    display: table;
+    position: relative;
+    table-layout: fixed;
+    width: 100%;
+}
+
+
+.simple-calendar .weeks .week .days {
+    display: table-row;
+}
+
+.simple-calendar .weeks .week .days .day {
+    border-right: 1px solid #dddddd;
+    display: table-cell;
+    height: 120px;
+    padding: 0 0 20px;
+    vertical-align: top;
+    width: 14.286%;
+}
+
+
+.simple-calendar .weeks .week .days .day .info {
+    color: #888888;
+    font-family: arial;
+    font-size: 12px;
+    height: 12px;
+    line-height: 12px;
+    padding: 6px 8px;
+}
+
+
+.simple-calendar .weeks .week .days .day .info .icon_calendar_add {
+    float: left;
+}
+
+
+.simple-calendar .weeks .week .days .day .info .num {
+    float: right;
+}
+
+.simple-calendar .weeks .week .events {
+    left: 0;
+    position: absolute;
+    top: 24px;
+    width: 100%;
+}
+
+.simple-calendar .weeks .week .events .event {
+    cursor: pointer;
+    margin: 0;
+    overflow: hidden;
+    position: absolute;
+    text-overflow: ellipsis;
+    white-space: nowrap;    
+    color: #333333;
+    font-size: 11px;
+    line-height: 16px;
+    overflow: hidden;
+    padding: 0 5px;
+    background-color: rgba(249, 67, 64, 0.2);
+}
+
+.simple-popover {
+    left: -9999px;
+    position: absolute;
+    top: -9999px;
+    z-index: 200;
+}
+
+
+.simple-popover .simple-popover-content {
+    background: #fff none repeat scroll 0 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+    padding: 10px 15px;
+    white-space: nowrap;
+}
+
+
+.simple-popover.direction-left-bottom .simple-popover-arrow, .simple-popover.direction-right-bottom .simple-popover-arrow {
+    top: 16px;
+}
+.simple-popover.direction-right-top .simple-popover-arrow, .simple-popover.direction-right-bottom .simple-popover-arrow, .simple-popover.direction-right-middle .simple-popover-arrow {
+    left: -16px;
+}
+.simple-popover .simple-popover-arrow {
+    height: 16px;
+    position: absolute;
+    width: 16px;
+}
+
+.simple-popover .simple-popover-arrow .arrow {
+    border-style: solid;
+    border-width: 8px;
+    font-size: 0;
+    height: 0;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 0;
+}
+
+/* input[type="text"], input[type="password"], input[type="email"], textarea {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: none;
+    display: block;
+    font-size: 14px;
+    height: 18px;
+    line-height: 18px;
+    margin: 0;
+    outline: 0 none;
+    overflow: auto;
+    padding: 8px 12px;
+    width: 220px;
+} */
+input.no-border[type="text"], input.no-border[type="password"], input.no-border[type="email"], textarea.no-border {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: -moz-use-text-color -moz-use-text-color #cccccc;
+    border-image: none;
+    border-radius: 0;
+    border-style: none none dashed;
+    border-width: medium medium 1px;
+    font-size: 16px;
+    line-height: 1.2;
+    overflow: hidden;
+    padding: 2px 0;
+    resize: none;
+}
+
+.cal-event-popover #txt-event-content {
+    height: auto;
+    margin: 5px 0;
+    width: 240px;
+}
+.simple-popover.direction-right-top .arrow-shadow-1, .simple-popover.direction-right-bottom .arrow-shadow-1, .simple-popover.direction-right-middle .arrow-shadow-1 {
+    border-color: transparent rgba(0, 0, 0, 0.05) transparent transparent;
+    left: -2px;
+}
+
+.simple-popover.direction-right-top .arrow-shadow-0, .simple-popover.direction-right-bottom .arrow-shadow-0, .simple-popover.direction-right-middle .arrow-shadow-0 {
+    border-color: transparent rgba(0, 0, 0, 0.1) transparent transparent;
+    left: -1px;
+}
+
+.simple-popover.direction-right-top .arrow-border, .simple-popover.direction-right-bottom .arrow-border, .simple-popover.direction-right-middle .arrow-border {
+    border-color: transparent #c3c3c3 transparent transparent;
+    left: 0;
+}
+
+.simple-popover.direction-right-top .arrow-basic, .simple-popover.direction-right-bottom .arrow-basic, .simple-popover.direction-right-middle .arrow-basic {
+    border-color: transparent #fff transparent transparent;
+    left: 1px;
+}
+
+.cal-event-popover {
+    position: relative;
+}
+
+.cal-event-popover .form-item::before, .cal-event-popover .form-item::after {
+    content: "";
+    display: table;
+}
+
+.cal-event-popover .form-item::after {
+    clear: both;
+    height: 0;
+    visibility: hidden;
+}
+
+.cal-event-popover .form-item::before, .cal-event-popover .form-item::after {
+    content: "";
+    display: table;
+}
+
+.cal-event-popover .form-item {
+    margin: 0 0 8px;
+}
+
+
+

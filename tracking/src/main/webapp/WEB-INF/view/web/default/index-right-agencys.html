@@ -1,0 +1,23 @@
+<div class="cp-panel hot-tags hot-tags-agency">
+    <div class="cp-panel-heading">
+        <h2>
+        	加盟高校信息
+        	<a class="more" href="javascript:;" onclick="randAgency();">换一组</a>
+        </h2>
+    </div>
+    <ul class="cp-panel-body clearfix agencys-list" id="ul_agency">
+        <#if rm.map.listAdmin??>
+        <#list rm.map.listAdmin as admin>
+        <li class="item">
+        	<img src="${admin.logo?default('')}">
+        	
+        	<div class="detail">
+				<div claaa="title">${admin.companyName?default('')}</div>
+				<div class="quantity"><span>需求量:</span>${admin.needs?default('')}/<span>推送量:</span>${admin.push?default('')}</div>&nbsp;&nbsp;
+			</div>
+			
+        </li>
+        </#list>
+        </#if>
+    </ul>
+</div>

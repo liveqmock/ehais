@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml>
+<group role="zkef" manager="" code="" table="hai_donation">
+<BootStrapModel>
+    <control>hidden</control>
+    <name>donationId</name>
+    <label>donationId</label>
+    <prompt>请输入donationId</prompt>
+    <oksign></oksign>
+    <errorsign></errorsign>
+    <listshow>0</listshow>
+    <tabno>0</tabno>
+    <optionKey></optionKey>
+    <treeKey></treeKey>
+    <gallery_format></gallery_format>
+</BootStrapModel>
+
+<BootStrapModel>
+    <control>text</control>
+    <name>donationName</name>
+    <label>捐款项目名称</label>
+    <prompt>请输入捐款项目名称</prompt>
+    <oksign></oksign>
+    <errorsign></errorsign>
+    <listshow>0</listshow>
+    <tabno>0</tabno>
+    <optionKey></optionKey>
+    <treeKey></treeKey>
+    <gallery_format></gallery_format>
+</BootStrapModel>
+
+
+<BootStrapModel>
+    <control>images</control>
+    <name>picture</name>
+    <label>显示图片</label>
+    <prompt>请输入640*400的图片</prompt>
+    <oksign></oksign>
+    <errorsign></errorsign>
+    <listshow>0</listshow>
+    <tabno>0</tabno>
+    <optionKey></optionKey>
+    <treeKey></treeKey>
+    <gallery_format></gallery_format>
+</BootStrapModel>
+
+<BootStrapModel>
+    <control>text</control>
+    <name>intro</name>
+    <label>摘要</label>
+    <prompt>请输入摘要</prompt>
+    <oksign></oksign>
+    <errorsign></errorsign>
+    <listshow>0</listshow>
+    <tabno>0</tabno>
+    <optionKey></optionKey>
+    <treeKey></treeKey>
+    <gallery_format></gallery_format>
+</BootStrapModel>
+
+<BootStrapModel>
+    <control>textarea</control>
+    <name>content</name>
+    <label>内容</label>
+    <prompt>请输入详细内容</prompt>
+    <oksign></oksign>
+    <errorsign></errorsign>
+    <listshow>0</listshow>
+    <tabno>0</tabno>
+    <optionKey></optionKey>
+    <treeKey></treeKey>
+    <gallery_format></gallery_format>
+</BootStrapModel>
+
+<BootStrapModel>
+    <control>text</control>
+    <name>sort</name>
+    <label>排序</label>
+    <prompt>请输入序号</prompt>
+    <oksign></oksign>
+    <errorsign></errorsign>
+    <listshow>0</listshow>
+    <tabno>0</tabno>
+    <optionKey></optionKey>
+    <treeKey></treeKey>
+    <gallery_format></gallery_format>
+</BootStrapModel>
+
+
+
+</group>
+</xml>
+

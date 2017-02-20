@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml>
+<group role="lijess" manager="" code="" table="hai_nav">
+<BootStrapModel>
+    <control>hidden</control>
+    <name>id</name>
+    <label>id</label>
+    <prompt>请输入id</prompt>
+    <oksign></oksign>
+    <errorsign></errorsign>
+    <listshow>0</listshow>
+    <tabno>0</tabno>
+    <optionKey></optionKey>
+    <treeKey></treeKey>
+    <gallery_format></gallery_format>
+</BootStrapModel>
+
+<BootStrapModel>
+    <control>text</control>
+    <name>name</name>
+    <label>导航栏名称</label>
+    <prompt>请输入导航栏名称</prompt>
+    <oksign></oksign>
+    <errorsign></errorsign>
+    <listshow>0</listshow>
+    <tabno>0</tabno>
+    <optionKey></optionKey>
+    <treeKey></treeKey>
+    <gallery_format></gallery_format>
+</BootStrapModel>
+
+<BootStrapModel>
+    <control>text</control>
+    <name>url</name>
+    <label>链接</label>
+    <prompt>请输入链接</prompt>
+    <oksign></oksign>
+    <errorsign></errorsign>
+    <listshow>0</listshow>
+    <tabno>0</tabno>
+    <optionKey></optionKey>
+    <treeKey></treeKey>
+    <gallery_format></gallery_format>
+</BootStrapModel>
+
+<BootStrapModel>
+    <control>text</control>
+    <name>vieworder</name>
+    <label>排序</label>
+    <prompt>请输入序号</prompt>
+    <oksign></oksign>
+    <errorsign></errorsign>
+    <listshow>0</listshow>
+    <tabno>0</tabno>
+    <optionKey></optionKey>
+    <treeKey></treeKey>
+    <gallery_format></gallery_format>
+</BootStrapModel>
+
+</group>
+
+<group role="vanas" manager="" code="" table="hai_nav">
+<BootStrapModel>
+    <control>hidden</control>
+    <name>id</name>
+    <label>id</label>
+    <prompt>请输入id</prompt>
+    <oksign></oksign>
+    <errorsign></errorsign>
+    <listshow>0</listshow>
+    <tabno>0</tabno>
+    <optionKey></optionKey>
+    <treeKey></treeKey>
+    <gallery_format></gallery_format>
+</BootStrapModel>
+
+<BootStrapModel>
+    <control>text</control>
+    <name>name</name>
+    <label>导航栏名称</label>
+    <prompt>请输入导航栏名称</prompt>
+    <oksign></oksign>
+    <errorsign></errorsign>
+    <listshow>0</listshow>
+    <tabno>0</tabno>
+    <optionKey></optionKey>
+    <treeKey></treeKey>
+    <gallery_format></gallery_format>
+</BootStrapModel>
+
+<BootStrapModel>
+    <control>text</control>
+    <name>url</name>
+    <label>链接</label>
+    <prompt>请输入链接</prompt>
+    <oksign></oksign>
+    <errorsign></errorsign>
+    <listshow>0</listshow>
+    <tabno>0</tabno>
+    <optionKey></optionKey>
+    <treeKey></treeKey>
+    <gallery_format></gallery_format>
+</BootStrapModel>
+
+<BootStrapModel>
+    <control>text</control>
+    <name>vieworder</name>
+    <label>排序</label>
+    <prompt>请输入序号</prompt>
+    <oksign></oksign>
+    <errorsign></errorsign>
+    <listshow>0</listshow>
+    <tabno>0</tabno>
+    <optionKey></optionKey>
+    <treeKey></treeKey>
+    <gallery_format></gallery_format>
+</BootStrapModel>
+
+</group>
+
+<group role="runxing" manager="" code="" table="hai_nav">
+<BootStrapModel>
+    <control>hidden</control>
+    <name>id</name>
+    <label>id</label>
+    <prompt>请输入id</prompt>
+    <oksign></oksign>
+    <errorsign></errorsign>
+    <listshow>0</listshow>
+    <tabno>0</tabno>
+    <optionKey></optionKey>
+    <treeKey></treeKey>
+    <gallery_format></gallery_format>
+</BootStrapModel>
+
+<BootStrapModel>
+    <control>text</control>
+    <name>name</name>
+    <label>导航栏名称</label>
+    <prompt>请输入导航栏名称</prompt>
+    <oksign></oksign>
+    <errorsign></errorsign>
+    <listshow>0</listshow>
+    <tabno>0</tabno>
+    <optionKey></optionKey>
+    <treeKey></treeKey>
+    <gallery_format></gallery_format>
+</BootStrapModel>
+
+<BootStrapModel>
+    <control>text</control>
+    <name>url</name>
+    <label>链接</label>
+    <prompt>请输入链接</prompt>
+    <oksign></oksign>
+    <errorsign></errorsign>
+    <listshow>0</listshow>
+    <tabno>0</tabno>
+    <optionKey></optionKey>
+    <treeKey></treeKey>
+    <gallery_format></gallery_format>
+</BootStrapModel>
+
+<BootStrapModel>
+    <control>text</control>
+    <name>vieworder</name>
+    <label>排序</label>
+    <prompt>请输入序号</prompt>
+    <oksign></oksign>
+    <errorsign></errorsign>
+    <listshow>0</listshow>
+    <tabno>0</tabno>
+    <optionKey></optionKey>
+    <treeKey></treeKey>
+    <gallery_format></gallery_format>
+</BootStrapModel>
+
+</group>
+
+</xml>
+

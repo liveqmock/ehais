@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>日志信息</title>
+<#include "/BootStrap_Include.html">
+</head>
+<body>
+<div class="container-fluid" style="margin-top: 20px;">
+<form class="form-horizontal" action="${action}" method="post">
+
+
+<ul id="myTab" class="nav nav-tabs">
+  <li role="presentation" class="active"><a href="#base" data-toggle="tab">基本资料</a></li>
+  <li role="presentation"><a href="#content" data-toggle="tab">内容</a></li>
+  <li role="presentation"><a href="#plan" data-toggle="tab">结果</a></li>
+  <li role="presentation"><a href="#remark" data-toggle="tab">备注</a></li>
+  <li role="presentation"><a href="#mobile" data-toggle="tab">手机版</a></li>
+</ul>
+
+
+<div id="myTabContent" class="tab-content">
+	<div class="tab-pane fade in active" id="base" style="padding-top: 20px;">
+		<!-- start -->
+		<div class="form-group">
+		  <label for="examineTitle" class="col-sm-2 control-label">标题</label>
+		  <div class="col-sm-7">
+		  <input type="text" class="form-control" id="examineTitle" name="examineTitle" value="${model.examineTitle?default('')}" placeholder="标题">
+		  </div>
+		</div>
+		<div class="form-group">
+		  <label for="planStartDate" class="col-sm-2 control-label">计划开始</label>
+		  <div class="col-sm-3">
+		  <input type="date" class="form-control datepicker" id="planStartDate" name="planStartDate" value="${(model.planStartDate?string('yyyy-MM-dd'))!}" placeholder="日期">
+		  </div>
+		</div>
+		<div class="form-group">
+		  <label for="planEndDate" class="col-sm-2 control-label">计划结束</label>
+		  <div class="col-sm-3">
+		  <input type="date" class="form-control datepicker" id="planEndDate" name="planEndDate" value="${(model.planEndDate?string('yyyy-MM-dd'))!}" placeholder="日期">
+		  </div>
+		</div>
+		<div class="form-group">
+		  <label for="truthStartDate" class="col-sm-2 control-label">实际开始</label>
+		  <div class="col-sm-3">
+		  <input type="date" class="form-control datepicker" id="truthStartDate" name="truthStartDate" value="${(model.truthStartDate?string('yyyy-MM-dd'))!}" placeholder="日期">
+		  </div>
+		</div>
+		<div class="form-group">
+		  <label for="truthEndDate" class="col-sm-2 control-label">实际结束</label>
+		  <div class="col-sm-3">
+		  <input type="date" class="form-control datepicker" id="truthEndDate" name="truthEndDate" value="${(model.truthEndDate?string('yyyy-MM-dd'))!}" placeholder="日期">
+		  </div>
+		</div>
+		<div class="form-group">
+		  <label for="progress" class="col-sm-2 control-label">进度</label>
+		  <div class="col-sm-2">
+		  <input type="text" class="form-control" id="progress" name="progress" value="${model.progress?default('0')}" placeholder="进度">
+		  </div>
+		</div>
+		<div class="form-group">
+		  <label for="userId" class="col-sm-2 control-label">参与人</label>
+		  <div class="col-sm-2">
+		  	<select class="form-control" id="userId" name="userId">
+		  		<option selected="" value="">--请选择--</option>
+		  		<#if userProjectList??>
+	      			<#list userProjectList as user>
+	      				<option value="${user.userId}" <#if (model.userId?? && user.userId == model.userId) >selected="selected"</#if> >${user.userName}</option>
+	      			</#list>
+	      		</#if>
+		  	</select>
+			是否邮件发送
+		  	<input type="checkbox" id="is_send_email" name="is_send_email" value="1">
+		  </div>
+		</div>
+
+		
+		<!-- end -->
+		
+	</div>
+	<div class="tab-pane fade" id="content" style="padding-top: 20px;">
+		<!-- start -->
+	
+		<div class="form-group">
+		  <label  class="col-sm-2 control-label">检测内容</label>
+		  <div class="wysi-column col-sm-7">
+		  	<textarea rows="5" class="xheditor" id="examineContent" name="examineContent" style="height: 300px;width: 100%;">${model.examineContent?default('')}</textarea>
+		    </div>
+		</div>
+		
+		<!-- end -->
+		
+	</div>
+	<div class="tab-pane fade" id="plan" style="padding-top: 20px;">
+		
+		<!-- start -->
+		
+		<div class="form-group">
+		  <label  class="col-sm-2 control-label">处理结果</label>
+		  <div class="wysi-column col-sm-7">
+		  	<textarea rows="5" class="xheditor" id="examineResult" name="examineResult" style="height: 300px;width: 100%;">${model.examineResult?default('')}</textarea>
+		    </div>
+		</div>		
+		
+		<!-- end -->
+	</div>
+	<div class="tab-pane fade" id="remark" style="padding-top: 20px;">
+		<!-- start -->
+		
+			<div class="form-group">
+			  <label  class="col-sm-2 control-label">备注</label>
+			  <div class="wysi-column col-sm-7">
+			  	<textarea rows="5" class="xheditor" id="remark" name="remark" style="height: 300px;width: 100%;">${model.remark?default('')}</textarea>
+			    </div>
+			</div>
+	
+		<!-- end -->
+	</div>
+	
+	<div class="tab-pane fade" id="mobile" style="padding-top: 20px;">
+		<!-- start -->
+		
+			<div class="form-group">
+			  <label  class="col-sm-2 control-label">内容</label>
+			  <div class="wysi-column col-sm-7">
+			  	<textarea rows="5" id="examineMContent" name="examineMContent" style="height: 100px;width: 100%;">${model.examineMContent?default('')}</textarea>
+			    </div>
+			</div>
+			
+			<div class="form-group">
+			  <label  class="col-sm-2 control-label">结果</label>
+			  <div class="wysi-column col-sm-7">
+			  	<textarea rows="5" id="examineMResult" name="examineMResult" style="height: 100px;width: 100%;">${model.examineMResult?default('')}</textarea>
+			    </div>
+			</div>
+			
+			<div class="form-group">
+			  <label  class="col-sm-2 control-label">备注</label>
+			  <div class="wysi-column col-sm-7">
+			  	<textarea rows="5" id="mRemark" name="mRemark" style="height: 100px;width: 100%;">${model.mRemark?default('')}</textarea>
+			    </div>
+			</div>
+	
+		<!-- end -->
+	</div>
+	
+</div>
+
+
+
+<input id="examineId" name="examineId" type="hidden" value="${model.examineId?default(0) }">
+  
+
+
+
+	
+
+
+  <button type="submit" class="btn btn-default">提交信息</button>
+</form>
+</div>
+
+</body>
+<script type="text/javascript">
+$(function(){
+	$( ".datepicker" ).datepicker({ dateFormat: "yy-mm-dd"});
+	
+	$('.xheditor').xheditor({tools:'full',
+		upImgUrl: "index.php?m=FileUpload&a=imageFileXheditor&file_path=article", 
+				upImgExt: "jpg,jpeg,gif,png",upMultiple:true,
+				html5Upload:false,onUpload:null});
+	
+});
+</script>
+</html>

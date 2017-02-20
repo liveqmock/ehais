@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>项目WBS分解</title>
+
+<#include "/BootStrap_Include.html">
+
+<style type="text/css">
+
+li {
+    list-style-type: none;
+    height: 25px;
+   	line-height: 25px;
+   	clear: both;
+   	margin-bottom: 10px;
+}
+li .dropdown{float: right;}
+li.down_line{border-bottom: 1px dashed #cccccc;}
+li.down_line .title{background: #cccccc;}
+li .plan{float:right; width: 600px;}
+.level_0{margin-left: 0px;}
+.level_1{margin-left: 10px;}
+.level_2{margin-left: 20px;}
+.level_3{margin-left: 30px;}
+.level_4{margin-left: 40px;}
+.level_5{margin-left: 50px;}
+.level_6{margin-left: 60px;}
+.level_7{margin-left: 70px;}
+.level_8{margin-left: 80px;}
+.level_9{margin-left: 90px;}
+.level_10{margin-left: 100px;}
+.level_11{margin-left: 110px;}
+.level_12{margin-left: 120px;}
+.level_13{margin-left: 130px;}
+.level_14{margin-left: 140px;}
+.level_15{margin-left: 150px;}
+.level_16{margin-left: 160px;}
+.level_17{margin-left: 170px;}
+.level_18{margin-left: 180px;}
+.level_19{margin-left: 190px;}
+.level_20{margin-left: 200px;}
+.f_input{
+	background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    color: #555;
+    display: block;
+    font-size: 14px;
+    height: 34px;
+    line-height: 1.42857;
+    padding: 6px 12px;
+    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    width: 100%;
+}
+.col_1{width: 100px; float: left;}
+.col_2{width: 50px; float: left;}
+.plan_hide div.plan{display: block;}
+.fl{float: left;}
+.fr{float: right;}
+</style>
+</head>
+<body>
+
+<div style="width: 100%;height: 10px;"></div>
+
+<button id="add_wbs_work" type="button" class="btn btn-default btn-xs " data-val="0" data-target="#myWbsWorkModal" data-toggle="modal" >
+ 	<span class="glyphicon glyphicon-saved" aria-hidden="true"></span>
+ 	添加顶层工作
+</button>
+<a href="P_WBS_EXPORT_EXCEL" target="_blank">下载</a>
+
+<div style="position : fixed;  right: 0px; top:0px; width: 700px; height: 20px;">
+	<div class="fl glyphicon glyphicon-hand-right col_2"></div>
+	<div class="col_1">计划开始</div>
+	<div class="col_1">计划结束</div>
+	<div class="col_1">实际开始</div>
+	<div class="col_1">实际结束</div>
+	<div class="col_2">进度</div>
+	<div class="col_2">参与者</div>
+	
+</div>
+
+<div style="width: 100%;height: 10px;"></div>
+
+<div class="container-fluid">
+	<div class="project">
+	
+		<ul id="wbs_ul">
+			
+			<#list proWbsWorkTreeList as val>				
+				<#include "sub/wbs_work_li.html">				
+			</#list>
+		</ul>
+	
+		
+	</div>
+</div>
+
+<#include "sub/wbs_work_modal.html">
+<#include "sub/participate_modal.html">
+	
+<script type="text/javascript">
+$(function(){
+	$("li").mouseover(function(){
+		//$(this).children(".dropdown").show();
+		$(this).addClass("down_line");
+	}).mouseout(function(){
+		//$(this).children(".dropdown").hide();
+		$(this).removeClass("down_line");
+	});
+	
+	
+	$('.datepicker').datepicker({
+	    inline: true,dateFormat: "yy-mm-dd"
+	});
+	
+	$(".Participate_Span").each(function(index,element){
+		$("#participate_userId option").each(function(num,ele){
+			if($(element).attr("data-value") != 0 && $(element).attr("data-value") == $(ele).val()){
+				$(element).text($(ele).text());
+				return true;
+			}
+		});
+	});
+	
+	$("#add_wbs_work").click(function(){add_wbs_work_event(this);});
+	$("#save_wbs_work").click(function(){save_wbs_work_event(this);});
+	$("#save_participate_userId").click(function(){save_participate_event(this);});
+	
+});
+
+//保存wbs事件
+
+function save_wbs_work_date_event(_this){
+	var wbsId = $(_this).attr("data-val");
+	var planStartDate = $("#planStartDate_"+wbsId).val();
+	var planEndDate = $("#planEndDate_"+wbsId).val();
+	var truthStartDate = $("#truthStartDate_"+wbsId).val();
+	var truthEndDate = $("#truthEndDate_"+wbsId).val();
+	var progress = $("#progress_"+wbsId).val();
+	
+	$.ajax({
+		url:"/admin/P_SaveWBS",
+		data:{
+			"wbsId":wbsId,
+			"planStartDate":planStartDate,
+			"planEndDate":planEndDate,
+			"truthStartDate":truthStartDate,
+			"truthEndDate":truthEndDate,
+			"progress":progress
+			},
+		type:"post",
+		dataType:"json",
+		success:function(data){},
+		error:function(e){}
+	});
+}
+
+
+
+//保存事件
+function save_wbs_work_event(_this){
+	
+	var wbsName = $("#wbsName").val();
+	if(wbsName == null || wbsName == ""){
+		return ;
+	}
+	var wbsId = $("#wbsId").val();
+	var wbsParentId = $("#wbsParentId").val();
+	var level = $("#level").val();
+	
+	var wbs_model = $("#wbs_model").val();
+	
+	var data = {
+			"wbsId":wbsId,
+			"wbsName":wbsName,
+			"wbsParentId":wbsParentId,
+			"level":level
+			};
+	
+	if(wbs_model == "add_wbs"){//新增
+		$.ajax({
+			url:"/admin/P_AddWBS",
+			data : data,
+			type:"post",
+			dataType:"html",
+			success:function(data){
+				$("#wbs_ul").append(data);				
+				$('#myWbsWorkModal').modal('hide');				
+			},
+			error:function(e){}
+		});
+	}else if(wbs_model == "update_wbs"){//更新
+		$.ajax({
+			url:"/admin/P_UpdateWBS",
+			data : data,
+			type:"post",
+			dataType:"json",
+			success:function(data){
+				$("#wbsName").val(wbsName);
+				$('#myWbsWorkModal').modal('hide');	
+				$("#wbs_id_"+wbsId).children(".title").html(wbsName);
+			},
+			error:function(e){}
+		});
+	}else if(wbs_model == "add_second_wbs"){
+		$.ajax({
+			url:"/admin/P_AddWBS",
+			data : data,
+			type:"post",
+			dataType:"html",
+			success:function(data){
+				$("#wbs_id_"+wbsId).after(data);				
+				$('#myWbsWorkModal').modal('hide');				
+			},
+			error:function(e){}
+		});
+	}
+	
+	
+}
+
+
+//添加事件
+function add_wbs_work_event(_this){
+	$("#wbsId").val(0);
+	$("#wbsName").val("");
+	$("#wbsParentId").val(0);
+	$("#level").val(1);
+	$("#wbs_model").val("add_wbs");
+}
+
+
+//设置编辑框的值
+function edit_form_wbs_work_event(_wbsId){
+	var wbsLi = $("#wbs_id_"+_wbsId);
+	$("#wbsId").val(_wbsId);
+	$("#wbsName").val(wbsLi.children(".title").text());
+	$("#wbsParentId").val(wbsLi.attr("wbsParentId"));
+	$("#level").val(wbsLi.attr("level"));
+	$("#wbs_model").val("update_wbs");
+}
+
+//添加二级工作
+function add_form_down_wbs_work_event(_wbsId){
+	var wbsLi = $("#wbs_id_"+_wbsId);
+	$("#wbsId").val(_wbsId);
+	$("#wbsName").val("");
+	$("#wbsParentId").val(_wbsId);
+	$("#level").val(parseInt(wbsLi.attr("level")) + 1);
+	$("#wbs_model").val("add_second_wbs");
+}
+
+//打开参与委派者
+function edit_participate_event(_wbsId){
+	$("#participate_wbsId").val(_wbsId);
+	var data_value = $("#Participate_"+_wbsId).attr("data-value");
+	if(data_value > 0){
+		$("#participate_userId").val(data_value);
+	}else{
+		$("#participate_userId").val(0);
+	}
+}
+
+//保存变更的委派人
+function save_participate_event(_this){
+	var participate_wbsId = $("#participate_wbsId").val();
+	var participate_userId = $("#participate_userId").val();
+	
+	
+	$.ajax({
+		url:"/member/P_Participate",
+		data : {"wbsId":participate_wbsId,"userId":participate_userId},
+		type:"post",
+		dataType:"html",
+		success:function(data){
+			$("#Participate_"+participate_wbsId).text($("#participate_userId option:selected").text());
+			$('#myParticipateModal').modal('hide');	
+		},
+		error:function(e){}
+	});
+	
+};
+
+</script>
+</body>
+</html>

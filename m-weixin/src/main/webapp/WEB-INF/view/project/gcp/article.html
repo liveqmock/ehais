@@ -1,0 +1,30 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>${model.title}</title>
+<#include "head_include.html">
+</head>
+
+<body class="body_single">
+	<#include "top_nav.html">
+	<div id="content">
+		<div class="single">
+			<ul class="wxlist">
+				<li>
+					<div class="ChannelName">
+						<h1>${model.title}</h1>
+					</div>
+					<div class="ChannelContent">
+						${model.content}	
+					</div>
+				</li>
+			</ul>
+			<div class="clear"></div>
+		</div>
+	</div>
+	<#include "footer_include.html">
+</body>
+
+</html>

@@ -1,0 +1,46 @@
+<xml>
+  <group role="" manager="lgj628" code="file" table="hai_article">
+    <BootStrapModel>
+      <control>text</control>
+      <name>goodsName1</name>
+      <label>文件名称</label>
+      <prompt>请输入</prompt>
+      <oksign></oksign>
+      <errorsign></errorsign>
+      <listshow>0</listshow>
+      <tabno>0</tabno>
+    </BootStrapModel>
+    <BootStrapModel>
+      <control>text</control>
+      <name>goodsSn1</name>
+      <label>文件编号</label>
+      <prompt>请输入</prompt>
+      <oksign></oksign>
+      <errorsign></errorsign>
+      <listshow>0</listshow>
+      <tabno>0</tabno>
+    </BootStrapModel>
+  </group>
+  <group role="" manager="lgj628" code="job" table="hai_article">
+    <BootStrapModel>
+      <control>text</control>
+      <name>goodsSn2</name>
+      <label>职位编号</label>
+      <prompt>请输入</prompt>
+      <oksign></oksign>
+      <errorsign></errorsign>
+      <listshow>0</listshow>
+      <tabno>0</tabno>
+    </BootStrapModel>
+    <BootStrapModel>
+      <control>text</control>
+      <name>goodsName2</name>
+      <label>职位名称</label>
+      <prompt>请输入</prompt>
+      <oksign></oksign>
+      <errorsign></errorsign>
+      <listshow>0</listshow>
+      <tabno>0</tabno>
+    </BootStrapModel>
+  </group>
+</xml>

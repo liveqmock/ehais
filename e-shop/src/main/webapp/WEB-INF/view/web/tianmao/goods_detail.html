@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>商品详情</title>
+<link rel="stylesheet" href="/themes/tianmao/style/detail.css">
+<link rel="stylesheet" href="/themes/tianmao/style/suggest.css">
+<link rel="stylesheet" href="/themes/tianmao/style/item_detail.css">
+
+<link rel="stylesheet" href="/themes/tianmao/style/zoom.css">
+
+
+<script src="/ehais/js/jquery/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="/js/jquery.imagezoom.min.js"></script>
+
+</head>
+<body class="w1230 w1190 enableHover" style="min-width:1230px;">
+
+<div id="mallPage" class="mui-global-biz-mallfp">
+	<#include "library/site-nav.html">
+	<#include "library/header-goods-detail.html">
+	
+	<div id="page">
+		<div id="content">
+			<div id="detail">
+				<div id="J_DetailMeta" class="tm-detail-meta tm-clear">
+					<div class="tm-clear">
+						<#include "library/goods-detail-property.html">
+						<#include "library/goods-detail-gallery.html">
+						<#include "library/goods-detail-form.html">
+					</div><!-- class="tm-clear" end -->
+					
+					<#include "library/goods-detail-right.html">
+					
+				</div><!-- id="J_DetailMeta" -->
+			</div><!-- id="detail" end -->
+			<div id="bd">
+				<#include "library/goods-detail-bd.html">
+			</div><!-- id="bd" end -->
+		</div><!-- id="content" end -->
+	
+	</div><!-- id = 'page' end -->
+	
+	<#include "library/footer.html">
+</div>
+
+
+</body>
+</html>

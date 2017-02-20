@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include  "/include/Matrix_Include.html" />
+<#include "/include/JqueryFileUpload_Include.html">
+<#include "/include/XhEditor_Include.html">
+<title>编辑调查问卷--毕业生服务系统--by ehais</title>
+<link rel="stylesheet" href="/css/admin/questionnaire.css" />
+</head>
+<body class="${className}">
+
+<!--main-container-part-->
+<div id="content">
+
+<!--breadcrumbs-->
+  <div id="content-header">
+    <div id="breadcrumb"> 
+    	<a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> 控制台</a>
+    	<a href="index.html" title="Go to Home" class="tip-bottom"> 调查问卷系统</a>
+    	<a href="index.html" title="Go to Home" class="tip-bottom"> 新增调查问卷</a>
+    </div>
+ 
+  </div>
+<!--End-breadcrumbs-->
+<hr>
+
+  <div class="container-fluid">
+
+	<div class="row-fluid">
+		<div class="span12">
+			
+			<div class="widget-box">
+			<!-- begin template -->
+			  	<form id="myForm" class="form-horizontal" action="${rm.action?default('')}" method="post">
+			  	<#list rm.bootStrapList as bootstrap>
+			  		<#if bootstrap.tab_no == 0>
+			  			<#include "/BootStrap/BootStrapHtml_Sub.html">
+			  		</#if>
+			  	</#list>
+			  	
+			  	
+			  	
+			  	<div class="field-box actions form-group">
+
+				    <label  class="col-sm-2 control-label"></label>
+				    <div class="wysi-column col-sm-7 controls">
+				    	<input id="submit" type="button" value="提交" class="btn btn-lg btn-primary fl">
+				    	<input id="cancel" type="button" class="fl btn btn-default btn-lg" value="取消" onclick="javascript:history.back(-1);" style="margin-left: 30px;">
+				    </div>
+				   <div class="clear"></div>  
+				</div>
+			</form>
+			<!-- end template -->			
+			</div>
+			
+			<div id="questions_container" class="widget-box dn">
+			
+			</div>
+			
+			
+			<hr>
+			
+			<div id="option_container" class="widget-box form-horizontal dn">
+				<div class="field-box actions form-group">
+
+				    <label  class="col-sm-2 control-label"></label>
+				    <div class="wysi-column col-sm-7 controls">
+				    	<input id="add_questions" type="button" value="添加题目" class="btn btn-lg btn-primary fl">
+				    	
+				    </div>
+				   <div class="clear"></div>  
+				</div>
+			</div>
+			
+		</div>
+	</div>
+
+  </div>
+  
+  
+</div>
+
+<!--end-main-container-part-->
+
+<script type="text/javascript">
+
+$(function(){
+	$( ".datepicker" ).datepicker({ dateFormat: "yy-mm-dd"});
+	${questions_group_list?default('')}
+});
+</script> 
+
+<script src="/js/admin/questionnaire.js"></script>
+
+</body>
+</html>

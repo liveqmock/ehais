@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<#include "/BootStrap_Include.html">
+</head>
+<body class="easyui-layout">
+	
+	<div data-options="region:'north',split:false" style="height:30px;">
+		<form action="WORK_LOG_EXPORT_EXCEL" method="post" target="_blank">
+			开始日期:<input type="text" id="startDate" name="startDate" class="datepicker">
+			结束日期:<input type="text" id="endDate" name="endDate" class="datepicker">
+			<button id="btn_search" type="button">搜索</button>
+			<button id="btn_search_export" type="submit">搜索并导出</button>
+		</form>
+	</div>
+	
+	<div data-options="region:'center',border:false" style="overflow: hidden;">
+		<table id="datagrid" data-options="fit:true"></table>
+	</div>
+<script type="text/javascript">
+var myDataGird ;
+var myPager;
+var page = 1;
+var rows = 10;
+$(function(){
+	$( ".datepicker" ).datepicker({ dateFormat: "yy-mm-dd"});
+	
+	$("#btn_search").click(function(){
+		page = 1;
+		loadData();
+	});
+	
+	myDataGird = $('#datagrid').datagrid({ 
+        title:'我的日志', 
+        iconCls:'icon-edit',//图标 
+        height: 'auto', 
+        nowrap: false, 
+        striped: true, 
+        border: true, 
+        collapsible:false,//是否可折叠的 
+        fit: true,//自动大小 
+        columns: [[
+         { field: 'workId', title: '编号', width: 80 },
+         { field: 'title', title: '标题' },
+         { field: 'workDate', title: '时间', width: 200 ,formatter : DateFormatter},
+         { field: 'action', title: '编辑', width: 100, align:'center' ,formatter:function(value,row,index){  
+        	 var e = '<a href="workLogUpdate?workId='+row.workId+'">编辑</a> ';  
+             var d = '<a href="workLogRecover?workId='+row.workId+'" onclick="return myConfirm();">删除</a>';  
+             return e+d;   
+         	}
+         },
+         
+        ]], 
+        
+        remoteSort:false,  
+        idField:'fldId', 
+        singleSelect:true,//是否单选 
+        pagination:true,//分页控件 
+        rownumbers:true,//行号 
+    });  
+	
+	myPager = myDataGird.datagrid('getPager');  
+	
+	if(myPager)  
+	{  
+		$(myPager).pagination({  
+	       onBeforeRefresh:function(){  
+	           //alert('before refresh');  
+	    },  
+	       onRefresh:function(pageNumber,pageSize){  
+	    	   page = pageNumber;
+	           rows = pageSize;
+	           
+	           loadData(); 
+	        },  
+	       onChangePageSize:function(){},  
+	       onSelectPage:function(pageNumber,pageSize){  
+	           
+	           page = pageNumber;
+	           rows = pageSize;
+	           
+	           loadData();
+	           
+	           
+	        }  
+	   });  
+	} 
+	
+	
+	loadData();
+});
+
+
+function loadData(){
+
+	$.ajax({
+        method : 'POST',
+        url : 'workLogListJson',
+        data : {
+        	"page":page,
+        	"rows":rows,
+        	startDate : $("#startDate").val(),
+        	endDate : $("#endDate").val(),
+        	
+        },
+        traditional : true,
+        async : false,
+        dataType : 'json',
+        beforeSend : function(jqXHR) {
+            jqXHR.setRequestHeader('Authorization', 'www.ehais.com-tyler fuck');
+            jqXHR.setRequestHeader('User-Agent-', 'tylerfuckyou');
+            
+        },
+        success : function(data) {
+        	if(data.code != 1){
+        		myDataGird.datagrid('loadData', []);
+        		return ;
+        	}
+        	
+        	
+        	myDataGird.datagrid('loadData', data);
+        },
+        error : function() {
+            alert('error');
+        }
+    });
+}
+
+function myConfirm()
+{
+	if(confirm("确定要删除记录吗？"))
+	{
+		return true;
+	}
+	return false;
+}
+
+function DateFormatter (value, rec, index) {
+	var date = new Date(value);
+    return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+}
+
+
+</script>	
+</body>
+</html>

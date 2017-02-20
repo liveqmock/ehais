@@ -1,0 +1,131 @@
+@CHARSET "UTF-8";
+
+.mui-mbar-tab-promotion {
+    display: none;
+}
+.mui-mbarp-promotion-bd {
+    border: 0 none;
+    height: 100%;
+    margin: 0;
+    width: 235px;
+}
+.mui-mbarp-promotion-logo {
+    bottom: 0;
+    height: 35px;
+    position: absolute;
+    right: 0;
+}
+.mui-mbar-status-mini .mui-mbarp-promotion-logo {
+    display: none;
+}
+.mui-mbar-tab-bubble-promotion .mui-mbar-arr {
+    top: 13px;
+}
+.mui-mbar-tab-bubble-promotion .mui-mbar-bubble-flexible-title {
+    display: none;
+}
+.mui-mbarp-promotion-bubble-cont {
+    padding: 15px;
+}
+.mui-mbarp-promotion-bubble-brand {
+    overflow: hidden;
+    padding-top: 10px;
+}
+.mui-mbarp-promotion-bubble-img {
+    float: left;
+    margin-right: 30px;
+}
+.mui-mbarp-promotion-bubble-get {
+    background: #c50000 none repeat scroll 0 0;
+    border-radius: 10px;
+    color: #fff;
+    float: left;
+    height: 20px;
+    line-height: 20px;
+    margin-top: 12px;
+    text-align: center;
+    width: 70px;
+}
+.mui-mbar-tab-bubble-promotion .mui-mbar-bubble {
+    width: 220px;
+}
+.mui-mbar-tab-bubble-promotion {
+    width: 94px;
+}
+.mui-mbarp-promotion-content {
+    width: 200px;
+}
+a.mui-mbarp-promotion-content-link:hover {
+    text-decoration: none;
+}
+.mui-mbarp-promotion-content img {
+    vertical-align: middle;
+}
+.mui-mbarp-promotion-content-box {
+    background: #fff none repeat scroll 0 0;
+    color: #000;
+    height: 195px;
+    padding: 10px;
+    text-align: center;
+}
+.mui-mbarp-promotion-content-title {
+    font-size: 27px;
+    height: 35px;
+    line-height: 35px;
+    overflow: hidden;
+    width: 180px;
+}
+.mui-mbarp-promotion-content-desc {
+    height: 18px;
+    line-height: 18px;
+    overflow: hidden;
+    width: 180px;
+}
+.mui-mbarp-promotion-content-right {
+    margin-top: 5px;
+}
+.mui-mbarp-promotion-right {
+    background: #c40000 none repeat scroll 0 0;
+    color: #fff;
+    display: inline-block;
+    height: 16px;
+    line-height: 16px;
+    overflow: hidden;
+    padding: 0 2px 0 18px;
+    position: relative;
+    vertical-align: middle;
+}
+.mui-mbarp-promotion-right .mui-mbar-iconfont {
+    background: #e40005 none repeat scroll 0 0;
+    height: 16px;
+    left: 0;
+    line-height: 16px;
+    position: absolute;
+    text-align: center;
+    top: 0;
+    width: 16px;
+}
+.mui-mbarp-promotion-content-brand-icon {
+    padding: 18px 0;
+    text-align: center;
+}
+.mui-mbarp-promotion-content-button {
+    background: #c40000 none repeat scroll 0 0;
+    color: #fff;
+    display: block;
+    font-size: 14px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+}
+.mui-mbarp-promotion-content-img {
+    height: 360px;
+    position: relative;
+    width: 200px;
+}
+.mui-mbarp-promotion-content-mark {
+    bottom: -30px;
+    left: 41px;
+    position: absolute;
+}
+

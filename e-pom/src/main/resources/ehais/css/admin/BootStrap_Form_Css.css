@@ -1,0 +1,159 @@
+@CHARSET "UTF-8";
+
+
+.dn{display:none !important;}
+.clear{clear: both;}
+.rel {
+    position: relative;
+}
+.pabs {
+	position: absolute;
+}
+.pointer {
+    cursor: pointer;
+}
+
+.over_hidden {
+    overflow: hidden;
+}
+.abs {
+    position: absolute;
+}
+.fl{float: left;}
+.fr{float: right;}
+
+#gritter-notice-wrapper {
+    position: fixed;
+    right: 35%;
+    top: 30%;
+    width: 301px;
+    z-index: 989;
+}
+
+.image_div{
+	float: left;
+	height: 130px;
+    margin-bottom: 25px;
+    width: 130px;
+    border: 1px dashed #ccc;
+    display: table-cell;
+	vertical-align: middle;
+}
+
+
+
+.image_div .item_img_input {
+    display: block;
+    height: 100%;
+    width: 100%;
+}
+
+.img_add_a, .img_add_b {
+    background-color: #eaeaf1;
+    margin: 0px;
+}
+
+.img_add_a {
+    height: 50px;
+    left: 62px;
+    top: 40px;
+    width: 6px;
+}
+
+.img_add_b {
+    height: 6px;
+    left: 40px;
+    top: 62px;
+    width: 50px;
+}
+
+.img_source{
+	
+    left: 0px;
+    top: 0px;
+    z-index: 10;
+
+    max-height: 130px;
+    max-width: 130px;
+    vertical-align: middle;
+    
+}
+.img_preview{
+	height: 100%;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    z-index: 11;
+}
+
+.img_loading{
+	z-index: 12;
+	left: 52.5px;
+    top: 52.5px;
+}
+
+.img_div_ur{
+	border: 1px solid #AAAAAA;
+	width: 150px;
+    height: 30px;
+    float: left;
+    line-height: 30px;
+    text-align: center;
+    margin-top: 40px;
+    margin-left: 10px;
+}
+
+.img_div_ed{
+	left: 50%;
+    top: 0px;
+    width: 50%;
+    height: 30px;
+    background: #CCCCCC;
+    border: 1px solid #AAAAAA;
+    z-index: 12;
+    line-height: 30px;
+    text-align: center;
+}
+.img_div_edit{
+	left: 50%;
+    top: 0px;
+}
+.img_div_delete{
+	left: 50%;
+    top: 30px;
+}
+
+#sidebar > ul li.active ul li a {
+    color: #939da8;
+}
+
+#sidebar > ul li ul li.subactive a {
+    background-color: #6d7a89;
+    color: #fff;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.col-sm-7.controls textarea{
+	width : 500px;
+	heigh : 150px;
+}
+
+.container-fluid .row-fluid:first-child{margin-top: 0;}
+form{padding-bottom: 20px;}
+
+.level1{padding-left: 0px;}
+.level2{padding-left: 10px;}
+.level3{padding-left: 20px;}
+.level4{padding-left: 30px;}
+.level5{padding-left: 40px;}
+.level6{padding-left: 50px;}
+.level7{padding-left: 60px;}
+.level8{padding-left: 70px;}
+.level9{padding-left: 80px;}
+.level10{padding-left: 90px;}
+
+
+
+
+.controls a.tip {padding: 2px 5px;}

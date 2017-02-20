@@ -1,0 +1,21 @@
+<li class="gallery_li image_div rel pointer " id="li_add_action_${bootstrap.field_name}_${gallery_index}">
+    			
+	<input type="file" accept="image/*" id="upload_file_${bootstrap.field_name}_${gallery_index}" multiple="" data-updateid="" data-action="add" class="item_img_input pointer" name="imgs_${bootstrap.field_name}_${gallery_index}" style="opacity : 0;">
+	
+	<em class="abs over_hidden img_add_a" >&nbsp;</em>
+	<em class="abs over_hidden img_add_b" >&nbsp;</em>
+	
+	<img alt="" src="{$gallery.thumb}" class="abs img_source" id="img_source_${bootstrap.field_name}_${gallery_index}" name="img_source_${bootstrap.field_name}_${gallery_index}">
+	<img alt="" src="" class="abs img_preview hide" id="img_preview_${bootstrap.field_name}_${gallery_index}" name="img_preview_${bootstrap.field_name}_${gallery_index}">
+	
+	<div id="div_edit_${bootstrap.field_name}_${gallery_index}" onclick="$('#upload_file_${bootstrap.field_name}_${gallery_index}').click();" class="abs img_div_edit img_div_ed pointer hide">编辑</div>
+	<div id="div_delete_${bootstrap.field_name}_${gallery_index}" onclick="img_delete_gallery_${bootstrap.field_name}(${gallery_index});" class="abs img_div_delete img_div_ed pointer hide">删除</div>
+	   
+	<img id="loading_${bootstrap.field_name}_${gallery_index}" alt="" src="/js/loading/images/progress.gif" class="abs img_loading hide">
+	
+	<input type="hidden" id="hid_gallery_thumb_${bootstrap.field_name}_${gallery_index}" name="hid_gallery_thumb_${bootstrap.field_name}_${gallery_index}" value="{$gallery.thumbUrl}">
+	<input type="hidden" id="hid_gallery_img_${bootstrap.field_name}_${gallery_index}" name="hid_gallery_img_${bootstrap.field_name}_${gallery_index}" value="{$gallery.imgUrl}">
+	<input type="hidden" id="hid_gallery_original_${bootstrap.field_name}_${gallery_index}" name="hid_gallery_original_${bootstrap.field_name}_${gallery_index}" value="{$gallery.imgOriginal}">
+	
+	
+</li>

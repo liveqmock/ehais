@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<#include "/include/BootStrap_Include.html">
+<title>学生信息绑定</title>
+<link href="/css/web/main.css" rel="stylesheet">
+<link href="/ehais/js/jqmobi/ejq.mobile.css" rel="stylesheet">
+<script type="text/javascript" src="/js/web/school.js"></script>
+<script type="text/javascript" src="/ehais/js/jqmobi/ejq.mobile.js"></script>
+
+</head>
+<body>
+
+<header class="navbar navbar-default navbar-fixed-top my-navbar tc" role="navigation"> 
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <h4>毕业生信息登记</h4>
+        </div>
+    </div>
+</header> 
+
+
+<div class="container-fluid pt60 pb60">
+
+<form role="form" id="student_form">
+
+  <div class="form-group">
+    <label for="school" class="col-sm-2 control-label">学校<span class="red">*</span></label>
+    <select class="form-control" id="school" name="school">
+    </select>
+  </div>
+  
+    <div class="form-group">
+    <label for="department" class="col-sm-2 control-label">院系<span class="red">*</span></label>
+    <select class="form-control" id="department" name="department">
+    </select>
+  </div>
+  
+    <div class="form-group">
+    <label for="professional" class="col-sm-2 control-label">专业<span class="red">*</span></label>
+    <select class="form-control" id="professional" name="professional">
+    </select>
+  </div>
+  
+  <div class="form-group">
+    <label for="grades" class="col-sm-2 control-label">班级<span class="red">*</span></label>
+    <select class="form-control" id="grades" name="grades">
+    </select>
+  </div>
+  
+    <div class="form-group">
+    <label for="name" class="col-sm-2 control-label">姓名<span class="red">*</span></label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="name" name="name" placeholder="请输入姓名">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="studentId" class="col-sm-2 control-label">学号<span class="red">*</span></label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="studentId" name="studentId" placeholder="请输入学号">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="mobile" class="col-sm-2 control-label">手机号<span class="red">*</span></label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="mobile" name="mobile" placeholder="请输入手机号">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="email" class="col-sm-2 control-label">邮箱</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="email" name="email" placeholder="请输入邮箱">
+    </div>
+  </div>
+<input type="hidden" id="wxid" name="wxid" value="${wxid}">
+<input type="hidden" id="qid" name="qid" value="${qid}">
+<input type="hidden" id="openid" name="openid" value="${openid}">
+</form>
+</div>
+
+<footer id="footer" class="navbar navbar-default navbar-fixed-bottom tc">
+	<button id="submit" type="submit" class="btn btn-default w80 mt8">提交登记</button>
+</footer>
+
+
+</body>
+</html>

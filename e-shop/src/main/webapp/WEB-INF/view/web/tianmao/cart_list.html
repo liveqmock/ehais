@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>购物车信息</title>
+<link rel="stylesheet" href="/themes/tianmao/style/detail.css">
+<link rel="stylesheet" href="/themes/tianmao/style/cart.css">
+<script src="/ehais/js/jquery/jquery-2.1.4.min.js"></script>
+<script src="/themes/tianmao/js/cart_list.js"></script>
+
+</head>
+<body class="w1230 w1190 enableHover" style="min-width:1230px;">
+
+<div id="mallPage" class="mui-global-biz-mallfp">
+	<#include "library/site-nav.html">
+	<#include "library/header-goods-detail.html">
+	
+	<div id="page">
+		<ul id="cartUl">
+		<#if cartList??>
+		<#list cartList as cart>
+			<li class="goodsinfo" data-recid="${cart.recId}" data-goodsid="${cart.goodsId}" >
+			<dl>
+				<dt></dt>
+				
+				<dd class="cart-checkbox">
+					<input type="checkbox" checked="checked">
+				</dd>
+				<dd class="cart-img">
+					<a><img alt="" src="${cart.goodsThumb}"></a>
+				</dd>
+				<dd class="cart-info">
+					<a href="goods-3167.html">${cart.goodsName}</a>
+				</dd>
+				<dd class="cart-price">￥${(cart.goodsPrice / 100)?string('0.00')}<span>${cart.goodsPrice}</span></dd>
+				<dd class="cart-quantity">
+					<div class="subtract">-</div>
+					<div class="quantity">${cart.goodsNumber}</div>
+					<div class="plus">+</div>
+				</dd>
+				<dd class="cart-sum">￥${(cart.goodsPrice * cart.goodsNumber / 100)?string('0.00')}</dd>
+				<dd class="cart-opt">
+					<a href="javascript:;">收藏</a>
+					<br>
+					<a href="javascript:;">删除</a>
+				</dd>
+			</dl>			
+			</li>
+			</#list>
+			
+			<li class="totalLi">
+				<dl>
+					<dt></dt>
+					<dd class="allcheckbox"><input type="checkbox" >全选</dd>
+					
+					
+					
+					<dd class="checkout">结算</dd>
+					<dd id="gTotal">共元</dd>
+					<dd id="gNumber">共件商品</dd>
+				</dl>
+			</li>
+			
+			<#else>
+			
+			<li>
+				购物车为空，继续购物！
+			</li>
+			</#if>
+			
+		</ul>
+	</div><!-- id = 'page' end -->
+	
+	<#include "library/footer.html">
+</div>
+
+
+</body>
+</html>

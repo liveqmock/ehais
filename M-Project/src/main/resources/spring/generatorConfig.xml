@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration >
+
+<classPathEntry  location="D:/MavenRepository/mysql/mysql-connector-java/5.1.16/mysql-connector-java-5.1.16.jar"/> 
+ 
+ 
+  <context id="context1" >
+  
+    <jdbcConnection driverClass="com.mysql.jdbc.Driver" 
+    connectionURL="jdbc:mysql://127.0.0.1:3306/sqlehaismall" 
+    userId="root" password="42016048" />
+    <javaModelGenerator targetPackage="org.ehais.project.model.generator" targetProject="M-Project" />
+    <sqlMapGenerator targetPackage="org.ehais.project.mapper.xml.generator" targetProject="M-Project" />
+    <javaClientGenerator targetPackage="org.ehais.project.mapper.generator" targetProject="M-Project" type="XMLMAPPER" />
+    <!-- 
+    <table schema="sqlehaismall" tableName="hai_users" >
+    	<generatedKey column="user_id" sqlStatement="MySql" identity="true" />
+    </table>
+    <table schema="sqlehaismall" tableName="pro_project" >
+    	<generatedKey column="pro_id" sqlStatement="MySql" identity="true" />
+    </table>
+    <table schema="sqlehaismall" tableName="pro_wbs_work" >
+    	<generatedKey column="wbs_id" sqlStatement="MySql" identity="true" />
+    </table>
+
+    <table schema="sqlehaismall" tableName="pro_user_project" >
+    	<generatedKey column="pro_user_id" sqlStatement="MySql" identity="true" />
+    </table>
+
+    <table schema="sqlehaismall" tableName="pro_work_log" >
+    	<generatedKey column="work_id" sqlStatement="MySql" identity="true" />
+    </table>
+
+    <table schema="sqlehaismall" tableName="pro_idea" >
+    	<generatedKey column="idea_id" sqlStatement="MySql" identity="true" />
+    </table>
+    
+        <table schema="sqlehaismall" tableName="hai_admin_user" >
+    	<generatedKey column="admin_id" sqlStatement="MySql" identity="true" />
+    </table>
+        
+     -->
+     
+    <table schema="sqlehaismall" tableName="pro_task" >
+    	<generatedKey column="task_id" sqlStatement="MySql" identity="true" />
+    </table>
+    <table schema="sqlehaismall" tableName="pro_work_log" >
+    	<generatedKey column="work_id" sqlStatement="MySql" identity="true" />
+    </table>
+        <table schema="sqlehaismall" tableName="pro_examine" >
+    	<generatedKey column="examine_id" sqlStatement="MySql" identity="true" />
+    </table>
+    
+    <table schema="sqlehaismall" tableName="pro_idea" >
+    	<generatedKey column="idea_id" sqlStatement="MySql" identity="true" />
+    </table>
+    
+    
+  </context>
+</generatorConfiguration>
+

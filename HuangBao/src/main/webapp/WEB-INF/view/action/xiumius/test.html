@@ -1,0 +1,123 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="x-rim-auto-match" content="none">
+
+    <meta id="metaDescription" name="description" content="顶轱辘都可以">
+
+    <script>
+        document.documentElement.setAttribute('data-useragent', navigator.userAgent);
+    </script>
+
+    <title>顶替</title>
+
+    <link rel="stylesheet" href="http://stc.xiumius.com/styles/app/reader/188f59.booklet.min.css">
+
+    <script id="__pre_data">
+        window.injectedData          = window.injectedData || {};
+        injectedData.SYSTEM_SETTINGS = {"templateRootPath":"http://sd.xiumius.com/tpls"};
+        injectedData.showInfo        = {"show_id":14898581,"type":3,"version":5,"title":"顶替","desc":"顶轱辘都可以","cover":"http://img.xiumi.us/xmi/ua/tTut/i/7af1dcea08a3a8f99f5e9f064ebfb42a-sz_2081.png@1l_640w.png","show_data_name":"tTut/3c0cc1960726008f5d9b1190d9bbf8d0","show_data_url":"http://sd.xiumius.com/xmi/td/tTut/3c0cc1960726008f5d9b1190d9bbf8d0.json?_ver=1464084228000","show_url":"http://r.xiumi.us/stage/v5/2mNpU/14898581","no_logo":0,"no_advert":0,"freeshow":0,"traffic":745678,"points":1438,"history_hits":2,"cur_hits":3,"hit_count":5,"high_peak":50000,"created_at":"2016-05-24T09:58:04.000Z","updated_at":"2016-05-24T10:03:49.000Z","owner":{"nickname":"国俊-电商","avatar_url":"http://q.qlogo.cn/qqapp/101147695/DF7795F479FB6AF6DE09B8D35460892F/100","brand_name":null,"agreement_access":1,"level":1,"level_remain_life":0}};
+        injectedData.wxSign          = {"appId":"wx765455a4f2dabd83","timestamp":1464084360,"nonceStr":"K7ZboGQMCrkS8GiI","signature":"13b556c9a20034f26de022e1f493f555b76ddb87"};
+        injectedData.advertList      = [];
+    </script>
+
+    <script id="__delete_pre_data">
+    var __pre_data = document.getElementById('__pre_data');
+    if (!!__pre_data) {
+        __pre_data.parentNode.removeChild(__pre_data);
+    }
+    var __pre_connect = document.getElementById('__pre_connect');
+    if (!!__pre_connect) {
+        __pre_connect.parentNode.removeChild(__pre_connect);
+    }
+    var __delete_pre_data = document.getElementById('__delete_pre_data');
+    if (!!__delete_pre_data) {
+        __delete_pre_data.parentNode.removeChild(__delete_pre_data);
+    }
+</script>
+</head>
+<body class="tn-transition-end block-overscroll tn-platform-class"
+      ng-controller="BookletRootReaderController">
+
+<div id="shareImage" style="display: none;">
+    <img src="http://img.xiumi.us/xmi/ua/tTut/i/7af1dcea08a3a8f99f5e9f064ebfb42a-sz_2081.png@1l_640w.png">
+</div>
+
+<div class="reader-booklet-container">
+    <div class="tn-reader-booklet" tn-opera-house
+         tn-atom-context="{ type: 'booklet', inReader: true }"
+         ng-controller="BookletReaderController">
+
+        <article class="dock-loader tn-scene-booklet tn-show-root tn-vertical-sliding-turner"
+                 tn-solo-comp-loader="cubes[0]"
+                 tn-bind-comp-tpl-id="reader_booklet-cp:sys/loader-fullscreen-booklet"
+                 tn-comp-role="root" ng-cloak>
+        </article>
+
+        <div class="loading-progress" ng-show="!isReady">
+            <span class="item"></span>
+            <span class="item"></span>
+            <span class="item"></span>
+        </div>
+
+        <div class="global-docker" ng-show="isReady" ng-cloak>
+            <div class="nav-up-arrow" ng-click="onNavArrowClicked()"
+                 ng-show="!operaStatus.turning && !operaStatus.isAtLastPage && operaStatus.turningMatrix.downward"
+                 ng-cloak>
+                <img src="http://statics.xiumi.us/stc/apps/reader/assets/up_arrow.png">
+            </div>
+
+            <a class="xiumi-support-info" href="/follow" ng-cloak
+               ng-show="showLogo && !operaStatus.turning && !operaStatus.isAtAdvertPage && operaStatus.isAtLastPage && !!operaStatus.turningMatrix.downward">
+                <div class="inner text-center">
+                    由秀米提供技术支持及广告
+                </div>
+            </a>
+
+            <div class="player-button" ng-class="{ 'player-button-stop': !isMusicOn }"
+                 ng-show="!!cubes[0].backgroundMusic" ng-click="onBgMusicClicked()" ng-cloak>
+                <audio class="audio-source" autoplay="autoplay"
+                       ng-src="{{ cubes[0].backgroundMusic | unsafeResource }}"></audio>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="out-link-page" ng-show="showOutLinkFrame" ng-cloak>
+        <div class="out-link-frame">
+            <iframe class="inner" ng-src="{{ outLinkHref }}"></iframe>
+        </div>
+        <div class="out-link-title-bar" ng-click="onBtnCloseFrameClicked()">
+            <img class="back-icon" src="http://statics.xiumi.us/stc/images/pointback.png"/>
+
+            <div>点击返回</div>
+        </div>
+    </div>
+
+    <div class="loading-mask" ng-show="loadingOutLink" ng-cloak>
+        <div class="loading-progress frame-loading-progress">
+            <span class="item"></span>
+            <span class="item"></span>
+            <span class="item"></span>
+        </div>
+    </div>
+</div>
+
+<section class="tn-scripts tn-last-block">
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+    <script src="http://stc.xiumius.com/views/app/reader/b3efce.ng-tpl.min.js"></script>
+
+    <script src="http://stc.xiumius.com/scripts/app/reader/entries/booklet/0b4c99.main.min.js"></script>
+
+</section>
+
+</body>
+</html>

@@ -1,0 +1,13 @@
+<div class="dropdown" data-value="${val.wbsId}">
+  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu_${val.wbsId}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+    操作
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+    <li><a href="javascript:;" data-target="#myWbsWorkModal" data-toggle="modal" onclick="add_form_down_wbs_work_event(${val.wbsId });">添加二级</a></li>
+    <li><a href="javascript:;" data-target="#myWbsWorkModal" data-toggle="modal" onclick="edit_form_wbs_work_event(${val.wbsId });">编辑</a></li>    
+    <li><a href="javascript:;">回收</a></li>
+    <li><a href="javascript:;">编辑计划</a></li>
+    <li><a href="javascript:;" data-target="#myParticipateModal" data-toggle="modal" onclick="edit_participate_event(${val.wbsId });">参与者</a></li>
+  </ul>
+</div>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+	<head>
+<#include "/include/EJQ_Include.html">
+
+<title>用户资料</title>
+<link rel="stylesheet" type="text/css" href="/css/mobile/form_list.css" />
+<link rel="stylesheet" type="text/css" href="/css/mobile/user_info.css" />
+<link rel="stylesheet" type="text/css" href="/ehais/css/region.css" />
+<script type="text/javascript" charset="utf-8" src="/js/ejq.mobile.js"></script>
+<script type="text/javascript" src="/js/mobile/user_info.js"></script>
+<script type="text/javascript" src="/js/regionH5.js"></script>
+	</head>
+	<body class="jqmobi">
+		<div class="view" id="mainview">
+			<header>
+            	<h1>用户资料</h1>
+        	</header>
+        	<div class="pages">
+        		<div  class="panel active" id="main" data-title="用户资料" data-selected="true">
+        			
+        			
+        			<ul class="list lbl form">
+        				<li>
+        					<div class="fl lbl">头像</div>
+        					<i class="fr"></i>
+        					<div class="fr oval" id=""></div>
+        					<div class="fr txt" id=""></div>
+        				</li>
+        				<li class="cStatic">
+        					<div class="fl lbl">用户名</div>
+        					<i class="fr"></i>
+        					<div class="fr" id="userName"></div>
+        				</li>
+        				<li>
+        					<div class="fl lbl">真实姓名</div>
+        					<i class="fr"></i>
+        					<div class="fr oval" id="realname"></div>
+        					<div class="fr txt" ><input type="text" id="txt_realname"></div>
+        				</li>
+        				<li class="cStatic">
+        					<div class="fl lbl">邮箱</div>
+        					<i class="fr"></i>
+        					<div class="fr" id="email"></div>
+        				</li>
+        				<li>
+        					<div class="fl lbl">性别</div>
+        					<i class="fr"></i>
+        					<div class="fr oval" id="sexName"></div>
+        					<input type="hidden" id="sex">
+        					<div class="fr txt" >
+        					
+        						<div id="rdo_sex_0" class="rdo_sex left" data-val="0">保密</div>
+        						<div id="rdo_sex_1" class="rdo_sex middle" data-val="1">男</div>
+        						<div id="rdo_sex_2" class="rdo_sex right" data-val="2">女</div>
+        						
+        					
+        					</div>
+        				</li>
+        				<li class="cStatic">
+        					<div class="fl lbl">手机号码</div>
+        					<i class="fr"></i>
+        					<div class="fr" id="mobilePhone"></div>
+        				</li>
+        				<li>
+        					<div class="fl lbl">出生日期</div>
+        					<i class="fr"></i>
+        					<div class="fr oval" id="birthday"></div>
+        					<div class="fr txt" ><input type="text" id="txt_birthday"></div>
+        				</li>
+        				
+        				<li id="userRegionLi">
+        					<div class="fl lbl">地区</div>
+        					<i class="fr"></i>
+        					<div class="fr oval_region" id="region">
+        						<div id="country"></div>
+        						<div id="province"></div>
+        						<div id="city"></div>
+        						<div id="county"></div>
+        						<div id="district"></div>
+        						<div id="street"></div>
+        					</div>
+        				</li>
+        				
+        				<li class="submit">
+        					<button type="button" id="submit" name="submit"  class="btn btn-bs btn-outline w100 " >提交更新</button>
+        				</li>
+        				
+        			</ul>
+        			
+        		</div>
+        		
+        	</div>
+        	
+
+	        
+        </div>
+        
+        <#include "/include/region.html">
+
+	</body>
+</html>

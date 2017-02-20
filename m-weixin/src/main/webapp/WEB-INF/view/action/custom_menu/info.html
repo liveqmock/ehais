@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+<#include "/include/BootStrap_Include.html">
+<#include "/include/XhEditor_Include.html">
+<#include "/include/JqueryFileUpload_Include.html">
+<title>菜单设置信息</title>
+</head>
+<body>
+
+<div style="width: 100%;height: 20px;"></div>
+<div class="container-fluid">
+<form class="form-horizontal" action="${rm.action?default('')}" method="post">
+
+<ul id="myTab" class="nav nav-tabs">
+  <li role="presentation" class="active"><a href="#base" data-toggle="tab">基本资料</a></li>
+</ul>
+
+    
+
+<div id="myTabContent" class="tab-content">
+  <div class="tab-pane fade in active" id="base" style="padding-top: 20px;">
+  	<#list rm.bootStrapList as bootstrap>
+  		<#if bootstrap.tab_no == 0>
+  			<#include "/BootStrap/BootStrapHtml_Sub.html">
+  		</#if>
+  	</#list>
+  </div>  	
+  	
+<div class="field-box actions form-group">
+
+     
+    <label  class="col-sm-2 control-label"></label>
+    <div class="wysi-column col-sm-7">
+    	<input type="submit" value="提交" class="btn btn-lg btn-primary fl">
+    	<input type="button" class="fl btn btn-default btn-lg" value="取消" onclick="javascript:history.back(-1);" style="margin-left: 30px;">
+    </div>
+    
+</div>
+       
+       
+       
+ 
+</div>
+
+
+
+</form>
+</div>                 
+<script type="text/javascript">
+$(function(){
+	$( ".datepicker" ).datepicker({ dateFormat: "yy-mm-dd"});
+});
+</script> 
+
+</body>
+</html>

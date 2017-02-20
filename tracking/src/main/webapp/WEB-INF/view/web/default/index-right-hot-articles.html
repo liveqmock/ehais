@@ -1,0 +1,28 @@
+<div class="cp-panel hot-articles">
+	<div class="cp-panel-heading">
+		<h2>
+			资讯排行榜
+			<ul class="more tabs list inline-list dni">
+				<li class="tab"><a data-rank="1" data-etrack="点击右边栏－一周热榜">周</a></li>
+				<li class="tab"><a data-rank="2" data-etrack="点击右边栏－月度热榜">月</a></li>
+				<li class="tab active"><a data-rank="3"
+					data-etrack="点击右边栏－年度总榜">年</a></li>
+			</ul>
+		</h2>
+	</div>
+	<div class="cp-panel-body clearfix">
+
+		<ol class="list rank-list">
+			<#if rm.map.infoRankingList??>
+			<#list rm.map.infoRankingList as ranking>
+				<li>
+				<span class="order od-${ranking_index+1}">${ranking_index+1}</span> 
+				<a class="tit" title="" href="/member_subscribe_detail.html?id=${ranking.id?default('')}"
+					alt="${ranking.name?default('')}" >${ranking.name?default('')}</a>
+					<span class="num text-right">${ranking.browsingTimes?default('')}</span>
+				</li>
+			</#list>
+			</#if>
+		</ol>
+	</div>
+</div>
