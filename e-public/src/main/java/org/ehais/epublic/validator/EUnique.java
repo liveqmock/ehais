@@ -16,6 +16,7 @@ public @interface EUnique {
 	String message() default "存在重复性的值"; //提示信息,可以写死,可以填写国际化的key    
     String tableName();
     String fieldName();
+    String actionType();
         
     //下面这两个属性必须添加    
     Class<?>[] groups() default {};    

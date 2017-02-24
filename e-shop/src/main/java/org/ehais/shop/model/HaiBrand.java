@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.validation.constraints.NotNull;
 
+import org.ehais.enums.EUniqueEnum;
 import org.ehais.epublic.validator.EUnique;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -24,7 +25,7 @@ public class HaiBrand implements Serializable {
      */
     @NotNull(message = "品牌名称不能为空")
     @NotEmpty(message = "品牌名称不能为空")
-    @EUnique(message="品牌名称重复",tableName="hai_brand",fieldName="brand_name")
+    @EUnique(message="品牌名称重复",tableName="hai_brand",fieldName="brand_name",actionType=EUniqueEnum.insert)
     private String brandName;
 
     /**

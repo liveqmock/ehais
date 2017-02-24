@@ -42,7 +42,7 @@
       <listshow>0</listshow>
       <tabno>0</tabno>
       <treeKey>categoryTree</treeKey>
-      <dataSource>org.ehais.shop.service.impl.CategoryServiceImpl.categoryTreeList2</dataSource>
+      <dataSource>categoryService.categoryTreeList2</dataSource>
     </BootStrapModel>
     
     

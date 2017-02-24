@@ -22,6 +22,8 @@ import org.ehais.model.ExtendsField.ExtendsFieldsXml;
 import org.ehais.service.CommonService;
 import org.ehais.tools.CriteriaObject;
 import org.ehais.util.FSO;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.thoughtworks.xstream.XStream;
 
@@ -233,12 +235,11 @@ public class CommonServiceImpl implements CommonService {
 					if(bootStrapModel.getDataSource() != null && !bootStrapModel.getDataSource().trim().equals("")){
 						String className = bootStrapModel.getDataSource().substring(0, bootStrapModel.getDataSource().lastIndexOf("."));
 						String funcName = bootStrapModel.getDataSource().substring(bootStrapModel.getDataSource().lastIndexOf(".") + 1 , bootStrapModel.getDataSource().length());
-						System.out.println("className:"+className+"  .  "+funcName);
-						
-						Class<?> clz = Class.forName(className);
-						Object o = clz.newInstance();
+
+						WebApplicationContext wac = RequestContextUtils.getWebApplicationContext(request);
+						Object o = wac.getBean(className);
+						Class<?> clz = Class.forName(o.getClass().getName());
 						Method m = clz.getMethod(funcName, HttpServletRequest.class);
-						
 						if(bootStrapModel.getControl().equals(ControlEnum.select_tree)){
 							List<TreeModel> treeList = (List<TreeModel>) m.invoke(o, request);
 							bootStrapModel.setTreeList(treeList);
