@@ -19,7 +19,7 @@ import net.sf.json.JSONObject;
 
 public class XIAAVArticleJUnit {
 	
-	private String website = "http://kanxav.net/";
+	private String website = "http://kanxav.ga/";
 	private String appkey = "ifuckehais";
 	private String secret = "ufuckehais";
 	private String store_id = "8";
