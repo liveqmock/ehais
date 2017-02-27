@@ -1,0 +1,14 @@
+@CHARSET "UTF-8";
+
+ul,li{padding: 0;list-style: none;}
+dl.parent_menu{border-bottom: 1px #ccc dashed; padding-bottom: 10px; margin-bottom: 10px;}
+div.role{margin: 5px 10px ;}
+div.role,ul.role,ul.MenuItem{float: left;padding-left: 5px;margin: 0;}
+ul.role li{float: left;list-style: none; margin: 5px 10px; padding:2px 10px; border: 1px solid #ccc;}
+
+dd.MenuItems{margin-top: 10px;}
+div.menuItem{padding-bottom: 20px;}
+#saveMenu{position: fixed; right: 0; bottom: 10px;z-index: 100;}
+.parent-menu{padding-bottom: 20px;margin-bottom: 20px;}
+#my_business_type li{padding: 5px 10px ; margin: 5px 10px ;border: 1px solid #ccc; float: left;}
+.glyphicon.glyphicon-trash{cursor:pointer}

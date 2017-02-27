@@ -19,21 +19,21 @@ import net.sf.json.JSONObject;
 
 public class XIAAVArticleJUnit {
 	
-	private String website = "http://kanxav.ga/";
-	private String appkey = "ifuckehais";
-	private String secret = "ufuckehais";
-	private String store_id = "8";
+	public String website = "http://kanxav.ga/";
+	public String appkey = "ifuckehais";
+	public String secret = "ufuckehais";
+	public String store_id = "8";
 	
 	public static void main(String[] args) {
 		XIAAVArticleJUnit xiaav = new XIAAVArticleJUnit();
-		for(int i = 1 ; i <= 300 ; i++){
+		for(int i = 1 ; i <= 8000 ; i++){
 			xiaav.article_list(xiaav.website + "forum-75-"+i+".html");
 		}
 	}
 	
 	@Test
 	public void article_run() {
-		for(int i = 490 ; i < 501 ; i++){
+		for(int i = 1 ; i <= 8000 ; i++){
 			this.article_list(website + "forum-75-"+i+".html");
 		}
 		
@@ -121,13 +121,16 @@ public class XIAAVArticleJUnit {
 			
 			Document doc = Jsoup.parse(htmlContent,"utf-8");
 			Elements pcb = doc.getElementsByClass("t_fsz");
+			Elements ptd = pcb.get(0).getElementsByTag("td");
 //			System.out.println(pcb.get(0).html());
 //			for (Element element : pcb) {
 //				System.out.println(element.html());
 //				System.out.println("//////////////////////////////////////////////////////////");
 //			}
 			
-			this.saveArticle(title, url, pcb.get(0).html(), store_id);
+//			Element pcb  = doc.getElementById("postmessage_12404687");
+//			System.out.println(ptd.html());
+			this.saveArticle(title, url, ptd.html(), store_id);
 		}catch(Exception e){
 			e.printStackTrace();
 		}

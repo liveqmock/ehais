@@ -1,0 +1,1 @@
+java -jar target/myjar-jar-with-dependencies.jar &

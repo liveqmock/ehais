@@ -20,7 +20,6 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.12</version>
-      <scope>test</scope>
     </dependency>
 
   
@@ -157,7 +156,7 @@
   
   <build>
 	<!-- <finalName>p-data</finalName> -->
-	<finalName>zgjj</finalName>
+	<finalName>myjar</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -168,8 +167,8 @@
 					</descriptorRefs>
 					<archive>
 						<manifest>
-							<!-- <mainClass>org.ehais.Junit.XIAAVArticleJUnit</mainClass> -->
-							<mainClass>org.ehais.Junit.jia.ZgjjJunit</mainClass>
+							<mainClass>org.ehais.Junit.XIAAVArticleJUnit</mainClass>
+							<!-- <mainClass>org.ehais.Junit.jia.ZgjjJunit</mainClass> -->
 						</manifest>
 					</archive>
 				</configuration>
