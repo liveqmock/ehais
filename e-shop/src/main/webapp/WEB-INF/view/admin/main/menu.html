@@ -66,6 +66,8 @@ $(function(){
 		$("ul#menu-ul .emenu.current").removeClass("current");
 		$(this).addClass("current");
 	});
+	
+	addTab("首页","main");
 
 });
 
@@ -73,7 +75,6 @@ function addTab(title, url){
 	if ($('#web_main').tabs('exists', title)){
 		$('#web_main').tabs('select', title);
 	} else {
-		//var mHeight = $('#web_main').children(".tabs-panels").height();
 		var content = '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:100%;"></iframe>';
 		$('#web_main').tabs('add',{
 			title:title,
