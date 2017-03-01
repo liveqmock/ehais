@@ -55,6 +55,7 @@
                                     <include>**/*.eot@</include>
                                     <include>**/*.ttf</include>
                                     <include>**/*.woff</include>
+                                    <include>**/*.woff2</include>
                                     <include>**/*.svg</include>
                                 </includes>  
                             </resource>  

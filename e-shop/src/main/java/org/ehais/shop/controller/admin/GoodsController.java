@@ -41,17 +41,18 @@ public class  GoodsController extends CommonController {
 			e.printStackTrace();
 			log.error("goods", e);
 		}
-		return "/admin/goods/list";
+		return "/admin/goods/datagrid";
 	}
 	
 	@ResponseBody
-	@RequestMapping("/goods_list_json")
+	@RequestMapping(value="/goods_list_json",method = RequestMethod.POST)
 	public String goods_list_json(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "page", required = true) Integer page,
-			@RequestParam(value = "len", required = true) Integer len) {
+			@RequestParam(value = "rows", required = true) Integer rows,
+			@RequestParam(value = "param", required = false) String param) {
 		try{
-			ReturnObject<HaiGoods> rm = goodsService.goods_list_json(request, page, len);
+			ReturnObject<HaiGoods> rm = goodsService.goods_list_json(request, page, rows);
 			return this.writeJson(rm);
 		}catch(Exception e){
 			e.printStackTrace();
