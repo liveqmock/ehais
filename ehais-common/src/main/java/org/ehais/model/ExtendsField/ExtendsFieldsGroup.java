@@ -39,6 +39,10 @@ public class ExtendsFieldsGroup {
 	@XStreamAlias("extend")
 	private String extend;//继承上级id
 	
+	private String loadFilterEasyUI;//返回数据处理类
+	private String javascriptEasyUI;
+	
+	
 	
 	@XStreamImplicit
 	private List<ExtendsFieldsTabs> tab;

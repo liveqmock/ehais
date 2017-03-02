@@ -19,6 +19,7 @@ public class EUniqueValidator implements ConstraintValidator<EUnique, String> {
 	
     private String tableName;
     private String fieldName;
+    private String actionType;
     /**  
      * 初始参数,获取注解中length的值  
      */    
@@ -26,11 +27,15 @@ public class EUniqueValidator implements ConstraintValidator<EUnique, String> {
     public void initialize(EUnique arg0) { 
     	tableName = arg0.tableName();
     	fieldName = arg0.fieldName();
+    	actionType = arg0.actionType();
     }    
     
     @Override    
     public boolean isValid(String str, ConstraintValidatorContext constraintValidatorContext) {    
-        if(str != null && !str.equals("")){
+        
+    	System.out.println(request.getRequestURI());
+    			
+    	if(str != null && !str.equals("")){
         	int c = eCommonMapper.commonUniqueStore(tableName, fieldName, str,(Integer)request.getSession().getAttribute(Constants.SESSION_ADMIN_ID) );
             if(c <= 0){    
                 return true;    

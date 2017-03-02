@@ -266,5 +266,41 @@ public class CommonServiceImpl implements CommonService {
 	
 	
 	
+	public <T> List<BootStrapModel> easyuiListXml(HttpServletRequest request , String bootStrapXml , String tablename) throws Exception{
+		List<BootStrapModel> list = new ArrayList<BootStrapModel>();
+		
+		String role = (String) request.getSession().getAttribute(Constants.SESSION_ROLE_TYPE);
+		String manager = role;
+		if(role.equals("admin")){
+			manager = (String) request.getSession().getAttribute(Constants.SESSION_ADMIN_NAME);
+		}else if(role.equals("user")){
+			manager = (String) request.getSession().getAttribute(Constants.SESSION_USER_NAME);
+		}
+		
+		CommonController c = new CommonController();
+		String general = c.config_file(request, bootStrapXml);
+		String general_content = FSO.BufferedReader(general);
+		XStream xStream = new XStream();
+		xStream.processAnnotations(ExtendsFieldsXml.class);
+		xStream.processAnnotations(ExtendsFieldsGroup.class);
+		xStream.processAnnotations(BootStrapModel.class);
+		
+		ExtendsFieldsXml atxml = (ExtendsFieldsXml) xStream.fromXML(general_content);
+		List<ExtendsFieldsGroup> efg = atxml.getGroup();
+		
+		for (ExtendsFieldsGroup extendsFieldsGroup : efg) {
+			if(((!role.equals("") && !extendsFieldsGroup.getRole().equals(role)) && (!manager.equals("") && !extendsFieldsGroup.getManager().equals(manager))) || !extendsFieldsGroup.getTable().equals(tablename)) continue;
+			List<BootStrapModel> bsml = extendsFieldsGroup.getField();
+			if(bsml == null)continue;
+			for (BootStrapModel bootStrapModel : bsml) {
+				list.add(bootStrapModel);
+			}			
+		}
+		
+		
+		return list;
+	}
+	
+	
 	
 }

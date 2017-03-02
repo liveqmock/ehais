@@ -35,8 +35,10 @@ public class  GoodsController extends CommonController {
 			HttpServletRequest request,HttpServletResponse response ) {	
 		Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
 		try{
+			ReturnObject<HaiGoods> rm = goodsService.goods_list(request);
 			modelMap.addAttribute("wxid", user_id);
 			modelMap.addAttribute("action", "goods_list_json");
+			modelMap.addAttribute("rm", rm);
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("goods", e);

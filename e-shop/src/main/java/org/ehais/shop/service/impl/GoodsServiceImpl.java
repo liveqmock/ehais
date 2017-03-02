@@ -51,6 +51,9 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		ReturnObject<HaiGoods> rm = new ReturnObject<HaiGoods>();
 		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
 		
+		List<BootStrapModel> bootStrapList = this.BootStrapXml(request, "goods.xml",null,"hai_goods",null,null);
+		
+		
 		rm.setCode(1);
 		return rm;
 	}

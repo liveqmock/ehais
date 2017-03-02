@@ -66,12 +66,38 @@ $(function(){
         singleSelect:true,//是否单选 
         pagination:true,//分页控件 
         rownumbers:true,//行号 
-        
+        onDblClickRow:function(rowIndex,rowData){
+        	//alert(JSON.stringify(rowData));
+            $("#datagrid").datagrid('getEditor', {index : rowIndex , field : rowData});
+         },
+         loadFilter: function(result){
+        	 
+        	 return result;
+         },
     });  
 	
+	$("#editRows").click(function(){
+		$('#datagrid').edatagrid('editRow',0);
+	});
 	
 	$("#addRows").click(function(){
-		$('#datagrid').edatagrid('addRow');
+		//$('#datagrid').edatagrid('addRow');
+		
+		var ed = $('#datagrid').datagrid('getEditor', {index:1,field:'goodsName'});
+		
+		/**
+		$('#datagrid').datagrid('addEditor',{    
+			field : 'goodsName' ,  //名称需要对应
+			editor : {       
+				type : 'text' ,   //让编辑框变成那种类型
+				options : {
+					required : true
+				}
+			}
+		});
+		**/
+		
+		
 	});
 });
 
