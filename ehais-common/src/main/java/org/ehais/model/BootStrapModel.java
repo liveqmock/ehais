@@ -52,6 +52,10 @@ public class BootStrapModel implements Serializable{
 	@XStreamAlias("listshow")
 	private Integer list_show;
 	
+	@XStreamAlias("formatter")
+	private String formatter;
+	
+	
 	@XStreamAlias("tabno")
 	private Integer tab_no;
 	
@@ -328,6 +332,22 @@ public class BootStrapModel implements Serializable{
 
 	public void setDataSource(String dataSource) {
 		this.dataSource = dataSource;
+	}
+
+	public String getFormatter() {
+		return formatter;
+	}
+
+	public void setFormatter(String formatter) {
+		this.formatter = formatter;
+	}
+
+	public List<BootStrapKeyValueModel> getKeyValueList() {
+		return keyValueList;
+	}
+
+	public void setKeyValueList(List<BootStrapKeyValueModel> keyValueList) {
+		this.keyValueList = keyValueList;
 	}
 
 
