@@ -9,8 +9,8 @@ import org.junit.Test;
 
 public class ShopJunit {
 
-//	private String web_url = "http://localhost:8080";
-	private String web_url = "http://shop.ehais.com";
+	private String web_url = "http://localhost:80";
+//	private String web_url = "http://shop.ehais.com";
 	private String timestamp = String.valueOf(System.currentTimeMillis());
 	private String appkey = "ifuckehais";
 	private String secret = "ufuckehais";
@@ -258,7 +258,7 @@ public class ShopJunit {
 			Map<String, String> paramsMap = new HashMap<String, String>();
 			paramsMap.put("appkey", appkey); paramsMap.put("version", "v1.0"); paramsMap.put("timestamp", timestamp);
 	    	
-	    	paramsMap.put("store_id", "1");
+	    	paramsMap.put("store_id", "2");
 	    	paramsMap.put("parent_id", "0");
 	    	
 	    	String sign = SignUtil.getSignWS(paramsMap,secret);
@@ -459,6 +459,33 @@ public class ShopJunit {
 			e.printStackTrace();
 		}
 	}
+	
+	
+
+	@Test
+	public void cart_list(){
+		try{
+			Map<String, String> paramsMap = new HashMap<String, String>();
+			paramsMap.put("appkey", appkey); paramsMap.put("version", "v1.0"); paramsMap.put("timestamp", timestamp);
+	    	
+	    	paramsMap.put("store_id", "1");
+	    	paramsMap.put("user_id", "1");
+	    	paramsMap.put("s_encode", "8aa927807029b0bc73720c43733130f9s");
+	    	
+	    	
+	    	String sign = SignUtil.getSignWS(paramsMap,secret);
+	    	paramsMap.put("sign", sign);
+	    	Map<String,String> mapHeader = new HashMap<String, String>();
+	    	mapHeader.put("User-Agent", "gzepro");
+			String req = EHttpClientUtil.httpPost(web_url+"/api/cart_list", paramsMap);
+			
+			System.out.println("请求返回："+req);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
 	
 	
 }

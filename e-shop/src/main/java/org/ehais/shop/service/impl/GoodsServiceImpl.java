@@ -371,11 +371,13 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		example.setStart((page - 1 ) * len);
 		example.setLen(len);
 		example.setOrderByClause("goods_id desc");
+		
+		Integer total = haiGoodsMapper.countByExample(example);		
 		List<HaiGoods> list = haiGoodsMapper.hai_goods_list_by_example(example);
 		
+		rm.setTotal(total);
 		rm.setCode(1);
 		rm.setRows(list);
-		
 		
 		return rm;
 	}

@@ -214,12 +214,18 @@ public class CartServiceImpl  extends CommonServiceImpl implements CartService{
 		}
 		
 		HaiCartExample example = new HaiCartExample();
-		if(user_id != null)example.or().andUserIdEqualTo(user_id);
-		if(session_shop_encode != null)example.or().andSessionIdEqualTo(session_shop_encode);
+		HaiCartExample.Criteria c = example.createCriteria();
+		if(user_id != null){//登录状态使用
+			c.andUserIdEqualTo(user_id);
+		}else if(session_shop_encode != null){//没有登录的状态使用
+			c.andSessionIdEqualTo(session_shop_encode);
+		}
 		
+		Integer total = haiCartMapper.countByExample(example);
 		List<HaiCart> list = haiCartMapper.hai_cart_list_by_example(example);
 		
 		rm.setCode(1);
+		rm.setTotal(total);
 		rm.setRows(list);
 		
 		rm.setCode(1);

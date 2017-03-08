@@ -30,7 +30,7 @@ public class InitDataListener implements InitializingBean, ServletContextAware{
 		EStoreAppKeySecretCacheManager cache = EStoreAppKeySecretCacheManager.getInstance();
 		
 		EHaiStoreAppkeySecretExample example =  new EHaiStoreAppkeySecretExample();
-		
+		example.createCriteria().andIsvalidEqualTo("1");
 		List<EHaiStoreAppkeySecret>  list = eHaiStoreAppkeySecretMapper.selectByExample(example);
 		for (EHaiStoreAppkeySecret eHaiStoreAppkeySecret : list) {
 //			System.out.println(eHaiStoreAppkeySecret.getAppkey() +" == "+ eHaiStoreAppkeySecret.getSecret());
