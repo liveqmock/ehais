@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 
 //model里面对应的日期添加的 @DateTimeFormat( pattern = "yyyy-MM-dd" )
 
-@Service("shippingService")
+@Service("shoppingService")
 public class ShoppingServiceImpl extends CommonServiceImpl implements ShoppingService {
 
 	@Override

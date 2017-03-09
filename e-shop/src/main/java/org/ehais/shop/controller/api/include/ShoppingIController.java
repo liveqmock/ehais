@@ -25,7 +25,7 @@ public class ShoppingIController extends CommonController{
 			HttpServletRequest request,HttpServletResponse response,
 			@ModelAttribute("order_done") OrderDoneParam order_done) {
 		try{
-			ReturnObject<HaiShipping> rm = shoppingService.shipping_list(request);
+			ReturnObject<OrderDoneParam> rm = shoppingService.OrderDone(request, order_done);
 			return this.writeJson(rm);
 		}catch(Exception e){
 			e.printStackTrace();

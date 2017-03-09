@@ -59,7 +59,7 @@
 					<url>/admin/category_list</url>
 					<module></module>
 					<className></className>
-					<iconClassName></iconClassName>
+					<iconClassName>fa fa-industry</iconClassName>
 					<roles>
 						<string>admin</string>
 						<string>store</string>
@@ -84,7 +84,7 @@
 					<url>/admin/goods_list</url>
 					<module></module>
 					<className></className>
-					<iconClassName></iconClassName>
+					<iconClassName>fa fa-list-ul</iconClassName>
 					<roles>
 						<string>admin</string>
 						<string>store</string>
