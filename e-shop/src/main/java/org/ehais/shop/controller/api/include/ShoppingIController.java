@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class ShoppingIController extends CommonController{
 
 	@Autowired
-	private ShoppingService shoppingService;
+	protected ShoppingService shoppingService;
 	
 	@ResponseBody
 	@RequestMapping("/order_done")
