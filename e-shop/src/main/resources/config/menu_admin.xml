@@ -10,7 +10,7 @@
 			<className></className>
 			<url></url>
 			<module></module>
-			<iconClassName></iconClassName>
+			<iconClassName>fa fa-sign-language</iconClassName>
 			<roles>
 				<string>admin</string>
 				<string>store</string>
@@ -101,7 +101,7 @@
 			<url></url>
 			<module></module>
 			<className></className>
-			<iconClassName></iconClassName>
+			<iconClassName>fa fa-yc-square</iconClassName>
 			<roles>
 				<string>admin</string>
 				<string>store</string>

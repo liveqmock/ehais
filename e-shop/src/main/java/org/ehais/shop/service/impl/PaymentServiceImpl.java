@@ -104,7 +104,7 @@ public class PaymentServiceImpl  extends CommonServiceImpl implements PaymentSer
 		// TODO Auto-generated method stub
 		ReturnObject<HaiPaymentWithBLOBs> rm = new ReturnObject<HaiPaymentWithBLOBs>();
 		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
-		HaiPaymentWithBLOBs model = haiPaymentMapper.selectByPrimaryKey(payId.byteValue());
+		HaiPaymentWithBLOBs model = haiPaymentMapper.selectByPrimaryKey(payId);
 		rm.setBootStrapList(this.formatBootStrapList(model));
 		
 		rm.setCode(1);
@@ -142,7 +142,7 @@ public class PaymentServiceImpl  extends CommonServiceImpl implements PaymentSer
 		ReturnObject<HaiPaymentWithBLOBs> rm = new ReturnObject<HaiPaymentWithBLOBs>();
 		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
 		
-		HaiPaymentWithBLOBs model = haiPaymentMapper.selectByPrimaryKey(payId.byteValue());
+		HaiPaymentWithBLOBs model = haiPaymentMapper.selectByPrimaryKey(payId);
 		rm.setBootStrapList(this.formatBootStrapList(model));
 		
 		rm.setCode(1);
@@ -158,7 +158,7 @@ public class PaymentServiceImpl  extends CommonServiceImpl implements PaymentSer
 		HaiPaymentExample example = new HaiPaymentExample();
 		HaiPaymentExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
-		c.andPayIdEqualTo(payId.byteValue());
+		c.andPayIdEqualTo(payId);
 		int code = haiPaymentMapper.deleteByExample(example);
 		rm.setCode(code);
 		rm.setMsg("删除成功");

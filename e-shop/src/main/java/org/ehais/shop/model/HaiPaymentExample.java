@@ -276,52 +276,52 @@ public class HaiPaymentExample {
             return (Criteria) this;
         }
 
-        public Criteria andPayIdEqualTo(Byte value) {
+        public Criteria andPayIdEqualTo(Integer value) {
             addCriterion("pay_id =", value, "payId");
             return (Criteria) this;
         }
 
-        public Criteria andPayIdNotEqualTo(Byte value) {
+        public Criteria andPayIdNotEqualTo(Integer value) {
             addCriterion("pay_id <>", value, "payId");
             return (Criteria) this;
         }
 
-        public Criteria andPayIdGreaterThan(Byte value) {
+        public Criteria andPayIdGreaterThan(Integer value) {
             addCriterion("pay_id >", value, "payId");
             return (Criteria) this;
         }
 
-        public Criteria andPayIdGreaterThanOrEqualTo(Byte value) {
+        public Criteria andPayIdGreaterThanOrEqualTo(Integer value) {
             addCriterion("pay_id >=", value, "payId");
             return (Criteria) this;
         }
 
-        public Criteria andPayIdLessThan(Byte value) {
+        public Criteria andPayIdLessThan(Integer value) {
             addCriterion("pay_id <", value, "payId");
             return (Criteria) this;
         }
 
-        public Criteria andPayIdLessThanOrEqualTo(Byte value) {
+        public Criteria andPayIdLessThanOrEqualTo(Integer value) {
             addCriterion("pay_id <=", value, "payId");
             return (Criteria) this;
         }
 
-        public Criteria andPayIdIn(List<Byte> values) {
+        public Criteria andPayIdIn(List<Integer> values) {
             addCriterion("pay_id in", values, "payId");
             return (Criteria) this;
         }
 
-        public Criteria andPayIdNotIn(List<Byte> values) {
+        public Criteria andPayIdNotIn(List<Integer> values) {
             addCriterion("pay_id not in", values, "payId");
             return (Criteria) this;
         }
 
-        public Criteria andPayIdBetween(Byte value1, Byte value2) {
+        public Criteria andPayIdBetween(Integer value1, Integer value2) {
             addCriterion("pay_id between", value1, value2, "payId");
             return (Criteria) this;
         }
 
-        public Criteria andPayIdNotBetween(Byte value1, Byte value2) {
+        public Criteria andPayIdNotBetween(Integer value1, Integer value2) {
             addCriterion("pay_id not between", value1, value2, "payId");
             return (Criteria) this;
         }
@@ -546,52 +546,52 @@ public class HaiPaymentExample {
             return (Criteria) this;
         }
 
-        public Criteria andPayOrderEqualTo(Byte value) {
+        public Criteria andPayOrderEqualTo(Integer value) {
             addCriterion("pay_order =", value, "payOrder");
             return (Criteria) this;
         }
 
-        public Criteria andPayOrderNotEqualTo(Byte value) {
+        public Criteria andPayOrderNotEqualTo(Integer value) {
             addCriterion("pay_order <>", value, "payOrder");
             return (Criteria) this;
         }
 
-        public Criteria andPayOrderGreaterThan(Byte value) {
+        public Criteria andPayOrderGreaterThan(Integer value) {
             addCriterion("pay_order >", value, "payOrder");
             return (Criteria) this;
         }
 
-        public Criteria andPayOrderGreaterThanOrEqualTo(Byte value) {
+        public Criteria andPayOrderGreaterThanOrEqualTo(Integer value) {
             addCriterion("pay_order >=", value, "payOrder");
             return (Criteria) this;
         }
 
-        public Criteria andPayOrderLessThan(Byte value) {
+        public Criteria andPayOrderLessThan(Integer value) {
             addCriterion("pay_order <", value, "payOrder");
             return (Criteria) this;
         }
 
-        public Criteria andPayOrderLessThanOrEqualTo(Byte value) {
+        public Criteria andPayOrderLessThanOrEqualTo(Integer value) {
             addCriterion("pay_order <=", value, "payOrder");
             return (Criteria) this;
         }
 
-        public Criteria andPayOrderIn(List<Byte> values) {
+        public Criteria andPayOrderIn(List<Integer> values) {
             addCriterion("pay_order in", values, "payOrder");
             return (Criteria) this;
         }
 
-        public Criteria andPayOrderNotIn(List<Byte> values) {
+        public Criteria andPayOrderNotIn(List<Integer> values) {
             addCriterion("pay_order not in", values, "payOrder");
             return (Criteria) this;
         }
 
-        public Criteria andPayOrderBetween(Byte value1, Byte value2) {
+        public Criteria andPayOrderBetween(Integer value1, Integer value2) {
             addCriterion("pay_order between", value1, value2, "payOrder");
             return (Criteria) this;
         }
 
-        public Criteria andPayOrderNotBetween(Byte value1, Byte value2) {
+        public Criteria andPayOrderNotBetween(Integer value1, Integer value2) {
             addCriterion("pay_order not between", value1, value2, "payOrder");
             return (Criteria) this;
         }

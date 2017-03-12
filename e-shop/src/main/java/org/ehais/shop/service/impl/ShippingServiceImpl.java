@@ -45,8 +45,8 @@ public class ShippingServiceImpl  extends CommonServiceImpl implements ShippingS
 		HaiShippingExample example = new HaiShippingExample();
 		HaiShippingExample.Criteria c = example.createCriteria();
 //		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
-		example.setStart(start);
-		example.setLen(len);
+		example.setLimitStart(start);
+		example.setLimitEnd(len);
 		List<HaiShipping> list = haiShippingMapper.hai_shipping_list_by_example(example);
 		Integer total = haiShippingMapper.countByExample(example);
 		rm.setCode(1);
@@ -104,7 +104,7 @@ public class ShippingServiceImpl  extends CommonServiceImpl implements ShippingS
 		// TODO Auto-generated method stub
 		ReturnObject<HaiShippingWithBLOBs> rm = new ReturnObject<HaiShippingWithBLOBs>();
 		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
-		HaiShippingWithBLOBs model = haiShippingMapper.selectByPrimaryKey(shippingId.byteValue());
+		HaiShippingWithBLOBs model = haiShippingMapper.selectByPrimaryKey(shippingId);
 		rm.setBootStrapList(this.formatBootStrapList(model));
 		
 		rm.setCode(1);
@@ -142,7 +142,7 @@ public class ShippingServiceImpl  extends CommonServiceImpl implements ShippingS
 		ReturnObject<HaiShippingWithBLOBs> rm = new ReturnObject<HaiShippingWithBLOBs>();
 		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
 		
-		HaiShippingWithBLOBs model = haiShippingMapper.selectByPrimaryKey(shippingId.byteValue());
+		HaiShippingWithBLOBs model = haiShippingMapper.selectByPrimaryKey(shippingId);
 		rm.setBootStrapList(this.formatBootStrapList(model));
 		
 		rm.setCode(1);
@@ -158,7 +158,7 @@ public class ShippingServiceImpl  extends CommonServiceImpl implements ShippingS
 		HaiShippingExample example = new HaiShippingExample();
 		HaiShippingExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
-		c.andShippingIdEqualTo(shippingId.byteValue());
+		c.andShippingIdEqualTo(shippingId);
 		int code = haiShippingMapper.deleteByExample(example);
 		rm.setCode(code);
 		rm.setMsg("删除成功");
