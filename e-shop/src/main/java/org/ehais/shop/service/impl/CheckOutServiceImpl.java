@@ -10,6 +10,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.ehais.common.Constants;
+import org.ehais.enums.OrderStatusEnum;
+import org.ehais.enums.PayStatusEnum;
+import org.ehais.enums.ShippingStatusEnum;
 import org.ehais.epublic.mapper.EHaiRegionMapper;
 import org.ehais.epublic.model.EHaiRegion;
 import org.ehais.epublic.model.EHaiRegionExample;
@@ -149,7 +152,7 @@ public class CheckOutServiceImpl extends CommonServiceImpl implements CheckOutSe
 
 	@Override
 	public ReturnObject<HaiOrderInfo> done(HttpServletRequest request, String recIds,
-			Short pay_id, Short ship_id, Long address_id,
+			Integer pay_id, Integer ship_id, Long address_id,
 			Long user_id, String message) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiOrderInfo> rm = new ReturnObject<HaiOrderInfo>();
@@ -221,13 +224,13 @@ public class CheckOutServiceImpl extends CommonServiceImpl implements CheckOutSe
 			return rm;
 		}
 		
-		HaiPayment pay = haiPaymentMapper.selectByPrimaryKey(pay_id.byteValue());
+		HaiPayment pay = haiPaymentMapper.selectByPrimaryKey(pay_id);
 		if(pay == null){
 			rm.setMsg("支付信息有误");
 			return rm;
 		}
 		
-		HaiShipping ship = haiShippingMapper.selectByPrimaryKey(ship_id.byteValue());
+		HaiShipping ship = haiShippingMapper.selectByPrimaryKey(ship_id);
 		if(ship == null){
 			rm.setMsg("货运信息有误");
 			return rm;
@@ -245,9 +248,9 @@ public class CheckOutServiceImpl extends CommonServiceImpl implements CheckOutSe
 		order.setOrderSn(year + month + todate + hours + minutes + second + ECommon.nonceInt(6));
 		order.setUserId(user_id);
 		
-		order.setOrderStatus(Short.valueOf(0+""));
-		order.setShippingStatus(Short.valueOf(0+""));
-		order.setPayStatus(Short.valueOf(0+""));
+		order.setOrderStatus(OrderStatusEnum.init);
+		order.setShippingStatus(ShippingStatusEnum.init);
+		order.setPayStatus(PayStatusEnum.init);
 		
 		order.setConsignee(address.getConsignee());
 		order.setCountry(address.getCountry());
@@ -281,25 +284,25 @@ public class CheckOutServiceImpl extends CommonServiceImpl implements CheckOutSe
 		order.setIntegralMoney(0);
 		order.setBonus(0);
 		order.setOrderAmount(0);//订单金额，需要修入一下
-		order.setFromAd(Short.valueOf("0"));
+		order.setFromAd(0);
 		order.setReferer("");
-		order.setAddTime(System.currentTimeMillis());
-		order.setConfirmTime(0L);
-		order.setPayTime(0L);
-		order.setShippingTime(0L);
-		order.setPackId(Short.valueOf("0"));
-		order.setCardId(Short.valueOf("0"));
+		order.setAddTime(date);
+		order.setConfirmTime(null);
+		order.setPayTime(null);
+		order.setShippingTime(null);
+		order.setPackId(0);
+		order.setCardId(0);
 		order.setBonusId(0);
 		order.setInvoiceNo("");
 		order.setExtensionCode("");
 		order.setExtensionId(0);
 		order.setToBuyer("");
 		order.setPayNote("");
-		order.setAgencyId(Short.valueOf("0"));
+		order.setAgencyId(0);
 		order.setInvType("");
-		order.setTax(0);
-		order.setIsSeparate(Short.valueOf("0"));
-		order.setParentId(0L);
+//		order.setTax(0);
+//		order.setIsSeparate(Short.valueOf("0"));
+//		order.setParentId(0L);
 		order.setDiscount(0);
 //		order.setStoreId(0);
 		order.setRemark("");

@@ -38,8 +38,8 @@ public class CheckOutApiController extends CheckOutIController {
 	public String done(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "user_id", required = true) Long user_id,
-			@RequestParam(value = "pay_id", required = true) Short pay_id,
-			@RequestParam(value = "ship_id", required = true) Short ship_id,
+			@RequestParam(value = "pay_id", required = true) Integer pay_id,
+			@RequestParam(value = "ship_id", required = true) Integer ship_id,
 			@RequestParam(value = "address_id", required = true) Long address_id,
 			@RequestParam(value = "message", required = true) String message,
 			@RequestParam(value = "recIds", required = true) String recIds) {

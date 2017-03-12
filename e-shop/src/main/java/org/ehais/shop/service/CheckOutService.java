@@ -12,8 +12,8 @@ public interface CheckOutService extends CommonService{
 	
 	public ReturnObject<HaiOrderInfo> done(HttpServletRequest request,
 			String recIds,
-			Short pay_id,
-			Short ship_id,
+			Integer pay_id,
+			Integer ship_id,
 			Long address_id,
 			Long user_id,
 			String message

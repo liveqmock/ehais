@@ -51,8 +51,8 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 		HaiOrderInfoExample example = new HaiOrderInfoExample();
 		HaiOrderInfoExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
-		example.setStart(start);
-		example.setLen(len);
+//		example.setStart(start);
+//		example.setLen(len);
 		List<HaiOrderInfo> list = haiOrderInfoMapper.hai_order_info_list_by_example(example);
 		Integer total = haiOrderInfoMapper.countByExample(example);
 		rm.setCode(1);
@@ -188,8 +188,8 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 		HaiOrderInfoExample example = new HaiOrderInfoExample();
 		HaiOrderInfoExample.Criteria c = example.createCriteria();
 		c.andUserIdEqualTo(user_id);
-		example.setStart(start);
-		example.setLen(len);
+//		example.setStart(start);
+//		example.setLen(len);
 		List<HaiOrderInfo> list = haiOrderInfoMapper.hai_order_info_list_by_example(example);
 		Integer total = haiOrderInfoMapper.countByExample(example);
 		
