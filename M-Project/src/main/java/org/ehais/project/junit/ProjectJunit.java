@@ -14,10 +14,10 @@ import org.ehais.project.model.ProWbsWork;
 import org.ehais.project.service.ProWbsWorkService;
 import org.ehais.project.util.ParseProjectMpp;
 import org.ehais.tools.ReturnObject;
-import org.ehais.util.DateUtil;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 public class ProjectJunit {
 
@@ -26,7 +26,7 @@ public class ProjectJunit {
 	public void prowbs_To_DB() throws Exception{
 		ApplicationContext context = new ClassPathXmlApplicationContext("classpath:spring/appContext.xml");
 		ProWbsWorkService proWbsWorkService = (ProWbsWorkService) context.getBean("proWbsWorkService");
-		String file = "E:/LGJ/a广州明动/信息推送/专利推送.mpp";
+		String file = "E:/LGJ/z中恒/谷子/谷子功能需求分析.mpp";
 		Map<Integer,Integer> wbsIdMap = new HashMap<Integer,Integer>();
 		List<Map<String,Object>> listPro = ParseProjectMpp.psrseProjectFile(file);
 		for (Map<String, Object> map : listPro) {
@@ -44,8 +44,10 @@ public class ProjectJunit {
 	
 	@Test
 	public void prowbs_To_XML() throws Exception{
-		ApplicationContext context = new ClassPathXmlApplicationContext("classpath:spring/appContext.xml");
-		ProWbsWorkService proWbsWorkService = (ProWbsWorkService) context.getBean("proWbsWorkService");
+//		ApplicationContext context = new ClassPathXmlApplicationContext("classpath:spring/appContext.xml");
+		ApplicationContext context = new FileSystemXmlApplicationContext("spring/appContext.xml");
+//		ProWbsWorkService proWbsWorkService = (ProWbsWorkService) context.getBean("proWbsWorkService");
+//		ProWbsWorkService proWbsWorkService = (ProWbsWorkService) context.getBean("proWbsWorkService");
 		
 		
 		//第一步，创建一个webbook，对应一个Excel文件  
@@ -77,7 +79,7 @@ public class ProjectJunit {
         cell.setCellStyle(style);
         
         
-		String file = "E:/LGJ/a广州明动/信息推送/专利推送.mpp";
+		String file = "E:/LGJ/z中恒/谷子/谷子功能需求分析.mpp";
 		Map<Integer,Integer> wbsIdMap = new HashMap<Integer,Integer>();
 		List<Map<String,Object>> listPro = ParseProjectMpp.psrseProjectFile(file);
 		
@@ -95,9 +97,9 @@ public class ProjectJunit {
 		}
 		
 //		ByteArrayOutputStream os = new ByteArrayOutputStream();  
-		FileOutputStream os = new FileOutputStream( "D:/project.xls"); 
-        wb.write(os); 
-        os.close();
+//		FileOutputStream os = new FileOutputStream( "D:/project2.xls"); 
+//        wb.write(os); 
+//        os.close();
         
 	}
 	

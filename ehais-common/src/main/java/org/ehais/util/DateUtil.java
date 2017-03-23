@@ -450,6 +450,31 @@ public class DateUtil {
 		return df.parse(day_last);
 	} 
 	
+	/**
+	 * @描述 时间戳转时间
+	 * @param dateStr
+	 * @return
+	 * @throws ParseException
+	 * @作者 lgj628
+	 * @日期 2017年3月23日
+	 * @返回 long
+	 */
+	public static long dateToStamp(String dateStr) throws ParseException{
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = simpleDateFormat.parse(dateStr);
+        long ts = date.getTime();
+        return ts;
+    }
+	
+	public static Date stampToDate(long lt){
+//        String res;
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        long lt = new Long(s);
+        Date date = new Date(lt);
+//        res = simpleDateFormat.format(date);
+        return date;
+    }
+	
 	
 	
 }

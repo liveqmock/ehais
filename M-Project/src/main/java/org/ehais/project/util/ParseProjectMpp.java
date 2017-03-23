@@ -23,7 +23,7 @@ import net.sf.mpxj.mpp.MPPReader;
 public class ParseProjectMpp {
 	
 	public static void main(String[] args) {
-		String file = "E:/LGJ/a广州明动/信息推送/专利推送.mpp";
+		String file = "E:/LGJ/z中恒/谷子/谷子功能需求分析.mpp";
 		
 		
 		List<Map<String,Object>> list = ParseProjectMpp.psrseProjectFile(file);

@@ -34,6 +34,7 @@ public class HtmlUnitDemo {
 //		url = "http://zhaoxav.net/thread-925667-1-1.html";
 //		url = "http://localhost:8080/index";
 		url = "https://www.tmall.com/?spm=a220m.1000858.a2226n0.1.dpooN3";
+		url = "http://news.baidu.com/ns?cl=2&rn=20&tn=news&word=http%3A%2F%2Fwww.qq.com";
 		
 		final WebClient webClient = new WebClient();
 

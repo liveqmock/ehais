@@ -64,5 +64,12 @@ public class App {
 		pwd = EncryptUtils.md5(pwd+"2294");
 		System.out.println(pwd);
 	}
+	
+	@Test
+	public void tmain() {
+		for(int i = 0 ; i < 211 ;i ++){
+			System.out.println("gData.add(new GoodsBean(\"梦之炫N件套"+String.format("%03d", i)+"\",\"201605320"+String.format("%03d", i) +"\",R.drawable.goods"+(i%10)+",0));");
+		}
+	}
 
 }
