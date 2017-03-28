@@ -19,6 +19,7 @@
     <module>HuangBao</module>
     <module>m-cms</module>
     <module>e-user-center</module>
+    <module>minaUnit</module>
   </modules>
   
   	<properties>
