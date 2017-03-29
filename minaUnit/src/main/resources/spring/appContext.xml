@@ -1,37 +1,25 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:c="http://www.springframework.org/schema/c"
-    xmlns:p="http://www.springframework.org/schema/p"
-    xmlns:util="http://www.springframework.org/schema/util"
-    xmlns:context="http://www.springframework.org/schema/context"
-    xmlns:tx="http://www.springframework.org/schema/tx"
-    xmlns:aop="http://www.springframework.org/schema/aop"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans
-        			    http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
-        			    http://www.springframework.org/schema/util
-        			    http://www.springframework.org/schema/util/spring-util-4.0.xsd
-        			    http://www.springframework.org/schema/context
-        			    http://www.springframework.org/schema/context/spring-context-4.0.xsd
-        			    http://www.springframework.org/schema/tx
-        			    http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
-        			    http://www.springframework.org/schema/aop
-        			    http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
-		
-		
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop.xsd">
+
 	<!-- ======================================================================== -->
 	<!-- Spring bootstrap config, only use this file in code should be sufficient -->
 	<!-- ======================================================================== -->
-<!-- 
-	<context:property-placeholder location="classpath:/META-INF/config/application-dev.properties"
+
+	<context:property-placeholder location="classpath:${system.config}"
 		ignore-unresolvable="true" />
-	<context:property-placeholder location="classpath:${system.config}" ignore-unresolvable="true" />
-	<import resource="classpath:spring/appContext-*.xml" />
- -->
-	
- 	
- 	
-	
+
+	<import resource="classpath*:spring/appContext-*.xml" />
 
 	<context:component-scan base-package="com.ehais.minaunit.service"
 		use-default-filters="false">
@@ -45,26 +33,64 @@
 		<property name="maxInMemorySize" value="4096" />
 		<property name="defaultEncoding" value="UTF-8"></property>
 	</bean>
-
+<!-- 
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.ehais.minaunit.mapper" />
+		<property name="basePackage" value="org.ehais.shop.mapper,org.ehais.epublic.mapper" />
 	</bean>
-
-
+ -->
+	<!-- Enable handling of java.util.logging through SLF4J -->
+	<!-- <bean id="slf4JBridgeHandler" class="org.slf4j.bridge.SLF4JBridgeHandler" 
+		init-method="removeHandlersForRootLogger"/> <bean class="org.slf4j.bridge.SLF4JBridgeHandler" 
+		init-method="install" depends-on="slf4JBridgeHandler"/> <bean class="mvc.gdrc.common.config.SystemConfig"> 
+		<property name="publicKeyPath" value="/encryptkey/publickey"></property> 
+		<property name="privateKeyPath" value="/encryptkey/privatekey"></property> 
+		<property name="resUploadPath" value="/upload/images"></property> </bean> -->
 
 	<!-- ContentNegotiatingViewResolver视图解析器,利用他就可以配置多种返回值 -->
 	<bean
 		class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
 
-		
+		<!-- 这里是否忽略掉accept header，默认就是false -->
+		<!-- 
+		<property name="ignoreAcceptHeader" value="true" />
+		 -->
+		<!-- 如果所有的mediaType都没匹配上，就会使用defaultContentType -->
+		<!-- 
+		<property name="defaultContentType" value="text/html" />
+ 		-->
+ 		<!-- 
+		<property name="mediaTypes">
+			<map>
+				<entry key="json" value="application/json" />
+				<entry key="xml" value="application/xml" />
+			</map>
+		</property>
+		 -->
 		<!-- 默认使用MappingJacksonJsonView生成jsonview -->
 		<property name="defaultViews">
 			<list>
-				
+				<!-- 
+				<bean
+					class="org.springframework.web.servlet.view.json.MappingJacksonJsonView">
+					<property name="extractValueFromSingleKeyModel" value="true" />
+				</bean>
+				<bean class="org.springframework.web.servlet.view.xml.MarshallingView">
+					<property name="marshaller">
+						<bean class="org.springframework.oxm.xstream.XStreamMarshaller" />
+					</property>
+				</bean>
+				 -->
 			</list>
 		</property>
 	</bean>
 
 	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"/>
+<!-- 
+	<bean id="evn" class="org.ehais.util.Environments">
+		<property name="jdbcUrl" value="${jdbc_url}" />
+	</bean>
+
+	<bean class="org.ehais.shop.processor.InitDataListener"></bean>
+ -->
  
 </beans>
