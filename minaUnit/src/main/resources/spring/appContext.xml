@@ -93,4 +93,9 @@
 	<bean class="org.ehais.shop.processor.InitDataListener"></bean>
  -->
  
+
+
+
+	
+ 
 </beans>
