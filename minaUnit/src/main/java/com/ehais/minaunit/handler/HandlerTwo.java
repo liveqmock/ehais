@@ -4,6 +4,8 @@ import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 
+import net.sf.json.JSONObject;
+
 
 public class HandlerTwo extends IoHandlerAdapter {
 
@@ -12,7 +14,15 @@ public class HandlerTwo extends IoHandlerAdapter {
 			throws Exception {
 		// TODO Auto-generated method stub
 	//	super.messageReceived(session, message);
-		System.out.println("received message :"+message);
+		System.out.println("HandlerTwo received message :"+message);
+		JSONObject json = JSONObject.fromObject(message);
+		MinaSessionMap sessionMap = MinaSessionMap.newInstance();
+		
+		IoSession s = sessionMap.getSession(json.getString("wxid"));
+		if(s==null)sessionMap.addSession(json.getString("wxid"), session);
+		
+//		session.write("我接收到了，返回给你吧："+message);
+		
 	}
 
 	@Override

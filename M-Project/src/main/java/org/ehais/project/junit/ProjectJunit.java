@@ -45,7 +45,7 @@ public class ProjectJunit {
 	@Test
 	public void prowbs_To_XML() throws Exception{
 //		ApplicationContext context = new ClassPathXmlApplicationContext("classpath:spring/appContext.xml");
-		ApplicationContext context = new FileSystemXmlApplicationContext("spring/appContext.xml");
+//		ApplicationContext context = new FileSystemXmlApplicationContext("spring/appContext.xml");
 //		ProWbsWorkService proWbsWorkService = (ProWbsWorkService) context.getBean("proWbsWorkService");
 //		ProWbsWorkService proWbsWorkService = (ProWbsWorkService) context.getBean("proWbsWorkService");
 		
@@ -97,9 +97,9 @@ public class ProjectJunit {
 		}
 		
 //		ByteArrayOutputStream os = new ByteArrayOutputStream();  
-//		FileOutputStream os = new FileOutputStream( "D:/project2.xls"); 
-//        wb.write(os); 
-//        os.close();
+		FileOutputStream os = new FileOutputStream( "D:/project2.xls"); 
+        wb.write(os); 
+        os.close();
         
 	}
 	

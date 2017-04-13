@@ -46,14 +46,14 @@ public class OrderPayRecordServiceImpl  extends CommonServiceImpl implements Ord
 		ReturnObject<HaiOrderPayRecordAndUsers> rm = new ReturnObject<HaiOrderPayRecordAndUsers>();
 		if(store_id == null) store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
 		condition.setStore_id(store_id);
-		Integer start = ((condition.getPage() != null)? ((condition.getPage() - 1 ) * condition.getLen() ) : 0 );
+		Integer start = ((condition.getPage() != null)? ((condition.getPage() - 1 ) * condition.getRows() ) : 0 );
 		
 		HaiOrderPayRecordExample example = new HaiOrderPayRecordExample();
 		HaiOrderPayRecordExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
 		example.setStart(start);
-		example.setLen(condition.getLen());
-		List<HaiOrderPayRecordAndUsers> list = haiOrderPayRecordMapper.hai_order_pay_record_list_by_condition(condition,tableId,tableName,1,start,condition.getLen());
+		example.setLen(condition.getRows());
+		List<HaiOrderPayRecordAndUsers> list = haiOrderPayRecordMapper.hai_order_pay_record_list_by_condition(condition,tableId,tableName,1,start,condition.getRows());
 		Integer total = haiOrderPayRecordMapper.countByExample(example);
 		rm.setCode(1);
 		rm.setRows(list);

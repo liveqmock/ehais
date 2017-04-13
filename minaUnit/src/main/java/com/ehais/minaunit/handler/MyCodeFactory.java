@@ -18,7 +18,7 @@ public  class MyCodeFactory implements ProtocolCodecFactory {
 		/*final static char endchar = 0x1a;*/
 		final static char endchar = 0x0d;
 		public MyCodeFactory() {
-			this(Charset.forName("gb2312"));
+			this(Charset.forName("utf-8"));
 		}
 		public MyCodeFactory(Charset charset) {
 			 encoder = new TextLineEncoder(charset, LineDelimiter.UNIX);   

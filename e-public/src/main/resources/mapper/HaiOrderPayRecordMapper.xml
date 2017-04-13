@@ -586,7 +586,7 @@
 	left join hai_order_pay_extends e on o.order_pay_id = e.order_pay_id
 	left join hai_users u on o.user_id = u.user_id 
 	left join hai_donation d on d.donation_id = o.table_id
-	where o.wxid = #{condition.store_id} and o.table_name = #{tableName} 
+	where o.store_id = #{condition.store_id} and o.table_name = #{tableName} 
 	<if test="tableId != null " >
       <![CDATA[ and o.table_id = ${tableId}  ]]>
     </if>

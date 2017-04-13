@@ -17,15 +17,15 @@ import org.apache.mina.core.session.IoSession;
 public class MinaSessionMap {
 
 
-	private final static Log log = LogFactory.getLog(SessionMap.class);
+	private final static Log log = LogFactory.getLog(MinaSessionMap.class);
 	
-	private static SessionMap sessionMap = null;
+	private static MinaSessionMap sessionMap = null;
 			
 	private Map<String, IoSession>map = new HashMap<String, IoSession>();
 	
 	
 	//构造私有化 单例
-	private SessionMap(){}
+	private MinaSessionMap(){}
 	
 	
 	/**
@@ -33,10 +33,10 @@ public class MinaSessionMap {
 	 * @author whl
 	 * @date 2014-9-29 下午1:29:33
 	 */
-	public static SessionMap newInstance(){
+	public static MinaSessionMap newInstance(){
 		log.debug("SessionMap单例获取---");
 		if(sessionMap == null){
-			sessionMap = new SessionMap();
+			sessionMap = new MinaSessionMap();
 		}
 		return sessionMap;
 	}

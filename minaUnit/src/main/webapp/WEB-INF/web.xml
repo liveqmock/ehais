@@ -60,9 +60,5 @@
 		<welcome-file>/index.html</welcome-file>
 	</welcome-file-list>
   
-    <context-param>  
-        <param-name>webAppRootKey</param-name>  
-        <param-value>patents.server.root</param-value>  
-    </context-param> 
     
 </web-app>

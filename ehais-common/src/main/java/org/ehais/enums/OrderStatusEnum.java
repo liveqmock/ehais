@@ -7,5 +7,7 @@ public class OrderStatusEnum {
 	public static Integer cencal = 2;//已取消
 	public static Integer invalid = 3;//无效
 	public static Integer returned = 3;//退货
+	public static Integer success = 1;//成功
+	
 
 }

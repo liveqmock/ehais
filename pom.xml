@@ -26,7 +26,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven_compiler_ver>3.2</maven_compiler_ver>
 		<maven_resources_ver>2.7</maven_resources_ver>
-		<spring.version>4.2.6.RELEASE</spring.version><!-- 4.0.5.RELEASE -->
+		<spring.version>4.3.7.RELEASE</spring.version><!-- 4.0.5.RELEASE -->
 		<jdk_ver>1.7</jdk_ver>
 		<maven_ver>3.2</maven_ver>
 		<junit_ver>4.12</junit_ver>

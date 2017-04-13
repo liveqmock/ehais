@@ -13,7 +13,7 @@ public class HandlerOne extends IoHandlerAdapter {
 			throws Exception {
 		// TODO Auto-generated method stub
 		//super.messageReceived(session, message);
-		System.out.println("message :"+message);
+		System.out.println("HandlerOne message :"+message);
 	}
 
 	@Override
