@@ -25,6 +25,32 @@ import org.ehais.model.Menu;
  */
 public class Bean2Utils {
 
+	public static <T> Map<String,Object> printEntity(T obj){
+                
+        Map<String, Object> map = new HashMap<String, Object>();  
+        try {  
+            BeanInfo beanInfo = Introspector.getBeanInfo(obj.getClass());  
+            PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();  
+            for (PropertyDescriptor property : propertyDescriptors) {  
+                String key = property.getName();
+                // 过滤class属性  
+                if (!key.equals("class")) {  
+                    // 得到property对应的getter方法  
+                    Method getter = property.getReadMethod();  
+                    Object value = getter.invoke(obj);  
+                    System.out.println(key +" == "+ value);
+                    map.put(key, value);  
+                }  
+  
+            }  
+        } catch (Exception e) {  
+            System.out.println("transBean2Map Error " + e);  
+        } 
+        
+        return map;
+    }
+	
+	
     public static <T> Map<String,Object> toMap(T t){
         Map<String,Object> map = new HashMap<String, Object>();
         Field[] fields = t.getClass().getDeclaredFields();

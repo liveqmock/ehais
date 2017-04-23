@@ -156,6 +156,14 @@ public class CommonController {
 		return "/system/dispatch_jump";
 	}
 	
+	public String errorJSON(Exception e){
+		ReturnObject<Object> rm = new ReturnObject<Object>();		
+		rm.setCode(0);
+		rm.setMsg(e.getMessage());
+		JSONObject json = JSONObject.fromObject(rm);
+		return json.toString();
+	}
+	
 	
 	public String ReturnJump(ModelMap modelMap,Integer code , String msg,String jumpUrl){
 

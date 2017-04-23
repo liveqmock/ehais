@@ -33,7 +33,7 @@ public class HtmlRegexpUtil {
      * @param input  
      * @return String  
      */  
-    public String replaceTag(String input) {   
+    public static String replaceTag(String input) {   
         if (!hasSpecialChars(input)) {   
             return input;   
         }   
@@ -61,7 +61,7 @@ public class HtmlRegexpUtil {
         }   
         return (filtered.toString());   
     }   
-  
+    
     /**  
      *   
      * 基本功能：判断标记是否存在  
@@ -70,7 +70,7 @@ public class HtmlRegexpUtil {
      * @param input  
      * @return boolean  
      */  
-    public boolean hasSpecialChars(String input) {   
+    public static boolean hasSpecialChars(String input) {   
         boolean flag = false;   
         if ((input != null) && (input.length() > 0)) {   
             char c;   

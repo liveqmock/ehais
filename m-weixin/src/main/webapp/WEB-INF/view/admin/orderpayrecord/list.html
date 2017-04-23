@@ -47,7 +47,7 @@
 var myDataGird ;
 var myPager;
 var page = 1;
-var len = 50;
+var rows = 50;
 var cat_list;
 var result;
 $(function(){
@@ -99,7 +99,7 @@ $(function(){
 	    },  
 	       onRefresh:function(pageNumber,pageSize){  
 	    	   page = pageNumber;
-	           len = pageSize;
+	           rows = pageSize;
 	           
 	           loadData(); 
 	        },  
@@ -107,7 +107,7 @@ $(function(){
 	       onSelectPage:function(pageNumber,pageSize){  
 	           
 	           page = pageNumber;
-	           len = pageSize;
+	           rows = pageSize;
 	           
 	           loadData();
 	           
@@ -133,7 +133,7 @@ function loadData(){
         url : "${action}",
         data : {
         	"page":page,
-        	"len":len,
+        	"rows":rows,
         	"tableName":"donation"
         },
 		method : 'POST',
