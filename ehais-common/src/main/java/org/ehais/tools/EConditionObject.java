@@ -72,6 +72,10 @@ public class EConditionObject implements Serializable{
 	public void setStore_id(Integer store_id) {
 		this.store_id = store_id;
 	}
-	
+	public Integer getStart(){
+		if(page <= 0 || page == null) page = 1;
+		if(rows == null)rows = 20;
+		return (page - 1) * rows;
+	}
 
 }

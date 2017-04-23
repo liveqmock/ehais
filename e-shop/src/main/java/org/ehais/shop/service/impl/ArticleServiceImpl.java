@@ -24,8 +24,8 @@ public class ArticleServiceImpl  extends CommonServiceImpl implements ArticleSer
 		
 		EHaiArticleExample example = new EHaiArticleExample();
 		example.createCriteria().andStoreIdEqualTo(store_id).andCatIdEqualTo(cat_id);
-		example.setStart(start);
-		example.setLen(len);
+		example.setLimitStart(start);
+		example.setLimitEnd(len);
 		List<EHaiArticle> list = eHaiArticleMapper.selectByExample(example);
 		
 		rm.setRows(list);

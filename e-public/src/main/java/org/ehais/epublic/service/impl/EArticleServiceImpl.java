@@ -45,8 +45,10 @@ public class EArticleServiceImpl  extends EArticleCommonServiceImpl implements E
 		EHaiArticleExample example = new EHaiArticleExample();
 		CriteriaObject co = this.storeIdCriteriaObject(request);
 //		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
-		example.setStart(start);
-		example.setLen(len);
+//		example.setStart(start);
+//		example.setLen(len);
+		example.setLimitStart(start);
+		example.setLimitEnd(len);
 		if(isCode){//请求常量资讯
 			EHaiArticleExample.Criteria c1 = example.or();
 			c1.andCodeIsNotNull();
