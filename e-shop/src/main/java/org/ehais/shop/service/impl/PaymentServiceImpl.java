@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.model.BootStrapModel;
 import org.ehais.service.impl.CommonServiceImpl;
 import org.ehais.shop.mapper.HaiPaymentMapper;
@@ -29,7 +29,7 @@ public class PaymentServiceImpl  extends CommonServiceImpl implements PaymentSer
 	public ReturnObject<HaiPayment> payment_list(HttpServletRequest request) throws Exception{
 		
 		ReturnObject<HaiPayment> rm = new ReturnObject<HaiPayment>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		rm.setCode(1);
 		return rm;
@@ -79,7 +79,7 @@ public class PaymentServiceImpl  extends CommonServiceImpl implements PaymentSer
 		}
 
 
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		model.setStoreId(store_id);
 
 		HaiPaymentExample example = new HaiPaymentExample();
@@ -103,7 +103,7 @@ public class PaymentServiceImpl  extends CommonServiceImpl implements PaymentSer
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiPaymentWithBLOBs> rm = new ReturnObject<HaiPaymentWithBLOBs>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiPaymentWithBLOBs model = haiPaymentMapper.selectByPrimaryKey(payId);
 		rm.setBootStrapList(this.formatBootStrapList(model));
 		
@@ -140,7 +140,7 @@ public class PaymentServiceImpl  extends CommonServiceImpl implements PaymentSer
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiPaymentWithBLOBs> rm = new ReturnObject<HaiPaymentWithBLOBs>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		HaiPaymentWithBLOBs model = haiPaymentMapper.selectByPrimaryKey(payId);
 		rm.setBootStrapList(this.formatBootStrapList(model));
@@ -154,7 +154,7 @@ public class PaymentServiceImpl  extends CommonServiceImpl implements PaymentSer
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiPayment> rm = new ReturnObject<HaiPayment>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiPaymentExample example = new HaiPaymentExample();
 		HaiPaymentExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));

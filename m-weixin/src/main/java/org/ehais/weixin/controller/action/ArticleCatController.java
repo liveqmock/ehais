@@ -3,7 +3,7 @@ package org.ehais.weixin.controller.action;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.ehais.model.TreeModel;
 import org.ehais.tools.ReturnObject;
@@ -33,7 +33,7 @@ public class  ArticleCatController extends CommonController {
 	@RequestMapping("/articlecat_list")
 	public String articlecat_list(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) {	
-		Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+		Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 		try{
 			modelMap.addAttribute("wxid", user_id.intValue());
 			modelMap.addAttribute("action", "articlecat_list_json");

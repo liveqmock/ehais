@@ -3,7 +3,7 @@ package org.ehais.weixin.controller.action;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.ehais.tools.ReturnObject;
 import org.ehais.weixin.controller.WxCommonController;
@@ -34,7 +34,7 @@ public class SurveyAnswerController extends WxCommonController {
 	@RequestMapping("/survey_answer_list")
 	public String survey_answer_list(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) {	
-		Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+		Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 		try{
 			modelMap.addAttribute("wxid", user_id.intValue());
 			modelMap.addAttribute("action", "survey_answer_list_json");
@@ -51,7 +51,7 @@ public class SurveyAnswerController extends WxCommonController {
 			@RequestParam(value = "page", required = true) Integer page,
 			@RequestParam(value = "len", required = true) Integer len) {
 		try{
-			Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			ReturnObject<WpSurveyAnswer> rm = surveyAnswerService.survey_answer_list_json(user_id.intValue(), page, len);
 			return this.writeJson(rm);
 		}catch(Exception e){
@@ -67,7 +67,7 @@ public class SurveyAnswerController extends WxCommonController {
 			HttpServletRequest request,HttpServletResponse response
 			) {
 		try{
-			Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			ReturnObject<WpSurveyAnswer> rm = surveyAnswerService.survey_answer_insert(user_id.intValue());
 			rm.setAction("survey_answer_insert_submit");
 			modelMap.addAttribute("rm", rm);
@@ -84,7 +84,7 @@ public class SurveyAnswerController extends WxCommonController {
 			@ModelAttribute WpSurveyAnswer survey_answer
 			) {
 		try{
-			Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 //			survey_answer.setStoreId(user_id);
 			ReturnObject<WpSurveyAnswer> rm = surveyAnswerService.survey_answer_insert_submit(survey_answer);
 			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "survey_answer_insert");
@@ -100,7 +100,7 @@ public class SurveyAnswerController extends WxCommonController {
 			@RequestParam(value = "id", required = true) Integer id
 			) {
 		try{
-			Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			ReturnObject<WpSurveyAnswer> rm = surveyAnswerService.survey_answer_update(user_id.intValue(), id);
 			rm.setAction("survey_answer_update_submit");
 			modelMap.addAttribute("rm", rm);
@@ -116,7 +116,7 @@ public class SurveyAnswerController extends WxCommonController {
 			@ModelAttribute WpSurveyAnswer survey_answer
 			) {
 		try{
-			Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 //			survey_answer.setStoreId(user_id);
 			ReturnObject<WpSurveyAnswer> rm = surveyAnswerService.survey_answer_update_submit(survey_answer);
 			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "survey_answer_list");
@@ -134,7 +134,7 @@ public class SurveyAnswerController extends WxCommonController {
 			@RequestParam(value = "code", required = false) String code
 			) {
 		try{
-			Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			ReturnObject<WpSurveyAnswer> rm = surveyAnswerService.survey_answer_delete(user_id.intValue(), id);
 			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "survey_answer_list");
 		}catch(Exception e){

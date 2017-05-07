@@ -8,7 +8,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.model.BootStrapModel;
 import org.ehais.model.TreeModel;
 import org.ehais.model.ExtendsField.ExtendsFieldsGroup;
@@ -210,13 +210,13 @@ public class ArticleServiceImpl  extends ArticleCommonServiceImpl implements Art
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
 //		c.andStoreIdEqualTo(model.getStoreId());
 		
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		if(store_id != null && store_id > 0){
 //			c.andStoreIdEqualTo(store_id);
 			model.setStoreId(store_id);
 			model.setUserId(null);
 		}else{
-			Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			if(user_id != null && user_id > 0){
 //				c.andUserIdEqualTo(user_id);
 				model.setUserId(user_id);
@@ -377,7 +377,7 @@ public class ArticleServiceImpl  extends ArticleCommonServiceImpl implements Art
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiArticle> rm = new ReturnObject<HaiArticle>();	
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 		HaiArticle model = new HaiArticle();
 		rm.setBootStrapList(this.formatBootStrapList(request,model));
 		rm.setCode(1);
@@ -388,7 +388,7 @@ public class ArticleServiceImpl  extends ArticleCommonServiceImpl implements Art
 			HttpServletRequest request, Integer key) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiArticle> ro = new ReturnObject<HaiArticle>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 		Map<String, Object> map = new HashMap<String, Object>();
 		HaiArticleCatExample exampleCat = new HaiArticleCatExample();
 		HaiArticleCatExample.Criteria cCat = exampleCat.createCriteria();

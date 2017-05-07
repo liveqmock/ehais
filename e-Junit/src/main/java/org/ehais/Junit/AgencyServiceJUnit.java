@@ -15,7 +15,7 @@ public class AgencyServiceJUnit {
 	public static void main(String[] args) throws IOException {
 		XStream xStream = new XStream();
 		xStream.autodetectAnnotations(true);  
-		xStream.setMode(XStream.XPATH_RELATIVE_REFERENCES);
+		xStream.setMode(XStream.NO_REFERENCES);
 		
 		AgencyServiceModel agency = new AgencyServiceModel();
 		List<AgencyServiceModel.Company> companyList = new ArrayList<AgencyServiceModel.Company>();

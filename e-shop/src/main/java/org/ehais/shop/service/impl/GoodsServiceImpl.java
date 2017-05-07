@@ -11,7 +11,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.model.BootStrapModel;
 import org.ehais.model.ExtendsField.ExtendsFieldsTabs;
 import org.ehais.shop.mapper.HaiCartMapper;
@@ -49,7 +49,7 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 	public ReturnObject<HaiGoods> goods_list(HttpServletRequest request) throws Exception{
 		
 		ReturnObject<HaiGoods> rm = new ReturnObject<HaiGoods>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		List<BootStrapModel> bootStrapList = this.BootStrapXml(request, "goods.xml",null,"hai_goods",null,null);
 		
@@ -62,7 +62,7 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 			Integer page, Integer len) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiGoods> rm = new ReturnObject<HaiGoods>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		Integer start = (page - 1 ) * len;
 		
 		HaiGoodsExample example = new HaiGoodsExample();
@@ -84,7 +84,7 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiGoodsWithBLOBs> rm = new ReturnObject<HaiGoodsWithBLOBs>();	
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiGoodsWithBLOBs model = new HaiGoodsWithBLOBs();
 		rm.setExtendsFieldsTabs(this.formatBootStrapTab(request,model));
 		
@@ -123,7 +123,7 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 //		if(true)throw new Exception("顶你个肺的错误");
 		
 		ReturnObject<HaiGoodsWithBLOBs> rm = new ReturnObject<HaiGoodsWithBLOBs>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		model.setStoreId(store_id);
 		int code = haiGoodsMapper.insertSelective(model);
 		
@@ -151,7 +151,7 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiGoodsWithBLOBs> rm = new ReturnObject<HaiGoodsWithBLOBs>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 //		HaiGoodsWithBLOBs model = haiGoodsMapper.selectByPrimaryKey(goodsId);
 		HaiGoodsWithBLOBs model = haiGoodsMapper.get_hai_goods_info(store_id, goodsId);
 		
@@ -169,7 +169,7 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiGoodsWithBLOBs> rm = new ReturnObject<HaiGoodsWithBLOBs>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiGoodsExample example = new HaiGoodsExample();
 		HaiGoodsExample.Criteria c = example.createCriteria();
 		
@@ -241,7 +241,7 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiGoodsWithBLOBs> rm = new ReturnObject<HaiGoodsWithBLOBs>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		HaiGoodsWithBLOBs model = haiGoodsMapper.selectByPrimaryKey(goodsId);
 		rm.setBootStrapList(this.formatBootStrapList(request,model));
@@ -255,7 +255,7 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiGoods> rm = new ReturnObject<HaiGoods>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiGoodsExample example = new HaiGoodsExample();
 		HaiGoodsExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
@@ -403,10 +403,10 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		ReturnObject<HaiGoodsWithBLOBs> rm = new ReturnObject<HaiGoodsWithBLOBs>();
 		
 		if(user_id == null ){
-			user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 		}
 		if(session_shop_encode == null ){
-			session_shop_encode = (String)request.getSession().getAttribute(Constants.SESSION_SHOP_ENCODE);
+			session_shop_encode = (String)request.getSession().getAttribute(EConstants.SESSION_SHOP_ENCODE);
 		}
 		
 		HaiGoodsWithBLOBs model = haiGoodsMapper.get_app_goods(store_id, goodsId);
@@ -471,7 +471,7 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		
 		HaiGoodsExample example = new HaiGoodsExample();
 		HaiGoodsExample.Criteria c = example.createCriteria();
-		c.andStoreIdEqualTo((Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID));
+		c.andStoreIdEqualTo((Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID));
 		if(catId!=null && catId != 0)c.andCatIdEqualTo(catId);
 		example.setStart((page-1) * len );
 		example.setLen(len);

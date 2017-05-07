@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.service.impl.CommonServiceImpl;
 import org.ehais.shop.mapper.HaiGoodsGalleryMapper;
 import org.ehais.shop.model.HaiGoodsGallery;
@@ -28,7 +28,7 @@ public class GoodsGalleryServiceImpl extends CommonServiceImpl implements GoodsG
 		ReturnObject<HaiGoodsGallery> rm = new ReturnObject<HaiGoodsGallery>();
 		rm.setCode(0);
 		
-		if(store_id == null) store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		if(store_id == null) store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		HaiGoodsGalleryExample example = new HaiGoodsGalleryExample();
 		example.createCriteria().andStoreIdEqualTo(store_id).andGoodsIdEqualTo(goods_id);
@@ -46,7 +46,7 @@ public class GoodsGalleryServiceImpl extends CommonServiceImpl implements GoodsG
 		ReturnObject<HaiGoodsGallery> rm = new ReturnObject<HaiGoodsGallery>();
 		rm.setCode(0);
 		
-		if(store_id == null) store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		if(store_id == null) store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		HaiGoodsGallery goodsGallery = haiGoodsGalleryMapper.get_hai_goods_gallery_info(store_id, img_id, goods_id);
 		rm.setModel(goodsGallery);
@@ -62,7 +62,7 @@ public class GoodsGalleryServiceImpl extends CommonServiceImpl implements GoodsG
 		ReturnObject<HaiGoodsGallery> rm = new ReturnObject<HaiGoodsGallery>();
 		rm.setCode(0);
 		
-		if(model.getStoreId() == null) model.setStoreId((Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID));
+		if(model.getStoreId() == null) model.setStoreId((Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID));
 		
 		Integer i = haiGoodsGalleryMapper.insert(model);
 		rm.setMsg("新增成功");
@@ -78,7 +78,7 @@ public class GoodsGalleryServiceImpl extends CommonServiceImpl implements GoodsG
 		ReturnObject<HaiGoodsGallery> rm = new ReturnObject<HaiGoodsGallery>();
 		rm.setCode(0);
 		
-		if(model.getStoreId() == null) model.setStoreId((Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID));
+		if(model.getStoreId() == null) model.setStoreId((Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID));
 		
 		HaiGoodsGalleryExample example = new HaiGoodsGalleryExample();
 		example.createCriteria().andStoreIdEqualTo(model.getStoreId()).andImgIdEqualTo(model.getImgId());
@@ -97,7 +97,7 @@ public class GoodsGalleryServiceImpl extends CommonServiceImpl implements GoodsG
 		ReturnObject<HaiGoodsGallery> rm = new ReturnObject<HaiGoodsGallery>();
 		rm.setCode(0);
 		
-		if(store_id == null) store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		if(store_id == null) store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		HaiGoodsGalleryExample example = new HaiGoodsGalleryExample();
 		example.createCriteria()

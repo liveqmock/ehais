@@ -3,7 +3,7 @@ package org.ehais.shop.controller.api;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.shop.controller.api.include.CartIController;
 import org.ehais.shop.model.HaiCart;
 import org.ehais.shop.model.HaiCartWithBLOBs;
@@ -25,7 +25,7 @@ public class CartWSController extends CartIController{
 	@RequestMapping("/cart_list")
 	public String cart_list(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response) {
-		Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+		Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 //		if(user_id==null) user_id = 1;//临时使用
 		try{
 			ReturnObject<HaiCart> rm = cartService.cart_list(request, null,null);

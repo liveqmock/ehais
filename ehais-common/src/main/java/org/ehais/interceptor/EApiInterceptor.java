@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.ehais.cache.EApiCacheManager;
 import org.ehais.cache.EStoreAppKeySecretCacheManager;
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.util.ECommon;
 import org.ehais.util.SignUtil;
 import org.springframework.beans.factory.annotation.Autowired;

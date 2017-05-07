@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.model.BootStrapModel;
 import org.ehais.service.impl.CommonServiceImpl;
 import org.ehais.epublic.mapper.EHaiAdminUserMapper;
@@ -34,7 +34,7 @@ public class EHaiAdminUserServiceImpl  extends CommonServiceImpl implements EHai
 	public ReturnObject<EHaiAdminUser> EHaiAdminUser_list(HttpServletRequest request) throws Exception{
 		
 		ReturnObject<EHaiAdminUser> rm = new ReturnObject<EHaiAdminUser>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		rm.setCode(1);
 		return rm;
@@ -44,7 +44,7 @@ public class EHaiAdminUserServiceImpl  extends CommonServiceImpl implements EHai
 			Integer page, Integer len) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiAdminUser> rm = new ReturnObject<EHaiAdminUser>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		Integer start = (page - 1 ) * len;
 		
 		EHaiAdminUserExample example = new EHaiAdminUserExample();
@@ -66,7 +66,7 @@ public class EHaiAdminUserServiceImpl  extends CommonServiceImpl implements EHai
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiAdminUserWithBLOBs> rm = new ReturnObject<EHaiAdminUserWithBLOBs>();	
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		EHaiAdminUserWithBLOBs model = new EHaiAdminUserWithBLOBs();
 		rm.setBootStrapList(this.formatBootStrapList(model));
 		rm.setCode(1);
@@ -77,7 +77,7 @@ public class EHaiAdminUserServiceImpl  extends CommonServiceImpl implements EHai
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiAdminUserWithBLOBs> rm = new ReturnObject<EHaiAdminUserWithBLOBs>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		model.setStoreId(store_id);
 		int code = eHaiAdminUserMapper.insertSelective(model);
 		rm.setCode(code);
@@ -89,7 +89,7 @@ public class EHaiAdminUserServiceImpl  extends CommonServiceImpl implements EHai
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiAdminUserWithBLOBs> rm = new ReturnObject<EHaiAdminUserWithBLOBs>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		EHaiAdminUserWithBLOBs model = eHaiAdminUserMapper.selectByPrimaryKey(Short.valueOf(key+""));
 		rm.setBootStrapList(this.formatBootStrapList(model));
 		
@@ -102,7 +102,7 @@ public class EHaiAdminUserServiceImpl  extends CommonServiceImpl implements EHai
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiAdminUserWithBLOBs> rm = new ReturnObject<EHaiAdminUserWithBLOBs>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		EHaiAdminUserExample example = new EHaiAdminUserExample();
 		EHaiAdminUserExample.Criteria c = example.createCriteria();
 		
@@ -118,7 +118,7 @@ public class EHaiAdminUserServiceImpl  extends CommonServiceImpl implements EHai
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiAdminUserWithBLOBs> rm = new ReturnObject<EHaiAdminUserWithBLOBs>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		EHaiAdminUserWithBLOBs model = eHaiAdminUserMapper.selectByPrimaryKey(Short.valueOf(key+""));
 		rm.setBootStrapList(this.formatBootStrapList(model));
@@ -132,7 +132,7 @@ public class EHaiAdminUserServiceImpl  extends CommonServiceImpl implements EHai
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiAdminUser> rm = new ReturnObject<EHaiAdminUser>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		EHaiAdminUserExample example = new EHaiAdminUserExample();
 		EHaiAdminUserExample.Criteria c = example.createCriteria();
 		
@@ -175,18 +175,18 @@ public class EHaiAdminUserServiceImpl  extends CommonServiceImpl implements EHai
 		}
 		
 		
-		request.getSession().setAttribute(Constants.SESSION_ADMIN_ID, Integer.valueOf(adminuser.getAdminId().intValue()));
+		request.getSession().setAttribute(EConstants.SESSION_ADMIN_ID, Integer.valueOf(adminuser.getAdminId().intValue()));
 		//以后再扩展同一个商家有多个管理员
-		request.getSession().setAttribute(Constants.SESSION_STORE_ID, Integer.valueOf(adminuser.getAdminId().intValue()));
-		request.getSession().setAttribute(Constants.SESSION_ADMIN_NAME, username);
+		request.getSession().setAttribute(EConstants.SESSION_STORE_ID, Integer.valueOf(adminuser.getAdminId().intValue()));
+		request.getSession().setAttribute(EConstants.SESSION_ADMIN_NAME, username);
 		//防止应用混合登录
-		request.getSession().removeAttribute(Constants.SESSION_USER_ID);
+		request.getSession().removeAttribute(EConstants.SESSION_USER_ID);
 		
 		ThinkRole role = thinkRoleMapper.think_role_admin(adminuser.getAdminId().intValue());
 		if(role != null && role.getRoleCode() != null && !role.getRoleCode().equals("")){
-			request.getSession().setAttribute(Constants.SESSION_ROLE_TYPE, role.getRoleCode());
+			request.getSession().setAttribute(EConstants.SESSION_ROLE_TYPE, role.getRoleCode());
 		}else if(adminuser.getProjectFolder() != null && !adminuser.getProjectFolder().equals("")){
-			request.getSession().setAttribute(Constants.SESSION_ROLE_TYPE, adminuser.getProjectFolder());
+			request.getSession().setAttribute(EConstants.SESSION_ROLE_TYPE, adminuser.getProjectFolder());
 		}else{
 			rm.setMsg("角色权限未分配，请联系管理员10045");
 			return rm;
@@ -204,10 +204,10 @@ public class EHaiAdminUserServiceImpl  extends CommonServiceImpl implements EHai
 		ReturnObject<EHaiAdminUser> rm = new ReturnObject<EHaiAdminUser>();
 		rm.setCode(0);
 		
-		request.getSession().removeAttribute(Constants.SESSION_ADMIN_ID);
-		request.getSession().removeAttribute(Constants.SESSION_STORE_ID);
-		request.getSession().removeAttribute(Constants.SESSION_ADMIN_NAME);
-		request.getSession().removeAttribute(Constants.SESSION_ROLE_TYPE);
+		request.getSession().removeAttribute(EConstants.SESSION_ADMIN_ID);
+		request.getSession().removeAttribute(EConstants.SESSION_STORE_ID);
+		request.getSession().removeAttribute(EConstants.SESSION_ADMIN_NAME);
+		request.getSession().removeAttribute(EConstants.SESSION_ROLE_TYPE);
 		
 		rm.setCode(1);
 		rm.setMsg("退出成功");

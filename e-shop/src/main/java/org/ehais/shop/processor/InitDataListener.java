@@ -10,8 +10,11 @@ import org.ehais.epublic.model.EHaiStoreAppkeySecret;
 import org.ehais.epublic.model.EHaiStoreAppkeySecretExample;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.ServletContextAware;
 
+
+@Transactional(value = "qualifier", rollbackFor = Exception.class)  
 public class InitDataListener implements InitializingBean, ServletContextAware{
 
 	@Autowired

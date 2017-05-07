@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.epublic.mapper.EHaiStoreAppkeySecretMapper;
 import org.ehais.epublic.model.EHaiStoreAppkeySecret;
 import org.ehais.epublic.model.EHaiStoreAppkeySecretExample;
@@ -28,7 +28,7 @@ public class EStoreAppkeySecretServiceImpl  extends CommonServiceImpl implements
 	public ReturnObject<EHaiStoreAppkeySecret> storeappkeysecret_list(HttpServletRequest request) throws Exception{
 		
 		ReturnObject<EHaiStoreAppkeySecret> rm = new ReturnObject<EHaiStoreAppkeySecret>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		rm.setCode(1);
 		return rm;
@@ -38,7 +38,7 @@ public class EStoreAppkeySecretServiceImpl  extends CommonServiceImpl implements
 			Integer page, Integer len) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiStoreAppkeySecret> rm = new ReturnObject<EHaiStoreAppkeySecret>();
-		if(store_id == null) store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		if(store_id == null) store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		Integer start = ((page != null)? ((page - 1 ) * len ) : 0 );
 		
 		EHaiStoreAppkeySecretExample example = new EHaiStoreAppkeySecretExample();
@@ -60,7 +60,7 @@ public class EStoreAppkeySecretServiceImpl  extends CommonServiceImpl implements
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiStoreAppkeySecret> rm = new ReturnObject<EHaiStoreAppkeySecret>();	
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		EHaiStoreAppkeySecret model = new EHaiStoreAppkeySecret();
 		rm.setBootStrapList(this.formatBootStrapList(model));
 		rm.setCode(1);
@@ -78,7 +78,7 @@ public class EStoreAppkeySecretServiceImpl  extends CommonServiceImpl implements
 		}
 
 
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		model.setStoreId(store_id);
 
 		EHaiStoreAppkeySecretExample example = new EHaiStoreAppkeySecretExample();
@@ -102,7 +102,7 @@ public class EStoreAppkeySecretServiceImpl  extends CommonServiceImpl implements
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiStoreAppkeySecret> rm = new ReturnObject<EHaiStoreAppkeySecret>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		EHaiStoreAppkeySecret model = eHaiStoreAppkeySecretMapper.selectByPrimaryKey(appId);
 		rm.setBootStrapList(this.formatBootStrapList(model));
 		
@@ -115,7 +115,7 @@ public class EStoreAppkeySecretServiceImpl  extends CommonServiceImpl implements
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiStoreAppkeySecret> rm = new ReturnObject<EHaiStoreAppkeySecret>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		EHaiStoreAppkeySecretExample example = new EHaiStoreAppkeySecretExample();
 		EHaiStoreAppkeySecretExample.Criteria c = example.createCriteria();
 		
@@ -139,7 +139,7 @@ public class EStoreAppkeySecretServiceImpl  extends CommonServiceImpl implements
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiStoreAppkeySecret> rm = new ReturnObject<EHaiStoreAppkeySecret>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		EHaiStoreAppkeySecret model = eHaiStoreAppkeySecretMapper.selectByPrimaryKey(appId);
 		rm.setBootStrapList(this.formatBootStrapList(model));
@@ -153,7 +153,7 @@ public class EStoreAppkeySecretServiceImpl  extends CommonServiceImpl implements
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiStoreAppkeySecret> rm = new ReturnObject<EHaiStoreAppkeySecret>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		EHaiStoreAppkeySecretExample example = new EHaiStoreAppkeySecretExample();
 		EHaiStoreAppkeySecretExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx" 
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="
 		http://www.springframework.org/schema/beans 
@@ -10,7 +12,9 @@
 		http://www.springframework.org/schema/tx 
 		http://www.springframework.org/schema/tx/spring-tx.xsd
 		http://www.springframework.org/schema/aop 
-		http://www.springframework.org/schema/aop/spring-aop.xsd">
+		http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/mvc 
+		http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
 
 	<!-- ======================================================================== -->
 	<!-- Spring bootstrap config, only use this file in code should be sufficient -->
@@ -34,9 +38,7 @@
 		<property name="defaultEncoding" value="UTF-8"></property>
 	</bean>
 
-	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="org.ehais.shop.mapper,org.ehais.epublic.mapper" />
-	</bean>
+
 
 	<!-- Enable handling of java.util.logging through SLF4J -->
 	<!-- <bean id="slf4JBridgeHandler" class="org.slf4j.bridge.SLF4JBridgeHandler" 
@@ -92,5 +94,8 @@
 
 	<bean class="org.ehais.shop.processor.InitDataListener"></bean>
 
+
+
+	
  
 </beans>

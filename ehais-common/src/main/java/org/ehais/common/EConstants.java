@@ -1,6 +1,6 @@
 package org.ehais.common;
 
-public class Constants {
+public class EConstants {
 
 	//商户号
 	public static final String SESSION_STORE_ID = "session_store_id";

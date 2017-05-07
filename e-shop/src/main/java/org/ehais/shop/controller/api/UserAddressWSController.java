@@ -3,7 +3,7 @@ package org.ehais.shop.controller.api;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.shop.controller.api.include.UserAddressIController;
 import org.ehais.shop.model.HaiUserAddress;
 import org.ehais.tools.ReturnObject;
@@ -24,7 +24,7 @@ public class UserAddressWSController extends UserAddressIController{
 	@RequestMapping("/useraddress_lists")
 	public String useraddress_lists(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response) {
-		Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+		Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 //		if(user_id==null) user_id = 1L;//临时使用
 		try{
 			ReturnObject<HaiUserAddress> rm = useraddressService.useraddress_lists(request,user_id);
@@ -42,7 +42,7 @@ public class UserAddressWSController extends UserAddressIController{
 	public String useraddress_info(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "addressId", required = true) Long addressId) {
-		Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+		Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 //		if(user_id==null) user_id = 1;//临时使用
 		try{
 			ReturnObject<HaiUserAddress> rm = useraddressService.useraddress_info(request,addressId,user_id);

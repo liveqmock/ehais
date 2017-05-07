@@ -7,7 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.epublic.service.EUsersService;
 import org.ehais.tools.ReturnObject;
@@ -274,9 +274,9 @@ public class WeixinController extends WxCommonController{
 				String openid = "o5eMcv6IGgGFswvaK8a_tCVA-qHw";
 				Long userId = 10L;
 				String userName = "lgj628";
-				request.getSession().setAttribute(Constants.SESSION_OPEN_ID, openid);
-				request.getSession().setAttribute(Constants.SESSION_USER_ID, userId);
-				request.getSession().setAttribute(Constants.SESSION_USER_NAME, userName);
+				request.getSession().setAttribute(EConstants.SESSION_OPEN_ID, openid);
+				request.getSession().setAttribute(EConstants.SESSION_USER_ID, userId);
+				request.getSession().setAttribute(EConstants.SESSION_USER_NAME, userName);
 				
 				response.sendRedirect( controllurl );
 			}else{
@@ -321,9 +321,9 @@ public class WeixinController extends WxCommonController{
 					Long userId = null;
 					if(rm.getCode() == 1 && rm.getModel() != null){
 						userId = rm.getModel().getUserId();
-						request.getSession().setAttribute(Constants.SESSION_OPEN_ID, openid);
-						request.getSession().setAttribute(Constants.SESSION_USER_ID, userId);
-						request.getSession().setAttribute(Constants.SESSION_USER_NAME, rm.getModel().getUserName());
+						request.getSession().setAttribute(EConstants.SESSION_OPEN_ID, openid);
+						request.getSession().setAttribute(EConstants.SESSION_USER_ID, userId);
+						request.getSession().setAttribute(EConstants.SESSION_USER_NAME, rm.getModel().getUserName());
 					}
 					//保存用户信息于session中				
 					map.put("userId", userId);

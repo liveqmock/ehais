@@ -3,7 +3,7 @@ package org.ehais.weixin.controller.action;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.ehais.tools.ReturnObject;
 import org.ehais.weixin.controller.WxCommonController;
@@ -34,7 +34,7 @@ public class SurveyCatController extends WxCommonController {
 	@RequestMapping("/survey_cat_list")
 	public String survey_cat_list(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) {	
-		Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+		Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 		try{
 			modelMap.addAttribute("wxid", user_id.intValue());
 			modelMap.addAttribute("action", "survey_cat_list_json");
@@ -51,7 +51,7 @@ public class SurveyCatController extends WxCommonController {
 			@RequestParam(value = "page", required = true) Integer page,
 			@RequestParam(value = "len", required = true) Integer len) {
 		try{
-			Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			ReturnObject<WpSurveyCat> rm = surveyCatService.survey_cat_list_json(user_id.intValue(), page, len);
 			return this.writeJson(rm);
 		}catch(Exception e){
@@ -67,7 +67,7 @@ public class SurveyCatController extends WxCommonController {
 			HttpServletRequest request,HttpServletResponse response
 			) {
 		try{
-			Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			ReturnObject<WpSurveyCat> rm = surveyCatService.survey_cat_insert(user_id.intValue());
 			rm.setAction("survey_cat_insert_submit");
 			modelMap.addAttribute("rm", rm);
@@ -84,7 +84,7 @@ public class SurveyCatController extends WxCommonController {
 			@ModelAttribute WpSurveyCat survey_cat
 			) {
 		try{
-			Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 //			survey_cat.setStoreId(user_id);
 			ReturnObject<WpSurveyCat> rm = surveyCatService.survey_cat_insert_submit(survey_cat);
 			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "survey_cat_insert");
@@ -100,7 +100,7 @@ public class SurveyCatController extends WxCommonController {
 			@RequestParam(value = "keyId", required = true) Integer keyId
 			) {
 		try{
-			Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			ReturnObject<WpSurveyCat> rm = surveyCatService.survey_cat_update(user_id.intValue(), keyId);
 			rm.setAction("survey_cat_update_submit");
 			modelMap.addAttribute("rm", rm);
@@ -116,7 +116,7 @@ public class SurveyCatController extends WxCommonController {
 			@ModelAttribute WpSurveyCat survey_cat
 			) {
 		try{
-			Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 //			survey_cat.setStoreId(user_id);
 			ReturnObject<WpSurveyCat> rm = surveyCatService.survey_cat_update_submit(survey_cat);
 			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "survey_cat_list");
@@ -134,7 +134,7 @@ public class SurveyCatController extends WxCommonController {
 			@RequestParam(value = "code", required = false) String code
 			) {
 		try{
-			Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			ReturnObject<WpSurveyCat> rm = surveyCatService.survey_cat_delete(user_id.intValue(), keyId);
 			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "survey_cat_list");
 		}catch(Exception e){

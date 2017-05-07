@@ -8,7 +8,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.model.BootStrapModel;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.EHttpClientUtil;
@@ -36,7 +36,7 @@ public class AdServiceImpl  extends WeiXinCommonServiceImpl implements AdService
 	public ReturnObject<HaiAd> ad_list(HttpServletRequest request) throws Exception{
 		
 		ReturnObject<HaiAd> rm = new ReturnObject<HaiAd>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 		
 		rm.setCode(1);
 		return rm;
@@ -46,7 +46,7 @@ public class AdServiceImpl  extends WeiXinCommonServiceImpl implements AdService
 			Integer page, Integer len) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiAd> rm = new ReturnObject<HaiAd>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 		Integer start = (page - 1 ) * len;
 		
 		HaiAdExample example = new HaiAdExample();
@@ -92,7 +92,7 @@ public class AdServiceImpl  extends WeiXinCommonServiceImpl implements AdService
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiAd> rm = new ReturnObject<HaiAd>();	
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 		HaiAd model = new HaiAd();
 		rm.setBootStrapList(this.formatBootStrapList(model));
 		rm.setCode(1);
@@ -115,7 +115,7 @@ public class AdServiceImpl  extends WeiXinCommonServiceImpl implements AdService
 		}
 
 
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 		model.setStoreId(store_id);
 		model.setStartTime(new Date());
 		model.setEndTime(new Date());
@@ -140,7 +140,7 @@ public class AdServiceImpl  extends WeiXinCommonServiceImpl implements AdService
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiAd> rm = new ReturnObject<HaiAd>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 		HaiAd model = haiAdMapper.selectByPrimaryKey(Short.valueOf(adId+""));
 		rm.setBootStrapList(this.formatBootStrapList(model));
 		
@@ -153,7 +153,7 @@ public class AdServiceImpl  extends WeiXinCommonServiceImpl implements AdService
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiAd> rm = new ReturnObject<HaiAd>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 		HaiAdExample example = new HaiAdExample();
 		HaiAdExample.Criteria c = example.createCriteria();
 		
@@ -194,7 +194,7 @@ public class AdServiceImpl  extends WeiXinCommonServiceImpl implements AdService
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiAd> rm = new ReturnObject<HaiAd>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 		
 		HaiAd model = haiAdMapper.selectByPrimaryKey(Short.valueOf(adId+""));
 		rm.setBootStrapList(this.formatBootStrapList(model));
@@ -208,7 +208,7 @@ public class AdServiceImpl  extends WeiXinCommonServiceImpl implements AdService
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiAd> rm = new ReturnObject<HaiAd>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 		HaiAdExample example = new HaiAdExample();
 		HaiAdExample.Criteria c = example.createCriteria();
 		c.andStoreIdEqualTo(store_id);

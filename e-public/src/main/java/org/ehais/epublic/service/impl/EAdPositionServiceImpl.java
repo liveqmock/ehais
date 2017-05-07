@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.epublic.mapper.EHaiAdPositionMapper;
 import org.ehais.epublic.model.EHaiAdPosition;
 import org.ehais.epublic.model.EHaiAdPositionExample;
@@ -28,7 +28,7 @@ public class EAdPositionServiceImpl  extends CommonServiceImpl implements EAdPos
 	public ReturnObject<EHaiAdPosition> adposition_list(HttpServletRequest request) throws Exception{
 		
 		ReturnObject<EHaiAdPosition> rm = new ReturnObject<EHaiAdPosition>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		rm.setCode(1);
 		return rm;
@@ -38,7 +38,7 @@ public class EAdPositionServiceImpl  extends CommonServiceImpl implements EAdPos
 			Integer page, Integer len) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiAdPosition> rm = new ReturnObject<EHaiAdPosition>();
-		if(store_id == null) store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		if(store_id == null) store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		Integer start = (page - 1 ) * len;
 		
 		EHaiAdPositionExample example = new EHaiAdPositionExample();
@@ -60,7 +60,7 @@ public class EAdPositionServiceImpl  extends CommonServiceImpl implements EAdPos
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiAdPosition> rm = new ReturnObject<EHaiAdPosition>();	
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		EHaiAdPosition model = new EHaiAdPosition();
 		rm.setBootStrapList(this.formatBootStrapList(model));
 		rm.setCode(1);
@@ -78,7 +78,7 @@ public class EAdPositionServiceImpl  extends CommonServiceImpl implements EAdPos
 		}
 
 
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		model.setStoreId(store_id);
 
 		EHaiAdPositionExample example = new EHaiAdPositionExample();
@@ -102,7 +102,7 @@ public class EAdPositionServiceImpl  extends CommonServiceImpl implements EAdPos
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiAdPosition> rm = new ReturnObject<EHaiAdPosition>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		EHaiAdPosition model = eHaiAdPositionMapper.selectByPrimaryKey(Short.valueOf(positionId+""));
 		rm.setBootStrapList(this.formatBootStrapList(model));
 		
@@ -115,7 +115,7 @@ public class EAdPositionServiceImpl  extends CommonServiceImpl implements EAdPos
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiAdPosition> rm = new ReturnObject<EHaiAdPosition>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		EHaiAdPositionExample example = new EHaiAdPositionExample();
 		EHaiAdPositionExample.Criteria c = example.createCriteria();
 		
@@ -139,7 +139,7 @@ public class EAdPositionServiceImpl  extends CommonServiceImpl implements EAdPos
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiAdPosition> rm = new ReturnObject<EHaiAdPosition>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		EHaiAdPosition model = eHaiAdPositionMapper.selectByPrimaryKey(Short.valueOf(positionId+""));
 		rm.setBootStrapList(this.formatBootStrapList(model));
@@ -153,7 +153,7 @@ public class EAdPositionServiceImpl  extends CommonServiceImpl implements EAdPos
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiAdPosition> rm = new ReturnObject<EHaiAdPosition>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		EHaiAdPositionExample example = new EHaiAdPositionExample();
 		EHaiAdPositionExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));

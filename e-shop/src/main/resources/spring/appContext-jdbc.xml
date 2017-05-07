@@ -25,6 +25,8 @@
            <value>java:comp/env/jndi/ehais</value>
        </property>
 	</bean>
+
+	
 	<!-- 
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close">
@@ -64,7 +66,9 @@
 	<bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
+		<qualifier value="qualifier" />
 	</bean>
+
 
 	<!-- 创建SqlSessionFactory -->
 	<bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
@@ -73,5 +77,10 @@
 		<property name="mapperLocations" value="classpath*:mapper/**/*.xml" />
 	</bean>
 
+
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="org.ehais.shop.mapper,org.ehais.epublic.mapper" />
+	</bean>
+	
 </beans>
 

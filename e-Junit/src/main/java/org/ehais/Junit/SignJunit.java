@@ -2,7 +2,6 @@ package org.ehais.Junit;
 
 import java.util.Properties;
 
-import org.ehais.util.ECommon;
 import org.ehais.util.EncryptUtils;
 import org.ehais.util.SignUtil;
 import org.ehais.weixin.model.WeiXinUnifiedOrder;

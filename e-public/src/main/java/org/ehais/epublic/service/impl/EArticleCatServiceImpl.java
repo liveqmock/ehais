@@ -7,7 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.epublic.mapper.EHaiArticleCatMapper;
 import org.ehais.epublic.model.EHaiArticleCat;
 import org.ehais.epublic.model.EHaiArticleCatExample;
@@ -31,7 +31,7 @@ public class EArticleCatServiceImpl  extends EArticleCommonServiceImpl implement
 	public ReturnObject<EHaiArticleCat> articlecat_list(HttpServletRequest request) throws Exception{
 		
 		ReturnObject<EHaiArticleCat> rm = new ReturnObject<EHaiArticleCat>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		rm.setCode(1);
 		return rm;
@@ -41,7 +41,7 @@ public class EArticleCatServiceImpl  extends EArticleCommonServiceImpl implement
 			Integer page, Integer len) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticleCat> rm = new ReturnObject<EHaiArticleCat>();
-		if(store_id == null) store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		if(store_id == null) store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		Integer start = (page - 1 ) * len;
 		
 		EHaiArticleCatExample example = new EHaiArticleCatExample();
@@ -63,7 +63,7 @@ public class EArticleCatServiceImpl  extends EArticleCommonServiceImpl implement
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticleCat> rm = new ReturnObject<EHaiArticleCat>();	
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		EHaiArticleCat model = new EHaiArticleCat();
 		rm.setBootStrapList(this.formatBootStrapList(request,model));
 		rm.setCode(1);
@@ -81,7 +81,7 @@ public class EArticleCatServiceImpl  extends EArticleCommonServiceImpl implement
 		}
 
 
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		model.setStoreId(store_id);
 
 		EHaiArticleCatExample example = new EHaiArticleCatExample();
@@ -105,7 +105,7 @@ public class EArticleCatServiceImpl  extends EArticleCommonServiceImpl implement
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticleCat> rm = new ReturnObject<EHaiArticleCat>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		EHaiArticleCat model = eHaiArticleCatMapper.selectByPrimaryKey(catId);
 		rm.setBootStrapList(this.formatBootStrapList(request,model));
 		
@@ -118,7 +118,7 @@ public class EArticleCatServiceImpl  extends EArticleCommonServiceImpl implement
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticleCat> rm = new ReturnObject<EHaiArticleCat>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		EHaiArticleCatExample example = new EHaiArticleCatExample();
 		EHaiArticleCatExample.Criteria c = example.createCriteria();
 		
@@ -142,7 +142,7 @@ public class EArticleCatServiceImpl  extends EArticleCommonServiceImpl implement
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticleCat> rm = new ReturnObject<EHaiArticleCat>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		EHaiArticleCat model = eHaiArticleCatMapper.selectByPrimaryKey(catId);
 		rm.setBootStrapList(this.formatBootStrapList(request,model));
@@ -156,7 +156,7 @@ public class EArticleCatServiceImpl  extends EArticleCommonServiceImpl implement
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticleCat> rm = new ReturnObject<EHaiArticleCat>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		EHaiArticleCatExample example = new EHaiArticleCatExample();
 		EHaiArticleCatExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
@@ -192,7 +192,7 @@ public class EArticleCatServiceImpl  extends EArticleCommonServiceImpl implement
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<TreeModel> rm = new ReturnObject<TreeModel>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		Integer start = (page - 1 ) * len;
 		
 		EHaiArticleCatExample example = new EHaiArticleCatExample();

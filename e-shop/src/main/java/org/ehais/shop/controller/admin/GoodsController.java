@@ -3,7 +3,7 @@ package org.ehais.shop.controller.admin;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.ehais.shop.model.HaiGoods;
 import org.ehais.shop.model.HaiGoodsWithBLOBs;
@@ -33,7 +33,7 @@ public class  GoodsController extends CommonController {
 	@RequestMapping("/goods_list")
 	public String goods_list(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) {	
-		Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+		Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 		try{
 			ReturnObject<HaiGoods> rm = goodsService.goods_list(request);
 			modelMap.addAttribute("wxid", user_id);

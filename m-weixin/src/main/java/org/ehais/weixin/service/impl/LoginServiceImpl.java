@@ -4,7 +4,7 @@ import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.epublic.mapper.EHaiUsersMapper;
 import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.tools.ReturnObject;
@@ -44,15 +44,15 @@ public class LoginServiceImpl implements LoginService{
 			p.setUid(user.getUserId());
 			wpPublicMapper.insertSelective(p);
 		}
-		request.getSession().setAttribute(Constants.SESSION_WX_ID,p.getId());
+		request.getSession().setAttribute(EConstants.SESSION_WX_ID,p.getId());
 		
 
-		request.getSession().setAttribute(Constants.SESSION_USER_NAME,userName);
-		request.getSession().setAttribute(Constants.SESSION_USER_ID,user.getUserId());
-		request.getSession().setAttribute(Constants.SESSION_ROLE_TYPE, "user");
+		request.getSession().setAttribute(EConstants.SESSION_USER_NAME,userName);
+		request.getSession().setAttribute(EConstants.SESSION_USER_ID,user.getUserId());
+		request.getSession().setAttribute(EConstants.SESSION_ROLE_TYPE, "user");
 		
-		request.getSession().removeAttribute(Constants.SESSION_ADMIN_ID);//防止应用出错
-		request.getSession().removeAttribute(Constants.SESSION_STORE_ID);//防止应用出错
+		request.getSession().removeAttribute(EConstants.SESSION_ADMIN_ID);//防止应用出错
+		request.getSession().removeAttribute(EConstants.SESSION_STORE_ID);//防止应用出错
 		
 		
 		

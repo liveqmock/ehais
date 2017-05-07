@@ -3,7 +3,7 @@ package org.ehais.shop.controller.mobile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

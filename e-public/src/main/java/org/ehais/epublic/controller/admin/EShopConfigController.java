@@ -6,7 +6,7 @@ import java.util.Enumeration;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.ehais.epublic.model.HaiShopConfig;
 import org.ehais.epublic.service.ShopConfigService;
@@ -36,7 +36,7 @@ public class  EShopConfigController extends CommonController {
 			) {
 		try{
 			
-			String ROLE = (String) request.getSession().getAttribute(Constants.SESSION_ROLE_TYPE);
+			String ROLE = (String) request.getSession().getAttribute(EConstants.SESSION_ROLE_TYPE);
 			
 			if(ROLE!=null && !ROLE.equals("")) {
 				ROLE="_"+ROLE;

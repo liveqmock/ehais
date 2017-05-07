@@ -3,7 +3,7 @@ package org.ehais.epublic.controller.admin;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.ehais.epublic.model.EHaiArticle;
 import org.ehais.epublic.service.EArticleService;

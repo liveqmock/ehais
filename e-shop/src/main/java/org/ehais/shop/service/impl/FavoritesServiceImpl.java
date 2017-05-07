@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.model.BootStrapModel;
 import org.ehais.service.impl.CommonServiceImpl;
 import org.ehais.shop.mapper.HaiFavoritesMapper;
@@ -34,7 +34,7 @@ public class FavoritesServiceImpl  extends CommonServiceImpl implements Favorite
 	public ReturnObject<HaiFavorites> favorites_list(HttpServletRequest request) throws Exception{
 		
 		ReturnObject<HaiFavorites> rm = new ReturnObject<HaiFavorites>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		rm.setCode(1);
 		return rm;
@@ -44,7 +44,7 @@ public class FavoritesServiceImpl  extends CommonServiceImpl implements Favorite
 			Integer page, Integer len) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiFavorites> rm = new ReturnObject<HaiFavorites>();
-		if(store_id == null) store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		if(store_id == null) store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		Integer start = ((page != null)? ((page - 1 ) * len ) : 0 );
 		
 		HaiFavoritesExample example = new HaiFavoritesExample();
@@ -66,7 +66,7 @@ public class FavoritesServiceImpl  extends CommonServiceImpl implements Favorite
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiFavorites> rm = new ReturnObject<HaiFavorites>();	
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiFavorites model = new HaiFavorites();
 		rm.setBootStrapList(this.formatBootStrapList(model));
 		rm.setCode(1);
@@ -84,7 +84,7 @@ public class FavoritesServiceImpl  extends CommonServiceImpl implements Favorite
 //		}
 
 
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		model.setStoreId(store_id);
 
 		HaiFavoritesExample example = new HaiFavoritesExample();
@@ -108,7 +108,7 @@ public class FavoritesServiceImpl  extends CommonServiceImpl implements Favorite
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiFavorites> rm = new ReturnObject<HaiFavorites>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiFavorites model = haiFavoritesMapper.selectByPrimaryKey(id);
 		rm.setBootStrapList(this.formatBootStrapList(model));
 		
@@ -121,7 +121,7 @@ public class FavoritesServiceImpl  extends CommonServiceImpl implements Favorite
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiFavorites> rm = new ReturnObject<HaiFavorites>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiFavoritesExample example = new HaiFavoritesExample();
 		HaiFavoritesExample.Criteria c = example.createCriteria();
 		
@@ -145,7 +145,7 @@ public class FavoritesServiceImpl  extends CommonServiceImpl implements Favorite
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiFavorites> rm = new ReturnObject<HaiFavorites>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		HaiFavorites model = haiFavoritesMapper.selectByPrimaryKey(id);
 		rm.setBootStrapList(this.formatBootStrapList(model));
@@ -159,7 +159,7 @@ public class FavoritesServiceImpl  extends CommonServiceImpl implements Favorite
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiFavorites> rm = new ReturnObject<HaiFavorites>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiFavoritesExample example = new HaiFavoritesExample();
 		HaiFavoritesExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
@@ -187,10 +187,10 @@ public class FavoritesServiceImpl  extends CommonServiceImpl implements Favorite
 		rm.setCode(0);
 		
 		if(user_id == null ){
-			user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 		}
 		if(session_shop_encode == null ){
-			session_shop_encode = (String)request.getSession().getAttribute(Constants.SESSION_SHOP_ENCODE);
+			session_shop_encode = (String)request.getSession().getAttribute(EConstants.SESSION_SHOP_ENCODE);
 		}
 		
 		HaiFavoritesExample fExample = new HaiFavoritesExample();
@@ -219,7 +219,7 @@ public class FavoritesServiceImpl  extends CommonServiceImpl implements Favorite
 			Integer len,String session_shop_encode) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiGoods> rm = new ReturnObject<HaiGoods>();
-		if(user_id == null) user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+		if(user_id == null) user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 		Integer start = ((page != null)? ((page - 1 ) * len ) : 0 );
 		
 		

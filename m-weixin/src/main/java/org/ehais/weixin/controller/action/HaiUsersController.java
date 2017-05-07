@@ -2,7 +2,7 @@ package org.ehais.weixin.controller.action;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.tools.ReturnObject;
@@ -35,7 +35,7 @@ public class  HaiUsersController extends CommonController {
 			HttpServletRequest request,HttpServletResponse response
 			) {
 		try{
-			Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			ReturnObject<EHaiUsers> rm = HaiUsersService.modifyPassword(request,user_id.intValue());
 			rm.setAction("modifyPasswordSubmit");
 			modelMap.addAttribute("rm", rm);

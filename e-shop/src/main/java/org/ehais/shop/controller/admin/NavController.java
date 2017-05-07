@@ -3,7 +3,7 @@ package org.ehais.shop.controller.admin;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.ehais.shop.model.HaiNav;
 import org.ehais.shop.service.NavService;
@@ -32,7 +32,7 @@ public class  NavController extends CommonController {
 	@RequestMapping("/nav_list")
 	public String nav_list(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) {	
-		Integer user_id = (Integer)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+		Integer user_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 		try{
 			modelMap.addAttribute("wxid", user_id);
 			modelMap.addAttribute("action", "nav_list_json");

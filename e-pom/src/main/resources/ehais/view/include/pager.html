@@ -6,7 +6,7 @@
 	<#local pageCount = ReturnObject.pageCount />
 	<#local parameter = "" />
 
-	<#local parameter = parameter + "&len=" + pageSize  />
+	<#local parameter = parameter + "&rows=" + pageSize  />
 	<#if ReturnObject.parameterMap??>
 	<#list ReturnObject.parameterMap?keys as key>
 		<#if ReturnObject.parameterMap[key]?? >

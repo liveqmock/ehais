@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.enums.OrderStatusEnum;
 import org.ehais.epublic.mapper.HaiOrderPayExtendsMapper;
 import org.ehais.epublic.mapper.HaiOrderPayRecordMapper;
@@ -44,7 +44,7 @@ public class OrderPayRecordServiceImpl  extends CommonServiceImpl implements Ord
 			EConditionObject condition,Integer tableId,String tableName) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiOrderPayRecordAndUsers> rm = new ReturnObject<HaiOrderPayRecordAndUsers>();
-		if(store_id == null) store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		if(store_id == null) store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		condition.setStore_id(store_id);
 		Integer start = ((condition.getPage() != null)? ((condition.getPage() - 1 ) * condition.getRows() ) : 0 );
 		

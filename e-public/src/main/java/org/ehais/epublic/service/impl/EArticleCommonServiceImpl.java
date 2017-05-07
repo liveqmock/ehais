@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.epublic.mapper.EHaiArticleCatMapper;
 import org.ehais.epublic.mapper.EHaiArticleMapper;
 import org.ehais.epublic.model.EHaiArticleCat;
@@ -23,7 +23,7 @@ public class EArticleCommonServiceImpl extends CommonServiceImpl{
 	protected EHaiArticleMapper eHaiArticleMapper;
 	
 	protected List<TreeModel> eTreeArticleCat(HttpServletRequest request){
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 
 		EHaiArticleCatExample example = new EHaiArticleCatExample();
 		EHaiArticleCatExample.Criteria c = example.createCriteria();

@@ -7,7 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.model.BootStrapModel;
 import org.ehais.model.TreeModel;
 import org.ehais.service.impl.CommonServiceImpl;
@@ -32,7 +32,7 @@ public class ArticleCatServiceImpl  extends ArticleCommonServiceImpl implements 
 	public ReturnObject<HaiArticleCat> articlecat_list(HttpServletRequest request) throws Exception{
 		
 		ReturnObject<HaiArticleCat> rm = new ReturnObject<HaiArticleCat>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 		
 		rm.setCode(1);
 		return rm;
@@ -67,7 +67,7 @@ public class ArticleCatServiceImpl  extends ArticleCommonServiceImpl implements 
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiArticleCat> rm = new ReturnObject<HaiArticleCat>();	
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 		HaiArticleCat model = new HaiArticleCat();
 		rm.setBootStrapList(this.formatBootStrapList(request,model));
 		rm.setCode(1);
@@ -97,7 +97,7 @@ public class ArticleCatServiceImpl  extends ArticleCommonServiceImpl implements 
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiArticleCat> rm = new ReturnObject<HaiArticleCat>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 		HaiArticleCat model = haiArticleCatMapper.selectByPrimaryKey(Short.valueOf(catId+""));
 		rm.setBootStrapList(this.formatBootStrapList(request,model));
 		
@@ -135,7 +135,7 @@ public class ArticleCatServiceImpl  extends ArticleCommonServiceImpl implements 
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiArticleCat> rm = new ReturnObject<HaiArticleCat>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 		
 		HaiArticleCat model = haiArticleCatMapper.selectByPrimaryKey(Short.valueOf(catId+""));
 		rm.setBootStrapList(this.formatBootStrapList(request,model));
@@ -149,7 +149,7 @@ public class ArticleCatServiceImpl  extends ArticleCommonServiceImpl implements 
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiArticleCat> rm = new ReturnObject<HaiArticleCat>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 		HaiArticleCatExample example = new HaiArticleCatExample();
 		HaiArticleCatExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));

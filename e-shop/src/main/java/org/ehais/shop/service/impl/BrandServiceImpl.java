@@ -7,7 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.model.BootStrapModel;
 import org.ehais.service.impl.CommonServiceImpl;
 import org.ehais.shop.mapper.HaiBrandMapper;
@@ -32,7 +32,7 @@ public class BrandServiceImpl  extends CommonServiceImpl implements BrandService
 	public ReturnObject<HaiBrand> brand_list(HttpServletRequest request) throws Exception{
 		
 		ReturnObject<HaiBrand> rm = new ReturnObject<HaiBrand>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		rm.setCode(1);
 		return rm;
@@ -42,7 +42,7 @@ public class BrandServiceImpl  extends CommonServiceImpl implements BrandService
 			Integer page, Integer len) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiBrand> rm = new ReturnObject<HaiBrand>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		Integer start = (page - 1 ) * len;
 		
 		HaiBrandExample example = new HaiBrandExample();
@@ -66,7 +66,7 @@ public class BrandServiceImpl  extends CommonServiceImpl implements BrandService
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiBrand> rm = new ReturnObject<HaiBrand>();	
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiBrand model = new HaiBrand();
 //		rm.setBootStrapList(this.formatBootStrapList(model));
 		rm.setBootStrapList(this.BootStrapXml(request, "brand.xml", model, "hai_brand", null));
@@ -78,7 +78,7 @@ public class BrandServiceImpl  extends CommonServiceImpl implements BrandService
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiBrand> rm = new ReturnObject<HaiBrand>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		model.setStoreId(store_id);
 		int code = haiBrandMapper.insertSelective(model);
 		rm.setCode(code);
@@ -90,7 +90,7 @@ public class BrandServiceImpl  extends CommonServiceImpl implements BrandService
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiBrand> rm = new ReturnObject<HaiBrand>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiBrand model = haiBrandMapper.selectByPrimaryKey(Short.valueOf(brandId+""));
 		rm.setBootStrapList(this.formatBootStrapList(request,model));
 		
@@ -103,7 +103,7 @@ public class BrandServiceImpl  extends CommonServiceImpl implements BrandService
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiBrand> rm = new ReturnObject<HaiBrand>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiBrandExample example = new HaiBrandExample();
 		HaiBrandExample.Criteria c = example.createCriteria();
 		
@@ -119,7 +119,7 @@ public class BrandServiceImpl  extends CommonServiceImpl implements BrandService
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiBrand> rm = new ReturnObject<HaiBrand>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		HaiBrand model = haiBrandMapper.selectByPrimaryKey(Short.valueOf(brandId+""));
 		rm.setBootStrapList(this.formatBootStrapList(request,model));
@@ -133,7 +133,7 @@ public class BrandServiceImpl  extends CommonServiceImpl implements BrandService
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiBrand> rm = new ReturnObject<HaiBrand>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiBrandExample example = new HaiBrandExample();
 		HaiBrandExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
@@ -176,7 +176,7 @@ public class BrandServiceImpl  extends CommonServiceImpl implements BrandService
 		
 		HaiBrandExample example = new HaiBrandExample();
 		HaiBrandExample.Criteria c = example.createCriteria();
-		c.andStoreIdEqualTo((Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID));
+		c.andStoreIdEqualTo((Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID));
 		c.andIsShowEqualTo(true);
 		
 		List<HaiBrand> list = haiBrandMapper.hai_brand_list_by_example(example);

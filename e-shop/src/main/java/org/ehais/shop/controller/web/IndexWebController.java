@@ -5,7 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.ehais.epublic.model.EHaiAd;
 import org.ehais.shop.model.HaiBrand;
@@ -53,18 +53,18 @@ public class IndexWebController extends CommonController{
 	
 	
 	public void initWebController(HttpServletRequest request){	
-		if(request.getSession().getAttribute(Constants.SESSION_SHOP_ENCODE) == null){
+		if(request.getSession().getAttribute(EConstants.SESSION_SHOP_ENCODE) == null){
 			//生成随机数的session
 			String webSession = ECommon.nonceStr(32);
-			request.getSession().setAttribute(Constants.SESSION_SHOP_ENCODE, webSession);
+			request.getSession().setAttribute(EConstants.SESSION_SHOP_ENCODE, webSession);
 			System.out.println("网站的随机数："+webSession);
 		}
 		
 		//获取store_id 如果是空则有默认
 		if(request.getParameter("store_id") != null){
-			request.getSession().setAttribute(Constants.SESSION_STORE_ID, Integer.valueOf(request.getParameter("store_id")));
+			request.getSession().setAttribute(EConstants.SESSION_STORE_ID, Integer.valueOf(request.getParameter("store_id")));
 		}else{
-			request.getSession().setAttribute(Constants.SESSION_STORE_ID, 3);
+			request.getSession().setAttribute(EConstants.SESSION_STORE_ID, 3);
 		}
 	}
 	

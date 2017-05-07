@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.model.TreeModel;
 import org.ehais.service.impl.CommonServiceImpl;
 import org.ehais.tools.CriteriaObject;
@@ -23,7 +23,7 @@ public class ArticleCommonServiceImpl extends WeiXinCommonServiceImpl{
 	
 	
 	protected TreeUtil treeArticleCat(HttpServletRequest request){
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 
 		HaiArticleCatExample example = new HaiArticleCatExample();
 		HaiArticleCatExample.Criteria c = example.createCriteria();

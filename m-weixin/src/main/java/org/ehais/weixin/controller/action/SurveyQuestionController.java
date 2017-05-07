@@ -3,7 +3,7 @@ package org.ehais.weixin.controller.action;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.ehais.tools.ReturnObject;
 import org.ehais.weixin.controller.WxCommonController;
@@ -36,7 +36,7 @@ public class SurveyQuestionController extends WxCommonController {
 	public String survey_question_list(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "survey_id", required = true) Integer survey_id) {	
-		Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+		Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 		try{
 			modelMap.addAttribute("wxid", user_id.intValue());
 			modelMap.addAttribute("survey_id", survey_id);
@@ -58,7 +58,7 @@ public class SurveyQuestionController extends WxCommonController {
 			@RequestParam(value = "page", required = true) Integer page,
 			@RequestParam(value = "len", required = true) Integer len) {
 		try{
-			Integer wx_id = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+			Integer wx_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 			ReturnObject<WpSurveyQuestion> rm = surveyQuestionService.survey_question_list_json(weiXinService.getWpPublic(wx_id).getToken(),survey_id, page, len);
 			return this.writeJson(rm);
 		}catch(Exception e){
@@ -74,7 +74,7 @@ public class SurveyQuestionController extends WxCommonController {
 			HttpServletRequest request,HttpServletResponse response
 			) {
 		try{
-			Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			ReturnObject<WpSurveyQuestionWithBLOBs> rm = surveyQuestionService.survey_question_insert(user_id.intValue());
 			rm.setAction("survey_question_insert_submit");
 			modelMap.addAttribute("rm", rm);
@@ -92,7 +92,7 @@ public class SurveyQuestionController extends WxCommonController {
 			@ModelAttribute WpSurveyQuestionWithBLOBs survey_question
 			) {
 		try{
-			Integer wx_id = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+			Integer wx_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 			survey_question.setToken(weiXinService.getWpPublic(wx_id).getToken());
 			ReturnObject<WpSurveyQuestionWithBLOBs> rm = surveyQuestionService.survey_question_insert_submit(survey_question);
 			return this.writeJson(rm);
@@ -108,7 +108,7 @@ public class SurveyQuestionController extends WxCommonController {
 			@RequestParam(value = "id", required = true) Integer id
 			) {
 		try{
-			Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			ReturnObject<WpSurveyQuestionWithBLOBs> rm = surveyQuestionService.survey_question_update(user_id.intValue(), id);
 			rm.setAction("survey_question_update_submit");
 			modelMap.addAttribute("rm", rm);
@@ -125,7 +125,7 @@ public class SurveyQuestionController extends WxCommonController {
 			@ModelAttribute WpSurveyQuestionWithBLOBs survey_question
 			) {
 		try{
-			Integer wx_id = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+			Integer wx_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 			survey_question.setToken(weiXinService.getWpPublic(wx_id).getToken());
 //			survey_question.setStoreId(user_id);
 			ReturnObject<WpSurveyQuestionWithBLOBs> rm = surveyQuestionService.survey_question_update_submit(survey_question);
@@ -145,7 +145,7 @@ public class SurveyQuestionController extends WxCommonController {
 			@RequestParam(value = "code", required = false) String code
 			) {
 		try{
-			Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			ReturnObject<WpSurveyQuestion> rm = surveyQuestionService.survey_question_delete(user_id.intValue(), id);
 			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "survey_question_list");
 		}catch(Exception e){
@@ -162,7 +162,7 @@ public class SurveyQuestionController extends WxCommonController {
 			@RequestParam(value = "id", required = true) Integer id
 			) {
 		try{
-			Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			ReturnObject<WpSurveyQuestionWithBLOBs> rm = surveyQuestionService.survey_question_find(user_id.intValue(), id);
 			return this.writeJson(rm);
 		}catch(Exception e){

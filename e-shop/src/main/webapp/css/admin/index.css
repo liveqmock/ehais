@@ -9,17 +9,18 @@
 
 
 .nav-list > li .submenu > li > a {
-    border-bottom: 1px solid #e5e5e5;
-    border-top: 1px solid #fcfcfc;
-    color: #616161;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05) inset;
+    color: #f4f4f4;
     display: block;
     font-size: 14px;
     margin: 0;
     padding: 7px 0 8px 18px;
     position: relative;
-    background: #f9f9f9;
+    background: #303030;
 }
-
+.nav-list > li a{text-decoration: none;}
+.nav-list > li .submenu > li > a:FOCUS,.nav-list > li .submenu > li > a:HOVER{background: #202020;color: #f4f4f4;}
 .nav-list > li .submenu > li > a > i[class*=" fa-"]{
 	margin-right: 5px;
 }
@@ -64,16 +65,23 @@
 }
 
 .nav-list > li > a {
-    background-color: #f9f9f9;
-    color: #585858;
+    background-color: #3a3a3a;
+    color: #f4f4f4;
     display: block;
-    font-size: 13px;
-    height: 38px;
-    line-height: 36px;
+    font-size: 14px;
+    height: 43px;
+    line-height: 40px;
     padding: 0 16px 0 7px;
     text-decoration: none;
-    text-shadow: none !important;
-    border-bottom: 1px solid #e5e5e5;
+    text-shadow: none !important;    
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05) inset;
+
+    
+}
+
+.nav-list > li > a:FOCUS,.nav-list > li > a:HOVER{
+	background-color: #2e2e2e;
 }
 
 li [class^="fa-"], li [class*=" fa-"], .nav-list li [class^="fa-"], .nav-list li [class*=" fa-"] {
@@ -88,11 +96,6 @@ li [class^="fa-"], li [class*=" fa-"], .nav-list li [class^="fa-"], .nav-list li
     vertical-align: middle;
 }
 
-
-
-.nav-list > li > a {
-    background-color: #f4f4f4;
-}
 
 .simplewind-nav > li {
     background: #2e6589 none repeat scroll 0 0;
@@ -120,7 +123,7 @@ li [class^="fa-"], li [class*=" fa-"], .nav-list li [class^="fa-"], .nav-list li
     position: absolute;
     right: 9px;
     text-shadow: none;
-    top: 11px;
+    top: 14px;
     width: 14px !important;
 }
 
@@ -249,3 +252,10 @@ li [class^="fa-"], li [class*=" fa-"], .nav-list li [class^="fa-"], .nav-list li
 	border-top: 1px;border-left: 0;border-bottom: 0;
 }
 **/
+.layout-panel-west .panel-header{
+	border: 0;
+}
+.panel-header,.layout-panel-east, .layout-panel-west,.layout-panel-west .layout-body{
+	background: #3a3a3a;border: 0;
+}
+.layout-panel-north .layout-body{border-left: 0;border-top: 0;border-right: 0;border-bottom: 1px solid #808080;box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05) inset;}

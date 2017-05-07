@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.epublic.mapper.ECommonMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -36,7 +36,7 @@ public class EUniqueValidator implements ConstraintValidator<EUnique, String> {
     	System.out.println(request.getRequestURI());
     			
     	if(str != null && !str.equals("")){
-        	int c = eCommonMapper.commonUniqueStore(tableName, fieldName, str,(Integer)request.getSession().getAttribute(Constants.SESSION_ADMIN_ID) );
+        	int c = eCommonMapper.commonUniqueStore(tableName, fieldName, str,(Integer)request.getSession().getAttribute(EConstants.SESSION_ADMIN_ID) );
             if(c <= 0){    
                 return true;    
             }else{

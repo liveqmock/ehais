@@ -9,7 +9,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.epublic.mapper.HaiShopConfigMapper;
 import org.ehais.epublic.model.HaiShopConfig;
 import org.ehais.epublic.model.HaiShopConfigExample;
@@ -38,7 +38,7 @@ public class ShopConfigServiceImpl  extends CommonServiceImpl implements ShopCon
 			throws Exception {
 		// TODO Auto-generated method stub  ,HaiShopConfig model
 		ReturnObject<HaiShopConfig> rm = new ReturnObject<HaiShopConfig>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_ADMIN_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_ADMIN_ID);
 		HaiShopConfigExample example = new HaiShopConfigExample();
 		HaiShopConfigExample.Criteria c = null;
 		int count = 0;
@@ -89,7 +89,7 @@ public class ShopConfigServiceImpl  extends CommonServiceImpl implements ShopCon
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiShopConfig> rm = new ReturnObject<HaiShopConfig>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_ADMIN_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_ADMIN_ID);
 		
 		HaiShopConfigExample example = new HaiShopConfigExample();
 		HaiShopConfigExample.Criteria c = example.createCriteria();
@@ -107,7 +107,7 @@ public class ShopConfigServiceImpl  extends CommonServiceImpl implements ShopCon
 
 	
 	private List<StoreConfigParent> formatBootStrapList(HttpServletRequest request,String store_config_path , List<HaiShopConfig> list) throws IOException{
-		String role = (String)request.getSession().getAttribute(Constants.SESSION_ROLE_TYPE);
+		String role = (String)request.getSession().getAttribute(EConstants.SESSION_ROLE_TYPE);
 		
 		Map<String, String> map = new HashMap<String, String>();
 		for (HaiShopConfig haiShopConfig : list) {

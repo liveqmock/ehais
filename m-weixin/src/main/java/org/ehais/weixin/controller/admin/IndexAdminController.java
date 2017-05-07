@@ -3,7 +3,7 @@ package org.ehais.weixin.controller.admin;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.ehais.model.eMenu.eMenuItem;
 import org.ehais.model.eMenu.eMenuXml;
@@ -27,7 +27,7 @@ public class IndexAdminController extends CommonController{
 			HttpServletRequest request,HttpServletResponse response) {
 		try{
 
-			String ROLE = (String) request.getSession().getAttribute(Constants.SESSION_ROLE_TYPE);
+			String ROLE = (String) request.getSession().getAttribute(EConstants.SESSION_ROLE_TYPE);
 			
 			if(ROLE!=null && !ROLE.equals("")) {
 				ROLE="_"+ROLE;

@@ -3,7 +3,7 @@ package org.ehais.weixin.controller.action;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.tools.ReturnObject;
 import org.ehais.weixin.controller.WxCommonController;
 import org.ehais.weixin.model.HaiArticle;
@@ -43,7 +43,7 @@ public class ArticleController extends WxCommonController {
 	public String article_list(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) {	
 		try{
-			Integer wxid = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+			Integer wxid = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 			modelMap.addAttribute("wxid", wxid);
 			modelMap.addAttribute("action", "article_list_json");
 		}catch(Exception e){
@@ -61,7 +61,7 @@ public class ArticleController extends WxCommonController {
 			@RequestParam(value = "page", required = true) Integer page,
 			@RequestParam(value = "len", required = true) Integer len) {
 		try{
-			Integer wxid = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+			Integer wxid = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 			ReturnObject<HaiArticle> ro = articleService.article_list(request,wxid ,cat_id, page, len);
 			return this.writeJson(ro);
 		}catch(Exception e){
@@ -74,7 +74,7 @@ public class ArticleController extends WxCommonController {
 	public String article_list_v2(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) {	
 		try{
-			Integer wxid = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+			Integer wxid = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 			modelMap.addAttribute("wxid", wxid);
 			modelMap.addAttribute("action", "article_list_json_v2");
 		}catch(Exception e){
@@ -92,7 +92,7 @@ public class ArticleController extends WxCommonController {
 			@RequestParam(value = "page", required = true) Integer page,
 			@RequestParam(value = "len", required = true) Integer len) {
 		try{
-			Integer wxid = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+			Integer wxid = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 			ReturnObject<HaiArticle> ro = articleService.article_list_json(request,wxid ,cat_id, page, len);
 			return this.writeJson(ro);
 		}catch(Exception e){
@@ -121,7 +121,7 @@ public class ArticleController extends WxCommonController {
 			@RequestParam(value = "page", required = true) Integer page,
 			@RequestParam(value = "len", required = true) Integer len) {
 		try{
-			Integer wxid = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+			Integer wxid = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 			ReturnObject<HaiArticle> ro = articleService.article_code_list(request,wxid , page, len);
 			return this.writeJson(ro);
 		}catch(Exception e){
@@ -137,7 +137,7 @@ public class ArticleController extends WxCommonController {
 			@RequestParam(value = "article_id", required = false) Integer article_id
 			) {
 		try{
-			Integer wxid = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+			Integer wxid = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 			ReturnObject<HaiArticle> ro = articleService.article_insert(request,wxid);
 			modelMap.addAttribute("cat_list", ro.getMap().get("cat_list"));
 			modelMap.addAttribute("model", new HaiArticle());
@@ -190,7 +190,7 @@ public class ArticleController extends WxCommonController {
 			@RequestParam(value = "article_id", required = true) Integer article_id
 			) {
 		try{
-			Integer wxid = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+			Integer wxid = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 			ReturnObject<HaiArticle> ro = articleService.article_update(request,wxid, article_id);
 			modelMap.addAttribute("cat_list", ro.getMap().get("cat_list"));
 			modelMap.addAttribute("model", ro.getModel());
@@ -246,7 +246,7 @@ public class ArticleController extends WxCommonController {
 			@RequestParam(value = "code", required = false) String code
 			) {
 		try{
-			Integer wxid = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+			Integer wxid = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 			ReturnObject<HaiArticle> ro = articleService.article_delete(request,wxid, article_id);
 			return this.ReturnJump(modelMap, ro.getCode(), ro.getMsg(), this.return_list_url(code));
 		}catch(Exception e){
@@ -264,7 +264,7 @@ public class ArticleController extends WxCommonController {
 			@RequestParam(value = "code", required = false) String code
 			) {
 		try{
-			Integer wxid = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+			Integer wxid = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 			ReturnObject<HaiArticle> ro = articleService.article_delete(request,wxid, article_id);
 			return this.ReturnJump(modelMap, ro.getCode(), ro.getMsg(), "article_list_v2");
 		}catch(Exception e){

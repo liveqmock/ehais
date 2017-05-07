@@ -6,7 +6,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.model.BootStrapModel;
 import org.ehais.service.impl.CommonServiceImpl;
 import org.ehais.shop.mapper.HaiNavMapper;
@@ -29,7 +29,7 @@ public class NavServiceImpl  extends CommonServiceImpl implements NavService{
 	public ReturnObject<HaiNav> nav_list(HttpServletRequest request) throws Exception{
 		
 		ReturnObject<HaiNav> rm = new ReturnObject<HaiNav>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		rm.setCode(1);
 		return rm;
@@ -39,7 +39,7 @@ public class NavServiceImpl  extends CommonServiceImpl implements NavService{
 			Integer page, Integer len) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiNav> rm = new ReturnObject<HaiNav>();
-		if(store_id == null) store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		if(store_id == null) store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		Integer start = ((page != null)? ((page - 1 ) * len ) : 0 );
 		
 		HaiNavExample example = new HaiNavExample();
@@ -61,7 +61,7 @@ public class NavServiceImpl  extends CommonServiceImpl implements NavService{
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiNav> rm = new ReturnObject<HaiNav>();	
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiNav model = new HaiNav();
 		rm.setBootStrapList(this.formatBootStrapList(request,model));
 		rm.setCode(1);
@@ -79,7 +79,7 @@ public class NavServiceImpl  extends CommonServiceImpl implements NavService{
 		}
 
 
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		model.setStoreId(store_id);
 
 		HaiNavExample example = new HaiNavExample();
@@ -103,7 +103,7 @@ public class NavServiceImpl  extends CommonServiceImpl implements NavService{
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiNav> rm = new ReturnObject<HaiNav>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiNav model = haiNavMapper.selectByPrimaryKey(id);
 		rm.setBootStrapList(this.formatBootStrapList(request,model));
 		
@@ -116,7 +116,7 @@ public class NavServiceImpl  extends CommonServiceImpl implements NavService{
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiNav> rm = new ReturnObject<HaiNav>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiNavExample example = new HaiNavExample();
 		HaiNavExample.Criteria c = example.createCriteria();
 		
@@ -140,7 +140,7 @@ public class NavServiceImpl  extends CommonServiceImpl implements NavService{
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiNav> rm = new ReturnObject<HaiNav>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		HaiNav model = haiNavMapper.selectByPrimaryKey(id);
 		rm.setBootStrapList(this.formatBootStrapList(request,model));
@@ -154,7 +154,7 @@ public class NavServiceImpl  extends CommonServiceImpl implements NavService{
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiNav> rm = new ReturnObject<HaiNav>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiNavExample example = new HaiNavExample();
 		HaiNavExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
@@ -183,7 +183,7 @@ public class NavServiceImpl  extends CommonServiceImpl implements NavService{
 		// TODO Auto-generated method stub
 		HaiNavExample example = new HaiNavExample();
 		HaiNavExample.Criteria c = example.createCriteria();
-		c.andStoreIdEqualTo((Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID));
+		c.andStoreIdEqualTo((Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID));
 		example.setOrderByClause("vieworder asc");
 		List<HaiNav> list = haiNavMapper.hai_nav_list_by_example(example);
 		

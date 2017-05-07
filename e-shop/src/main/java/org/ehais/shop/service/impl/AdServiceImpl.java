@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.epublic.mapper.EHaiAdMapper;
 import org.ehais.epublic.model.EHaiAd;
 import org.ehais.epublic.model.EHaiAdExample;
@@ -50,7 +50,7 @@ public class AdServiceImpl extends CommonServiceImpl implements AdService{
 		// TODO Auto-generated method stub
 		EHaiAdExample example = new EHaiAdExample();
 		example.createCriteria()
-		.andStoreIdEqualTo((Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID));
+		.andStoreIdEqualTo((Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID));
 		
 		List<EHaiAd> list = eHaiAdMapper.selectByExampleWithBLOBs(example);
 		

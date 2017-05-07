@@ -16,7 +16,7 @@ import java.util.Properties;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.model.Menu;
 import org.ehais.model.eMenu.eMenuItem;
 import org.ehais.model.eMenu.eMenuXml;
@@ -51,16 +51,16 @@ public class IndexMemberController extends ManagerController{
 	public String index(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response) {
 		try{
-			Long userId = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			Long userId = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			
-			String username = (String)request.getSession().getAttribute(Constants.SESSION_USER_NAME);
+			String username = (String)request.getSession().getAttribute(EConstants.SESSION_USER_NAME);
 			
 			
 			
 			//判断用户是否在wp_public注册了信息，如果没有，给他添加一条
 			ReturnObject<WpPublicWithBLOBs> rm = publicService.public_by_user(userId);
 			WpPublicWithBLOBs wpPublic = rm.getModel();
-			request.getSession().setAttribute(Constants.SESSION_WX_ID,wpPublic.getId());
+			request.getSession().setAttribute(EConstants.SESSION_WX_ID,wpPublic.getId());
 			weixinService.setWpPublic(wpPublic.getId(), wpPublic);
 			
 			String menu_path = this.config_file(request,"menu_"+username+".xml");

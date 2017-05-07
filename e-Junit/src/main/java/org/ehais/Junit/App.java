@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 
 import org.ehais.util.EncryptUtils;
 import org.junit.Test;
+import org.springframework.security.userdetails.UserDetailsService;
 
 /**
  * Hello world!

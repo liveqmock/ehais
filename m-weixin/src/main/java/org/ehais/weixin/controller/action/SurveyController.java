@@ -6,7 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.ehais.tools.ReturnObject;
 import org.ehais.weixin.controller.WxCommonController;
@@ -39,7 +39,7 @@ public class SurveyController extends WxCommonController {
 	@RequestMapping("/survey_list")
 	public String survey_list(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) {	
-		Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+		Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 		try{
 			modelMap.addAttribute("wxid", user_id.intValue());
 			modelMap.addAttribute("action", "survey_list_json");
@@ -56,7 +56,7 @@ public class SurveyController extends WxCommonController {
 			@RequestParam(value = "page", required = true) Integer page,
 			@RequestParam(value = "len", required = true) Integer len) {
 		try{
-			Integer wx_id = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+			Integer wx_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 			
 			ReturnObject<WpSurvey> rm = surveyService.survey_list_json(weiXinService.getWpPublic(wx_id).getToken(), page, len);
 			return this.writeJson(rm);
@@ -73,7 +73,7 @@ public class SurveyController extends WxCommonController {
 			HttpServletRequest request,HttpServletResponse response
 			) {
 		try{
-			Integer wx_id = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+			Integer wx_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 			ReturnObject<WpSurveyWithBLOBs> rm = surveyService.survey_insert(weiXinService.getWpPublic(wx_id).getToken());
 			rm.setAction("survey_insert_submit");
 			modelMap.addAttribute("rm", rm);
@@ -91,7 +91,7 @@ public class SurveyController extends WxCommonController {
 			@ModelAttribute WpSurveyWithBLOBs survey
 			) {
 		try{
-			Integer wx_id = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+			Integer wx_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 			survey.setToken(weiXinService.getWpPublic(wx_id).getToken());
 			ReturnObject<WpSurveyWithBLOBs> rm = surveyService.survey_insert_submit(survey);
 			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "survey_insert");
@@ -107,7 +107,7 @@ public class SurveyController extends WxCommonController {
 			@RequestParam(value = "id", required = true) Integer id
 			) {
 		try{
-			Integer wx_id = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+			Integer wx_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 			
 			ReturnObject<WpSurveyWithBLOBs> rm = surveyService.survey_update(weiXinService.getWpPublic(wx_id).getToken(), id);
 			rm.setAction("survey_update_submit");
@@ -124,7 +124,7 @@ public class SurveyController extends WxCommonController {
 			@ModelAttribute WpSurveyWithBLOBs survey
 			) {
 		try{
-			Integer wx_id = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+			Integer wx_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 			survey.setToken(weiXinService.getWpPublic(wx_id).getToken());
 			ReturnObject<WpSurveyWithBLOBs> rm = surveyService.survey_update_submit(survey);
 			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "survey_list");
@@ -142,7 +142,7 @@ public class SurveyController extends WxCommonController {
 			@RequestParam(value = "code", required = false) String code
 			) {
 		try{
-			Integer wx_id = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+			Integer wx_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 			ReturnObject<WpSurvey> rm = surveyService.survey_delete(weiXinService.getWpPublic(wx_id).getToken(), id);
 			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "survey_list");
 		}catch(Exception e){

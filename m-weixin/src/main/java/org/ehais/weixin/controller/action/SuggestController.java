@@ -3,7 +3,7 @@ package org.ehais.weixin.controller.action;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.tools.ReturnObject;
 import org.ehais.weixin.controller.WxCommonController;
 import org.ehais.weixin.model.HaiSuggest;
@@ -57,7 +57,7 @@ public class SuggestController extends WxCommonController {
 	@RequestMapping("/suggest_list")
 	public String suggest_list(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) {	
-		Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+		Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 		try{
 			modelMap.addAttribute("wxid", user_id.intValue());
 			modelMap.addAttribute("action", "suggest_list_json");
@@ -74,7 +74,7 @@ public class SuggestController extends WxCommonController {
 			@RequestParam(value = "page", required = true) Integer page,
 			@RequestParam(value = "len", required = true) Integer len) {
 		try{
-			Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			ReturnObject<HaiSuggest> rm = suggestService.suggest_list_json(user_id.intValue(), page, len);
 			return this.writeJson(rm);
 		}catch(Exception e){
@@ -91,7 +91,7 @@ public class SuggestController extends WxCommonController {
 			@RequestParam(value = "sugId", required = true) Integer sugId
 			) {
 		try{
-			Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			ReturnObject<HaiSuggest> rm = suggestService.suggest_find(user_id.intValue(), sugId);
 			modelMap.addAttribute("rm", rm);
 		}catch(Exception e){

@@ -7,7 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.epublic.mapper.HaiOrderPayExtendsMapper;
 import org.ehais.epublic.model.HaiOrderPayRecordAndUsers;
 import org.ehais.model.BootStrapModel;
@@ -34,7 +34,7 @@ public class DonationServiceImpl  extends CommonServiceImpl implements DonationS
 	public ReturnObject<HaiDonation> donation_list(HttpServletRequest request) throws Exception{
 		
 		ReturnObject<HaiDonation> rm = new ReturnObject<HaiDonation>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		rm.setCode(1);
 		return rm;
@@ -44,7 +44,7 @@ public class DonationServiceImpl  extends CommonServiceImpl implements DonationS
 			Integer page, Integer len) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiDonation> rm = new ReturnObject<HaiDonation>();
-		if(store_id == null) store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		if(store_id == null) store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		Integer start = ((page != null)? ((page - 1 ) * len ) : 0 );
 		
 		HaiDonationExample example = new HaiDonationExample();
@@ -67,7 +67,7 @@ public class DonationServiceImpl  extends CommonServiceImpl implements DonationS
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiDonation> rm = new ReturnObject<HaiDonation>();	
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiDonation model = new HaiDonation();
 		rm.setBootStrapList(this.formatBootStrapList(request,model));
 		rm.setCode(1);
@@ -85,7 +85,7 @@ public class DonationServiceImpl  extends CommonServiceImpl implements DonationS
 		}
 
 
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		model.setStoreId(store_id);
 
 		HaiDonationExample example = new HaiDonationExample();
@@ -114,7 +114,7 @@ public class DonationServiceImpl  extends CommonServiceImpl implements DonationS
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiDonation> rm = new ReturnObject<HaiDonation>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiDonation model = haiDonationMapper.selectByPrimaryKey(donationId);
 		rm.setBootStrapList(this.formatBootStrapList(request,model));
 		
@@ -127,7 +127,7 @@ public class DonationServiceImpl  extends CommonServiceImpl implements DonationS
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiDonation> rm = new ReturnObject<HaiDonation>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiDonationExample example = new HaiDonationExample();
 		HaiDonationExample.Criteria c = example.createCriteria();
 		
@@ -151,7 +151,7 @@ public class DonationServiceImpl  extends CommonServiceImpl implements DonationS
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiDonation> rm = new ReturnObject<HaiDonation>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		HaiDonation model = haiDonationMapper.selectByPrimaryKey(donationId);
 		rm.setBootStrapList(this.formatBootStrapList(request,model));
@@ -165,7 +165,7 @@ public class DonationServiceImpl  extends CommonServiceImpl implements DonationS
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiDonation> rm = new ReturnObject<HaiDonation>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiDonationExample example = new HaiDonationExample();
 		HaiDonationExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
@@ -193,7 +193,7 @@ public class DonationServiceImpl  extends CommonServiceImpl implements DonationS
 	public ReturnObject<HaiDonation> donation_detail(HttpServletRequest request ,Integer store_id, Integer donationId) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiDonation> rm = new ReturnObject<HaiDonation>();
-		if(store_id == null || store_id == 0) store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		if(store_id == null || store_id == 0) store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		HaiDonation model = haiDonationMapper.selectByPrimaryKey(donationId);
 		

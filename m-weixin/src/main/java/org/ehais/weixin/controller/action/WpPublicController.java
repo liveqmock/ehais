@@ -3,7 +3,7 @@ package org.ehais.weixin.controller.action;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.tools.ReturnObject;
 import org.ehais.weixin.controller.WxCommonController;
 import org.ehais.weixin.model.PublicAddonConfig;
@@ -34,7 +34,7 @@ public class WpPublicController extends WxCommonController{
 	public String wecome(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response){
 		try{
-			Integer wx_id = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+			Integer wx_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 			WpPublicWithBLOBs wpPublic = weiXinService.getWpPublic(wx_id);
 			String addonConfig = wpPublic.getAddonConfig();
 			System.out.println(addonConfig);
@@ -64,7 +64,7 @@ public class WpPublicController extends WxCommonController{
 			@RequestParam(value = "wecome", required = true) String wecome
 			){
 		try{
-			Integer wx_id = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+			Integer wx_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 			WpPublicWithBLOBs wpPublic = weiXinService.getWpPublic(wx_id);
 			String addonConfig = wpPublic.getAddonConfig();
 			System.out.println(addonConfig);
@@ -101,7 +101,7 @@ public class WpPublicController extends WxCommonController{
 			HttpServletRequest request,HttpServletResponse response
 			) {
 		try{
-			Integer wx_id = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+			Integer wx_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 			ReturnObject<WpPublicWithBLOBs> rm = publicService.public_update(null, wx_id);
 			rm.setAction("public_update_submit");
 			modelMap.addAttribute("rm", rm);
@@ -117,9 +117,9 @@ public class WpPublicController extends WxCommonController{
 			@ModelAttribute WpPublicWithBLOBs wpPublic
 			) {
 		try{
-			Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			wpPublic.setUid(user_id);
-			Integer wx_id = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+			Integer wx_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 			wpPublic.setId(wx_id);
 			ReturnObject<WpPublicWithBLOBs> rm = publicService.public_update_submit(wpPublic);
 			weiXinService.setWpPublic(wx_id, wpPublic);

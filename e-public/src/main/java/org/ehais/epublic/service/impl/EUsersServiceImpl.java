@@ -7,7 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.epublic.mapper.EHaiUsersMapper;
 import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.epublic.model.EHaiUsersExample;
@@ -31,7 +31,7 @@ public class EUsersServiceImpl  extends CommonServiceImpl implements EUsersServi
 	public ReturnObject<EHaiUsers> users_list(HttpServletRequest request) throws Exception{
 		
 		ReturnObject<EHaiUsers> rm = new ReturnObject<EHaiUsers>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		rm.setCode(1);
 		return rm;
@@ -41,7 +41,7 @@ public class EUsersServiceImpl  extends CommonServiceImpl implements EUsersServi
 			Integer page, Integer len) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiUsers> rm = new ReturnObject<EHaiUsers>();
-		if(store_id == null) store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		if(store_id == null) store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		Integer start = ((page != null)? ((page - 1 ) * len ) : 0 );
 		
 		EHaiUsersExample example = new EHaiUsersExample();
@@ -63,7 +63,7 @@ public class EUsersServiceImpl  extends CommonServiceImpl implements EUsersServi
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiUsers> rm = new ReturnObject<EHaiUsers>();	
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		EHaiUsers model = new EHaiUsers();
 		rm.setBootStrapList(this.formatBootStrapList(model));
 		rm.setCode(1);
@@ -81,7 +81,7 @@ public class EUsersServiceImpl  extends CommonServiceImpl implements EUsersServi
 		}
 
 
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		model.setStoreId(store_id);
 
 		EHaiUsersExample example = new EHaiUsersExample();
@@ -105,7 +105,7 @@ public class EUsersServiceImpl  extends CommonServiceImpl implements EUsersServi
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiUsers> rm = new ReturnObject<EHaiUsers>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		EHaiUsers model = eHaiUsersMapper.selectByPrimaryKey(userId);
 		rm.setBootStrapList(this.formatBootStrapList(model));
 		
@@ -118,7 +118,7 @@ public class EUsersServiceImpl  extends CommonServiceImpl implements EUsersServi
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiUsers> rm = new ReturnObject<EHaiUsers>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		EHaiUsersExample example = new EHaiUsersExample();
 		EHaiUsersExample.Criteria c = example.createCriteria();
 		
@@ -156,7 +156,7 @@ public class EUsersServiceImpl  extends CommonServiceImpl implements EUsersServi
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiUsers> rm = new ReturnObject<EHaiUsers>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		EHaiUsersExample example = new EHaiUsersExample();
 		EHaiUsersExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
@@ -202,8 +202,8 @@ public class EUsersServiceImpl  extends CommonServiceImpl implements EUsersServi
 		rm.setModel(users);
 		
 		if(source.equals("ws") || source.equals("web")){
-			request.getSession().setAttribute(Constants.SESSION_USER_ID, users.getUserId());
-			request.getSession().setAttribute(Constants.SESSION_USER_NAME, users.getUserName());
+			request.getSession().setAttribute(EConstants.SESSION_USER_ID, users.getUserId());
+			request.getSession().setAttribute(EConstants.SESSION_USER_NAME, users.getUserName());
 			
 			String back_shop_url = (String) request.getSession().getAttribute("BACK-SHOP-URL");
 			
@@ -261,8 +261,8 @@ public class EUsersServiceImpl  extends CommonServiceImpl implements EUsersServi
 		rm.setModel(users);
 		
 		if(source.equals("ws") || source.equals("web")){
-			request.getSession().setAttribute(Constants.SESSION_USER_ID, users.getUserId());
-			request.getSession().setAttribute(Constants.SESSION_USER_NAME, users.getUserName());
+			request.getSession().setAttribute(EConstants.SESSION_USER_ID, users.getUserId());
+			request.getSession().setAttribute(EConstants.SESSION_USER_NAME, users.getUserName());
 		}
 		
 		return rm;
@@ -275,7 +275,7 @@ public class EUsersServiceImpl  extends CommonServiceImpl implements EUsersServi
 		ReturnObject<EHaiUsers> rm = new ReturnObject<EHaiUsers>();
 		rm.setCode(0);
 		if(user_id == null || user_id == 0){
-			user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			if(user_id == null || user_id == 0){
 				rm.setMsg("参数不正确0020");
 				return rm;
@@ -305,8 +305,8 @@ public class EUsersServiceImpl  extends CommonServiceImpl implements EUsersServi
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiUsers> rm = new ReturnObject<EHaiUsers>();
 		rm.setCode(1);
-		request.getSession().removeAttribute(Constants.SESSION_USER_ID);
-		request.getSession().removeAttribute(Constants.SESSION_USER_NAME);
+		request.getSession().removeAttribute(EConstants.SESSION_USER_ID);
+		request.getSession().removeAttribute(EConstants.SESSION_USER_NAME);
 		
 		
 		return rm;

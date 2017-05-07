@@ -3,7 +3,7 @@ package org.ehais.epublic.controller.admin;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.ehais.epublic.model.EHaiAdPosition;
 import org.ehais.epublic.service.EAdPositionService;
@@ -32,7 +32,7 @@ public class  EAdPositionController extends CommonController {
 	@RequestMapping("/e_adposition_list")
 	public String e_adposition_list(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) {	
-		Integer user_id = (Integer)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+		Integer user_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 		try{
 			modelMap.addAttribute("wxid", user_id);
 			modelMap.addAttribute("action", "e_adposition_list_json");

@@ -6,7 +6,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.epublic.mapper.EHaiUsersMapper;
 import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.service.impl.CommonServiceImpl;
@@ -30,7 +30,7 @@ public class MemberServiceImpl extends CommonServiceImpl implements MemberServic
 			HttpServletRequest request, Long user_id,String token) {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiUsers> rm = new ReturnObject<EHaiUsers>();
-		if(user_id == null) user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+		if(user_id == null) user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 		EHaiUsers model = eHaiUsersMapper.selectByPrimaryKey(user_id);
 		model.setPassword(null);
 		rm.setModel(model);

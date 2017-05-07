@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.model.BootStrapModel;
 import org.ehais.model.ExtendsField.ExtendsFieldsGroup;
 import org.ehais.model.ExtendsField.ExtendsFieldsXml;
@@ -46,8 +46,8 @@ public class ExtendsFieldsServiceImpl extends CommonServiceImpl implements Exten
 		xStream.processAnnotations(ExtendsFieldsGroup.class);
 		xStream.processAnnotations(BootStrapModel.class);
 		boolean isRole = false;
-		String role = (String)request.getSession().getAttribute(Constants.SESSION_ROLE_TYPE);
-		String username = (String)request.getSession().getAttribute(Constants.SESSION_USER_NAME);
+		String role = (String)request.getSession().getAttribute(EConstants.SESSION_ROLE_TYPE);
+		String username = (String)request.getSession().getAttribute(EConstants.SESSION_USER_NAME);
 		if(role!=null && !role.equals("") && username == null)isRole = true;//管理员登录状态
 		
 		ExtendsFieldsXml atxml = (ExtendsFieldsXml) xStream.fromXML(menu_content);
@@ -106,11 +106,11 @@ public class ExtendsFieldsServiceImpl extends CommonServiceImpl implements Exten
 		HaiExtendValueExample example = new HaiExtendValueExample();
 		
 		Integer store_id = 0;
-		Integer admin_id = (Integer)request.getSession().getAttribute(Constants.SESSION_ADMIN_ID);
+		Integer admin_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_ADMIN_ID);
 		if(admin_id != null && admin_id > 0){
 			store_id = admin_id;
 		}else{
-			Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			store_id = user_id.intValue();
 		}
 		

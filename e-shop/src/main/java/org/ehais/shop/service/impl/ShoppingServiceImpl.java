@@ -8,7 +8,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.enums.OrderStatusEnum;
 import org.ehais.enums.PayStatusEnum;
 import org.ehais.enums.ShippingStatusEnum;
@@ -76,7 +76,7 @@ public class ShoppingServiceImpl extends CommonServiceImpl implements ShoppingSe
 		rm.setCode(0);
 		
 		if(user_id == null ){
-			user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 		}
 		
 		
@@ -166,7 +166,7 @@ public class ShoppingServiceImpl extends CommonServiceImpl implements ShoppingSe
 		rm.setCode(0);
 		
 		if(user_id == null ){
-			user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 		}
 		
 		

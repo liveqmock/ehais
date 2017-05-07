@@ -270,7 +270,7 @@
 				<configuration>
 					<path>/</path>
 					<uriEncoding>UTF-8</uriEncoding>
-					<port>80</port>
+					<port>81</port>
 					<java.util.logging.manager>org.apache.juli.ClassLoaderLogManager</java.util.logging.manager>
 					<mode>context</mode>
 					<contextFile>${basedir}/../../context.xml</contextFile>
@@ -333,4 +333,5 @@
 		</profile>
 	</profiles>
 
+  	<packaging>war</packaging>
 </project>

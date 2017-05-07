@@ -3,7 +3,7 @@ package org.ehais.shop.controller.api;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.shop.controller.api.include.CartIController;
 import org.ehais.shop.model.HaiCart;
 import org.ehais.shop.model.HaiCartWithBLOBs;

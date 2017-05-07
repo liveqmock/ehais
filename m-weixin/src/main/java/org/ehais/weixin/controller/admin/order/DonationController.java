@@ -3,7 +3,7 @@ package org.ehais.weixin.controller.admin.order;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.ehais.tools.ReturnObject;
 import org.ehais.weixin.model.HaiDonation;
@@ -32,7 +32,7 @@ public class  DonationController extends CommonController {
 	@RequestMapping("/donation_list")
 	public String donation_list(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) {	
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		try{
 			modelMap.addAttribute("wxid", store_id);
 			modelMap.addAttribute("action", "donation_list_json");

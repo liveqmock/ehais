@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.epublic.mapper.EHaiUsersMapper;
 import org.ehais.epublic.mapper.HaiOrderPayExtendsMapper;
 import org.ehais.epublic.mapper.HaiOrderPayRecordMapper;
@@ -77,12 +77,12 @@ public class OrderPayWeiXinServiceImpl implements OrderPayWeiXinService {
 		}
 		
 		
-		String openid = (String)request.getSession().getAttribute(Constants.SESSION_OPEN_ID);
+		String openid = (String)request.getSession().getAttribute(EConstants.SESSION_OPEN_ID);
 		if( openid == null || openid.equals("")){
 			rm.setMsg("登录错误11005");return rm;
 		}
 		
-		Long userId = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+		Long userId = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 		if( userId == null || userId == 0){
 			rm.setMsg("登录错误11006");return rm;
 		}

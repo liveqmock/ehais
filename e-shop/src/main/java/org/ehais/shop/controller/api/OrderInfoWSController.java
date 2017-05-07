@@ -3,7 +3,7 @@ package org.ehais.shop.controller.api;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.shop.controller.api.include.OrderInfoIController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -23,7 +23,7 @@ public class OrderInfoWSController extends OrderInfoIController{
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "page", required = true) Integer page,
 			@RequestParam(value = "len", required = true) Integer len){
-		Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+		Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 //		if(user_id==null) user_id = 1;//临时使用
 		try {
 			return this.writeJson(orderinfoService.orderinfo_list(request, user_id, page, len));
@@ -41,7 +41,7 @@ public class OrderInfoWSController extends OrderInfoIController{
 	public String orderinfo_info(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "orderId", required = true) Long orderId){
-		Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+		Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 //		if(user_id==null) user_id = 1;//临时使用
 		try {
 			return this.writeJson(orderinfoService.orderinfo_info(request, user_id, orderId));

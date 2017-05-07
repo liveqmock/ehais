@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 
 
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -26,7 +26,7 @@ public class AdminInterceptor extends HandlerInterceptorAdapter{
 				return true;
 			}
 		}
-		String account = (String) request.getSession().getAttribute(Constants.SESSION_ADMIN_NAME);
+		String account = (String) request.getSession().getAttribute(EConstants.SESSION_ADMIN_NAME);
 		
 		//如果session中用户名为空，则跳转到登录页面
 		if (account == null || "".equals(account)) {

@@ -3,7 +3,7 @@ package org.ehais.weixin.controller.action;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.ehais.tools.ReturnObject;
 import org.ehais.weixin.model.HaiCategory;
@@ -34,7 +34,7 @@ public class  HaiCategoryController extends CommonController {
 	@RequestMapping("/haicategory_list")
 	public String haicategory_list(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) {	
-		Integer wxid = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+		Integer wxid = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 		try{
 			modelMap.addAttribute("wxid", wxid);
 			modelMap.addAttribute("action", "haicategory_list_json");
@@ -52,7 +52,7 @@ public class  HaiCategoryController extends CommonController {
 			@RequestParam(value = "page", required = true) Integer page,
 			@RequestParam(value = "len", required = true) Integer len) {
 		try{
-			Integer wx_id = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+			Integer wx_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 			ReturnObject<HaiCategory> rm = haicategoryService.haicategory_list_json(request,cat_code,wx_id, page, len);
 			return this.writeJson(rm);
 		}catch(Exception e){
@@ -69,7 +69,7 @@ public class  HaiCategoryController extends CommonController {
 			@RequestParam(value = "cat_code", required = true) String cat_code
 			) {
 		try{
-			Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			ReturnObject<HaiCategoryWithBLOBs> rm = haicategoryService.haicategory_insert(request,cat_code,user_id.intValue());
 			rm.setAction("haicategory_insert_submit");
 			modelMap.addAttribute("rm", rm);
@@ -86,7 +86,7 @@ public class  HaiCategoryController extends CommonController {
 			@ModelAttribute HaiCategoryWithBLOBs haicategory
 			) {
 		try{
-			Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			haicategory.setStoreId(user_id.intValue());
 			ReturnObject<HaiCategoryWithBLOBs> rm = haicategoryService.haicategory_insert_submit(request,cat_code,haicategory);
 			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "haicategory_insert");
@@ -103,7 +103,7 @@ public class  HaiCategoryController extends CommonController {
 			@RequestParam(value = "keyId", required = true) Integer keyId
 			) {
 		try{
-			Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			ReturnObject<HaiCategoryWithBLOBs> rm = haicategoryService.haicategory_update(request,cat_code,user_id.intValue(), keyId);
 			rm.setAction("haicategory_update_submit");
 			modelMap.addAttribute("rm", rm);
@@ -120,7 +120,7 @@ public class  HaiCategoryController extends CommonController {
 			@ModelAttribute HaiCategoryWithBLOBs haicategory
 			) {
 		try{
-			Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			haicategory.setStoreId(user_id.intValue());
 			ReturnObject<HaiCategoryWithBLOBs> rm = haicategoryService.haicategory_update_submit(request,cat_code,haicategory);
 			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "haicategory_list");
@@ -139,7 +139,7 @@ public class  HaiCategoryController extends CommonController {
 			@RequestParam(value = "code", required = false) String code
 			) {
 		try{
-			Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			ReturnObject<HaiCategory> rm = haicategoryService.haicategory_delete(request,cat_code,user_id.intValue(), keyId);
 			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "haicategory_list");
 		}catch(Exception e){

@@ -7,7 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.model.BootStrapModel;
 import org.ehais.model.TreeModel;
 import org.ehais.shop.mapper.HaiBrandMapper;
@@ -36,7 +36,7 @@ public class CategoryServiceImpl  extends EShopCommonServiceImpl implements Cate
 	public ReturnObject<HaiCategory> category_list(HttpServletRequest request) throws Exception{
 		
 		ReturnObject<HaiCategory> rm = new ReturnObject<HaiCategory>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		rm.setCode(1);
 		return rm;
@@ -46,7 +46,7 @@ public class CategoryServiceImpl  extends EShopCommonServiceImpl implements Cate
 			Integer page, Integer len) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiCategory> rm = new ReturnObject<HaiCategory>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		Integer start = (page - 1 ) * len;
 		
 		HaiCategoryExample example = new HaiCategoryExample();
@@ -68,7 +68,7 @@ public class CategoryServiceImpl  extends EShopCommonServiceImpl implements Cate
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiCategoryWithBLOBs> rm = new ReturnObject<HaiCategoryWithBLOBs>();	
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiCategoryWithBLOBs model = new HaiCategoryWithBLOBs();
 //		rm.setBootStrapList(this.formatBootStrapList(request,model));
 	
@@ -88,7 +88,7 @@ public class CategoryServiceImpl  extends EShopCommonServiceImpl implements Cate
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiCategoryWithBLOBs> rm = new ReturnObject<HaiCategoryWithBLOBs>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		model.setStoreId(store_id);
 		int code = haiCategoryMapper.insertSelective(model);
 		rm.setCode(code);
@@ -100,7 +100,7 @@ public class CategoryServiceImpl  extends EShopCommonServiceImpl implements Cate
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiCategoryWithBLOBs> rm = new ReturnObject<HaiCategoryWithBLOBs>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiCategoryWithBLOBs model = haiCategoryMapper.selectByPrimaryKey(catId);
 //		rm.setBootStrapList(this.formatBootStrapList(request,model));
 		
@@ -119,7 +119,7 @@ public class CategoryServiceImpl  extends EShopCommonServiceImpl implements Cate
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiCategoryWithBLOBs> rm = new ReturnObject<HaiCategoryWithBLOBs>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiCategoryExample example = new HaiCategoryExample();
 		HaiCategoryExample.Criteria c = example.createCriteria();
 		
@@ -135,7 +135,7 @@ public class CategoryServiceImpl  extends EShopCommonServiceImpl implements Cate
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiCategoryWithBLOBs> rm = new ReturnObject<HaiCategoryWithBLOBs>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		HaiCategoryWithBLOBs model = haiCategoryMapper.selectByPrimaryKey(catId);
 		rm.setBootStrapList(this.formatBootStrapList(request,model));
@@ -149,7 +149,7 @@ public class CategoryServiceImpl  extends EShopCommonServiceImpl implements Cate
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiCategory> rm = new ReturnObject<HaiCategory>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiCategoryExample example = new HaiCategoryExample();
 		HaiCategoryExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
@@ -236,7 +236,7 @@ public class CategoryServiceImpl  extends EShopCommonServiceImpl implements Cate
 	public List<HaiCategory> list(HttpServletRequest request) throws Exception{
 		HaiCategoryExample example = new HaiCategoryExample();
 		HaiCategoryExample.Criteria c = example.createCriteria();
-		c.andStoreIdEqualTo((Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID));
+		c.andStoreIdEqualTo((Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID));
 		c.andIsShowEqualTo(true);
 		List<HaiCategory> list = haiCategoryMapper.hai_category_list_by_example(example);
 		

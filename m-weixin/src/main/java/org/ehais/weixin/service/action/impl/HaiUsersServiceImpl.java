@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.epublic.mapper.EHaiUsersMapper;
 import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.epublic.model.EHaiUsersExample;
@@ -178,7 +178,7 @@ public class HaiUsersServiceImpl  extends CommonServiceImpl implements HaiUsersS
 			return rm;
 		}
 		
-		Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+		Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 		EHaiUsers u = haiUsersMapper.userInfo(user_id);
 		if(u == null){
 			rm.setMsg("登录异常，请退出重新登录");

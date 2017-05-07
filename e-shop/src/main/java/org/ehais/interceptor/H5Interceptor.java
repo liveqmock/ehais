@@ -3,7 +3,7 @@ package org.ehais.interceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.util.ECommon;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
@@ -20,11 +20,11 @@ public class H5Interceptor extends HandlerInterceptorAdapter{
 		String url = request.getRequestURI().toString()+(request.getQueryString() != null?("?"+request.getQueryString().toString()):"");
 //		System.out.println(url);
 		
-		String s_encode = (String) request.getSession().getAttribute(Constants.SESSION_SHOP_ENCODE);
+		String s_encode = (String) request.getSession().getAttribute(EConstants.SESSION_SHOP_ENCODE);
 		if(s_encode == null || s_encode.equals("")){
 			s_encode = ECommon.nonceStrUpper(32);
 			System.out.println("商码："+s_encode);
-			request.getSession().setAttribute(Constants.SESSION_SHOP_ENCODE,s_encode);
+			request.getSession().setAttribute(EConstants.SESSION_SHOP_ENCODE,s_encode);
 		}
 		
 		if(url.equals(loginUrl)){
@@ -39,7 +39,7 @@ public class H5Interceptor extends HandlerInterceptorAdapter{
 		
 		
 		
-		Long user_id = (Long) request.getSession().getAttribute(Constants.SESSION_USER_ID);
+		Long user_id = (Long) request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 		
 		//如果session中用户名为空，则跳转到登录页面
 		if (user_id == null || user_id == 0) {

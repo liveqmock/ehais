@@ -30,11 +30,9 @@
 		<jdk_ver>1.7</jdk_ver>
 		<maven_ver>3.2</maven_ver>
 		<junit_ver>4.12</junit_ver>
-		<struts2_ver>2.3.24</struts2_ver>
 		<logback_ver>1.0.13</logback_ver>
 		<servlet_api_ver>3.1.0</servlet_api_ver>
 		<commons_lang3_ver>3.1</commons_lang3_ver>
-		<springframework_ver>4.2.6.RELEASE</springframework_ver>
 		<slf4j_ver>1.7.5</slf4j_ver>
 		<jackson_ver>1.9.12</jackson_ver>
 		<hibernate.version>4.3.10.Final</hibernate.version>
@@ -180,6 +178,7 @@
 			<version>${junit_ver}</version>
 		</dependency>
 		<!-- jackson -->
+		<!-- 
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
@@ -191,7 +190,22 @@
 			<artifactId>jackson-core-asl</artifactId>
 			<version>${jackson_ver}</version>
 		</dependency>
-
+		 -->
+		<dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.7.4</version>
+          </dependency>
+          <dependency>  
+            <groupId>com.fasterxml.jackson.core</groupId>  
+            <artifactId>jackson-core</artifactId>  
+            <version>2.7.4</version>  
+        </dependency>
+        <dependency>  
+            <groupId>com.fasterxml.jackson.core</groupId>  
+            <artifactId>jackson-annotations</artifactId>  
+            <version>2.7.4</version>  
+        </dependency>
 	
 		<dependency>
 			<groupId>javax.servlet</groupId>

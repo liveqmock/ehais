@@ -7,7 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.epublic.mapper.EHaiAdMapper;
 import org.ehais.epublic.mapper.EHaiAdPositionMapper;
 import org.ehais.epublic.model.EHaiAd;
@@ -35,7 +35,7 @@ public class EAdServiceImpl  extends CommonServiceImpl implements EAdService{
 	public ReturnObject<EHaiAd> ad_list(HttpServletRequest request) throws Exception{
 		
 		ReturnObject<EHaiAd> rm = new ReturnObject<EHaiAd>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		rm.setCode(1);
 		return rm;
@@ -45,7 +45,7 @@ public class EAdServiceImpl  extends CommonServiceImpl implements EAdService{
 			Integer page, Integer len) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiAd> rm = new ReturnObject<EHaiAd>();
-		if(store_id == null) store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		if(store_id == null) store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		Integer start = (page - 1 ) * len;
 		
 		EHaiAdExample example = new EHaiAdExample();
@@ -67,7 +67,7 @@ public class EAdServiceImpl  extends CommonServiceImpl implements EAdService{
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiAd> rm = new ReturnObject<EHaiAd>();	
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		EHaiAd model = new EHaiAd();
 		rm.setBootStrapList(this.formatBootStrapList(request,model));
 		rm.setCode(1);
@@ -85,7 +85,7 @@ public class EAdServiceImpl  extends CommonServiceImpl implements EAdService{
 		}
 
 
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		model.setStoreId(store_id);
 
 		EHaiAdExample example = new EHaiAdExample();
@@ -109,7 +109,7 @@ public class EAdServiceImpl  extends CommonServiceImpl implements EAdService{
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiAd> rm = new ReturnObject<EHaiAd>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		EHaiAd model = eHaiAdMapper.selectByPrimaryKey(Short.valueOf(adId+""));
 		rm.setBootStrapList(this.formatBootStrapList(request,model));
 		
@@ -122,7 +122,7 @@ public class EAdServiceImpl  extends CommonServiceImpl implements EAdService{
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiAd> rm = new ReturnObject<EHaiAd>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		EHaiAdExample example = new EHaiAdExample();
 		EHaiAdExample.Criteria c = example.createCriteria();
 		
@@ -146,7 +146,7 @@ public class EAdServiceImpl  extends CommonServiceImpl implements EAdService{
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiAd> rm = new ReturnObject<EHaiAd>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		EHaiAd model = eHaiAdMapper.selectByPrimaryKey(Short.valueOf(adId+""));
 		rm.setBootStrapList(this.formatBootStrapList(request,model));
@@ -160,7 +160,7 @@ public class EAdServiceImpl  extends CommonServiceImpl implements EAdService{
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiAd> rm = new ReturnObject<EHaiAd>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		EHaiAdExample example = new EHaiAdExample();
 		EHaiAdExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));

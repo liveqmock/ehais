@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.model.BootStrapModel;
 import org.ehais.service.impl.CommonServiceImpl;
 import org.ehais.shop.mapper.HaiCartMapper;
@@ -32,7 +32,7 @@ public class CartServiceImpl  extends CommonServiceImpl implements CartService{
 	public ReturnObject<HaiCart> cart_list(HttpServletRequest request) throws Exception{
 		
 		ReturnObject<HaiCart> rm = new ReturnObject<HaiCart>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		rm.setCode(1);
 		return rm;
@@ -42,7 +42,7 @@ public class CartServiceImpl  extends CommonServiceImpl implements CartService{
 			Integer page, Integer len) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiCart> rm = new ReturnObject<HaiCart>();
-		if(store_id == null) store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		if(store_id == null) store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		Integer start = ((page != null)? ((page - 1 ) * len ) : 0 );
 		
 		HaiCartExample example = new HaiCartExample();
@@ -64,7 +64,7 @@ public class CartServiceImpl  extends CommonServiceImpl implements CartService{
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiCartWithBLOBs> rm = new ReturnObject<HaiCartWithBLOBs>();	
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiCartWithBLOBs model = new HaiCartWithBLOBs();
 		rm.setBootStrapList(this.formatBootStrapList(model));
 		rm.setCode(1);
@@ -82,7 +82,7 @@ public class CartServiceImpl  extends CommonServiceImpl implements CartService{
 		}
 
 
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		model.setStoreId(store_id);
 
 		HaiCartExample example = new HaiCartExample();
@@ -106,7 +106,7 @@ public class CartServiceImpl  extends CommonServiceImpl implements CartService{
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiCartWithBLOBs> rm = new ReturnObject<HaiCartWithBLOBs>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiCartWithBLOBs model = haiCartMapper.selectByPrimaryKey(recId);
 		rm.setBootStrapList(this.formatBootStrapList(model));
 		
@@ -119,7 +119,7 @@ public class CartServiceImpl  extends CommonServiceImpl implements CartService{
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiCartWithBLOBs> rm = new ReturnObject<HaiCartWithBLOBs>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiCartExample example = new HaiCartExample();
 		HaiCartExample.Criteria c = example.createCriteria();
 		
@@ -143,7 +143,7 @@ public class CartServiceImpl  extends CommonServiceImpl implements CartService{
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiCartWithBLOBs> rm = new ReturnObject<HaiCartWithBLOBs>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		HaiCartWithBLOBs model = haiCartMapper.selectByPrimaryKey(recId);
 		rm.setBootStrapList(this.formatBootStrapList(model));
@@ -157,7 +157,7 @@ public class CartServiceImpl  extends CommonServiceImpl implements CartService{
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiCart> rm = new ReturnObject<HaiCart>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiCartExample example = new HaiCartExample();
 		HaiCartExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
@@ -182,10 +182,10 @@ public class CartServiceImpl  extends CommonServiceImpl implements CartService{
 		rm.setCode(0);
 		
 		if(user_id == null ){
-			user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 		}
 		if(session_shop_encode == null ){
-			session_shop_encode = (String)request.getSession().getAttribute(Constants.SESSION_SHOP_ENCODE);
+			session_shop_encode = (String)request.getSession().getAttribute(EConstants.SESSION_SHOP_ENCODE);
 		}
 		
 		HaiCartExample example = new HaiCartExample();
@@ -207,10 +207,10 @@ public class CartServiceImpl  extends CommonServiceImpl implements CartService{
 		rm.setCode(0);
 //		request.getSession().setAttribute(Constants.SESSION_USER_ID, Long.valueOf("1"));
 		if(user_id == null ){
-			user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 		}
 		if(session_shop_encode == null ){
-			session_shop_encode = (String)request.getSession().getAttribute(Constants.SESSION_SHOP_ENCODE);
+			session_shop_encode = (String)request.getSession().getAttribute(EConstants.SESSION_SHOP_ENCODE);
 		}
 		
 		HaiCartExample example = new HaiCartExample();
@@ -286,13 +286,13 @@ public class CartServiceImpl  extends CommonServiceImpl implements CartService{
 		rm.setCode(0);
 		
 		if(user_id == null ){
-			user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 		}
 		if(session_shop_encode == null ){
-			session_shop_encode = (String)request.getSession().getAttribute(Constants.SESSION_SHOP_ENCODE);
+			session_shop_encode = (String)request.getSession().getAttribute(EConstants.SESSION_SHOP_ENCODE);
 		}
 		if(store_id == null ){
-			store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+			store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		}
 		
 		if((user_id == null || user_id == 0) && (session_shop_encode == null || session_shop_encode.equals(""))){
@@ -371,14 +371,14 @@ public class CartServiceImpl  extends CommonServiceImpl implements CartService{
 		
 
 		if(user_id == null ){
-			user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 		}
 		if(session_shop_encode == null ){
-			session_shop_encode = (String)request.getSession().getAttribute(Constants.SESSION_SHOP_ENCODE);
+			session_shop_encode = (String)request.getSession().getAttribute(EConstants.SESSION_SHOP_ENCODE);
 		}
 		
 		if(store_id == null ){
-			store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+			store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		}
 		
 		if((user_id == null || user_id == 0) && (session_shop_encode == null || session_shop_encode.equals(""))){

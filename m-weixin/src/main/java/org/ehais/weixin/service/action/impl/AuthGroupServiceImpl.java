@@ -7,7 +7,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.common.Constants;
 import org.ehais.model.BootStrapModel;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.EHttpClientUtil;
@@ -38,7 +37,7 @@ public class AuthGroupServiceImpl  extends WeiXinCommonServiceImpl implements Au
 	public ReturnObject<WpAuthGroup> authgroup_list(HttpServletRequest request) throws Exception{
 		
 		ReturnObject<WpAuthGroup> rm = new ReturnObject<WpAuthGroup>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		rm.setCode(1);
 		return rm;
@@ -48,7 +47,7 @@ public class AuthGroupServiceImpl  extends WeiXinCommonServiceImpl implements Au
 			Integer page, Integer len) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<WpAuthGroup> rm = new ReturnObject<WpAuthGroup>();
-		Integer wxid = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+		Integer wxid = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 		Integer start = (page - 1 ) * len;
 		
 		WpAuthGroupExample example = new WpAuthGroupExample();
@@ -71,7 +70,7 @@ public class AuthGroupServiceImpl  extends WeiXinCommonServiceImpl implements Au
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<WpAuthGroupWithBLOBs> rm = new ReturnObject<WpAuthGroupWithBLOBs>();	
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		WpAuthGroupWithBLOBs model = new WpAuthGroupWithBLOBs();
 		rm.setBootStrapList(this.formatBootStrapList(model));
 		rm.setCode(1);
@@ -82,7 +81,7 @@ public class AuthGroupServiceImpl  extends WeiXinCommonServiceImpl implements Au
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<WpAuthGroupWithBLOBs> rm = new ReturnObject<WpAuthGroupWithBLOBs>();
-		Integer wxid = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+		Integer wxid = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 		model.setToken(this.getWpPublic(wxid).getToken());
 		model.setStatus(Integer.valueOf(1).byteValue());
 		model.setType(Integer.valueOf(1).byteValue());
@@ -97,7 +96,7 @@ public class AuthGroupServiceImpl  extends WeiXinCommonServiceImpl implements Au
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<WpAuthGroupWithBLOBs> rm = new ReturnObject<WpAuthGroupWithBLOBs>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		WpAuthGroupWithBLOBs model = wpAuthGroupMapper.selectByPrimaryKey(id);
 		rm.setBootStrapList(this.formatBootStrapList(model));
 		
@@ -110,7 +109,7 @@ public class AuthGroupServiceImpl  extends WeiXinCommonServiceImpl implements Au
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<WpAuthGroupWithBLOBs> rm = new ReturnObject<WpAuthGroupWithBLOBs>();
-		Integer wxid = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+		Integer wxid = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 		WpAuthGroupExample example = new WpAuthGroupExample();
 		WpAuthGroupExample.Criteria c = example.createCriteria();
 		c.andTokenEqualTo(this.getWpPublic(wxid).getToken());
@@ -125,7 +124,7 @@ public class AuthGroupServiceImpl  extends WeiXinCommonServiceImpl implements Au
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<WpAuthGroupWithBLOBs> rm = new ReturnObject<WpAuthGroupWithBLOBs>();
-		Integer wxid = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+		Integer wxid = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 		
 		WpAuthGroupWithBLOBs model = wpAuthGroupMapper.selectByPrimaryKey(id);
 		rm.setBootStrapList(this.formatBootStrapList(model));
@@ -139,7 +138,7 @@ public class AuthGroupServiceImpl  extends WeiXinCommonServiceImpl implements Au
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<WpAuthGroup> rm = new ReturnObject<WpAuthGroup>();
-		Integer wxid = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+		Integer wxid = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 		WpAuthGroupExample example = new WpAuthGroupExample();
 		WpAuthGroupExample.Criteria c = example.createCriteria();
 		c.andTokenEqualTo(this.getWpPublic(wxid).getToken());
@@ -178,7 +177,7 @@ public class AuthGroupServiceImpl  extends WeiXinCommonServiceImpl implements Au
 			HttpServletRequest request, Integer id) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<WpAuthGroupWithBLOBs> rm = new ReturnObject<WpAuthGroupWithBLOBs>();
-		Integer wxid = (Integer)request.getSession().getAttribute(Constants.SESSION_WX_ID);
+		Integer wxid = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 		
 		WpAuthGroupWithBLOBs model = wpAuthGroupMapper.selectByPrimaryKey(id);
 		

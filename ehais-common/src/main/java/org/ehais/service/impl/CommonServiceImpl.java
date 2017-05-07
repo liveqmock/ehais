@@ -10,7 +10,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.ehais.enums.ControlEnum;
 import org.ehais.model.BootStrapCheckBoxModel;
@@ -31,17 +31,17 @@ public class CommonServiceImpl implements CommonService {
 
 	
 	public void storeIdMap(HttpServletRequest request,Map<String, Object> map) {
-		String role_type = (String)request.getSession().getAttribute(Constants.SESSION_ROLE_TYPE);
+		String role_type = (String)request.getSession().getAttribute(EConstants.SESSION_ROLE_TYPE);
 		if(role_type.equals("student") || role_type.equals("teacher")){
-			map.put("schoolId", (Integer)request.getSession().getAttribute(Constants.SESSION_SCHOOL_ID));
+			map.put("schoolId", (Integer)request.getSession().getAttribute(EConstants.SESSION_SCHOOL_ID));
 		}else if(role_type.equals("school")){
-			map.put("schoolId", (Integer)request.getSession().getAttribute(Constants.SESSION_USER_ID));
+			map.put("schoolId", (Integer)request.getSession().getAttribute(EConstants.SESSION_USER_ID));
 		}
 	}
 	
 	public CriteriaObject storeIdCriteriaObject(HttpServletRequest request){
 		CriteriaObject co = new CriteriaObject();
-		String role_type = (String)request.getSession().getAttribute(Constants.SESSION_ROLE_TYPE);
+		String role_type = (String)request.getSession().getAttribute(EConstants.SESSION_ROLE_TYPE);
 		co.setRoleType(role_type);
 		if(role_type == null) {
 			co.setOperator("");
@@ -49,13 +49,13 @@ public class CommonServiceImpl implements CommonService {
 			co.setOperator("");
 		}else if(role_type.equals("store")){
 			co.setOperator("eq");
-			co.setStoreId((Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID));
+			co.setStoreId((Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID));
 		}else if(role_type.equals("user")){
 			co.setOperator("user_eq");
-			co.setUserId((Long)request.getSession().getAttribute(Constants.SESSION_USER_ID));
+			co.setUserId((Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID));
 		}else{
 			co.setOperator("eq");
-			co.setStoreId((Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID));
+			co.setStoreId((Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID));
 		}
 		
 		return co;
@@ -63,7 +63,7 @@ public class CommonServiceImpl implements CommonService {
 	
 	public CriteriaObject storeIdCriteriaObject(HttpServletRequest request , Integer store_id){
 		CriteriaObject co = new CriteriaObject();
-		String role_type = (String)request.getSession().getAttribute(Constants.SESSION_ROLE_TYPE);
+		String role_type = (String)request.getSession().getAttribute(EConstants.SESSION_ROLE_TYPE);
 		co.setRoleType(role_type);
 		if(role_type == null) {
 			co.setOperator("");
@@ -71,13 +71,13 @@ public class CommonServiceImpl implements CommonService {
 			co.setOperator("");
 		}else if(role_type.equals("store")){
 			co.setOperator("eq");
-			co.setStoreId((store_id == null) ? (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID) : store_id);
+			co.setStoreId((store_id == null) ? (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID) : store_id);
 		}else if(role_type.equals("user")){
 			co.setOperator("user_eq");
-			co.setUserId((Long)request.getSession().getAttribute(Constants.SESSION_USER_ID));
+			co.setUserId((Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID));
 		}else{
 			co.setOperator("eq");
-			co.setStoreId((store_id == null)?(Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID):store_id);
+			co.setStoreId((store_id == null)?(Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID):store_id);
 		}
 		
 		return co;
@@ -107,13 +107,13 @@ public class CommonServiceImpl implements CommonService {
 	
 
 	public <T> List<BootStrapModel> BootStrapXml(HttpServletRequest request , String bootStrapXml,T t,String tablename,Map<String,Object> optionMap,Map<String,Object> galleryMap) throws Exception{
-		String role = (String) request.getSession().getAttribute(Constants.SESSION_ROLE_TYPE);
+		String role = (String) request.getSession().getAttribute(EConstants.SESSION_ROLE_TYPE);
 		if (role == null) role = "user";
 		String manager = role;
 		if(role.equals("admin")){
-			manager = (String) request.getSession().getAttribute(Constants.SESSION_ADMIN_NAME);
+			manager = (String) request.getSession().getAttribute(EConstants.SESSION_ADMIN_NAME);
 		}else if(role.equals("user")){
-			manager = (String) request.getSession().getAttribute(Constants.SESSION_USER_NAME);
+			manager = (String) request.getSession().getAttribute(EConstants.SESSION_USER_NAME);
 		}
 		
 		if(manager == null)manager = "";
@@ -177,12 +177,12 @@ public class CommonServiceImpl implements CommonService {
 	
 	
 	public <T> List<ExtendsFieldsTabs> BootStrapTabXml(HttpServletRequest request , String bootStrapXml,T t,String tablename,Map<String,Object> optionMap,Map<String,Object> galleryMap) throws Exception{
-		String role = (String) request.getSession().getAttribute(Constants.SESSION_ROLE_TYPE);
+		String role = (String) request.getSession().getAttribute(EConstants.SESSION_ROLE_TYPE);
 		String manager = role;
 		if(role.equals("admin")){
-			manager = (String) request.getSession().getAttribute(Constants.SESSION_ADMIN_NAME);
+			manager = (String) request.getSession().getAttribute(EConstants.SESSION_ADMIN_NAME);
 		}else if(role.equals("user")){
-			manager = (String) request.getSession().getAttribute(Constants.SESSION_USER_NAME);
+			manager = (String) request.getSession().getAttribute(EConstants.SESSION_USER_NAME);
 		}
 		
 		Map<String, Object> goodsMap = this.getClassValue(t);
@@ -269,12 +269,12 @@ public class CommonServiceImpl implements CommonService {
 	public <T> List<BootStrapModel> easyuiListXml(HttpServletRequest request , String bootStrapXml , String tablename) throws Exception{
 		List<BootStrapModel> list = new ArrayList<BootStrapModel>();
 		
-		String role = (String) request.getSession().getAttribute(Constants.SESSION_ROLE_TYPE);
+		String role = (String) request.getSession().getAttribute(EConstants.SESSION_ROLE_TYPE);
 		String manager = role;
 		if(role.equals("admin")){
-			manager = (String) request.getSession().getAttribute(Constants.SESSION_ADMIN_NAME);
+			manager = (String) request.getSession().getAttribute(EConstants.SESSION_ADMIN_NAME);
 		}else if(role.equals("user")){
-			manager = (String) request.getSession().getAttribute(Constants.SESSION_USER_NAME);
+			manager = (String) request.getSession().getAttribute(EConstants.SESSION_USER_NAME);
 		}
 		
 		CommonController c = new CommonController();

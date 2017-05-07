@@ -7,7 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.model.BootStrapModel;
 import org.ehais.service.impl.CommonServiceImpl;
 import org.ehais.shop.mapper.HaiOrderGoodsMapper;
@@ -35,7 +35,7 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 	public ReturnObject<HaiOrderInfo> orderinfo_list(HttpServletRequest request) throws Exception{
 		
 		ReturnObject<HaiOrderInfo> rm = new ReturnObject<HaiOrderInfo>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		rm.setCode(1);
 		return rm;
@@ -45,7 +45,7 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 			Integer page, Integer len) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiOrderInfo> rm = new ReturnObject<HaiOrderInfo>();
-		if(store_id == null) store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		if(store_id == null) store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		Integer start = ((page != null)? ((page - 1 ) * len ) : 0 );
 		
 		HaiOrderInfoExample example = new HaiOrderInfoExample();
@@ -67,7 +67,7 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiOrderInfo> rm = new ReturnObject<HaiOrderInfo>();	
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiOrderInfo model = new HaiOrderInfo();
 		rm.setBootStrapList(this.formatBootStrapList(model));
 		rm.setCode(1);
@@ -85,7 +85,7 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 		}
 
 
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		model.setStoreId(store_id);
 
 		HaiOrderInfoExample example = new HaiOrderInfoExample();
@@ -109,7 +109,7 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiOrderInfo> rm = new ReturnObject<HaiOrderInfo>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiOrderInfo model = haiOrderInfoMapper.selectByPrimaryKey(orderId);
 		rm.setBootStrapList(this.formatBootStrapList(model));
 		
@@ -122,7 +122,7 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiOrderInfo> rm = new ReturnObject<HaiOrderInfo>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiOrderInfoExample example = new HaiOrderInfoExample();
 		HaiOrderInfoExample.Criteria c = example.createCriteria();
 		
@@ -146,7 +146,7 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiOrderInfo> rm = new ReturnObject<HaiOrderInfo>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		HaiOrderInfo model = haiOrderInfoMapper.selectByPrimaryKey(orderId);
 		rm.setBootStrapList(this.formatBootStrapList(model));
@@ -160,7 +160,7 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiOrderInfo> rm = new ReturnObject<HaiOrderInfo>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiOrderInfoExample example = new HaiOrderInfoExample();
 		HaiOrderInfoExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));

@@ -8,7 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.epublic.model.EHaiRegion;
 import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.shop.controller.api.include.UserIController;
@@ -30,7 +30,7 @@ public class UserWSController extends UserIController {
 	@RequestMapping("/user_info")
 	public String user_info(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response) {
-		Long user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+		Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 		
 		try{
 			ReturnObject<EHaiUsers> rm = eUsersService.users_find(request, user_id);

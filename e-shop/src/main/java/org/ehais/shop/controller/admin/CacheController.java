@@ -7,7 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.ehais.util.EHttpClientUtil;
 import org.ehais.util.SignUtil;
@@ -46,7 +46,7 @@ public class CacheController extends CommonController{
 			@RequestParam(value = "url", required = true) String url
 			) throws UnsupportedEncodingException {
 		
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		timestamp = String.valueOf(System.currentTimeMillis() / 1000);
 		Map<String, String> paramsMap = new HashMap<String, String>();

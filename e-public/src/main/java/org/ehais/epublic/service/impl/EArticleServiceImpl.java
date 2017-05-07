@@ -7,7 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.epublic.model.EHaiArticle;
 import org.ehais.epublic.model.EHaiArticleCat;
 import org.ehais.epublic.model.EHaiArticleCatExample;
@@ -29,7 +29,7 @@ public class EArticleServiceImpl  extends EArticleCommonServiceImpl implements E
 	public ReturnObject<EHaiArticle> article_list(HttpServletRequest request) throws Exception{
 		
 		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		rm.setCode(1);
 		return rm;
@@ -39,7 +39,7 @@ public class EArticleServiceImpl  extends EArticleCommonServiceImpl implements E
 			Integer page, Integer len) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
-		if(store_id == null) store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		if(store_id == null) store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		Integer start = (page - 1 ) * len;
 		
 		EHaiArticleExample example = new EHaiArticleExample();
@@ -78,7 +78,7 @@ public class EArticleServiceImpl  extends EArticleCommonServiceImpl implements E
 			
 		}
 		List<EHaiArticle> list = eHaiArticleMapper.hai_article_list_by_example(example);
-		Integer total = eHaiArticleMapper.countByExample(example);
+		Integer total = Long.valueOf(eHaiArticleMapper.countByExample(example)).intValue();
 		
 		
 
@@ -104,7 +104,7 @@ public class EArticleServiceImpl  extends EArticleCommonServiceImpl implements E
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();	
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		EHaiArticle model = new EHaiArticle();
 		rm.setBootStrapList(this.formatBootStrapList(request,model,isCode));
 		rm.setCode(1);
@@ -122,14 +122,14 @@ public class EArticleServiceImpl  extends EArticleCommonServiceImpl implements E
 		}
 
 
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		model.setStoreId(store_id);
 
 		EHaiArticleExample example = new EHaiArticleExample();
 		EHaiArticleExample.Criteria c = example.createCriteria();
 		c.andTitleEqualTo(model.getTitle());
 		c.andStoreIdEqualTo(store_id);
-		int count = eHaiArticleMapper.countByExample(example);
+		int count = Long.valueOf(eHaiArticleMapper.countByExample(example)).intValue();
 		if(count > 0){
 			rm.setMsg("存在相同的记录");
 			return rm;
@@ -146,7 +146,7 @@ public class EArticleServiceImpl  extends EArticleCommonServiceImpl implements E
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		EHaiArticle model = eHaiArticleMapper.selectByPrimaryKey(articleId);
 		rm.setBootStrapList(this.formatBootStrapList(request,model,isCode));
 		
@@ -159,7 +159,7 @@ public class EArticleServiceImpl  extends EArticleCommonServiceImpl implements E
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		EHaiArticleExample example = new EHaiArticleExample();
 		EHaiArticleExample.Criteria c = example.createCriteria();
 		
@@ -167,7 +167,7 @@ public class EArticleServiceImpl  extends EArticleCommonServiceImpl implements E
 		c.andArticleIdEqualTo(model.getArticleId());
 		c.andStoreIdEqualTo(store_id);
 
-		int count = eHaiArticleMapper.countByExample(example);
+		int count = Long.valueOf(eHaiArticleMapper.countByExample(example)).intValue();
 		if(count == 0){
 			rm.setMsg("记录不存在");
 			return rm;
@@ -183,7 +183,7 @@ public class EArticleServiceImpl  extends EArticleCommonServiceImpl implements E
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		EHaiArticle model = eHaiArticleMapper.selectByPrimaryKey(articleId);
 		rm.setBootStrapList(this.formatBootStrapList(request,model,isCode));
@@ -197,7 +197,7 @@ public class EArticleServiceImpl  extends EArticleCommonServiceImpl implements E
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		EHaiArticleExample example = new EHaiArticleExample();
 		EHaiArticleExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));

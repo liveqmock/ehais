@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.shop.controller.api.include.UserIController;
 import org.ehais.tools.ReturnObject;

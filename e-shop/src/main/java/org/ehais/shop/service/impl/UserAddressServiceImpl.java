@@ -8,7 +8,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.epublic.mapper.EHaiRegionMapper;
 import org.ehais.epublic.model.EHaiRegion;
 import org.ehais.epublic.model.EHaiRegionExample;
@@ -37,7 +37,7 @@ public class UserAddressServiceImpl  extends CommonServiceImpl implements UserAd
 	public ReturnObject<HaiUserAddress> useraddress_list(HttpServletRequest request) throws Exception{
 		
 		ReturnObject<HaiUserAddress> rm = new ReturnObject<HaiUserAddress>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		rm.setCode(1);
 		return rm;
@@ -47,7 +47,7 @@ public class UserAddressServiceImpl  extends CommonServiceImpl implements UserAd
 			Integer page, Integer len) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiUserAddress> rm = new ReturnObject<HaiUserAddress>();
-		if(store_id == null) store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		if(store_id == null) store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		Integer start = ((page != null)? ((page - 1 ) * len ) : 0 );
 		
 		HaiUserAddressExample example = new HaiUserAddressExample();
@@ -69,7 +69,7 @@ public class UserAddressServiceImpl  extends CommonServiceImpl implements UserAd
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiUserAddress> rm = new ReturnObject<HaiUserAddress>();	
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiUserAddress model = new HaiUserAddress();
 		rm.setBootStrapList(this.formatBootStrapList(model));
 		rm.setCode(1);
@@ -87,7 +87,7 @@ public class UserAddressServiceImpl  extends CommonServiceImpl implements UserAd
 		}
 
 
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		model.setStoreId(store_id);
 
 		HaiUserAddressExample example = new HaiUserAddressExample();
@@ -111,7 +111,7 @@ public class UserAddressServiceImpl  extends CommonServiceImpl implements UserAd
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiUserAddress> rm = new ReturnObject<HaiUserAddress>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiUserAddress model = haiUserAddressMapper.selectByPrimaryKey(addressId);
 		rm.setBootStrapList(this.formatBootStrapList(model));
 		
@@ -124,7 +124,7 @@ public class UserAddressServiceImpl  extends CommonServiceImpl implements UserAd
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiUserAddress> rm = new ReturnObject<HaiUserAddress>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiUserAddressExample example = new HaiUserAddressExample();
 		HaiUserAddressExample.Criteria c = example.createCriteria();
 		
@@ -148,7 +148,7 @@ public class UserAddressServiceImpl  extends CommonServiceImpl implements UserAd
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiUserAddress> rm = new ReturnObject<HaiUserAddress>();
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		HaiUserAddress model = haiUserAddressMapper.selectByPrimaryKey(addressId);
 		rm.setBootStrapList(this.formatBootStrapList(model));
@@ -187,7 +187,7 @@ public class UserAddressServiceImpl  extends CommonServiceImpl implements UserAd
 		rm.setCode(0);
 		
 		if(user_id == null ){
-			user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 		}
 		
 		
@@ -259,7 +259,7 @@ public class UserAddressServiceImpl  extends CommonServiceImpl implements UserAd
 		rm.setCode(0);
 		
 		if(user_id == null ){
-			user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 		}
 		
 		
@@ -357,7 +357,7 @@ public class UserAddressServiceImpl  extends CommonServiceImpl implements UserAd
 		ReturnObject<HaiUserAddress> rm = new ReturnObject<HaiUserAddress>();
 		rm.setCode(0);
 		
-		if(user_id == null) user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+		if(user_id == null) user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 		if(user_id == null || user_id == 0){
 			rm.setMsg("必填项不能为空");
 			return rm;
@@ -405,7 +405,7 @@ public class UserAddressServiceImpl  extends CommonServiceImpl implements UserAd
 		rm.setCode(0);
 		
 		if(user_id == null ){
-			user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 		}
 		
 		
@@ -447,7 +447,7 @@ public class UserAddressServiceImpl  extends CommonServiceImpl implements UserAd
 		rm.setCode(0);
 		
 		if(user_id == null ){
-			user_id = (Long)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 		}
 		
 		
