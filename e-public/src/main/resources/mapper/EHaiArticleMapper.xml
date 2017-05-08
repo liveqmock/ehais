@@ -790,8 +790,8 @@
     <if test="orderByClause != null" >
       <![CDATA[ order by ${orderByClause}  ]]>
     </if>
-    <if test="start != null and len != null and start >= 0 and len > 0" >
-      <![CDATA[ limit #{start,jdbcType=INTEGER},#{len,jdbcType=INTEGER}  ]]>
+    <if test="limitStart != null and limitEnd != null and limitStart >= 0 and limitEnd > 0" >
+      <![CDATA[ limit #{limitStart,jdbcType=INTEGER},#{limitEnd,jdbcType=INTEGER}  ]]>
     </if>
   </select>
   <select id="hai_article_list_by_example" resultMap="BaseResultMap" parameterType="org.ehais.epublic.model.EHaiArticleExample" >
@@ -804,8 +804,8 @@
     <if test="orderByClause != null" >
       <![CDATA[ order by ${orderByClause}  ]]>
     </if>
-    <if test="start != null and len != null and start >= 0 and len > 0" >
-      <![CDATA[ limit #{start,jdbcType=INTEGER},#{len,jdbcType=INTEGER}  ]]>
+    <if test="limitStart != null and limitEnd != null and limitStart >= 0 and limitEnd > 0" >
+      <![CDATA[ limit #{limitStart,jdbcType=INTEGER},#{limitEnd,jdbcType=INTEGER}  ]]>
     </if>
   </select>
   
@@ -817,7 +817,7 @@
     from hai_article a left join hai_article_cat c on a.cat_id = c.cat_id
     where a.store_id = #{store_id} and c.code = #{code}    
     order by a.article_id desc 
-    limit #{start},#{len}
+    limit #{limitStart},#{limitEnd}
   </select>
  
   <select id="get_hai_article_info" resultMap="ResultMapWithBLOBs" parameterType="map" >
