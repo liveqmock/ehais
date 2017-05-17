@@ -22,13 +22,14 @@ public class EArticleCommonServiceImpl extends CommonServiceImpl{
 	@Autowired
 	protected EHaiArticleMapper eHaiArticleMapper;
 	
-	protected List<TreeModel> eTreeArticleCat(HttpServletRequest request){
+	protected List<TreeModel> eTreeArticleCat(HttpServletRequest request,String module){
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 
 		EHaiArticleCatExample example = new EHaiArticleCatExample();
 		EHaiArticleCatExample.Criteria c = example.createCriteria();
 		c.andStoreIdEqualTo(store_id);
-		List<EHaiArticleCat> list = eHaiArticleCatMapper.hai_article_cat_list_by_example(example);
+		c.andModuleEqualTo(module);
+		List<EHaiArticleCat> list = eHaiArticleCatMapper.selectByExample(example);
 		
 		TreeUtil tree = new TreeUtil();
 		List<TreeModel> treeList = new ArrayList<TreeModel>();

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<#include "/include/BootStrap_Include.html">
+<title>Insert title here</title>
+<link rel="stylesheet" href="/css/bi/bi.css"></link>
+<script type="text/javascript" src="/ehais/js/echarts.min.js"></script>
+</head>
+<body>
+<div class="container-fluid">
+	<div class="row">
+		<h2>2017-05.自有品牌奶粉销售分分析</h2>
+	</div>
+	<div class="row">
+		<div id="report" style="width: 1000px; height: 500px;"></div>
+	</div>
+</div>
+<script type="text/javascript">
+$(function(){
+
+	var myChart = echarts.init(document.getElementById('report'));
+	var xAxisData = ['法婴特','','爱智宝','百牧元','奶福','爱里贝','悠蓝','1897','三绿','合生'];
+	var data01 = [];
+	var data02 = [];
+	for (var i = 9; i < 19; i++) {
+	    data01.push(Math.round(Math.random() * 500) + 200);
+	    data02.push(Math.round(Math.random() * 600) + 100);
+	}
+	var option = {
+	    title: { text: '门店销售', },
+	    legend:{data:['老客','新客']},
+	    xAxis:{
+	        axisLabel:{show:false},
+	        splitLine:{show:false},
+	        axisLine:{show:false},
+	        axisTick:{show:false},
+	    },
+	    yAxis:[{
+	        data: xAxisData,
+	        axisLabel:{inside:true,textStyle:{color:'#03a9f4'}},
+	        axisLine:{show:true,lineStyle:{color:'rgba(96, 236, 236)',type:'dashed'}},
+	        splitLine:{show:false},
+	        axisTick:{show:false},
+	    }],
+	    series: [{
+	        name:'新客',
+	        type:'bar',
+	        stack: '总量',
+	        barWidth: 10,
+	        label: {normal:{show: true, position: 'right'}},
+	        data:[320, 302, 341, 374, 390, 450, 420,123,122,432],
+	        itemStyle: {
+	            normal: {
+	                color: "#0081D2"
+	            }
+	        }
+	    },{
+	        name:'老客',
+	        type:'bar',
+	        stack: '总量',
+	        label: {normal:{show: true, position: 'left'}},
+	        data:[-120, -132, -101, -134, -190, -230, -210,-123,-122,-432],
+	        itemStyle: {
+	            normal: {
+	                color: "#00D3AA"
+	            }
+	        }
+	    }]
+	};
+	
+	
+	myChart.setOption(option);
+	
+});
+</script>
+</body>
+</html>

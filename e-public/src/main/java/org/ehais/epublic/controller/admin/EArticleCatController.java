@@ -32,10 +32,12 @@ public class  EArticleCatController extends CommonController {
 	
 	@RequestMapping("/e_articlecat_list")
 	public String articlecat_list(ModelMap modelMap,
-			HttpServletRequest request,HttpServletResponse response ) {	
+			HttpServletRequest request,HttpServletResponse response ,
+			@RequestParam(value = "module", required = true) String module) {	
 		Integer user_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 		try{
 			modelMap.addAttribute("wxid", user_id);
+			modelMap.addAttribute("module", module);
 			modelMap.addAttribute("action", "e_articlecat_list_json");
 		}catch(Exception e){
 			e.printStackTrace();
@@ -49,9 +51,10 @@ public class  EArticleCatController extends CommonController {
 	public String articlecat_list_json(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "page", required = true) Integer page,
-			@RequestParam(value = "len", required = true) Integer len) {
+			@RequestParam(value = "len", required = true) Integer len,
+			@RequestParam(value = "module", required = true) String module) {
 		try{
-			ReturnObject<TreeModel> rm = eArticlecatService.articlecat_tree_json(request, page, len);
+			ReturnObject<TreeModel> rm = eArticlecatService.articlecat_tree_json(request,module, page, len);
 			return this.writeJson(rm);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -64,11 +67,13 @@ public class  EArticleCatController extends CommonController {
 
 	@RequestMapping("/e_articlecat_insert")
 	public String articlecat_insert(ModelMap modelMap,
-			HttpServletRequest request,HttpServletResponse response
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "module", required = true) String module
 			) {
 		try{
-			ReturnObject<EHaiArticleCat> rm = eArticlecatService.articlecat_insert(request);
+			ReturnObject<EHaiArticleCat> rm = eArticlecatService.articlecat_insert(request,module);
 			rm.setAction("e_articlecat_insert_submit");
+			modelMap.addAttribute("module", module);
 			modelMap.addAttribute("rm", rm);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -80,11 +85,12 @@ public class  EArticleCatController extends CommonController {
 	@RequestMapping(value="/e_articlecat_insert_submit",method=RequestMethod.POST)
 	public String articlecat_insert_submit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
-			@ModelAttribute EHaiArticleCat articlecat
+			@ModelAttribute EHaiArticleCat articlecat,
+			@RequestParam(value = "module", required = true) String module
 			) {
 		try{
 			ReturnObject<EHaiArticleCat> rm = eArticlecatService.articlecat_insert_submit(request,articlecat);
-			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "e_articlecat_insert");
+			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "e_articlecat_insert?module="+module);
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("articlecat", e);
@@ -95,11 +101,13 @@ public class  EArticleCatController extends CommonController {
 	@RequestMapping("/e_articlecat_update")
 	public String articlecat_update(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
-			@RequestParam(value = "catId", required = true) Integer catId
+			@RequestParam(value = "catId", required = true) Integer catId,
+			@RequestParam(value = "module", required = true) String module
 			) {
 		try{
-			ReturnObject<EHaiArticleCat> rm = eArticlecatService.articlecat_update(request, catId);
+			ReturnObject<EHaiArticleCat> rm = eArticlecatService.articlecat_update(request,module, catId);
 			rm.setAction("e_articlecat_update_submit");
+			modelMap.addAttribute("module", module);
 			modelMap.addAttribute("rm", rm);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -111,11 +119,12 @@ public class  EArticleCatController extends CommonController {
 	@RequestMapping(value="/e_articlecat_update_submit",method=RequestMethod.POST)
 	public String articlecat_update_submit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
-			@ModelAttribute EHaiArticleCat articlecat
+			@ModelAttribute EHaiArticleCat articlecat,
+			@RequestParam(value = "module", required = true) String module
 			) {
 		try{
 			ReturnObject<EHaiArticleCat> rm = eArticlecatService.articlecat_update_submit(request,articlecat);
-			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "e_articlecat_list");
+			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "e_articlecat_list?module="+module);
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("articlecat", e);
@@ -128,11 +137,12 @@ public class  EArticleCatController extends CommonController {
 	public String articlecat_delete(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "catId", required = false) Integer catId,
-			@RequestParam(value = "code", required = false) String code
+			@RequestParam(value = "code", required = false) String code,
+			@RequestParam(value = "module", required = true) String module
 			) {
 		try{
-			ReturnObject<EHaiArticleCat> rm = eArticlecatService.articlecat_delete(request, catId);
-			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "e_articlecat_list");
+			ReturnObject<EHaiArticleCat> rm = eArticlecatService.articlecat_delete(request,module, catId);
+			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "e_articlecat_list?module="+module);
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("articlecat", e);

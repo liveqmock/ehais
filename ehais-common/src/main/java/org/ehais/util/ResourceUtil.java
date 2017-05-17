@@ -1,10 +1,11 @@
 package org.ehais.util;
 
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class ResourceUtil {
-
-	private static final ResourceBundle bundle = java.util.ResourceBundle.getBundle("config/config");
+	private static final Locale locale = Locale.getDefault();  
+	private static final ResourceBundle bundle = java.util.ResourceBundle.getBundle("config/config",locale);
 
 	private void ResourceUtil() {
 	}

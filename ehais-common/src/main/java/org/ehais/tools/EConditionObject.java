@@ -49,7 +49,7 @@ public class EConditionObject implements Serializable{
 		this.endDate = endDate;
 	}
 	public String getKeyword() {
-		return keyword;
+		return keyword!=null?keyword.trim():keyword;
 	}
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;

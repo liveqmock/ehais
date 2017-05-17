@@ -71,6 +71,9 @@ public class ReturnObject<T> {
 	public void setTotal(Integer total) {
 		this.total = total;
 	}
+	public void setTotal(Long total) {
+		this.total = total.intValue();
+	}
 	public List<BootStrapModel> getBootStrapList() {
 		return bootStrapList;
 	}

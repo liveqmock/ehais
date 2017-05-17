@@ -3,10 +3,13 @@ package org.ehais.Junit;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.ehais.util.EncryptUtils;
 import org.junit.Test;
-import org.springframework.security.userdetails.UserDetailsService;
+
+import net.sf.json.JSONArray;
 
 /**
  * Hello world!
@@ -73,4 +76,16 @@ public class App {
 		}
 	}
 
+	@Test
+	public void arr(){
+		List<List<String>> list = new ArrayList<List<String>>();
+		for(Integer i = 0 ; i < 3 ; i++){
+			List<String> l = new ArrayList<String>();
+			l.add(i.toString());
+			l.add(i+"==");
+			list.add(l);
+		}
+		JSONArray arr = JSONArray.fromObject(list);
+		System.out.println(arr.toString());
+	}
 }

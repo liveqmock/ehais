@@ -7,6 +7,7 @@ import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.ehais.epublic.model.EHaiArticle;
 import org.ehais.epublic.service.EArticleService;
+import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,30 +33,28 @@ public class  EArticleController extends CommonController {
 	@RequestMapping("/e_article_list")
 	public String article_list(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
-			@RequestParam(value = "isCode", required = true) Integer isCode ) {
+			@RequestParam(value = "module", required = true) String module ) {
 		try{
-			modelMap.addAttribute("isCode", isCode);
+			modelMap.addAttribute("module", module);
 			modelMap.addAttribute("action", "e_article_list_json");
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("article", e);
 		}
-		return "/admin/eArticle/list";
+		return "/admin/article/list";
 	}
 	
 	@ResponseBody
 	@RequestMapping("/e_article_list_json")
 	public String e_article_list_json(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
-			@RequestParam(value = "isCode", required = true) Integer isCode,//0：变量，1：常量
-			@RequestParam(value = "page", required = true) Integer page,
-			@RequestParam(value = "len", required = true) Integer len) {
+			@RequestParam(value = "module", required = true) String module,
+			@RequestParam(value = "catId", required = false) Integer catId,
+			@ModelAttribute EConditionObject condition) {
 		
-		boolean is_code = false;
-		if(isCode!=null && isCode == 1)is_code = true;
 		
 		try{
-			ReturnObject<EHaiArticle> rm = eArticleService.article_list_json(request,null , is_code, page, len);
+			ReturnObject<EHaiArticle> rm = eArticleService.article_list_json(request,null ,catId, module,condition);
 			return this.writeJson(rm);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -69,29 +68,29 @@ public class  EArticleController extends CommonController {
 	@RequestMapping("/e_article_insert")
 	public String article_insert(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
-			@RequestParam(value = "isCode", required = true) Integer isCode
+			@RequestParam(value = "module", required = true) String module
 			) {
 		try{
-			ReturnObject<EHaiArticle> rm = eArticleService.article_insert(request, isCode);
+			ReturnObject<EHaiArticle> rm = eArticleService.article_insert(request, module);
 			rm.setAction("e_article_insert_submit");
 			modelMap.addAttribute("rm", rm);
-			modelMap.addAttribute("isCode", isCode);
+			modelMap.addAttribute("module", module);
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("article", e);
 		}
-		return "/admin/eArticle/info";
+		return "/admin/article/info";
 	}
 	
 	@RequestMapping(value="/e_article_insert_submit",method=RequestMethod.POST)
 	public String article_insert_submit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@ModelAttribute EHaiArticle article,
-			@RequestParam(value = "isCode", required = true) Integer isCode
+			@RequestParam(value = "module", required = true) String module
 			) {
 		try{
 			ReturnObject<EHaiArticle> rm = eArticleService.article_insert_submit(request,article);
-			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "e_article_insert?isCode="+isCode);
+			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "e_article_insert?module="+module);
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("article", e);
@@ -103,33 +102,33 @@ public class  EArticleController extends CommonController {
 	public String article_update(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "articleId", required = true) Integer articleId,
-			@RequestParam(value = "isCode", required = true) Integer isCode
+			@RequestParam(value = "module", required = true) String module
 			) {
 		try{
-			ReturnObject<EHaiArticle> rm = eArticleService.article_update(request, articleId,isCode);
+			ReturnObject<EHaiArticle> rm = eArticleService.article_update(request,module, articleId);
 			rm.setAction("e_article_update_submit");
 			modelMap.addAttribute("rm", rm);
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("article", e);
 		}
-		return "/admin/eArticle/info";
+		return "/admin/article/info";
 	}
 	
 	@RequestMapping(value="/e_article_update_submit",method=RequestMethod.POST)
 	public String article_update_submit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@ModelAttribute EHaiArticle article,
-			@RequestParam(value = "isCode", required = true) Integer isCode
+			@RequestParam(value = "module", required = true) String module
 			) {
 		try{
 			ReturnObject<EHaiArticle> rm = eArticleService.article_update_submit(request,article);
-			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "e_article_list?isCode="+isCode);
+			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "e_article_list?module="+module);
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("article", e);
 		}
-		return "/admin/eArticle/info";
+		return "/admin/article/info";
 	}
 	
 	
@@ -137,11 +136,11 @@ public class  EArticleController extends CommonController {
 	public String article_delete(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "articleId", required = false) Integer articleId,
-			@RequestParam(value = "isCode", required = true) Integer isCode
+			@RequestParam(value = "module", required = true) String module
 			) {
 		try{
-			ReturnObject<EHaiArticle> rm = eArticleService.article_delete(request, articleId);
-			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "e_article_list?isCode="+isCode);
+			ReturnObject<EHaiArticle> rm = eArticleService.article_delete(request,module, articleId);
+			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "e_article_list?module="+module);
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("article", e);

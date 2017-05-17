@@ -1,6 +1,7 @@
 package org.ehais.epublic.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import org.ehais.epublic.model.EHaiArticleExample;
 import org.ehais.epublic.service.EArticleService;
 import org.ehais.model.BootStrapModel;
 import org.ehais.tools.CriteriaObject;
+import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
 import org.springframework.stereotype.Service;
 
@@ -99,14 +101,61 @@ public class EArticleServiceImpl  extends EArticleCommonServiceImpl implements E
 		
 		
 	}
+	
+	
 
-	public ReturnObject<EHaiArticle> article_insert(HttpServletRequest request,Integer isCode)
+	public ReturnObject<EHaiArticle> article_list_json(HttpServletRequest request,Integer store_id,Integer catId,String module,
+			EConditionObject condition) throws Exception {
+		// TODO Auto-generated method stub
+		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
+		if(store_id == null) store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		
+		EHaiArticleExample example = new EHaiArticleExample();
+		CriteriaObject co = this.storeIdCriteriaObject(request);
+
+		example.setLimitStart(condition.getStart());
+		example.setLimitEnd(condition.getRows());
+		EHaiArticleExample.Criteria c = example.or();
+//		example.CriteriaStoreId(c, co);
+		c.andStoreIdEqualTo(store_id);
+		c.andModuleEqualTo(module);
+		if(catId != null && catId > 0)c.andCatIdEqualTo(catId);
+		if(condition.getKeyword()!=null && !condition.getKeyword().equals("")){
+			c.andTitleLike(condition.getKeyword());
+		}
+		
+		
+		
+		List<EHaiArticle> list = eHaiArticleMapper.hai_article_list_by_example(example);
+		Integer total = Long.valueOf(eHaiArticleMapper.countByExample(example)).intValue();
+		
+		
+
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		EHaiArticleCatExample exampleCat = new EHaiArticleCatExample();
+		EHaiArticleCatExample.Criteria cCat = exampleCat.createCriteria();
+		cCat.andStoreIdEqualTo(store_id);
+		List<EHaiArticleCat> cat_list = eHaiArticleCatMapper.selectByExample(exampleCat);
+		map.put("cat_list", cat_list);
+		
+		rm.setMap(map);		
+		
+		rm.setCode(1);
+		rm.setRows(list);
+		rm.setTotal(total);
+		return rm;
+		
+		
+	}
+
+	public ReturnObject<EHaiArticle> article_insert(HttpServletRequest request,String module)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();	
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		EHaiArticle model = new EHaiArticle();
-		rm.setBootStrapList(this.formatBootStrapList(request,model,isCode));
+		rm.setBootStrapList(this.formatBootStrapList(request,model,module));
 		rm.setCode(1);
 		return rm;
 	}
@@ -124,6 +173,7 @@ public class EArticleServiceImpl  extends EArticleCommonServiceImpl implements E
 
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		model.setStoreId(store_id);
+		model.setCreateDate(new Date());
 
 		EHaiArticleExample example = new EHaiArticleExample();
 		EHaiArticleExample.Criteria c = example.createCriteria();
@@ -142,13 +192,13 @@ public class EArticleServiceImpl  extends EArticleCommonServiceImpl implements E
 		return rm;
 	}
 
-	public ReturnObject<EHaiArticle> article_update(HttpServletRequest request,Integer articleId,Integer isCode)
+	public ReturnObject<EHaiArticle> article_update(HttpServletRequest request,String module,Integer articleId)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		EHaiArticle model = eHaiArticleMapper.selectByPrimaryKey(articleId);
-		rm.setBootStrapList(this.formatBootStrapList(request,model,isCode));
+		rm.setBootStrapList(this.formatBootStrapList(request,model,module));
 		
 		rm.setCode(1);
 		rm.setModel(model);
@@ -159,6 +209,7 @@ public class EArticleServiceImpl  extends EArticleCommonServiceImpl implements E
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
+		rm.setCode(0);
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		EHaiArticleExample example = new EHaiArticleExample();
 		EHaiArticleExample.Criteria c = example.createCriteria();
@@ -172,6 +223,8 @@ public class EArticleServiceImpl  extends EArticleCommonServiceImpl implements E
 			rm.setMsg("记录不存在");
 			return rm;
 		}
+		
+		model.setUpdateDate(new Date());
 
 		int code = eHaiArticleMapper.updateByExampleSelective(model, example);
 		rm.setCode(code);
@@ -179,21 +232,21 @@ public class EArticleServiceImpl  extends EArticleCommonServiceImpl implements E
 		return rm;
 	}
 
-	public ReturnObject<EHaiArticle> article_find(HttpServletRequest request,Integer articleId,Integer isCode)
+	public ReturnObject<EHaiArticle> article_find(HttpServletRequest request,Integer articleId,String module)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		EHaiArticle model = eHaiArticleMapper.selectByPrimaryKey(articleId);
-		rm.setBootStrapList(this.formatBootStrapList(request,model,isCode));
+		rm.setBootStrapList(this.formatBootStrapList(request,model,module));
 		
 		rm.setCode(1);
 		rm.setModel(model);
 		return rm;
 	}
 
-	public ReturnObject<EHaiArticle> article_delete(HttpServletRequest request,Integer articleId)
+	public ReturnObject<EHaiArticle> article_delete(HttpServletRequest request,String module,Integer articleId)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
@@ -208,12 +261,12 @@ public class EArticleServiceImpl  extends EArticleCommonServiceImpl implements E
 		return rm;
 	}
 	
-	private List<BootStrapModel> formatBootStrapList(HttpServletRequest request,EHaiArticle model,Integer isCode) throws Exception{
+	private List<BootStrapModel> formatBootStrapList(HttpServletRequest request,EHaiArticle model,String module) throws Exception{
 		
 		Map<String,Object> optionMap = new HashMap<String, Object>();
-		optionMap.put("categoryTree", this.eTreeArticleCat(request));
+		optionMap.put("categoryTree", this.eTreeArticleCat(request,module));
 		List<BootStrapModel> bootStrapList = this.BootStrapXml(request, "article.xml",model,"hai_article",optionMap);
-		bootStrapList.add(new BootStrapModel("hidden", "isCode", "", isCode, "请输入", "", "", null, 0));
+		bootStrapList.add(new BootStrapModel("hidden", "module", "", module, "请输入", "", "", null, 0));
 		
 //		
 //		List<BootStrapModel> bootStrapList = new ArrayList<BootStrapModel>();

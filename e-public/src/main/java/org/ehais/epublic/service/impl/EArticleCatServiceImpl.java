@@ -28,7 +28,7 @@ public class EArticleCatServiceImpl  extends EArticleCommonServiceImpl implement
 	
 	
 	
-	public ReturnObject<EHaiArticleCat> articlecat_list(HttpServletRequest request) throws Exception{
+	public ReturnObject<EHaiArticleCat> articlecat_list(HttpServletRequest request,String module) throws Exception{
 		
 		ReturnObject<EHaiArticleCat> rm = new ReturnObject<EHaiArticleCat>();
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
@@ -37,7 +37,7 @@ public class EArticleCatServiceImpl  extends EArticleCommonServiceImpl implement
 		return rm;
 	}
 
-	public ReturnObject<EHaiArticleCat> articlecat_list_json(HttpServletRequest request,Integer store_id,
+	public ReturnObject<EHaiArticleCat> articlecat_list_json(HttpServletRequest request,Integer store_id,String module,
 			Integer page, Integer len) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticleCat> rm = new ReturnObject<EHaiArticleCat>();
@@ -46,11 +46,13 @@ public class EArticleCatServiceImpl  extends EArticleCommonServiceImpl implement
 		
 		EHaiArticleCatExample example = new EHaiArticleCatExample();
 		EHaiArticleCatExample.Criteria c = example.createCriteria();
+		c.andModuleEqualTo(module);
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
-		example.setStart(start);
-		example.setLen(len);
+		example.setLimitStart(start);
+		example.setLimitEnd(len);
+		
 		List<EHaiArticleCat> list = eHaiArticleCatMapper.hai_article_cat_list_by_example(example);
-		Integer total = eHaiArticleCatMapper.countByExample(example);
+		Long total = eHaiArticleCatMapper.countByExample(example);
 		rm.setCode(1);
 		rm.setRows(list);
 		rm.setTotal(total);
@@ -59,13 +61,13 @@ public class EArticleCatServiceImpl  extends EArticleCommonServiceImpl implement
 		return rm;
 	}
 
-	public ReturnObject<EHaiArticleCat> articlecat_insert(HttpServletRequest request)
+	public ReturnObject<EHaiArticleCat> articlecat_insert(HttpServletRequest request,String module)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticleCat> rm = new ReturnObject<EHaiArticleCat>();	
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		EHaiArticleCat model = new EHaiArticleCat();
-		rm.setBootStrapList(this.formatBootStrapList(request,model));
+		rm.setBootStrapList(this.formatBootStrapList(request,model,module));
 		rm.setCode(1);
 		return rm;
 	}
@@ -88,7 +90,7 @@ public class EArticleCatServiceImpl  extends EArticleCommonServiceImpl implement
 		EHaiArticleCatExample.Criteria c = example.createCriteria();
 		c.andCatNameEqualTo(model.getCatName());
 		c.andStoreIdEqualTo(store_id);
-		int count = eHaiArticleCatMapper.countByExample(example);
+		long count = eHaiArticleCatMapper.countByExample(example);
 		if(count > 0){
 			rm.setMsg("存在相同的记录");
 			return rm;
@@ -101,13 +103,13 @@ public class EArticleCatServiceImpl  extends EArticleCommonServiceImpl implement
 		return rm;
 	}
 
-	public ReturnObject<EHaiArticleCat> articlecat_update(HttpServletRequest request,Integer catId)
+	public ReturnObject<EHaiArticleCat> articlecat_update(HttpServletRequest request,String module,Integer catId)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticleCat> rm = new ReturnObject<EHaiArticleCat>();
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		EHaiArticleCat model = eHaiArticleCatMapper.selectByPrimaryKey(catId);
-		rm.setBootStrapList(this.formatBootStrapList(request,model));
+		rm.setBootStrapList(this.formatBootStrapList(request,model,module));
 		
 		rm.setCode(1);
 		rm.setModel(model);
@@ -126,7 +128,7 @@ public class EArticleCatServiceImpl  extends EArticleCommonServiceImpl implement
 		c.andCatIdEqualTo(model.getCatId());
 		c.andStoreIdEqualTo(store_id);
 
-		int count = eHaiArticleCatMapper.countByExample(example);
+		long count = eHaiArticleCatMapper.countByExample(example);
 		if(count == 0){
 			rm.setMsg("记录不存在");
 			return rm;
@@ -138,21 +140,21 @@ public class EArticleCatServiceImpl  extends EArticleCommonServiceImpl implement
 		return rm;
 	}
 
-	public ReturnObject<EHaiArticleCat> articlecat_find(HttpServletRequest request,Integer catId)
+	public ReturnObject<EHaiArticleCat> articlecat_find(HttpServletRequest request,String module,Integer catId)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticleCat> rm = new ReturnObject<EHaiArticleCat>();
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		EHaiArticleCat model = eHaiArticleCatMapper.selectByPrimaryKey(catId);
-		rm.setBootStrapList(this.formatBootStrapList(request,model));
+		rm.setBootStrapList(this.formatBootStrapList(request,model,module));
 		
 		rm.setCode(1);
 		rm.setModel(model);
 		return rm;
 	}
 
-	public ReturnObject<EHaiArticleCat> articlecat_delete(HttpServletRequest request,Integer catId)
+	public ReturnObject<EHaiArticleCat> articlecat_delete(HttpServletRequest request,String module,Integer catId)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticleCat> rm = new ReturnObject<EHaiArticleCat>();
@@ -167,19 +169,25 @@ public class EArticleCatServiceImpl  extends EArticleCommonServiceImpl implement
 		return rm;
 	}
 	
-	private List<BootStrapModel> formatBootStrapList(HttpServletRequest request,EHaiArticleCat model){
+	private List<BootStrapModel> formatBootStrapList(HttpServletRequest request,EHaiArticleCat model,String module) throws Exception{
 		
-		List<BootStrapModel> bootStrapList = new ArrayList<BootStrapModel>();
+		Map<String,Object> optionMap = new HashMap<String, Object>();
+		optionMap.put("categoryTree", this.eTreeArticleCat(request,module));
+		List<BootStrapModel> bootStrapList = this.BootStrapXml(request, "article_cat.xml",model,"hai_article_cat",optionMap);
+		bootStrapList.add(new BootStrapModel("hidden", "module", "", module, "请输入", "", "", null, 0));
 		
-		bootStrapList.add(new BootStrapModel("hidden", "catId", "", model.getCatId(), "请输入", "", "", null, 0));
-		bootStrapList.add(new BootStrapModel("text", "catName", "标题", model.getCatName(), "请输入分类标题", "", "", null, 0));
-//		bootStrapList.add(new BootStrapModel("select_format", "catType", "", model.getCatType(), "请输入", "", "", null, 0));
-		bootStrapList.add(new BootStrapModel("text", "code", "编码", model.getCode(), "请输入分类编码", "", "", null, 0));
-		bootStrapList.add(new BootStrapModel("select_tree", "parentId", "上级分类", model.getParentId(), "请选择上级分类", "", "", null,eTreeArticleCat(request), 0));
-		bootStrapList.add(new BootStrapModel("text", "keywords", "关键字", model.getKeywords(), "请输入关键字", "", "", null, 0));
-		bootStrapList.add(new BootStrapModel("text", "catDesc", "描述", model.getCatDesc(), "请输入描述", "", "", null, 0));
-		bootStrapList.add(new BootStrapModel("text", "sortOrder", "排序", model.getSortOrder(), "请输入排序", "", "", null, 0));
-		bootStrapList.add(new BootStrapModel("images", "images", "图片", model.getImages(), "请输入", "", "", null, 0));
+//		
+//		List<BootStrapModel> bootStrapList = new ArrayList<BootStrapModel>();
+//		
+//		bootStrapList.add(new BootStrapModel("hidden", "catId", "", model.getCatId(), "请输入", "", "", null, 0));
+//		bootStrapList.add(new BootStrapModel("text", "catName", "标题", model.getCatName(), "请输入分类标题", "", "", null, 0));
+////		bootStrapList.add(new BootStrapModel("select_format", "catType", "", model.getCatType(), "请输入", "", "", null, 0));
+//		bootStrapList.add(new BootStrapModel("text", "code", "编码", model.getCode(), "请输入分类编码", "", "", null, 0));
+//		bootStrapList.add(new BootStrapModel("select_tree", "parentId", "上级分类", model.getParentId(), "请选择上级分类", "", "", null,eTreeArticleCat(request), 0));
+//		bootStrapList.add(new BootStrapModel("text", "keywords", "关键字", model.getKeywords(), "请输入关键字", "", "", null, 0));
+//		bootStrapList.add(new BootStrapModel("text", "catDesc", "描述", model.getCatDesc(), "请输入描述", "", "", null, 0));
+//		bootStrapList.add(new BootStrapModel("text", "sortOrder", "排序", model.getSortOrder(), "请输入排序", "", "", null, 0));
+//		bootStrapList.add(new BootStrapModel("images", "images", "图片", model.getImages(), "请输入", "", "", null, 0));
 		
 		
 		return bootStrapList;
@@ -188,7 +196,7 @@ public class EArticleCatServiceImpl  extends EArticleCommonServiceImpl implement
 	
 
 	public ReturnObject<TreeModel> articlecat_tree_json(
-			HttpServletRequest request, Integer page, Integer len)
+			HttpServletRequest request,String module, Integer page, Integer len)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<TreeModel> rm = new ReturnObject<TreeModel>();
@@ -198,11 +206,13 @@ public class EArticleCatServiceImpl  extends EArticleCommonServiceImpl implement
 		EHaiArticleCatExample example = new EHaiArticleCatExample();
 		EHaiArticleCatExample.Criteria c = example.createCriteria();
 		c.andStoreIdEqualTo(store_id);
+		c.andModuleEqualTo(module);
 		
-		example.setStart(start);
-		example.setLen(len);
-		List<EHaiArticleCat> list = eHaiArticleCatMapper.hai_article_cat_list_by_example(example);
-		Integer total = eHaiArticleCatMapper.countByExample(example);
+		example.setLimitStart(start);
+		example.setLimitEnd(len);
+//		List<EHaiArticleCat> list = eHaiArticleCatMapper.hai_article_cat_list_by_example(example);
+		List<EHaiArticleCat> list = eHaiArticleCatMapper.selectByExample(example);
+		Long total = eHaiArticleCatMapper.countByExample(example);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("articlecat_list", list);
@@ -226,7 +236,7 @@ public class EArticleCatServiceImpl  extends EArticleCommonServiceImpl implement
 		return rm;
 	}
 
-	public ReturnObject<EHaiArticleCat> articlecatcode(HttpServletRequest request,Integer store_id, String code) throws Exception {
+	public ReturnObject<EHaiArticleCat> articlecatcode(HttpServletRequest request,String module,Integer store_id, String code) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticleCat> rm = new ReturnObject<EHaiArticleCat>();
 		rm.setCode(0);

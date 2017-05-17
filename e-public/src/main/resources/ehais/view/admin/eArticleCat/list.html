@@ -48,10 +48,9 @@ $(function(){
         columns: [[
          { field: 'id', title: '编号', width: 80 }, 
          { field: 'title', title: '标题', width: 200 ,formatter : TitleFormatter },
-         { field: 'code', title: '编码', width: 120 }, 
          { field: 'action', title: '编辑', width: 100, align:'center' ,formatter:function(value,row,index){  
-        		var e = '<a href="e_articlecat_update?catId='+row.id+'">编辑</a> ';  
-            	var d = '<a href="e_articlecat_delete?catId='+row.id+'" onclick="return myConfirm();">删除</a> ';  
+        		var e = '<a href="e_articlecat_update?catId='+row.id+'&module=${module}">编辑</a> ';  
+            	var d = '<a href="e_articlecat_delete?catId='+row.id+'&module=${module}" onclick="return myConfirm();">删除</a> ';  
             	return e+d;   
          	}
          },
@@ -110,6 +109,7 @@ function loadData(){
         data : {
         	"page":page,
         	"len":len,
+        	"module" : "${module}",
         },
 		method : 'POST',
         traditional : true,
