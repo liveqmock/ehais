@@ -1,0 +1,57 @@
+<ul id="menu-ul" class="nav nav-list">
+
+
+
+      <li class="emenu">
+          <a class="dropdown-toggle">          
+			<i class=" normal"></i>
+			<span class="normal">测试一</span>
+			<b class="arrow fa fa-angle-right normal"></b>
+          </a>
+          
+
+          <ul class="submenu">
+   
+   
+      		 <li>
+                   <a href="javascript:;" onclick="addTab('主测试页','tmain')"><i class=" normal"></i>主测试一</a>
+             </li>
+            
+        </ul>
+        
+        
+    </li>
+    
+ 
+
+</ul>
+
+<script type="text/javascript">
+$(function(){
+	
+	$("ul#menu-ul .emenu").click(function(){
+		$("ul#menu-ul .emenu.current").removeClass("current");
+		$(this).addClass("current");
+	});
+	
+	addTab("首页","main");
+
+});
+
+function addTab(title, url){
+	if ($('#web_main').tabs('exists', title)){
+		$('#web_main').tabs('select', title);
+	} else {
+		var content = '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:100%;"></iframe>';
+		$('#web_main').tabs('add',{
+			title:title,
+			content:content,
+			closable:true
+		});
+	}
+}
+
+
+
+
+</script>

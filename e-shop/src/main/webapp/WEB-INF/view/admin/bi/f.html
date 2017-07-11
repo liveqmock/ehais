@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<#include "/include/BootStrap_Include.html">
+<title>Insert title here</title>
+<link rel="stylesheet" href="/css/bi/bi.css"></link>
+<script type="text/javascript" src="/ehais/js/echarts.min.js"></script>
+<link rel="stylesheet" href="/ehais/js/bootstrap/select/js/bootstrap-select.min.css"></link>
+<script type="text/javascript" src="/ehais/js/bootstrap/select/js/bootstrap-select.min.js"></script>
+</head>
+<body>
+<div class="container-fluid">
+	
+	<div class="row">
+		<div class="col-lg-6">
+		<div id="report" style=""></div>
+		</div>
+		<div class="col-lg-6">
+		<div id="report2" style=""></div>
+		</div>
+	</div>
+	
+	
+	<div class="row">
+	 <div class="form-group col-lg-12">
+         <label class="col-sm-3 control-label">客资类型：</label>
+          <div class="col-sm-4">
+              <select id="usertype" name="usertype" class="selectpicker show-tick form-control" multiple data-live-search="false">
+                      <option value="0">苹果</option>
+                      <option value="1">菠萝</option>
+                      <option value="2">香蕉</option>
+                      <option value="3">火龙果</option>
+                      <option value="4">梨子</option>
+                      <option value="5">草莓</option>
+                      <option value="6">哈密瓜</option>
+                      <option value="7">椰子</option>
+                      <option value="8">猕猴桃</option>
+                      <option value="9">桃子</option>
+              </select>
+          </div>
+        </div>
+	</div>
+	
+</div>
+<script type="text/javascript">
+$(function(){
+	
+	$('#usertype').selectpicker({
+        'selectedText': 'cat'
+    });
+	
+	$("#report").width($(document).width() / 2);
+	$("#report").height($(document).height() / 3 * 2);
+	$("#report2").width($(document).width() / 2);
+	$("#report2").height($(document).height() / 3 * 2);
+	
+	///////////////////////////////////////////////////////////////
+	
+	var TmpData = (function(){
+	    var data = [];
+	    Date.prototype.getHM = function (format) {
+	        return this.getHours()+":"+this.getMinutes();
+	    }
+	    Date.prototype.getYMD = function (format) {
+	        return this.getMonth()+"-"+this.getDate();//(this.getYear()+1900)+"-"+
+	    }
+	    var date=new Date(); 
+	    for(var i=0;i<14;i++){
+	        var tmp = {};
+	        date.setDate(date.getDate()+1);
+	        tmp['time'] = date.getYMD();
+	        //所有人数
+	        tmp['allMember'] = Math.floor(Math.random()*20)+30;//30~50个
+	        //回访会员数
+	        tmp['visitNumber'] =  Math.floor(tmp['allMember']*(Math.random()/10));//不大于10%
+	        //成功回访会员数
+	        tmp['winVisitNumber'] = Math.floor((tmp['allMember']-tmp['visitNumber'])*(Math.random()/3));//剩余部分不大于1/3
+	        //回访孕妇数
+	        tmp['visitPregnantNumber'] =  Math.floor(tmp['allMember']*(Math.random()/10));//不大于10%
+	        //成功回访孕妇数
+	        tmp['winVisitPregnantNumber'] = Math.floor((tmp['allMember']-tmp['visitNumber'])*(Math.random()/3));//剩余部分不大于1/3
+	      	//购买会员数
+	        tmp['buyNumber'] = tmp['allMember']-tmp['winVisitNumber']-tmp['visitNumber'];//剩下的
+	        
+	        
+	        data.push(tmp);
+	    }
+	    return data;
+	})();
+
+
+	var xData = function() {
+	    var data = [];
+	    for (var i = 0; i < TmpData.length; i++) {
+	        data.push(TmpData[i]['time']);
+	    }
+	    return data;
+	}();
+
+	var allMemberData = function() {
+	    var data = [];
+	    for (var i = 0; i < TmpData.length; i++) {
+	        data.push(TmpData[i]['allMember']);
+	    }
+	    return data;
+	}();
+
+	var buyNumberData = function() {
+	    var data = [];
+	    for (var i = 0; i < TmpData.length; i++) {
+	        data.push(TmpData[i]['buyNumber']);
+	    }
+	    return data;
+	}();
+
+	var winVisitNumberData = function() {
+	    var data = [];
+	    for (var i = 0; i < TmpData.length; i++) {
+	        data.push(TmpData[i]['winVisitNumber']);
+	    }
+	    return data;
+	}();
+
+	var visitNumberData = function() {
+	    var data = [];
+	    for (var i = 0; i < TmpData.length; i++) {
+	        data.push(TmpData[i]['visitNumber']);
+	    }
+	    return data;
+	}();
+	
+	var visitPregnantNumberData = function() {
+	    var data = [];
+	    for (var i = 0; i < TmpData.length; i++) {
+	        data.push(TmpData[i]['visitPregnantNumber']);
+	    }
+	    return data;
+	}();
+	
+	var winVisitPregnantNumberData = function() {
+	    var data = [];
+	    for (var i = 0; i < TmpData.length; i++) {
+	        data.push(TmpData[i]['winVisitPregnantNumber']);
+	    }
+	    return data;
+	}();
+
+	var option = {
+	    //backgroundColor: "#344b58",
+	    "title": {
+	       // "text": "活动参与会员分析",
+	        x: "4%",
+
+	        textStyle: {
+	            color: '#446699',
+	            fontSize: '14'
+	        }
+	    },
+	    "tooltip": {
+	        "trigger": "axis",
+	        "axisPointer": {
+	            "type": "shadow",
+	            textStyle: {
+	                color: "#fff"
+	            }
+
+	        },
+	    },
+	    toolbox: {
+	            feature: {
+	                dataView: {show: true, readOnly: false},
+	                restore: {show: true},
+	                saveAsImage: {show: true}
+	            }
+	        },
+	    "grid": {
+	        "borderWidth": 0,
+	        "top": '25%',
+	        "bottom": '10%',
+	        textStyle: {
+	            color: "#fff"
+	        }
+	    },
+	    "legend": {
+	        x: '0%',
+	        //top: '2%',
+	        textStyle: {
+	            color: '#90979c',
+	        },
+	        "data": ['购买会员数', '回访会员数', '成功回访会员数', '回访孕妇数', '成功回访孕妇数', '总数']
+	    },
+	     
+
+	    "calculable": true,
+	    "xAxis": [{
+	        "type": "category",
+	        "axisLine": {
+	            lineStyle: {
+	                color: '#90979c'
+	            }
+	        },
+	        "splitLine": {
+	            "show": false
+	        },
+	        "axisTick": {
+	            "show": false
+	        },
+	        "splitArea": {
+	            "show": false
+	        },
+	        "axisLabel": {
+	            "interval": 0,
+	        },
+	        "data": xData,
+	    }],
+	    "yAxis": [{
+	        "type": "value",
+	        "splitLine": {
+	            "show": false
+	        },
+	        "axisLine": {
+	            lineStyle: {
+	                color: '#90979c'
+	            }
+	        },
+	        "axisTick": {
+	            "show": false
+	        },
+	        "axisLabel": {
+	            "interval": 0,
+
+	        },
+	        "splitArea": {
+	            "show": false
+	        },
+
+	    }],
+	    
+	    "series": [{
+	            "name": "购买会员数",
+	            "type": "bar",
+	            "barMaxWidth": 25,
+	            "barGap": "20%",
+	            "itemStyle": {
+	                "normal": {
+	                    "color": "#1F77B4",
+	                    "label": {
+	                        "show": true,
+	                        "textStyle": {
+	                            "color": "#fff"
+	                        },
+	                        "position": "insideTop",
+	                        formatter: function(p) {
+	                            return p.value > 0 ? (p.value) : '';
+	                        }
+	                    }
+	                }
+	            },
+	            "data": buyNumberData,
+	        },{
+	            "name": "回访会员数",
+	            "type": "bar",
+	            "stack": "总数",
+	            "itemStyle": {
+	                "normal": {
+	                    "color": "#FF7F0E",
+	                    "barBorderRadius": 0,
+	                    "label": {
+	                        "show": true,
+	                        "position": "inside",
+	                        formatter: function(p) {
+	                            return p.value > 0 ? (p.value) : '';
+	                        }
+	                    }
+	                }
+	            },
+	            "data": winVisitNumberData
+	        }, {
+	            "name": "成功回访会员数",
+	            "type": "bar",
+	            "stack": "总数",
+	            "itemStyle": {
+	                "normal": {
+	                    "color": "#2CA02C",
+	                    "barBorderRadius": 0,
+	                    "label": {
+	                        "show": true,
+	                        "position": "top",
+	                        formatter: function(p) {
+	                            return p.value > 0 ? (p.value) : '';
+	                        }
+	                    }
+	                }
+	            },
+	            "data": visitNumberData
+	        }, {
+	            "name": "回访孕妇数",
+	            "type": "bar",
+	            "stack": "总数",
+	            "itemStyle": {
+	                "normal": {
+	                    "color": "#2ef02b",
+	                    "barBorderRadius": 0,
+	                    "label": {
+	                        "show": true,
+	                        "position": "top",
+	                        formatter: function(p) {
+	                            return p.value > 0 ? (p.value) : '';
+	                        }
+	                    }
+	                }
+	            },
+	            "data": visitPregnantNumberData
+	        }, {
+	            "name": "成功回访孕妇数",
+	            "type": "bar",
+	            "stack": "总数",
+	            "itemStyle": {
+	                "normal": {
+	                    "color": "#3CA24C",
+	                    "barBorderRadius": 0,
+	                    "label": {
+	                        "show": true,
+	                        "position": "top",
+	                        formatter: function(p) {
+	                            return p.value > 0 ? (p.value) : '';
+	                        }
+	                    }
+	                }
+	            },
+	            "data": winVisitPregnantNumberData
+	        },{
+	            "name": "总数",
+	            "type": "line",
+	            "stack": "总数",
+	            symbolSize:8,
+	            symbol:'circle',
+	            "itemStyle": {
+	                "normal": {
+	                    "color": "#6ca7e2",
+	                    "barBorderRadius": 0,
+	                    "label": {
+	                        "show": true,
+	                        "position": "top",
+	                        formatter: function(p) {
+	                            return p.value > 0 ? (p.value) : '';
+	                        }
+	                    }
+	                }
+	            },
+	            "data": allMemberData
+	        },
+	    ]
+	}
+	
+	var myChart = echarts.init(document.getElementById('report'));
+	myChart.setOption(option);
+	
+	///////////////////////////////////////////////////
+	
+	function randomData() {
+	    now = new Date(+now + oneDay);
+	    value = value + Math.random() * 21 - 10;
+	    return {
+	        name: now.toString(),
+	        value: [
+	            [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'),
+	            Math.round(value)
+	        ]
+	    }
+	}
+
+	var data = [];
+	var now = +new Date(1997, 9, 3);
+	var oneDay = 24 * 3600 * 1000;
+	var value = Math.random() * 1000;
+	for (var i = 0; i < 1000; i++) {
+	    data.push(randomData());
+	}
+
+	var option2 = {
+	    title: {
+	        text: '动态数据 + 时间坐标轴'
+	    },
+	    tooltip: {
+	        trigger: 'axis',
+	        formatter: function (params) {
+	            params = params[0];
+	            var date = new Date(params.name);
+	            return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' : ' + params.value[1];
+	        },
+	        axisPointer: {
+	            animation: false
+	        }
+	    },
+	    xAxis: {
+	        type: 'time',
+	        splitLine: {
+	            show: false
+	        }
+	    },
+	    yAxis: {
+	        type: 'value',
+	        boundaryGap: [0, '100%'],
+	        splitLine: {
+	            show: false
+	        }
+	    },
+	    series: [{
+	        name: '模拟数据',
+	        type: 'line',
+	        showSymbol: false,
+	        hoverAnimation: false,
+	        data: data
+	    }]
+	};
+
+
+	
+	var myChart2 = echarts.init(document.getElementById('report2'));
+	myChart2.setOption(option2);
+	
+});
+</script>
+</body>
+</html>

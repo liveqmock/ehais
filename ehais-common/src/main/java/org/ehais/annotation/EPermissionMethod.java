@@ -13,6 +13,7 @@ public @interface EPermissionMethod {
      * 功能ID，该功能ID，对应xml中的功能ID 
      */  
     String value() default ""; 
-    String name() default ""; 
+    String name() default ""; //按钮名称
     String type() default "url"; 
+    String intro() default "";//描述，用于系统操作日志的描述 
 }

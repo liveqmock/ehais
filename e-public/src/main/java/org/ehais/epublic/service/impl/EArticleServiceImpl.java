@@ -18,6 +18,7 @@ import org.ehais.model.BootStrapModel;
 import org.ehais.tools.CriteriaObject;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
+import org.ehais.util.Bean2Utils;
 import org.springframework.stereotype.Service;
 
 //model里面对应的日期添加的 @DateTimeFormat( pattern = "yyyy-MM-dd" )
@@ -185,6 +186,8 @@ public class EArticleServiceImpl  extends EArticleCommonServiceImpl implements E
 			return rm;
 		}
 
+		Bean2Utils.printEntity(model);
+		
 
 		int code = eHaiArticleMapper.insertSelective(model);
 		rm.setCode(code);

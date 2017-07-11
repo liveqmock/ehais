@@ -1,0 +1,146 @@
+<ul class="nav nav-tabs" id="myTab">
+	<li class="active"><a href="#home" data-toggle="tab">门店</a></li>
+	<li><a href="#svn" data-toggle="tab">会员</a></li>
+</ul>
+<div class="tab-content">
+	<div class="tab-pane fade in active" id="home">
+		<div id="report1" style="width: 350px; height: 380px;"></div>
+	</div>
+	<div class="tab-pane fade" id="svn">
+		<div id="report2" style="width: 350px; height: 380px;"></div>
+	</div>
+</div>
+<script>
+$(function(){
+	$('#myTab a').click(function (e) {
+		  e.preventDefault()
+		  $(this).tab('show')
+	});
+	
+	
+	
+	var myChart1 = echarts.init(document.getElementById('report1'));
+	var option1 = {
+		    title: {
+		        text: '门店销售排名',
+		    },
+		    tooltip: {
+		        trigger: 'axis',
+		        axisPointer: {
+		            type: 'shadow'
+		        },
+		        formatter: "{a} <br/>{b} : {c}元"
+		    },
+		    legend: {
+		        data: ['2017年']
+		    },
+		    grid: {
+		        left: '3%',
+		        right: '4%',
+		        bottom: '3%',
+		        containLabel: true
+		    },
+		    xAxis: {
+		        type: 'value',
+		        boundaryGap: [0, 0.01],
+		        "axisLabel": {
+		            "interval": 0,
+		            formatter: '{value}',
+		        }
+		    },
+		    yAxis: {
+		        type: 'category',
+		        data: ['太原门店',
+		            '大钢门店',
+		            '五一店',
+		            '新门',
+		            '老店',
+		            'A店',
+		            'B店',
+		            'C店',
+		            'D店',
+		            'E店',
+		            'F店',
+		        ]
+		    },
+		    itemStyle: {
+		        normal: {
+		        	color: '#0566A9', 
+		        }
+		    },
+		    series: [{
+		        name: '2017-05排名',
+		        type: 'bar',		        
+		        data: [2.00, 3.00, 5.00, 5.50, 6.50, 6.50, 7.50, 8.50, 8.50, 9.50, 10.0]
+		    }]
+		};
+	
+	myChart1.setOption(option1);
+	
+	
+	
+	
+	
+
+	var myChart2 = echarts.init(document.getElementById('report2'));
+	var option2 = {
+		    title: {
+		        text: '新会员排名',
+		    },
+		    tooltip: {
+		        trigger: 'axis',
+		        axisPointer: {
+		            type: 'shadow'
+		        },
+		        formatter: "{a} <br/>{b} : {c}人"
+		    },
+		    legend: {
+		        data: ['2017年']
+		    },
+		    grid: {
+		        left: '3%',
+		        right: '4%',
+		        bottom: '3%',
+		        containLabel: true
+		    },
+		    xAxis: {
+		        type: 'value',
+		        boundaryGap: [0, 0.01],
+		        "axisLabel": {
+		            "interval": 0,
+		            formatter: '{value}',
+		        }
+		    },
+		    yAxis: {
+		        type: 'category',
+		        data: [
+		            '大钢门店',
+		            '五一店',		            
+		            '老店',
+		            'A店',
+		            'B店',
+		            '太原门店',
+		            'C店',
+		            'D店',
+		            '新门',
+		            'E店',
+		            'F店',
+		        ]
+		    },
+		    itemStyle: {
+		        normal: {
+		        	color: '#0566A9', 
+		        }
+		    },
+		    series: [{
+		        name: '2017-05排名',
+		        type: 'bar',		        
+		        data: [11, 13, 19, 22, 25, 27, 28, 30, 33, 36, 40]
+		    }]
+		};
+	
+	myChart2.setOption(option2);
+	
+	
+});
+</script>

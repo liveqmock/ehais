@@ -546,7 +546,22 @@
 	      <listshow>0</listshow>
 	      <tabno>0</tabno>
 	    </BootStrapModel>
-  	
+  		<BootStrapModel>
+	      <control>checkbox</control>
+	      <name>isHot</name>
+	      <label>是否热门产品</label>
+	      <prompt>请输入商品名称</prompt>
+	      <oksign></oksign>
+	      <errorsign></errorsign>
+	      <listshow>0</listshow>
+	      <tabno>0</tabno>
+	      <checkboxs>
+		    <checkbox>
+		      <key>1</key>
+		      <value>热门</value>
+		    </checkbox>
+		  </checkboxs>
+	    </BootStrapModel>
   	</tab>
   	<tab id="extends" title="高级资料" active="">
   	

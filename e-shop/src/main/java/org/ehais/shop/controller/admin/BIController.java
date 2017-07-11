@@ -64,4 +64,38 @@ public class BIController {
 		return "/admin/bi/e";
 	}
 	
+	
+	@RequestMapping("/f")
+	public String f(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response ) {		
+		try{
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return "/admin/bi/f";
+	}
+	
+	
+	@RequestMapping("/g")
+	public String g(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response ) {		
+		try{
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return "/admin/bi/g";
+	}
+	
+	
+	@RequestMapping("/checkbox")
+	public String checkbox(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response ) {		
+		try{
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return "/admin/bi/checkbox";
+	}
+	
+	
 }

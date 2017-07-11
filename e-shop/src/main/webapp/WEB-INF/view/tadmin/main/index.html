@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="/ehais/js/jqueryui/jquery-ui.min.css" rel="stylesheet">
+
+<link href="/ehais/js/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="/ehais/js/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+<link href="/ehais/js/bootstrap/css/font-awesome.min.css" rel="stylesheet">
+
+<script type="text/javascript" src="/ehais/js/jquery/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="/ehais/js/bootstrap/js/bootstrap.min.js"></script>
+
+<link href="/ehais/js/easyui/1.5.2/themes/default/easyui.css" type="text/css" rel="stylesheet"></link>
+<link href="/ehais/js/easyui/1.5.2/themes/icon.css" type="text/css" rel="stylesheet"></link>
+
+<script type="text/javascript" src="/ehais/js/easyui/1.5.2/plugins/jquery.panel.js"></script>
+<script type="text/javascript" src="/ehais/js/easyui/1.5.2/plugins/jquery.layout.js"></script>
+<script type="text/javascript" src="/ehais/js/easyui/1.5.2/plugins/jquery.tabs.js"></script>
+
+<script type="text/javascript" src="/ehais/js/easyui/1.5.2/locale/easyui-lang-zh_CN.js"></script>
+
+
+<title>Insert title here</title>
+<style type="text/css">
+/*bootstrap兼容问题和easyui的bug*/  
+.panel-header, .panel-body {  
+border-width: 0px;  
+}  
+.datagrid,.combo-p{  
+border:solid 1px #D4D4D4;  
+}  
+.datagrid *{  
+-webkit-box-sizing: content-box;  
+-moz-box-sizing: content-box;  
+box-sizing: content-box;  
+}
+</style>
+</head>
+<body class="easyui-layout" data-options="fit : true,border : false">
+<div region="north" title="" split="false" style="height:50px;">
+<div style="float: right;">
+
+测试框架
+<a href="/admin_logout">退出</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</div>
+</div>
+<div region="south" title="" split="false" style="height:40px;"></div>
+<div region="east" iconCls="icon-reload" title="常用功能" split="false" style="width:100px;">
+
+A
+	  
+</div>
+
+<div region="west" split="false" title="菜单" style="width:150px;">
+	<#include "menu.html">
+</div>
+
+<div  data-options="region:'center',title:''"  style="padding:0px;" >
+	<div id="web_main" class="easyui-tabs" fit="true" title="首页"></div>
+</div>
+
+
+<div id="tab-tools">
+	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'" onclick="reloadPanel()"></a>
+</div>
+	
+
+</body>
+</html>

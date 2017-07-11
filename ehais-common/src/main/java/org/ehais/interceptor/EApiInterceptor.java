@@ -36,7 +36,7 @@ public class EApiInterceptor extends HandlerInterceptorAdapter{
 			HttpServletResponse response, Object handler) throws Exception {
 //		System.out.println("request.getServletPath():"+request.getServletPath());
 		String url = request.getRequestURI().toString();
-//		System.out.println("url:"+url);
+		System.out.println("url:"+url);
 		//判断当前URL是不是登录页面，如果是，则不拦截
 //		for (String s : ignoreUrls) {
 //			if (url.equals(s)) {

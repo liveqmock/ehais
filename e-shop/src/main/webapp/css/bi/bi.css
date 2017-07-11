@@ -36,3 +36,10 @@ font-size:25px;
 -o-border-radius:50%;
 }
 .ul_report li div.num{font-size: 30px;font-weight: bold;}
+.myRow{margin-top: 10px; margin-bottom: 5px;}
+.myRow label.w{width: 90px;text-align: right;font-weight: 100;}
+.myRow input.form-control.w{border-top: 0;border-left:0;border-right:0;border-bottom: 1px solid #000;border-radius:0;
+-webkit-box-shadow:none;box-shadow:none;-webkit-transition:none;transition:none;
+}
+.reportRow{margin-top: 50px;}
+.form-horizontal .form-group{margin-left: 0;margin-right: 0;}

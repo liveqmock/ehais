@@ -224,6 +224,21 @@ public class CommonController {
 		return "/system/dispatch_jump";
 	}
 	
+	
+	public <T> String writeBindingResult(ModelMap modelMap,BindingResult result){
+		List<ObjectError> errorList = result.getAllErrors();
+//        for(ObjectError error : errorList){
+//            System.out.println(error.getDefaultMessage());
+//        }
+		modelMap.addAttribute("errorMsgs",errorList);
+		modelMap.addAttribute("jumpUrl","javascript:history.back(-1);");
+		modelMap.addAttribute("waitSecond",3);
+		
+		return "/system/dispatch_jump";
+	}
+	
+	
+	
 	public <T> String ReturnWriteWrong(ModelMap modelMap,BindingResult result){
 		ReturnObject<Object> rm = new ReturnObject<Object>();
 		rm.setCode(-2);
