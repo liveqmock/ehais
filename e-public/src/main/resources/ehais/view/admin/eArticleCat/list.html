@@ -1,32 +1,23 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<#include "/include/BootStrap_Include.html">
+<link rel="stylesheet" href="/ehais/js/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="/ehais/js/bootstrap/plugins/bootstrap-table/bootstrap-table.min.css">
+<link rel="stylesheet" href="/ehais/js/layer/skin/default/layer.css">
+<link rel="stylesheet" href="/ehais/css/admin/BootStrap_Form_Css.css">
+
+<script src="/ehais/js/jquery/jquery-2.1.4.min.js"></script>
+<script src="/ehais/js/jqueryui/jquery-ui.min.js"></script>
+<script src="/ehais/js/bootstrap/js/bootstrap.min.js"></script>
+<script src="/ehais/js/bootstrap/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="/ehais/js/bootstrap/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="/ehais/js/layer/layer.js"></script>
 <title></title>
 </head>
-<body class="easyui-layout">
-	<div class="dn" data-options="region:'north',split:false" style="height:30px;display: none;">
-		<form action="examine_export_excel" method="post" target="_blank">
-		<select  id="user_id" name="user_id">
-	  		<option value="0"  >--全部--</option>
-	  		<#if userProjectList??>
-      			<#list userProjectList as user>
-      				<option value="${user.userId}"  >${user.userName}</option>
-      			</#list>
-      		</#if>
-	  	</select>
-	  	<select  id="progress" name="progress">
-	  		<option value="0"  >--不限--</option>
-	  		<option value="99"  >未完成</option>
-	  		<option value="100"  >已完成</option>
-	  	</select>
-	  	<button id="btn_search" type="button">搜索</button>
-	  	<button type="submit" id="export_excel">导出</button>
-	  	</form>
-	</div>
-	<div data-options="region:'center',border:false" style="overflow: hidden;">
-		<table id="datagrid" data-options="fit:true"></table>
-	</div>
+<body class="">
+	
+	<table id="datagrid" data-options="fit:true"></table>
+	
 <script type="text/javascript">
 var myDataGird ;
 var myPager;
@@ -34,18 +25,54 @@ var page = 1;
 var len = 50;
 var cat_list;
 $(function(){
-	myDataGird = $('#datagrid').datagrid({ 
-        title:'列表', 
-        iconCls:'icon-edit',//图标 
-        height: 'auto', 
-        nowrap: false, 
-        striped: true, 
-        border: true, 
-        collapsible:false,//是否可折叠的 
-        fit: true,//自动大小 
-        pageSize:50,
-        pageList:[10,20,30,40,50,60,70,80,90,100],
-        columns: [[
+	myDataGird = $('#datagrid').bootstrapTable({ 
+        
+        url: '${action}',         //请求后台的URL（*）
+		method: 'post',                      //请求方式（*）
+        toolbar: '#toolbar',                //工具按钮用哪个容器
+        striped: true,                      //是否显示行间隔色
+        cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+        pagination: true,                   //是否显示分页（*）
+        sortable: false,                     //是否启用排序
+        sortOrder: "asc",                   //排序方式
+        queryParams: function (params) {//传递参数（*）
+            return {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的  
+                rows: params.pageSize,   //页面大小  
+                len : params.pageSize,  
+                page: params.pageNumber,  //页码        
+                sort: params.sort,  //排序列名  
+                sortOrder: params.order,//排位命令（desc，asc）
+                module : "${module}"
+              };
+        },
+        sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+        pageNumber:1,                       //初始化加载第一页，默认第一页
+        pageSize: 20,                       //每页的记录行数（*）
+        queryParamsType:'',
+        pageList: [10, 20, 50, 100],        //可供选择的每页的行数（*）
+        search: false,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+        strictSearch: false,
+        showColumns: false,                  //是否显示所有的列
+        showRefresh: false,                  //是否显示刷新按钮
+        minimumCountColumns: 2,             //最少允许的列数
+        clickToSelect: true,                //是否启用点击选中行
+        height: 600,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+        uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+        showToggle:false,                    //是否显示详细视图和列表视图的切换按钮
+        cardView: false,                    //是否显示详细视图
+        detailView: false,                   //是否显示父子表
+        contentType: "application/x-www-form-urlencoded",
+        silent: true,
+         
+         onLoadSuccess: function(data){  //加载成功时执行  
+       		console.log("success:"+JSON.stringify(data));
+           layer.msg("加载成功");  
+        },  
+        onLoadError: function(){  //加载失败时执行  
+           layer.msg("加载数据失败", {time : 1500, icon : 2});  
+        },
+        
+        columns: [
          { field: 'id', title: '编号', width: 80 }, 
          { field: 'title', title: '标题', width: 200 ,formatter : TitleFormatter },
          { field: 'action', title: '编辑', width: 100, align:'center' ,formatter:function(value,row,index){  
@@ -55,16 +82,11 @@ $(function(){
          	}
          },
          
-        ]], 
+        ], 
         
-        remoteSort:false,  
-        idField:'fldId', 
-        singleSelect:true,//是否单选 
-        pagination:true,//分页控件 
-        rownumbers:true,//行号 
     });  
 	
-	myPager = myDataGird.datagrid('getPager');  
+	/* myPager = myDataGird.datagrid('getPager');  
 	
 	if(myPager)  
 	{  
@@ -97,10 +119,10 @@ $(function(){
 	$("#btn_search").click(function(){
 		page = 1;
 		loadData();
-	});
+	}); */
 });
 
-
+/* 
 function loadData(){
 
 	$.ajax({
@@ -135,6 +157,7 @@ function loadData(){
         }
     });
 }
+ */
 
 function myConfirm()
 {
