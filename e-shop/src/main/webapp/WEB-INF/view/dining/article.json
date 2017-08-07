@@ -1,0 +1,76 @@
+{
+    "code": 1,
+    "total": 30,
+    "rows": [
+        {
+            "goods_name": "红酒名称一",
+            "original_img": "",
+            "article_id": "1",
+            "title": "软文名称一",
+            "description": "软文摘要一"
+        },
+        {
+            "goods_name": "红酒名称一",
+            "original_img": "",
+            "article_id": "2",
+            "title": "软文名称一",
+            "description": "软文摘要一"
+        },
+        {
+            "goods_name": "红酒名称一",
+            "original_img": "",
+            "article_id": "3",
+            "title": "软文名称一",
+            "description": "软文摘要一"
+        },
+        {
+            "goods_name": "红酒名称一",
+            "original_img": "",
+            "article_id": "4",
+            "title": "软文名称一",
+            "description": "软文摘要一"
+        },
+        {
+            "goods_name": "红酒名称一",
+            "original_img": "",
+            "article_id": "5",
+            "title": "软文名称一",
+            "description": "软文摘要一"
+        },
+        {
+            "goods_name": "红酒名称一",
+            "original_img": "",
+            "article_id": "6",
+            "title": "软文名称一",
+            "description": "软文摘要一"
+        },
+        {
+            "goods_name": "红酒名称一",
+            "original_img": "",
+            "article_id": "7",
+            "title": "软文名称一",
+            "description": "软文摘要一"
+        },
+        {
+            "goods_name": "红酒名称一",
+            "original_img": "",
+            "article_id": "8",
+            "title": "软文名称一",
+            "description": "软文摘要一"
+        },
+        {
+            "goods_name": "红酒名称一",
+            "original_img": "",
+            "article_id": "9",
+            "title": "软文名称一",
+            "description": "软文摘要一"
+        },
+        {
+            "goods_name": "红酒名称一",
+            "original_img": "",
+            "article_id": "10",
+            "title": "软文名称一",
+            "description": "软文摘要一"
+        }
+    ]
+}

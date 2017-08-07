@@ -93,6 +93,28 @@ public class EHttpClientUtil {
 		}
 		return null;
 	}
+	
+	public static String eHttpGet(String url,Map<String,String> map) throws Exception {
+		String resData = null;
+		
+		for (Map.Entry<String,String> entry : map.entrySet()) {
+			url += "&"+entry.getKey()+"="+entry.getValue();
+		}
+		System.out.println(url);
+		DefaultHttpClient httpclient = new DefaultHttpClient();
+		// 目标地址
+		HttpGet httpGet = new HttpGet(url);
+		// 执行
+		HttpResponse response = httpclient.execute(httpGet);
+		HttpEntity entity = response.getEntity();
+
+		if (entity != null) {
+			resData = EntityUtils.toString(entity, "utf-8");
+		}
+
+		return resData;
+
+	}
 
 	/**
 	 * 

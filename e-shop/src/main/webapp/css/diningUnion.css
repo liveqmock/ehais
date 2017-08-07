@@ -1,0 +1,33 @@
+@import url("common.css");
+.wrapper_dining_union {
+  font-size: 0.14rem;
+  padding: 0.2rem 0.25rem;
+  box-sizing: border-box;
+  width: 100%;
+}
+.wrapper_dining_union .item {
+  width: 100%;
+  float: left;
+}
+.wrapper_dining_union .item input[type="text"],
+.wrapper_dining_union .item input[type="tel"],
+.wrapper_dining_union .item button {
+  padding: 0.08rem;
+  box-sizing: border-box;
+  border: 0.01rem solid #e5e5e5;
+  width: 100%;
+  border-radius: 0.02rem;
+  background: #fff;
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
+  -webkit-appearance: none;
+}
+.wrapper_dining_union .item > label {
+  width: 30%;
+  display: inline-block;
+  color: #999;
+  font-weight: bold;
+}
+.wrapper_dining_union .item > span {
+  width: 70%;
+  display: inline-block;
+}

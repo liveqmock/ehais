@@ -39,6 +39,13 @@ public class SignJunit {
         
 	}
 	
+	@Test
+	public void md5s() throws Exception{
+		String str = "appid=wxb7e05d362dab27b1&attach=weixin&body=支付订单：201708011641517535&goods_tag=e_wx_pay&mch_id=1480510742&nonce_str=k4dy2orgac0ksrpoq9nhnxah3wh7m9pe&notify_url=http://w.ehais.com/index.php/Home/Payment/notifyUrl/pay_code/weixin&openid=oiGBot1K1vYJA2DFv2B-0W2xL9O0&out_trade_no=2017080116415175351501576911&spbill_create_ip=127.0.0.1&time_expire=20170801165151&time_start=20170801164151&trade_type=JSAPI&key=EhaisTylerEllen123456789LGJ628ok";
+		String result = EncryptUtils.md5(str).toUpperCase();
+        System.out.println(result);
+	}
+	
 	
 	@Test
 	public void jdkVer(){

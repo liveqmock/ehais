@@ -20,6 +20,9 @@ public interface EArticleService extends CommonService{
 	public ReturnObject<EHaiArticle> article_find(HttpServletRequest request,Integer articleId,String module) throws Exception;
 	public ReturnObject<EHaiArticle> article_delete(HttpServletRequest request,String module,Integer articleId) throws Exception;
 	
+	public ReturnObject<EHaiArticle> article_module(HttpServletRequest request,String module) throws Exception;
+	
+	
 	
 	
 

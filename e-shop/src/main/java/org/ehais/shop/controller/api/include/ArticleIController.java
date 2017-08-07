@@ -24,10 +24,10 @@ public class ArticleIController extends CommonController{
 			@RequestParam(value = "store_id", required = true) Integer store_id,
 			@RequestParam(value = "cat_id", required = true) Integer cat_id,
 			@RequestParam(value = "page", required = true) Integer page,
-			@RequestParam(value = "len", required = true) Integer len){
+			@RequestParam(value = "rows", required = true) Integer rows){
 		
 		try {
-			return this.writeJson(articleService.article_list_cid(store_id, cat_id, page, len));
+			return this.writeJson(articleService.article_list_cid(store_id, cat_id, page, rows));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

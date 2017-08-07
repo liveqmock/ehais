@@ -120,6 +120,7 @@ public class EArticleServiceImpl  extends EArticleCommonServiceImpl implements E
 //		example.CriteriaStoreId(c, co);
 		c.andStoreIdEqualTo(store_id);
 		c.andModuleEqualTo(module);
+		example.setOrderByClause("article_id desc");
 		if(catId != null && catId > 0)c.andCatIdEqualTo(catId);
 		if(condition.getKeyword()!=null && !condition.getKeyword().equals("")){
 			c.andTitleLike(condition.getKeyword());
@@ -137,6 +138,7 @@ public class EArticleServiceImpl  extends EArticleCommonServiceImpl implements E
 		EHaiArticleCatExample exampleCat = new EHaiArticleCatExample();
 		EHaiArticleCatExample.Criteria cCat = exampleCat.createCriteria();
 		cCat.andStoreIdEqualTo(store_id);
+		exampleCat.setOrderByClause("cat_id desc");
 		List<EHaiArticleCat> cat_list = eHaiArticleCatMapper.selectByExample(exampleCat);
 		map.put("cat_list", cat_list);
 		
@@ -264,6 +266,30 @@ public class EArticleServiceImpl  extends EArticleCommonServiceImpl implements E
 		return rm;
 	}
 	
+	
+	
+	public ReturnObject<EHaiArticle> article_module(HttpServletRequest request,String module)
+			throws Exception {
+		// TODO Auto-generated method stub
+		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+//		EHaiArticle model = eHaiArticleMapper.selectByPrimaryKey(articleId);
+		EHaiArticleExample example = new EHaiArticleExample();
+		EHaiArticleExample.Criteria c = example.createCriteria();
+		c.andModuleEqualTo(module);
+		c.andStoreIdEqualTo(store_id);
+		List<EHaiArticle> list = eHaiArticleMapper.selectByExampleWithBLOBs(example);
+		EHaiArticle model = list.get(0);
+		
+		rm.setBootStrapList(this.formatBootStrapModuleList(request,model,module));
+		
+		rm.setCode(1);
+		rm.setModel(model);
+		return rm;
+	}
+	
+	
+	
 	private List<BootStrapModel> formatBootStrapList(HttpServletRequest request,EHaiArticle model,String module) throws Exception{
 		
 		Map<String,Object> optionMap = new HashMap<String, Object>();
@@ -271,7 +297,7 @@ public class EArticleServiceImpl  extends EArticleCommonServiceImpl implements E
 		List<BootStrapModel> bootStrapList = this.BootStrapXml(request, "article.xml",model,"hai_article",optionMap);
 		bootStrapList.add(new BootStrapModel("hidden", "module", "", module, "请输入", "", "", null, 0));
 		
-//		
+		
 //		List<BootStrapModel> bootStrapList = new ArrayList<BootStrapModel>();
 //		
 //
@@ -295,11 +321,24 @@ public class EArticleServiceImpl  extends EArticleCommonServiceImpl implements E
 ////		bootStrapList.add(new BootStrapModel("text", "videoUrl", "", model.getVideoUrl(), "请输入", "", "", null, 0));
 ////		bootStrapList.add(new BootStrapModel("checkbox", "goodsId", "", model.getGoodsId(), "请输入", "", "", null, 0));
 ////		bootStrapList.add(new BootStrapModel("checkbox", "chaId", "", model.getChaId(), "请输入", "", "", null, 0));
-//
-//		
-//		
+
+		
+		
 		return bootStrapList;
 	}
+	
+	
+	private List<BootStrapModel> formatBootStrapModuleList(HttpServletRequest request,EHaiArticle model,String module) throws Exception{
+		
+		Map<String,Object> optionMap = new HashMap<String, Object>();
+		optionMap.put("categoryTree", this.eTreeArticleCat(request,module));
+		List<BootStrapModel> bootStrapList = this.BootStrapXml(request, "article_module.xml",model,"hai_article",optionMap);
+//		bootStrapList.add(new BootStrapModel("hidden", "module", "", module, "请输入", "", "", null, 0));
+		
+		
+		return bootStrapList;
+	}
+
 	
 }
 

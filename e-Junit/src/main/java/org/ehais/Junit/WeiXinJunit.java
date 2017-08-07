@@ -40,6 +40,38 @@ public class WeiXinJunit {
 //	private String access_token = "ahRh4ZJnIPixXCvEsGHaw0sZvao_JWk_zFSNJnhnu4TerLQVgWvgCdvWzw0Hf896zeu4svZvx7uqbgXbpKpFE3lZ__P0rVDXC7-9UxPKqY1iTCI-KVlkXudYi6BGxhIiRKLhABAYRS";
 	private String access_token = "L5AM0Oc3ZtXVS3j-zSq3W3Qncvxf1leobFxJgT3aLz3r3MWSxPYubSv4suO5JkvapNtvY6oCGqOAWmcR73jiCFGllDagQDIm9Gbak0-E1VBMidBqiOuvSqlY1yUJBRD1UWOjAIABDV";
 
+	/**
+	 * 微信对接的接口
+	 */
+	@Test
+	public void sing(){
+		String apiurl = "http://wxsale.9351p.com/api.php?id=8";
+		String token = "fzgom2mb4civshgj1qdfallzp1o1ccwt";
+		String timestamp = String.valueOf(System.currentTimeMillis() / 1000);
+		String nonce = ECommon.nonceStr(32);
+		String echostr = ECommon.nonceStr(16);
+		
+		System.out.println("token:"+token);
+		System.out.println("nonce:"+nonce);
+		System.out.println("echostr:"+echostr);
+		
+		Map<String,String> paramsMap = new HashMap<String,String>();
+		paramsMap.put("timestamp", timestamp );
+		paramsMap.put("nonce", nonce);
+		paramsMap.put("echostr", echostr);
+		try {
+			paramsMap.put("signature", WeiXinUtil.wxSignature(token, paramsMap.get("timestamp"), paramsMap.get("nonce")));
+			String result = EHttpClientUtil.eHttpGet(apiurl, paramsMap);
+			System.out.println(result);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
+	
+	
 	@Test 
 	public void getAccessToken() throws Exception {
 		AccessToken token = WeiXinUtil.getAccessToken(0, weixin_appid, weixin_appsecret);
@@ -92,8 +124,11 @@ public class WeiXinJunit {
 	@Test
 	public void notityBackPay(){
 		try{
-			String xml = "<xml><appid><![CDATA[wx9439cbf94f9235f0]]></appid><bank_type><![CDATA[CFT]]></bank_type><cash_fee><![CDATA[1]]></cash_fee><fee_type><![CDATA[CNY]]></fee_type><is_subscribe><![CDATA[N]]></is_subscribe><mch_id><![CDATA[1245521602]]></mch_id><nonce_str><![CDATA[ani64biyvb0cj7nsro917q76uukque4e]]></nonce_str><openid><![CDATA[oT2uMs9CG4LOqo3epOZS9gJJkNwo]]></openid><out_trade_no><![CDATA[20160229143916445362]]></out_trade_no><result_code><![CDATA[SUCCESS]]></result_code><return_code><![CDATA[SUCCESS]]></return_code><sign><![CDATA[84CC795005F58687E6D105A8DE570572]]></sign><time_end><![CDATA[20160229143923]]></time_end><total_fee>1</total_fee><trade_type><![CDATA[JSAPI]]></trade_type><transaction_id><![CDATA[1003280855201602293619746081]]></transaction_id></xml>";
-			String url = site + "/weixin/notify_pay";
+//			String xml = "<xml><appid><![CDATA[wx9439cbf94f9235f0]]></appid><bank_type><![CDATA[CFT]]></bank_type><cash_fee><![CDATA[1]]></cash_fee><fee_type><![CDATA[CNY]]></fee_type><is_subscribe><![CDATA[N]]></is_subscribe><mch_id><![CDATA[1245521602]]></mch_id><nonce_str><![CDATA[ani64biyvb0cj7nsro917q76uukque4e]]></nonce_str><openid><![CDATA[oT2uMs9CG4LOqo3epOZS9gJJkNwo]]></openid><out_trade_no><![CDATA[20160229143916445362]]></out_trade_no><result_code><![CDATA[SUCCESS]]></result_code><return_code><![CDATA[SUCCESS]]></return_code><sign><![CDATA[84CC795005F58687E6D105A8DE570572]]></sign><time_end><![CDATA[20160229143923]]></time_end><total_fee>1</total_fee><trade_type><![CDATA[JSAPI]]></trade_type><transaction_id><![CDATA[1003280855201602293619746081]]></transaction_id></xml>";
+			String xml = "<xml><appid><![CDATA[wxb7e05d362dab27b1]]></appid><attach><![CDATA[weixin]]></attach><bank_type><![CDATA[CFT]]></bank_type><cash_fee><![CDATA[1]]></cash_fee><fee_type><![CDATA[CNY]]></fee_type><is_subscribe><![CDATA[Y]]></is_subscribe><mch_id><![CDATA[1480510742]]></mch_id><nonce_str><![CDATA[djkk5c6xxo9azk756wmydiggkc1yalnn]]></nonce_str><openid><![CDATA[oiGBot1K1vYJA2DFv2B-0W2xL9O0]]></openid><out_trade_no><![CDATA[2017080121134882991501593228]]></out_trade_no><result_code><![CDATA[SUCCESS]]></result_code><return_code><![CDATA[SUCCESS]]></return_code><sign><![CDATA[AAC38B326AD519BBAD7813D751D1C99C]]></sign><time_end><![CDATA[20170801211353]]></time_end><total_fee>1</total_fee><trade_type><![CDATA[JSAPI]]></trade_type><transaction_id><![CDATA[4001192001201708013920623277]]></transaction_id></xml>";
+			
+//			String url = site + "/weixin/notify_pay";
+			String url = "http://www.tpshop.org/api.php/Api/DiningApi/notifyUrl";
 			String req = EHttpClientUtil.httpClientRequest(url, xml);
 			System.out.println("请求返回："+req);
 		}catch(Exception e){
@@ -347,6 +382,18 @@ public class WeiXinJunit {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	@Test
+	public void singCode(){
+		String url = "http://wxsale.9351p.com/app/index.php?id=8&code="+ECommon.nonceStr(32);
+		System.out.println(url);
+		try{
+			String result = EHttpClientUtil.methodGet(url);
+			System.out.println(result);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	
 }

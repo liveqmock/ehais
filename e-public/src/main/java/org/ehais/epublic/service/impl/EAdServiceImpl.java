@@ -50,9 +50,11 @@ public class EAdServiceImpl  extends CommonServiceImpl implements EAdService{
 		
 		EHaiAdExample example = new EHaiAdExample();
 		EHaiAdExample.Criteria c = example.createCriteria();
-		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+		c.andStoreIdEqualTo(store_id);
+//		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
 		example.setStart(start);
 		example.setLen(len);
+		example.setOrderByClause("ad_id desc");
 		List<EHaiAd> list = eHaiAdMapper.hai_ad_list_by_example(example);
 		Integer total = eHaiAdMapper.countByExample(example);
 		rm.setCode(1);
@@ -174,7 +176,9 @@ public class EAdServiceImpl  extends CommonServiceImpl implements EAdService{
 	private Map<String, String> positionMap(HttpServletRequest request){
 		EHaiAdPositionExample example = new EHaiAdPositionExample();
 		EHaiAdPositionExample.Criteria c = example.createCriteria();
-		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+//		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		c.andStoreIdEqualTo(store_id);
 		Map<String, String> map = new HashMap<String, String>();
 		List<EHaiAdPosition> list = eHaiAdPositionMapper.hai_ad_position_list_by_example(example);
 		
@@ -195,7 +199,7 @@ public class EAdServiceImpl  extends CommonServiceImpl implements EAdService{
 //		bootStrapList.add(new BootStrapModel("checkbox", "mediaType", "", model.getMediaType(), "请输入", "", "", null, 0));
 		bootStrapList.add(new BootStrapModel("text", "adName", "名称", model.getAdName(), "请输入广告名称", "", "", null, 0));
 		bootStrapList.add(new BootStrapModel("text", "adLink", "链接", model.getAdLink(), "请输入广告链接", "", "", null, 0));
-		bootStrapList.add(new BootStrapModel("images", "adCode", "图片", model.getAdCode(), "请输入选择", "", "", null, 0));
+		bootStrapList.add(new BootStrapModel("images", "adCode", "图片", model.getAdCode(), "请输入1125*300的图片", "", "", null, 0));
 //		bootStrapList.add(new BootStrapModel("text", "linkMan", "", model.getLinkMan(), "请输入", "", "", null, 0));
 //		bootStrapList.add(new BootStrapModel("text", "linkEmail", "", model.getLinkEmail(), "请输入", "", "", null, 0));
 //		bootStrapList.add(new BootStrapModel("text", "linkPhone", "", model.getLinkPhone(), "请输入", "", "", null, 0));

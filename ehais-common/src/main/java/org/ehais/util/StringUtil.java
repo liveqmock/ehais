@@ -87,6 +87,15 @@ public class StringUtil {
 		}
 		return str;
 	}
+	public static String fieldFirstUpperCase(String str){
+		str = firstUpperCase(str);
+		int count = getCount2(str,"_");
+		for(int i = 0 ; i < count ; i++){
+			int in = str.indexOf("_");
+			str = firstUpperCase(str.substring(0,in))+(str.length() > (in+1)?firstUpperCase(str.substring(in+1,str.length())):"");
+		}
+		return str;
+	}
 	
 	public static Map<String,String> dbType(String field,String type,String fKey){
 		Map<String,String> map = new HashMap<String,String>();

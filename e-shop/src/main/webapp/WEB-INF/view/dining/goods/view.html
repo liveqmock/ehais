@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="../js/jquery-2.1.4.min.js" ></script>
+		
+		<link rel="stylesheet" href="../js/bootstrap/css/bootstrap.min.css" />
+		<script type="text/javascript" src="../js/bootstrap/js/bootstrap.min.js" ></script>
+		<link rel="stylesheet" href="../css/admin.css" />
+		
+		<link rel="stylesheet" href="../js/bootstrap/treeview/bootstrap-treeview.min.css" />
+		<script type="text/javascript" src="../js/bootstrap/treeview/bootstrap-treeview.min.js" ></script>
+		
+		<link rel="stylesheet" href="../js/bootstrap/table/bootstrap-table.min.css" />
+		<script type="text/javascript" src="../js/bootstrap/table/bootstrap-table.min.js" ></script>
+		<script type="text/javascript" src="../js/bootstrap/table/locale/bootstrap-table-zh-CN.min.js" ></script>
+		
+		<link rel="stylesheet" href="../js/layer/skin/default/layer.css" />
+		<script type="text/javascript" src="../js/layer/layer.js" ></script>
+		
+		
+	</head>
+	<body>
+		<div class="header">
+			<div class="nav">
+				<i class="icon fa fa-home">&nbsp;</i>
+				<div class="nav0">菜品管理</div>
+				<div class="nav1">列表信息</div>
+			</div>
+		</div>
+		<div class="body">
+			<div class="container_box">
+				<div class="col_side">
+					<h4>
+						<i class="fa fa-cubes"></i>
+						菜谱分类
+						<i id="deleteCate" class="fr fa fa-trash-o"></i>
+						<i id="editCate" class="fr fa fa-edit"></i>
+						<i id="addCate" class="fr fa fa-plus"></i>
+						
+					</h4>
+					<div class="category">
+						<div id="tree"></div>
+					</div>
+				</div>
+				<div class="col_main">
+					<h4>
+						<i class="fa fa-list"></i>
+						菜品列表
+						<a href="tpDiningAddDetail" class="fa fa-plus btn btn-primary" >添加菜品</a>
+					</h4>
+					
+					<div class="panel panel-default">
+						<div class="panel-heading">搜索条件</div>
+						<div class="panel-body single">					    
+							菜品名称：<input id="keyword" name="keyword" class="control"/><button id="btnSearch" name="btnSearch" class="fa fa-search btn btn-default control">搜索</button>
+						</div>
+					</div>
+					
+					
+					<div class="main_table">
+						<table id="bsTable" data-show-columns="false"></table>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		
+		<script type="text/javascript" src="../js/adminCommon.js" ></script>
+		<script type="text/javascript" src="../js/m_goods_list.js" ></script>
+	</body>
+</html>

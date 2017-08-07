@@ -23,11 +23,13 @@ public class ArticleServiceImpl  extends CommonServiceImpl implements ArticleSer
 		Integer start = (((page == null)?1:page) - 1 ) * len;
 		
 		EHaiArticleExample example = new EHaiArticleExample();
-		example.createCriteria().andStoreIdEqualTo(store_id).andCatIdEqualTo(cat_id);
+		EHaiArticleExample.Criteria c = example.createCriteria();
+		c.andStoreIdEqualTo(store_id);
+		if(cat_id > 0)c.andCatIdEqualTo(cat_id);
 		example.setLimitStart(start);
 		example.setLimitEnd(len);
 		List<EHaiArticle> list = eHaiArticleMapper.selectByExample(example);
-		
+		rm.setTotal(eHaiArticleMapper.countByExample(example));
 		rm.setRows(list);
 		rm.setCode(1);
 		return rm;

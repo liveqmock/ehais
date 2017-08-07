@@ -53,6 +53,20 @@ public class WeiXinUtil {
 		return tmpStr;
 	}
 	
+	public static String wxSignature(String wx_token,String timestamp,String nonce)throws Exception{
+		String[] arr = new String[] { wx_token, timestamp, nonce };
+		// 将token、timestamp、nonce三个参数进行字典序排序
+		Arrays.sort(arr);
+		StringBuilder content = new StringBuilder();
+		for (int i = 0; i < arr.length; i++) {
+			content.append(arr[i]);
+		}
+		System.out.println(content.toString());
+		String tmpStr = EncryptUtils.sha1(content.toString());
+		// 将sha1加密后的字符串可与signature对比，标识该请求来源于微信
+		return tmpStr ;
+	}
+	
 	public static boolean checkSignature(String timestamp,String nonce,String signature)throws Exception{
 		String[] arr = new String[] { EConstants.wxdev_token, timestamp, nonce };
 		// 将token、timestamp、nonce三个参数进行字典序排序

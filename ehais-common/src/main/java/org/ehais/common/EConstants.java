@@ -28,5 +28,7 @@ public class EConstants {
 	public static final String SESSION_ROLE_TYPE = "session_role_type";
 	//学校类型
 	public static final String SESSION_SCHOOL_ID = "session_school_id";
+	//供应商编号
+	public static final String SESSION_SUPPLIERS_ID = "session_suppliers_id";
 	
 }

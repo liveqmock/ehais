@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>软文资讯管理</title>
+		
+		<script type="text/javascript" src="../js/jquery-2.1.4.min.js" ></script>
+		
+		<link rel="stylesheet" href="../js/bootstrap/css/bootstrap.min.css" />
+		<script type="text/javascript" src="../js/bootstrap/js/bootstrap.min.js" ></script>
+		
+		<link rel="stylesheet" href="../js/bootstrap/table/bootstrap-table.min.css" />
+		<script type="text/javascript" src="../js/bootstrap/table/bootstrap-table.min.js" ></script>
+		<script type="text/javascript" src="../js/bootstrap/table/locale/bootstrap-table-zh-CN.min.js" ></script>
+		
+		<link rel="stylesheet" href="../css/wine.css" />
+		
+	</head>
+	<body>
+		<div class="header">
+			<div class="inner">
+				<div class="logo">金藤酒荟LOGO</div>
+				<div class="main">金藤酒荟地区代理管理后台</div>
+				<div class="account">代理名称<br>代理地区</div>
+			</div>
+		</div>
+		<div class="body">
+			<div class="container_box">
+				<div class="col_side">
+					<div class="menu_title fa fa-home">
+						<a href="javascript:;">首页</a>
+					</div>
+					<div class="menu_title fa fa-home">
+						<a href="article.html">软文资讯</a>
+					</div>
+					<div class="menu_title fa fa-home">
+						<a href="trade.html">交易记录</a>
+					</div>
+					<div class="menu_title fa fa-home">
+						<a href="trade.html">修改密码</a>
+					</div>
+				</div>
+				<div class="col_main">
+					<div class="main_hd fa fa-hand-o-right">软文资讯</div>
+					<div class="main_search">
+						搜索条件
+					</div>
+					<div class="main_search">
+						商品名称：<input />
+						软文名称：<input />
+						<button class="fa fa-search">搜索</button>
+					</div>
+					<div class="main_table">
+						<table id="bsTable"></table>
+					</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<script type="text/javascript">
+			$(function(){
+				$('#bsTable').bootstrapTable({
+		            url: 'article.json',//请求后台的url
+		            method: 'get',//请求方式
+		            toolbar: '#toolbar',//工具按钮用哪个容器
+		            dataType: "json",
+    				pagination: true, //分页
+    				//search: true, //显示搜索框
+		            striped: true,//是否显示行间隔色
+		            cache: false,
+		            sortable: true,//是否启用排序
+		            sortOrder: 'asc',//排序方式
+		            clickToSelect: true,//是否启用点击选中行
+		            sidePagination: "server", //服务端处理分页
+		            uniqueId: 'article_id',//每一行的唯一标识，一般为主键列
+		            columns: [{
+		                field: 'article_id',
+		                title: '软文编号'
+		            }, {
+		                field: 'title',
+		                title: '软文名称'
+		            }, {
+		                field: 'description',
+		                title: '软文摘要'
+		            }, {
+		                field: 'goods_name',
+		                title: '商品名称'
+		            }, {
+		                field: 'article_id',
+		                title: '分享二维码',
+		                formatter:function(value,row,index){  
+		                	var e = '<img width="64" height="64" src="../upload/taste/qrwine.jpg">';  
+		                    return e;  
+		                } 
+		            }]
+		        });
+			});
+		</script>
+	</body>
+</html>

@@ -237,6 +237,19 @@ public class CommonController {
 		return "/system/dispatch_jump";
 	}
 	
+	public <T> String writeBindingResult(BindingResult result){
+		ReturnObject<ObjectError> rm = new ReturnObject<ObjectError>();
+		rm.setCode(0);
+		List<ObjectError> errorList = result.getAllErrors();
+		String msg = "";
+		rm.setRows(errorList);
+        for(ObjectError error : errorList){
+        	msg += error.getDefaultMessage()+"<br>";
+        }
+		rm.setMsg(msg);
+		return this.writeJson(rm);
+	}
+	
 	
 	
 	public <T> String ReturnWriteWrong(ModelMap modelMap,BindingResult result){
