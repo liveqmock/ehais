@@ -41,20 +41,21 @@ $(function(){
 });
 
 
-function initFileInput(id,path){
+function initFileInput(id,initialPreview){
 	$("#"+id+"_").fileinput({
 		language : "zh",//设置语言
-	    uploadUrl: "/upload/image.upd",
+		uploadUrl: "/upload/image.upd",
 	    allowedFileExtensions: ["jpg", "png", "gif"],
-	    dropZoneTitle:"拖拽文件到这里 &hellip;<br>支持单文件上传",
-	    resizeImage: true,
+	    dropZoneTitle:"拖拽文件到这里 &hellip;<br>请只上传一个文件",
+	    isUploadable : true,//
+	    //resizeImage: true,
 	    overwriteInitial: false,
 	    initialPreviewAsData: true,
 	    initialPreviewFileType: 'image',
-	    initialPreview: path
+	    initialPreview: initialPreview,
 	}).on('filepreupload', function() {
 	}).on('fileuploaded', function(event, data) {
-		$("#"+id).val(data.msg);
+		$("#"+id).val(data.response.msg);
 	});
 }
 

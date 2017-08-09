@@ -118,9 +118,12 @@ public class AdminUserServiceImpl extends CommonServiceImpl implements AdminUser
 			rm.setMsg("未加盟本系统");
 			return rm;
 		}
+		TpSuppliers suppliers = listSup.get(0);
 		
 		session.setAttribute(EConstants.SESSION_ADMIN_ID, adminuser.getAdminId());
+		session.setAttribute(EConstants.SESSION_ADMIN_NAME, adminuser.getUserName());
 		session.setAttribute(EConstants.SESSION_SUPPLIERS_ID, adminuser.getSuppliersId());
+		session.setAttribute("session_supplierssn", suppliers.getSuppliersSn());
 		
 		rm.setCode(1);
 		rm.setMsg("登录成功");
