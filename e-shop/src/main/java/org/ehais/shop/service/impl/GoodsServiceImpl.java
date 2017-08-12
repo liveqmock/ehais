@@ -11,6 +11,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
 import org.ehais.model.BootStrapModel;
 import org.ehais.model.ExtendsField.ExtendsFieldsTabs;
@@ -26,6 +27,7 @@ import org.ehais.shop.model.HaiGoodsGallery;
 import org.ehais.shop.model.HaiGoodsGalleryExample;
 import org.ehais.shop.model.HaiGoodsWithBLOBs;
 import org.ehais.shop.service.GoodsService;
+import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,6 +72,29 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
 		example.setStart(start);
 		example.setLen(len);
+		List<HaiGoods> list = haiGoodsMapper.hai_goods_list_by_example(example);
+		Integer total = haiGoodsMapper.countByExample(example);
+		rm.setCode(1);
+		rm.setRows(list);
+		rm.setTotal(total);
+		
+		
+		return rm;
+	}
+	
+	public ReturnObject<HaiGoods> goods_list_json(HttpServletRequest request,
+			EConditionObject condition,Integer cat_id , String goods_name) throws Exception{
+		ReturnObject<HaiGoods> rm = new ReturnObject<HaiGoods>();
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		
+		
+		HaiGoodsExample example = new HaiGoodsExample();
+		HaiGoodsExample.Criteria c = example.createCriteria();
+		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+		if(cat_id > 0)c.andCatIdEqualTo(cat_id);
+		if(StringUtils.isNotEmpty(goods_name))c.andGoodsNameLike("%"+goods_name+"%");
+		example.setStart(condition.getStart());
+		example.setLen(condition.getRows());
 		List<HaiGoods> list = haiGoodsMapper.hai_goods_list_by_example(example);
 		Integer total = haiGoodsMapper.countByExample(example);
 		rm.setCode(1);

@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
 import org.ehais.epublic.mapper.EHaiAdminUserMapper;
 import org.ehais.epublic.model.EHaiAdminUser;
+import org.ehais.epublic.model.EHaiAdminUserExample;
 import org.ehais.service.impl.CommonServiceImpl;
 import org.ehais.shop.mapper.tp.TpAdminMapper;
 import org.ehais.shop.mapper.tp.TpSuppliersMapper;
@@ -62,6 +63,59 @@ public class AdminUserServiceImpl extends CommonServiceImpl implements AdminUser
 		return rm;
 	}
 
+	
+	@Override
+	public ReturnObject<EHaiAdminUser> hai_login_submit(HttpServletRequest request,String username, String password, String verificationcode)
+			throws Exception {
+		// TODO Auto-generated method stub
+		ReturnObject<EHaiAdminUser> rm = new ReturnObject<EHaiAdminUser>();
+		rm.setCode(0);
+		
+		if(StringUtils.isEmpty(username)){
+			rm.setMsg("用户名不能为空");
+			return rm;
+		}
+		if(StringUtils.isEmpty(password)){
+			rm.setMsg("密码不能为空");
+			return rm;
+		}
+		if(StringUtils.isEmpty(verificationcode)){
+			rm.setMsg("验证码不能为空");
+			return rm;
+		}
+		
+		HttpSession session = request.getSession(true);
+		String verCode = (String)session.getAttribute("verCode");
+		if(verCode == null || !verCode.equals(verificationcode)){
+			rm.setMsg("验证码错误");
+			return rm;
+		}
+		
+		password = EncryptUtils.md5(password);
+		EHaiAdminUserExample example = new EHaiAdminUserExample();
+		EHaiAdminUserExample.Criteria c = example.createCriteria();
+		c.andUserNameEqualTo(username);
+		c.andPasswordEqualTo(password);
+		System.out.println(username+"=="+password);
+		
+		List<EHaiAdminUser> listAdmin = eHaiAdminUserMapper.selectByExample(example);
+		
+		if(listAdmin == null || listAdmin.size() == 0){
+			rm.setMsg("用户名或密码不正确");
+			return rm;
+		}
+		EHaiAdminUser adminuser = listAdmin.get(0);
+		
+		session.setAttribute(EConstants.SESSION_STORE_ID, adminuser.getAdminId().intValue());
+		session.setAttribute(EConstants.SESSION_ADMIN_ID, adminuser.getAdminId());
+		session.setAttribute(EConstants.SESSION_ADMIN_NAME, adminuser.getUserName());
+		
+		rm.setCode(1);
+		rm.setMsg("登录成功");
+		
+		return rm;
+	}
+	
 
 	@Override
 	public ReturnObject<TpAdmin> login_submit(HttpServletRequest request,String username, String password, String verificationcode)

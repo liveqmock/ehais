@@ -3,6 +3,7 @@ package org.ehais.epublic.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import org.ehais.tools.CriteriaObject;
 
 public class EHaiArticleExample {
@@ -2158,6 +2159,81 @@ public class EHaiArticleExample {
             addCriterion("upper(video_url) like", value.toUpperCase(), "videoUrl");
             return (Criteria) this;
         }
+        
+        
+        
+
+        public Criteria andArticleEnumIsNull() {
+            addCriterion("article_enum is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andArticleEnumIsNotNull() {
+            addCriterion("article_enum is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andArticleEnumEqualTo(String value) {
+            addCriterion("article_enum =", value, "articleEnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andArticleEnumNotEqualTo(String value) {
+            addCriterion("article_enum <>", value, "articleEnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andArticleEnumGreaterThan(String value) {
+            addCriterion("article_enum >", value, "articleEnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andArticleEnumGreaterThanOrEqualTo(String value) {
+            addCriterion("article_enum >=", value, "articleEnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andArticleEnumLessThan(String value) {
+            addCriterion("article_enum <", value, "articleEnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andArticleEnumLessThanOrEqualTo(String value) {
+            addCriterion("article_enum <=", value, "articleEnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andArticleEnumLike(String value) {
+            addCriterion("article_enum like", value, "articleEnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andArticleEnumNotLike(String value) {
+            addCriterion("article_enum not like", value, "articleEnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andArticleEnumIn(List<String> values) {
+            addCriterion("article_enum in", values, "articleEnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andArticleEnumNotIn(List<String> values) {
+            addCriterion("article_enum not in", values, "articleEnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andArticleEnumBetween(String value1, String value2) {
+            addCriterion("article_enum between", value1, value2, "articleEnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andArticleEnumNotBetween(String value1, String value2) {
+            addCriterion("article_enum not between", value1, value2, "articleEnum");
+            return (Criteria) this;
+        }
+
+        
     }
 
     /**

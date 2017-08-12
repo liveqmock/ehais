@@ -91,8 +91,10 @@ public class QRCodeJunit {
     public static void main(String[] args) throws IOException, WriterException {  
         
         createQrCode(
-        		new FileOutputStream(new File("d:\\qrcode.jpg")),
-        		"http://w.ehais.com/appehais/tastedetail.html",900,"JPEG");
+        		new FileOutputStream(new File("d:\\qrcode_union.jpg")),
+//        		"http://w.ehais.com/api.php/Api/DiningApi/wxgo?dining=tyler&tableno=001",
+        		"http://w.ehais.com/api.php/Api/DiningUnionApi/wxgo",
+        		900,"JPEG");
 //        readQrCode(new FileInputStream(new File("d:\\qrcode.jpg")));  
     }  
 }

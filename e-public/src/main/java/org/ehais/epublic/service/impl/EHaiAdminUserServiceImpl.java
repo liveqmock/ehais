@@ -50,8 +50,9 @@ public class EHaiAdminUserServiceImpl  extends CommonServiceImpl implements EHai
 		EHaiAdminUserExample example = new EHaiAdminUserExample();
 		EHaiAdminUserExample.Criteria c = example.createCriteria();
 		
-		example.setStart(start);
-		example.setLen(len);
+		example.setLimitStart((page - 1) * len );
+		example.setLimitEnd(len);
+		
 		List<EHaiAdminUser> list = eHaiAdminUserMapper.hai_admin_user_list_by_example(example);
 		Integer total = eHaiAdminUserMapper.countByExample(example);
 		rm.setCode(1);
@@ -136,7 +137,7 @@ public class EHaiAdminUserServiceImpl  extends CommonServiceImpl implements EHai
 		EHaiAdminUserExample example = new EHaiAdminUserExample();
 		EHaiAdminUserExample.Criteria c = example.createCriteria();
 		
-		c.andAdminIdEqualTo(Short.valueOf(key+""));
+		c.andAdminIdEqualTo(Long.valueOf(key));
 		int code = eHaiAdminUserMapper.deleteByExample(example);
 		rm.setCode(code);
 		rm.setMsg("删除成功");

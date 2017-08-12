@@ -1,6 +1,7 @@
 package org.ehais.enums;
 
 public class EArticleModuleEnum {
+	public final static String ARTICLE = "article";//文章
 	public final static String INFORMATEION = "information";//资讯新闻
 	public final static String ACTIVITY = "activity";//资讯新闻
 	public final static String INDUSTRY = "industry";//行业动态 

@@ -1,0 +1,66 @@
+<!-- 日期控件：<@bsDatePicker id="a" value="b" /> -->
+<#macro bsDatePicker id value >
+    <div class="input-group date form_date_${id} " data-date="" data-date-format="yyyy-mm-dd">
+		<input class="form-control" size="16" type="text" id="${id}" name="${id}" value="${value!''}"  readonly>
+		<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+		<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+	</div>	
+	<script type="text/javascript">
+		$(function(){
+			$('.form_date_${id}').datetimepicker({
+		        language:  'zh-CN',
+		        weekStart: 1,
+		        todayBtn:  1,
+				autoclose: 1,
+				todayHighlight: 1,
+				startView: 2,
+				minView: 2,
+				forceParse: 0
+		    });
+		});
+	</script>
+</#macro>
+
+<!-- 图片控件：<@bsImagesPicker id="a" value="b" /> -->
+<#macro bsImagesPicker id value >
+<input type="file" id="${id}_" name="${id}_">
+<input type="hidden" class="form-control" id="${id}" name="${id}" value="${value!''}" placeholder="">
+<script type="text/javascript">
+$(function(){
+	initFileInput("${id}");//图片组件添加
+});
+</script> 
+</#macro>
+
+<!-- 在线编辑控件：<@ueditorPicker id="a" value="b" /> -->
+<#macro ueditorPicker id value >
+<textarea  id="${id}" name="${id}" >${value!''}</textarea>
+<script type="text/javascript">
+$(function(){
+	var ue_${id} = UE.getEditor('${id}');
+});
+</script>
+</#macro>
+
+
+<!-- 数字控件：<@quantityPicker id="a" value="b" /> -->
+<#macro quantityPicker id value >
+	<div class="input-group spinner" data-trigger="spinner">
+		<input type="text" class="form-control text-center" id="${id}" name="${id}" value="${value!''}" data-rule="quantity">
+		<div class="input-group-addon">
+			<a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>
+			<a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>
+		</div>
+	</div>
+</#macro>
+
+<!-- 货币控件：<@currencyPicker id="a" value="b" /> -->
+<#macro currencyPicker id value >
+	<div class="input-group spinner" data-trigger="spinner">
+		<input type="text" class="form-control text-center" id="${id}" name="${id}" value="${value!''}" data-rule="currency">
+		<div class="input-group-addon">
+			<a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>
+			<a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>
+		</div>
+	</div>
+</#macro>

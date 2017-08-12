@@ -11,14 +11,11 @@ import org.ehais.common.EConstants;
 import org.ehais.model.BootStrapModel;
 import org.ehais.model.TreeModel;
 import org.ehais.shop.mapper.HaiBrandMapper;
-import org.ehais.shop.model.HaiBrand;
-import org.ehais.shop.model.HaiBrandExample;
-import org.ehais.shop.model.HaiBrandExample.Criteria;
 import org.ehais.shop.model.HaiCategory;
 import org.ehais.shop.model.HaiCategoryExample;
 import org.ehais.shop.model.HaiCategoryWithBLOBs;
 import org.ehais.shop.service.CategoryService;
-import org.ehais.tools.CriteriaObject;
+import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.TreeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +53,28 @@ public class CategoryServiceImpl  extends EShopCommonServiceImpl implements Cate
 		example.setLen(len);
 		List<HaiCategory> list = haiCategoryMapper.hai_category_list_by_example(example);
 		Integer total = haiCategoryMapper.countByExample(example);
+		rm.setCode(1);
+		rm.setRows(list);
+		rm.setTotal(total);
+		
+		
+		return rm;
+	}
+	
+	public ReturnObject<HaiCategory> category_list_json(HttpServletRequest request,EConditionObject condition) throws Exception {
+		// TODO Auto-generated method stub
+		ReturnObject<HaiCategory> rm = new ReturnObject<HaiCategory>();
+		rm.setCode(0);
+		if(condition.getStore_id() == null)condition.setStore_id((Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID));
+		
+		
+		HaiCategoryExample example = new HaiCategoryExample();
+		HaiCategoryExample.Criteria c = example.createCriteria();
+		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+		example.setStart(condition.getStart());
+		example.setLen(condition.getRows());
+		List<HaiCategory> list = haiCategoryMapper.selectByExample(example);
+		long total = haiCategoryMapper.countByExample(example);
 		rm.setCode(1);
 		rm.setRows(list);
 		rm.setTotal(total);

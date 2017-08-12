@@ -41,7 +41,9 @@ $(function(){
 });
 
 
-function initFileInput(id,initialPreview){
+function initFileInput(id){
+	var initialPreview = [];
+	if($("#"+id).val()!="")initialPreview[0] = $("#"+id).val();
 	$("#"+id+"_").fileinput({
 		language : "zh",//设置语言
 		uploadUrl: "/upload/image.upd",
@@ -81,4 +83,9 @@ Date.prototype.format = function(format) {
     return format;
 }
 
+String.prototype.formatDate = function(format) {
+	if(this == null || this == "" || this == "null") return "";
+	var date =  new Date(Date.parse(this));
+	return date.format(format);
+}
 

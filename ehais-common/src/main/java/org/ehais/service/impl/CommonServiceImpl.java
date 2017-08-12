@@ -44,7 +44,10 @@ public class CommonServiceImpl implements CommonService {
 		String role_type = (String)request.getSession().getAttribute(EConstants.SESSION_ROLE_TYPE);
 		co.setRoleType(role_type);
 		if(role_type == null) {
-			co.setOperator("");
+//			co.setOperator("");
+			co.setOperator("eq");
+			co.setStoreId((Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID));
+			
 		}else if(role_type.equals("admin")){
 			co.setOperator("");
 		}else if(role_type.equals("store")){

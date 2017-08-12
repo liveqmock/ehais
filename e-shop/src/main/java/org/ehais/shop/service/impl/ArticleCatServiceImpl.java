@@ -1,7 +1,9 @@
 package org.ehais.shop.service.impl;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,6 +16,7 @@ import org.ehais.epublic.model.EHaiArticleCatExample;
 import org.ehais.epublic.model.EHaiArticleExample;
 import org.ehais.service.impl.CommonServiceImpl;
 import org.ehais.shop.service.ArticleCatService;
+import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.Bean2Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,6 +89,234 @@ public class ArticleCatServiceImpl extends CommonServiceImpl implements ArticleC
 		int code = eHaiArticleMapper.insertSelective(model);
 		rm.setCode(code);
 		rm.setMsg("添加成功");
+		return rm;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+public ReturnObject<EHaiArticleCat> articlecat_list(HttpServletRequest request) throws Exception{
+		
+		ReturnObject<EHaiArticleCat> rm = new ReturnObject<EHaiArticleCat>();
+		rm.setCode(0);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		
+		rm.setCode(1);
+		return rm;
+	}
+
+	public ReturnObject<EHaiArticleCat> articlecat_list_json(HttpServletRequest request,EConditionObject condition) throws Exception {
+		// TODO Auto-generated method stub
+		ReturnObject<EHaiArticleCat> rm = new ReturnObject<EHaiArticleCat>();
+		rm.setCode(0);
+		if(condition.getStore_id() == null)condition.setStore_id((Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID));
+		
+		
+		EHaiArticleCatExample example = new EHaiArticleCatExample();
+		EHaiArticleCatExample.Criteria c = example.createCriteria();
+		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+		example.setLimitStart(condition.getStart());
+		example.setLimitEnd(condition.getRows());
+		List<EHaiArticleCat> list = eHaiArticleCatMapper.selectByExample(example);
+		long total = eHaiArticleCatMapper.countByExample(example);
+		rm.setCode(1);
+		rm.setRows(list);
+		rm.setTotal(total);
+		
+		
+		return rm;
+	}
+
+	public ReturnObject<EHaiArticleCat> articlecat_insert(HttpServletRequest request)
+			throws Exception {
+		// TODO Auto-generated method stub
+		ReturnObject<EHaiArticleCat> rm = new ReturnObject<EHaiArticleCat>();
+		rm.setCode(0);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		EHaiArticleCat model = new EHaiArticleCat();
+
+		Map<String, Object> map = new HashMap<String, Object>();
+
+
+		rm.setMap(map);
+		rm.setModel(model);
+		rm.setCode(1);
+		rm.setAction("add");
+		return rm;
+	}
+	
+	public ReturnObject<EHaiArticleCat> articlecat_insert_submit(HttpServletRequest request,EHaiArticleCat model)
+			throws Exception {
+		// TODO Auto-generated method stub
+		ReturnObject<EHaiArticleCat> rm = new ReturnObject<EHaiArticleCat>();
+		rm.setCode(0);
+
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		model.setStoreId(store_id);
+
+		EHaiArticleCatExample example = new EHaiArticleCatExample();
+		EHaiArticleCatExample.Criteria c = example.createCriteria();
+		c.andCatNameEqualTo(model.getCatName());
+		c.andStoreIdEqualTo(store_id);
+		long count = eHaiArticleCatMapper.countByExample(example);
+		if(count > 0){
+			rm.setMsg("存在相同的记录");
+			return rm;
+		}
+
+
+		int code = eHaiArticleCatMapper.insertSelective(model);
+		rm.setCode(code);
+		rm.setMsg("添加成功");
+		return rm;
+	}
+
+	public ReturnObject<EHaiArticleCat> articlecat_update(HttpServletRequest request,Integer catId)
+			throws Exception {
+		// TODO Auto-generated method stub
+		ReturnObject<EHaiArticleCat> rm = new ReturnObject<EHaiArticleCat>();
+		rm.setCode(0);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		EHaiArticleCatExample example = new EHaiArticleCatExample();
+		EHaiArticleCatExample.Criteria c = example.createCriteria();
+		c.andCatIdEqualTo(catId);
+		c.andStoreIdEqualTo(store_id);
+		List<EHaiArticleCat> list = eHaiArticleCatMapper.selectByExample(example);
+		if(list == null || list.size() == 0){
+			rm.setMsg("记录不存在");
+			return rm;
+		}
+		EHaiArticleCat model = list.get(0);
+
+
+		Map<String, Object> map = new HashMap<String, Object>();
+
+
+		rm.setMap(map);
+
+		rm.setAction("edit");
+		rm.setCode(1);
+		rm.setModel(model);
+		return rm;
+	}
+	
+	public ReturnObject<EHaiArticleCat> articlecat_update_submit(HttpServletRequest request,EHaiArticleCat model)
+			throws Exception {
+		// TODO Auto-generated method stub
+		ReturnObject<EHaiArticleCat> rm = new ReturnObject<EHaiArticleCat>();
+		rm.setCode(0);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		EHaiArticleCatExample example = new EHaiArticleCatExample();
+		EHaiArticleCatExample.Criteria c = example.createCriteria();
+		
+		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+		c.andCatIdEqualTo(model.getCatId());
+		c.andStoreIdEqualTo(store_id);
+
+		long count = eHaiArticleCatMapper.countByExample(example);
+		if(count == 0){
+			rm.setMsg("记录不存在");
+			return rm;
+		}
+
+		EHaiArticleCat bean = eHaiArticleCatMapper.selectByPrimaryKey(model.getCatId());
+
+		bean.setCatId(model.getCatId());
+bean.setCatName(model.getCatName());
+bean.setCatType(model.getCatType());
+bean.setModule(model.getModule());
+bean.setKeywords(model.getKeywords());
+bean.setCatDesc(model.getCatDesc());
+bean.setSortOrder(model.getSortOrder());
+bean.setShowInNav(model.getShowInNav());
+bean.setParentId(model.getParentId());
+bean.setStoreId(model.getStoreId());
+bean.setCode(model.getCode());
+bean.setUserId(model.getUserId());
+bean.setImages(model.getImages());
+
+
+		int code = eHaiArticleCatMapper.updateByExampleSelective(bean, example);
+		rm.setCode(code);
+		rm.setMsg("编辑成功");
+		return rm;
+	}
+
+	public ReturnObject<EHaiArticleCat> articlecat_info(HttpServletRequest request,Integer catId)
+			throws Exception {
+		// TODO Auto-generated method stub
+		ReturnObject<EHaiArticleCat> rm = new ReturnObject<EHaiArticleCat>();
+		rm.setCode(0);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		EHaiArticleCatExample example = new EHaiArticleCatExample();
+		EHaiArticleCatExample.Criteria c = example.createCriteria();
+		c.andCatIdEqualTo(catId);
+		c.andStoreIdEqualTo(store_id);
+		List<EHaiArticleCat> list = eHaiArticleCatMapper.selectByExample(example);
+		if(list == null || list.size() == 0){
+			rm.setMsg("记录不存在");
+			return rm;
+		}
+		EHaiArticleCat model = list.get(0);
+		rm.setCode(1);
+		rm.setModel(model);
+		return rm;
+	}
+
+
+	public ReturnObject<EHaiArticleCat> articlecat_find(HttpServletRequest request,Integer catId)
+			throws Exception {
+		// TODO Auto-generated method stub
+		ReturnObject<EHaiArticleCat> rm = new ReturnObject<EHaiArticleCat>();
+		rm.setCode(0);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		
+		EHaiArticleCat model = eHaiArticleCatMapper.selectByPrimaryKey(catId);
+		
+		
+		rm.setCode(1);
+		rm.setModel(model);
+		return rm;
+	}
+
+	public ReturnObject<EHaiArticleCat> articlecat_delete(HttpServletRequest request,Integer catId)
+			throws Exception {
+		// TODO Auto-generated method stub
+		ReturnObject<EHaiArticleCat> rm = new ReturnObject<EHaiArticleCat>();
+		rm.setCode(0);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		EHaiArticleCatExample example = new EHaiArticleCatExample();
+		EHaiArticleCatExample.Criteria c = example.createCriteria();
+		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+		c.andCatIdEqualTo(catId);
+
+		long count = eHaiArticleCatMapper.countByExample(example);
+		if(count == 0){
+			rm.setMsg("记录不存在");
+			return rm;
+		}
+
+		
+		EHaiArticleExample aexample = new EHaiArticleExample();
+		EHaiArticleExample.Criteria ca = aexample.createCriteria();
+		aexample.CriteriaStoreId(ca, this.storeIdCriteriaObject(request));
+		ca.andCatIdEqualTo(catId);
+		count = eHaiArticleMapper.countByExample(aexample);
+		if(count > 0){
+			rm.setMsg("此项存在关联资讯信息，请先移除关联资讯");
+			return rm;
+		}
+
+		int code = eHaiArticleCatMapper.deleteByExample(example);
+		rm.setCode(code);
+		rm.setMsg("删除成功");
 		return rm;
 	}
 
