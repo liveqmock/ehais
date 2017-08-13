@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -15,13 +14,22 @@ import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
 import org.ehais.model.BootStrapModel;
 import org.ehais.model.ExtendsField.ExtendsFieldsTabs;
+import org.ehais.shop.mapper.HaiAgencyMapper;
 import org.ehais.shop.mapper.HaiCartMapper;
+import org.ehais.shop.mapper.HaiCategoryMapper;
 import org.ehais.shop.mapper.HaiFavoritesMapper;
+import org.ehais.shop.mapper.HaiGoodsAgencyMapper;
 import org.ehais.shop.mapper.HaiGoodsGalleryMapper;
 import org.ehais.shop.mapper.HaiGoodsMapper;
+import org.ehais.shop.model.HaiAgency;
+import org.ehais.shop.model.HaiAgencyExample;
 import org.ehais.shop.model.HaiCartExample;
+import org.ehais.shop.model.HaiCategory;
+import org.ehais.shop.model.HaiCategoryExample;
 import org.ehais.shop.model.HaiFavoritesExample;
 import org.ehais.shop.model.HaiGoods;
+import org.ehais.shop.model.HaiGoodsAgency;
+import org.ehais.shop.model.HaiGoodsAgencyExample;
 import org.ehais.shop.model.HaiGoodsExample;
 import org.ehais.shop.model.HaiGoodsGallery;
 import org.ehais.shop.model.HaiGoodsGalleryExample;
@@ -46,6 +54,12 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 	private HaiCartMapper haiCartMapper;
 	@Autowired
 	private HaiFavoritesMapper haiFavoritesMapper;
+	@Autowired
+	private HaiCategoryMapper haiCategoryMapper;
+	@Autowired
+	private HaiAgencyMapper haiAgencyMapper;
+	@Autowired
+	private HaiGoodsAgencyMapper haiGoodsAgencyMapper;
 	
 	
 	public ReturnObject<HaiGoods> goods_list(HttpServletRequest request) throws Exception{
@@ -54,7 +68,6 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		List<BootStrapModel> bootStrapList = this.BootStrapXml(request, "goods.xml",null,"hai_goods",null,null);
-		
 		
 		rm.setCode(1);
 		return rm;
@@ -95,6 +108,7 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		if(StringUtils.isNotEmpty(goods_name))c.andGoodsNameLike("%"+goods_name+"%");
 		example.setStart(condition.getStart());
 		example.setLen(condition.getRows());
+		example.setOrderByClause("goods_id desc");
 		List<HaiGoods> list = haiGoodsMapper.hai_goods_list_by_example(example);
 		Integer total = haiGoodsMapper.countByExample(example);
 		rm.setCode(1);
@@ -104,16 +118,120 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		
 		return rm;
 	}
+	
+	/**
+	 * 获取分类列表
+	 * @param request
+	 * @return
+	 */
+	private List<HaiCategory> catList(HttpServletRequest request){
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		HaiCategoryExample cateExample = new HaiCategoryExample();
+		HaiCategoryExample.Criteria cc = cateExample.createCriteria();
+		cc.andStoreIdEqualTo(store_id);
+		List<HaiCategory> list = haiCategoryMapper.selectByExample(cateExample);
+		return list;
+	}
+	
+	/**
+	 * 代理列表
+	 * @param request
+	 * @return
+	 */
+	private List<HaiAgency> agencyList(HttpServletRequest request){
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		HaiAgencyExample agyExample = new HaiAgencyExample();
+		HaiAgencyExample.Criteria cc = agyExample.createCriteria();
+		cc.andStoreIdEqualTo(store_id);
+		agyExample.setOrderByClause("agency_level asc");
+		List<HaiAgency> list = haiAgencyMapper.selectByExample(agyExample);
+		return list;
+	}
+	
+	/**
+	 * 获取某商品的代理提成
+	 * @param request
+	 * @param goodsId
+	 * @return
+	 */
+	private List<HaiGoodsAgency> goodsAgencyList(HttpServletRequest request,Long goodsId){
+		HaiGoodsAgencyExample gaExp = new HaiGoodsAgencyExample();
+		HaiGoodsAgencyExample.Criteria c = gaExp.createCriteria();
+		if(goodsId > 0)c.andGoodsIdEqualTo(goodsId);
+		List<HaiGoodsAgency> gaList = haiGoodsAgencyMapper.selectByExample(gaExp);
+		return gaList;
+	}
+	
+	/**
+	 * 整理代理取货金额或代理提现金额
+	 * @param agencyList
+	 * @param goodsAgencyList
+	 * @return
+	 */
+	private List<Map<String,Object>> goodsAgencyPrice(List<HaiAgency> agencyList,List<HaiGoodsAgency> goodsAgencyList){
+		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+		for (HaiAgency agency : agencyList) {
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("agencyId", agency.getAgencyId());
+			map.put("agencyName", agency.getAgencyName());
+			map.put("agencyLevel", agency.getAgencyLevel());
+			map.put("price", 0);
+			for(HaiGoodsAgency goodsAgency : goodsAgencyList){
+				if(agency.getAgencyId() == goodsAgency.getAgencyId()){
+					map.put("price", goodsAgency.getPrice());
+				}
+			}
+			list.add(map);
+		}
+		return list;
+	}
+	
+	/**
+	 * 保存代理价格
+	 * @param request
+	 * @param goodsId
+	 */
+	private void saveGoodsAgencyPrice(HttpServletRequest request,Long goodsId){
+		List<HaiAgency> agencyList = this.agencyList(request);
+		for (HaiAgency haiAgency : agencyList) {
+			String agency_price = request.getParameter("agencyPrice_"+haiAgency.getAgencyId());
+			Integer price = 0;
+			if(StringUtils.isNotBlank(agency_price)){
+				price = Float.valueOf( Float.valueOf(agency_price) * 100).intValue();
+			}
+			
+			HaiGoodsAgencyExample example = new HaiGoodsAgencyExample();
+			HaiGoodsAgencyExample.Criteria c = example.createCriteria();
+			c.andGoodsIdEqualTo(goodsId).andAgencyIdEqualTo(haiAgency.getAgencyId());
+			List<HaiGoodsAgency> list = haiGoodsAgencyMapper.selectByExample(example);
+			if(list == null || list.size() == 0){
+				HaiGoodsAgency ga = new HaiGoodsAgency();
+				ga.setAgencyId(haiAgency.getAgencyId());
+				ga.setGoodsId(goodsId);
+				ga.setPrice(price);
+				haiGoodsAgencyMapper.insert(ga);
+			}else{
+				HaiGoodsAgency ga = list.get(0);
+				ga.setPrice(price);
+				haiGoodsAgencyMapper.updateByExample(ga, example);
+			}
+		}
+	}
 
 	public ReturnObject<HaiGoodsWithBLOBs> goods_insert(HttpServletRequest request)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiGoodsWithBLOBs> rm = new ReturnObject<HaiGoodsWithBLOBs>();	
-		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiGoodsWithBLOBs model = new HaiGoodsWithBLOBs();
-		rm.setExtendsFieldsTabs(this.formatBootStrapTab(request,model));
 		
+		Map<String, Object> map = new HashMap<String,Object>();
+		map.put("catList", this.catList(request));
+		map.put("goodsAgencyPrice", this.goodsAgencyPrice(this.agencyList(request), this.goodsAgencyList(request,0L)));
+		
+		rm.setMap(map);
+		rm.setModel(model);
 		rm.setCode(1);
+		rm.setAction("add");
 		return rm;
 	}
 	
@@ -171,6 +289,33 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		rm.setMsg("添加成功");
 		return rm;
 	}
+	
+	public ReturnObject<HaiGoodsWithBLOBs> wine_goods_insert_submit(HttpServletRequest request,HaiGoodsWithBLOBs model)
+			throws Exception {
+		ReturnObject<HaiGoodsWithBLOBs> rm = new ReturnObject<HaiGoodsWithBLOBs>();
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		model.setStoreId(store_id);
+		String costPriceFloat = request.getParameter("costPriceFloat");
+		String shopPriceFloat = request.getParameter("shopPriceFloat");
+		if(StringUtils.isNotBlank(costPriceFloat)){
+			Integer costPrice = Float.valueOf(Float.valueOf(StringUtils.trim(costPriceFloat)) * 100).intValue();
+			model.setCostPrice(costPrice);
+		}
+		if(StringUtils.isNotBlank(shopPriceFloat)){
+			Integer shopPrice = Float.valueOf(Float.valueOf(StringUtils.trim(shopPriceFloat)) * 100).intValue();
+			model.setShopPrice(shopPrice);
+		}
+		
+		int code = haiGoodsMapper.insertSelective(model);
+		
+		//保存代理价格
+		this.saveGoodsAgencyPrice(request, model.getGoodsId());
+		
+		
+		rm.setCode(1);
+		rm.setMsg("添加成功");
+		return rm;
+	}
 
 	public ReturnObject<HaiGoodsWithBLOBs> goods_update(HttpServletRequest request,Long goodsId)
 			throws Exception {
@@ -183,10 +328,18 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		HaiGoodsGalleryExample example = new HaiGoodsGalleryExample();
 		example.createCriteria().andGoodsIdEqualTo(goodsId);
 		List<HaiGoodsGallery> goodsGallery = haiGoodsGalleryMapper.selectByExample(example);
-		rm.setExtendsFieldsTabs(this.formatBootStrapTab(request,model));
+//		rm.setExtendsFieldsTabs(this.formatBootStrapTab(request,model));
+		
+		Map<String, Object> map = new HashMap<String,Object>();
+		map.put("catList", this.catList(request));
+		map.put("goodsGallery", goodsGallery);
+		map.put("goodsAgencyPrice", this.goodsAgencyPrice(this.agencyList(request), this.goodsAgencyList(request,goodsId)));
+		
+		rm.setMap(map);
 		
 		rm.setCode(1);
 		rm.setModel(model);
+		rm.setAction("edit");
 		return rm;
 	}
 	

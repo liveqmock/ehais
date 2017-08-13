@@ -9,6 +9,9 @@ import javax.validation.Valid;
 import org.ehais.annotation.EPermissionController;
 import org.ehais.annotation.EPermissionMethod;
 import org.ehais.controller.CommonController;
+import org.ehais.epublic.validator.EInsertValidator;
+import org.ehais.epublic.validator.EUniqueValidator;
+import org.ehais.epublic.validator.EUpdateValidator;
 import org.ehais.protocol.PermissionProtocol;
 import org.ehais.shop.model.HaiCategory;
 import org.ehais.shop.model.HaiCategoryWithBLOBs;
@@ -24,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -106,13 +110,13 @@ public class  GoodsAdminController extends CommonController {
 	@RequestMapping(value="/manage/wineGoodsAddSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String wineGoodsAddSubmit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
-			@Valid @ModelAttribute("goods") HaiGoodsWithBLOBs goods,
+			@Validated({EInsertValidator.class,EUniqueValidator.class}) @ModelAttribute("goods") HaiGoodsWithBLOBs goods,
 			BindingResult result
 			) {
 			if(result.hasErrors())return this.writeBindingResult(result);
 		try{
 			
-			ReturnObject<HaiGoodsWithBLOBs> rm = wineGoodsService.goods_insert_submit(request, goods);
+			ReturnObject<HaiGoodsWithBLOBs> rm = wineGoodsService.wine_goods_insert_submit(request, goods);
 			return this.writeJson(rm);
 			
 		}catch(Exception e){
@@ -147,8 +151,7 @@ public class  GoodsAdminController extends CommonController {
 	@RequestMapping(value="/manage/wineGoodsEditSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String wineGoodsEditSubmit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
-			@RequestParam(value = "goodsId", required = true) Integer goodsId,
-			@Valid @ModelAttribute("goods") HaiGoodsWithBLOBs goods,
+			@Validated({EUpdateValidator.class}) @ModelAttribute("goods") HaiGoodsWithBLOBs goods,
 			BindingResult result
 			) {
 			if(result.hasErrors())return this.writeBindingResult(result);

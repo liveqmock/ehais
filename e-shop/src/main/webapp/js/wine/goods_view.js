@@ -55,17 +55,23 @@ $(function(){
 			    field: 'goodsName',
 			    title: '红酒名称'
 			},{
+			    field: 'costPrice',
+			    title: '分销成本价',formatter : function(value,rows,index){
+			    	if(value != null && value != ""){
+			    		return (parseFloat(value) / 100 ).toFixed(2);
+			    	}else{
+			    		return 0;
+			    	}
+			    }
+			},{
 			    field: 'shopPrice',
-			    title: '一级代理价'
-			},{
-			    field: '',
-			    title: '二级代理价'
-			},{
-			    field: '',
-			    title: '高级钻石价'
-			},{
-			    field: '',
-			    title: '扩展价...'
+			    title: '出售价格',formatter : function(value,rows,index){
+			    	if(value != null && value != ""){
+			    		return (parseFloat(value) / 100 ).toFixed(2);
+			    	}else{
+			    		return 0;
+			    	}
+			    }
 			}, {
 	            field: 'isOnSale',
 	            title: '上/下架',

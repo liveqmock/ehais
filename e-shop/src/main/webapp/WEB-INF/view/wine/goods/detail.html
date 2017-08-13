@@ -44,283 +44,105 @@
 
 <input type="hidden" class="form-control" id="goodsId" name="goodsId" value="${rm.model.goodsId!''}" placeholder="">
 
-
 <div class="form-group">
-<label class="col-sm-2 control-label">catId</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="catId" name="catId" value="${rm.model.catId!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">goodsSn</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="goodsSn" name="goodsSn" value="${rm.model.goodsSn!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">goodsName</label>
+<label class="col-sm-2 control-label">红酒名称</label>
 <div class="col-sm-5">
 	<input type="text" class="form-control" id="goodsName" name="goodsName" value="${rm.model.goodsName!''}" placeholder="">
 </div>
 </div>
 
 <div class="form-group">
-<label class="col-sm-2 control-label">storeId</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="storeId" name="storeId" value="${rm.model.storeId!''}" placeholder="">
+<label class="col-sm-2 control-label">红酒分类</label>
+<div class="col-sm-3">
+	
+	<select id="catId" name="catId" class="form-control">
+		<option value="0">--选择红酒分类--</option>
+		<#if rm.map?? && rm.map.catList?? && rm.map.catList?size gt 0>
+		<#list rm.map.catList as dc>
+		<option value="${dc.catId!0}" <#if dc.catId == rm.model.catId!0 >selected="selected"</#if> >${dc.catName!''}</option>
+		</#list>
+		</#if>
+	</select>
 </div>
 </div>
 
 <div class="form-group">
-<label class="col-sm-2 control-label">brandId</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="brandId" name="brandId" value="${rm.model.brandId!''}" placeholder="">
+<label class="col-sm-2 control-label">红酒编码</label>
+<div class="col-sm-3">
+	<input type="text" class="form-control" id="goodsSn" name="goodsSn" value="${rm.model.goodsSn!''}" placeholder="">
+</div>
+</div>
+
+
+<div class="form-group">
+<label class="col-sm-2 control-label">分销成本</label>
+<div class="col-sm-2">
+	<@currencyPicker id="costPriceFloat" value="${(rm.model.costPrice!0) / 100}" />
+</div>
+<div class="col-sm-8">非进货成本价，此成本价与出货价的计算利泣，会根据三级分销，计算分销提成金额</div>
+</div>
+
+
+<div class="form-group">
+<label class="col-sm-2 control-label">出售价格</label>
+<div class="col-sm-2">
+	<@currencyPicker id="shopPriceFloat" value="${(rm.model.shopPrice!0) / 100}" />
+</div>
+</div>
+
+<#if rm.map.goodsAgencyPrice??>
+<#list rm.map.goodsAgencyPrice as map> 
+
+<div class="form-group">
+<label class="col-sm-2 control-label">${map["agencyName"]} 取货价</label>
+<div class="col-sm-2">
+	<@currencyPicker id="agencyPrice_${map['agencyId']}" value="${(map['price']!0) / 100}" />
+</div>
+</div>
+
+</#list>
+</#if>
+<div class="form-group">
+<label class="col-sm-2 control-label">上架</label>
+<div class="col-sm-1">
+	<@checkboxPicker id="isOnSale" value="${(rm.model.isOnSale!false)?string('yes', 'no')}" />
+</div>
+</div>
+
+
+<div class="form-group">
+<label class="col-sm-2 control-label">热销</label>
+<div class="col-sm-1">
+	<@checkboxPicker id="isHot" value="${(rm.model.isHot!false)?string('yes', 'no')}" />
 </div>
 </div>
 
 <div class="form-group">
-<label class="col-sm-2 control-label">goodsNumber</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="goodsNumber" name="goodsNumber" value="${rm.model.goodsNumber!''}" placeholder="">
+<label class="col-sm-2 control-label">促销</label>
+<div class="col-sm-1">
+	<@checkboxPicker id="isPromote" value="${(rm.model.isPromote!false)?string('yes', 'no')}" />
 </div>
 </div>
 
 <div class="form-group">
-<label class="col-sm-2 control-label">goodsWeight</label>
+<label class="col-sm-2 control-label">图片</label>
 <div class="col-sm-5">
-	<input type="text" class="form-control" id="goodsWeight" name="goodsWeight" value="${rm.model.goodsWeight!''}" placeholder="">
+	<@bsImagesPicker id="originalImg" value="${rm.model.originalImg!''}" />
 </div>
 </div>
 
 <div class="form-group">
-<label class="col-sm-2 control-label">marketPrice</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="marketPrice" name="marketPrice" value="${rm.model.marketPrice!''}" placeholder="">
+<label class="col-sm-2 control-label">描述</label>
+<div class="col-sm-8">
+	<@ueditorPicker id="goodsDesc" value="${rm.model.goodsDesc!''}" />
 </div>
 </div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">shopPrice</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="shopPrice" name="shopPrice" value="${rm.model.shopPrice!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">costPrice</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="costPrice" name="costPrice" value="${rm.model.costPrice!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">warnNumber</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="warnNumber" name="warnNumber" value="${rm.model.warnNumber!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">keywords</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="keywords" name="keywords" value="${rm.model.keywords!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">goodsBrief</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="goodsBrief" name="goodsBrief" value="${rm.model.goodsBrief!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">goodsDesc</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="goodsDesc" name="goodsDesc" value="${rm.model.goodsDesc!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">actDesc</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="actDesc" name="actDesc" value="${rm.model.actDesc!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">appDesc</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="appDesc" name="appDesc" value="${rm.model.appDesc!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">goodsThumb</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="goodsThumb" name="goodsThumb" value="${rm.model.goodsThumb!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">goodsImg</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="goodsImg" name="goodsImg" value="${rm.model.goodsImg!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">originalImg</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="originalImg" name="originalImg" value="${rm.model.originalImg!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">isReal</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="isReal" name="isReal" value="${rm.model.isReal!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">isOnSale</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="isOnSale" name="isOnSale" value="${rm.model.isOnSale!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">isAloneSale</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="isAloneSale" name="isAloneSale" value="${rm.model.isAloneSale!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">isShipping</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="isShipping" name="isShipping" value="${rm.model.isShipping!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">integral</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="integral" name="integral" value="${rm.model.integral!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">sortOrder</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="sortOrder" name="sortOrder" value="${rm.model.sortOrder!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">isDelete</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="isDelete" name="isDelete" value="${rm.model.isDelete!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">isBest</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="isBest" name="isBest" value="${rm.model.isBest!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">isNew</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="isNew" name="isNew" value="${rm.model.isNew!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">isHot</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="isHot" name="isHot" value="${rm.model.isHot!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">isPromote</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="isPromote" name="isPromote" value="${rm.model.isPromote!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">isSpecial</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="isSpecial" name="isSpecial" value="${rm.model.isSpecial!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">bonusTypeId</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="bonusTypeId" name="bonusTypeId" value="${rm.model.bonusTypeId!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">goodsType</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="goodsType" name="goodsType" value="${rm.model.goodsType!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">giveIntegral</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="giveIntegral" name="giveIntegral" value="${rm.model.giveIntegral!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">rankIntegral</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="rankIntegral" name="rankIntegral" value="${rm.model.rankIntegral!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">userId</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="userId" name="userId" value="${rm.model.userId!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">createDate</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="createDate" name="createDate" value="${rm.model.createDate!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">updateDate</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="updateDate" name="updateDate" value="${rm.model.updateDate!''}" placeholder="">
-</div>
-</div>
-
-
-
 
 
 <div class="form-group">
 	<div class="col-sm-3"></div>
 	<div class="col-sm-6"><button id="saveSubmit" type="button" class="btn btn-primary">提交信息</button></div>
 </div>
-       
-
 
 
 

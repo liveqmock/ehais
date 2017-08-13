@@ -64,3 +64,8 @@ $(function(){
 		</div>
 	</div>
 </#macro>
+
+<!-- 复选项控件：<@checkboxPicker id="XX" value="{rm.model.bool?string('yes', 'no')}" /> -->
+<#macro checkboxPicker id value >
+	<input type="checkbox"  id="${id}" name="${id}" value="1" placeholder="" <#if value == 'yes'> checked="checked" </#if> >
+</#macro>

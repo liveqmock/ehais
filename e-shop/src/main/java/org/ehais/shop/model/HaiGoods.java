@@ -3,6 +3,11 @@ package org.ehais.shop.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.validation.constraints.NotNull;
+
+import org.ehais.epublic.validator.EInsertValidator;
+import org.ehais.epublic.validator.EUnique;
+import org.ehais.epublic.validator.EUpdateValidator;
 import org.hibernate.validator.constraints.NotBlank;
 
 public class HaiGoods implements Serializable {
@@ -12,6 +17,7 @@ public class HaiGoods implements Serializable {
      *
      * @mbggenerated Tue Jul 19 21:54:38 CST 2016
      */
+	@NotNull(message="商品编号不能为空",groups = {EUpdateValidator.class})
     private Long goodsId;
 
     /**
@@ -28,6 +34,7 @@ public class HaiGoods implements Serializable {
      *
      * @mbggenerated Tue Jul 19 21:54:38 CST 2016
      */
+    @NotBlank(message="商品编码不能为空",groups = {EUpdateValidator.class})
     private String goodsSn;
 
     /**
@@ -36,7 +43,8 @@ public class HaiGoods implements Serializable {
      *
      * @mbggenerated Tue Jul 19 21:54:38 CST 2016
      */
-    @NotBlank(message="商品名称不能为空")
+    @NotBlank(message="商品名称不能为空",groups = {EInsertValidator.class })
+    @EUnique(tableName="hai_goods",fieldName="goods_name",message="商品名称存在同名",groups = {EInsertValidator.class})
     private String goodsName;
 
     /**
