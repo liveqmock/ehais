@@ -13,12 +13,15 @@
 		<script type="text/javascript" src="../js/bootstrap/addtabs/bootstrap.addtabs.js" ></script>
 		
 		<script type="text/javascript" src="../js/jquery.qrcode.min.js" ></script>
+		<script type="text/javascript" src="../js/jqprint/jQuery.print.js" ></script>
 		
+		<link rel="stylesheet" href="/css/popupOrder.css" />
+		<link rel="stylesheet" href="/css/popupOrder.css" media="print" />
 	</head>
 	<body>
 		<div class="mylayout">
 				<div class="north">
-					<div style="float: left;padding: 5px 0 0 20px;font-size: 24px;color: #fff;">恩平颈赤街LOGO</div>
+					<div style="float: left;padding: 5px 0 0 20px;font-size: 24px;color: #fff;">微信扫码点餐管理后台</div>
 					<div style="float: right;color: #fff;padding: 10px;">
 
 					管理编号：${session_admin_id }
@@ -28,7 +31,7 @@
 					管理帐号：${session_admin_name }
 					
 					&nbsp;&nbsp;&nbsp;
-					<a href="javascript:;" onclick="show_qrcode();">餐厅二维码</a>
+					
 					
 					&nbsp;&nbsp;&nbsp;
 					<a href="logout" style="color: #fff">退出系统</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -38,12 +41,12 @@
 					
 					
 					<ul id="menu-list-group" class="list-group">
-						<!-- <li class="list-group-item active">
-							<a data-addtab="addad" data-url="m_article_list">
+						<li class="list-group-item active">
+							<a data-addtab="diningtable" data-url="tpDiningTableView">
 								<i class="glyphicon glyphicon-cloud"></i>
-								软文管理
+								台桌管理
 							</a>							
-						</li> -->
+						</li>
 						<li class="list-group-item">
 							<a data-addtab="addlist" data-url="tpDiningView">
 								<i class="glyphicon glyphicon-glass"></i>商品管理
@@ -76,9 +79,88 @@
 
 						<!-- Tab panes -->
 						<div id="my-tab-content" class="tab-content">
-							<div role="tabpanel" class="tab-pane active" id="home">
-							<div id="jqrcode" ></div>
+							<div role="tabpanel" class="tab-pane active" id="home" style="width: 100%;text-align: center;margin-top: 50px;">
+								<div id="jqrcode" ></div>
+								<div>商家二维码</div>
+								<div id="popupOrderList" class="popupOrderList" style="position: fixed;top: 100px;right: 0;width: 250px;bottom: 30px;border-left: 1px solid #333;float: left;overflow-y:scroll; ">
+									<div id="order_0001" class="item" style="width: 250px;float: left;">
+										<div class="title" style="font-size: 20px;font-weight: bold;width:100%;float: left;">易海司餐厅--恩平颈赤街</div>
+										<div class="tableno" style="margin-bottom:10px; border-bottom: 1px dotted #ccc;padding-bottom: 10px;width:100%;float: left;text-align: center;">餐桌：（A002台）</div>
+										<div class="tablehead" style="margin-top: 10px;width:100%;float: left;">
+											<div style="width: 40%;float: left;">菜品</div>
+											<div style="width: 20%;float: left;">单价</div>
+											<div style="width: 20%;float: left;">数量</div>
+											<div style="width: 20%;float: left;">金额</div>
+										</div>
+										<div class="tablebody" style="margin-top: 10px;width:100%;float: left;">
+											<div class="item" style="margin: 10px 0;width:100%;float:left;">
+												<div style="width: 40%;float: left;">芒果缤纷果汁</div>
+												<div style="width: 20%;float: left;">15.00</div>
+												<div style="width: 20%;float: left;">10</div>
+												<div style="width: 20%;float: left;">150.00</div>
+											</div>
+											<div class="item" style="margin: 10px 0;width:100%;float:left;">
+												<div style="width: 40%;float: left;">芒果缤纷果汁</div>
+												<div style="width: 20%;float: left;">15.00</div>
+												<div style="width: 20%;float: left;">10</div>
+												<div style="width: 20%;float: left;">150.00</div>
+											</div>
+											<div class="item" style="margin: 10px 0;width:100%;float:left;">
+												<div style="width: 40%;float: left;">芒果缤纷果汁</div>
+												<div style="width: 20%;float: left;">15.00</div>
+												<div style="width: 20%;float: left;">10</div>
+												<div style="width: 20%;float: left;">150.00</div>
+											</div>
+										</div>
+										<div class="tablefoot" style="margin: 10px 0;width:100%;float:left;border-top: 1px dotted #ccc;">
+											<div style="width: 60%;float: left;">合计</div>
+											<div style="width: 20%;float: left;">50</div>
+											<div style="width: 20%;float: left;">750.00</div>
+										</div>
+									</div>
+									
+									
+									
+									
+									<div id="order_0002" class="item" style="width: 250px;float: left;">
+										<div class="title" style="font-size: 20px;font-weight: bold;width:100%;float: left;">易海司餐厅--恩平颈赤街</div>
+										<div class="tableno" style="margin-bottom:10px; border-bottom: 1px dotted #ccc;padding-bottom: 10px;width:100%;float: left;text-align: center;">餐桌：（A003台）</div>
+										<div class="tablehead" style="margin-top: 10px;width:100%;float: left;">
+											<div style="width: 40%;float: left;">菜品</div>
+											<div style="width: 20%;float: left;">单价</div>
+											<div style="width: 20%;float: left;">数量</div>
+											<div style="width: 20%;float: left;">金额</div>
+										</div>
+										<div class="tablebody" style="margin-top: 10px;width:100%;float: left;">
+											<div class="item" style="margin: 10px 0;width:100%;float:left;">
+												<div style="width: 40%;float: left;">芒果缤纷果汁</div>
+												<div style="width: 20%;float: left;">23.00</div>
+												<div style="width: 20%;float: left;">10</div>
+												<div style="width: 20%;float: left;">230.00</div>
+											</div>
+											<div class="item" style="margin: 10px 0;width:100%;float:left;">
+												<div style="width: 40%;float: left;">芒果缤纷果汁</div>
+												<div style="width: 20%;float: left;">23.00</div>
+												<div style="width: 20%;float: left;">10</div>
+												<div style="width: 20%;float: left;">230.00</div>
+											</div>
+											<div class="item" style="margin: 10px 0;width:100%;float:left;">
+												<div style="width: 40%;float: left;">芒果缤纷果汁</div>
+												<div style="width: 20%;float: left;">23.00</div>
+												<div style="width: 20%;float: left;">10</div>
+												<div style="width: 20%;float: left;">230.00</div>
+											</div>
+										</div>
+										<div class="tablefoot" style="margin: 10px 0;width:100%;float:left;border-top: 1px dotted #ccc;">
+											<div style="width: 60%;float: left;">合计</div>
+											<div style="width: 20%;float: left;">50</div>
+											<div style="width: 20%;float: left;">750.00</div>
+										</div>
+									</div>
+									
+								</div>
 							</div>
+							
 						</div>
 
 					</div>
@@ -135,6 +217,9 @@ $(function(){
 	//$(".south").html(south_w+"+"+south_h);
 	//$.addtabs({settings:{iframeHeight:500}});
 //	alert($.addtabs.settings.iframeHeight);
+
+	//setInterval(popupOrder, 3000);
+	popupOrder();
 });
 
 $(window).resize(function () {          //当浏览器大小变化时
@@ -185,6 +270,10 @@ $(window).resize(function () {          //当浏览器大小变化时
 
 function show_qrcode(){
 	
+}
+
+function popupOrder(){
+	$.print("#order_0002");
 }
 
 </script>

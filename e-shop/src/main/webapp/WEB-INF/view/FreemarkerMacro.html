@@ -1,7 +1,7 @@
-<!-- 日期控件：<@bsDatePicker id="a" value="b" /> -->
-<#macro bsDatePicker id value >
+<!-- 日期控件：< @ bsDatePicker id="a" value="" /> -->
+<#macro bsDatePicker id="" value="" >
     <div class="input-group date form_date_${id} " data-date="" data-date-format="yyyy-mm-dd">
-		<input class="form-control" size="16" type="text" id="${id}" name="${id}" value="${value!''}"  readonly>
+		<input class="form-control" size="16" type="text" id="${id}" name="${id}" value="${(value!'')?string('yyyy-MM-dd')}"  readonly>
 		<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
 		<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 	</div>	
@@ -69,3 +69,17 @@ $(function(){
 <#macro checkboxPicker id value >
 	<input type="checkbox"  id="${id}" name="${id}" value="1" placeholder="" <#if value == 'yes'> checked="checked" </#if> >
 </#macro>
+
+
+<!-- 复选项控件：<@selectCategoryPicker id="" text="" value=0 list={}/> -->
+<#macro selectCategoryPicker id value text list>
+	<select class="form-control" id="${id}" name="${id}" >
+		<option value="0">--请选择分类--</option>		
+		<#if list??&&list?size gt 0>
+		<#list list as cate>
+		<option value="${cate[id]!0}" <#if cate[id]?string('') == value >selected="selected"</#if> >${cate[text]!''}</option>
+		</#list>
+		</#if>
+	</select>	
+</#macro>
+

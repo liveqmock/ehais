@@ -101,6 +101,7 @@ public class TpDiningCategoryServiceImpl  extends CommonServiceImpl implements T
 		}
 		
 		model.setSuppliersId(suppliers_id);
+		model.setClassify("dining");
 
 		int code = tpDiningCategoryMapper.insertSelective(model);
 		rm.setCode(code);
@@ -116,6 +117,7 @@ public class TpDiningCategoryServiceImpl  extends CommonServiceImpl implements T
 		TpDiningCategoryExample example = new TpDiningCategoryExample();
 		TpDiningCategoryExample.Criteria c = example.createCriteria();
 		c.andIdEqualTo(id);
+		c.andClassifyEqualTo("dining");
 		Long suppliers_id = (Long)request.getSession().getAttribute(EConstants.SESSION_SUPPLIERS_ID);
 		c.andSuppliersIdEqualTo(suppliers_id);
 		List<TpDiningCategory> list = tpDiningCategoryMapper.selectByExample(example);
@@ -148,7 +150,7 @@ public class TpDiningCategoryServiceImpl  extends CommonServiceImpl implements T
 		c.andIdEqualTo(model.getId());
 		Long suppliers_id = (Long)request.getSession().getAttribute(EConstants.SESSION_SUPPLIERS_ID);
 		c.andSuppliersIdEqualTo(suppliers_id);
-
+		c.andClassifyEqualTo("dining");
 		long count = tpDiningCategoryMapper.countByExample(example);
 		if(count == 0){
 			rm.setMsg("记录不存在");
@@ -176,6 +178,7 @@ public class TpDiningCategoryServiceImpl  extends CommonServiceImpl implements T
 		c.andIdEqualTo(id);
 		Long suppliers_id = (Long)request.getSession().getAttribute(EConstants.SESSION_SUPPLIERS_ID);
 		c.andSuppliersIdEqualTo(suppliers_id);
+		c.andClassifyEqualTo("dining");
 		List<TpDiningCategory> list = tpDiningCategoryMapper.selectByExample(example);
 		if(list == null || list.size() == 0){
 			rm.setMsg("记录不存在");
@@ -212,7 +215,7 @@ public class TpDiningCategoryServiceImpl  extends CommonServiceImpl implements T
 		Long suppliers_id = (Long)request.getSession().getAttribute(EConstants.SESSION_SUPPLIERS_ID);
 		c.andSuppliersIdEqualTo(suppliers_id);
 		c.andIdEqualTo(id);
-		
+		c.andClassifyEqualTo("dining");
 		long count = tpDiningCategoryMapper.countByExample(example);
 		if(count == 0){
 			rm.setMsg("记录不存在");

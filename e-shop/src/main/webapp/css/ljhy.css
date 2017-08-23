@@ -12,6 +12,10 @@ th, td { /* table elements 表格元素 */
 .online_doctors{margin-right:15px;}
 .online_doctors span{color:#fff}
 .online_doctors b{padding-left:10px; color:#fff}
+a{color: #fff;}
+a:HOVER,a:FOCUS{
+	color: #f0f0f0;text-decoration: none;
+}
 
 /*首页*/
 .index .welcome{margin-top:200px;}
@@ -21,7 +25,7 @@ th, td { /* table elements 表格元素 */
 .ljhy_login{background:url('./images/login_bg.png')}
 .ljhy_login .fgt_pass{padding-left:10px;}
 .ljhy_login .login-layout{}
-.ljhy_login .main-container{padding-top:100px;}
+.ljhy_login .main-container{padding-top:50px;}
 .ljhy_login .login_logo .app_name{font-size:22px;}
 .ljhy_login .login_logo span{vertical-align: middle}
 .ljhy_login .login_area{box-shadow: 0 1px 2px  #c6c6c6;border-radius:6px; background:#f8f8f8;}
@@ -55,3 +59,8 @@ th, td { /* table elements 表格元素 */
 .hzxx .hzxx_panel ul{margin:0; padding:0; list-style: none; float:left; margin-left:15px;}
 .hzxx .hzxx_panel ul .info_name{display:inline-block;padding:10px 0 10px ;}
 
+.register_qrcode{display: none;}.register_qrcode.active{display: block;}
+.register_qrcode {margin: 0 auto;text-align: center;}
+.register_qrcode .bg{position: fixed;top: 0;bottom: 0;left: 0;right: 0;background: #000;filter:alpha(Opacity=75);-moz-opacity:0.75;opacity: 0.75;}
+.register_qrcode .qrcode_div{position: fixed;top: 100px; width: 100%;height: 500px;margin: 0 auto;}
+.register_qrcode .qrcode_div .txt_qrcode{color: #fff;font-size: 28px;margin-top: 20px;}

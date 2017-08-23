@@ -22,6 +22,7 @@ public interface GoodsService extends CommonService{
 	public ReturnObject<HaiGoodsWithBLOBs> wine_goods_insert_submit(HttpServletRequest request,HaiGoodsWithBLOBs model) throws Exception;
 	public ReturnObject<HaiGoodsWithBLOBs> goods_update(HttpServletRequest request,Long goodsId) throws Exception;
 	public ReturnObject<HaiGoodsWithBLOBs> goods_update_submit(HttpServletRequest request,HaiGoodsWithBLOBs model) throws Exception;
+	public ReturnObject<HaiGoodsWithBLOBs> wine_goods_update_submit(HttpServletRequest request,HaiGoodsWithBLOBs model) throws Exception;
 	public ReturnObject<HaiGoodsWithBLOBs> goods_find(HttpServletRequest request,Long goodsId) throws Exception;
 	public ReturnObject<HaiGoods> goods_delete(HttpServletRequest request,Long goodsId) throws Exception;
 	

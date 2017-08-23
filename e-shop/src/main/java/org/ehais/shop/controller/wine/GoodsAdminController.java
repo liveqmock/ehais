@@ -156,7 +156,7 @@ public class  GoodsAdminController extends CommonController {
 			) {
 			if(result.hasErrors())return this.writeBindingResult(result);
 		try{
-			return this.writeJson(wineGoodsService.goods_update_submit(request,goods));
+			return this.writeJson(wineGoodsService.wine_goods_update_submit(request,goods));
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("goods", e);

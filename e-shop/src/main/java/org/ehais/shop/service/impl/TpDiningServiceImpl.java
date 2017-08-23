@@ -74,6 +74,7 @@ public class TpDiningServiceImpl  extends CommonServiceImpl implements TpDiningS
 		TpDiningCategoryExample.Criteria c = dcExample.createCriteria();
 		Long suppliers_id = (Long)request.getSession().getAttribute(EConstants.SESSION_SUPPLIERS_ID);
 		c.andSuppliersIdEqualTo(suppliers_id);
+		c.andClassifyEqualTo("dining");
 		List<TpDiningCategory> dcList = tpDiningCategoryMapper.selectByExample(dcExample);
 		rm.setRows(dcList);
 		rm.setCode(1);
@@ -90,6 +91,7 @@ public class TpDiningServiceImpl  extends CommonServiceImpl implements TpDiningS
 		TpDiningCategoryExample dcExample = new TpDiningCategoryExample();
 		TpDiningCategoryExample.Criteria c = dcExample.createCriteria();
 		c.andSuppliersIdEqualTo(suppliers_id);
+		c.andClassifyEqualTo("dining");
 		List<TpDiningCategory> dcList = tpDiningCategoryMapper.selectByExample(dcExample);
 		map.put("dcList", dcList);
 		
@@ -111,6 +113,7 @@ public class TpDiningServiceImpl  extends CommonServiceImpl implements TpDiningS
 		TpDiningExample.Criteria c = example.createCriteria();
 		c.andGoodsNameEqualTo(model.getGoodsName());
 		c.andSuppliersIdEqualTo(suppliers_id);
+		c.andClassifyEqualTo("dining");
 		long count = tpDiningMapper.countByExample(example);
 		if(count > 0){
 			rm.setMsg("存在相同的记录");
@@ -139,6 +142,7 @@ public class TpDiningServiceImpl  extends CommonServiceImpl implements TpDiningS
 		TpDiningExample.Criteria c = example.createCriteria();
 		c.andGoodsIdEqualTo(goodsId);
 		c.andSuppliersIdEqualTo(suppliers_id);
+		c.andClassifyEqualTo("dining");
 		List<TpDiningWithBLOBs> list = tpDiningMapper.selectByExampleWithBLOBs(example);
 		if(list == null || list.size() == 0){
 			rm.setMsg("记录不存在");
@@ -173,7 +177,7 @@ public class TpDiningServiceImpl  extends CommonServiceImpl implements TpDiningS
 		c.andGoodsIdEqualTo(model.getGoodsId());
 		Long suppliers_id = (Long)request.getSession().getAttribute(EConstants.SESSION_SUPPLIERS_ID);
 		c.andSuppliersIdEqualTo(suppliers_id);
-		
+		c.andClassifyEqualTo("dining");
 		long count = tpDiningMapper.countByExample(example);
 		if(count == 0){
 			rm.setMsg("记录不存在");
@@ -207,6 +211,7 @@ public class TpDiningServiceImpl  extends CommonServiceImpl implements TpDiningS
 		c.andGoodsIdEqualTo(goodsId);
 		Long suppliers_id = (Long)request.getSession().getAttribute(EConstants.SESSION_SUPPLIERS_ID);
 		c.andSuppliersIdEqualTo(suppliers_id);
+		c.andClassifyEqualTo("dining");
 		List<TpDiningWithBLOBs> list = tpDiningMapper.selectByExampleWithBLOBs(example);
 		if(list == null || list.size() == 0){
 			rm.setMsg("记录不存在");
@@ -242,6 +247,7 @@ public class TpDiningServiceImpl  extends CommonServiceImpl implements TpDiningS
 		c.andGoodsIdEqualTo(goodsId);
 		Long suppliers_id = (Long)request.getSession().getAttribute(EConstants.SESSION_SUPPLIERS_ID);
 		c.andSuppliersIdEqualTo(suppliers_id);
+		c.andClassifyEqualTo("dining");
 		int code = tpDiningMapper.deleteByExample(example);
 		rm.setCode(code);
 		rm.setMsg("删除成功");

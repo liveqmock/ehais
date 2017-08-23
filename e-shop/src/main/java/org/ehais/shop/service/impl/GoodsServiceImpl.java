@@ -414,6 +414,105 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		rm.setMsg("编辑成功");
 		return rm;
 	}
+	
+	
+	public ReturnObject<HaiGoodsWithBLOBs> wine_goods_update_submit(HttpServletRequest request,HaiGoodsWithBLOBs model)
+			throws Exception {
+		// TODO Auto-generated method stub
+		ReturnObject<HaiGoodsWithBLOBs> rm = new ReturnObject<HaiGoodsWithBLOBs>();
+		rm.setCode(0);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		HaiGoodsExample example = new HaiGoodsExample();
+		HaiGoodsExample.Criteria c = example.createCriteria();
+		
+		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+		c.andGoodsIdEqualTo(model.getGoodsId());
+		c.andStoreIdEqualTo(store_id);
+
+		long count = haiGoodsMapper.countByExample(example);
+		if(count == 0){
+			rm.setMsg("记录不存在");
+			return rm;
+		}
+		
+		
+
+		HaiGoodsWithBLOBs bean = haiGoodsMapper.selectByPrimaryKey(model.getGoodsId());
+		
+		bean.setCatId(model.getCatId());
+		bean.setGoodsSn(model.getGoodsSn());
+		bean.setGoodsName(model.getGoodsName());
+		bean.setStoreId(model.getStoreId());
+		bean.setBrandId(model.getBrandId());
+		bean.setGoodsNumber(model.getGoodsNumber());
+		bean.setGoodsWeight(model.getGoodsWeight());
+		bean.setMarketPrice(model.getMarketPrice());
+		bean.setShopPrice(model.getShopPrice());
+		bean.setCostPrice(model.getCostPrice());
+		bean.setWarnNumber(model.getWarnNumber());
+		bean.setKeywords(model.getKeywords());
+		bean.setGoodsBrief(model.getGoodsBrief());
+		bean.setGoodsDesc(model.getGoodsDesc());
+		bean.setActDesc(model.getActDesc());
+		bean.setAppDesc(model.getAppDesc());
+		bean.setGoodsThumb(model.getGoodsThumb());
+		bean.setGoodsImg(model.getGoodsImg());
+		bean.setOriginalImg(model.getOriginalImg());
+		bean.setIsReal(model.getIsReal());
+		bean.setIsOnSale(model.getIsOnSale());
+		bean.setIsAloneSale(model.getIsAloneSale());
+		bean.setIsShipping(model.getIsShipping());
+		bean.setIntegral(model.getIntegral());
+		bean.setSortOrder(model.getSortOrder());
+		bean.setIsDelete(model.getIsDelete());
+		bean.setIsBest(model.getIsBest());
+		bean.setIsNew(model.getIsNew());
+		bean.setIsHot(model.getIsHot());
+		bean.setIsPromote(model.getIsPromote());
+		bean.setIsSpecial(model.getIsSpecial());
+		bean.setBonusTypeId(model.getBonusTypeId());
+		bean.setGoodsType(model.getGoodsType());
+		bean.setGiveIntegral(model.getGiveIntegral());
+		bean.setRankIntegral(model.getRankIntegral());
+		bean.setUserId(model.getUserId());
+		bean.setCreateDate(model.getCreateDate());
+		bean.setUpdateDate(model.getUpdateDate());
+		
+		
+		if(model.getIsAloneSale() == null)model.setIsAloneSale(false);
+		if(model.getIsBest() == null)model.setIsBest(false);
+		if(model.getIsDelete() == null)model.setIsDelete(false);
+		if(model.getIsHot() == null)model.setIsHot(false);
+		if(model.getIsNew() == null)model.setIsNew(false);
+		if(model.getIsOnSale() == null)model.setIsOnSale(false);
+		if(model.getIsPromote() == null)model.setIsPromote(false);
+		if(model.getIsShipping() == null)model.setIsShipping(false);
+		if(model.getIsSpecial() == null)model.setIsSpecial(false);
+		if(model.getIsReal() == null)model.setIsReal(Byte.valueOf("0"));
+		
+		String costPriceFloat = request.getParameter("costPriceFloat");
+		String shopPriceFloat = request.getParameter("shopPriceFloat");
+		if(StringUtils.isNotBlank(costPriceFloat)){
+			Integer costPrice = Float.valueOf(Float.valueOf(StringUtils.trim(costPriceFloat)) * 100).intValue();
+			bean.setCostPrice(costPrice);
+		}
+		if(StringUtils.isNotBlank(shopPriceFloat)){
+			Integer shopPrice = Float.valueOf(Float.valueOf(StringUtils.trim(shopPriceFloat)) * 100).intValue();
+			bean.setShopPrice(shopPrice);
+		}
+
+		int code = haiGoodsMapper.updateByExampleSelective(bean, example);
+		
+		//保存代理价格
+		this.saveGoodsAgencyPrice(request, model.getGoodsId());
+
+		
+		
+		rm.setCode(code);
+		rm.setMsg("编辑成功");
+		return rm;
+	}
+	
 
 	public ReturnObject<HaiGoodsWithBLOBs> goods_find(HttpServletRequest request,Long goodsId)
 			throws Exception {

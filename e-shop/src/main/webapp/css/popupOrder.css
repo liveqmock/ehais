@@ -1,0 +1,27 @@
+@media print{}{
+	
+
+.popupOrderList{
+	position: fixed;top: 100px;right: 0;width: 250px;bottom: 30px;border-left: 1px solid #333;float: left;overflow-y:scroll; 
+}
+.popupOrderList .item{
+	width: 250px;float: left;
+}
+.popupOrderList .item .title{
+	font-size: 20px;font-weight: bold;width:100%;float: left;
+}
+.popupOrderList .item .tableno{
+	border-bottom: 1px dotted #ccc;padding-bottom: 10px;width:100%;float: left;
+}
+.popupOrderList .item .tablehead,.popupOrderList .item .tablebody{
+	margin-top: 10px;width:100%;float: left;
+}
+.popupOrderList .item .tablehead >div,.popupOrderList .item .tablebody >div.item >div,.popupOrderList .item .tablefoot >div{width: 20%;float: left;}
+.popupOrderList .item .tablehead >div:FIRST-CHILD ,.popupOrderList .item .tablebody >div.item >div:FIRST-CHILD{
+	width: 40%;float: left;
+}
+.popupOrderList .item .tablebody >div.item{margin: 10px 0}
+.popupOrderList .item .tablefoot >div:FIRST-CHILD{width: 60%;float: left;text-align: left;}
+}
+
+}
