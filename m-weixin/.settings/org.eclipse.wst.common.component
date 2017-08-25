@@ -8,15 +8,6 @@
         <dependent-module archiveName="ehais-common-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/ehais-common/ehais-common">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="e-weixin-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/e-weixin/e-weixin">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="e-pom-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/e-pom/e-pom">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="e-public-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/e-public/e-public">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <property name="context-root" value="m-weixin"/>
         <property name="java-output-path" value="/m-weixin/target/classes"/>
     </wb-module>
