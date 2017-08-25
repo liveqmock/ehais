@@ -21,9 +21,9 @@ public interface ArticleService extends CommonService{
 	public ReturnObject<EHaiArticle> article_list(HttpServletRequest request) throws Exception;
 	public ReturnObject<EHaiArticle> article_list_json(HttpServletRequest request,EConditionObject condition) throws Exception;
 	public ReturnObject<EHaiArticle> article_insert(HttpServletRequest request) throws Exception;
-	public ReturnObject<EHaiArticle> article_insert_submit(HttpServletRequest request,EHaiArticle model) throws Exception;
+	public ReturnObject<EHaiArticle> article_insert_submit(HttpServletRequest request,EHaiArticle model,Long goodsId) throws Exception;
 	public ReturnObject<EHaiArticle> article_update(HttpServletRequest request,Integer articleId) throws Exception;
-	public ReturnObject<EHaiArticle> article_update_submit(HttpServletRequest request,EHaiArticle model) throws Exception;
+	public ReturnObject<EHaiArticle> article_update_submit(HttpServletRequest request,EHaiArticle model,Long goodsId) throws Exception;
 	public ReturnObject<EHaiArticle> article_info(HttpServletRequest request,Integer articleId) throws Exception;
 	public ReturnObject<EHaiArticle> article_find(HttpServletRequest request,Integer articleId) throws Exception;
 	public ReturnObject<EHaiArticle> article_delete(HttpServletRequest request,Integer articleId) throws Exception;

@@ -43,6 +43,19 @@ public class CommonController {
 		return path;
 	}
 	
+	/**
+	 * 判断否本地请求，微信方面的在本地请求可以不通过微信外网请求
+	 * @param request
+	 * @return
+	 */
+	protected boolean isLocalHost(HttpServletRequest request){
+		if(request.getServerName().equals("localhost") || request.getServerName().equals("127.0.0.1") || IpUtil.getIpAddr(request).equals("127.0.0.1")){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
 /**
 	protected String menu_path(HttpServletRequest request){		
 		String menu_path = "";
@@ -129,7 +142,7 @@ public class CommonController {
 	**/
 	
 	//成功后统一返回的信息提示页
-	public String successJump(ModelMap modelMap,String successMsg,String jumpUrl){
+	protected String successJump(ModelMap modelMap,String successMsg,String jumpUrl){
 //		modelMap.addAttribute("status","ok");
 		modelMap.addAttribute("successMsg",successMsg);
 		modelMap.addAttribute("jumpUrl",jumpUrl);
@@ -139,7 +152,7 @@ public class CommonController {
 	}
 	
 	//失败后统一返回的信息提示页
-	public String errorJump(ModelMap modelMap,String errorMsg){
+	protected String errorJump(ModelMap modelMap,String errorMsg){
 //		modelMap.addAttribute("status","fail");
 		modelMap.addAttribute("errorMsg",errorMsg);
 		modelMap.addAttribute("jumpUrl","javascript:history.back(-1);");
@@ -148,7 +161,7 @@ public class CommonController {
 		return "/system/dispatch_jump";
 	}
 	
-	public String errorJump(ModelMap modelMap){
+	protected String errorJump(ModelMap modelMap){
 		modelMap.addAttribute("errorMsg","系统错误");
 		modelMap.addAttribute("jumpUrl","javascript:history.back(-1);");
 		modelMap.addAttribute("waitSecond",2);		
@@ -156,7 +169,7 @@ public class CommonController {
 		return "/system/dispatch_jump";
 	}
 	
-	public String errorJSON(Exception e){
+	protected String errorJSON(Exception e){
 		ReturnObject<Object> rm = new ReturnObject<Object>();		
 		rm.setCode(0);
 		rm.setMsg(e.getMessage());
@@ -165,7 +178,7 @@ public class CommonController {
 	}
 	
 	
-	public String ReturnJump(ModelMap modelMap,Integer code , String msg,String jumpUrl){
+	protected String ReturnJump(ModelMap modelMap,Integer code , String msg,String jumpUrl){
 
 		if(code == 1){
 			modelMap.addAttribute("successMsg",msg);
@@ -180,7 +193,7 @@ public class CommonController {
 		return "/system/dispatch_jump";
 	}
 	
-	public String ReturnJump(ModelMap modelMap,Integer code , String[] msgs,String jumpUrl){
+	protected String ReturnJump(ModelMap modelMap,Integer code , String[] msgs,String jumpUrl){
 
 		if(code == 1){
 			modelMap.addAttribute("successMsgs",msgs);
@@ -195,7 +208,7 @@ public class CommonController {
 		return "/system/dispatch_jump";
 	}
 	
-	public <T> String ReturnJump(ModelMap modelMap,ReturnObject<T> rm,String jumpUrl){
+	protected <T> String ReturnJump(ModelMap modelMap,ReturnObject<T> rm,String jumpUrl){
 
 		if(rm.getCode() == 1){
 			modelMap.addAttribute("successMsg",rm.getMsg());
@@ -212,7 +225,7 @@ public class CommonController {
 		return "/system/dispatch_jump";
 	}
 	
-	public <T> String ReturnJumpWrong(ModelMap modelMap,BindingResult result){
+	protected <T> String ReturnJumpWrong(ModelMap modelMap,BindingResult result){
 		List<ObjectError> errorList = result.getAllErrors();
 //        for(ObjectError error : errorList){
 //            System.out.println(error.getDefaultMessage());
@@ -225,7 +238,7 @@ public class CommonController {
 	}
 	
 	
-	public <T> String writeBindingResult(ModelMap modelMap,BindingResult result){
+	protected <T> String writeBindingResult(ModelMap modelMap,BindingResult result){
 		List<ObjectError> errorList = result.getAllErrors();
 //        for(ObjectError error : errorList){
 //            System.out.println(error.getDefaultMessage());
@@ -237,7 +250,7 @@ public class CommonController {
 		return "/system/dispatch_jump";
 	}
 	
-	public <T> String writeBindingResult(BindingResult result){
+	protected <T> String writeBindingResult(BindingResult result){
 		ReturnObject<ObjectError> rm = new ReturnObject<ObjectError>();
 		rm.setCode(0);
 		List<ObjectError> errorList = result.getAllErrors();
@@ -252,7 +265,7 @@ public class CommonController {
 	
 	
 	
-	public <T> String ReturnWriteWrong(ModelMap modelMap,BindingResult result){
+	protected <T> String ReturnWriteWrong(ModelMap modelMap,BindingResult result){
 		ReturnObject<Object> rm = new ReturnObject<Object>();
 		rm.setCode(-2);
 		rm.setErrorList(result.getAllErrors());
@@ -260,7 +273,7 @@ public class CommonController {
 		return json.toString();
 	}
 	
-	public String wrongJump(ModelMap modelMap,String msg){
+	protected String wrongJump(ModelMap modelMap,String msg){
 		modelMap.addAttribute("errorMsg",msg);
 		return "/system/wrong";
 	}
@@ -270,7 +283,7 @@ public class CommonController {
 	 * @param ro
 	 * @return
 	 */
-	public <T> String writeJson(ReturnObject<T> rm){
+	protected <T> String writeJson(ReturnObject<T> rm){
 		JSONObject json = JSONObject.fromObject(rm,this.getDefaultJsonConfig());
 		return json.toString();
 	}
@@ -284,7 +297,7 @@ public class CommonController {
 	 * @日期 2016年10月29日
 	 * @返回 String
 	 */
-	public <T> String writeJsonObject(T t){
+	protected <T> String writeJsonObject(T t){
 		JSONObject json = JSONObject.fromObject(t,this.getDefaultJsonConfig());
 		return json.toString();
 	}
@@ -328,7 +341,7 @@ public class CommonController {
 	
 	
 	@ExceptionHandler  
-    public String myExceptionHandler(HttpServletRequest request, Exception ex) { 
+	protected String myExceptionHandler(HttpServletRequest request, Exception ex) { 
 		ex.printStackTrace();
         request.setAttribute("ex", ex);  
         // 根据不同错误转向不同页面  

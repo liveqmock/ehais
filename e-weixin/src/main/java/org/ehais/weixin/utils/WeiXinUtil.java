@@ -254,8 +254,8 @@ public class WeiXinUtil {
 	
 	/**生成获取用户openid的地址
 	 * @param weixin_appid
-	 * @param SCOPE
-	 * @param REDIRECT_URI
+	 * @param SCOPE : [snsapi_base , snsapi_userinfo]
+	 * @param REDIRECT_URI 
 	 * @return
 	 */
 	public static String authorize_snsapi(String weixin_appid,String SCOPE,String REDIRECT_URI){

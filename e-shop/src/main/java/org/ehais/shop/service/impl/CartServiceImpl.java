@@ -48,10 +48,10 @@ public class CartServiceImpl  extends CommonServiceImpl implements CartService{
 		HaiCartExample example = new HaiCartExample();
 		HaiCartExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
-		example.setStart(start);
-		example.setLen(len);
+		example.setLimitStart(start);
+		example.setLimitEnd(len);
 		List<HaiCart> list = haiCartMapper.hai_cart_list_by_example(example);
-		Integer total = haiCartMapper.countByExample(example);
+		long total = haiCartMapper.countByExample(example);
 		rm.setCode(1);
 		rm.setRows(list);
 		rm.setTotal(total);
@@ -89,7 +89,7 @@ public class CartServiceImpl  extends CommonServiceImpl implements CartService{
 		HaiCartExample.Criteria c = example.createCriteria();
 		c.andGoodsIdEqualTo(model.getGoodsId());
 		c.andStoreIdEqualTo(store_id);
-		int count = haiCartMapper.countByExample(example);
+		long count = haiCartMapper.countByExample(example);
 		if(count > 0){
 			rm.setMsg("存在相同的记录");
 			return rm;
@@ -127,7 +127,7 @@ public class CartServiceImpl  extends CommonServiceImpl implements CartService{
 		c.andRecIdEqualTo(model.getRecId());
 		c.andStoreIdEqualTo(store_id);
 
-		int count = haiCartMapper.countByExample(example);
+		long count = haiCartMapper.countByExample(example);
 		if(count == 0){
 			rm.setMsg("记录不存在");
 			return rm;
@@ -188,16 +188,19 @@ public class CartServiceImpl  extends CommonServiceImpl implements CartService{
 			session_shop_encode = (String)request.getSession().getAttribute(EConstants.SESSION_SHOP_ENCODE);
 		}
 		
+		if(user_id == null && session_shop_encode == null){
+			
+		}
+		
 		HaiCartExample example = new HaiCartExample();
 		if(user_id != null)example.or().andUserIdEqualTo(user_id);
 		if(session_shop_encode != null)example.or().andSessionIdEqualTo(session_shop_encode);
 		
-		Integer total = haiCartMapper.countByExample(example);
+		Long total = haiCartMapper.countByExample(example);
 		
 		rm.setCode(1);
 		rm.setTotal(total);
 		
-		rm.setCode(1);
 		return rm;
 	}
 	
@@ -221,7 +224,7 @@ public class CartServiceImpl  extends CommonServiceImpl implements CartService{
 			c.andSessionIdEqualTo(session_shop_encode);
 		}
 		
-		Integer total = haiCartMapper.countByExample(example);
+		long total = haiCartMapper.countByExample(example);
 		List<HaiCart> list = haiCartMapper.hai_cart_list_by_example(example);
 		
 		rm.setCode(1);
@@ -279,7 +282,7 @@ public class CartServiceImpl  extends CommonServiceImpl implements CartService{
 	
 	
 
-	public ReturnObject<HaiCartWithBLOBs> cart_add_submit(HttpServletRequest request, Long goods_id,Integer store_id,Integer quantity, Long user_id,String session_shop_encode)
+	public ReturnObject<HaiCartWithBLOBs> cart_add_submit(HttpServletRequest request, Long goods_id,Integer store_id,Integer quantity, Long user_id,String session_shop_encode,Long parent_user_id,Integer agency_id,Integer article_id)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiCartWithBLOBs> rm = new ReturnObject<HaiCartWithBLOBs>();
@@ -356,10 +359,21 @@ public class CartServiceImpl  extends CommonServiceImpl implements CartService{
 		model.setGoodsThumb(goods.getGoodsThumb());
 		model.setGoodsAttr("");
 		model.setStoreId(goods.getStoreId());
+		model.setParentUserId(parent_user_id);//来源分销的用户
+		model.setAgencyId(agency_id);
+		model.setArticleId(article_id);
 		
 		int code = haiCartMapper.insertSelective(model);
 		rm.setCode(code);
 		rm.setMsg(code==1?"添加成功":"添加失败");
+		
+		//即时返回此用户的购物车存在商品
+		HaiCartExample example = new HaiCartExample();
+		if(user_id != null)example.or().andUserIdEqualTo(user_id);
+		if(session_shop_encode != null)example.or().andSessionIdEqualTo(session_shop_encode);
+		
+		long total = haiCartMapper.countByExample(example);
+		rm.setTotal(total);//购物车的数量
 		
 		return rm;
 	}

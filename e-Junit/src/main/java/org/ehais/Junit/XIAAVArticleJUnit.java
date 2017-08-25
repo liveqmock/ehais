@@ -19,7 +19,7 @@ import net.sf.json.JSONObject;
 
 public class XIAAVArticleJUnit {
 	
-	public String website = "http://kanxav.ga/";
+	public String website = "http://xav6.com/";
 	public String appkey = "ifuckehais";
 	public String secret = "ufuckehais";
 	public String store_id = "8";
@@ -27,14 +27,14 @@ public class XIAAVArticleJUnit {
 	public static void main(String[] args) {
 		XIAAVArticleJUnit xiaav = new XIAAVArticleJUnit();
 		for(int i = 1 ; i <= 8000 ; i++){
-			xiaav.article_list(xiaav.website + "forum-75-"+i+".html");
+			xiaav.article_list(xiaav.website + "forum-41-"+i+".html");
 		}
 	}
 	
 	@Test
 	public void article_run() {
 		for(int i = 1 ; i <= 8000 ; i++){
-			this.article_list(website + "forum-75-"+i+".html");
+			this.article_list(website + "forum-41-"+i+".html");
 		}
 		
 	}

@@ -702,7 +702,7 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		HaiCartExample example = new HaiCartExample();
 		if(user_id != null)example.or().andUserIdEqualTo(user_id);
 		if(session_shop_encode != null)example.or().andSessionIdEqualTo(session_shop_encode);
-		Integer cart_quantity = haiCartMapper.countByExample(example);
+		Long cart_quantity = haiCartMapper.countByExample(example);
 		map.put("cart_quantity", cart_quantity);
 		
 		HaiFavoritesExample fExample = new HaiFavoritesExample();

@@ -60,10 +60,13 @@ public class CartWSController extends CartIController{
 //			@ModelAttribute HaiCartWithBLOBs cart
 			@RequestParam(value = "goods_id", required = true) Long goods_id,
 			@RequestParam(value = "store_id", required = false) Integer store_id,
-			@RequestParam(value = "quantity", required = true) Integer quantity
+			@RequestParam(value = "quantity", required = true) Integer quantity,
+			@RequestParam(value = "parent_user_id", required = true) Long parent_user_id,
+			@RequestParam(value = "agency_id", required = true) Integer agency_id,
+			@RequestParam(value = "article_id", required = true) Integer article_id
 			) {
 		try{
-			ReturnObject<HaiCartWithBLOBs> rm = cartService.cart_add_submit(request,goods_id,store_id,quantity,null,null);
+			ReturnObject<HaiCartWithBLOBs> rm = cartService.cart_add_submit(request,goods_id,store_id,quantity,null,null,parent_user_id,agency_id,article_id);
 			return this.writeJson(rm);
 		}catch(Exception e){
 			e.printStackTrace();

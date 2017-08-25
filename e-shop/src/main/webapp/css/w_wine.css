@@ -1,0 +1,114 @@
+@import url("common.css");
+.w_wine_wrapper {
+  max-width: 4.8rem;
+  margin: 0 auto;
+  padding: 0 0.15rem;
+  box-sizing: border-box;
+  font-size: 0.14rem;
+}
+.w_wine_wrapper > h3 {
+  font-size: 0.22rem;
+}
+.w_wine_wrapper > h3,
+.w_wine_wrapper > div {
+  width: 100%;
+  float: left;
+  margin: 0.1rem 0;
+}
+.w_wine_wrapper > div {
+  width: 100%;
+  float: left;
+  margin: 0.1rem 0;
+}
+.w_wine_wrapper > div img {
+  max-width: 100%;
+}
+.w_wine_wrapper .lbl {
+  color: #8c8c8c;
+}
+.w_wine_wrapper .lbl span {
+  margin-right: 0.15rem;
+}
+.w_wine_wrapper .lbl span:last-child {
+  color: #607fa6;
+}
+.w_wine_wrapper .media {
+  text-align: center;
+}
+.w_wine_wrapper .article {
+  line-height: 0.28rem;
+  font-size: 0.18rem;
+}
+.w_wine_wrapper .statistics {
+  padding: 0.15rem 0 0 0;
+  text-align: right;
+  margin: 0;
+}
+.w_wine_wrapper .statistics span {
+  display: inline-block;
+  color: #607fa6;
+  margin-right: 0.15rem;
+}
+.w_wine_wrapper .product {
+  text-align: center;
+}
+.w_wine_wrapper .product .name {
+  font-size: 0.16rem;
+  font-weight: bold;
+}
+.w_wine_wrapper .product .detail {
+  margin: 0.1rem 0;
+}
+.w_wine_wrapper .product .detail span {
+  width: 33.33%;
+  display: inline-block;
+  text-align: center;
+  float: left;
+}
+.w_wine_wrapper .product .detail span a {
+  padding: 0.05rem 0.1rem;
+  display: inline-block;
+  border: 0.01rem solid #607fa6;
+  border-radius: 0.05rem;
+}
+.w_wine_wrapper .recommend_title {
+  font-size: 0.16rem;
+  font-weight: bold;
+  border-bottom: 0.01rem solid #cacaca;
+  padding-bottom: 0.05rem;
+  margin-bottom: 0.05rem;
+}
+.w_wine_wrapper .recommend .item {
+  border-bottom: 0.01rem solid #f0f0f0;
+  padding: 0.05rem 0;
+  width: 100%;
+  float: left;
+}
+.w_wine_wrapper .recommend .item .pic {
+  float: left;
+  width: 25%;
+  padding: 0.08rem 0.08rem 0 0;
+}
+.w_wine_wrapper .recommend .item .desc {
+  padding: 0.08rem;
+}
+.w_wine_wrapper .recommend .item .desc h4 {
+  margin: 0;
+  padding: 0;
+}
+.w_wine_wrapper .recommend .item .desc .intro {
+  text-indent: 0.28rem;
+  line-height: 0.17rem;
+  height: 0.34rem;
+  overflow: hidden;
+  margin-top: 0.02rem;
+  color: #9c9c9c;
+  text-overflow: ellipsis;
+}
+.w_wine_wrapper .qrcode {
+  text-align: center;
+  padding: 0.15rem 0;
+}
+.w_wine_wrapper .qrcode img {
+  width: 80%;
+}

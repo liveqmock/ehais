@@ -9,7 +9,9 @@ function GetQueryString(name)
 //全局设置
 $.ajaxSetup({
 	layerIndex:-1,
-	timeout:3000,
+	timeout:30000,
+	type:"post",
+	dataType:"json",
 	beforeSend: function () {
 	    //ajax请求之前
 	    this.layerIndex = layer.load({

@@ -73,22 +73,23 @@
 </div>
 </div>
 
-
-<div class="form-group">
-<label class="col-sm-2 control-label">分销成本</label>
-<div class="col-sm-2">
-	<@currencyPicker id="costPriceFloat" value="${(rm.model.costPrice!0) / 100}" />
-</div>
-<div class="col-sm-8">非进货成本价，此成本价与出货价的计算利泣，会根据三级分销，计算分销提成金额</div>
-</div>
-
-
 <div class="form-group">
 <label class="col-sm-2 control-label">出售价格</label>
 <div class="col-sm-2">
 	<@currencyPicker id="shopPriceFloat" value="${(rm.model.shopPrice!0) / 100}" />
 </div>
 </div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">分销成本</label>
+<div class="col-sm-2">
+	<@currencyPicker id="costPriceFloat" value="${(rm.model.costPrice!0) / 100}" />
+</div>
+<div class="col-sm-8">非进货成本价，此成本价与出货价的计算利润，会根据三级分销，计算分销提成金额</div>
+</div>
+
+
+
 
 <#if rm.map.goodsAgencyPrice??>
 <#list rm.map.goodsAgencyPrice as map> 

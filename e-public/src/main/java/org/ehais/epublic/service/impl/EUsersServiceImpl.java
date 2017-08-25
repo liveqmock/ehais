@@ -47,8 +47,10 @@ public class EUsersServiceImpl  extends CommonServiceImpl implements EUsersServi
 		EHaiUsersExample example = new EHaiUsersExample();
 		EHaiUsersExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
-		example.setStart(start);
-		example.setLen(len);
+//		example.setStart(start);
+//		example.setLen(len);
+		example.setLimitStart(start);
+		example.setLimitEnd(len);
 		List<EHaiUsers> list = eHaiUsersMapper.hai_users_list_by_example(example);
 		Integer total = eHaiUsersMapper.countByExample(example);
 		rm.setCode(1);

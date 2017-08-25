@@ -1,7 +1,7 @@
 <!-- 日期控件：< @ bsDatePicker id="a" value="" /> -->
 <#macro bsDatePicker id="" value="" >
     <div class="input-group date form_date_${id} " data-date="" data-date-format="yyyy-mm-dd">
-		<input class="form-control" size="16" type="text" id="${id}" name="${id}" value="${(value!'')?string('yyyy-MM-dd')}"  readonly>
+		<input class="form-control" size="16" type="text" id="${id}" name="${id}" value="${(value)!''}"  readonly>
 		<span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
 		<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 	</div>	

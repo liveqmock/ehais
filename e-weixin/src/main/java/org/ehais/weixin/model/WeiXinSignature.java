@@ -1,6 +1,7 @@
 package org.ehais.weixin.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class WeiXinSignature implements Serializable{
 
@@ -20,7 +21,7 @@ public class WeiXinSignature implements Serializable{
 	private String desc;// 分享描述
 	private String type;// 分享类型,music、video或link，不填默认为link
 	private String dataUrl;// 如果type是music或video，则要提供数据链接，默认为空
-	
+	private List<String> jsApiList;//api接口列表
 
 
 	public String getAppId() {
@@ -130,6 +131,16 @@ public class WeiXinSignature implements Serializable{
 
 	public void setDataUrl(String dataUrl) {
 		this.dataUrl = dataUrl;
+	}
+
+
+	public List<String> getJsApiList() {
+		return jsApiList;
+	}
+
+
+	public void setJsApiList(List<String> jsApiList) {
+		this.jsApiList = jsApiList;
 	}
 
 	

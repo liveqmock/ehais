@@ -1,5 +1,6 @@
 package org.ehais.shop.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +18,12 @@ import org.ehais.epublic.model.EHaiArticleCat;
 import org.ehais.epublic.model.EHaiArticleCatExample;
 import org.ehais.epublic.model.EHaiArticleExample;
 import org.ehais.service.impl.CommonServiceImpl;
+import org.ehais.shop.mapper.HaiArticleGoodsMapper;
+import org.ehais.shop.mapper.HaiGoodsMapper;
+import org.ehais.shop.model.HaiArticleGoods;
+import org.ehais.shop.model.HaiArticleGoodsExample;
+import org.ehais.shop.model.HaiGoods;
+import org.ehais.shop.model.HaiGoodsExample;
 import org.ehais.shop.service.ArticleService;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
@@ -30,6 +37,10 @@ public class ArticleServiceImpl  extends CommonServiceImpl implements ArticleSer
 	private EHaiArticleMapper eHaiArticleMapper;
 	@Autowired
 	private EHaiArticleCatMapper eHaiArticleCatMapper;
+	@Autowired
+	private HaiGoodsMapper haiGoodsMapper;
+	@Autowired
+	private HaiArticleGoodsMapper haiArticleGoodsMapper;
 
 	public ReturnObject<EHaiArticle> article_list_cid(Integer store_id, Integer cat_id,Integer page,Integer len) throws Exception {
 		// TODO Auto-generated method stub
@@ -61,6 +72,13 @@ public class ArticleServiceImpl  extends CommonServiceImpl implements ArticleSer
 		return rm;
 	}
 	
+	private List<HaiGoods> goodsList(HttpServletRequest request){
+		HaiGoodsExample example = new HaiGoodsExample();
+		HaiGoodsExample.Criteria c = example.createCriteria();
+		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+		List<HaiGoods> list = haiGoodsMapper.selectByExample(example);
+		return list;
+	}
 
 	public ReturnObject<EHaiArticle> article_info(Integer store_id, Integer article_id) throws Exception {
 		// TODO Auto-generated method stub
@@ -159,6 +177,8 @@ public ReturnObject<EHaiArticle> article_list(HttpServletRequest request) throws
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("articleCatList", this.articleCatList(request));
+		map.put("goodsList", this.goodsList(request));
+		map.put("agId", 0);
 		
 		rm.setMap(map);
 		rm.setModel(model);
@@ -167,7 +187,7 @@ public ReturnObject<EHaiArticle> article_list(HttpServletRequest request) throws
 		return rm;
 	}
 	
-	public ReturnObject<EHaiArticle> article_insert_submit(HttpServletRequest request,EHaiArticle model)
+	public ReturnObject<EHaiArticle> article_insert_submit(HttpServletRequest request,EHaiArticle model,Long goodsId)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
@@ -189,6 +209,7 @@ public ReturnObject<EHaiArticle> article_list(HttpServletRequest request) throws
 		model.setModule(EArticleModuleEnum.ARTICLE);
 
 		int code = eHaiArticleMapper.insertSelective(model);
+		this.saveArticleGoods(request, model.getArticleId(), goodsId);//保存更新信息的商品
 		rm.setCode(code);
 		rm.setMsg("添加成功");
 		return rm;
@@ -214,7 +235,9 @@ public ReturnObject<EHaiArticle> article_list(HttpServletRequest request) throws
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("articleCatList", this.articleCatList(request));
-
+		map.put("goodsList", this.goodsList(request));
+		map.put("agId", this.getAgId(request, model.getArticleId()));//查找关联商品
+		
 		rm.setMap(map);
 
 		rm.setAction("edit");
@@ -223,7 +246,42 @@ public ReturnObject<EHaiArticle> article_list(HttpServletRequest request) throws
 		return rm;
 	}
 	
-	public ReturnObject<EHaiArticle> article_update_submit(HttpServletRequest request,EHaiArticle model)
+	private Long getAgId(HttpServletRequest request,Integer articleId){
+		HaiArticleGoodsExample example = new HaiArticleGoodsExample();
+		HaiArticleGoodsExample.Criteria c = example.createCriteria();
+		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+		c.andArticleIdEqualTo(articleId);
+		List<HaiArticleGoods> list = haiArticleGoodsMapper.selectByExample(example);
+		if(list != null && list.size() > 0){
+			return list.get(0).getGoodsId();
+		}
+		return 0L;
+	}
+	
+	private void saveArticleGoods(HttpServletRequest request,Integer articleId,Long goodsId){
+		HaiArticleGoodsExample example = new HaiArticleGoodsExample();
+		HaiArticleGoodsExample.Criteria c = example.createCriteria();
+		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+		c.andArticleIdEqualTo(articleId);
+		
+		haiArticleGoodsMapper.deleteByExample(example);
+		
+		HaiArticleGoods ag = new HaiArticleGoods();
+		ag.setArticleId(articleId);
+		ag.setGoodsId(goodsId);
+		ag.setStoreId((Integer)request.getSession(true).getAttribute(EConstants.SESSION_STORE_ID));
+		haiArticleGoodsMapper.insert(ag);
+		
+//		c.andGoodsIdEqualTo(goodsId);
+//		List<HaiArticleGoods> list = haiArticleGoodsMapper.selectByExample(example);
+//		if(list == null || list.size() == 0){
+//			
+//		}else{
+//			
+//		}
+	}
+	
+	public ReturnObject<EHaiArticle> article_update_submit(HttpServletRequest request,EHaiArticle model,Long goodsId)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
@@ -274,6 +332,7 @@ bean.setArticleLabel(model.getArticleLabel());
 
 
 		int code = eHaiArticleMapper.updateByExampleSelective(bean, example);
+		this.saveArticleGoods(request, model.getArticleId(), goodsId);//保存更新信息的商品
 		rm.setCode(code);
 		rm.setMsg("编辑成功");
 		return rm;

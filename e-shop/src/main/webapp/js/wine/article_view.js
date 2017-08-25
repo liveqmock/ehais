@@ -103,7 +103,7 @@ function getTree() {
 			
 		    $('#tree').treeview({
 		        data: [{
-			        text: "菜品分类",
+			        text: "红酒分类",
 			        nodes: nodes
 			    }],
 		        levels: 5,

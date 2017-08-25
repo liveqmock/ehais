@@ -103,13 +103,14 @@ public class  ArticleAdminController extends CommonController {
 	@RequestMapping(value="/manage/wineArticleAddSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String wineArticleAddSubmit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "goodsId", required = true) Long goodsId,
 			@Valid @ModelAttribute("article") EHaiArticle article,
 			BindingResult result
 			) {
 			if(result.hasErrors())return this.writeBindingResult(result);
 		try{
 			
-			ReturnObject<EHaiArticle> rm = wineArticleService.article_insert_submit(request, article);
+			ReturnObject<EHaiArticle> rm = wineArticleService.article_insert_submit(request, article,goodsId);
 			return this.writeJson(rm);
 			
 		}catch(Exception e){
@@ -145,12 +146,13 @@ public class  ArticleAdminController extends CommonController {
 	public String wineArticleEditSubmit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "articleId", required = true) Integer articleId,
+			@RequestParam(value = "goodsId", required = true) Long goodsId,
 			@Valid @ModelAttribute("article") EHaiArticle article,
 			BindingResult result
 			) {
 			if(result.hasErrors())return this.writeBindingResult(result);
 		try{
-			return this.writeJson(wineArticleService.article_update_submit(request,article));
+			return this.writeJson(wineArticleService.article_update_submit(request,article,goodsId));
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("article", e);

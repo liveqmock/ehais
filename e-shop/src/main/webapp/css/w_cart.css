@@ -1,0 +1,152 @@
+@import url("common.css");
+.w_cart_wrapper {
+  max-width: 5.6rem;
+  margin: 0 auto;
+  box-sizing: border-box;
+  position: relative;
+  margin-bottom: 0.49rem;
+  font-size: 0.14rem;
+}
+.w_cart_wrapper > div,
+.w_cart_wrapper > div > div {
+  float: left;
+  width: 100%;
+  box-sizing: border-box;
+}
+.w_cart_wrapper header {
+  height: 0.45rem;
+  line-height: 0.49rem;
+  font-size: 0.16rem;
+  text-align: center;
+  background: #f8f8f8;
+  border-bottom: 1px solid #dedede;
+}
+.w_cart_wrapper header > div {
+  float: left;
+  width: 25%;
+  box-sizing: border-box;
+  height: 0.45rem;
+}
+.w_cart_wrapper header > div.middle {
+  width: 50%;
+}
+.w_cart_wrapper header > div.fa-chevron-left,
+.w_cart_wrapper header div.fa-list {
+  padding: 0.18rem;
+  text-align: left;
+}
+.w_cart_wrapper header > div.fa-list {
+  text-align: right;
+}
+.w_cart_wrapper header > div.active {
+  font-weight: bold;
+  border-bottom: 0.02rem solid #232326;
+}
+.w_cart_wrapper > .list {
+  padding: 0 0.15rem;
+  box-sizing: border-box;
+}
+.w_cart_wrapper > .list .item {
+  border-bottom: 0.01rem solid #f0f0f0;
+  padding: 0.05rem 0;
+  width: 100%;
+  float: left;
+  position: relative;
+}
+.w_cart_wrapper > .list .item .pic {
+  float: left;
+  width: 25%;
+  padding: 0.08rem 0.08rem 0 0;
+}
+.w_cart_wrapper > .list .item .pic img {
+  width: 100%;
+}
+.w_cart_wrapper > .list .item .desc {
+  padding: 0.08rem;
+}
+.w_cart_wrapper > .list .item .desc h4 {
+  margin: 0;
+  padding: 0;
+  height: 0.64rem;
+}
+.w_cart_wrapper > .list .item .desc .intro {
+  position: absolute;
+  bottom: 0.15rem;
+  width: 100%;
+  padding-left: 25%;
+  box-sizing: border-box;
+  z-index: 10;
+}
+.w_cart_wrapper > .list .item .desc .intro > div {
+  font-size: 0.16rem;
+  line-height: 1;
+  padding: 0 0.1rem;
+}
+.w_cart_wrapper > .list .item .desc .intro .price {
+  color: #ca1816;
+}
+.w_cart_wrapper > .list .item .desc .intro .fa-plus-square {
+  color: #ca1816;
+}
+.w_cart_wrapper > .list .item .desc .intro .fa-minus-square,
+.w_cart_wrapper > .list .item .desc .intro .fa-trash-o {
+  color: #B0B0B0;
+}
+.w_cart_wrapper > .list .item .fa-check-circle {
+  position: absolute;
+  top: 0.15rem;
+  right: 0rem;
+  font-size: 0.28rem;
+  color: #f0f0f0;
+  z-index: 10;
+}
+.w_cart_wrapper > .list .item .fa-check-circle.active {
+  color: #ca1816;
+}
+.w_cart_wrapper footer {
+  position: fixed;
+  width: 100%;
+  height: 0.45rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #f3f5f7;
+  box-sizing: border-box;
+  font-size: 0.12rem;
+  z-index: 101;
+}
+.w_cart_wrapper footer > div {
+  width: 60%;
+  float: left;
+  font-size: 0.16rem;
+  line-height: 0.45rem;
+}
+.w_cart_wrapper footer > div > div.all {
+  padding-left: 0.15rem;
+  box-sizing: border-box;
+  float: left;
+  margin-right: 0.15rem;
+}
+.w_cart_wrapper footer > div > div.all span {
+  margin-right: 0.1rem;
+  color: #CA1816;
+}
+.w_cart_wrapper footer > div > div.total {
+  float: left;
+}
+.w_cart_wrapper footer > div > div.total span {
+  color: #CA1816;
+}
+.w_cart_wrapper footer button {
+  float: right;
+  border: 0;
+  background: none;
+  width: 40%;
+  background: #ca1816;
+  height: 0.45rem;
+  text-align: center;
+  line-height: 0.45rem;
+  font-size: 0.18rem;
+  color: #fff;
+  font-weight: bold;
+}

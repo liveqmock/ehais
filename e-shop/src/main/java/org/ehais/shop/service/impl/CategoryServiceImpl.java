@@ -109,6 +109,8 @@ public class CategoryServiceImpl  extends EShopCommonServiceImpl implements Cate
 		ReturnObject<HaiCategoryWithBLOBs> rm = new ReturnObject<HaiCategoryWithBLOBs>();
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		model.setStoreId(store_id);
+		model.setStyle("");
+		model.setFilterAttr("");
 		int code = haiCategoryMapper.insertSelective(model);
 		rm.setCode(code);
 		rm.setMsg("添加成功");

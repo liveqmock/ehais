@@ -5,6 +5,7 @@ body {
   margin: 0;
   padding: 0;
   color: #333;
+  font-family: "Helvetica Neue", Helvetica, "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
 }
 ul,
 li,
@@ -67,4 +68,16 @@ dt {
   line-height: 1.42857;
   padding: 6px 12px;
   transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+}
+a {
+  color: #333;
+  text-decoration: none;
+}
+a:hover,
+a:focus {
+  color: #333;
+  text-decoration: none;
+}
+.clear {
+  clear: both;
 }

@@ -64,10 +64,13 @@ public class CartApiController extends CartIController{
 			@RequestParam(value = "store_id", required = true) Integer store_id,
 			@RequestParam(value = "quantity", required = true) Integer quantity,
 			@RequestParam(value = "user_id", required = true) Long user_id,
-			@RequestParam(value = "s_encode", required = true) String s_encode
+			@RequestParam(value = "s_encode", required = true) String s_encode,
+			@RequestParam(value = "parent_user_id", required = true) Long parent_user_id,
+			@RequestParam(value = "agency_id", required = true) Integer agency_id,
+			@RequestParam(value = "article_id", required = true) Integer article_id
 			) {
 		try{
-			ReturnObject<HaiCartWithBLOBs> rm = cartService.cart_add_submit(request,goods_id,store_id,quantity,user_id,s_encode);
+			ReturnObject<HaiCartWithBLOBs> rm = cartService.cart_add_submit(request,goods_id,store_id,quantity,user_id,s_encode,parent_user_id,agency_id,article_id);
 			return this.writeJson(rm);
 		}catch(Exception e){
 			e.printStackTrace();
