@@ -31,6 +31,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -207,7 +208,8 @@ public class  IXiangmengAdminController extends CommonController {
 			
 			WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, store_id, weixin_appid, weixin_appsecret, null);
 			signature.setTitle(rm.getModel().getTitle());
-			signature.setLink(rm.getModel().getLink());
+//			signature.setLink(rm.getModel().getLink());
+			signature.setLink(request.getScheme()+"://"+ request.getServerName()+"/wxixm"+rm.getModel().getArticleId());
 			signature.setDesc(rm.getModel().getDescription());
 			signature.setImgUrl(rm.getModel().getArticleThumb());
 			List<String> jsApiList = new ArrayList<String>();
@@ -221,6 +223,25 @@ public class  IXiangmengAdminController extends CommonController {
 			
 			
 			return "/admin/xiangmeng/wx";
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("xiangmeng", e);
+			return this.errorJump(modelMap, e.getMessage());
+		}
+		
+	}
+	
+	@RequestMapping(value="/wxixm{articleId}")
+	public String wxixm(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@PathVariable(value = "articleId", required = true) Integer articleId
+			) {
+		try{
+			request.getSession(true).setAttribute(EConstants.SESSION_STORE_ID, store_id);
+			
+			ReturnObject<EHaiArticle> rm = iXiangmengService.xiangmeng_update(request,articleId);
+			
+			return "redirect:"+rm.getModel().getLink();
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("xiangmeng", e);
