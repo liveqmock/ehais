@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
 import org.ehais.model.BootStrapModel;
 import org.ehais.service.impl.CommonServiceImpl;
@@ -356,7 +357,7 @@ public class CartServiceImpl  extends CommonServiceImpl implements CartService{
 		model.setGoodsName(goods.getGoodsName());
 		model.setMarketPrice(goods.getMarketPrice());
 		model.setGoodsPrice(goods.getShopPrice());
-		model.setGoodsThumb(goods.getGoodsThumb());
+		model.setGoodsThumb(StringUtils.isEmpty(goods.getGoodsThumb())?goods.getOriginalImg():goods.getGoodsThumb());
 		model.setGoodsAttr("");
 		model.setStoreId(goods.getStoreId());
 		model.setParentUserId(parent_user_id);//来源分销的用户
@@ -420,7 +421,7 @@ public class CartServiceImpl  extends CommonServiceImpl implements CartService{
 		
 		
 		if(user_id!=null && user_id > 0)example.or().andGoodsIdEqualTo(goods_id).andUserIdEqualTo(user_id);
-		example.or().andGoodsIdEqualTo(goods_id).andSessionIdEqualTo(session_shop_encode);
+		if(StringUtils.isNotEmpty(session_shop_encode))example.or().andGoodsIdEqualTo(goods_id).andSessionIdEqualTo(session_shop_encode);
 		HaiCart cart = haiCartMapper.selectByPrimaryKey(recId);
 		if(cart == null){
 			rm.setMsg("此商品不存在购物车中");
@@ -459,7 +460,9 @@ public class CartServiceImpl  extends CommonServiceImpl implements CartService{
 		// TODO Auto-generated method stub
 		ReturnObject<HaiCart> rm = new ReturnObject<HaiCart>();
 		rm.setCode(0);
-		
+		if(user_id == null ){
+			user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
+		}
 		HaiCartExample example = new HaiCartExample();
 		HaiCartExample.Criteria c = example.createCriteria();
 		c.andRecIdEqualTo(recId);

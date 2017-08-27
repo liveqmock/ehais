@@ -1,0 +1,187 @@
+@import url("common.css");
+.w_address_wrapper {
+  margin: 0 auto;
+  box-sizing: border-box;
+  position: relative;
+  margin-bottom: 0.49rem;
+  font-size: 0.15rem;
+  width: 100%;
+  float: left;
+}
+.w_address_wrapper > div,
+.w_address_wrapper > div > div {
+  float: left;
+  width: 100%;
+  box-sizing: border-box;
+}
+.w_address_wrapper header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0.45rem;
+  line-height: 0.49rem;
+  font-size: 0.16rem;
+  text-align: center;
+  background: #f8f8f8;
+  border-bottom: 1px solid #dedede;
+}
+.w_address_wrapper header > div {
+  float: left;
+  width: 25%;
+  box-sizing: border-box;
+  height: 0.45rem;
+}
+.w_address_wrapper header > div.middle {
+  width: 50%;
+}
+.w_address_wrapper header > div.fa-chevron-left,
+.w_address_wrapper header div.fa-list,
+.w_address_wrapper header div.fa-plus-circle,
+.w_address_wrapper header div.fa-trash-o {
+  padding: 0.18rem;
+  text-align: left;
+}
+.w_address_wrapper header > div.fa-list,
+.w_address_wrapper header > div.fa-plus-circle,
+.w_address_wrapper header > div.fa-trash-o {
+  text-align: right;
+}
+.w_address_wrapper header > div.fa-trash-o {
+  display: none;
+}
+.w_address_wrapper header > div.fa-trash-o.activex {
+  display: block;
+}
+.w_address_wrapper header > div.active {
+  font-weight: bold;
+  border-bottom: 0.02rem solid #232326;
+}
+.w_address_wrapper > div.form {
+  width: 100%;
+  float: left;
+  padding: 0.49rem 0.15rem 0;
+  box-sizing: border-box;
+}
+.w_address_wrapper > div.form .erow {
+  width: 100%;
+  float: left;
+  padding: 0.05rem 0 ;
+  border-bottom: 0.01rem solid #dedede;
+}
+.w_address_wrapper > div.form .erow label {
+  width: 25%;
+  float: left;
+  box-sizing: border-box;
+  line-height: 0.38rem;
+}
+.w_address_wrapper > div.form .erow input,
+.w_address_wrapper > div.form .erow > div.input {
+  width: 65%;
+  float: left;
+  display: inline-block;
+  padding: 0.06rem;
+  border: 0;
+  font-size: 0.15rem;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.w_address_wrapper > div.form .erow > div.input > input {
+  padding-left: 0;
+}
+.w_address_wrapper > div.form .erow > div.isDefault span {
+  color: #dcdcdc;
+}
+.w_address_wrapper > div.form .erow > div.isDefault.active span {
+  color: #ca1818;
+}
+.w_address_wrapper > div.form .erow span {
+  width: 5%;
+  float: left;
+  display: inline-block;
+  box-sizing: border-box;
+  line-height: 0.38rem;
+  color: #a0a0a0;
+}
+.w_address_wrapper > div.list {
+  width: 100%;
+  float: left;
+  padding: 0.49rem 0.15rem 0;
+  box-sizing: border-box;
+}
+.w_address_wrapper > div.list .item {
+  width: 100%;
+  padding: 0.08rem 0;
+  border-bottom: 0.01rem solid #DADADA;
+}
+.w_address_wrapper > div.list .item .default {
+  width: 8%;
+  float: left;
+  padding-top: 0.16rem;
+  color: #CACACA;
+}
+.w_address_wrapper > div.list .item .default.active {
+  color: #ca1818;
+}
+.w_address_wrapper > div.list .item .info {
+  width: 75%;
+  float: left;
+}
+.w_address_wrapper > div.list .item .info .username {
+  margin-bottom: 0.1rem;
+}
+.w_address_wrapper > div.list .item .info .username .consignee {
+  width: 50%;
+  display: inline-block;
+}
+.w_address_wrapper > div.list .item .info .username .fa-mobile {
+  margin-left: 0.1rem;
+}
+.w_address_wrapper > div.list .item .info .username .mobile {
+  margin-left: 0.06rem;
+}
+.w_address_wrapper > div.list .item .edit {
+  float: right;
+  padding: 0.16rem 0.05rem 0.05rem 0.05rem;
+  color: #a9a9a9;
+}
+.w_address_wrapper footer {
+  position: fixed;
+  width: 100%;
+  height: 0.45rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #f3f5f7;
+  box-sizing: border-box;
+  font-size: 0.12rem;
+  z-index: 101;
+}
+.w_address_wrapper footer > div {
+  width: 60%;
+  float: left;
+  font-size: 0.16rem;
+  line-height: 0.45rem;
+}
+.w_address_wrapper footer > div > div.total {
+  padding-left: 0.15rem;
+  box-sizing: border-box;
+  float: left;
+}
+.w_address_wrapper footer > div > div.total span {
+  color: #CA1816;
+}
+.w_address_wrapper footer button {
+  float: right;
+  border: 0;
+  background: none;
+  width: 40%;
+  background: #ca1816;
+  height: 0.45rem;
+  text-align: center;
+  line-height: 0.45rem;
+  font-size: 0.18rem;
+  color: #fff;
+  font-weight: bold;
+}

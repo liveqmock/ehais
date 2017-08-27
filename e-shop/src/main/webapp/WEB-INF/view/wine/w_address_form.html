@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<title>填写地区</title>
+		<script type="text/javascript" src="../js/jquery-2.1.4.min.js" ></script>
+		
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/w_address.css" />
+		<link rel="stylesheet" href="../css/chinese-region.css" />
+	</head>
+	<body>
+		<div class="w_address_wrapper">
+			<header>
+				<div class="fa fa-chevron-left"></div>
+				<div class="middle">填写地区</div>
+				<div class="fa fa-trash-o"></div>
+			</header>
+			<div class="form">
+				<form id="form" name="form" >
+				<input type="hidden" id="addressId" name="addressId" value="${model.addressId!0}"/>
+				<div class="erow">
+					<label>收货人</label>
+					<input type="text" id="consignee" name="consignee" value="${model.consignee!''}" placeholder="名字"/>
+					<span class="fa fa-user-o"></span>
+				</div>
+				<div class="erow">
+					<label>手机号码</label>
+					<input type="text" id="" name="mobile" value="${model.mobile!''}" placeholder="11位手机号"/>
+					<span class="fa fa-phone"></span>
+				</div>
+				<div class="erow">
+					<label>选择地区</label>
+					<div id="chinaRegion" class="input">地区信息</div>
+					<span class="fa fa-map-marker"></span>
+				</div>
+				<div class="erow">
+					<label>详细地址</label>
+					<input type="text" id="address" name="address" value="${model.address!''}" placeholder="街道门牌号"/>
+					<span class="fa fa-map-o"></span>
+				</div>
+				<div class="erow">
+					<label>邮政编码</label>
+					<input type="text" id="zipcode" name="zipcode" value="${model.zipcode!''}" placeholder="邮政编码"/>
+					<span class="fa fa-map-pin"></span>
+				</div>
+				<div class="erow">
+					<label>是否默认</label>
+					<div class="input isDefault <#if ((model.isDefault!'0') == '1')>active</#if>"><span class="fa fa-check-circle"></span></div>
+					<input type="hidden" id="isDefault" name="isDefault" value="${model.isDefault!0}"/>
+					
+				</div>
+				</form>
+			</div>
+			<footer>
+				
+				<button id="submitAddress">提交信息</button>
+			</footer>
+		</div>
+		<script type="text/javascript" src="../js/jquery-2.1.4.min.js" ></script>
+		<script type="text/javascript" src="../js/layer/mobile/layer.js" ></script>
+		<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js" ></script>
+		<script type="text/javascript" src="../js/chinese-region.js"></script>
+		<script src="../js/wine/w_address_form.js"></script>
+		<script type="text/javascript">
+		$(function(){
+			$("#chinaRegion").chineseRegion({
+				province:"province",provinceValue:${model.province!0},
+				city:"city",cityValue:${model.city!0},
+				county:"county",countyValue:${model.county!0},
+				district:"district",districtValue:${model.district!0},
+				url:"/wx/region_id_list",
+				param:"parent_id"
+			});
+		});
+		function onBridgeReady() {
+            WeixinJSBridge.call('hideOptionMenu');
+        }
+
+        if (typeof WeixinJSBridge == "undefined") {
+            if (document.addEventListener) {
+                document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+            } else if (document.attachEvent) {
+                document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+                document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+            }
+        } else {
+            onBridgeReady();
+        }
+		</script>
+		
+	</body>
+</html>

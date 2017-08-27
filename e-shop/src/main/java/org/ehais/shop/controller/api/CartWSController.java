@@ -96,4 +96,20 @@ public class CartWSController extends CartIController{
 	}
 	
 	
+	@ResponseBody
+	@RequestMapping(value="/cart_delete_submit",method=RequestMethod.POST)
+	public String cart_delete_submit(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "recId", required = true) Long recId
+			) {
+		try{
+			ReturnObject<HaiCart> rm = cartService.cart_delete(request, recId,null);
+			return this.writeJson(rm);
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("cart", e);
+		}
+		return null;
+	}
+	
 }

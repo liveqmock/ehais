@@ -129,6 +129,10 @@
 }
 .w_cart_wrapper footer > div > div.all span {
   margin-right: 0.1rem;
+  color: #f0f0f0;
+  font-size: 0.25rem;
+}
+.w_cart_wrapper footer > div > div.all span.active {
   color: #CA1816;
 }
 .w_cart_wrapper footer > div > div.total {

@@ -1,0 +1,76 @@
+.chinese-region .dropdown-chinese-region {
+  position: fixed;
+  top: 30%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100% !important;
+  display: none;
+}
+.chinese-region .dropdown-chinese-region > .bg {
+  background: #000;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 102;
+  filter: alpha(opacity=50);
+  -moz-opacity: 0.5;
+  opacity: 0.5;
+}
+.chinese-region .dropdown-chinese-region > .main {
+  z-index: 103;
+  width: 100%;
+  background: #fff;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+.chinese-region .dropdown-chinese-region > .main .nav-tabs {
+  width: 100%;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+  float: left;
+}
+.chinese-region .dropdown-chinese-region > .main .nav-tabs > li {
+  float: left;
+  width: 25%;
+  height: 0.45rem;
+  text-align: center;
+  margin-bottom: -1px;
+}
+.chinese-region .dropdown-chinese-region > .main .nav-tabs > li > a {
+  margin-right: 0;
+  display: block;
+  padding: 10px 15px;
+  position: relative;
+}
+.chinese-region .dropdown-chinese-region > .main .nav-tabs li.active {
+  background: #fff;
+}
+.chinese-region .dropdown-chinese-region > .main .nav-tabs li.active > a {
+  background: #fff;
+}
+.chinese-region .dropdown-chinese-region > .main .tab-content {
+  padding-top: 0.1rem;
+}
+.chinese-region .dropdown-chinese-region > .main .tab-content .tab-pane {
+  display: none;
+}
+.chinese-region .dropdown-chinese-region > .main .tab-content .tab-pane > div {
+  margin-bottom: 3px;
+  padding: 4px 8px;
+  float: left;
+}
+.chinese-region .dropdown-chinese-region > .main .tab-content .tab-pane > div.active {
+  background: #337ab7;
+  color: #fff;
+}
+.chinese-region .dropdown-chinese-region > .main .tab-content .tab-pane.active {
+  display: block;
+}
+.chinese-region .dropdown-chinese-region.active {
+  display: block;
+}

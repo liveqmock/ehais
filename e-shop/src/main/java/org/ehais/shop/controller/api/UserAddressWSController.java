@@ -21,7 +21,7 @@ public class UserAddressWSController extends UserAddressIController{
 	
 
 	@ResponseBody
-	@RequestMapping("/useraddress_lists")
+	@RequestMapping(value="/useraddress_lists",method=RequestMethod.POST)
 	public String useraddress_lists(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response) {
 		Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
@@ -38,7 +38,7 @@ public class UserAddressWSController extends UserAddressIController{
 	
 	
 	@ResponseBody
-	@RequestMapping("/useraddress_info")
+	@RequestMapping(value="/useraddress_info",method=RequestMethod.POST)
 	public String useraddress_info(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "addressId", required = true) Long addressId) {
@@ -46,6 +46,22 @@ public class UserAddressWSController extends UserAddressIController{
 //		if(user_id==null) user_id = 1;//临时使用
 		try{
 			ReturnObject<HaiUserAddress> rm = useraddressService.useraddress_info(request,addressId,user_id);
+			return this.writeJson(rm);
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("useraddress", e);
+		}
+		return null;
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value="/useraddress_default",method=RequestMethod.POST)
+	public String useraddress_default(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "addressId", required = true) Long addressId) {
+		try{
+			ReturnObject<HaiUserAddress> rm = useraddressService.useraddress_set_default(request,addressId,null);
 			return this.writeJson(rm);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -89,7 +105,7 @@ public class UserAddressWSController extends UserAddressIController{
 	}
 	
 	@ResponseBody
-	@RequestMapping("/useraddress_delete_sumbit")
+	@RequestMapping(value="/useraddress_delete_sumbit",method=RequestMethod.POST)
 	public String useraddress_delete_sumbit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "addressId", required = true) Long addressId

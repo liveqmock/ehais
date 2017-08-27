@@ -22,11 +22,14 @@ import org.ehais.epublic.model.EHaiUsersExample;
 import org.ehais.shop.mapper.HaiArticleGoodsMapper;
 import org.ehais.shop.mapper.HaiCartMapper;
 import org.ehais.shop.mapper.HaiGoodsMapper;
+import org.ehais.shop.mapper.HaiUserAddressMapper;
 import org.ehais.shop.model.HaiArticleGoods;
 import org.ehais.shop.model.HaiArticleGoodsExample;
 import org.ehais.shop.model.HaiCart;
 import org.ehais.shop.model.HaiCartExample;
 import org.ehais.shop.model.HaiGoods;
+import org.ehais.shop.model.HaiUserAddress;
+import org.ehais.shop.model.HaiUserAddressExample;
 import org.ehais.util.EachMapUtils;
 import org.ehais.util.EncryptUtils;
 import org.ehais.weixin.model.OpenidInfo;
@@ -44,7 +47,7 @@ import net.sf.json.JSONObject;
 @Controller
 @RequestMapping("/wine")
 public class WineWebController extends CommonController {
-
+//三级分销的主页面，可以将代理，与三个分销关系的ID组成商城主页，从而确定到三层关系与分销员的唯一商城地址
 	Integer store_id = 56;
 	
 	@Autowired
@@ -59,6 +62,8 @@ public class WineWebController extends CommonController {
 	private EHaiUsersMapper eHaiUsersMapper;
 	@Autowired
 	private HaiCartMapper haiCartMapper;
+	@Autowired
+	private HaiUserAddressMapper haiUserAddressMapper;
 	
 	public static String weixin_appid = ResourceUtil.getProValue("weixin_appid");
 	public static String weixin_appsecret = ResourceUtil.getProValue("weixin_appsecret");
@@ -359,6 +364,7 @@ public class WineWebController extends CommonController {
 			HttpServletRequest request,HttpServletResponse response	) {
 		
 		request.getSession().setAttribute(EConstants.SESSION_USER_ID, 920L);
+		request.getSession().setAttribute(EConstants.SESSION_STORE_ID, 56);
 		
 		
 		try{
@@ -367,29 +373,81 @@ public class WineWebController extends CommonController {
 			example.setOrderByClause("rec_id desc");
 			List<HaiCart> cartList = haiCartMapper.selectByExample(example);
 			
-			
 			modelMap.addAttribute("cartList", cartList);
-			
-			//购物车限制转发
-//			WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, store_id, weixin_appid, weixin_appsecret, null);
-//			signature.setTitle(article.getTitle());
-//			signature.setLink(link);
-//			signature.setDesc(article.getDescription());
-//			signature.setImgUrl(article.getArticleImages());
-//			List<String> jsApiList = new ArrayList<String>();
-//			jsApiList.add("onMenuShareTimeline");
-//			jsApiList.add("onMenuShareAppMessage");
-//			jsApiList.add("onMenuShareQQ");
-//			jsApiList.add("onMenuShareWeibo");
-//			jsApiList.add("onMenuShareQZone");
-//			signature.setJsApiList(jsApiList);
-//			modelMap.addAttribute("signature", JSONObject.fromObject(signature).toString());
-			
 			
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 		return "/wine/w_cart";
+	}
+	
+	
+	@RequestMapping("/w_address_list")
+	public String w_address_list(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response	) {
+		
+		request.getSession().setAttribute(EConstants.SESSION_USER_ID, 1L);
+		request.getSession().setAttribute(EConstants.SESSION_STORE_ID, 56);
+		
+		
+		try{
+			HaiUserAddressExample example = new HaiUserAddressExample();
+			example.createCriteria().andUserIdEqualTo((Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID));
+			example.setOrderByClause("is_default desc,address_id desc");
+			List<HaiUserAddress> userAddressList = haiUserAddressMapper.selectByExample(example);
+			
+			modelMap.addAttribute("userAddressList", userAddressList);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return "/wine/w_address_list";
+	}
+	
+	
+	@RequestMapping("/w_address_add")
+	public String w_address_add(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response	) {
+		
+		request.getSession().setAttribute(EConstants.SESSION_USER_ID, 1L);
+		request.getSession().setAttribute(EConstants.SESSION_STORE_ID, 56);
+		
+		try{
+			modelMap.addAttribute("model", new HaiUserAddress());
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return "/wine/w_address_form";
+	}
+	
+	
+	@RequestMapping("/w_address_edit")
+	public String w_address_edit(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response	,
+			@RequestParam(value = "addressId", required = true) Long addressId
+			) {
+		
+		request.getSession().setAttribute(EConstants.SESSION_USER_ID, 1L);
+		request.getSession().setAttribute(EConstants.SESSION_STORE_ID, 56);
+		
+		try{
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
+			
+			HaiUserAddressExample example = new HaiUserAddressExample();
+			example.createCriteria()
+			.andUserIdEqualTo((Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID))
+			.andAddressIdEqualTo(addressId)	;
+			List<HaiUserAddress> userAddressList = haiUserAddressMapper.selectByExample(example);
+			if(userAddressList == null || userAddressList.size() == 0){
+				return "/wine/wrong";
+			}
+			
+			modelMap.addAttribute("model", userAddressList.get(0));
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return "/wine/w_address_form";
 	}
 	
 	

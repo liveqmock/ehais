@@ -580,7 +580,7 @@
   <update id="setUserDefault" parameterType="map" >
     update hai_user_address
     set is_default = '1'
-    where address_id = #{addressId,jdbcType=INTEGER} and user_id = #{user_id} 
+    where address_id = #{address_id,jdbcType=INTEGER} and user_id = #{user_id} 
   </update>
    
 </mapper>

@@ -53,8 +53,8 @@ public class UserAddressServiceImpl  extends CommonServiceImpl implements UserAd
 		HaiUserAddressExample example = new HaiUserAddressExample();
 		HaiUserAddressExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
-		example.setStart(start);
-		example.setLen(len);
+		example.setLimitStart(start);
+		example.setLimitEnd(len);
 		List<HaiUserAddress> list = haiUserAddressMapper.hai_user_address_list_by_example(example);
 		Integer total = haiUserAddressMapper.countByExample(example);
 		rm.setCode(1);
@@ -243,7 +243,9 @@ public class UserAddressServiceImpl  extends CommonServiceImpl implements UserAd
 		}
 
 		model.setAddressName("");
-		model.setUpdateTime(System.currentTimeMillis());
+		Date date = new Date();
+		model.setAddTime(date);
+		model.setUpdateTime(date);
 		
 		int code = haiUserAddressMapper.insertSelective(model);
 		rm.setModel(model);
@@ -306,7 +308,7 @@ public class UserAddressServiceImpl  extends CommonServiceImpl implements UserAd
 			haiUserAddressMapper.clearUserDefault(user_id);
 		}
 		model.setAddressName("");
-		model.setUpdateTime(System.currentTimeMillis());
+		model.setUpdateTime(new Date());
 		int code = haiUserAddressMapper.updateByExampleSelective(model, example);
 		
 		rm.setModel(model);
