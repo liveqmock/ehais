@@ -9,15 +9,15 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.ehais.common.EConstants;
+import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.model.BootStrapModel;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.EHttpClientUtil;
-import org.ehais.weixin.EConstants;
+import org.ehais.weixin.WXConstants;
 import org.ehais.weixin.mapper.HaiAdMapper;
 import org.ehais.weixin.model.AccessToken;
 import org.ehais.weixin.model.HaiAd;
 import org.ehais.weixin.model.HaiAdExample;
-import org.ehais.weixin.model.WpPublicWithBLOBs;
 import org.ehais.weixin.service.action.AdService;
 import org.ehais.weixin.service.wx.impl.WeiXinCommonServiceImpl;
 import org.ehais.weixin.utils.WeiXinUtil;
@@ -173,7 +173,7 @@ public class AdServiceImpl  extends WeiXinCommonServiceImpl implements AdService
 		WpPublicWithBLOBs wp = this.getWpPublic(store_id);
 		AccessToken token = WeiXinUtil.getAccessToken(store_id, wp.getAppid(), wp.getSecret());
 		
-		String upload_media = EConstants.upload_media
+		String upload_media = WXConstants.upload_media
 		.replaceAll("ACCESS_TOKEN", token.getToken())
 		.replaceAll("TYPE", "image");
 		

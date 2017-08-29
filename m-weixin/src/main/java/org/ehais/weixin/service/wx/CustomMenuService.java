@@ -1,10 +1,10 @@
 package org.ehais.weixin.service.wx;
 
+import org.ehais.epublic.model.WpPublic;
 import org.ehais.model.TreeModel;
 import org.ehais.service.CommonService;
 import org.ehais.tools.ReturnObject;
 import org.ehais.weixin.model.WpCustomMenu;
-import org.ehais.weixin.model.WpPublic;
 
 public interface CustomMenuService extends CommonService{
 	

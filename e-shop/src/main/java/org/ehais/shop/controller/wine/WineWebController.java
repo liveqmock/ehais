@@ -19,6 +19,8 @@ import org.ehais.epublic.mapper.EHaiUsersMapper;
 import org.ehais.epublic.model.EHaiArticle;
 import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.epublic.model.EHaiUsersExample;
+import org.ehais.epublic.model.WpPublicWithBLOBs;
+import org.ehais.epublic.service.EWPPublicService;
 import org.ehais.shop.mapper.HaiArticleGoodsMapper;
 import org.ehais.shop.mapper.HaiCartMapper;
 import org.ehais.shop.mapper.HaiGoodsMapper;
@@ -40,6 +42,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import net.sf.json.JSONObject;
@@ -64,17 +67,19 @@ public class WineWebController extends CommonController {
 	private HaiCartMapper haiCartMapper;
 	@Autowired
 	private HaiUserAddressMapper haiUserAddressMapper;
+	@Autowired
+	private EWPPublicService eWPPublicService;
 	
-	public static String weixin_appid = ResourceUtil.getProValue("weixin_appid");
-	public static String weixin_appsecret = ResourceUtil.getProValue("weixin_appsecret");
-	public static String wxdev_token = ResourceUtil.getProValue("wxdev_token");
+//	public static String weixin_appid = ResourceUtil.getProValue("weixin_appid");
+//	public static String weixin_appsecret = ResourceUtil.getProValue("weixin_appsecret");
+//	public static String wxdev_token = ResourceUtil.getProValue("wxdev_token");
 	public static String website = ResourceUtil.getProValue("website");
 	
 	//sid 32位md5[{5}{agencyId}-{15}{articleId}_{26}{userId}-{6}{goodsId}]
 	public static void main(String[] args)  {
 		Integer agencyId = 9873;
-		Integer articleId = 9081;
-		Long userId = 94L;
+		Integer articleId = 9082;
+		Long userId = 54L;
 		Long goodsId = 3269L;
 		
 		try {
@@ -88,8 +93,9 @@ public class WineWebController extends CommonController {
 		}
 	}
 	
-	private String setSid(Integer agencyId,Integer articleId,Long userId,Long goodsId) throws UnsupportedEncodingException{
-		String md5 = EncryptUtils.md5(agencyId.toString()+articleId.toString()+userId.toString()+goodsId.toString()+wxdev_token);
+	private String setSid(Integer agencyId,Integer articleId,Long userId,Long goodsId) throws Exception{
+		WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
+		String md5 = EncryptUtils.md5(agencyId.toString()+articleId.toString()+userId.toString()+goodsId.toString()+wp.getToken());
 		String sid = md5.substring(0, 5)+agencyId.toString()+"-"+md5.substring(5,15)+articleId.toString()+"_"+md5.substring(15,26)+userId.toString()+"-"+md5.substring(26,32)+goodsId.toString();
 		return sid;
 	}
@@ -111,7 +117,8 @@ public class WineWebController extends CommonController {
 			String sUserId = sid.substring(sid.indexOf("_") +12,sid.indexOf("_") +sid.substring(sid.indexOf("_")).indexOf("-"));if(StringUtils.isEmpty(sUserId))return null;
 			String s4 = sid.substring(sid.lastIndexOf("-")+1,sid.lastIndexOf("-")+7);if(StringUtils.isEmpty(s4))return null;
 			String sGoodsId = sid.substring(sid.lastIndexOf("-")+7);if(StringUtils.isEmpty(sGoodsId))return null;
-			if(EncryptUtils.md5(sAgencyId+sArticleId+sUserId+sGoodsId+wxdev_token).equals(s1+s2+s3+s4)){
+			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
+			if(EncryptUtils.md5(sAgencyId+sArticleId+sUserId+sGoodsId+wp.getToken()).equals(s1+s2+s3+s4)){
 				map = new HashMap<String,Object>();
 				map.put("agencyId", sAgencyId);
 				map.put("articleId", sArticleId);
@@ -126,7 +133,8 @@ public class WineWebController extends CommonController {
 	}
 	
 	private void saveUserByOpenIdInfo(HttpServletRequest request,String code,Map<String ,Object> map) throws Exception{
-		OpenidInfo open = WeiXinUtil.getOpenid(code,weixin_appid,weixin_appsecret);
+		WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
+		OpenidInfo open = WeiXinUtil.getOpenid(code,wp.getAppid(),wp.getSecret());
 		
 		EHaiUsersExample userExp = new EHaiUsersExample();
 		EHaiUsersExample.Criteria userC = userExp.createCriteria();
@@ -152,6 +160,7 @@ public class WineWebController extends CommonController {
 			eHaiUsersMapper.updateByPrimaryKeyWithBLOBs(user);
 			request.getSession(true).setAttribute(EConstants.SESSION_USER_ID, user.getUserId());
 		}
+		request.getSession(true).setAttribute(EConstants.SESSION_OPEN_ID, open.getOpenid());
 	}
 	
 	
@@ -175,13 +184,14 @@ public class WineWebController extends CommonController {
 		    return "redirect://"+website; //错误的链接，跳转商城
 		}
 		try{
-
+			request.getSession().setAttribute(EConstants.SESSION_STORE_ID, store_id);
 			if(StringUtils.isEmpty(code)){//跳转微信的链接
 				String REDIRECT_URI = request.getScheme()+"://"+request.getServerName()+"/wine/wxarticle!"+sid;
 				REDIRECT_URI = java.net.URLEncoder.encode(REDIRECT_URI, "utf-8");
-				
-				return "redirect:"+WeiXinUtil.authorize_snsapi(weixin_appid, "snsapi_base", REDIRECT_URI);
+				WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
+				return "redirect:"+WeiXinUtil.ehais_authorize_snsapi(wp.getAppid(), "snsapi_base", REDIRECT_URI);
 			}else{//根据code获取openid，判断此用户是否存在库，如果不存在，把此用户入库，同时记录推荐人的user_id
+				System.out.println("weixin open code:"+code);
 				this.saveUserByOpenIdInfo(request, code,map);
 			}
 		}catch(Exception e){
@@ -214,6 +224,7 @@ public class WineWebController extends CommonController {
 			return "redirect://"+link;//无登录情况要跳回重新登录
 		}
 		
+		
 		try{
 			//读取文章信息
 			EHaiArticle article = eHaiArticleMapper.selectByPrimaryKey(Integer.valueOf(map.get("articleId").toString()));
@@ -236,8 +247,12 @@ public class WineWebController extends CommonController {
 			
 			modelMap.addAttribute("article", article);
 			modelMap.addAttribute("goods", goods);
+			modelMap.addAttribute("parentUserId", map.get("userId"));
+			modelMap.addAttribute("agencyId", map.get("agencyId"));
+			modelMap.addAttribute("articleId", map.get("articleId"));
 			
-			WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, store_id, weixin_appid, weixin_appsecret, null);
+			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
+			WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, store_id, wp.getAppid(), wp.getSecret(), null);
 			signature.setTitle(article.getTitle());
 			signature.setLink(link);
 			signature.setDesc(article.getDescription());
@@ -252,6 +267,7 @@ public class WineWebController extends CommonController {
 			modelMap.addAttribute("signature", JSONObject.fromObject(signature).toString());
 			modelMap.addAttribute("w_goods_detail","w_goods_detail!"+sid);
 			modelMap.addAttribute("buynow","buynow!"+sid);
+			
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -276,8 +292,8 @@ public class WineWebController extends CommonController {
 			if(StringUtils.isEmpty(code)){//跳转微信的链接
 				String REDIRECT_URI = request.getScheme()+"://"+request.getServerName()+"/wine/wxgoods!"+sid;
 				REDIRECT_URI = java.net.URLEncoder.encode(REDIRECT_URI, "utf-8");
-				
-				return "redirect:"+WeiXinUtil.authorize_snsapi(weixin_appid, "snsapi_base", REDIRECT_URI);
+				WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
+				return "redirect:"+WeiXinUtil.ehais_authorize_snsapi(wp.getAppid(), "snsapi_base", REDIRECT_URI);
 			}else{//根据code获取openid，判断此用户是否存在库，如果不存在，把此用户入库，同时记录推荐人的user_id
 				this.saveUserByOpenIdInfo(request, code,map);
 			}
@@ -308,6 +324,9 @@ public class WineWebController extends CommonController {
 		if(StringUtils.isEmpty((String)request.getSession(true).getAttribute(EConstants.SESSION_OPEN_ID)) && !this.isLocalHost(request)){
 			return "redirect://"+link;//无登录情况要跳回重新登录
 		}
+		if(this.isLocalHost(request)){
+			request.getSession().setAttribute(EConstants.SESSION_USER_ID, 55L);			
+		}
 		
 		try{
 			
@@ -335,8 +354,8 @@ public class WineWebController extends CommonController {
 			modelMap.addAttribute("parentUserId", map.get("userId"));
 			modelMap.addAttribute("agencyId", map.get("agencyId"));
 			modelMap.addAttribute("articleId", map.get("articleId"));
-			
-			WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, store_id, weixin_appid, weixin_appsecret, null);
+			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
+			WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, store_id, wp.getAppid(), wp.getSecret(), null);
 			signature.setTitle(article.getTitle());
 			signature.setLink(link);
 			signature.setDesc(article.getDescription());
@@ -363,9 +382,8 @@ public class WineWebController extends CommonController {
 	public String w_cart(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response	) {
 		
-		request.getSession().setAttribute(EConstants.SESSION_USER_ID, 920L);
-		request.getSession().setAttribute(EConstants.SESSION_STORE_ID, 56);
 		
+	
 		
 		try{
 			HaiCartExample example = new HaiCartExample();
@@ -381,13 +399,26 @@ public class WineWebController extends CommonController {
 		return "/wine/w_cart";
 	}
 	
+	@RequestMapping("/w_check_order")
+	public String w_check_order(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response	) {
+		
+		if(this.isLocalHost(request)){
+			request.getSession().setAttribute(EConstants.SESSION_USER_ID, 55L);			
+		}
+		try{
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return "/wine/w_check_order";
+	}
+	
 	
 	@RequestMapping("/w_address_list")
 	public String w_address_list(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response	) {
 		
-		request.getSession().setAttribute(EConstants.SESSION_USER_ID, 1L);
-		request.getSession().setAttribute(EConstants.SESSION_STORE_ID, 56);
 		
 		
 		try{
@@ -409,8 +440,6 @@ public class WineWebController extends CommonController {
 	public String w_address_add(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response	) {
 		
-		request.getSession().setAttribute(EConstants.SESSION_USER_ID, 1L);
-		request.getSession().setAttribute(EConstants.SESSION_STORE_ID, 56);
 		
 		try{
 			modelMap.addAttribute("model", new HaiUserAddress());
@@ -427,8 +456,6 @@ public class WineWebController extends CommonController {
 			@RequestParam(value = "addressId", required = true) Long addressId
 			) {
 		
-		request.getSession().setAttribute(EConstants.SESSION_USER_ID, 1L);
-		request.getSession().setAttribute(EConstants.SESSION_STORE_ID, 56);
 		
 		try{
 			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);

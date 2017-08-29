@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.ehais.epublic.model.WpPublic;
 import org.ehais.model.BootStrapModel;
 import org.ehais.model.TreeModel;
 import org.ehais.service.impl.CommonServiceImpl;
@@ -17,7 +18,6 @@ import org.ehais.weixin.model.WeiXinMenu;
 import org.ehais.weixin.model.WpCustomMenu;
 import org.ehais.weixin.model.WpCustomMenuExample;
 import org.ehais.weixin.model.WpCustomMenuExample.Criteria;
-import org.ehais.weixin.model.WpPublic;
 import org.ehais.weixin.service.wx.CustomMenuService;
 import org.ehais.weixin.utils.WeiXinUtil;
 import org.slf4j.Logger;

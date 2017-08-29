@@ -3,13 +3,13 @@ package org.ehais.weixin.service.wx.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.ehais.epublic.mapper.WpPublicMapper;
+import org.ehais.epublic.model.WpPublic;
+import org.ehais.epublic.model.WpPublicExample;
+import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.model.BootStrapModel;
 import org.ehais.service.impl.CommonServiceImpl;
 import org.ehais.tools.ReturnObject;
-import org.ehais.weixin.mapper.WpPublicMapper;
-import org.ehais.weixin.model.WpPublic;
-import org.ehais.weixin.model.WpPublicExample;
-import org.ehais.weixin.model.WpPublicWithBLOBs;
 import org.ehais.weixin.service.wx.PublicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,12 +24,18 @@ public class PublicServiceImpl extends CommonServiceImpl implements PublicServic
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<WpPublicWithBLOBs> rm = new ReturnObject<WpPublicWithBLOBs>();
-		WpPublicWithBLOBs p = wpPublicMapper.public_by_user(user_id);
-		if(p == null){
+		WpPublicExample example = new WpPublicExample();
+		example.createCriteria().andUidEqualTo(user_id);
+		List<WpPublicWithBLOBs> list = wpPublicMapper.selectByExampleWithBLOBs(example);
+		WpPublicWithBLOBs p = null;
+		if(list!=null && list.size() > 0){
+			p = list.get(0);
+		}else{
 			p = new WpPublicWithBLOBs();
 			p.setUid(user_id);
 			wpPublicMapper.insertSelective(p);
 		}
+		
 		rm.setModel(p);
 		rm.setCode(1);
 		return rm;
@@ -40,11 +46,14 @@ public class PublicServiceImpl extends CommonServiceImpl implements PublicServic
 		// TODO Auto-generated method stub
 		ReturnObject<WpPublic> ro = new ReturnObject<WpPublic>();
 		Integer start = (page - 1 ) * len;
-		List<WpPublic> list = wpPublicMapper.public_list(userId , start, len);
 		WpPublicExample example = new WpPublicExample();
-		WpPublicExample.Criteria c = example.createCriteria();
-		c.andUidEqualTo(userId);
-		Integer total = wpPublicMapper.countByExample(example);
+		example.createCriteria().andUidEqualTo(userId);
+		example.setLimitStart(start);
+		example.setLimitEnd(len);
+		List<WpPublic> list = wpPublicMapper.selectByExample(example);
+		WpPublicWithBLOBs p = null;
+
+		Long total = wpPublicMapper.countByExample(example);
 		ro.setCode(1);
 		ro.setRows(list);
 		ro.setTotal(total);

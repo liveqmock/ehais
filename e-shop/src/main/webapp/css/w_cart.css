@@ -1,11 +1,12 @@
 @import url("common.css");
 .w_cart_wrapper {
-  max-width: 5.6rem;
   margin: 0 auto;
   box-sizing: border-box;
   position: relative;
   margin-bottom: 0.49rem;
-  font-size: 0.14rem;
+  font-size: 0.16rem;
+  width: 100%;
+  float: left;
 }
 .w_cart_wrapper > div,
 .w_cart_wrapper > div > div {
@@ -13,37 +14,8 @@
   width: 100%;
   box-sizing: border-box;
 }
-.w_cart_wrapper header {
-  height: 0.45rem;
-  line-height: 0.49rem;
-  font-size: 0.16rem;
-  text-align: center;
-  background: #f8f8f8;
-  border-bottom: 1px solid #dedede;
-}
-.w_cart_wrapper header > div {
-  float: left;
-  width: 25%;
-  box-sizing: border-box;
-  height: 0.45rem;
-}
-.w_cart_wrapper header > div.middle {
-  width: 50%;
-}
-.w_cart_wrapper header > div.fa-chevron-left,
-.w_cart_wrapper header div.fa-list {
-  padding: 0.18rem;
-  text-align: left;
-}
-.w_cart_wrapper header > div.fa-list {
-  text-align: right;
-}
-.w_cart_wrapper header > div.active {
-  font-weight: bold;
-  border-bottom: 0.02rem solid #232326;
-}
 .w_cart_wrapper > .list {
-  padding: 0 0.15rem;
+  padding: 0 0.15rem ;
   box-sizing: border-box;
 }
 .w_cart_wrapper > .list .item {
@@ -66,8 +38,9 @@
 }
 .w_cart_wrapper > .list .item .desc h4 {
   margin: 0;
-  padding: 0;
+  padding: 0 0.15rem 0 0 ;
   height: 0.64rem;
+  box-sizing: border-box;
 }
 .w_cart_wrapper > .list .item .desc .intro {
   position: absolute;
@@ -84,6 +57,7 @@
 }
 .w_cart_wrapper > .list .item .desc .intro .price {
   color: #ca1816;
+  padding-left: 0;
 }
 .w_cart_wrapper > .list .item .desc .intro .fa-plus-square {
   color: #ca1816;
@@ -92,9 +66,12 @@
 .w_cart_wrapper > .list .item .desc .intro .fa-trash-o {
   color: #B0B0B0;
 }
+.w_cart_wrapper > .list .item .desc .intro .fa {
+  font-size: 0.2rem;
+}
 .w_cart_wrapper > .list .item .fa-check-circle {
   position: absolute;
-  top: 0.15rem;
+  top: 0.1rem;
   right: 0rem;
   font-size: 0.28rem;
   color: #f0f0f0;

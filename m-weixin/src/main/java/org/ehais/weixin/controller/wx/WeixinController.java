@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.ehais.common.EConstants;
 import org.ehais.epublic.model.EHaiUsers;
+import org.ehais.epublic.model.WpPublic;
 import org.ehais.epublic.service.EUsersService;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.ECommon;
@@ -18,7 +19,6 @@ import org.ehais.weixin.model.OpenidInfo;
 import org.ehais.weixin.model.WeiXinNotityXml;
 import org.ehais.weixin.model.WeiXinSignature;
 import org.ehais.weixin.model.WeiXinUserInfo;
-import org.ehais.weixin.model.WpPublic;
 import org.ehais.weixin.service.wx.WeiXinService;
 import org.ehais.weixin.utils.WeiXinUtil;
 import org.slf4j.Logger;

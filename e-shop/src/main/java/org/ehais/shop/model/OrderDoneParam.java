@@ -16,7 +16,8 @@ public class OrderDoneParam  extends ApiNormalParam implements Serializable{
 	private Integer shipping_id;
 	private String postscript;//订单附言,由用户提交订单前填写 
 	private String invPayee;//发票抬头,用户页面填写
-	 private String invContent;//发票内容,用户页面选择
+	private String invContent;//发票内容,用户页面选择
+	private String orderSn;
 	
 	@NotNull
 	@NotEmpty
@@ -64,6 +65,12 @@ public class OrderDoneParam  extends ApiNormalParam implements Serializable{
 	}
 	public void setInvContent(String invContent) {
 		this.invContent = invContent;
+	}
+	public String getOrderSn() {
+		return orderSn;
+	}
+	public void setOrderSn(String orderSn) {
+		this.orderSn = orderSn;
 	}
 	
 	

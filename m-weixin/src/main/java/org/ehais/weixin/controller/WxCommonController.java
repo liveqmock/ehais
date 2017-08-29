@@ -1,10 +1,8 @@
 package org.ehais.weixin.controller;
 
 import org.ehais.controller.CommonController;
-import org.ehais.weixin.EConstants;
-import org.ehais.weixin.cache.WXPublicCacheManager;
+import org.ehais.epublic.model.WpPublic;
 import org.ehais.weixin.model.OpenidInfo;
-import org.ehais.weixin.model.WpPublic;
 import org.ehais.weixin.service.wx.WeiXinService;
 import org.ehais.weixin.utils.WeiXinUtil;
 import org.springframework.beans.factory.annotation.Autowired;

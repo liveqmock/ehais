@@ -2,12 +2,11 @@ package org.ehais.weixin.service.wx;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.service.CommonService;
 import org.ehais.tools.ReturnObject;
 import org.ehais.weixin.model.WeiXinNotifyPay;
 import org.ehais.weixin.model.WeiXinNotityXml;
-import org.ehais.weixin.model.WpPublic;
-import org.ehais.weixin.model.WpPublicWithBLOBs;
 
 public interface WeiXinService extends CommonService {
 

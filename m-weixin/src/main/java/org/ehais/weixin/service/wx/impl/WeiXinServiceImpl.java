@@ -7,8 +7,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.ehais.epublic.cache.WXPublicCacheManager;
+import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.tools.ReturnObject;
-import org.ehais.weixin.cache.WXPublicCacheManager;
 import org.ehais.weixin.mapper.EOrderMapper;
 import org.ehais.weixin.mapper.HaiArticleMapper;
 import org.ehais.weixin.mapper.WpCustomMenuMapper;
@@ -26,7 +27,6 @@ import org.ehais.weixin.model.WpCustomMenu;
 import org.ehais.weixin.model.WpCustomMenuExample;
 import org.ehais.weixin.model.WpKeyword;
 import org.ehais.weixin.model.WpKeywordExample;
-import org.ehais.weixin.model.WpPublicWithBLOBs;
 import org.ehais.weixin.model.WxNotityPay;
 import org.ehais.weixin.service.wx.WeiXinService;
 import org.ehais.weixin.utils.WeiXinUtil;

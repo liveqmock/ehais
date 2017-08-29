@@ -1,9 +1,7 @@
-package org.ehais.weixin.cache;
+package org.ehais.epublic.cache;
 
 import org.ehais.cache.BaseOSCache;
-import org.ehais.weixin.model.AccessToken;
-import org.ehais.weixin.model.WpPublic;
-import org.ehais.weixin.model.WpPublicWithBLOBs;
+import org.ehais.epublic.model.WpPublicWithBLOBs;
 
 public class WXPublicCacheManager {
 
@@ -15,7 +13,7 @@ public class WXPublicCacheManager {
 	public WXPublicCacheManager() {
 		// 这个根据配置文件来，初始BaseCache而已;
 		System.out.println("WXPublicCacheManager 这个根据配置文件来，初始BaseCache而已");
-		wxPublicCache = new BaseOSCache("wx_token", 1880000);
+		wxPublicCache = new BaseOSCache("wx_public", 1880000);
 	}
 	
 	public static WXPublicCacheManager getInstance() {
@@ -32,23 +30,23 @@ public class WXPublicCacheManager {
 	
 	
 
-	public void putWXPublic(Integer wxid, WpPublicWithBLOBs publicToken) {
+	public void putWXPublic(Integer storeId, WpPublicWithBLOBs publicToken) {
 		// TODO 自动生成方法存根
-		wxPublicCache.put(wxid, publicToken);
+		wxPublicCache.put(storeId, publicToken);
 	}
 
-	public void removePublic(Integer wxid) {
+	public void removePublic(Integer storeId) {
 		// TODO 自动生成方法存根
-		wxPublicCache.remove(wxid);
+		wxPublicCache.remove(storeId);
 	}
 
-	public WpPublicWithBLOBs getWXPublic(int wxid) {
+	public WpPublicWithBLOBs getWXPublic(Integer storeId) {
 		// TODO 自动生成方法存根
 		try {
-			return (WpPublicWithBLOBs) wxPublicCache.get(wxid);
+			return (WpPublicWithBLOBs) wxPublicCache.get(storeId);
 		} catch (Exception e) {
 			// TODO 自动生成 catch 块
-			System.out.println("wxPublicCache>>wxid[" + wxid + "]>>"
+			System.out.println("wxPublicCache>>storeId[" + storeId + "]>>"
 					+ e.getMessage());
 			return null;
 		}

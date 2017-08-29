@@ -1,17 +1,19 @@
 package org.ehais.weixin.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.ehais.common.EConstants;
 import org.ehais.epublic.mapper.EHaiUsersMapper;
+import org.ehais.epublic.mapper.WpPublicMapper;
 import org.ehais.epublic.model.EHaiUsers;
+import org.ehais.epublic.model.WpPublicExample;
+import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.EncryptUtils;
 import org.ehais.util.ResourceUtil;
-import org.ehais.weixin.mapper.WpPublicMapper;
-import org.ehais.weixin.model.WpPublicWithBLOBs;
 import org.ehais.weixin.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,12 +40,18 @@ public class LoginServiceImpl implements LoginService{
 			return ro;
 		}
 		//获取微信编号wxid
-		WpPublicWithBLOBs p = wpPublicMapper.public_by_user(user.getUserId());
-		if(p == null){
+		WpPublicWithBLOBs p = null;//wpPublicMapper.public_by_user(user.getUserId());
+		WpPublicExample example = new WpPublicExample();
+		example.createCriteria().andUidEqualTo(user.getUserId());
+		List<WpPublicWithBLOBs> list = wpPublicMapper.selectByExampleWithBLOBs(example);
+		if(list != null && list.size() > 0){
+			p = list.get(0);
+		}else{
 			p = new WpPublicWithBLOBs();
 			p.setUid(user.getUserId());
 			wpPublicMapper.insertSelective(p);
 		}
+		
 		request.getSession().setAttribute(EConstants.SESSION_WX_ID,p.getId());
 		
 
@@ -118,8 +126,13 @@ public class LoginServiceImpl implements LoginService{
 		haiUserMapper.insertSelective(user);
 		
 		//生成public的数据
-		WpPublicWithBLOBs p = wpPublicMapper.public_by_user(user.getUserId());
-		if(p == null){
+		WpPublicWithBLOBs p = null;//wpPublicMapper.public_by_user(user.getUserId());
+		WpPublicExample example = new WpPublicExample();
+		example.createCriteria().andUidEqualTo(user.getUserId());
+		List<WpPublicWithBLOBs> list = wpPublicMapper.selectByExampleWithBLOBs(example);
+		if(list != null && list.size() > 0){
+			p = list.get(0);
+		}else{
 			p = new WpPublicWithBLOBs();
 			p.setUid(user.getUserId());
 			wpPublicMapper.insertSelective(p);

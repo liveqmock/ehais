@@ -7,16 +7,17 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.ehais.common.EConstants;
+import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.model.BootStrapModel;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.EHttpClientUtil;
-import org.ehais.weixin.EConstants;
+import org.ehais.weixin.WXConstants;
 import org.ehais.weixin.mapper.WpAuthGroupMapper;
 import org.ehais.weixin.model.AccessToken;
 import org.ehais.weixin.model.WpAuthGroup;
 import org.ehais.weixin.model.WpAuthGroupExample;
 import org.ehais.weixin.model.WpAuthGroupWithBLOBs;
-import org.ehais.weixin.model.WpPublicWithBLOBs;
 import org.ehais.weixin.service.action.AuthGroupService;
 import org.ehais.weixin.service.wx.impl.WeiXinCommonServiceImpl;
 import org.ehais.weixin.utils.WeiXinUtil;
@@ -193,7 +194,7 @@ public class AuthGroupServiceImpl  extends WeiXinCommonServiceImpl implements Au
 		
 		if(model.getWechatGroupId() == null || model.getWechatGroupId().intValue() == 0 || model.getWechatGroupId().intValue() == -1){
 			//创建微信分组
-			String groups_create = EConstants.groups_create.replace("ACCESS_TOKEN", token.getToken());
+			String groups_create = WXConstants.groups_create.replace("ACCESS_TOKEN", token.getToken());
 			String resData = EHttpClientUtil.httpPostEntity(groups_create, json.toString());
 			System.out.println("请求返回："+resData);
 			json = JSONObject.fromObject(resData);
@@ -207,7 +208,7 @@ public class AuthGroupServiceImpl  extends WeiXinCommonServiceImpl implements Au
 			mapGroup.put("group", mapName);
 			json = JSONObject.fromObject(mapGroup);
 			System.out.println(json.toString());
-			String groups_update = EConstants.groups_update.replace("ACCESS_TOKEN", token.getToken());
+			String groups_update = WXConstants.groups_update.replace("ACCESS_TOKEN", token.getToken());
 			String resData = EHttpClientUtil.httpPostEntity(groups_update, json.toString());
 			System.out.println("请求返回："+resData);
 			json = JSONObject.fromObject(resData);

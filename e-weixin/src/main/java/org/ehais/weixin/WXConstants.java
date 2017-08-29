@@ -2,7 +2,7 @@ package org.ehais.weixin;
 
 import org.ehais.util.ResourceUtil;
 
-public class EConstants {
+public class WXConstants {
 //	public static String weixin_appid = ResourceUtil.getProValue("weixin_appid");
 //	public static String weixin_appsecret = ResourceUtil.getProValue("weixin_appsecret");
 //	public static String weixin_mch_id = ResourceUtil.getProValue("weixin_mch_id");
@@ -10,21 +10,25 @@ public class EConstants {
 	public static String wxdev_token = "ehais_wxdev";//ResourceUtil.getProValue("wxdev_token");
 
 	// 获取access_token的接口地址（GET） 限200（次/天）
-	public final static String access_token_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
-
+	public static String access_token_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
+	public static String ehais_access_token = "http://w.ehais.com/Home/WeiXinRemoteApi/token";
+	// 获取getJsApiTicket
+	public static String get_jsapi_url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?type=jsapi&access_token=ACCESS_TOKEN&type=jsapi";
+	public static String ehais_jsapiticket = "http://w.ehais.com/Home/WeiXinRemoteApi/jsApiTicket";
+		
 	// 菜单创建（POST） 限100（次/天）
 	public static String menu_create_url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN";
 
 	// 组成可以获取授权的链接
 	public static String authorize = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect";
+	public static String ehais_authorize = "http://w.ehais.com/Home/WeiXinRemoteApi/oauth?redirectUrl=REDIRECT_URI";
+	
 	// 获取opendid的接口地址
 	public static String get_opendid_url = "https://api.weixin.qq.com/sns/oauth2/access_token?grant_type=authorization_code";
 	// 获取用户信息，并判断是否关注此微信号
 	public static String get_user_info = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN";
 	// 获取ip
 	public static String get_call_back_ip = "https://api.weixin.qq.com/cgi-bin/getcallbackip?access_token=ACCESS_TOKEN";
-	// 获取getJsApiTicket
-	public static String get_jsapi_url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?type=jsapi&access_token=ACCESS_TOKEN&type=jsapi";
 	// 统一下单
 	public static String unifiedorder = "https://api.mch.weixin.qq.com/pay/unifiedorder";
 	// 退款申请

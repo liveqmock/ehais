@@ -1,6 +1,6 @@
 package org.ehais.enums;
 
-public class ShippingStatusEnum {
+public class EShippingStatusEnum {
 	public static Integer init = 0;//初始化，未发货
 	public static Integer shipments = 1;//已发货
 	public static Integer receiving = 2;//已收货

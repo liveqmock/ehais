@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.ehais.controller.CommonController;
-import org.ehais.weixin.EConstants;
+import org.ehais.weixin.WXConstants;
 import org.ehais.weixin.controller.WxCommonController;
 import org.ehais.weixin.model.OpenidInfo;
 import org.ehais.weixin.utils.WeiXinUtil;

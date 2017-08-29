@@ -10,11 +10,7 @@
 	</head>
 	<body>
 		<div class="w_cart_wrapper">
-			<header>
-				<div class="fa fa-chevron-left"></div>
-				<div class="middle">购物车</div>
-				<div class="fa fa-list"></div>
-			</header>
+
 			<div class="list">
 				<#if cartList??>
 				<#assign total=0>
@@ -31,7 +27,7 @@
 							<div class="fr fa fa-trash-o"></div>
 						</div>
 					</div>
-					<div class="fa fa-check-circle singleCheck"></div>
+					<div class="fa fa-check-circle singleCheck active"></div>
 				</div>
 				<#assign total=total + cart.goodsPrice * cart.goodsNumber >
 				</#list>
@@ -39,10 +35,10 @@
 			</div>
 			<footer>
 				<div class="">
-					<div class="all"><span class="fa fa-check-circle allCheck"></span>全选</div>
+					<div class="all"><span class="fa fa-check-circle allCheck active"></span>全选</div>
 					<div class="total">结算金额：<span id="total">￥${(total/100)?string("0.00")}</span></div>
 				</div>
-				<button>立即结算</button>
+				<button id="checkOrder">立即结算</button>
 			</footer>
 		</div>
 		

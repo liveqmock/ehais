@@ -3,10 +3,10 @@ package org.ehais.weixin.controller.wx;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.ehais.epublic.model.WpPublic;
 import org.ehais.tools.ReturnObject;
 import org.ehais.weixin.controller.WxCommonController;
 import org.ehais.weixin.model.HaiArticle;
-import org.ehais.weixin.model.WpPublic;
 import org.ehais.weixin.service.action.ArticleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

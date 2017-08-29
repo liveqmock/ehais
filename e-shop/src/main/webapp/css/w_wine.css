@@ -89,6 +89,9 @@
   width: 25%;
   padding: 0.08rem 0.08rem 0 0;
 }
+.w_wine_wrapper .recommend .item .pic img {
+  width: 100%;
+}
 .w_wine_wrapper .recommend .item .desc {
   padding: 0.08rem;
 }
@@ -111,4 +114,32 @@
 }
 .w_wine_wrapper .qrcode img {
   width: 80%;
+}
+.share_wrapper {
+  display: none;
+}
+.share_wrapper .bg {
+  background: #000;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  filter: alpha(opacity=90);
+  -moz-opacity: 0.9;
+  opacity: 0.9;
+}
+.share_wrapper .pic {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 101;
+  background: url("../images/share.png") no-repeat center top;
+  background-size: 80%;
+}
+.share_wrapper.active {
+  display: block;
 }

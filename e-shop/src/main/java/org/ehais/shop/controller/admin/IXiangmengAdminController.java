@@ -13,6 +13,8 @@ import org.ehais.annotation.EPermissionMethod;
 import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.ehais.epublic.model.EHaiArticle;
+import org.ehais.epublic.model.WpPublicWithBLOBs;
+import org.ehais.epublic.service.EWPPublicService;
 import org.ehais.epublic.validator.EInsertValidator;
 import org.ehais.epublic.validator.EUniqueValidator;
 import org.ehais.epublic.validator.EUpdateValidator;
@@ -47,10 +49,11 @@ import net.sf.json.JSONObject;
 public class  IXiangmengAdminController extends CommonController {
 
 	private static Logger log = LoggerFactory.getLogger(IXiangmengAdminController.class);
-	
-	public static String weixin_appid = ResourceUtil.getProValue("weixin_appid");
-	public static String weixin_appsecret = ResourceUtil.getProValue("weixin_appsecret");
-	public static String wxdev_token = ResourceUtil.getProValue("wxdev_token");
+	@Autowired
+	private EWPPublicService eWPPublicService;
+//	public static String weixin_appid = ResourceUtil.getProValue("weixin_appid");
+//	public static String weixin_appsecret = ResourceUtil.getProValue("weixin_appsecret");
+//	public static String wxdev_token = ResourceUtil.getProValue("wxdev_token");
 	public static String website = ResourceUtil.getProValue("website");
 	
 	@Autowired
@@ -205,8 +208,8 @@ public class  IXiangmengAdminController extends CommonController {
 			
 			ReturnObject<EHaiArticle> rm = iXiangmengService.xiangmeng_update(request,articleId);
 			modelMap.addAttribute("rm", rm);
-			
-			WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, store_id, weixin_appid, weixin_appsecret, null);
+			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
+			WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, store_id, wp.getAppid(), wp.getSecret(), null);
 			signature.setTitle(rm.getModel().getTitle());
 //			signature.setLink(rm.getModel().getLink());
 			signature.setLink(request.getScheme()+"://"+ request.getServerName()+"/wxixm"+rm.getModel().getArticleId());

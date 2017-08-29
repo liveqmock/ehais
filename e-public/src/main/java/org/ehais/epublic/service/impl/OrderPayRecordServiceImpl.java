@@ -5,7 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.ehais.common.EConstants;
-import org.ehais.enums.OrderStatusEnum;
+import org.ehais.enums.EOrderStatusEnum;
 import org.ehais.epublic.mapper.HaiOrderPayExtendsMapper;
 import org.ehais.epublic.mapper.HaiOrderPayRecordMapper;
 import org.ehais.epublic.model.HaiOrderPayRecord;
@@ -89,11 +89,11 @@ public class OrderPayRecordServiceImpl  extends CommonServiceImpl implements Ord
 			rm.setMsg("不存在此订单信息");return false;
 		}
 		HaiOrderPayRecord opr = oprList.get(0);
-		if(opr.getOrderStatus() != OrderStatusEnum.init){
+		if(opr.getOrderStatus() != EOrderStatusEnum.init){
 			rm.setMsg("订单信息已处理");return false;
 		}
 		
-		opr.setOrderStatus(OrderStatusEnum.success);
+		opr.setOrderStatus(EOrderStatusEnum.success);
 		criteria.andOrderSnEqualTo(OrderSn).andOrderStatusEqualTo(0);
 		haiOrderPayRecordMapper.updateByExample(opr, oprExample);
 		

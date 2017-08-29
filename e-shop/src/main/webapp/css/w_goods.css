@@ -1,6 +1,7 @@
 @import url("common.css");
 .w_goods_wrapper {
-  max-width: 5.6rem;
+  width: 100%;
+  float: left;
   margin: 0 auto;
   box-sizing: border-box;
   position: relative;
@@ -12,35 +13,6 @@
   float: left;
   width: 100%;
   box-sizing: border-box;
-}
-.w_goods_wrapper header {
-  height: 0.45rem;
-  line-height: 0.49rem;
-  font-size: 0.16rem;
-  text-align: center;
-  background: #f8f8f8;
-  border-bottom: 1px solid #dedede;
-}
-.w_goods_wrapper header > div {
-  float: left;
-  width: 25%;
-  box-sizing: border-box;
-  height: 0.45rem;
-}
-.w_goods_wrapper header > div.middle {
-  width: 50%;
-}
-.w_goods_wrapper header > div.fa-chevron-left,
-.w_goods_wrapper header div.fa-list {
-  padding: 0.18rem;
-  text-align: left;
-}
-.w_goods_wrapper header > div.fa-list {
-  text-align: right;
-}
-.w_goods_wrapper header > div.active {
-  font-weight: bold;
-  border-bottom: 0.02rem solid #232326;
 }
 .w_goods_wrapper > div.base,
 .w_goods_wrapper > div.detail {
@@ -108,19 +80,29 @@
 }
 .w_goods_wrapper footer > div span {
   margin-right: 0.06rem;
+  font-size: 0.28rem;
 }
-.w_goods_wrapper footer > div i {
+.w_goods_wrapper footer > div.cart {
+  position: relative;
+  text-align: left;
+}
+.w_goods_wrapper footer > div.cart i {
   width: 0.2rem;
   height: 0.2rem;
   border: 0.01rem solid #ca1818;
+  background: #ca1818;
+  color: #fff;
   font-size: 0.14rem;
   text-align: center;
   line-height: 0.2rem;
   border-radius: 50%;
   z-index: 100;
   display: none;
+  position: absolute;
+  top: -0.05rem;
+  left: 0.2rem;
 }
-.w_goods_wrapper footer > div i.active {
+.w_goods_wrapper footer > div.cart i.active {
   display: inline-block;
 }
 .w_goods_wrapper footer > div.addCart {

@@ -1,9 +1,9 @@
 package org.ehais.weixin.service.wx;
 
+import org.ehais.epublic.model.WpPublic;
+import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.service.CommonService;
 import org.ehais.tools.ReturnObject;
-import org.ehais.weixin.model.WpPublic;
-import org.ehais.weixin.model.WpPublicWithBLOBs;
 
 public interface PublicService extends CommonService {
 

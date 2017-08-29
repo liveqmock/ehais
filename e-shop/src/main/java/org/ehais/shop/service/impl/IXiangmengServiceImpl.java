@@ -1,9 +1,8 @@
 package org.ehais.shop.service.impl;
 
 
-import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -51,12 +50,12 @@ public class IXiangmengServiceImpl  extends CommonServiceImpl implements IXiangm
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
 		example.setLimitStart(condition.getStart());
 		example.setLimitEnd(condition.getRows());
+		example.setOrderByClause("update_date desc");
 		if(StringUtils.isNotEmpty(title))c.andTitleLike("%"+title+"%");
 		List<EHaiArticle> list = iXiangmengMapper.selectByExample(example);
 		long total = iXiangmengMapper.countByExample(example);
-
-
-
+		
+		
 		rm.setCode(1);
 		rm.setRows(list);
 		rm.setTotal(total);
@@ -90,6 +89,9 @@ public class IXiangmengServiceImpl  extends CommonServiceImpl implements IXiangm
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		model.setStoreId(store_id);
 		model.setContent("");
+		Date date = new Date();
+		model.setCreateDate(date);
+		model.setUpdateDate(date);
 		EHaiArticleExample example = new EHaiArticleExample();
 		EHaiArticleExample.Criteria c = example.createCriteria();
 		c.andTitleEqualTo(model.getTitle());
@@ -166,22 +168,21 @@ bean.setStartApplyDate(model.getStartApplyDate());
 bean.setEndApplyDate(model.getEndApplyDate());
 bean.setKeywords(model.getKeywords());
 bean.setIsOpen(model.getIsOpen());
-bean.setCreateDate(model.getCreateDate());
 bean.setFileUrl(model.getFileUrl());
 bean.setOpenType(model.getOpenType());
 bean.setLink(model.getLink());
 bean.setDescription(model.getDescription());
-bean.setStoreId(model.getStoreId());
 bean.setSort(model.getSort());
 bean.setArticleThumb(model.getArticleThumb());
 bean.setArticleImages(model.getArticleImages());
 bean.setVideoUrl(model.getVideoUrl());
 bean.setArticleTypeCode(model.getArticleTypeCode());
 bean.setUserId(model.getUserId());
-bean.setUpdateDate(model.getUpdateDate());
 bean.setArticleEnum(model.getArticleEnum());
 bean.setArticleLabel(model.getArticleLabel());
 
+Date date = new Date();
+bean.setUpdateDate(date);
 
 		int code = iXiangmengMapper.updateByExampleSelective(bean, example);
 		rm.setCode(code);

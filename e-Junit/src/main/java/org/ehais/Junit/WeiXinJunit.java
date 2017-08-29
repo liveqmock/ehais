@@ -11,7 +11,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.ehais.util.ECommon;
 import org.ehais.util.EHttpClientUtil;
 import org.ehais.util.SignUtil;
-import org.ehais.weixin.EConstants;
+import org.ehais.weixin.WXConstants;
 import org.ehais.weixin.model.AccessToken;
 import org.ehais.weixin.model.WeiXinArticles;
 import org.ehais.weixin.model.WeiXinArticlesItem;
@@ -204,7 +204,7 @@ public class WeiXinJunit {
 //			{"url":"http:\/\/mmbiz.qpic.cn\/mmbiz\/mX3BibrEkJQib7dpudfBBb9lmPVFFqc2MHcP4S5udtUnVd23QkOibRyAbmVJcnLHV2piaUyDlAuZicpeqGH2Kt5o0zw\/0"}
 
 			String req = EHttpClientUtil.postHttpClientFile(
-					EConstants.upload_media.replace("ACCESS_TOKEN", token.getToken()).replace("TYPE", "image"),
+					WXConstants.upload_media.replace("ACCESS_TOKEN", token.getToken()).replace("TYPE", "image"),
 					parMap, fileMap,null);
 			System.out.println(req);
 //			{"type":"image","media_id":"Dfrvsz7yN5Ho32Avh7VKLvV2_e9dC0M63ZRngkU19IFKZ_Oxb5X-xO74c6m1wOoy","created_at":1460361822}
@@ -252,7 +252,7 @@ public class WeiXinJunit {
 
 			
 			String req = EHttpClientUtil.httpPostEntity(
-					EConstants.upload_news.replace("ACCESS_TOKEN", token.getToken()),
+					WXConstants.upload_news.replace("ACCESS_TOKEN", token.getToken()),
 					content);
 			System.out.println(req);
 //			{"type":"news","media_id":"ShCRrjPK2nPgd6O-aO2e4qoO1omf0FX2xyZV4_lkTDNB2gxCvbkpZNxwsxifevma","created_at":1460362918}

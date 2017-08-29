@@ -49,7 +49,8 @@ public class CommonController {
 	 * @return
 	 */
 	protected boolean isLocalHost(HttpServletRequest request){
-		if(request.getServerName().equals("localhost") || request.getServerName().equals("127.0.0.1") || IpUtil.getIpAddr(request).equals("127.0.0.1")){
+		if(request.getServerName().equals("localhost") || request.getServerName().equals("127.0.0.1")){
+			log.info("服务器存在本地请求。。。#### server has local request");
 			return true;
 		}else{
 			return false;

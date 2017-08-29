@@ -3,6 +3,7 @@ var recIdTemp = 0;
 var recid = 0 ;
 var quantity = 0;
 $(function(){
+	$("header .fa-chevron-left").click(function(){window.history.go(-1);});
 	$(".fa-plus-square").click(function(){
 		var recid = $(this).parent().parent().parent().attr("recid");
 		var goodsid = $(this).parent().parent().parent().attr("goodsid");
@@ -58,6 +59,7 @@ $(function(){
 		}else{
 			$(".allCheck").removeClass("active");
 		}
+		cartListItem();
 	});
 	$(".allCheck").click(function(){
 		if($(this).hasClass("active")){
@@ -66,9 +68,26 @@ $(function(){
 			$(".list > .item > .fa-check-circle").addClass("active");
 		}
 		$(this).toggleClass("active");
+		cartListItem();
 	});
-	
-
+	//立即结算
+	$("#checkOrder").click(function(){
+		var recIds = new Array();
+		$(".list > .item").each(function(index,ele){
+			if($(ele).children(".singleCheck").hasClass("active")){
+				recIds.push($(ele).attr("recid"));
+			}
+		});
+		if(recIds.length == 0){
+			var layerIndex = layer.open({
+			    content: '请选择购物车要结算的商品'
+			    ,btn: ['朕知道了']
+			});
+		}else{
+			localStorage.setItem("recIds",recIds.join(","));
+			window.location.href = "w_check_order";
+		}
+	});
 });
 
 function cart_edit_submit(recid,goodsid,quantity){
@@ -97,8 +116,9 @@ function cart_delete_submit(that,recid){
 function cartListItem(){
 	var totle = 0;
 	$(".list > .item").each(function(index,ele){
-		totle += (parseInt($(ele).attr("price")) * parseInt($(ele).attr("quantity")));
-		
+		if($(ele).children(".singleCheck").hasClass("active")){
+			totle += (parseInt($(ele).attr("price")) * parseInt($(ele).attr("quantity")));
+		}
 	});
 	$("#total").html("￥"+(totle / 100 ).toFixed(2));//
 }

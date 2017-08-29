@@ -10,16 +10,12 @@
 	</head>
 	<body>
 		<div class="w_address_wrapper">
-			<header>
-				<div class="fa fa-chevron-left"></div>
-				<div class="middle">地址信息</div>
-				<div class="fa fa-plus-circle"></div>
-			</header>
+
 			<div class="list">
 				<#if userAddressList??>
 				<#list userAddressList as addr>
 				<div class="item" addressid="${addr.addressId}">
-					<div class="default <#if addr.isDefault == '1'>active</#if>"><span class="fa fa-leaf"></span></div>
+					
 					<div class="info">
 						<div class="username">
 							<span class="consignee">${addr.consignee!''}</span>
@@ -28,12 +24,21 @@
 						</div>
 						<div class="address">${addr.address}</div>
 					</div>
-					<div class="edit"><span class="fa fa-chevron-right"></span></div>
+					<div class="operate">
+						<div class="choose"><i class="fa fa-hand-o-up"></i></div>
+						<div class="default <#if addr.isDefault == '1'>active</#if>"><i class="fa fa-leaf"></i>默认</div>
+						<div class="edit"><i class="fa fa-edit"></i></div>
+						<div class="trash"><i class="fa fa-trash"></i></div>
+					</div>
+					
 				</div>
 				</#list>
 				</#if>
 			</div>
-			
+			<footer>
+				
+				<button id="newAddress">新增地址</button>
+			</footer>
 		</div>
 		<script type="text/javascript" src="../js/jquery-2.1.4.min.js" ></script>
 		<script type="text/javascript" src="../js/layer/mobile/layer.js" ></script>

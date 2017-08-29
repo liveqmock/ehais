@@ -1,6 +1,6 @@
 package org.ehais.enums;
 
-public class OrderStatusEnum {
+public class EOrderStatusEnum {
 	
 	public static Integer init = 0;//刚刚插入的记录初始化为0
 	public static Integer confirm = 1;//确认

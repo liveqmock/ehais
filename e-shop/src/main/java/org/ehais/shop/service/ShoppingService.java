@@ -22,6 +22,9 @@ public ReturnObject<Object> checkout(HttpServletRequest request,String recIds,Lo
 	
 	public ReturnObject<OrderDoneParam> OrderDone(HttpServletRequest request,OrderDoneParam order_done) throws Exception;
 	
+	
+	public ReturnObject<OrderDoneParam> WeixinOrderDone(HttpServletRequest request,OrderDoneParam order_done) throws Exception;
+	
 
 }
 

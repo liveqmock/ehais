@@ -4,11 +4,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.ehais.common.EConstants;
+import org.ehais.epublic.model.WpPublic;
 import org.ehais.model.TreeModel;
 import org.ehais.tools.ReturnObject;
 import org.ehais.weixin.controller.WxCommonController;
 import org.ehais.weixin.model.WpCustomMenu;
-import org.ehais.weixin.model.WpPublic;
 import org.ehais.weixin.service.wx.CustomMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

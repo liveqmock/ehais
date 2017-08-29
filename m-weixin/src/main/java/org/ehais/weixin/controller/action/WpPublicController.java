@@ -4,12 +4,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.ehais.common.EConstants;
+import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.tools.ReturnObject;
 import org.ehais.weixin.controller.WxCommonController;
 import org.ehais.weixin.model.PublicAddonConfig;
 import org.ehais.weixin.model.Wecome;
-import org.ehais.weixin.model.WpPublic;
-import org.ehais.weixin.model.WpPublicWithBLOBs;
 import org.ehais.weixin.service.wx.PublicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

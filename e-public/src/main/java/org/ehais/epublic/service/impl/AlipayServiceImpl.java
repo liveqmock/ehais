@@ -2,7 +2,7 @@ package org.ehais.epublic.service.impl;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.enums.OrderStatusEnum;
+import org.ehais.enums.EOrderStatusEnum;
 import org.ehais.epublic.mapper.HaiOrderPayExtendsMapper;
 import org.ehais.epublic.mapper.HaiOrderPayRecordMapper;
 import org.ehais.epublic.mapper.alipay.AlipayNotifyUrlMapper;
@@ -65,7 +65,7 @@ public class AlipayServiceImpl extends PayCommonServiceImpl implements AlipaySer
 			
 			if(!orderpayrecordService.successOrderPay(returnModel.getOut_trade_no(), rm))return rm;
 			
-			alipayUnifiedOrderMapper.UpdatePayStatue(returnModel.getOut_trade_no(), OrderStatusEnum.success);
+			alipayUnifiedOrderMapper.UpdatePayStatue(returnModel.getOut_trade_no(), EOrderStatusEnum.success);
 			
 			rm.setMsg("OK");				
 			rm.setCode(1);				
@@ -91,7 +91,7 @@ public class AlipayServiceImpl extends PayCommonServiceImpl implements AlipaySer
 			
 			if(!orderpayrecordService.successOrderPay(notifyModel.getOut_trade_no(), rm))return rm;
 			
-			alipayUnifiedOrderMapper.UpdatePayStatue(notifyModel.getOut_trade_no(), OrderStatusEnum.success);
+			alipayUnifiedOrderMapper.UpdatePayStatue(notifyModel.getOut_trade_no(), EOrderStatusEnum.success);
 			
 			rm.setMsg("OK");				
 			rm.setCode(1);				

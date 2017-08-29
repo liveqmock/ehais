@@ -320,13 +320,23 @@ public class CartServiceImpl  extends CommonServiceImpl implements CartService{
 		}
 		
 
-//		HaiCartExample example = new HaiCartExample();
-		
-		int count = haiCartMapper.get_hai_cart_goods(goods_id,user_id,session_shop_encode);
-		if(count > 0){
+		//即时返回此用户的购物车存在商品
+		HaiCartExample example = new HaiCartExample();
+		if(user_id != null)example.or().andUserIdEqualTo(user_id);
+		if(session_shop_encode != null)example.or().andSessionIdEqualTo(session_shop_encode);
+				
+		List<HaiCartWithBLOBs> listCart = haiCartMapper.selectByExampleWithBLOBs(example);
+		if(listCart!=null && listCart.size()>0){
+			rm.setCode(2);
 			rm.setMsg("此商品已存在购物车中，请进入购物车修改数量");
+			rm.setModel(listCart.get(0));
 			return rm;
 		}
+//		int count = haiCartMapper.get_hai_cart_goods(goods_id,user_id,session_shop_encode);
+//		if(count > 0){
+//			rm.setMsg("此商品已存在购物车中，请进入购物车修改数量");
+//			return rm;
+//		}
 		
 		HaiGoods goods = haiGoodsMapper.get_app_goods(store_id, goods_id);
 		if(goods == null){
@@ -368,10 +378,6 @@ public class CartServiceImpl  extends CommonServiceImpl implements CartService{
 		rm.setCode(code);
 		rm.setMsg(code==1?"添加成功":"添加失败");
 		
-		//即时返回此用户的购物车存在商品
-		HaiCartExample example = new HaiCartExample();
-		if(user_id != null)example.or().andUserIdEqualTo(user_id);
-		if(session_shop_encode != null)example.or().andSessionIdEqualTo(session_shop_encode);
 		
 		long total = haiCartMapper.countByExample(example);
 		rm.setTotal(total);//购物车的数量

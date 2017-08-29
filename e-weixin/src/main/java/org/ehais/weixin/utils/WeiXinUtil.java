@@ -13,7 +13,7 @@ import org.ehais.util.ECommon;
 import org.ehais.util.EHttpClientUtil;
 import org.ehais.util.EncryptUtils;
 import org.ehais.util.StringUtil;
-import org.ehais.weixin.EConstants;
+import org.ehais.weixin.WXConstants;
 import org.ehais.weixin.cache.AccessTokenCacheManager;
 import org.ehais.weixin.cache.JsApiTicketCacheManager;
 import org.ehais.weixin.model.AccessToken;
@@ -68,7 +68,7 @@ public class WeiXinUtil {
 	}
 	
 	public static boolean checkSignature(String timestamp,String nonce,String signature)throws Exception{
-		String[] arr = new String[] { EConstants.wxdev_token, timestamp, nonce };
+		String[] arr = new String[] { WXConstants.wxdev_token, timestamp, nonce };
 		// 将token、timestamp、nonce三个参数进行字典序排序
 		Arrays.sort(arr);
 		StringBuilder content = new StringBuilder();
@@ -105,6 +105,16 @@ public class WeiXinUtil {
 		xStream.alias("Image",WeiXinImage.class);
 		xStream.alias("item",WeiXinArticlesItem.class);
 	}
+	
+	public static String getEhaisToken() throws Exception{
+		String request = EHttpClientUtil.methodGet(WXConstants.ehais_access_token);
+		return request;
+	}
+	
+	public static String getJsApiTicket() throws Exception{
+		String request = EHttpClientUtil.methodGet(WXConstants.ehais_jsapiticket);
+		return request;
+	}
 
 	/**
 	 * 获取access token
@@ -121,7 +131,7 @@ public class WeiXinUtil {
 			}				
 		}
 
-		String requestUrl = EConstants.access_token_url
+		String requestUrl = WXConstants.access_token_url
 				.replace("APPID", weixin_appid)
 				.replace("APPSECRET", weixin_appsecret);
 		log.info("请求AccessToken地址:"+requestUrl);
@@ -144,7 +154,7 @@ public class WeiXinUtil {
 	public static AccessToken getAccessToken(int wxid,String weixin_appid,String weixin_appsecret,boolean isconstraint) throws Exception{
 		AccessToken accessToken = (AccessToken)AccessTokenCacheManager.getInstance().getAccessToken(wxid);
 		
-		String requestUrl = EConstants.access_token_url
+		String requestUrl = WXConstants.access_token_url
 				.replace("APPID", weixin_appid)
 				.replace("APPSECRET", weixin_appsecret);
 		log.info("强制请求AccessToken地址:"+requestUrl);
@@ -185,7 +195,7 @@ public class WeiXinUtil {
 		}
 		
 		
-		String requestUrl = EConstants.get_jsapi_url.replace("ACCESS_TOKEN", access_token);
+		String requestUrl = WXConstants.get_jsapi_url.replace("ACCESS_TOKEN", access_token);
 		System.out.println("JsApiTicket:"+requestUrl);
 		String request = EHttpClientUtil.methodGet(requestUrl);
 		JSONObject jsonObject = JSONObject.fromObject(request);
@@ -212,8 +222,11 @@ public class WeiXinUtil {
 	public static WeiXinSignature SignatureJSSDK(HttpServletRequest request,int wxid,String weixin_appid,String weixin_appsecret,String url) throws Exception{
 		WeiXinSignature signature = new WeiXinSignature();
 		
-		AccessToken token = getAccessToken(wxid, weixin_appid, weixin_appsecret);
-		JsApiTicket jsapiticket = getJsApiTicket(wxid, token.getToken());
+//		AccessToken token = getAccessToken(wxid, weixin_appid, weixin_appsecret);
+//		JsApiTicket jsapiticket = getJsApiTicket(wxid, token.getToken());
+		
+		String jsapiticket = getJsApiTicket();
+		
 		signature.setAppId(weixin_appid);
 		signature.setTimestamp(String.valueOf(System.currentTimeMillis()/1000));
 		signature.setNonceStr(ECommon.nonceStr(32));
@@ -225,7 +238,7 @@ public class WeiXinUtil {
 		}
 		signature.setUrl(url);
 		System.out.println("signature url:"+url);
-		String sign_before = "jsapi_ticket="+jsapiticket.getTicket()+
+		String sign_before = "jsapi_ticket="+jsapiticket+ //jsapiticket.getTicket()+
 				"&noncestr="+signature.getNonceStr()+
 				"&timestamp="+signature.getTimestamp()+
 				"&url="+signature.getUrl();
@@ -244,7 +257,7 @@ public class WeiXinUtil {
 	 */
 	public static String menu_create(int id,String token,String json) throws Exception{
 		
-		String requestUrl = EConstants.menu_create_url
+		String requestUrl = WXConstants.menu_create_url
 				.replace("ACCESS_TOKEN", token);
 		String request = EHttpClientUtil.httpPostEntity(requestUrl, json);
 		log.info("创建菜单返回信息："+request);
@@ -259,7 +272,12 @@ public class WeiXinUtil {
 	 * @return
 	 */
 	public static String authorize_snsapi(String weixin_appid,String SCOPE,String REDIRECT_URI){
-		String url = EConstants.authorize.replace("APPID", weixin_appid).replace("SCOPE", SCOPE).replace("REDIRECT_URI", REDIRECT_URI);
+		String url = WXConstants.authorize.replace("APPID", weixin_appid).replace("SCOPE", SCOPE).replace("REDIRECT_URI", REDIRECT_URI);
+		return url ;
+	}
+	
+	public static String ehais_authorize_snsapi(String weixin_appid,String SCOPE,String REDIRECT_URI){
+		String url = WXConstants.ehais_authorize.replace("APPID", weixin_appid).replace("SCOPE", SCOPE).replace("REDIRECT_URI", REDIRECT_URI);
 		return url ;
 	}
 	
@@ -270,7 +288,7 @@ public class WeiXinUtil {
 				StringUtil.NullOrEqual(code) ){
 			return null;
 		}
-		String requestUrl = EConstants.get_opendid_url + "&appid=" + weixin_appid + "&secret=" + weixin_appsecret + "&code=" +code;
+		String requestUrl = WXConstants.get_opendid_url + "&appid=" + weixin_appid + "&secret=" + weixin_appsecret + "&code=" +code;
 		log.info("请求openid:"+requestUrl);
 		String request = EHttpClientUtil.methodGet(requestUrl);
 		log.info("获取openid"+request);
@@ -290,7 +308,7 @@ public class WeiXinUtil {
 	
 	public static WeiXinUserInfo getUserInfo(String access_token,String openid) throws Exception {
 		WeiXinUserInfo userinfo = new WeiXinUserInfo();
-		String requestUrl = EConstants.get_user_info.replace("ACCESS_TOKEN", access_token).replace("OPENID", openid);
+		String requestUrl = WXConstants.get_user_info.replace("ACCESS_TOKEN", access_token).replace("OPENID", openid);
 		String request = EHttpClientUtil.methodGet(requestUrl);
 		log.info("微信获取用户信息接口返回："+request);
 		JSONObject jsonObject = JSONObject.fromObject(request);
@@ -357,7 +375,7 @@ public class WeiXinUtil {
 	        System.out.println(postDataXML);
 	        log.info("统一下单提交数据接口:"+postDataXML);
 	        //统一下订单
-	        String resultXml = EHttpClientUtil.httpPostEntity(EConstants.unifiedorder, postDataXML);
+	        String resultXml = EHttpClientUtil.httpPostEntity(WXConstants.unifiedorder, postDataXML);
 	        System.out.println("sys统一下单返回数据接口："+resultXml);
 	        log.info("log统一下单返回数据接口:"+resultXml);
 	        WeiXinUnifiedOrderResult result = toUnifiedOrderResultXml(resultXml);
@@ -393,7 +411,7 @@ public class WeiXinUtil {
 	public static String uploadMedia(String token,String type,
 			Map<String, String> paramsMap , 
 			Map<String, String> fileMap ) throws ClientProtocolException, IOException{
-		String url = EConstants.upload_media
+		String url = WXConstants.upload_media
 				.replaceAll("ACCESS_TOKEN", token)
 				.replaceAll("TYPE", type);
 		
@@ -406,7 +424,7 @@ public class WeiXinUtil {
 	//下载媒体
 	public static String downloadMedia(String token, String media_id, String filename) throws Exception
 	{
-		String url = EConstants.download_media
+		String url = WXConstants.download_media
 				.replace("ACCESS_TOKEN", token)
 				.replace("MEDIA_ID", media_id);
 		
@@ -419,7 +437,7 @@ public class WeiXinUtil {
 	
 	//上传图文素材
 	public static String uploadnews(String token,List<WeiXinMPNews> news) throws Exception{
-		String url = EConstants.upload_news
+		String url = WXConstants.upload_news
 				.replace("ACCESS_TOKEN", token);
 		Map<String, List<WeiXinMPNews>> map = new HashMap<String, List<WeiXinMPNews>>();
 		map.put("articles", news);
@@ -437,7 +455,7 @@ public class WeiXinUtil {
 			String media_id,
 			String content
 			) throws Exception{
-		String url = EConstants.mass_sendall.replace("ACCESS_TOKEN", token);
+		String url = WXConstants.mass_sendall.replace("ACCESS_TOKEN", token);
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		Map<String, Object> filterMap = new HashMap<String, Object>();
@@ -472,7 +490,7 @@ public class WeiXinUtil {
 			Integer scene_id,
 			String scene_str
 			) throws Exception {
-		String url = EConstants.qrcode.replace("TOKENPOST", token);
+		String url = WXConstants.qrcode.replace("TOKENPOST", token);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		
@@ -495,7 +513,7 @@ public class WeiXinUtil {
 			String action,
 			String long_url
 			) throws Exception {
-		String url = EConstants.shorturl.replace("ACCESS_TOKEN", token);
+		String url = WXConstants.shorturl.replace("ACCESS_TOKEN", token);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		
@@ -510,7 +528,7 @@ public class WeiXinUtil {
 	
 	
 	public static String MerchantInfo(String token) throws Exception {
-		String url = EConstants.merchantinfo.replace("TOKEN", token);
+		String url = WXConstants.merchantinfo.replace("TOKEN", token);
 		System.out.println(url);
 		
 		return EHttpClientUtil.methodGet(url);
