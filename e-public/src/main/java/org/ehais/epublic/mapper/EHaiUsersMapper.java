@@ -13,6 +13,13 @@ public interface EHaiUsersMapper {
 	@ResultMap(value = "BaseResultMap")
     EHaiUsers login(@Param("user_name") String user_name, @Param("password") String password);
 
+	@ResultMap(value = "BaseResultMap")
+    EHaiUsers login_store(
+    		@Param("user_name") String user_name, 
+    		@Param("password") String password,
+    		@Param("store_id") Integer store_id);
+
+	
 	public int checkUser(@Param("userName") String userName,@Param("email") String email);
 	
 	@Select("select * from hai_users where user_id in (#{userIds})")

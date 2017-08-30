@@ -76,29 +76,29 @@ public class WineWebController extends CommonController {
 	public static String website = ResourceUtil.getProValue("website");
 	
 	//sid 32位md5[{5}{agencyId}-{15}{articleId}_{26}{userId}-{6}{goodsId}]
-	public static void main(String[] args)  {
-		Integer agencyId = 9873;
-		Integer articleId = 9082;
-		Long userId = 54L;
-		Long goodsId = 3269L;
-		
-		try {
-			WineWebController w = new WineWebController();
-			String sid = w.setSid(agencyId, articleId, userId, goodsId);
-			Map<String,Object> map = w.getSid(sid);
-			if(map!=null)EachMapUtils.printMap(map);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	private String setSid(Integer agencyId,Integer articleId,Long userId,Long goodsId) throws Exception{
-		WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
-		String md5 = EncryptUtils.md5(agencyId.toString()+articleId.toString()+userId.toString()+goodsId.toString()+wp.getToken());
-		String sid = md5.substring(0, 5)+agencyId.toString()+"-"+md5.substring(5,15)+articleId.toString()+"_"+md5.substring(15,26)+userId.toString()+"-"+md5.substring(26,32)+goodsId.toString();
-		return sid;
-	}
+//	public static void main(String[] args)  {
+//		Integer agencyId = 9873;
+//		Integer articleId = 9082;
+//		Long userId = 54L;
+//		Long goodsId = 3269L;
+//		
+//		try {
+//			WineWebController w = new WineWebController();
+//			String sid = w.setSid(agencyId, articleId, userId, goodsId);
+//			Map<String,Object> map = w.getSid(sid);
+//			if(map!=null)EachMapUtils.printMap(map);
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
+//	
+//	private String setSid(Integer agencyId,Integer articleId,Long userId,Long goodsId) throws Exception{
+//		WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
+//		String md5 = EncryptUtils.md5(agencyId.toString()+articleId.toString()+userId.toString()+goodsId.toString()+wp.getToken());
+//		String sid = md5.substring(0, 5)+agencyId.toString()+"-"+md5.substring(5,15)+articleId.toString()+"_"+md5.substring(15,26)+userId.toString()+"-"+md5.substring(26,32)+goodsId.toString();
+//		return sid;
+//	}
 	
 	/**
 	 * 解析参数
@@ -146,6 +146,7 @@ public class WineWebController extends CommonController {
 			EHaiUsers user = new EHaiUsers();
 			user.setOpenid(open.getOpenid());
 			user.setParentId(Long.valueOf(map.get("userId").toString()));
+			user.setAgencyId(Integer.valueOf(map.get("agencyId").toString()));
 			user.setStoreId(store_id);
 			user.setEmail("");
 			user.setUserName(open.getOpenid());

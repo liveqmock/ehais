@@ -56,14 +56,14 @@
 												<fieldset>
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-left">
-															<input type="text" id="username" name="username" class="form-control w100" placeholder="用户名" />
+															<input type="text" id="username" name="username" value="lgj628" class="form-control w100" placeholder="用户名" />
 															<i class="fa fa-user-o"></i>
 														</span>
 													</label>
 
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-left">
-															<input type="password" id="password" name="password" class="form-control w100" placeholder="密码" />
+															<input type="password" id="password" name="password" value="123456" class="form-control w100" placeholder="密码" />
 															<i class="fa fa-lock"></i>
 														</span>
 													</label>
@@ -140,7 +140,7 @@ $(function(){
 });
 function login_submit(){
 	$.ajax({
-		url : "login_submit",dataType:"json",type:"post",
+		url : "${submit!''}",dataType:"json",type:"post",
 		data:{
 			username:$("#username").val(),
 			password:$("#password").val(),
@@ -152,7 +152,7 @@ function login_submit(){
 				layer.alert(result.msg);
 				return;
 			}
-			window.location.href = "manage/main";
+			window.location.href = "${redirect!''}";
 		},
 		error:function(result){
 			

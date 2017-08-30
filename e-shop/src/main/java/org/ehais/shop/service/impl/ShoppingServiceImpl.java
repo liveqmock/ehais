@@ -357,7 +357,7 @@ public class ShoppingServiceImpl extends CommonServiceImpl implements ShoppingSe
 			orderGoods.setGoodsId(haiCart.getGoodsId());
 			orderGoods.setGoodsName(haiCart.getGoodsName());
 			orderGoods.setGoodsSn(haiCart.getGoodsSn());
-			orderGoods.setGoodsNumber(Short.valueOf(haiCart.getGoodsNumber()+""));
+			orderGoods.setGoodsNumber(haiCart.getGoodsNumber());
 			orderGoods.setMarketPrice(haiCart.getMarketPrice());
 			orderGoods.setGoodsPrice(haiCart.getGoodsPrice());
 			orderGoods.setGoodsThumb(haiCart.getGoodsThumb());
@@ -368,7 +368,7 @@ public class ShoppingServiceImpl extends CommonServiceImpl implements ShoppingSe
 			orderGoods.setGoodsAttr("");
 			orderGoods.setExtensionCode("");
 			orderGoods.setIsReal(true);
-			orderGoods.setSendNumber(Short.valueOf("0"));
+			orderGoods.setSendNumber(0);
 			orderGoodsList.add(orderGoods);
 		}
 		
@@ -514,7 +514,7 @@ public class ShoppingServiceImpl extends CommonServiceImpl implements ShoppingSe
 			orderGoods.setGoodsId(haiCart.getGoodsId());
 			orderGoods.setGoodsName(haiCart.getGoodsName());
 			orderGoods.setGoodsSn(haiCart.getGoodsSn());
-			orderGoods.setGoodsNumber(Short.valueOf(haiCart.getGoodsNumber()+""));
+			orderGoods.setGoodsNumber(haiCart.getGoodsNumber());
 			orderGoods.setMarketPrice(haiCart.getMarketPrice());
 			orderGoods.setGoodsPrice(haiCart.getGoodsPrice());
 			orderGoods.setGoodsThumb(haiCart.getGoodsThumb());
@@ -525,7 +525,7 @@ public class ShoppingServiceImpl extends CommonServiceImpl implements ShoppingSe
 			orderGoods.setGoodsAttr("");
 			orderGoods.setExtensionCode("");
 			orderGoods.setIsReal(true);
-			orderGoods.setSendNumber(Short.valueOf("0"));
+			orderGoods.setSendNumber(0);
 			orderGoodsList.add(orderGoods);
 		}
 		
@@ -590,9 +590,9 @@ public class ShoppingServiceImpl extends CommonServiceImpl implements ShoppingSe
 		//配送地址不为空的情况，检验配送地址是否此商家
 		if(order_done.getAddress_id()!=null && order_done.getAddress_id()!=0){
 			userAddress = haiUserAddressMapper.get_hai_user_address_info(order_done.getUser_id(), order_done.getAddress_id());
-//			if(userAddress != null){
-//				rm.setMsg("支付方式错误");return rm;
-//			}
+			if(userAddress != null){
+				rm.setMsg("收货人错误");return rm;
+			}
 		}
 		
 		
@@ -758,7 +758,7 @@ public class ShoppingServiceImpl extends CommonServiceImpl implements ShoppingSe
 			orderGoods.setGoodsId(haiCart.getGoodsId());
 			orderGoods.setGoodsName(haiCart.getGoodsName());
 			orderGoods.setGoodsSn(haiCart.getGoodsSn());
-			orderGoods.setGoodsNumber(Short.valueOf(haiCart.getGoodsNumber()+""));
+			orderGoods.setGoodsNumber(haiCart.getGoodsNumber());
 			orderGoods.setMarketPrice(haiCart.getMarketPrice());
 			orderGoods.setGoodsPrice(haiCart.getGoodsPrice());
 			orderGoods.setGoodsThumb(haiCart.getGoodsThumb());
@@ -769,7 +769,10 @@ public class ShoppingServiceImpl extends CommonServiceImpl implements ShoppingSe
 			orderGoods.setGoodsAttr("");
 			orderGoods.setExtensionCode("");
 			orderGoods.setIsReal(true);
-			orderGoods.setSendNumber(Short.valueOf("0"));
+			orderGoods.setSendNumber(0);
+			orderGoods.setAgencyId(haiCart.getAgencyId());
+			orderGoods.setArticleId(haiCart.getArticleId());
+			orderGoods.setSellerUserId(haiCart.getSellerUserId());
 			orderGoodsList.add(orderGoods);
 		}
 		

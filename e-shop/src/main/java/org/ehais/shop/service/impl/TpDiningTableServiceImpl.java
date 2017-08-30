@@ -297,14 +297,9 @@ bean.setIsValid(model.getIsValid());
         
         //画二维码，记得调用multiFormatWriter.encode()时最后要带上hints参数，不然上面设置无效
         BitMatrix bitMatrix = multiFormatWriter.encode(content, BarcodeFormat.QR_CODE, width, height, hints);
-        
-//        OutputStream stream = response.getOutputStream();
-//        MatrixToImageWriter.writeToStream(bitMatrix, "jpg", stream);
-		
         BufferedImage image = MatrixToImageWriter.toBufferedImage(bitMatrix);
 //        
         Graphics2D g = image.createGraphics();
-//        BufferedImage logo = ImageIO.read(logoPic);
         String pressText = "台号："+model.getTablename();
         int fontSize = 28; //字体大小
         int fontStyle = 1; //字体风格

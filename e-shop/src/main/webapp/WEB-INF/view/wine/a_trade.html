@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>交易记录</title>
+		
+		<script type="text/javascript" src="/js/jquery-2.1.4.min.js" ></script>
+		
+		<link rel="stylesheet" href="/js/bootstrap/css/bootstrap.min.css" />
+		<script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js" ></script>
+		
+		<link rel="stylesheet" href="/js/bootstrap/table/bootstrap-table.min.css" />
+		<script type="text/javascript" src="/js/bootstrap/table/bootstrap-table.min.js" ></script>
+		<script type="text/javascript" src="/js/bootstrap/table/locale/bootstrap-table-zh-CN.min.js" ></script>
+		
+		<link rel="stylesheet" href="/css/wine.css" />
+		
+	</head>
+	<body>
+		<div class="header">
+			<div class="inner">
+				<div class="logo">金藤酒荟LOGO</div>
+				<div class="main">金藤酒荟地区代理管理后台</div>
+				<div class="account">代理名称<br>代理地区</div>
+			</div>
+		</div>
+		<div class="body">
+			<div class="container_box">
+				<div class="col_side">
+					<div class="menu_title fa fa-home">
+						<a href="javascript:;">首页</a>
+					</div>
+					<div class="menu_title fa fa-home">
+						<a href="article.html">软文资讯</a>
+					</div>
+					<div class="menu_title fa fa-home">
+						<a href="trade.html">交易记录</a>
+					</div>
+					<div class="menu_title fa fa-home">
+						<a href="trade.html">修改密码</a>
+					</div>
+				</div>
+				<div class="col_main">
+					<div class="main_hd fa fa-hand-o-right">交易记录查询</div>
+					<div class="main_search">
+						搜索条件
+					</div>
+					<div class="main_search">
+						商品名称：<input />
+						软文名称：<input />
+						交易时间：<input placeholder="开始与结束时间选择" />
+						<button class="fa fa-search">搜索</button>
+					</div>
+					<div class="main_table">
+						<table id="bsTable"></table>
+					</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<script type="text/javascript">
+			$(function(){
+				$('#bsTable').bootstrapTable({
+		            url: 'trade.json',//请求后台的url
+		            method: 'get',//请求方式
+		            toolbar: '#toolbar',//工具按钮用哪个容器
+		            dataType: "json",
+    				pagination: true, //分页
+    				//search: true, //显示搜索框
+		            striped: true,//是否显示行间隔色
+		            cache: false,
+		            sortable: true,//是否启用排序
+		            sortOrder: 'asc',//排序方式
+		            clickToSelect: true,//是否启用点击选中行
+		            sidePagination: "server", //服务端处理分页
+		            uniqueId: 'order_id',//每一行的唯一标识，一般为主键列
+		            columns: [{
+		                field: 'order_id',
+		                title: '订单编号'
+		            }, {
+		                field: 'goods_name',
+		                title: '商品名称'
+		            }, {
+		                field: 'goods_num',
+		                title: '购买数量 '
+		            }, {
+		                field: 'time',
+		                title: '购买时间'
+		            }, {
+		                field: 'amount',
+		                title: '分成金额'
+		            }]
+		        });
+			});
+		</script>
+	</body>
+</html>

@@ -63,12 +63,13 @@ public class WineAdminController extends CommonController{
 	}
 	
 	
-	@RequestMapping("/login")
+	@RequestMapping("/adminlogin")
 	public String login(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) {	
 		
 		try{
-			
+			modelMap.addAttribute("submit", "admin_login_submit");
+			modelMap.addAttribute("redirect", "manage/main");
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -76,7 +77,7 @@ public class WineAdminController extends CommonController{
 	}
 	
 	@ResponseBody
-	@RequestMapping("/login_submit")
+	@RequestMapping("/admin_login_submit")
 	public String login_submit(ModelMap modelMap,
 			HttpServletRequest request,
 			HttpServletResponse response,
@@ -106,7 +107,7 @@ public class WineAdminController extends CommonController{
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		return "redirect:login";
+		return "redirect:../adminlogin";
 	}
 	
 	@RequestMapping("/manage/main")

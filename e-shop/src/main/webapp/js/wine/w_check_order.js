@@ -1,5 +1,6 @@
 var recIds = null;
 var chooseAddressId = null;
+var WeiXinWCPay = null;
 $(function(){
 	$("header .fa-chevron-left").click(function(){window.history.go(-1);});
 	recIds = localStorage.getItem("recIds");//缓存中的选中购物车的商品信息
@@ -20,8 +21,10 @@ $(function(){
 		orderSubmit();
 	});
 	
-//	alert("请选择或添加收货人信息");
-//	layer.open({content:"请选择或添加收货人信息",btn:"朕马上处理"});
+	//重新支付
+	$("#btnRepay").click(function(){
+		if(WeiXinWCPay!=null)onBridgeReady(WeiXinWCPay);
+	});
 });
 
 /**
@@ -46,7 +49,7 @@ function orderSubmit(){
 				return ;
 			}
 			
-			var WeiXinWCPay = result.map.WeiXinWCPay;
+			WeiXinWCPay = result.map.WeiXinWCPay;
 			WeiXinWCPay["package"] = WeiXinWCPay["pack_age"] 
 			//支付调起
 			onBridgeReady(WeiXinWCPay);
