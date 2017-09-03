@@ -104,12 +104,19 @@
 </#list>
 </#if>
 <div class="form-group">
+<label class="col-sm-2 control-label">库存数量</label>
+<div class="col-sm-2">
+	<@quantityPicker id="goodsNumber" value="${rm.model.goodsNumber!100}" />
+</div>
+</div>
+
+
+<div class="form-group">
 <label class="col-sm-2 control-label">上架</label>
 <div class="col-sm-1">
 	<@checkboxPicker id="isOnSale" value="${(rm.model.isOnSale!false)?string('yes', 'no')}" />
 </div>
 </div>
-
 
 <div class="form-group">
 <label class="col-sm-2 control-label">热销</label>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.ehais.shop.mapper.WOrderGoodsActionMapper" >
+  <resultMap id="BaseResultMap" type="org.ehais.shop.model.WOrderGoodsAction" >
+    <id column="order_id" jdbcType="BIGINT" property="orderId" />
+    <result column="order_sn" jdbcType="VARCHAR" property="orderSn" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="order_status" jdbcType="INTEGER" property="orderStatus" />
+    <result column="shipping_status" jdbcType="INTEGER" property="shippingStatus" />
+    <result column="pay_status" jdbcType="INTEGER" property="payStatus" />
+    <result column="consignee" jdbcType="VARCHAR" property="consignee" />
+    <result column="country" jdbcType="INTEGER" property="country" />
+    <result column="province" jdbcType="INTEGER" property="province" />
+    <result column="city" jdbcType="INTEGER" property="city" />
+    <result column="county" jdbcType="INTEGER" property="county" />
+    <result column="district" jdbcType="INTEGER" property="district" />
+    <result column="street" jdbcType="INTEGER" property="street" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="zipcode" jdbcType="VARCHAR" property="zipcode" />
+    <result column="tel" jdbcType="VARCHAR" property="tel" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="best_time" jdbcType="VARCHAR" property="bestTime" />
+    <result column="sign_building" jdbcType="VARCHAR" property="signBuilding" />
+    <result column="postscript" jdbcType="VARCHAR" property="postscript" />
+    <result column="shipping_id" jdbcType="INTEGER" property="shippingId" />
+    <result column="shipping_name" jdbcType="VARCHAR" property="shippingName" />
+    <result column="pay_id" jdbcType="INTEGER" property="payId" />
+    <result column="pay_name" jdbcType="VARCHAR" property="payName" />
+    <result column="how_oos" jdbcType="VARCHAR" property="howOos" />
+    <result column="how_surplus" jdbcType="VARCHAR" property="howSurplus" />
+    <result column="pack_name" jdbcType="VARCHAR" property="packName" />
+    <result column="card_name" jdbcType="VARCHAR" property="cardName" />
+    <result column="card_message" jdbcType="VARCHAR" property="cardMessage" />
+    <result column="inv_payee" jdbcType="VARCHAR" property="invPayee" />
+    <result column="inv_content" jdbcType="VARCHAR" property="invContent" />
+    <result column="goods_amount" jdbcType="INTEGER" property="goodsAmount" />
+    <result column="shipping_fee" jdbcType="INTEGER" property="shippingFee" />
+    <result column="insure_fee" jdbcType="INTEGER" property="insureFee" />
+    <result column="pay_fee" jdbcType="INTEGER" property="payFee" />
+    <result column="pack_fee" jdbcType="INTEGER" property="packFee" />
+    <result column="card_fee" jdbcType="INTEGER" property="cardFee" />
+    <result column="money_paid" jdbcType="INTEGER" property="moneyPaid" />
+    <result column="surplus" jdbcType="INTEGER" property="surplus" />
+    <result column="integral" jdbcType="INTEGER" property="integral" />
+    <result column="integral_money" jdbcType="INTEGER" property="integralMoney" />
+    <result column="bonus" jdbcType="INTEGER" property="bonus" />
+    <result column="order_amount" jdbcType="INTEGER" property="orderAmount" />
+    <result column="from_ad" jdbcType="INTEGER" property="fromAd" />
+    <result column="referer" jdbcType="VARCHAR" property="referer" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="confirm_time" jdbcType="INTEGER" property="confirmTime" />
+    <result column="pay_time" jdbcType="INTEGER" property="payTime" />
+    <result column="shipping_time" jdbcType="INTEGER" property="shippingTime" />
+    <result column="pack_id" jdbcType="INTEGER" property="packId" />
+    <result column="card_id" jdbcType="INTEGER" property="cardId" />
+    <result column="bonus_id" jdbcType="INTEGER" property="bonusId" />
+    <result column="invoice_no" jdbcType="VARCHAR" property="invoiceNo" />
+    <result column="extension_code" jdbcType="VARCHAR" property="extensionCode" />
+    <result column="extension_id" jdbcType="INTEGER" property="extensionId" />
+    <result column="to_buyer" jdbcType="VARCHAR" property="toBuyer" />
+    <result column="pay_note" jdbcType="VARCHAR" property="payNote" />
+    <result column="agency_id" jdbcType="INTEGER" property="agencyId" />
+    <result column="inv_type" jdbcType="VARCHAR" property="invType" />
+    <result column="tax" jdbcType="REAL" property="tax" />
+    <result column="is_separate" jdbcType="INTEGER" property="isSeparate" />
+    <result column="parent_id" jdbcType="BIGINT" property="parentId" />
+    <result column="discount" jdbcType="REAL" property="discount" />
+    <result column="store_id" jdbcType="INTEGER" property="storeId" />
+    <result column="is_void" jdbcType="CHAR" property="isVoid" />
+    <result column="order_source" jdbcType="VARCHAR" property="orderSource" />
+    
+    
+    <result column="rec_id" jdbcType="BIGINT" property="recId" />
+    <result column="sub_order_sn" jdbcType="VARCHAR" property="subOrderSn" />
+    <result column="goods_id" jdbcType="BIGINT" property="goodsId" />
+    <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+    <result column="goods_sn" jdbcType="VARCHAR" property="goodsSn" />
+    <result column="product_id" jdbcType="BIGINT" property="productId" />
+    <result column="goods_number" jdbcType="INTEGER" property="goodsNumber" />
+    <result column="market_price" jdbcType="INTEGER" property="marketPrice" />
+    <result column="goods_price" jdbcType="INTEGER" property="goodsPrice" />
+    <result column="goods_thumb" jdbcType="VARCHAR" property="goodsThumb" />
+    <result column="send_number" jdbcType="INTEGER" property="sendNumber" />
+    <result column="is_real" jdbcType="BIT" property="isReal" />
+    <result column="is_gift" jdbcType="SMALLINT" property="isGift" />
+    <result column="goods_attr_id" jdbcType="VARCHAR" property="goodsAttrId" />
+    <result column="article_id" jdbcType="INTEGER" property="articleId" />
+    <result column="seller_user_id" jdbcType="BIGINT" property="sellerUserId" />
+    
+    
+  </resultMap>
+  
+  <select id="listOrderGoods" resultMap="BaseResultMap" parameterType="map" >
+  	select *
+  	from hai_order_info o 
+  	left join hai_order_goods g on o.order_id = g.order_id
+  	where o.store_id = #{store_id} and o.pay_time > 0 and 
+  	o.pay_time between #{start_time} and #{end_time}  
+  	order by o.pay_time desc
+  	limit #{start},#{len}
+  </select>
+  
+  
+  <select id="countOrderGoods" resultType="java.lang.Long" parameterType="map" >
+  	select count(*)
+  	from hai_order_info o 
+  	left join hai_order_goods g on o.order_id = g.order_id
+  	where o.store_id = #{store_id} and o.pay_time > 0 and 
+  	o.pay_time between #{start_time} and #{end_time}  
+  </select>
+  
+  
+  
+</mapper>  

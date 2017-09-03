@@ -74,7 +74,7 @@
 	<bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="typeAliasesPackage" value="org.ehais.shop.model,org.ehais.epublic.model" />
-		<property name="configLocation" value="classpath:spring/mybatis-config.xml"></property>
+		<!-- <property name="configLocation" value="classpath:spring/mybatis-config.xml"></property> -->
 		<property name="mapperLocations" value="classpath*:mapper/**/*.xml" />
 	</bean>
 

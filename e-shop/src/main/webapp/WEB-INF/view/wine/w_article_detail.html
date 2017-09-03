@@ -13,7 +13,7 @@
 			<div class="logo"></div>
 			<h3>${article.title!''}</h3>
 			<div class="lbl">
-				<span>${(article.articleDate!'')?string("yyyy-MM-dd")}</span>
+				<span>${(article.articleDate?string("yyyy-MM-dd"))!''}</span>
 				<span>${article.author!''}</span>
 				<span>易海司</span>
 			</div>

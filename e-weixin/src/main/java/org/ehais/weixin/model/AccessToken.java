@@ -4,18 +4,18 @@ public class AccessToken {
 	//用于区别哪一个用户的编号
 	private int id;
 	// 获取到的凭证
-	private String token;
+	private String access_token;
 	// 凭证有效时间，单位：秒
 	private int expiresIn;
 	//凭证到期时间戳
 	private Long expire_time;
 	
 	
-	public String getToken() {
-		return token;
+	public String getAccess_token() {
+		return access_token;
 	}
-	public void setToken(String token) {
-		this.token = token;
+	public void setAccess_token(String access_token) {
+		this.access_token = access_token;
 	}
 	public int getExpiresIn() {
 		return expiresIn;

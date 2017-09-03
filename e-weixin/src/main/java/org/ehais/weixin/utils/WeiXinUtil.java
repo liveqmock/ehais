@@ -106,15 +106,15 @@ public class WeiXinUtil {
 		xStream.alias("item",WeiXinArticlesItem.class);
 	}
 	
-	public static String getEhaisToken() throws Exception{
-		String request = EHttpClientUtil.methodGet(WXConstants.ehais_access_token);
-		return request;
-	}
+//	public static String getEhaisToken() throws Exception{
+//		String request = EHttpClientUtil.methodGet(WXConstants.ehais_access_token);
+//		return request;
+//	}
 	
-	public static String getJsApiTicket() throws Exception{
-		String request = EHttpClientUtil.methodGet(WXConstants.ehais_jsapiticket);
-		return request;
-	}
+//	public static String getJsApiTicket() throws Exception{
+//		String request = EHttpClientUtil.methodGet(WXConstants.ehais_jsapiticket);
+//		return request;
+//	}
 
 	/**
 	 * 获取access token
@@ -126,7 +126,7 @@ public class WeiXinUtil {
 		AccessToken accessToken = (AccessToken)AccessTokenCacheManager.getInstance().getAccessToken(wxid);
 		if(accessToken!=null){
 			if(System.currentTimeMillis() < accessToken.getExpire_time()){
-				log.info("oscache缓存accesstoken:"+accessToken.getToken());
+				log.info("oscache缓存accesstoken:"+accessToken.getAccess_token());
 				return accessToken;
 			}				
 		}
@@ -142,7 +142,7 @@ public class WeiXinUtil {
 		if (null != jsonObject) {
 			accessToken = new AccessToken();
 			accessToken.setId(wxid);
-			accessToken.setToken(jsonObject.getString("access_token"));
+			accessToken.setAccess_token(jsonObject.getString("access_token"));
 			accessToken.setExpiresIn(jsonObject.getInt("expires_in"));
 			accessToken.setExpire_time(System.currentTimeMillis() + jsonObject.getInt("expires_in") * 1000);//毫秒数
 			AccessTokenCacheManager.getInstance().putAccessToken(accessToken);//保存内存中，不需要经常读接口
@@ -165,7 +165,7 @@ public class WeiXinUtil {
 		if (null != jsonObject) {
 			accessToken = new AccessToken();
 			accessToken.setId(wxid);
-			accessToken.setToken(jsonObject.getString("access_token"));
+			accessToken.setAccess_token(jsonObject.getString("access_token"));
 			accessToken.setExpiresIn(jsonObject.getInt("expires_in"));
 			accessToken.setExpire_time(System.currentTimeMillis() + jsonObject.getInt("expires_in") * 1000);//毫秒数
 			AccessTokenCacheManager.getInstance().putAccessToken(accessToken);//保存内存中，不需要经常读接口
@@ -222,11 +222,9 @@ public class WeiXinUtil {
 	public static WeiXinSignature SignatureJSSDK(HttpServletRequest request,int wxid,String weixin_appid,String weixin_appsecret,String url) throws Exception{
 		WeiXinSignature signature = new WeiXinSignature();
 		
-//		AccessToken token = getAccessToken(wxid, weixin_appid, weixin_appsecret);
-//		JsApiTicket jsapiticket = getJsApiTicket(wxid, token.getToken());
-		
-		String jsapiticket = getJsApiTicket();
-		
+		AccessToken token = getAccessToken(wxid, weixin_appid, weixin_appsecret);
+		JsApiTicket jsapiticket = getJsApiTicket(wxid, token.getAccess_token());
+				
 		signature.setAppId(weixin_appid);
 		signature.setTimestamp(String.valueOf(System.currentTimeMillis()/1000));
 		signature.setNonceStr(ECommon.nonceStr(32));
@@ -238,7 +236,7 @@ public class WeiXinUtil {
 		}
 		signature.setUrl(url);
 		System.out.println("signature url:"+url);
-		String sign_before = "jsapi_ticket="+jsapiticket+ //jsapiticket.getTicket()+
+		String sign_before = "jsapi_ticket="+jsapiticket.getTicket()+
 				"&noncestr="+signature.getNonceStr()+
 				"&timestamp="+signature.getTimestamp()+
 				"&url="+signature.getUrl();
@@ -276,10 +274,10 @@ public class WeiXinUtil {
 		return url ;
 	}
 	
-	public static String ehais_authorize_snsapi(String weixin_appid,String SCOPE,String REDIRECT_URI){
-		String url = WXConstants.ehais_authorize.replace("APPID", weixin_appid).replace("SCOPE", SCOPE).replace("REDIRECT_URI", REDIRECT_URI);
-		return url ;
-	}
+//	public static String ehais_authorize_snsapi(String weixin_appid,String SCOPE,String REDIRECT_URI){
+//		String url = WXConstants.ehais_authorize.replace("APPID", weixin_appid).replace("SCOPE", SCOPE).replace("REDIRECT_URI", REDIRECT_URI);
+//		return url ;
+//	}
 	
 	public static OpenidInfo getOpenid(String code,String weixin_appid,String weixin_appsecret) throws Exception {
 		//code从这里来https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9439cbf94f9235f0&redirect_uri=http://www.gz96833.com/test.jsp&response_type=code&scope=snsapi_base&state=123#wechat_redirect

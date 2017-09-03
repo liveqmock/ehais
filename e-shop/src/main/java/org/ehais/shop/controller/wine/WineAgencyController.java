@@ -5,6 +5,8 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,19 +17,19 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.ehais.common.EConstants;
-import org.ehais.controller.CommonController;
 import org.ehais.epublic.mapper.EHaiArticleMapper;
 import org.ehais.epublic.model.EHaiArticle;
 import org.ehais.epublic.model.EHaiArticleExample;
 import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.epublic.service.EUsersService;
-import org.ehais.epublic.service.EWPPublicService;
 import org.ehais.shop.mapper.HaiGoodsMapper;
 import org.ehais.shop.mapper.WArticleGoodsMapper;
+import org.ehais.shop.mapper.WOrderGoodsActionMapper;
 import org.ehais.shop.model.HaiGoods;
 import org.ehais.shop.model.HaiGoodsExample;
 import org.ehais.shop.model.WArticleGoods;
+import org.ehais.shop.model.WOrderGoodsAction;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.EncryptUtils;
@@ -49,10 +51,9 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 @Controller
 @RequestMapping("/wine")
-public class WineAgencyController extends CommonController{
-	private Integer store_id = 56;
-	@Autowired
-	private EWPPublicService eWPPublicService;
+public class WineAgencyController extends WineCommonController{
+	//store_id在winecommoncontroller设置
+	
 	@Autowired
 	private EUsersService eUsersService;
 	@Autowired
@@ -61,6 +62,8 @@ public class WineAgencyController extends CommonController{
 	private EHaiArticleMapper eHaiArticleMapper;
 	@Autowired
 	private HaiGoodsMapper haiGoodsMapper;
+	@Autowired
+	private WOrderGoodsActionMapper wOrderGoodsActionMapper;
 	
 	
 	@RequestMapping("/login")
@@ -160,12 +163,7 @@ public class WineAgencyController extends CommonController{
 		return "{'code':-1,'msg':'wrong'}";
 	}
 	
-	private String setSid(Long agencyId,Integer articleId,Long userId,Long goodsId) throws Exception{
-		WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
-		String md5 = EncryptUtils.md5(agencyId.toString()+articleId.toString()+userId.toString()+goodsId.toString()+wp.getToken());
-		String sid = md5.substring(0, 5)+agencyId.toString()+"-"+md5.substring(5,15)+articleId.toString()+"_"+md5.substring(15,26)+userId.toString()+"-"+md5.substring(26,32)+goodsId.toString();
-		return sid;
-	}
+	
 	
 	@RequestMapping(value="/agency/article_qrcode",method=RequestMethod.POST)
 	public void article_qrcode(ModelMap modelMap,
@@ -197,7 +195,7 @@ public class WineAgencyController extends CommonController{
 				return ;
 			}
 			
-			String content = request.getScheme()+"://"+request.getServerName()+"/wine/wxarticle!"+this.setSid(user_id,articleId,user_id,goodsId);
+			String content = request.getScheme()+"://"+request.getServerName()+"/wine/w_article_detail!"+this.setSid(user_id,articleId,user_id,goodsId);
 			System.out.println(content);
 			MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
 			@SuppressWarnings("rawtypes")
@@ -276,6 +274,39 @@ public class WineAgencyController extends CommonController{
 			e.printStackTrace();
 		}
 		return "/wine/a_trade";
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value="/agency/trade_json",method=RequestMethod.POST)
+	public String trade_json(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@ModelAttribute EConditionObject condition,
+			@RequestParam(value = "start_time", required = true) String start_time,
+			@RequestParam(value = "end_time", required = true) String end_time
+			) {	
+		try{
+			System.out.println(System.currentTimeMillis() / 1000);
+			
+			ReturnObject<WOrderGoodsAction> rm = new ReturnObject<WOrderGoodsAction>();
+			rm.setCode(0);
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
+			Date sdate = sdf.parse(start_time); 
+			Date edate = sdf.parse(end_time); 
+			List<WOrderGoodsAction> list = wOrderGoodsActionMapper.listOrderGoods(store_id, Long.valueOf(sdate.getTime() / 1000).intValue() , Long.valueOf(edate.getTime() / 1000).intValue(), condition.getStart(), condition.getRows());
+			
+			
+			Long total = wOrderGoodsActionMapper.countOrderGoods(store_id, Long.valueOf(sdate.getTime() / 1000).intValue() , Long.valueOf(edate.getTime() / 1000).intValue());
+			rm.setRows(list);
+			rm.setTotal(total);
+			rm.setCode(1);
+			
+			return this.writeJson(rm);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return "{'code':-1,'msg':'wrong'}";
 	}
 	
 	@RequestMapping("/agency/modify_password")

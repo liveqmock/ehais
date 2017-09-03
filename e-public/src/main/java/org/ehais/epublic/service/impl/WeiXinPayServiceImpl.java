@@ -15,6 +15,7 @@ import org.ehais.epublic.model.weixin.WxUnifiedorderResult;
 import org.ehais.epublic.service.EWPPublicService;
 import org.ehais.epublic.service.WeiXinPayService;
 import org.ehais.util.ECommon;
+import org.ehais.util.IpUtil;
 import org.ehais.util.SignUtil;
 import org.ehais.weixin.model.WeiXinUnifiedOrder;
 import org.ehais.weixin.model.WeiXinUnifiedOrderResult;
@@ -46,7 +47,6 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 			Integer amount, String body, String table_name, Long table_id) throws Exception {
 		// TODO Auto-generated method stub
 		WpPublicWithBLOBs wpPublic = eWPPublicService.getWpPublic(store_id);
-		InetAddress address = InetAddress.getLocalHost();//获取的是本地的IP地址
 		
 		Date date = new Date();
 		WeiXinUnifiedOrder order = new WeiXinUnifiedOrder();
@@ -56,7 +56,7 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 		order.setBody(body);
 		order.setOut_trade_no(orderSn);
 		order.setTotal_fee(amount);		
-		order.setSpbill_create_ip(address.getHostAddress());//120.27.35.142
+		order.setSpbill_create_ip(IpUtil.getIpAddrV2(request));
 		order.setNotify_url(request.getScheme()+"://"+request.getServerName()+"/weixin/pay/notify_url");
 		order.setTrade_type("JSAPI");
 		order.setOpenid(openid);
