@@ -19,6 +19,7 @@ public class WineCommonController extends CommonController{
 	//三级分销的主页面，可以将代理，与三个分销关系的ID组成商城主页，从而确定到三层关系与分销员的唯一商城地址
 
 	protected Integer store_id = 56;
+//	protected Integer store_id = 2;
 	
 	@Autowired
 	protected EWPPublicService eWPPublicService;
