@@ -3,8 +3,8 @@ var chooseAddressId = null;
 var WeiXinWCPay = null;
 $(function(){
 	$("header .fa-chevron-left").click(function(){window.history.go(-1);});
-	recIds = localStorage.getItem("recIds");//缓存中的选中购物车的商品信息
-	chooseAddressId = localStorage.getItem("chooseAddressId");//地址选择页面选择地配送地址对象信息
+	recIds = sessionStorage.getItem("recIds");//缓存中的选中购物车的商品信息
+	chooseAddressId = sessionStorage.getItem("chooseAddressId");//地址选择页面选择地配送地址对象信息
 	
 	$("#coupon").click(function(){
 		layer.open({content:"暂无优惠券",btn:"朕知道了"});
@@ -98,7 +98,7 @@ function w_check_order_data(){
 				layer.open({content:result.msg + recIds, btn:"朕知道了"});
 				return ;
 			}
-			
+			alert("加载中.."+chooseAddressId);
 			if(chooseAddressId != null){//重新选择的地址
 				useraddress_info(chooseAddressId);
 				localStorage.removeItem("chooseAddressId");

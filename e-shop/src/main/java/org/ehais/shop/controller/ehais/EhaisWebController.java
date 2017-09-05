@@ -28,6 +28,7 @@ import org.ehais.shop.model.HaiCartExample;
 import org.ehais.shop.model.HaiGoods;
 import org.ehais.shop.model.HaiUserAddress;
 import org.ehais.shop.model.HaiUserAddressExample;
+import org.ehais.util.ECommon;
 import org.ehais.weixin.model.OpenidInfo;
 import org.ehais.weixin.model.WeiXinSignature;
 import org.ehais.weixin.utils.WeiXinUtil;
@@ -73,8 +74,6 @@ public class EhaisWebController extends EhaisCommonController {
 	 * @return
 	 * @throws Exception
 	 */
-	
-	
 	private EHaiUsers saveUserByOpenIdInfo(HttpServletRequest request,String code,Map<String ,Object> map) throws Exception{
 		//获取openid
 		WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(Integer.valueOf(map.get("store_id").toString()));
@@ -106,21 +105,76 @@ public class EhaisWebController extends EhaisCommonController {
 			eHaiUsersMapper.updateByPrimaryKeyWithBLOBs(user);
 			request.getSession().setAttribute(EConstants.SESSION_USER_ID, user.getUserId());
 		}
-		request.getSession(true).setAttribute(EConstants.SESSION_OPEN_ID, open.getOpenid());
+//		request.getSession(true).setAttribute(EConstants.SESSION_OPEN_ID, open.getOpenid());
 		
 		return user;
 	}
 	
+	/**
+	 * 获取软文与商品的所有信息
+	 * @param modelMap
+	 * @param request
+	 * @param response
+	 * @param sid
+	 * @param map
+	 * @return
+	 * @throws Exception 
+	 * @throws NumberFormatException 
+	 */
+	private String article_goods(ModelMap modelMap,	HttpServletRequest request,HttpServletResponse response,WpPublicWithBLOBs wp,String sid,Map<String,Object> map,String path) throws NumberFormatException, Exception{
+		String link = request.getScheme() + "://" + request.getServerName() + "/w_article_detail!"+sid;
+		//读取文章信息
+		EHaiArticle article = eHaiArticleMapper.selectByPrimaryKey(Integer.valueOf(map.get("articleId").toString()));
+		//读取商品信息
+		HaiArticleGoodsExample articleGoodsExp = new HaiArticleGoodsExample();
+		articleGoodsExp.createCriteria().andArticleIdEqualTo(Integer.valueOf(map.get("articleId").toString()));
+		List<HaiArticleGoods> articleGoodsList = haiArticleGoodsMapper.selectByExample(articleGoodsExp);
+		Long goodsId = 0L;
+		if(articleGoodsList != null && articleGoodsList.size() > 0){
+			goodsId = articleGoodsList.get(0).getGoodsId();
+			if(goodsId.longValue() !=Long.valueOf(map.get("goodsId").toString()).longValue()){
+				return "redirect:"+website; //错误的链接，跳转商城
+			}
+		}
+		//读取微信的分享信息与链接整理
+		if(goodsId == null || goodsId == 0L){
+			return "redirect:"+website; //错误的链接，跳转商城
+		}
+		HaiGoods goods = haiGoodsMapper.selectByPrimaryKey(goodsId);
+		
+		modelMap.addAttribute("article", article);
+		modelMap.addAttribute("goods", goods);
+		modelMap.addAttribute("parendId", map.get("parendId"));
+		modelMap.addAttribute("agencyId", map.get("agencyId"));
+		modelMap.addAttribute("articleId", map.get("articleId"));
+		
+		WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, Integer.valueOf(map.get("store_id").toString()), wp.getAppid(), wp.getSecret(), null);
+		signature.setTitle(article.getTitle());
+		signature.setLink(link);
+		signature.setDesc(article.getDescription());
+		signature.setImgUrl(article.getArticleImages());
+		List<String> jsApiList = new ArrayList<String>();
+		jsApiList.add("onMenuShareTimeline");
+		jsApiList.add("onMenuShareAppMessage");
+		jsApiList.add("onMenuShareQQ");
+		jsApiList.add("onMenuShareWeibo");
+		jsApiList.add("onMenuShareQZone");
+		signature.setJsApiList(jsApiList);
+		modelMap.addAttribute("signature", JSONObject.fromObject(signature).toString());
+		modelMap.addAttribute("w_goods_detail","w_goods_detail!"+sid);
+		modelMap.addAttribute("buynow","buynow!"+sid);
+		return path;
+	}
 		
 	/**
-	 * http://wx123.9351p.com/ehais_article_detail!1380e1-7c17608f579081_6ed557049551-2096bf3269
+	 * http://wx123.9351p.com/w_article_detail!1380e1-7c17608f579081_6ed557049551-2096bf3269
 	 * @param modelMap
 	 * @param request
 	 * @param response
 	 * @param sid
 	 * @return
 	 */
-	@RequestMapping("/ehais_article_detail!{sid}")
+	@RequestMapping("/w_article_detail!{sid}")
 	public String w_article_detail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@PathVariable(value = "sid") String sid	,
@@ -128,84 +182,43 @@ public class EhaisWebController extends EhaisCommonController {
 			) {
 		Integer store_id = this.getUriStoreId(sid);
 		if(store_id == 0){
-			System.out.println(sid+" store_id is worng");
 			return "redirect:"+website; //错误的链接，跳转商城
 		}
 		request.getSession().setAttribute(EConstants.SESSION_STORE_ID, store_id);
+		
 		try{
 			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
 			Map<String,Object> map = this.getSid(sid,wp.getToken());
 			if(map == null){
-				System.out.println(sid+" sid is worng");
 			    return "redirect:"+website; //错误的链接，跳转商城
 			}
 			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
-			String openid = (String)request.getSession().getAttribute(EConstants.SESSION_OPEN_ID);
+			
+			if(this.isWeiXin(request)){//微信端登录
+				if((user_id == null || user_id == 0 ) && StringUtils.isEmpty(code)){
+					return this.redirect_wx_authorize(request , wp.getAppid() , "/w_article_detail!"+sid);
+				}else if(StringUtils.isNotEmpty(code)){
+					System.out.println(code);
+					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map);
+					String newSid = this.setSid(store_id,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), user.getUserId(), Integer.valueOf(map.get("articleId").toString()), Long.valueOf(map.get("goodsId").toString()),wp.getToken());
+					String link = request.getScheme() + "://" + request.getServerName() + "/w_article_detail!"+newSid;
+					System.out.println("code:"+link);
+					return "redirect:"+link;
+				}else if(user_id > 0 && Long.valueOf(map.get("userId").toString()).longValue() == user_id.longValue()){//经过code获取用户信息跳回自己的链接中来
+					return this.article_goods(modelMap, request, response,wp, sid,map,"/ehais/w_article_detail");//整理此软文与商品所有内容
+				}else if(Long.valueOf(map.get("userId").toString()).longValue() != user_id.longValue()){
+					System.out.println("user_id != map.userId condition is worng");
+					request.getSession().removeAttribute(EConstants.SESSION_USER_ID);
 
-			if((user_id == null || user_id == 0 || StringUtils.isEmpty(openid)) && StringUtils.isEmpty(code)){
-				return this.redirect_wx_authorize(request , wp.getAppid() , "/ehais_article_detail!"+sid);
-			}else if(StringUtils.isNotEmpty(code)){
-				System.out.println(code);
-				EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map);
-				String newSid = this.setSid(store_id,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), user.getUserId(), Integer.valueOf(map.get("articleId").toString()), Long.valueOf(map.get("goodsId").toString()),wp.getToken());
-				String link = request.getScheme() + "://" + request.getServerName() + "/ehais_article_detail!"+newSid;
-				System.out.println("code:"+link);
-				return "redirect:"+link;
-			}else if(user_id > 0 && StringUtils.isNotEmpty(openid) && Long.valueOf(map.get("userId").toString()).longValue() == user_id.longValue()){//经过code获取用户信息跳回自己的链接中来
-				String link = request.getScheme() + "://" + request.getServerName() + "/ehais_article_detail!"+sid;
-				//读取文章信息
-				EHaiArticle article = eHaiArticleMapper.selectByPrimaryKey(Integer.valueOf(map.get("articleId").toString()));
-				//读取商品信息
-				HaiArticleGoodsExample articleGoodsExp = new HaiArticleGoodsExample();
-				articleGoodsExp.createCriteria().andArticleIdEqualTo(Integer.valueOf(map.get("articleId").toString()));
-				List<HaiArticleGoods> articleGoodsList = haiArticleGoodsMapper.selectByExample(articleGoodsExp);
-				Long goodsId = 0L;
-				if(articleGoodsList != null && articleGoodsList.size() > 0){
-					goodsId = articleGoodsList.get(0).getGoodsId();
-					if(goodsId.longValue() !=Long.valueOf(map.get("goodsId").toString()).longValue()){
-						return "redirect:"+website; //错误的链接，跳转商城
-					}
-				}
-				//读取微信的分享信息与链接整理
-				if(goodsId == null || goodsId == 0L){
+				    return this.redirect_wx_authorize(request,wp.getAppid(), "/w_article_detail!"+sid);
+				}else{
+					System.out.println(sid+" condition is worng");
 					return "redirect:"+website; //错误的链接，跳转商城
 				}
-				HaiGoods goods = haiGoodsMapper.selectByPrimaryKey(goodsId);
-				
-				modelMap.addAttribute("article", article);
-				modelMap.addAttribute("goods", goods);
-				modelMap.addAttribute("parendId", map.get("parendId"));
-				modelMap.addAttribute("agencyId", map.get("agencyId"));
-				modelMap.addAttribute("articleId", map.get("articleId"));
-				
-				WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, store_id, wp.getAppid(), wp.getSecret(), null);
-				signature.setTitle(article.getTitle());
-				signature.setLink(link);
-				signature.setDesc(article.getDescription());
-				signature.setImgUrl(article.getArticleImages());
-				List<String> jsApiList = new ArrayList<String>();
-				jsApiList.add("onMenuShareTimeline");
-				jsApiList.add("onMenuShareAppMessage");
-				jsApiList.add("onMenuShareQQ");
-				jsApiList.add("onMenuShareWeibo");
-				jsApiList.add("onMenuShareQZone");
-				signature.setJsApiList(jsApiList);
-				modelMap.addAttribute("signature", JSONObject.fromObject(signature).toString());
-				modelMap.addAttribute("ehais_goods_detail","ehais_goods_detail!"+sid);
-				modelMap.addAttribute("buynow","buynow!"+sid);
-				return "/ehais/w_article_detail";
-			}else if(Long.valueOf(map.get("userId").toString()).longValue() != user_id.longValue()){
-				System.out.println("user_id != map.userId condition is worng");
-				request.getSession().removeAttribute(EConstants.SESSION_USER_ID);
-				request.getSession().removeAttribute(EConstants.SESSION_OPEN_ID);
-
-			    return this.redirect_wx_authorize(request,wp.getAppid(), "/ehais_article_detail!"+sid);
 			}else{
-				System.out.println(sid+" condition is worng");
-				return "redirect:"+website; //错误的链接，跳转商城
+				this.shop_encode(request);
+				return this.article_goods(modelMap, request, response,wp, sid,map,"/ehais/w_article_detail");//整理此软文与商品所有内容
 			}
-
-
 			
 			
 		}catch(Exception e){
@@ -216,14 +229,14 @@ public class EhaisWebController extends EhaisCommonController {
 	
 	
 	/**
-	 * http://localhost/ehais_goods_detail!7f9999873-2b10bbc4af9081_ec8f91bb8b694-1f18cd3269
+	 * http://localhost/w_goods_detail!7f9999873-2b10bbc4af9081_ec8f91bb8b694-1f18cd3269
 	 * @param modelMap
 	 * @param request
 	 * @param response
 	 * @param sid
 	 * @return
 	 */
-	@RequestMapping("/ehais_goods_detail!{sid}")
+	@RequestMapping("/w_goods_detail!{sid}")
 	public String w_goods_detail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@PathVariable(value = "sid") String sid	,
@@ -243,67 +256,36 @@ public class EhaisWebController extends EhaisCommonController {
 			    return "redirect:"+website; //错误的链接，跳转商城
 			}
 			
-			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
-			String openid = (String)request.getSession().getAttribute(EConstants.SESSION_OPEN_ID);
+			if(this.isWeiXin(request)){//微信端登录
 
-			if((user_id == null || user_id == 0 || StringUtils.isEmpty(openid)) && StringUtils.isEmpty(code)){
-				return this.redirect_wx_authorize(request,wp.getAppid(), "/ehais_goods_detail!"+sid);
-			}else if(StringUtils.isNotEmpty(code)){
-				System.out.println(code);
-				EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map);
-				String newSid = this.setSid(store_id,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), user.getUserId(), Integer.valueOf(map.get("articleId").toString()), Long.valueOf(map.get("goodsId").toString()),wp.getToken());
-				String link = request.getScheme() + "://" + request.getServerName() + "/ehais_goods_detail!"+newSid;
-				System.out.println("code:"+link);
-				return "redirect:"+link;
-			}else if(user_id > 0 && StringUtils.isNotEmpty(openid) && Long.valueOf(map.get("userId").toString()).longValue() == user_id.longValue()){
-				String link = request.getScheme() + "://" + request.getServerName() + "/ehais_goods_detail!"+sid;
-				//读取文章信息
-				EHaiArticle article = eHaiArticleMapper.selectByPrimaryKey(Integer.valueOf(map.get("articleId").toString()));
-				//读取商品信息
-				HaiArticleGoodsExample articleGoodsExp = new HaiArticleGoodsExample();
-				articleGoodsExp.createCriteria().andArticleIdEqualTo(Integer.valueOf(map.get("articleId").toString()));
-				List<HaiArticleGoods> articleGoodsList = haiArticleGoodsMapper.selectByExample(articleGoodsExp);
-				Long goodsId = 0L;
-				if(articleGoodsList != null && articleGoodsList.size() > 0){
-					goodsId = articleGoodsList.get(0).getGoodsId();
-					if(goodsId.longValue() !=Long.valueOf(map.get("goodsId").toString()).longValue()){
-						return "redirect:"+website; //错误的链接，跳转商城
-					}
-				}
-				//读取微信的分享信息与链接整理
-				if(goodsId == null || goodsId == 0L){
+				Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
+//				String openid = (String)request.getSession().getAttribute(EConstants.SESSION_OPEN_ID);
+
+				if((user_id == null || user_id == 0) && StringUtils.isEmpty(code)){
+					return this.redirect_wx_authorize(request,wp.getAppid(), "/w_goods_detail!"+sid);
+				}else if(StringUtils.isNotEmpty(code)){
+					System.out.println(code);
+					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map);
+					String newSid = this.setSid(store_id,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), user.getUserId(), Integer.valueOf(map.get("articleId").toString()), Long.valueOf(map.get("goodsId").toString()),wp.getToken());
+					String link = request.getScheme() + "://" + request.getServerName() + "/w_goods_detail!"+newSid;
+					System.out.println("code:"+link);
+					return "redirect:"+link;
+				}else if(user_id > 0 && Long.valueOf(map.get("userId").toString()).longValue() == user_id.longValue()){
+					return this.article_goods(modelMap, request, response,wp, sid,map,"/ehais/w_goods_detail");//整理此软文与商品所有内容
+				}else if(Long.valueOf(map.get("userId").toString()).longValue() != user_id.longValue()){
+					System.out.println("user_id != map.userId condition is worng");
+					request.getSession().removeAttribute(EConstants.SESSION_USER_ID);
+//					request.getSession().removeAttribute(EConstants.SESSION_OPEN_ID);
+
+				    return this.redirect_wx_authorize(request,wp.getAppid(), "/w_goods_detail!"+sid);
+				}else{
+					System.out.println(sid+" condition is worng");
 					return "redirect:"+website; //错误的链接，跳转商城
 				}
-				HaiGoods goods = haiGoodsMapper.selectByPrimaryKey(goodsId);
 				
-				modelMap.addAttribute("article", article);
-				modelMap.addAttribute("goods", goods);
-				modelMap.addAttribute("parendId", map.get("parendId"));
-				modelMap.addAttribute("agencyId", map.get("agencyId"));
-				modelMap.addAttribute("articleId", map.get("articleId"));
-				WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, store_id, wp.getAppid(), wp.getSecret(), null);
-				signature.setTitle(article.getTitle());
-				signature.setLink(link);
-				signature.setDesc(article.getDescription());
-				signature.setImgUrl(article.getArticleImages());
-				List<String> jsApiList = new ArrayList<String>();
-				jsApiList.add("onMenuShareTimeline");
-				jsApiList.add("onMenuShareAppMessage");
-				jsApiList.add("onMenuShareQQ");
-				jsApiList.add("onMenuShareWeibo");
-				jsApiList.add("onMenuShareQZone");
-				signature.setJsApiList(jsApiList);
-				modelMap.addAttribute("signature", JSONObject.fromObject(signature).toString());
-				return "/ehais/w_goods_detail";
-			}else if(Long.valueOf(map.get("userId").toString()).longValue() != user_id.longValue()){
-				System.out.println("user_id != map.userId condition is worng");
-				request.getSession().removeAttribute(EConstants.SESSION_USER_ID);
-				request.getSession().removeAttribute(EConstants.SESSION_OPEN_ID);
-
-			    return this.redirect_wx_authorize(request,wp.getAppid(), "/ehais_goods_detail!"+sid);
 			}else{
-				System.out.println(sid+" condition is worng");
-				return "redirect:"+website; //错误的链接，跳转商城
+				this.shop_encode(request);
+				return this.article_goods(modelMap, request, response,wp, sid,map,"/ehais/w_goods_detail");//整理此软文与商品所有内容
 			}
 			
 			
@@ -316,7 +298,7 @@ public class EhaisWebController extends EhaisCommonController {
 	
 	
 	
-	@RequestMapping("/ehais_cart")
+	@RequestMapping("/w_cart")
 	public String w_cart(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response	) {
 		
@@ -334,7 +316,7 @@ public class EhaisWebController extends EhaisCommonController {
 		return "/ehais/w_cart";
 	}
 	
-	@RequestMapping("/ehais_check_order")
+	@RequestMapping("/w_check_order")
 	public String w_check_order(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response	) {
 		
@@ -351,7 +333,7 @@ public class EhaisWebController extends EhaisCommonController {
 	}
 	
 	
-	@RequestMapping("/ehais_address_list")
+	@RequestMapping("/w_address_list")
 	public String w_address_list(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response	) {
 		
@@ -371,7 +353,7 @@ public class EhaisWebController extends EhaisCommonController {
 	}
 	
 	
-	@RequestMapping("/ehais_address_add")
+	@RequestMapping("/w_address_add")
 	public String w_address_add(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response	) {
 		
@@ -385,7 +367,7 @@ public class EhaisWebController extends EhaisCommonController {
 	}
 	
 	
-	@RequestMapping("/ehais_address_edit")
+	@RequestMapping("/w_address_edit")
 	public String w_address_edit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response	,
 			@RequestParam(value = "addressId", required = true) Long addressId

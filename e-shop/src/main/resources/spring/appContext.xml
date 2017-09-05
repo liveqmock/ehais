@@ -101,6 +101,48 @@
 
 
 
-	
- 
+
+
+
+
+
+<!-- 
+	<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+		<property name="customEditors">
+			<map>
+				<entry key="java.net.SocketAddress">
+					<bean class="org.apache.mina.integration.beans.InetSocketAddressEditor"></bean>
+				</entry>
+			</map>
+		</property>
+	</bean>
+	<bean id="minaHandler" class="org.ehais.mina.MinaProtocolHandler"/>
+	<bean id="executorFilter" class="org.apache.mina.filter.executor.ExecutorFilter"/>
+ 	<bean id="mdcInjectionFilter" class="org.apache.mina.filter.logging.MdcInjectionFilter">
+ 		<constructor-arg value="remoteAddress"/>
+ 	</bean>
+ 	<bean id="codecFilter" class="org.apache.mina.filter.codec.ProtocolCodecFilter">
+ 		<constructor-arg>
+ 			<bean class="org.apache.mina.filter.codec.textline.TextLineCodecFactory"></bean>
+ 		</constructor-arg>
+ 	</bean>
+ 	<bean id="loggingFilter" class="org.apache.mina.filter.logging.LoggingFilter" />
+ 	<bean id="filterChainBuilder" class="org.apache.mina.core.filterchain.DefaultIoFilterChainBuilder">
+ 		<property name="filters">
+ 			<map>
+ 				<entry key="executor" value-ref="executorFilter"></entry>
+ 				<entry key="mdcInjectionFilter" value-ref="mdcInjectionFilter"></entry>
+ 				<entry key="codecFilter" value-ref="codecFilter"></entry>
+ 				<entry key="loggingFilter" value-ref="loggingFilter"></entry>
+ 			</map>
+ 		</property>
+ 	</bean>
+ 	<bean id="minaAcceptor" class="org.apache.mina.transport.socket.nio.NioSocketAcceptor" init-method="bind" destroy-method="unbind">
+ 		<property name="defaultLocalAddress" value=":10008"></property>
+ 		<property name="handler" ref="minaHandler"></property>
+ 		<property name="reuseAddress" value="true"></property>
+ 		<property name="filterChainBuilder" ref="filterChainBuilder"></property>
+ 	</bean>
+ 	 -->
+ 	
 </beans>

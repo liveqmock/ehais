@@ -199,7 +199,7 @@ public class EhaisAgencyController extends EhaisCommonController{
 				return ;
 			}
 			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
-			String content = request.getScheme()+"://"+request.getServerName()+"/ehais_article_detail!"+this.setSid(store_id,agencyId,user_id,user_id,articleId,goodsId,wp.getToken());
+			String content = request.getScheme()+"://"+request.getServerName()+"/w_article_detail!"+this.setSid(store_id,agencyId,user_id,user_id,articleId,goodsId,wp.getToken());
 			System.out.println(content);
 			MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
 			@SuppressWarnings("rawtypes")

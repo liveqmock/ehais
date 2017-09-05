@@ -58,7 +58,7 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 		// TODO Auto-generated method stub
 		WpPublicWithBLOBs wpPublic = eWPPublicService.getWpPublic(store_id);
 		
-		Date date = new Date();
+//		Date date = new Date();
 		WeiXinUnifiedOrder order = new WeiXinUnifiedOrder();
 		order.setAppid(wpPublic.getAppid());
 		order.setMch_id(wpPublic.getMchId());
@@ -67,7 +67,7 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 		order.setOut_trade_no(orderSn);
 		order.setTotal_fee(amount);		
 		order.setSpbill_create_ip(IpUtil.getIpAddrV2(request));
-		order.setNotify_url(request.getScheme()+"://"+request.getServerName()+"/weixin/pay/notify_url");
+		order.setNotify_url(request.getScheme()+"://"+request.getServerName()+"/weixin/pay/notify_url-"+store_id);
 		order.setTrade_type("JSAPI");
 		order.setOpenid(openid);
 		

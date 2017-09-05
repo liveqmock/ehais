@@ -656,7 +656,7 @@ public class ShoppingServiceImpl extends CommonServiceImpl implements ShoppingSe
 		Date date = new Date();
 		//插入订单主表
 		HaiOrderInfo orderInfo = new HaiOrderInfo();
-		String orderSn = DateUtil.formatDate(date, DateUtil.FORMATSTR_4) + ECommon.nonceInt(4) + order_done.getUser_id().toString();
+		String orderSn = "100"+DateUtil.formatDate(date, DateUtil.FORMATSTR_4) + ECommon.nonceInt(4) + order_done.getUser_id().toString();
 		orderInfo.setOrderSn(orderSn);
 		orderInfo.setUserId(order_done.getUser_id());
 		orderInfo.setOrderStatus(EOrderStatusEnum.init);

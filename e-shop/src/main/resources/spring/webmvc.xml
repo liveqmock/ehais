@@ -123,7 +123,7 @@
 		
 		<mvc:interceptor>
 			<mvc:mapping path="/ehais/manage/**"/>
-			<ref bean="ehaisInterceptor"/>
+			<ref bean="ehaisManageInterceptor"/>
 		</mvc:interceptor>
 		
 		<mvc:interceptor>
@@ -178,7 +178,7 @@
 		</property>
 	</bean>
 	
-	<bean id="ehaisInterceptor" class="org.ehais.interceptor.WineInterceptor">
+	<bean id="ehaisManageInterceptor" class="org.ehais.interceptor.EhaisManageInterceptor">
 		<property name="loginUrl" value="/ehais/adminlogin"/>
 		<property name="ignoreUrls">
 			<list>
@@ -188,7 +188,7 @@
 		</property>
 	</bean>
 	
-	<bean id="ehaisAgencyInterceptor" class="org.ehais.interceptor.WineAgencyInterceptor">
+	<bean id="ehaisAgencyInterceptor" class="org.ehais.interceptor.EhaisAgencyInterceptor">
 		<property name="loginUrl" value="/ehais/login"/>
 		<property name="ignoreUrls">
 			<list>

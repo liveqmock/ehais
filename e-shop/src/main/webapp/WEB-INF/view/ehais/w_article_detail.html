@@ -3,6 +3,9 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
 		<title>${article.title!''}</title>
 		<link rel="stylesheet" href="../css/common.css" />
 		<link rel="stylesheet" href="../css/w_wine.css" />
@@ -26,7 +29,7 @@
 				<div class="name">${goods.goodsName!''}</div>
 				<div class="detail">
 					<span id="buynow"><a href="javascript:;">购买</a></span>
-					<span><a href="${ehais_goods_detail!''}">详情</a></span>
+					<span><a href="${w_goods_detail!''}">详情</a></span>
 					<span id="shareTip"><a href="javascript:;">分享</a></span>
 				</div>
 			</div>
@@ -52,7 +55,7 @@
 	<script type="text/javascript" src="../js/jquery-2.1.4.min.js" ></script>
 	<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js" ></script>
 	<script type="text/javascript" src="../js/wxsdk.js" ></script>
-	<script type="text/javascript" src="../js/wine/w_article_detail.js" ></script>
+	<script type="text/javascript" src="../js/ehais/w_article_detail.js" ></script>
 	<script type="text/javascript">
 	$(function(){
 		wx_config(${signature});

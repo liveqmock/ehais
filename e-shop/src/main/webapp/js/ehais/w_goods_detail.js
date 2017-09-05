@@ -49,11 +49,12 @@ function addCart(){
 		url : "/ws/cart_add_submit",type:"post",dataType:"json",
 		data : {"goods_id":$("#goodsId").val(),"parent_user_id":$("#parendId").val(),"agency_id":$("#agencyId").val(),"article_id":$("#articleId").val(),"quantity":1},
 		success : function(result){
-			if(result.code != 1){
-				layer.open({
-				    content: result.msg
-				    ,btn: '朕知道了'
-				  });
+			layer.open({
+			    content: result.msg
+			    ,btn: '朕知道了'
+			    ,time: 3
+			});
+			if(result.code != 1){				
 				return ;
 			}
 			//更新购物车数量
@@ -80,7 +81,7 @@ function buynow(){
 				return ;
 			}
 			//更新购物车数量
-			localStorage.setItem("recIds",result.model.recId);
+			sessionStorage.setItem("recIds",result.model.recId);
 			window.location.href = "w_check_order";
 		},error : function(err,xhr){
 			

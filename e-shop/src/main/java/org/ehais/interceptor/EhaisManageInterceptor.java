@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-public class WineAgencyInterceptor extends HandlerInterceptorAdapter{
+public class EhaisManageInterceptor extends HandlerInterceptorAdapter{
 
 	private String loginUrl;
 	private String[] ignoreUrls;
@@ -39,10 +39,10 @@ public class WineAgencyInterceptor extends HandlerInterceptorAdapter{
 		
 		
 		
-		Long user_id = (Long) request.getSession().getAttribute(EConstants.SESSION_USER_ID);
+		Long admin_id = (Long) request.getSession().getAttribute(EConstants.SESSION_ADMIN_ID);
 		
 		//如果session中用户名为空，则跳转到登录页面
-		if (user_id == null || user_id == 0) {
+		if (admin_id == null || admin_id == 0) {
 			//如果是ajax请求
 			if (request.getHeader("X-Requested-With") != null) {
 				response.getWriter().write("{'code':2,'msg':'请登录再请求'}");

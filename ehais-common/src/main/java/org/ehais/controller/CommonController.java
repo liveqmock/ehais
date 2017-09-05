@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
 import org.ehais.tools.ReturnObject;
+import org.ehais.util.ECommon;
 import org.ehais.util.IpUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -303,6 +304,14 @@ public class CommonController {
 		}
 	}
 	
-	
+	protected String shop_encode(HttpServletRequest request){
+		String s_encode = (String) request.getSession().getAttribute(EConstants.SESSION_SHOP_ENCODE);
+		if(s_encode == null || s_encode.equals("")){
+			s_encode = ECommon.nonceStrUpper(32);
+			System.out.println("商码："+s_encode);
+			request.getSession().setAttribute(EConstants.SESSION_SHOP_ENCODE,s_encode);
+		}
+		return s_encode;
+	}
 }
 

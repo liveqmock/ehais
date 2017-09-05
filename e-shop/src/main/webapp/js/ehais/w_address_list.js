@@ -32,7 +32,7 @@ $(function(){
 	});
 	
 	$(".list .item .operate .choose").click(function(){
-		localStorage.setItem("chooseAddressId",$(this).parent().parent().attr("addressid"));
+		sessionStorage.setItem("chooseAddressId",$(this).parent().parent().attr("addressid"));
 		window.history.go(-1);
 	});
 	

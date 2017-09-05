@@ -84,7 +84,7 @@ $(function(){
 			    ,btn: ['朕知道了']
 			});
 		}else{
-			localStorage.setItem("recIds",recIds.join(","));
+			sessionStorage.setItem("recIds",recIds.join(","));
 			window.location.href = "w_check_order";
 		}
 	});

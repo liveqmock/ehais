@@ -20,7 +20,7 @@ function buynow(){
 				return ;
 			}
 			//更新购物车数量
-			localStorage.setItem("recIds",result.model.recId);
+			sessionStorage.setItem("recIds",result.model.recId);
 			window.location.href = "w_check_order";
 		},error : function(err,xhr){
 			
