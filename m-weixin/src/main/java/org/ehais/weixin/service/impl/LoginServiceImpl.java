@@ -13,7 +13,7 @@ import org.ehais.epublic.model.WpPublicExample;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.EncryptUtils;
-import org.ehais.util.ResourceUtil;
+import org.ehais.util.EResourceUtil;
 import org.ehais.weixin.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -110,7 +110,7 @@ public class LoginServiceImpl implements LoginService{
 			return ro;
 		}
 		
-		Integer store_id = Integer.valueOf(ResourceUtil.getProValue("store_id"));
+		Integer store_id = Integer.valueOf(EResourceUtil.getProValue("store_id"));
 		int c = haiUserMapper.checkUser(userName, email);
 		if(c>0){
 			ro.setMsg("用户名或邮箱存在");

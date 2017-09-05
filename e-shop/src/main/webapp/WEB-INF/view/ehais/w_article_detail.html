@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<title>${article.title!''}</title>
+		<link rel="stylesheet" href="../css/common.css" />
+		<link rel="stylesheet" href="../css/w_wine.css" />
+				
+	</head>
+	<body>
+		<div class="w_wine_wrapper">
+			<div class="logo"></div>
+			<h3>${article.title!''}</h3>
+			<div class="lbl">
+				<span>${(article.articleDate?string("yyyy-MM-dd"))!''}</span>
+				<span>${article.author!''}</span>
+				<span>易海司</span>
+			</div>
+			<div class="media">
+				<img src="${article.articleImages!''}" />
+			</div>
+			<div class="article">${article.content!''}</div>
+			<div class="product">
+				<img src="${goods.goodsThumb!''}" />
+				<div class="name">${goods.goodsName!''}</div>
+				<div class="detail">
+					<span id="buynow"><a href="javascript:;">购买</a></span>
+					<span><a href="${ehais_goods_detail!''}">详情</a></span>
+					<span id="shareTip"><a href="javascript:;">分享</a></span>
+				</div>
+			</div>
+			
+			<div class="qrcode">
+				<img src="../images/qrcode.gif" />
+			</div>
+		</div>
+		
+		<div class="share_wrapper">
+			<div class="bg"></div>
+			<div class="pic"></div>
+		</div>
+		
+		<input type="hidden" id="goodsId" name="goodsId" value="${goods.goodsId}"/>
+		<input type="hidden" id="parendId" name="parendId" value="${parendId}"/>
+		<input type="hidden" id="articleId" name="articleId" value="${articleId}"/>
+		<input type="hidden" id="agencyId" name="agencyId" value="${agencyId}"/>
+		
+		
+	</body>
+	
+	<script type="text/javascript" src="../js/jquery-2.1.4.min.js" ></script>
+	<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js" ></script>
+	<script type="text/javascript" src="../js/wxsdk.js" ></script>
+	<script type="text/javascript" src="../js/wine/w_article_detail.js" ></script>
+	<script type="text/javascript">
+	$(function(){
+		wx_config(${signature});
+	});
+	</script>
+		
+</html>

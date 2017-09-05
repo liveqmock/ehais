@@ -1,11 +1,16 @@
 package org.ehais.weixin.model;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-public class WeiXinNotifyPay {
+public class WeiXinNotifyPay implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1692010165785385960L;
 	private String return_code;
 	private String return_msg;
 	private String appid;
@@ -13,6 +18,7 @@ public class WeiXinNotifyPay {
 	private String device_info;
 	private String nonce_str;
 	private String sign;
+	private String sign_type;
 	private String result_code;
 	private String err_code;
 	private String err_code_des;
@@ -21,6 +27,7 @@ public class WeiXinNotifyPay {
 	private String trade_type;
 	private String bank_type;
 	private Integer total_fee;
+	private Integer settlement_total_fee;
 	private String fee_type;
 	private Integer cash_fee;
 	private String cash_fee_type;
@@ -188,10 +195,20 @@ public class WeiXinNotifyPay {
 	}
 	public void setTime_end(Float time_end) {
 		this.time_end = time_end;
+	}	
+    public String getSign_type() {
+		return sign_type;
 	}
-
-	
-    public Map<String,Object> toMap(){
+	public void setSign_type(String sign_type) {
+		this.sign_type = sign_type;
+	}
+	public Integer getSettlement_total_fee() {
+		return settlement_total_fee;
+	}
+	public void setSettlement_total_fee(Integer settlement_total_fee) {
+		this.settlement_total_fee = settlement_total_fee;
+	}
+	public Map<String,Object> toMap(){
         Map<String,Object> map = new HashMap<String, Object>();
         Field[] fields = this.getClass().getDeclaredFields();
         for (Field field : fields) {

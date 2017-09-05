@@ -4,6 +4,12 @@ public class EConstants {
 
 	//商户号
 	public static final String SESSION_STORE_ID = "session_store_id";
+	public static final String SESSION_STORE_NAME = "session_store_name";
+	public static final String SESSION_STORE_THEME = "session_store_theme";//商家后台模板
+	//代理
+	public static final String SESSION_AGENCY_ID = "session_agency_id";
+	public static final String SESSION_AGENCY_NAME = "session_agency_name";
+	
 	/** 用户登录商城或手机时，都会产生一个随机数传给后台临时存储 字符串类型 **/
 	public static final String SESSION_SHOP_ENCODE = "session_shop_encode";
 	/** session-key 管理员ID **/

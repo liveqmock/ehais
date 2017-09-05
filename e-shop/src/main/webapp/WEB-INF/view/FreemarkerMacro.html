@@ -24,10 +24,27 @@
 <!-- 图片控件：<@bsImagesPicker id="a" value="b" /> -->
 <#macro bsImagesPicker id value >
 <input type="file" id="${id}_" name="${id}_">
-<input type="hidden" class="form-control" id="${id}" name="${id}" value="${value!''}" placeholder="">
+<input type="hidden" id="${id}" name="${id}" value="${value!''}" >
 <script type="text/javascript">
 $(function(){
-	initFileInput("${id}");//图片组件添加
+	initImageInput("${id}");//图片组件添加
+});
+</script> 
+</#macro>
+
+<!-- 多图片相册控件：<@bsGalleryPicker id="a" gallery={} /> -->
+<#macro bsGalleryPicker id gallery >
+<input type="file" id="${id}_" name="${id}_">
+<div id="gallery_${id}" class="dn">
+	<#if gallery??&&gallery?size gt 0>
+	<#list gallery as pic>
+		<input type="hidden" id="gallery_pic_${id}_${pic_index}" name="${id}" value="${pic.imgOriginal!''}" no="${pic_index}">
+	</#list>
+	</#if>
+</div>
+<script type="text/javascript">
+$(function(){
+	initGalleryInput("${id}");//图片组件添加
 });
 </script> 
 </#macro>

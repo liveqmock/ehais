@@ -83,7 +83,8 @@ public class  GoodsController extends CommonController {
 	@RequestMapping(value="/goods_insert_submit",method=RequestMethod.POST)
 	public String goods_insert_submit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
-			@ModelAttribute HaiGoodsWithBLOBs goods
+			@ModelAttribute HaiGoodsWithBLOBs goods,
+			@RequestParam(value = "imgOriginal", required = false) String[] imgOriginal
 			) throws Exception {
 //		try{
 //			
@@ -94,7 +95,7 @@ public class  GoodsController extends CommonController {
 //		return "redirect:goods_insert";
 		
 		
-		ReturnObject<HaiGoodsWithBLOBs> rm = goodsService.goods_insert_submit(request,goods);
+		ReturnObject<HaiGoodsWithBLOBs> rm = goodsService.goods_insert_submit(request,goods,imgOriginal);
 		return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "goods_insert");
 		
 	}
@@ -118,10 +119,11 @@ public class  GoodsController extends CommonController {
 	@RequestMapping(value="/goods_update_submit",method=RequestMethod.POST)
 	public String goods_update_submit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
-			@ModelAttribute HaiGoodsWithBLOBs goods
+			@ModelAttribute HaiGoodsWithBLOBs goods,
+			@RequestParam(value = "imgOriginal", required = false) String[] imgOriginal
 			) {
 		try{
-			ReturnObject<HaiGoodsWithBLOBs> rm = goodsService.goods_update_submit(request,goods);
+			ReturnObject<HaiGoodsWithBLOBs> rm = goodsService.goods_update_submit(request,goods,imgOriginal);
 			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "goods_list");
 		}catch(Exception e){
 			e.printStackTrace();

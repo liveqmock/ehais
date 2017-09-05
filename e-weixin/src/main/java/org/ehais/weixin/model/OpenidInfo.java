@@ -1,6 +1,12 @@
 package org.ehais.weixin.model;
 
-public class OpenidInfo {
+import java.io.Serializable;
+
+public class OpenidInfo implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2219185835235171997L;
 	private String access_token;
 	private Integer expires_in;
 	private String refresh_token;

@@ -1,6 +1,12 @@
 package org.ehais.weixin.model;
 
-public class AccessToken {
+import java.io.Serializable;
+
+public class AccessToken implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4918649896332871797L;
 	//用于区别哪一个用户的编号
 	private int id;
 	// 获取到的凭证

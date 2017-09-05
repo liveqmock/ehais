@@ -81,10 +81,16 @@ public class OrderPayWeiXinController extends CommonController{
 			if(notifyPay != null){
 				//自己的逻辑处理
 				ReturnObject<WeiXinNotifyPay> rm = orderPayWeiXinService.notify_order_pay(request, notifyPay);
-								
 				WeiXinNotifyPay wnp = new WeiXinNotifyPay();
-				wnp.setReturn_code(rm.getModel().getReturn_code());
-				wnp.setReturn_msg(rm.getModel().getReturn_msg());
+				if(rm.getCode()!=0){
+					wnp.setReturn_code("FAIL");
+					wnp.setReturn_msg(rm.getMsg());
+				}else{
+					wnp.setReturn_code("SUCCESS");
+					wnp.setReturn_msg("");
+				}
+				
+				
 				
 				String xml = WeiXinUtil.fromNotifyPayXml(wnp);
 				

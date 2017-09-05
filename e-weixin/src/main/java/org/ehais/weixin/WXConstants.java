@@ -1,6 +1,6 @@
 package org.ehais.weixin;
 
-import org.ehais.util.ResourceUtil;
+import org.ehais.util.EResourceUtil;
 
 public class WXConstants {
 //	public static String weixin_appid = ResourceUtil.getProValue("weixin_appid");
@@ -72,6 +72,8 @@ public class WXConstants {
 	//使用该接口，商户可获取账号下的类目与号段等信息
 	public static String merchantinfo = "https://api.weixin.qq.com/scan/merchantinfo/get?access_token=TOKEN";
 	
+	//消息模板发送
+	public static String template_send = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=ACCESS_TOKEN";
 	
 }
 

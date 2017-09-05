@@ -219,54 +219,7 @@ public class EUsersServiceImpl  extends CommonServiceImpl implements EUsersServi
 		return rm;
 	}
 	
-	@Override
-	public ReturnObject<EHaiUsers> agencyLogin(HttpServletRequest request,
-			String username, String password,String verificationcode,String source) throws Exception {
-		// TODO Auto-generated method stub
-		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
-		
-		ReturnObject<EHaiUsers> rm = new ReturnObject<EHaiUsers>();
-		rm.setCode(0);
-		if(username == null || username.trim().length() == 0){
-			rm.setMsg("用户名不能为空");
-			return rm;
-		}
-		if(password == null || password.trim().length() == 0){
-			rm.setMsg("密码不能为空");
-			return rm;
-		}
-		if(StringUtils.isEmpty(verificationcode)){
-			rm.setMsg("验证码不能为空");
-			return rm;
-		}
-
-		HttpSession session = request.getSession(true);
-		String verCode = (String)session.getAttribute("verCode");
-		if(verCode == null || !verCode.equals(verificationcode)){
-			rm.setMsg("验证码错误");
-			return rm;
-		}
-		
-		
-		password = EncryptUtils.md5(password);
-		System.out.println(password);
-		EHaiUsers users = eHaiUsersMapper.login_store(username, password,store_id);
-		if(users == null){
-			rm.setMsg("用户不存在或密码错误");
-			return rm;
-		}
-		
-		rm.setCode(1);
-		rm.setModel(users);
-		
-		if(source.equals("ws") || source.equals("web")){
-			request.getSession().setAttribute(EConstants.SESSION_USER_ID, users.getUserId());
-			request.getSession().setAttribute(EConstants.SESSION_USER_NAME, users.getUserName());
-			
-		}
-		
-		return rm;
-	}
+	
 
 	@Override
 	public ReturnObject<EHaiUsers> register(HttpServletRequest request,

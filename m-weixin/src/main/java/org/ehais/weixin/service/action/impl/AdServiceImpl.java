@@ -174,7 +174,7 @@ public class AdServiceImpl  extends WeiXinCommonServiceImpl implements AdService
 		AccessToken token = WeiXinUtil.getAccessToken(store_id, wp.getAppid(), wp.getSecret());
 		
 		String upload_media = WXConstants.upload_media
-		.replaceAll("ACCESS_TOKEN", token.getToken())
+		.replaceAll("ACCESS_TOKEN", token.getAccess_token())
 		.replaceAll("TYPE", "image");
 		
 		Map<String,String> fileMap = new HashMap<String,String>();

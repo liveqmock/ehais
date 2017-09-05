@@ -19,7 +19,7 @@ public interface EUsersService extends CommonService{
 	public ReturnObject<EHaiUsers> users_delete(HttpServletRequest request,Long user_id) throws Exception;
 	
 	public ReturnObject<EHaiUsers> login(HttpServletRequest request,String username,String password,String source) throws Exception;
-	public ReturnObject<EHaiUsers> agencyLogin(HttpServletRequest request,String username,String password,String verificationcode,String source) throws Exception;
+	
 	public ReturnObject<EHaiUsers> register(HttpServletRequest request,String username,String password,String confirmPassword,String source) throws Exception;
 	public ReturnObject<EHaiUsers> logout(HttpServletRequest request,String source) throws Exception;
 	

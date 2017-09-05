@@ -2,6 +2,8 @@ package org.ehais.epublic.service;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.ehais.tools.ReturnObject;
+import org.ehais.weixin.model.WeiXinNotifyPay;
 import org.ehais.weixin.model.WeiXinWCPay;
 
 /**
@@ -11,7 +13,20 @@ import org.ehais.weixin.model.WeiXinWCPay;
  */
 public interface WeiXinPayService {
 
-
+	/**
+	 * 微信支付需要的js参数通过此方法返回
+	 * @param request
+	 * @param store_id
+	 * @param user_id
+	 * @param openid
+	 * @param orderSn
+	 * @param amount
+	 * @param body
+	 * @param table_name
+	 * @param table_id
+	 * @return
+	 * @throws Exception
+	 */
 	public WeiXinWCPay WeiXinPayApi(HttpServletRequest request,
 			Integer store_id,
 			Long user_id,
@@ -24,6 +39,13 @@ public interface WeiXinPayService {
 			
 			) throws Exception;
 	
-	
+	/**
+	 * 微信支付回调方法
+	 * @param request
+	 * @param notify
+	 * @return
+	 * @throws Exception
+	 */
+	public ReturnObject<WeiXinNotifyPay> WeiXinNotifyPay(HttpServletRequest request,WeiXinNotifyPay notifyPay,Integer store_id) throws Exception;
 	
 }

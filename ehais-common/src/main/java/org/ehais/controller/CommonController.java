@@ -8,6 +8,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
+import org.ehais.common.EConstants;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.IpUtil;
 import org.slf4j.Logger;
@@ -34,7 +36,7 @@ public class CommonController {
 	 */
 	public String config_file(HttpServletRequest request,String file_name){
 		String path = "";		
-		if(request.getServerName().equals("localhost") || request.getServerName().equals("127.0.0.1") || IpUtil.getIpAddr(request).equals("127.0.0.1")){
+		if(this.isLocalHost(request)){
 			path = request.getRealPath("").replace("webapp", "");
 			path += "/resources/config/"+file_name;
 		}else{
@@ -57,90 +59,26 @@ public class CommonController {
 		}
 	}
 	
-/**
-	protected String menu_path(HttpServletRequest request){		
-		String menu_path = "";
-		Integer userId = (Integer)request.getSession().getAttribute(Constants.SESSION_USER_ID);
-		if(request.getServerName().equals("localhost")){
-			menu_path = request.getRealPath("").replace("webapp", "");
-			menu_path += "/resources/config/member_menu_"+userId+".json";
-		}else{
-			menu_path = request.getRealPath("/WEB-INF/classes/config/member_menu_"+userId+".json");
-		}		
-		return menu_path;
-	}
-
-	protected String menu_path(HttpServletRequest request,String menu_json){
-		
-		String menu_path = "";
-		if(request.getServerName().equals("localhost")){
-			menu_path = request.getRealPath("").replace("webapp", "");
-			menu_path += "/resources/config/"+menu_json;
-		}else{
-			menu_path = request.getRealPath("/WEB-INF/classes/config/"+menu_json);
-		}		
-		return menu_path;
+	/**
+	 * 获取商家ID
+	 * @param request
+	 * @return
+	 */
+	protected Integer getStoreId(HttpServletRequest request){
+		return (Integer) request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 	}
 	
-	protected String menu_xml_path(HttpServletRequest request,Integer store_id){		
-		String menu_path = "";
-		Integer userId = (Integer)request.getSession().getAttribute(Constants.SESSION_USER_ID);
-		if(request.getServerName().equals("localhost")){
-			menu_path = request.getRealPath("").replace("webapp", "");
-			menu_path += "/resources/config/menu_"+store_id+".xml";
-		}else{
-			menu_path = request.getRealPath("/WEB-INF/classes/config/menu_"+store_id+".xml");
-		}		
-		return menu_path;
-	}
-
-	
-	protected String menu_xml_path(HttpServletRequest request){		
-		String menu_path = "";
-		String ROLE = (String) request.getSession().getAttribute(Constants.SESSION_ROLE_TYPE);
-		
-		if(ROLE!=null && !ROLE.equals("")) {
-			ROLE="_"+ROLE;
-		}else{
-			ROLE = "";
-		}
-		
-		if(request.getServerName().equals("localhost")){
-			menu_path = request.getRealPath("").replace("webapp", "");
-			menu_path += "/resources/config/menu"+ROLE+".xml";
-		}else{
-			menu_path = request.getRealPath("/WEB-INF/classes/config/menu"+ROLE+".xml");
-		}
-		
-		return menu_path;
+	/**
+	 * 获取商家的主题模板
+	 * @param request
+	 * @return
+	 */
+	protected String getStoreTheme(HttpServletRequest request){
+		String theme = (String) request.getSession().getAttribute(EConstants.SESSION_STORE_THEME);
+		if(StringUtils.isEmpty(theme))theme = "ehais";
+		return theme;
 	}
 	
-	
-	
-	public String eapi_parameter_path(HttpServletRequest request){		
-		String menu_path = "";
-		if(request.getServerName().equals("localhost")){
-			menu_path = request.getRealPath("").replace("webapp", "");
-			menu_path += "/resources/config/ApiParameter.xml";
-		}else{
-			menu_path = request.getRealPath("/WEB-INF/classes/config/ApiParameter.xml");
-		}		
-		return menu_path;
-	}
-	
-	
-	public String store_config_path(HttpServletRequest request){		
-		String menu_path = "";
-		if(request.getServerName().equals("localhost")){
-			menu_path = request.getRealPath("").replace("webapp", "");
-			menu_path += "/resources/config/StoreConfig.xml";
-		}else{
-			menu_path = request.getRealPath("/WEB-INF/classes/config/StoreConfig.xml");
-		}		
-		return menu_path;
-	}
-	
-	**/
 	
 	//成功后统一返回的信息提示页
 	protected String successJump(ModelMap modelMap,String successMsg,String jumpUrl){
@@ -354,6 +292,16 @@ public class CommonController {
             return "error";  
         }  
     }
+	
+	
+	protected boolean isWeiXin(HttpServletRequest request){
+		String ua = ((HttpServletRequest) request).getHeader("user-agent") .toLowerCase();  
+		if (ua.indexOf("micromessenger") > 0) {// 是微信浏览器  
+		    return  true;  
+		}else{
+			return false;
+		}
+	}
 	
 	
 }

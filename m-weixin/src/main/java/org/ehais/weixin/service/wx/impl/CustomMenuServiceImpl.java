@@ -72,7 +72,7 @@ public class CustomMenuServiceImpl extends CommonServiceImpl implements CustomMe
 			
 			AccessToken token = WeiXinUtil.getAccessToken(wpPublic.getId(),wpPublic.getAppid(),wpPublic.getSecret());
 			
-			String request = WeiXinUtil.menu_create(wpPublic.getId(), token.getToken(), obj.toString());
+			String request = WeiXinUtil.menu_create(wpPublic.getId(), token.getAccess_token(), obj.toString());
 			
 		}catch(Exception e){
 			e.printStackTrace();

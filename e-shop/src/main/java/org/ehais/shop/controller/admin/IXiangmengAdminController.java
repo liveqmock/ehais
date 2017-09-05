@@ -19,7 +19,7 @@ import org.ehais.epublic.validator.EInsertValidator;
 import org.ehais.epublic.validator.EUniqueValidator;
 import org.ehais.epublic.validator.EUpdateValidator;
 import org.ehais.protocol.PermissionProtocol;
-import org.ehais.shop.controller.wine.ResourceUtil;
+import org.ehais.shop.controller.ehais.ResourceUtil;
 import org.ehais.shop.service.IXiangmengService;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;

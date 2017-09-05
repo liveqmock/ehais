@@ -11,7 +11,7 @@ $.ajaxSetup({
 	type:"post",
 	dataType:"json",
 	layerIndex:-1,
-	timeout:3000,
+	timeout:120000,
 	beforeSend: function () {
 	    //ajax请求之前
 		this.layerIndex = layer.load(1, {
@@ -41,14 +41,14 @@ $(function(){
 });
 
 
-function initFileInput(id){
+function initImageInput(id){
 	var initialPreview = [];
 	if($("#"+id).val()!="")initialPreview[0] = $("#"+id).val();
 	$("#"+id+"_").fileinput({
 		language : "zh",//设置语言
 		uploadUrl: "/upload/image.upd",
 	    allowedFileExtensions: ["jpg", "png", "gif"],
-	    dropZoneTitle:"拖拽文件到这里 &hellip;<br>请只上传一个文件",
+	    dropZoneTitle:"请只上传一个文件",
 	    isUploadable : true,//
 	    //resizeImage: true,
 	    overwriteInitial: false,
@@ -58,6 +58,45 @@ function initFileInput(id){
 	}).on('filepreupload', function() {
 	}).on('fileuploaded', function(event, data) {
 		$("#"+id).val(data.response.msg);
+	});
+}
+
+
+function initGalleryInput(id){
+	var initialPreview = [];
+	
+	$("#gallery_"+id+" input[type='hidden']").each(function(index,ele){
+		if($.trim($(ele).val()).length > 0)initialPreview.push($(ele).val());
+	})
+	
+	
+	$("#"+id+"_").fileinput({
+		language : "zh",//设置语言
+		uploadUrl: "/upload/image.upd",
+	    allowedFileExtensions: ["jpg", "png", "gif"],
+	    dropZoneTitle:"图片相册",
+	    isUploadable : true,//
+	    //resizeImage: true,
+	    overwriteInitial: false,
+	    initialPreviewAsData: true,
+	    initialPreviewFileType: 'image',
+	    initialPreview: initialPreview,
+	    uploadExtraData: function(previewId, index) {   //额外参数的关键点
+            var param = {};
+            param.title = "hello";
+            console.log(param);
+            return param;
+        }
+	}).on('filepreupload', function() {
+	}).on('fileuploaded', function(event, data, previewId, index) {		
+		var maxNo = $("#gallery_"+id+" input[type='hidden']").last().attr("no");
+		if(maxNo == null)maxNo = -1;
+		maxNo = parseInt(maxNo) + 1;
+		$("#gallery_"+id).append("<input id=\"gallery_pic_"+id+"_"+maxNo+"\" name=\""+id+"\" value=\""+data.response.msg+"\" no=\""+maxNo+"\" type=\"hidden\">");
+	}).on("filedelete",function(event, id) {
+		alert("filedelete"+JSON.stringify(id));
+	}).on("filesuccessremove",function(event, id) {
+		alert("filesuccessremove"+JSON.stringify(event));
 	});
 }
 

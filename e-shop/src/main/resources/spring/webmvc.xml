@@ -122,13 +122,13 @@
 		</mvc:interceptor>
 		
 		<mvc:interceptor>
-			<mvc:mapping path="/wine/manage/**"/>
-			<ref bean="wineInterceptor"/>
+			<mvc:mapping path="/ehais/manage/**"/>
+			<ref bean="ehaisInterceptor"/>
 		</mvc:interceptor>
 		
 		<mvc:interceptor>
-			<mvc:mapping path="/wine/agency/**"/>
-			<ref bean="wineAgencyInterceptor"/>
+			<mvc:mapping path="/ehais/agency/**"/>
+			<ref bean="ehaisAgencyInterceptor"/>
 		</mvc:interceptor>
 		
 	</mvc:interceptors>
@@ -178,22 +178,22 @@
 		</property>
 	</bean>
 	
-	<bean id="wineInterceptor" class="org.ehais.interceptor.WineInterceptor">
-		<property name="loginUrl" value="/wine/adminlogin"/>
+	<bean id="ehaisInterceptor" class="org.ehais.interceptor.WineInterceptor">
+		<property name="loginUrl" value="/ehais/adminlogin"/>
 		<property name="ignoreUrls">
 			<list>
-				<value>/wine/AuthImage</value>
-				<value>/wine/admin_login_submit</value>
+				<value>/ehais/AuthImage</value>
+				<value>/ehais/admin_login_submit</value>
 			</list>
 		</property>
 	</bean>
 	
-	<bean id="wineAgencyInterceptor" class="org.ehais.interceptor.WineAgencyInterceptor">
-		<property name="loginUrl" value="/wine/login"/>
+	<bean id="ehaisAgencyInterceptor" class="org.ehais.interceptor.WineAgencyInterceptor">
+		<property name="loginUrl" value="/ehais/login"/>
 		<property name="ignoreUrls">
 			<list>
-				<value>/wine/AuthImage</value>
-				<value>/wine/agency_login_submit</value>
+				<value>/ehais/AuthImage</value>
+				<value>/ehais/agency_login_submit</value>
 			</list>
 		</property>
 	</bean>

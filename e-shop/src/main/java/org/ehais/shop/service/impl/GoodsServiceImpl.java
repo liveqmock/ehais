@@ -228,6 +228,8 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		map.put("catList", this.catList(request));
 		map.put("goodsAgencyPrice", this.goodsAgencyPrice(this.agencyList(request), this.goodsAgencyList(request,0L)));
 		
+		List<HaiGoodsGallery> gallery = new ArrayList<HaiGoodsGallery>();
+		map.put("gallery", gallery);
 		rm.setMap(map);
 		rm.setModel(model);
 		rm.setCode(1);
@@ -235,7 +237,7 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		return rm;
 	}
 	
-	public ReturnObject<HaiGoodsWithBLOBs> goods_insert_submit(HttpServletRequest request,HaiGoodsWithBLOBs model)
+	public ReturnObject<HaiGoodsWithBLOBs> goods_insert_submit(HttpServletRequest request,HaiGoodsWithBLOBs model,String[] gallery)
 			throws Exception {
 		// TODO Auto-generated method stub
 		
@@ -271,7 +273,16 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		int code = haiGoodsMapper.insertSelective(model);
 		
 		//添加数组
-		for (Integer integer : galleryNo) {
+		for (String string : gallery) {
+			HaiGoodsGallery g = new HaiGoodsGallery();			
+			g.setGoodsId(model.getGoodsId());
+			g.setTableName("hai_goods");
+			g.setStoreId(store_id);
+			g.setImgOriginal(string);		
+			haiGoodsGalleryMapper.insertSelective(g);
+			
+		}
+/*		for (Integer integer : galleryNo) {
 			HaiGoodsGallery gallery = new HaiGoodsGallery();
 			
 			gallery.setGoodsId(model.getGoodsId());
@@ -283,14 +294,14 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		
 			haiGoodsGalleryMapper.insertSelective(gallery);
 			
-		}
+		}*/
 
 		rm.setCode(code);
 		rm.setMsg("添加成功");
 		return rm;
 	}
 	
-	public ReturnObject<HaiGoodsWithBLOBs> wine_goods_insert_submit(HttpServletRequest request,HaiGoodsWithBLOBs model)
+	public ReturnObject<HaiGoodsWithBLOBs> ehais_goods_insert_submit(HttpServletRequest request,HaiGoodsWithBLOBs model,String[] gallery)
 			throws Exception {
 		ReturnObject<HaiGoodsWithBLOBs> rm = new ReturnObject<HaiGoodsWithBLOBs>();
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
@@ -311,6 +322,15 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		//保存代理价格
 		this.saveGoodsAgencyPrice(request, model.getGoodsId());
 		
+		for (String string : gallery) {
+			HaiGoodsGallery g = new HaiGoodsGallery();			
+			g.setGoodsId(model.getGoodsId());
+			g.setTableName("hai_goods");
+			g.setStoreId(store_id);
+			g.setImgOriginal(string);		
+			haiGoodsGalleryMapper.insertSelective(g);
+			
+		}
 		
 		rm.setCode(1);
 		rm.setMsg("添加成功");
@@ -332,7 +352,7 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		
 		Map<String, Object> map = new HashMap<String,Object>();
 		map.put("catList", this.catList(request));
-		map.put("goodsGallery", goodsGallery);
+		map.put("gallery", goodsGallery);
 		map.put("goodsAgencyPrice", this.goodsAgencyPrice(this.agencyList(request), this.goodsAgencyList(request,goodsId)));
 		
 		rm.setMap(map);
@@ -343,7 +363,7 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		return rm;
 	}
 	
-	public ReturnObject<HaiGoodsWithBLOBs> goods_update_submit(HttpServletRequest request,HaiGoodsWithBLOBs model)
+	public ReturnObject<HaiGoodsWithBLOBs> goods_update_submit(HttpServletRequest request,HaiGoodsWithBLOBs model,String[] gallery)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiGoodsWithBLOBs> rm = new ReturnObject<HaiGoodsWithBLOBs>();
@@ -366,49 +386,45 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		
 		int code = haiGoodsMapper.updateByExampleSelective(model, example);
 		
-		Set<Integer> galleryNo = new HashSet<Integer>();
+		HaiGoodsGalleryExample galleryExample = new HaiGoodsGalleryExample();
 		
-		for(Enumeration e = request.getParameterNames() ; e.hasMoreElements();){
-			String thisName=e.nextElement().toString();
-			String thisValue=request.getParameter(thisName);
-			if(thisName.indexOf("[]") >= 0){
-				String[] thisValues = request.getParameterValues(thisName);
-//				System.out.println(thisName+"是数组 :"+thisValues.length);
-				thisValue = "";
-				for(int iv = 0 ; iv < thisValues.length ; iv++){
-					thisValue += thisValues[iv] + ",";
+//		haiGoodsGalleryMapper.deleteByExample(galleryExample);
+		
+		galleryExample.createCriteria()
+		.andStoreIdEqualTo(store_id)
+		.andGoodsIdEqualTo(model.getGoodsId());
+		List<HaiGoodsGallery> listGoodsGallery = haiGoodsGalleryMapper.selectByExample(galleryExample);
+		for (String string : gallery) {
+			boolean has = false;
+			for (HaiGoodsGallery haiGoodsGallery : listGoodsGallery) {
+				if(haiGoodsGallery.getImgOriginal().equals(string)){
+					has = true;
+					break;
 				}
-				if(thisValue.length() > 0)thisValue = thisValue.substring(0, thisValue.length()-1);
 			}
-			
-			if(thisName.indexOf("hid_id_gallery_")>=0){
-				
-				galleryNo.add(Integer.valueOf(thisName.substring(thisName.lastIndexOf("_")+1)));//获取序号
+			if(!has){
+				//当前string可以添加到数据库
+				HaiGoodsGallery g = new HaiGoodsGallery();			
+				g.setGoodsId(model.getGoodsId());
+				g.setTableName("hai_goods");
+				g.setStoreId(store_id);
+				g.setImgOriginal(string);		
+				haiGoodsGalleryMapper.insertSelective(g);	
 			}
-			
-//			System.out.println(thisName+"=="+thisValue);
-
+		}
+		for (HaiGoodsGallery haiGoodsGallery : listGoodsGallery) {
+			boolean del = true;
+			for (String string : gallery) {
+				if(haiGoodsGallery.getImgOriginal().equals(string)){
+					del = false;
+					break;
+				}
+			}
+			if(del){
+				haiGoodsGalleryMapper.deleteByPrimaryKey(haiGoodsGallery.getImgId());
+			}
 		}
 		
-		//添加数组
-		for (Integer integer : galleryNo) {
-			if(request.getParameter("hid_id_gallery_"+integer) != null && request.getParameter("hid_id_gallery_"+integer).equals("0")){
-
-				HaiGoodsGallery gallery = new HaiGoodsGallery();
-				
-				gallery.setGoodsId(model.getGoodsId());
-				gallery.setTableName("hai_goods");
-				gallery.setStoreId(store_id);
-				if(request.getParameter("hid_gallery_thumb_gallery_"+integer) != null)gallery.setThumbUrl(request.getParameter("hid_gallery_thumb_gallery_"+integer));
-				if(request.getParameter("hid_gallery_img_gallery_"+integer) != null)gallery.setImgUrl(request.getParameter("hid_gallery_img_gallery_"+integer));
-				if(request.getParameter("hid_gallery_original_gallery_"+integer) != null)gallery.setImgOriginal(request.getParameter("hid_gallery_original_gallery_"+integer));
-			
-				haiGoodsGalleryMapper.insertSelective(gallery);
-				
-			}
-			
-		}
-				
 		
 		rm.setCode(code);
 		rm.setMsg("编辑成功");
@@ -416,7 +432,7 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 	}
 	
 	
-	public ReturnObject<HaiGoodsWithBLOBs> wine_goods_update_submit(HttpServletRequest request,HaiGoodsWithBLOBs model)
+	public ReturnObject<HaiGoodsWithBLOBs> ehais_goods_update_submit(HttpServletRequest request,HaiGoodsWithBLOBs model,String[] gallery)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiGoodsWithBLOBs> rm = new ReturnObject<HaiGoodsWithBLOBs>();
@@ -506,7 +522,42 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		//保存代理价格
 		this.saveGoodsAgencyPrice(request, model.getGoodsId());
 
+		HaiGoodsGalleryExample galleryExample = new HaiGoodsGalleryExample();
 		
+		galleryExample.createCriteria()
+		.andStoreIdEqualTo(store_id)
+		.andGoodsIdEqualTo(model.getGoodsId());
+		List<HaiGoodsGallery> listGoodsGallery = haiGoodsGalleryMapper.selectByExample(galleryExample);
+		for (String string : gallery) {
+			boolean has = false;
+			for (HaiGoodsGallery haiGoodsGallery : listGoodsGallery) {
+				if(haiGoodsGallery.getImgOriginal().equals(string)){
+					has = true;
+					break;
+				}
+			}
+			if(!has){
+				//当前string可以添加到数据库
+				HaiGoodsGallery g = new HaiGoodsGallery();			
+				g.setGoodsId(model.getGoodsId());
+				g.setTableName("hai_goods");
+				g.setStoreId(store_id);
+				g.setImgOriginal(string);		
+				haiGoodsGalleryMapper.insertSelective(g);	
+			}
+		}
+		for (HaiGoodsGallery haiGoodsGallery : listGoodsGallery) {
+			boolean del = true;
+			for (String string : gallery) {
+				if(haiGoodsGallery.getImgOriginal().equals(string)){
+					del = false;
+					break;
+				}
+			}
+			if(del){
+				haiGoodsGalleryMapper.deleteByPrimaryKey(haiGoodsGallery.getImgId());
+			}
+		}
 		
 		rm.setCode(code);
 		rm.setMsg("编辑成功");

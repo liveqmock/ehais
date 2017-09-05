@@ -25,6 +25,7 @@ import org.ehais.weixin.model.WeiXinMPNews;
 import org.ehais.weixin.model.WeiXinNotifyPay;
 import org.ehais.weixin.model.WeiXinNotityXml;
 import org.ehais.weixin.model.WeiXinSignature;
+import org.ehais.weixin.model.WeiXinTemplateMessage;
 import org.ehais.weixin.model.WeiXinUnifiedOrder;
 import org.ehais.weixin.model.WeiXinUnifiedOrderResult;
 import org.ehais.weixin.model.WeiXinUserInfo;
@@ -530,6 +531,15 @@ public class WeiXinUtil {
 		System.out.println(url);
 		
 		return EHttpClientUtil.methodGet(url);
+	}
+	
+	
+	public static String TemplateSend(String token,WeiXinTemplateMessage template) throws Exception {
+		String url = WXConstants.template_send.replace("TOKEN", token);
+		System.out.println(url);
+		
+		JSONObject json = JSONObject.fromObject(template);
+		return EHttpClientUtil.httpPostEntity(url, json.toString());
 	}
 	
 	

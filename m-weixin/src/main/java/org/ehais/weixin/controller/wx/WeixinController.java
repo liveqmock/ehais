@@ -288,7 +288,7 @@ public class WeixinController extends WxCommonController{
 				log.info( "openid:" + openid );
 				System.out.println("system openid : " + openid);
 				AccessToken accessToken = WeiXinUtil.getAccessToken(wxid,wpPublic.getAppid(), wpPublic.getSecret());
-				WeiXinUserInfo userInfo = WeiXinUtil.getUserInfo(accessToken.getToken(),openid);
+				WeiXinUserInfo userInfo = WeiXinUtil.getUserInfo(accessToken.getAccess_token(),openid);
 				
 				System.out.println("返回的微信用户信息："+this.writeJsonObject(userInfo));
 				

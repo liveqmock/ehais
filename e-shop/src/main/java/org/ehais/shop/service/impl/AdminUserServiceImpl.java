@@ -11,8 +11,11 @@ import org.ehais.epublic.mapper.EHaiAdminUserMapper;
 import org.ehais.epublic.model.EHaiAdminUser;
 import org.ehais.epublic.model.EHaiAdminUserExample;
 import org.ehais.service.impl.CommonServiceImpl;
+import org.ehais.shop.mapper.HaiStoreMapper;
 import org.ehais.shop.mapper.tp.TpAdminMapper;
 import org.ehais.shop.mapper.tp.TpSuppliersMapper;
+import org.ehais.shop.model.HaiStore;
+import org.ehais.shop.model.HaiStoreExample;
 import org.ehais.shop.model.tp.TpAdmin;
 import org.ehais.shop.model.tp.TpAdminExample;
 import org.ehais.shop.model.tp.TpSuppliers;
@@ -32,6 +35,8 @@ public class AdminUserServiceImpl extends CommonServiceImpl implements AdminUser
 	private TpAdminMapper tpAdminMapper;
 	@Autowired
 	private TpSuppliersMapper tpSuppliersMapper;
+	@Autowired
+	private HaiStoreMapper haiStoreMapper;
 	
 	
 	public ReturnObject<EHaiAdminUser> admin_login(String username, String password) throws Exception {
@@ -105,10 +110,23 @@ public class AdminUserServiceImpl extends CommonServiceImpl implements AdminUser
 			return rm;
 		}
 		EHaiAdminUser adminuser = listAdmin.get(0);
+		if(adminuser.getStoreId() == null || adminuser.getStoreId() == 0){
+			rm.setMsg("非本后台的用户");
+			return rm;
+		}
+		//读取相应的商家
+		HaiStore store = haiStoreMapper.selectByPrimaryKey(adminuser.getStoreId());
+		if(store == null){
+			rm.setMsg("非本商家后台的用户");
+			return rm;
+		}
 		
-		session.setAttribute(EConstants.SESSION_STORE_ID, adminuser.getAdminId().intValue());
 		session.setAttribute(EConstants.SESSION_ADMIN_ID, adminuser.getAdminId());
 		session.setAttribute(EConstants.SESSION_ADMIN_NAME, adminuser.getUserName());
+		session.setAttribute(EConstants.SESSION_STORE_ID, store.getStoreId());
+		session.setAttribute(EConstants.SESSION_STORE_NAME, store.getStoreName());
+		session.setAttribute(EConstants.SESSION_STORE_THEME, store.getTheme());
+		
 		
 		rm.setCode(1);
 		rm.setMsg("登录成功");
