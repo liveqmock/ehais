@@ -1,13 +1,16 @@
 package org.ehais.Junit;
 
+import java.util.Map;
 import java.util.Properties;
 
+import org.ehais.util.Bean2Utils;
 import org.ehais.util.EncryptUtils;
 import org.ehais.util.SignUtil;
 import org.ehais.weixin.model.WeiXinUnifiedOrder;
 import org.ehais.weixin.utils.WeiXinUtil;
 import org.junit.Test;
 import org.springframework.core.JdkVersion;
+
 
 public class SignJunit {
 
@@ -85,5 +88,15 @@ public class SignJunit {
         System.out.println("用户的当前工作目录："+props.getProperty("user.dir")); 
     } 
     
+	
+	@Test
+	public void tsid(){
+		String sid = "3e4ca680-0838c501-1e80f902-2b29e21243-34a6da91504-45a90623765-5db";
+		Map<String,Object> map = SignUtil.getSid(sid, "ehais_wxdev");
+		Bean2Utils.printMap(map);
+		
+		System.out.println("SSS"+map.get("parentId").toString());
+		
+	}
     
 }

@@ -10,7 +10,7 @@ function buynow(){
 	
 	$.ajax({
 		url : "/ws/cart_add_submit",type:"post",dataType:"json",
-		data : {"goods_id":$("#goodsId").val(),"parent_user_id":$("#parendId").val(),"agency_id":$("#agencyId").val(),"article_id":$("#articleId").val(),"quantity":1},
+		data : {"goods_id":$("#goodsId").val(),"parent_user_id":$("#parentId").val(),"agency_id":$("#agencyId").val(),"article_id":$("#articleId").val(),"quantity":1},
 		success : function(result){
 			if(result.code != 1 && result.code != 2){
 				layer.open({

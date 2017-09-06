@@ -11,6 +11,7 @@
 }
 .wrapper_dining_union .item input[type="text"],
 .wrapper_dining_union .item input[type="tel"],
+.wrapper_dining_union .item input[type="password"],
 .wrapper_dining_union .item button {
   padding: 0.08rem;
   box-sizing: border-box;

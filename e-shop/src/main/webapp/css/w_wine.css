@@ -13,12 +13,12 @@
 .w_wine_wrapper > div {
   width: 100%;
   float: left;
-  margin: 0.1rem 0;
+  margin: 0.05rem 0;
 }
 .w_wine_wrapper > div {
   width: 100%;
   float: left;
-  margin: 0.1rem 0;
+  margin: 0.05rem 0;
 }
 .w_wine_wrapper > div img {
   max-width: 100%;
@@ -27,7 +27,7 @@
   color: #8c8c8c;
 }
 .w_wine_wrapper .lbl span {
-  margin-right: 0.15rem;
+  margin-right: 0.08rem;
 }
 .w_wine_wrapper .lbl span:last-child {
   color: #607fa6;
@@ -37,7 +37,10 @@
 }
 .w_wine_wrapper .article {
   line-height: 0.28rem;
-  font-size: 0.18rem;
+  font-size: 0.16rem;
+}
+.w_wine_wrapper .article img {
+  max-width: 100%;
 }
 .w_wine_wrapper .statistics {
   padding: 0.15rem 0 0 0;

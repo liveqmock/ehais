@@ -1,12 +1,21 @@
 package org.ehais.epublic.mapper;
 
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultMap;
+import org.apache.ibatis.annotations.Update;
 import org.ehais.epublic.model.EHaiArticle;
 import org.ehais.epublic.model.EHaiArticleExample;
 
 public interface EHaiArticleMapper {
+	
+	/**
+	 * 阅读量增加
+	 * @param articleId
+	 */
+	@Update("update hai_article read_count = ifnull(read_count,0) + 1 where article_id = #{articleId}")
+	public void plusReadCount(@Param("articleId") Integer articleId);
 	
 	@ResultMap(value = "BaseResultMap")
 	public List<EHaiArticle> article_list_by_catcode(

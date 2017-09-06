@@ -57,6 +57,9 @@
   line-height: 0.28rem;
   font-size: 0.18rem;
 }
+.w_goods_wrapper > div.detail img {
+  max-width: 100%;
+}
 .w_goods_wrapper .foot-bottom {
   margin-bottom: 0.49rem;
 }

@@ -1,0 +1,56 @@
+.wrapper_report {
+  overflow-y: scroll;
+}
+.wrapper_report dl {
+  width: 100%;
+  float: left;
+  padding: 10px 20px;
+  box-sizing: border-box;
+}
+.wrapper_report dl dt {
+  width: 100%;
+  float: left;
+  font-size: 30px;
+  padding: 10px 0;
+  box-sizing: border-box;
+}
+.wrapper_report dl dd {
+  text-align: center;
+  height: 120px;
+  background: #438eb9;
+  color: #fff;
+  width: 25%;
+  float: left;
+  margin: 10px 20px;
+}
+.wrapper_report dl dd .total,
+.wrapper_report dl dd .intro,
+.wrapper_report dl dd .sort {
+  float: left;
+}
+.wrapper_report dl dd .sort {
+  width: 10%;
+  line-height: 120px;
+  font-size: 22px;
+  border-right: 1px solid #fff;
+  margin-right: -1px;
+}
+.wrapper_report dl dd .total {
+  width: 50%;
+  font-size: 22px;
+  line-height: 120px;
+}
+.wrapper_report dl dd .intro {
+  width: 40%;
+  font-size: 20px;
+}
+.wrapper_report dl dd .intro .name,
+.wrapper_report dl dd .intro .quantity {
+  width: 100%;
+  line-height: 60px;
+  height: 60px;
+}
+.wrapper_report .echart {
+  width: 100%;
+  float: left;
+}

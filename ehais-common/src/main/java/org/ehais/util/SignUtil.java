@@ -125,7 +125,7 @@ public class SignUtil {
 			String s_agencyId = sid.substring(n0+8, n1);
 			
 			String s2 = sid.substring(n1+3, n1+8);
-			String s_parendId = sid.substring(n1+8, n2);
+			String s_parentId = sid.substring(n1+8, n2);
 			
 			String s3 = sid.substring(n2+3,n2+8);
 			String s_userId = sid.substring(n2+8, n3);
@@ -138,11 +138,11 @@ public class SignUtil {
 			
 			String s6 = sid.substring(n5+3,n5+5);
 			
-			if(EncryptUtils.md5(s_store_id+s_agencyId+s_parendId+s_userId+s_articleId+s_goodsId+secret).equals(s0+s1+s2+s3+s4+s5+s6)){
+			if(EncryptUtils.md5(s_store_id+s_agencyId+s_parentId+s_userId+s_articleId+s_goodsId+secret).equals(s0+s1+s2+s3+s4+s5+s6)){
 				map = new HashMap<String,Object>();
 				map.put("store_id", s_store_id);
 				map.put("agencyId", s_agencyId);
-				map.put("parendId", s_parendId);
+				map.put("parentId", s_parentId);
 				map.put("userId", s_userId);
 				map.put("articleId", s_articleId);				
 				map.put("goodsId", s_goodsId);

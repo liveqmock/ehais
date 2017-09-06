@@ -137,7 +137,7 @@ public class EhaisCommonController extends CommonController{
         
         int startX = (width-(fontSize*pressText.length()))/2;
         //y开始的位置：图片高度-（图片高度-图片宽度）/2
-        int startY = height-(height-width)/2; 
+        int startY = height-(height-width)/2 + 5; 
         g.setColor(Color.BLACK);
         g.setFont(new Font(null, fontStyle, fontSize));
         g.drawString(pressText, startX, startY);
@@ -223,7 +223,7 @@ public class EhaisCommonController extends CommonController{
         
         int startX = (width-(fontSize*pressText.length()))/2;
         //y开始的位置：图片高度-（图片高度-图片宽度）/2
-        int startY = height-(height-width)/2; 
+        int startY = height-(height-width)/2 + 5; 
         g.setColor(Color.BLACK);
         g.setFont(new Font(null, fontStyle, fontSize));
         g.drawString(pressText, startX, startY);

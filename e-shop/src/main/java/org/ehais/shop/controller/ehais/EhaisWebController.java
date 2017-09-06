@@ -18,11 +18,14 @@ import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.epublic.model.EHaiUsersExample;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.shop.mapper.HaiArticleGoodsMapper;
+import org.ehais.shop.mapper.HaiArticleRecordMapper;
 import org.ehais.shop.mapper.HaiCartMapper;
 import org.ehais.shop.mapper.HaiGoodsMapper;
 import org.ehais.shop.mapper.HaiUserAddressMapper;
 import org.ehais.shop.model.HaiArticleGoods;
 import org.ehais.shop.model.HaiArticleGoodsExample;
+import org.ehais.shop.model.HaiArticleRecord;
+import org.ehais.shop.model.HaiArticleRecordExample;
 import org.ehais.shop.model.HaiCart;
 import org.ehais.shop.model.HaiCartExample;
 import org.ehais.shop.model.HaiGoods;
@@ -59,6 +62,8 @@ public class EhaisWebController extends EhaisCommonController {
 	private HaiCartMapper haiCartMapper;
 	@Autowired
 	private HaiUserAddressMapper haiUserAddressMapper;
+	@Autowired
+	private HaiArticleRecordMapper haiArticleRecordMapper;
 	
 	
 	public static String website = ResourceUtil.getProValue("website");
@@ -144,7 +149,7 @@ public class EhaisWebController extends EhaisCommonController {
 		
 		modelMap.addAttribute("article", article);
 		modelMap.addAttribute("goods", goods);
-		modelMap.addAttribute("parendId", map.get("parendId"));
+		modelMap.addAttribute("parentId", map.get("parentId"));
 		modelMap.addAttribute("agencyId", map.get("agencyId"));
 		modelMap.addAttribute("articleId", map.get("articleId"));
 		
@@ -205,6 +210,27 @@ public class EhaisWebController extends EhaisCommonController {
 					System.out.println("code:"+link);
 					return "redirect:"+link;
 				}else if(user_id > 0 && Long.valueOf(map.get("userId").toString()).longValue() == user_id.longValue()){//经过code获取用户信息跳回自己的链接中来
+					
+					//文章的阅读记录添加
+					HaiArticleRecordExample arExample = new HaiArticleRecordExample();
+					arExample.createCriteria()
+					.andStoreIdEqualTo(store_id)
+					.andArticleIdEqualTo(Integer.valueOf(map.get("articleId").toString()))
+					.andUserIdEqualTo(user_id);
+					Long c = haiArticleRecordMapper.countByExample(arExample);
+					if(c == 0){
+						HaiArticleRecord ar = new HaiArticleRecord();
+						ar.setStoreId(store_id);
+						ar.setAgencyId(Integer.valueOf(map.get("agencyId").toString()));
+						ar.setParentId(Long.valueOf(map.get("parentId").toString()));
+						ar.setUserId(Long.valueOf(map.get("userId").toString()));
+						ar.setArticleId(Integer.valueOf(map.get("articleId").toString()));
+						ar.setGoodsId(Long.valueOf(map.get("goodsId").toString()));
+						ar.setReadTime(new Date());
+						eHaiArticleMapper.plusReadCount(Integer.valueOf(map.get("articleId").toString()));
+					}
+					
+					
 					return this.article_goods(modelMap, request, response,wp, sid,map,"/ehais/w_article_detail");//整理此软文与商品所有内容
 				}else if(Long.valueOf(map.get("userId").toString()).longValue() != user_id.longValue()){
 					System.out.println("user_id != map.userId condition is worng");

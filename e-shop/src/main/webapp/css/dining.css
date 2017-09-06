@@ -12,6 +12,93 @@
   box-sizing: border-box;
   overflow-x: hidden;
 }
+.wrapper_dining .header {
+  width: 100%;
+  float: left;
+  padding: 0.15rem;
+  box-sizing: border-box;
+}
+.wrapper_dining .header .amount {
+  width: 100%;
+  float: left;
+}
+.wrapper_dining .header .amount > div {
+  width: 50%;
+  float: left;
+}
+.wrapper_dining .header .amount > div > div {
+  width: 100%;
+  float: left;
+  height: 0.5rem;
+}
+.wrapper_dining .header .amount > div > div > div:first-child {
+  width: 30%;
+  float: left;
+  line-height: 0.5rem;
+  text-align: center;
+}
+.wrapper_dining .header .amount > div > div > div:last-child {
+  width: 70%;
+  float: left;
+  text-align: right;
+}
+.wrapper_dining .header .amount > div > div > div:last-child > div.fa {
+  height: 0.25rem;
+  line-height: 0.25rem;
+  width: 100%;
+}
+.wrapper_dining .header .amount > div > div > div.take_out {
+  height: 0.5rem;
+  line-height: 0.5rem;
+}
+.wrapper_dining .header .amount > div > div:first-child {
+  border-bottom: 0.01rem solid #e5e5e5;
+  margin-bottom: -0.01rem;
+}
+.wrapper_dining .header .amount > div.total {
+  height: 1rem;
+  line-height: 1rem;
+  text-align: center;
+  font-size: 0.2rem;
+  border-right: 0.01rem solid #e5e5e5;
+  margin-right: -0.01rem;
+}
+.wrapper_dining .swiper-container {
+  position: relative;
+}
+.wrapper_dining .swiper-container .phone {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: 0.65rem;
+  height: 0.35rem;
+  margin-top: -0.15rem;
+  z-index: 1000;
+  background: #555;
+  border-top-left-radius: 0.15rem;
+  border-bottom-left-radius: 0.15rem;
+  padding: 0.08rem;
+  filter: alpha(opacity=70);
+  -moz-opacity: 0.7;
+  opacity: 0.7;
+}
+.wrapper_dining .swiper-container .fa-phone {
+  position: absolute;
+  top: 50%;
+  right: 0.55rem;
+  color: #fff;
+  z-index: 1001;
+  font-size: 0.25rem;
+}
+.wrapper_dining .swiper-container .fa-user {
+  position: absolute;
+  top: 50%;
+  right: 0.25rem;
+  color: #fff;
+  z-index: 1001;
+  font-size: 0.25rem;
+  margin-top: -0.02rem;
+}
 .wrapper_dining .swiper-container .swiper-wrapper .swiper-slide img {
   width: 100%;
 }
@@ -20,20 +107,48 @@
   float: left;
 }
 .wrapper_dining > div.tabs {
-  margin: 0.1rem 0 ;
+  margin: 0.03rem 0 0.1rem;
 }
 .wrapper_dining > div.tabs ul li {
-  width: 50%;
+  width: 25%;
   float: left;
   text-align: center;
   border-bottom: 0.01rem solid #e5e5e5;
   padding: 0.1rem 0;
+}
+.wrapper_dining > div.tabs ul li span {
+  margin-right: 0.06rem;
 }
 .wrapper_dining > div.tabs ul li.active {
   border-bottom: 0.02rem solid #ca1816;
   margin-bottom: -0.01rem;
   font-weight: bold;
   color: #ca1816;
+}
+.wrapper_dining > div.content > ul {
+  width: 100%;
+  float: left;
+  display: none;
+}
+.wrapper_dining > div.content > ul > li {
+  width: 100%;
+  float: left;
+  padding: .15rem;
+  box-sizing: border-box;
+  margin-bottom: 0.15rem;
+  border-bottom: 0.01rem solid #e5e5e5;
+}
+.wrapper_dining > div.content > ul > li > div {
+  margin: 0.05rem 0;
+}
+.wrapper_dining > div.content > ul > li > div > span.table_no {
+  float: right;
+}
+.wrapper_dining > div.content > ul > li > div.total span {
+  float: right;
+}
+.wrapper_dining > div.content > ul.active {
+  display: block;
 }
 .wrapper_dining > div.menu .left {
   width: 25%;
@@ -47,12 +162,14 @@
 .wrapper_dining > div.menu .left ul li {
   width: 100%;
   padding: 0.15rem 0.05rem ;
-  background: #f9f9f9;
+  background: #f0f0f0;
   border-bottom: 0.01rem solid #e5e5e5;
   box-sizing: border-box;
 }
 .wrapper_dining > div.menu .left ul li.active {
   background: #fff;
+  color: #cb1816;
+  font-weight: bold;
 }
 .wrapper_dining > div.menu .right {
   width: 75%;
@@ -125,6 +242,10 @@
 .wrapper_dining > div.menu .right ul li .badge.active {
   display: block;
 }
+.wrapper_dining > div.myOrder {
+  display: none;
+  width: 100%;
+}
 footer {
   position: fixed;
   width: 100%;
@@ -135,8 +256,10 @@ footer {
   background: #fff;
   box-sizing: border-box;
   font-size: 0.12rem;
+  z-index: 101;
 }
-footer > div.cart {
+footer > div.cart,
+footer > div.orderCart {
   width: 60%;
   float: left;
   font-size: 0.33rem;
@@ -144,8 +267,10 @@ footer > div.cart {
   padding: 0.08rem 0 0 0.08rem;
   box-sizing: border-box;
   position: relative;
+  text-align: left;
 }
-footer > div.cart i {
+footer > div.cart i,
+footer > div.orderCart i {
   width: 0.2rem;
   height: 0.2rem;
   border: 0.01rem solid #ca1818;
@@ -160,13 +285,27 @@ footer > div.cart i {
   z-index: 100;
   display: none;
 }
-footer > div.cart i.active {
-  display: block;
-}
-footer > div.cart span {
+footer > div.cart span,
+footer > div.orderCart span {
   font-size: 0.18rem;
   margin-left: 0.2rem;
   display: none;
+}
+footer > div.cart i.active,
+footer > div.orderCart i.active,
+footer > div.cart span.active,
+footer > div.orderCart span.active {
+  display: inline-block;
+}
+footer > div.orderCart {
+  line-height: 0.45rem;
+  padding: 0;
+}
+footer > div.orderCart span {
+  color: #ca1816;
+  margin-left: 0;
+  font-size: 0.16rem;
+  line-height: 0.45rem;
 }
 footer button {
   float: right;
@@ -178,6 +317,12 @@ footer button {
   text-align: center;
   line-height: 0.45rem;
   font-size: 0.18rem;
+}
+footer > div.orderCart {
+  display: none;
+}
+footer > button.orderSubmit {
+  display: none;
 }
 footer.active > div.cart {
   color: #ca1816;
@@ -194,12 +339,14 @@ footer.active button {
   color: #fff;
   background: #ca1816;
 }
-.cart_layer {
+.cart_layer,
+.check_out_layer {
   font-size: 0.14rem;
   display: none;
 }
-.cart_layer .bg {
-  background: #cdcdcd;
+.cart_layer .bg,
+.check_out_layer .bg {
+  background: #000;
   position: fixed;
   top: 0;
   bottom: 0.45rem;
@@ -210,52 +357,261 @@ footer.active button {
   -moz-opacity: 0.5;
   opacity: 0.5;
 }
-.cart_layer dl {
+.cart_layer dl,
+.check_out_layer dl,
+.cart_layer > div.dl,
+.check_out_layer > div.dl {
   position: fixed;
   z-index: 101;
   left: 0;
   right: 0;
   bottom: 0.45rem;
+  top: 0;
   background: #fff;
 }
-.cart_layer dl dt {
+.cart_layer dl dt,
+.check_out_layer dl dt,
+.cart_layer > div.dl dt,
+.check_out_layer > div.dl dt,
+.cart_layer dl > div.title,
+.check_out_layer dl > div.title,
+.cart_layer > div.dl > div.title,
+.check_out_layer > div.dl > div.title {
   background: #F4F3F1;
-  color: #9A9997;
+  color: #505050;
   width: 100%;
   float: left;
 }
-.cart_layer dl dt > div {
+.cart_layer dl dt > div,
+.check_out_layer dl dt > div,
+.cart_layer > div.dl dt > div,
+.check_out_layer > div.dl dt > div,
+.cart_layer dl > div.title > div,
+.check_out_layer dl > div.title > div,
+.cart_layer > div.dl > div.title > div,
+.check_out_layer > div.dl > div.title > div {
   padding: 0.15rem;
   box-sizing: border-box;
 }
-.cart_layer dl dt > div:first-child {
+.cart_layer dl dt > div:first-child,
+.check_out_layer dl dt > div:first-child,
+.cart_layer > div.dl dt > div:first-child,
+.check_out_layer > div.dl dt > div:first-child,
+.cart_layer dl > div.title > div:first-child,
+.check_out_layer dl > div.title > div:first-child,
+.cart_layer > div.dl > div.title > div:first-child,
+.check_out_layer > div.dl > div.title > div:first-child {
   float: left;
 }
-.cart_layer dl dt > div:last-child {
+.cart_layer dl dt > div:first-child span,
+.check_out_layer dl dt > div:first-child span,
+.cart_layer > div.dl dt > div:first-child span,
+.check_out_layer > div.dl dt > div:first-child span,
+.cart_layer dl > div.title > div:first-child span,
+.check_out_layer dl > div.title > div:first-child span,
+.cart_layer > div.dl > div.title > div:first-child span,
+.check_out_layer > div.dl > div.title > div:first-child span {
+  margin-right: 0.05rem;
+}
+.cart_layer dl dt > div.clear_cart,
+.check_out_layer dl dt > div.clear_cart,
+.cart_layer > div.dl dt > div.clear_cart,
+.check_out_layer > div.dl dt > div.clear_cart,
+.cart_layer dl > div.title > div.clear_cart,
+.check_out_layer dl > div.title > div.clear_cart,
+.cart_layer > div.dl > div.title > div.clear_cart,
+.check_out_layer > div.dl > div.title > div.clear_cart,
+.cart_layer dl dt > div.close_cart,
+.check_out_layer dl dt > div.close_cart,
+.cart_layer > div.dl dt > div.close_cart,
+.check_out_layer > div.dl dt > div.close_cart,
+.cart_layer dl > div.title > div.close_cart,
+.check_out_layer dl > div.title > div.close_cart,
+.cart_layer > div.dl > div.title > div.close_cart,
+.check_out_layer > div.dl > div.title > div.close_cart,
+.cart_layer dl dt > div.goOrderFood,
+.check_out_layer dl dt > div.goOrderFood,
+.cart_layer > div.dl dt > div.goOrderFood,
+.check_out_layer > div.dl dt > div.goOrderFood,
+.cart_layer dl > div.title > div.goOrderFood,
+.check_out_layer dl > div.title > div.goOrderFood,
+.cart_layer > div.dl > div.title > div.goOrderFood,
+.check_out_layer > div.dl > div.title > div.goOrderFood {
   float: right;
 }
-.cart_layer dl dt > div:last-child span {
+.cart_layer dl dt > div.clear_cart span,
+.check_out_layer dl dt > div.clear_cart span,
+.cart_layer > div.dl dt > div.clear_cart span,
+.check_out_layer > div.dl dt > div.clear_cart span,
+.cart_layer dl > div.title > div.clear_cart span,
+.check_out_layer dl > div.title > div.clear_cart span,
+.cart_layer > div.dl > div.title > div.clear_cart span,
+.check_out_layer > div.dl > div.title > div.clear_cart span,
+.cart_layer dl dt > div.close_cart span,
+.check_out_layer dl dt > div.close_cart span,
+.cart_layer > div.dl dt > div.close_cart span,
+.check_out_layer > div.dl dt > div.close_cart span,
+.cart_layer dl > div.title > div.close_cart span,
+.check_out_layer dl > div.title > div.close_cart span,
+.cart_layer > div.dl > div.title > div.close_cart span,
+.check_out_layer > div.dl > div.title > div.close_cart span,
+.cart_layer dl dt > div.goOrderFood span,
+.check_out_layer dl dt > div.goOrderFood span,
+.cart_layer > div.dl dt > div.goOrderFood span,
+.check_out_layer > div.dl dt > div.goOrderFood span,
+.cart_layer dl > div.title > div.goOrderFood span,
+.check_out_layer dl > div.title > div.goOrderFood span,
+.cart_layer > div.dl > div.title > div.goOrderFood span,
+.check_out_layer > div.dl > div.title > div.goOrderFood span {
   margin-right: 0.06rem ;
 }
-.cart_layer dl dd {
+.cart_layer dl > div.list,
+.check_out_layer dl > div.list,
+.cart_layer > div.dl > div.list,
+.check_out_layer > div.dl > div.list {
+  overflow-y: scroll;
+  position: absolute;
+  top: 0.49rem;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.cart_layer dl > div.list.checkout,
+.check_out_layer dl > div.list.checkout,
+.cart_layer > div.dl > div.list.checkout,
+.check_out_layer > div.dl > div.list.checkout {
+  bottom: 0.59rem;
+}
+.cart_layer dl dd,
+.check_out_layer dl dd,
+.cart_layer > div.dl dd,
+.check_out_layer > div.dl dd,
+.cart_layer dl > div.list > div.dd,
+.check_out_layer dl > div.list > div.dd,
+.cart_layer > div.dl > div.list > div.dd,
+.check_out_layer > div.dl > div.list > div.dd {
   width: 100%;
   float: left;
   padding: 0.15rem;
   border-bottom: 0.01rem solid #e5e5e5;
   box-sizing: border-box;
 }
-.cart_layer dl dd .fa-plus-square {
+.cart_layer dl dd .goods_name,
+.check_out_layer dl dd .goods_name,
+.cart_layer > div.dl dd .goods_name,
+.check_out_layer > div.dl dd .goods_name,
+.cart_layer dl > div.list > div.dd .goods_name,
+.check_out_layer dl > div.list > div.dd .goods_name,
+.cart_layer > div.dl > div.list > div.dd .goods_name,
+.check_out_layer > div.dl > div.list > div.dd .goods_name {
+  width: 40%;
+  overflow: hidden;
+  float: left;
+  text-align: left;
+  height: 0.16rem;
+  line-height: 0.16rem;
+}
+.cart_layer dl dd .fa-plus-square,
+.check_out_layer dl dd .fa-plus-square,
+.cart_layer > div.dl dd .fa-plus-square,
+.check_out_layer > div.dl dd .fa-plus-square,
+.cart_layer dl > div.list > div.dd .fa-plus-square,
+.check_out_layer dl > div.list > div.dd .fa-plus-square,
+.cart_layer > div.dl > div.list > div.dd .fa-plus-square,
+.check_out_layer > div.dl > div.list > div.dd .fa-plus-square {
   color: #ca1816;
 }
-.cart_layer dl dd .fa-minus-square {
+.cart_layer dl dd .fa-minus-square,
+.check_out_layer dl dd .fa-minus-square,
+.cart_layer > div.dl dd .fa-minus-square,
+.check_out_layer > div.dl dd .fa-minus-square,
+.cart_layer dl > div.list > div.dd .fa-minus-square,
+.check_out_layer dl > div.list > div.dd .fa-minus-square,
+.cart_layer > div.dl > div.list > div.dd .fa-minus-square,
+.check_out_layer > div.dl > div.list > div.dd .fa-minus-square {
   color: #B0B0B0;
 }
-.cart_layer dl dd .fr {
-  font-size: 0.2rem;
+.cart_layer dl dd .fr,
+.check_out_layer dl dd .fr,
+.cart_layer > div.dl dd .fr,
+.check_out_layer > div.dl dd .fr,
+.cart_layer dl > div.list > div.dd .fr,
+.check_out_layer dl > div.list > div.dd .fr,
+.cart_layer > div.dl > div.list > div.dd .fr,
+.check_out_layer > div.dl > div.list > div.dd .fr {
+  font-size: 0.16rem;
   line-height: 1;
   padding: 0 0.05rem;
 }
-.cart_layer.active {
+.cart_layer dl dd .price,
+.check_out_layer dl dd .price,
+.cart_layer > div.dl dd .price,
+.check_out_layer > div.dl dd .price,
+.cart_layer dl > div.list > div.dd .price,
+.check_out_layer dl > div.list > div.dd .price,
+.cart_layer > div.dl > div.list > div.dd .price,
+.check_out_layer > div.dl > div.list > div.dd .price {
+  width: 25%;
+  height: 0.2rem;
+  overflow: hidden;
+  float: right;
+}
+.cart_layer dl > div.check_out_pay,
+.check_out_layer dl > div.check_out_pay,
+.cart_layer > div.dl > div.check_out_pay,
+.check_out_layer > div.dl > div.check_out_pay {
+  position: absolute;
+  bottom: 0.1rem;
+  left: 0;
+  right: 0rem;
+  height: 0.49rem;
+}
+.cart_layer dl > div.check_out_pay > div,
+.check_out_layer dl > div.check_out_pay > div,
+.cart_layer > div.dl > div.check_out_pay > div,
+.check_out_layer > div.dl > div.check_out_pay > div {
+  position: relative;
+  width: 50%;
+  float: left;
+  text-align: center;
+  box-sizing: border-box;
+  height: 0.49rem;
+  line-height: 0.45rem;
+  border: 0.02rem solid #f0f0f0;
+}
+.cart_layer dl > div.check_out_pay > div .fa,
+.check_out_layer dl > div.check_out_pay > div .fa,
+.cart_layer > div.dl > div.check_out_pay > div .fa,
+.check_out_layer > div.dl > div.check_out_pay > div .fa {
+  margin-right: 0.06rem;
+}
+.cart_layer dl > div.check_out_pay > div .fa-check,
+.check_out_layer dl > div.check_out_pay > div .fa-check,
+.cart_layer > div.dl > div.check_out_pay > div .fa-check,
+.check_out_layer > div.dl > div.check_out_pay > div .fa-check {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: none;
+  margin-right: 0;
+  font-size: 0.18rem;
+}
+.cart_layer dl > div.check_out_pay > div.active,
+.check_out_layer dl > div.check_out_pay > div.active,
+.cart_layer > div.dl > div.check_out_pay > div.active,
+.check_out_layer > div.dl > div.check_out_pay > div.active {
+  border: 0.02rem solid #CA1816;
+  color: #CA1816;
+  font-weight: bold;
+}
+.cart_layer dl > div.check_out_pay > div.active .fa-check,
+.check_out_layer dl > div.check_out_pay > div.active .fa-check,
+.cart_layer > div.dl > div.check_out_pay > div.active .fa-check,
+.check_out_layer > div.dl > div.check_out_pay > div.active .fa-check {
+  display: block;
+}
+.cart_layer.active,
+.check_out_layer.active {
   display: block;
 }
 .wrapper_sign .form-control {

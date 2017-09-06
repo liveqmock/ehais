@@ -54,16 +54,18 @@ $(function(){
 			},{
 			    field: 'goodsName',
 			    title: '商品名称'
-			},{
-			    field: 'costPrice',
-			    title: '分销成本价',formatter : function(value,rows,index){
-			    	if(value != null && value != ""){
-			    		return (parseFloat(value) / 100 ).toFixed(2);
-			    	}else{
-			    		return 0;
-			    	}
-			    }
-			},{
+			},
+//			{
+//			    field: 'costPrice',
+//			    title: '分销成本价',formatter : function(value,rows,index){
+//			    	if(value != null && value != ""){
+//			    		return (parseFloat(value) / 100 ).toFixed(2);
+//			    	}else{
+//			    		return 0;
+//			    	}
+//			    }
+//			},
+			{
 			    field: 'shopPrice',
 			    title: '出售价格',formatter : function(value,rows,index){
 			    	if(value != null && value != ""){
