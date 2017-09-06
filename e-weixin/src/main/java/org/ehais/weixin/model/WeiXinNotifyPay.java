@@ -38,7 +38,7 @@ public class WeiXinNotifyPay implements Serializable{
 	private String transaction_id;
 	private String out_trade_no;
 	private String attach;
-	private Float time_end;
+	private Long time_end;
 	
 	public String getReturn_code() {
 		return return_code;
@@ -190,10 +190,10 @@ public class WeiXinNotifyPay implements Serializable{
 	public void setAttach(String attach) {
 		this.attach = attach;
 	}
-	public Float getTime_end() {
+	public Long getTime_end() {
 		return time_end;
 	}
-	public void setTime_end(Float time_end) {
+	public void setTime_end(Long time_end) {
 		this.time_end = time_end;
 	}	
     public String getSign_type() {

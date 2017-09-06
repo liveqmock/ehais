@@ -28,7 +28,7 @@ import org.ehais.shop.model.HaiCartExample;
 import org.ehais.shop.model.HaiGoods;
 import org.ehais.shop.model.HaiUserAddress;
 import org.ehais.shop.model.HaiUserAddressExample;
-import org.ehais.util.ECommon;
+import org.ehais.util.SignUtil;
 import org.ehais.weixin.model.OpenidInfo;
 import org.ehais.weixin.model.WeiXinSignature;
 import org.ehais.weixin.utils.WeiXinUtil;
@@ -188,7 +188,7 @@ public class EhaisWebController extends EhaisCommonController {
 		
 		try{
 			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
-			Map<String,Object> map = this.getSid(sid,wp.getToken());
+			Map<String,Object> map = SignUtil.getSid(sid,wp.getToken());
 			if(map == null){
 			    return "redirect:"+website; //错误的链接，跳转商城
 			}
@@ -200,7 +200,7 @@ public class EhaisWebController extends EhaisCommonController {
 				}else if(StringUtils.isNotEmpty(code)){
 					System.out.println(code);
 					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map);
-					String newSid = this.setSid(store_id,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), user.getUserId(), Integer.valueOf(map.get("articleId").toString()), Long.valueOf(map.get("goodsId").toString()),wp.getToken());
+					String newSid = SignUtil.setSid(store_id,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), user.getUserId(), Integer.valueOf(map.get("articleId").toString()), Long.valueOf(map.get("goodsId").toString()),wp.getToken());
 					String link = request.getScheme() + "://" + request.getServerName() + "/w_article_detail!"+newSid;
 					System.out.println("code:"+link);
 					return "redirect:"+link;
@@ -250,7 +250,7 @@ public class EhaisWebController extends EhaisCommonController {
 		
 		try{
 			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
-			Map<String,Object> map = this.getSid(sid,wp.getToken());
+			Map<String,Object> map = SignUtil.getSid(sid,wp.getToken());
 			if(map == null){
 				System.out.println(sid+" sid is worng");
 			    return "redirect:"+website; //错误的链接，跳转商城
@@ -266,7 +266,7 @@ public class EhaisWebController extends EhaisCommonController {
 				}else if(StringUtils.isNotEmpty(code)){
 					System.out.println(code);
 					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map);
-					String newSid = this.setSid(store_id,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), user.getUserId(), Integer.valueOf(map.get("articleId").toString()), Long.valueOf(map.get("goodsId").toString()),wp.getToken());
+					String newSid = SignUtil.setSid(store_id,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), user.getUserId(), Integer.valueOf(map.get("articleId").toString()), Long.valueOf(map.get("goodsId").toString()),wp.getToken());
 					String link = request.getScheme() + "://" + request.getServerName() + "/w_goods_detail!"+newSid;
 					System.out.println("code:"+link);
 					return "redirect:"+link;

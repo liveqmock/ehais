@@ -85,6 +85,28 @@ public class Bean2Utils {
         return map;
     }
     
+    
+    public static <T> Map<String,Object> toSignMap(T t){
+    	 Map<String,Object> map = new HashMap<String, Object>();
+         Field[] fields = t.getClass().getDeclaredFields();
+         for (Field field : fields) {
+        	 if(field.getName().equals("sign"))continue;
+        	 if(field.getName().toLowerCase().equals("serialversionuid"))continue;
+             try {
+             	field.setAccessible(true);
+             	Object obj = field.get(t);
+                 if(obj!=null){
+                	 map.put(field.getName(), obj.toString()); 
+                 }
+             } catch (IllegalArgumentException e) {
+                 e.printStackTrace();
+             } catch (IllegalAccessException e) {
+                 e.printStackTrace();
+             }
+         }
+         return map;
+    }
+    
     /**
      * 直接返回httpclient post的可用参数
      * @param t
@@ -233,6 +255,20 @@ public class Bean2Utils {
             temFiels.set(object, map.get(key));
         }
         return object;
+    }
+    
+    /**
+     * 遍历打印查看map
+     * @param map
+     */
+    public static void printMap(Map<String,Object> map){
+    	if(map == null){
+    		System.out.println("map is null");
+    		return ;
+    	}
+    	for (Map.Entry<String,Object> m : map.entrySet()) {
+			System.out.println(m.getKey()+"=="+m.getValue());
+		}
     }
     
     

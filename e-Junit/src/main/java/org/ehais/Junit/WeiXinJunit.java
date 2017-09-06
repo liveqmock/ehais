@@ -125,10 +125,12 @@ public class WeiXinJunit {
 	public void notityBackPay(){
 		try{
 //			String xml = "<xml><appid><![CDATA[wx9439cbf94f9235f0]]></appid><bank_type><![CDATA[CFT]]></bank_type><cash_fee><![CDATA[1]]></cash_fee><fee_type><![CDATA[CNY]]></fee_type><is_subscribe><![CDATA[N]]></is_subscribe><mch_id><![CDATA[1245521602]]></mch_id><nonce_str><![CDATA[ani64biyvb0cj7nsro917q76uukque4e]]></nonce_str><openid><![CDATA[oT2uMs9CG4LOqo3epOZS9gJJkNwo]]></openid><out_trade_no><![CDATA[20160229143916445362]]></out_trade_no><result_code><![CDATA[SUCCESS]]></result_code><return_code><![CDATA[SUCCESS]]></return_code><sign><![CDATA[84CC795005F58687E6D105A8DE570572]]></sign><time_end><![CDATA[20160229143923]]></time_end><total_fee>1</total_fee><trade_type><![CDATA[JSAPI]]></trade_type><transaction_id><![CDATA[1003280855201602293619746081]]></transaction_id></xml>";
-			String xml = "<xml><appid><![CDATA[wxb7e05d362dab27b1]]></appid><attach><![CDATA[weixin]]></attach><bank_type><![CDATA[CFT]]></bank_type><cash_fee><![CDATA[1]]></cash_fee><fee_type><![CDATA[CNY]]></fee_type><is_subscribe><![CDATA[Y]]></is_subscribe><mch_id><![CDATA[1480510742]]></mch_id><nonce_str><![CDATA[djkk5c6xxo9azk756wmydiggkc1yalnn]]></nonce_str><openid><![CDATA[oiGBot1K1vYJA2DFv2B-0W2xL9O0]]></openid><out_trade_no><![CDATA[2017080121134882991501593228]]></out_trade_no><result_code><![CDATA[SUCCESS]]></result_code><return_code><![CDATA[SUCCESS]]></return_code><sign><![CDATA[AAC38B326AD519BBAD7813D751D1C99C]]></sign><time_end><![CDATA[20170801211353]]></time_end><total_fee>1</total_fee><trade_type><![CDATA[JSAPI]]></trade_type><transaction_id><![CDATA[4001192001201708013920623277]]></transaction_id></xml>";
+//			String xml = "<xml><appid><![CDATA[wxb7e05d362dab27b1]]></appid><attach><![CDATA[weixin]]></attach><bank_type><![CDATA[CFT]]></bank_type><cash_fee><![CDATA[1]]></cash_fee><fee_type><![CDATA[CNY]]></fee_type><is_subscribe><![CDATA[Y]]></is_subscribe><mch_id><![CDATA[1480510742]]></mch_id><nonce_str><![CDATA[djkk5c6xxo9azk756wmydiggkc1yalnn]]></nonce_str><openid><![CDATA[oiGBot1K1vYJA2DFv2B-0W2xL9O0]]></openid><out_trade_no><![CDATA[2017080121134882991501593228]]></out_trade_no><result_code><![CDATA[SUCCESS]]></result_code><return_code><![CDATA[SUCCESS]]></return_code><sign><![CDATA[AAC38B326AD519BBAD7813D751D1C99C]]></sign><time_end><![CDATA[20170801211353]]></time_end><total_fee>1</total_fee><trade_type><![CDATA[JSAPI]]></trade_type><transaction_id><![CDATA[4001192001201708013920623277]]></transaction_id></xml>";
+			String xml = "<xml><appid><![CDATA[wxb7e05d362dab27b1]]></appid><bank_type><![CDATA[CFT]]></bank_type><cash_fee><![CDATA[1]]></cash_fee><fee_type><![CDATA[CNY]]></fee_type><is_subscribe><![CDATA[Y]]></is_subscribe><mch_id><![CDATA[1480510742]]></mch_id><nonce_str><![CDATA[f1wnfu1it06n47xcczinpq9b7r1wqeo1]]></nonce_str><openid><![CDATA[oiGBot1K1vYJA2DFv2B-0W2xL9O0]]></openid><out_trade_no><![CDATA[201709061320282629125]]></out_trade_no><result_code><![CDATA[SUCCESS]]></result_code><return_code><![CDATA[SUCCESS]]></return_code><sign><![CDATA[890C2ED179C0336242C47FA353C3DCAD]]></sign><time_end><![CDATA[20170906132145]]></time_end><total_fee>1</total_fee><trade_type><![CDATA[JSAPI]]></trade_type><transaction_id><![CDATA[4001192001201709060523841559]]></transaction_id></xml>";
 			
 //			String url = site + "/weixin/notify_pay";
-			String url = "http://www.tpshop.org/api.php/Api/DiningApi/notifyUrl";
+//			String url = "http://www.tpshop.org/api.php/Api/DiningApi/notifyUrl";
+			String url = "http://mg.ehais.com/weixin/pay/notify_url-56";
 			String req = EHttpClientUtil.httpClientRequest(url, xml);
 			System.out.println("请求返回："+req);
 		}catch(Exception e){
@@ -198,13 +200,13 @@ public class WeiXinJunit {
 		try {
 			AccessToken token = new AccessToken();//WeiXinUtil.getAccessToken(8, "wx722e9a654b5d58cc", "63be13ed69ff195b599d4ccd53b8ca93");
 
-			token.setToken("jB0Umel_cMrsheRvPjUOFUBQz2VzQtr1TGXMGFqvKLuj224rD_L22hQRHVHJOZuCCEyUhB7p3K27KE9SK-UIyjb8s4X1F5aTANjeOjcanvmDl73fgf5J4x_-b61yEUd_BIQcADAOVD");
+			token.setAccess_token("jB0Umel_cMrsheRvPjUOFUBQz2VzQtr1TGXMGFqvKLuj224rD_L22hQRHVHJOZuCCEyUhB7p3K27KE9SK-UIyjb8s4X1F5aTANjeOjcanvmDl73fgf5J4x_-b61yEUd_BIQcADAOVD");
 //			String req = EHttpClientUtil.postHttpClientFile(EConstants.upload_img.replaceAll("ACCESS_TOKEN", token.getToken()),parMap, fileMap,null);
 //			System.out.println(req);
 //			{"url":"http:\/\/mmbiz.qpic.cn\/mmbiz\/mX3BibrEkJQib7dpudfBBb9lmPVFFqc2MHcP4S5udtUnVd23QkOibRyAbmVJcnLHV2piaUyDlAuZicpeqGH2Kt5o0zw\/0"}
 
 			String req = EHttpClientUtil.postHttpClientFile(
-					WXConstants.upload_media.replace("ACCESS_TOKEN", token.getToken()).replace("TYPE", "image"),
+					WXConstants.upload_media.replace("ACCESS_TOKEN", token.getAccess_token()).replace("TYPE", "image"),
 					parMap, fileMap,null);
 			System.out.println(req);
 //			{"type":"image","media_id":"Dfrvsz7yN5Ho32Avh7VKLvV2_e9dC0M63ZRngkU19IFKZ_Oxb5X-xO74c6m1wOoy","created_at":1460361822}
@@ -248,11 +250,11 @@ public class WeiXinJunit {
 			
 			
 			AccessToken token = new AccessToken();//WeiXinUtil.getAccessToken(8, "wx722e9a654b5d58cc", "63be13ed69ff195b599d4ccd53b8ca93");
-			token.setToken("jB0Umel_cMrsheRvPjUOFUBQz2VzQtr1TGXMGFqvKLuj224rD_L22hQRHVHJOZuCCEyUhB7p3K27KE9SK-UIyjb8s4X1F5aTANjeOjcanvmDl73fgf5J4x_-b61yEUd_BIQcADAOVD");
+			token.setAccess_token("jB0Umel_cMrsheRvPjUOFUBQz2VzQtr1TGXMGFqvKLuj224rD_L22hQRHVHJOZuCCEyUhB7p3K27KE9SK-UIyjb8s4X1F5aTANjeOjcanvmDl73fgf5J4x_-b61yEUd_BIQcADAOVD");
 
 			
 			String req = EHttpClientUtil.httpPostEntity(
-					WXConstants.upload_news.replace("ACCESS_TOKEN", token.getToken()),
+					WXConstants.upload_news.replace("ACCESS_TOKEN", token.getAccess_token()),
 					content);
 			System.out.println(req);
 //			{"type":"news","media_id":"ShCRrjPK2nPgd6O-aO2e4qoO1omf0FX2xyZV4_lkTDNB2gxCvbkpZNxwsxifevma","created_at":1460362918}
@@ -280,7 +282,7 @@ public class WeiXinJunit {
 
 			
 //			String req = WeiXinUtil.mass_sendall(token.getToken(), true, null, "mpnews", "ShCRrjPK2nPgd6O-aO2e4qoO1omf0FX2xyZV4_lkTDNB2gxCvbkpZNxwsxifevma", null);
-			String req = WeiXinUtil.mass_sendall(token.getToken(), true, null, "text", "ShCRrjPK2nPgd6O-aO2e4qoO1omf0FX2xyZV4_lkTDNB2gxCvbkpZNxwsxifevma", "我要顶你个肺推送信息文档顶!--ShCRrjPK2nPgd6O-aO2e4qoO1omf0FX2xyZV4_lkTDNB2gxCvbkpZNxwsxifevma");
+			String req = WeiXinUtil.mass_sendall(token.getAccess_token(), true, null, "text", "ShCRrjPK2nPgd6O-aO2e4qoO1omf0FX2xyZV4_lkTDNB2gxCvbkpZNxwsxifevma", "我要顶你个肺推送信息文档顶!--ShCRrjPK2nPgd6O-aO2e4qoO1omf0FX2xyZV4_lkTDNB2gxCvbkpZNxwsxifevma");
 			System.out.println(req);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -367,7 +369,7 @@ public class WeiXinJunit {
 	
 	@Test
 	public void notityPay(){
-		String notityXml = "<xml><appid><![CDATA[wxb154991e8c8b6b09]]></appid><bank_type><![CDATA[CFT]]></bank_type><cash_fee><![CDATA[1]]></cash_fee><fee_type><![CDATA[CNY]]></fee_type><is_subscribe><![CDATA[N]]></is_subscribe><mch_id><![CDATA[1340156101]]></mch_id><nonce_str><![CDATA[znwrd04quv2y3no0iqiebosxiajv9ffh]]></nonce_str><openid><![CDATA[o5eMcvy2z2ocEYN7B1m13qv0xsDQ]]></openid><out_trade_no><![CDATA[201610291504462657420005400055]]></out_trade_no><result_code><![CDATA[SUCCESS]]></result_code><return_code><![CDATA[SUCCESS]]></return_code><sign><![CDATA[1661E218B4AE3B2619D91BB0C77ED08E]]></sign><time_end><![CDATA[20161029150452]]></time_end><total_fee>1</total_fee><trade_type><![CDATA[JSAPI]]></trade_type><transaction_id><![CDATA[4003282001201610298065761657]]></transaction_id></xml>";
+		String notityXml = "<xml><appid><![CDATA[wxb7e05d362dab27b1]]></appid><bank_type><![CDATA[CFT]]></bank_type><cash_fee><![CDATA[1]]></cash_fee><fee_type><![CDATA[CNY]]></fee_type><is_subscribe><![CDATA[Y]]></is_subscribe><mch_id><![CDATA[1480510742]]></mch_id><nonce_str><![CDATA[f1wnfu1it06n47xcczinpq9b7r1wqeo1]]></nonce_str><openid><![CDATA[oiGBot1K1vYJA2DFv2B-0W2xL9O0]]></openid><out_trade_no><![CDATA[201709061320282629125]]></out_trade_no><result_code><![CDATA[SUCCESS]]></result_code><return_code><![CDATA[SUCCESS]]></return_code><sign><![CDATA[890C2ED179C0336242C47FA353C3DCAD]]></sign><time_end><![CDATA[20170906132145]]></time_end><total_fee>1</total_fee><trade_type><![CDATA[JSAPI]]></trade_type><transaction_id><![CDATA[4001192001201709060523841559]]></transaction_id></xml>";
 		try {
 			WeiXinNotifyPay notifyPay = WeiXinUtil.toNotifyPayXml(notityXml);
 			Map<String,Object> map = notifyPay.toMap();

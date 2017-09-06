@@ -45,8 +45,12 @@ public class WeiXinPayController extends CommonController {
 				WeiXinNotifyPay notifyPay = WeiXinUtil.toNotifyPayXml(notityPayXml);
 				ReturnObject<WeiXinNotifyPay> rm = weiXinPayService.WeiXinNotifyPay(request, notifyPay,store_id);
 				WeiXinNotifyPay wnp = new WeiXinNotifyPay();
-				wnp.setReturn_code(rm.getModel().getReturn_code());
-				wnp.setReturn_msg(rm.getModel().getReturn_msg());
+				if(rm.getCode() != 1){
+					wnp.setReturn_code("FAIL");
+				}else{
+					wnp.setReturn_code("SUCCESS");
+				}
+				wnp.setReturn_msg(rm.getMsg());
 				
 				String xml = WeiXinUtil.fromNotifyPayXml(wnp);
 				

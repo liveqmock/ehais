@@ -1,6 +1,6 @@
 package org.ehais.Junit.validator;
 
-import javax.validation.ConstraintValidator;    
+import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;    
     
 public class CannotContainSpacesValidator implements ConstraintValidator<CannotContainSpaces, String> {    

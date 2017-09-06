@@ -1,5 +1,6 @@
 package org.ehais.epublic.service.impl;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +21,7 @@ import org.ehais.epublic.model.weixin.WxUnifiedorderResult;
 import org.ehais.epublic.service.EWPPublicService;
 import org.ehais.epublic.service.WeiXinPayService;
 import org.ehais.tools.ReturnObject;
+import org.ehais.util.Bean2Utils;
 import org.ehais.util.ECommon;
 import org.ehais.util.IpUtil;
 import org.ehais.util.SignUtil;
@@ -156,7 +158,8 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 		rm.setCode(0);
 		//进行签名验证
 		WpPublicWithBLOBs wpPublic = eWPPublicService.getWpPublic(store_id);
-		String sign = SignUtil.getSign(notifyPay.toMap(), wpPublic.getMchSecret());
+//		String sign = SignUtil.getSign(notifyPay.toMap(), wpPublic.getMchSecret());
+		String sign = SignUtil.getSign(Bean2Utils.toSignMap(notifyPay), wpPublic.getMchSecret());
 		if(!sign.equals(notifyPay.getSign())){
 			rm.setMsg("签名出错");return rm;
 		}
@@ -179,7 +182,7 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 			WeiXinTemplateMessage template = new WeiXinTemplateMessage();
 			template.setTemplate_id("DfQe86d1O0RUunKp5ZIRI-nMkPMyArRUdJV4XVi5vVs");//订单支付成功通知
 			template.setTouser(notifyPay.getOpenid());
-			template.setUrl("");
+			template.setUrl(request.getScheme()+"://"+request.getServerName()+"/wx_order_detail!"+SignUtil.setOid(store_id, orderInfo.getOrderId(), orderInfo.getOrderSn(), orderInfo.getUserId(), notifyPay.getOpenid(), wpPublic.getToken()));
 			template.setTopcolor("#FF0000");
 			
 			Map<String,Object> map = new HashMap<String,Object>();
@@ -191,7 +194,7 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 			
 			//商品名称
 			Map<String,String> keyword1 = new HashMap<String,String>();
-			keyword1.put("value", "详情");
+			keyword1.put("value", orderInfo.getGoodsDesc());
 			keyword1.put("color", "#173177");
 			map.put("keyword1", keyword1);
 			
@@ -201,9 +204,10 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 			keyword2.put("color", "#173177");
 			map.put("keyword2", keyword2);
 			
+
 			//支付金额
 			Map<String,String> keyword3 = new HashMap<String,String>();
-			keyword3.put("value", String.format("%.2f", notifyPay.getTotal_fee() / 100));
+			keyword3.put("value", String.format("%.2f", notifyPay.getTotal_fee().doubleValue() / 100));
 			keyword3.put("color", "#173177");
 			map.put("keyword3", keyword3);
 			
@@ -214,7 +218,8 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 			
 			template.setData(map);
 			
-			WeiXinUtil.TemplateSend(WeiXinUtil.getAccessToken(store_id, wpPublic.getAppid(), wpPublic.getSecret()).getAccess_token(), template);
+			String template_result = WeiXinUtil.TemplateSend(WeiXinUtil.getAccessToken(store_id, wpPublic.getAppid(), wpPublic.getSecret()).getAccess_token(), template);
+			System.out.println(template_result);
 			
 			rm.setCode(1);
 			rm.setMsg("SUCCESS");

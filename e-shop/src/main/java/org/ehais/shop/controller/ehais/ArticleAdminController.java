@@ -8,10 +8,15 @@ import javax.validation.Valid;
 
 import org.ehais.annotation.EPermissionController;
 import org.ehais.annotation.EPermissionMethod;
+import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
+import org.ehais.epublic.mapper.EHaiArticleMapper;
 import org.ehais.epublic.model.EHaiArticle;
 import org.ehais.epublic.model.EHaiArticleCat;
 import org.ehais.protocol.PermissionProtocol;
+import org.ehais.shop.mapper.HaiArticleGoodsMapper;
+import org.ehais.shop.mapper.HaiGoodsMapper;
+import org.ehais.shop.mapper.WArticleGoodsMapper;
 import org.ehais.shop.service.ArticleCatService;
 import org.ehais.shop.service.ArticleService;
 import org.ehais.tools.EConditionObject;
@@ -32,7 +37,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @EPermissionController(intro="红酒软文功能",value="ehaisArticleController")
 @Controller
 @RequestMapping("/ehais")
-public class  ArticleAdminController extends CommonController {
+public class  ArticleAdminController extends EhaisCommonController {
 
 	private static Logger log = LoggerFactory.getLogger(ArticleAdminController.class);
 
@@ -40,6 +45,12 @@ public class  ArticleAdminController extends CommonController {
 	private ArticleService ehaisArticleService;
 	@Autowired
 	private ArticleCatService ehaisArticleCatService;
+	@Autowired
+	private HaiArticleGoodsMapper haiArticleGoodsMapper;
+	@Autowired
+	private EHaiArticleMapper eHaiArticleMapper;
+	@Autowired
+	private HaiGoodsMapper haiGoodsMapper;
 	
 	
 	@EPermissionMethod(intro="打开红酒软文页面",value="ehaisArticleView",type=PermissionProtocol.URL)
@@ -259,6 +270,28 @@ public class  ArticleAdminController extends CommonController {
 			return this.errorJSON(e);
 		}
 	}
+	
+	
+	
+	@RequestMapping(value="/manage/article_qrcode",method=RequestMethod.POST)
+	public void manage_article_qrcode(ModelMap modelMap,
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestParam(value = "articleId", required = true) Integer articleId,
+			@RequestParam(value = "download", required = false) Integer download
+			
+			) {	
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		try{
+			
+			this.article_qrcode(request, response, eHaiArticleMapper, haiGoodsMapper,haiArticleGoodsMapper, store_id, 0, 0L, 0L, articleId, download);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+	}
+	
 	
 	
 	

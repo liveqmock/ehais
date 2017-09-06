@@ -98,7 +98,7 @@ function w_check_order_data(){
 				layer.open({content:result.msg + recIds, btn:"朕知道了"});
 				return ;
 			}
-			alert("加载中.."+chooseAddressId);
+			//alert("加载中.."+chooseAddressId);
 			if(chooseAddressId != null){//重新选择的地址
 				useraddress_info(chooseAddressId);
 				localStorage.removeItem("chooseAddressId");

@@ -26,7 +26,7 @@ public class JSONJunit {
 		
 		List<Map<String,Object>> listData = new ArrayList<Map<String,Object>>();
 		
-		Map<String, Object> mapColor = new HashMap<>();
+		Map<String, Object> mapColor = new HashMap<String , Object>();
 		mapColor.put("key", "color");
 		mapColor.put("value", "颜色");
 		List<Map<String,Object>> listColor = new ArrayList<Map<String,Object>>();		
@@ -46,7 +46,7 @@ public class JSONJunit {
 		listData.add(mapColor);
 		
 		
-		Map<String, Object> mapSize = new HashMap<>();
+		Map<String, Object> mapSize = new HashMap<String,Object>();
 		mapSize.put("key", "size");
 		mapSize.put("value", "尺寸");
 		List<Map<String,Object>> listSize = new ArrayList<Map<String,Object>>();		
@@ -66,7 +66,7 @@ public class JSONJunit {
 		listData.add(mapSize);
 		
 		
-		Map<String, Object> mapGroup = new HashMap<>();
+		Map<String, Object> mapGroup = new HashMap<String ,Object>();
 		mapGroup.put("key", "group");
 		mapGroup.put("value", "组合");
 		List<Map<String,Object>> listGroup = new ArrayList<Map<String,Object>>();		

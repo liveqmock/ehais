@@ -23,6 +23,7 @@ import org.ehais.epublic.model.EHaiArticleExample;
 import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.epublic.service.EUsersService;
+import org.ehais.shop.mapper.HaiArticleGoodsMapper;
 import org.ehais.shop.mapper.HaiGoodsMapper;
 import org.ehais.shop.mapper.WArticleGoodsMapper;
 import org.ehais.shop.mapper.WOrderGoodsActionMapper;
@@ -59,6 +60,8 @@ public class EhaisAgencyController extends EhaisCommonController{
 	private UsersAgencyService usersAgencyService;
 	@Autowired
 	private WArticleGoodsMapper wArticleGoodsMapper;
+	@Autowired
+	private HaiArticleGoodsMapper haiArticleGoodsMapper;
 	@Autowired
 	private EHaiArticleMapper eHaiArticleMapper;
 	@Autowired
@@ -169,11 +172,10 @@ public class EhaisAgencyController extends EhaisCommonController{
 	
 	
 	@RequestMapping(value="/agency/article_qrcode",method=RequestMethod.POST)
-	public void article_qrcode(ModelMap modelMap,
+	public void agency_article_qrcode(ModelMap modelMap,
 			HttpServletRequest request,
 			HttpServletResponse response,
 			@RequestParam(value = "articleId", required = true) Integer articleId,
-			@RequestParam(value = "goodsId", required = true) Long goodsId,
 			@RequestParam(value = "download", required = false) Integer download
 			
 			) {	
@@ -181,84 +183,8 @@ public class EhaisAgencyController extends EhaisCommonController{
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		Integer agencyId = (Integer)request.getSession().getAttribute(EConstants.SESSION_AGENCY_ID);
 		try{
-			EHaiArticleExample articleExample = new EHaiArticleExample();
-			articleExample.createCriteria().andArticleIdEqualTo(articleId).andStoreIdEqualTo(store_id);
-			List<EHaiArticle> listArticle = eHaiArticleMapper.selectByExample(articleExample);
-			if(listArticle == null || listArticle.size() == 0){
-				response.setHeader("Content-type", "text/html;charset=UTF-8");
-				response.getWriter().print("错误信息");
-				return ;
-			}
-			EHaiArticle article = listArticle.get(0);
-			HaiGoodsExample goodsExample = new HaiGoodsExample();
-			goodsExample.createCriteria().andGoodsIdEqualTo(goodsId).andStoreIdEqualTo(store_id);
-			List<HaiGoods> listGoods = haiGoodsMapper.selectByExample(goodsExample);
-			if(listGoods == null || listGoods.size() == 0){
-				response.setHeader("Content-type", "text/html;charset=UTF-8");
-				response.getWriter().print("无关联商品错误信息");
-				return ;
-			}
-			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
-			String content = request.getScheme()+"://"+request.getServerName()+"/w_article_detail!"+this.setSid(store_id,agencyId,user_id,user_id,articleId,goodsId,wp.getToken());
-			System.out.println(content);
-			MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-			@SuppressWarnings("rawtypes")
-	        Map hints = new HashMap();
-	        
-	        //设置UTF-8， 防止中文乱码
-	        hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
-	        //设置二维码四周白色区域的大小
-	        hints.put(EncodeHintType.MARGIN,1);
-	        //设置二维码的容错性
-	        hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H); 
-	        
-	        //width:图片完整的宽;height:图片完整的高
-	        //因为要在二维码下方附上文字，所以把图片设置为长方形（高大于宽）
-	        int width = 400;
-	        int height = 500;
-	        
-	        //画二维码，记得调用multiFormatWriter.encode()时最后要带上hints参数，不然上面设置无效
-	        BitMatrix bitMatrix = multiFormatWriter.encode(content, BarcodeFormat.QR_CODE, width, height, hints);
-	        BufferedImage image = MatrixToImageWriter.toBufferedImage(bitMatrix);
-//	        
-	        Graphics2D g = image.createGraphics();
-	        String pressText = article.getTitle();
-	        int fontSize = 25; //字体大小
-	        int fontStyle = 1; //字体风格
-	        
-	        int startX = (width-(fontSize*pressText.length()))/2;
-	        //y开始的位置：图片高度-（图片高度-图片宽度）/2
-	        int startY = height-(height-width)/2; 
-	        g.setColor(Color.BLACK);
-	        g.setFont(new Font(null, fontStyle, fontSize));
-	        g.drawString(pressText, startX, startY);
-	        
-	        
-	        fontSize = 12; //字体大小
-	        g.setFont(new Font(null, fontStyle, fontSize));
-	        pressText = "广州易海司信息科技有限公司";
-	        startX = (width-(fontSize*pressText.length()))/2;
-	        g.drawString(pressText, startX, startY + 30);
-	        
-	        fontSize = 10; //字体大小
-	        g.setFont(new Font(null, fontStyle, fontSize));
-	        pressText = "www.ehais.com";
-	        startX = (width-(fontSize*pressText.length()) / 2 )/2;
-	        g.drawString(pressText, startX, startY + 40);
-	        
-	        g.dispose();
-	        
-	        if(download != null && download == 1){//下载
-	        	response.setContentType("application/octet-stream");  
-	            response.setHeader("Accept-Ranges", "bytes");  
-	            response.setHeader("Content-Disposition", "attachment;fileName=" + new String(article.getTitle().getBytes("utf-8"), "ISO8859-1")+".jpg");  
-	            
-	        }
-	         
-	        
-	        OutputStream stream = response.getOutputStream();
-	        ImageIO.write(image, "jpg", stream);
-	        
+			
+			this.article_qrcode(request, response, eHaiArticleMapper, haiGoodsMapper, haiArticleGoodsMapper, store_id, agencyId, user_id, user_id, articleId, download);
 			
 		}catch(Exception e){
 			e.printStackTrace();

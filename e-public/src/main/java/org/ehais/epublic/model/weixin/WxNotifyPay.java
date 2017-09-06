@@ -244,7 +244,7 @@ public class WxNotifyPay implements Serializable {
      *
      * @mbg.generated Mon Aug 28 19:23:05 CST 2017
      */
-    private Float timeEnd;
+    private Long timeEnd;
 
     /**
      *
@@ -895,7 +895,7 @@ public class WxNotifyPay implements Serializable {
      *
      * @mbg.generated Mon Aug 28 19:23:05 CST 2017
      */
-    public Float getTimeEnd() {
+    public Long getTimeEnd() {
         return timeEnd;
     }
 
@@ -907,7 +907,7 @@ public class WxNotifyPay implements Serializable {
      *
      * @mbg.generated Mon Aug 28 19:23:05 CST 2017
      */
-    public void setTimeEnd(Float timeEnd) {
+    public void setTimeEnd(Long timeEnd) {
         this.timeEnd = timeEnd;
     }
 

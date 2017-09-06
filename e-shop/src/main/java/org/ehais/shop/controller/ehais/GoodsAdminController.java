@@ -8,11 +8,13 @@ import javax.validation.Valid;
 
 import org.ehais.annotation.EPermissionController;
 import org.ehais.annotation.EPermissionMethod;
+import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.ehais.epublic.validator.EInsertValidator;
 import org.ehais.epublic.validator.EUniqueValidator;
 import org.ehais.epublic.validator.EUpdateValidator;
 import org.ehais.protocol.PermissionProtocol;
+import org.ehais.shop.mapper.HaiGoodsMapper;
 import org.ehais.shop.model.HaiCategory;
 import org.ehais.shop.model.HaiCategoryWithBLOBs;
 import org.ehais.shop.model.HaiGoods;
@@ -40,7 +42,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @EPermissionController(intro="红酒信息功能",value="ehaisGoodsController")
 @Controller
 @RequestMapping("/ehais")
-public class  GoodsAdminController extends CommonController {
+public class  GoodsAdminController extends EhaisCommonController {
 
 	private static Logger log = LoggerFactory.getLogger(GoodsAdminController.class);
 
@@ -50,6 +52,8 @@ public class  GoodsAdminController extends CommonController {
 	private CategoryService ehaisCategoryService;
 	@Autowired
 	private GoodsGalleryService goodsGalleryService; 
+	@Autowired
+	private HaiGoodsMapper haiGoodsMapper;
 	
 	
 	@EPermissionMethod(intro="打开红酒信息页面",value="ehaisGoodsView",type=PermissionProtocol.URL)
@@ -119,9 +123,7 @@ public class  GoodsAdminController extends CommonController {
 			) {
 			if(result.hasErrors())return this.writeBindingResult(result);
 		try{
-			for (String string : imgOriginal) {
-				System.out.println("originalImg..."+string);
-			}
+			
 			
 			ReturnObject<HaiGoodsWithBLOBs> rm = ehaisGoodsService.ehais_goods_insert_submit(request, goods,imgOriginal);
 			return this.writeJson(rm);
@@ -272,6 +274,35 @@ public class  GoodsAdminController extends CommonController {
 	}
 	
 	
+	@RequestMapping(value="/manage/goods_qrcode",method=RequestMethod.POST)
+	public void manage_article_qrcode(ModelMap modelMap,
+			HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestParam(value = "goodsId", required = true) Long goodsId,
+			@RequestParam(value = "download", required = false) Integer download
+			
+			) {	
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		try{
+			
+			this.goods_qrcode(
+					request,
+					response,
+					haiGoodsMapper,
+					store_id,
+					Integer.valueOf(0),
+					Long.valueOf(0l),
+					Long.valueOf(0l),
+					goodsId,
+					download					
+					);
+
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+	}
+
 	
 }
 

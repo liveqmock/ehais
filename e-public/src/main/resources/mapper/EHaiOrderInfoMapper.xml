@@ -73,6 +73,7 @@
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="org.ehais.epublic.model.EHaiOrderInfo">
     <result column="remark" jdbcType="LONGVARCHAR" property="remark" />
+    <result column="goods_desc" jdbcType="LONGVARCHAR" property="goodsDesc" />
   </resultMap>
   
 </mapper>

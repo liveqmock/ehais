@@ -1,19 +1,41 @@
 package org.ehais.shop.controller.ehais;
 
-import java.io.UnsupportedEncodingException;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.ehais.controller.CommonController;
+import org.ehais.epublic.mapper.EHaiArticleMapper;
+import org.ehais.epublic.model.EHaiArticle;
+import org.ehais.epublic.model.EHaiArticleExample;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.epublic.service.EWPPublicService;
-import org.ehais.util.EncryptUtils;
+import org.ehais.shop.mapper.HaiArticleGoodsMapper;
+import org.ehais.shop.mapper.HaiGoodsMapper;
+import org.ehais.shop.model.HaiArticleGoods;
+import org.ehais.shop.model.HaiArticleGoodsExample;
+import org.ehais.shop.model.HaiGoods;
+import org.ehais.shop.model.HaiGoodsExample;
+import org.ehais.util.MatrixToImageWriter;
+import org.ehais.util.SignUtil;
 import org.ehais.weixin.utils.WeiXinUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.context.support.HttpRequestHandlerServlet;
+
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 public class EhaisCommonController extends CommonController{
 	//三级分销的主页面，可以将代理，与三个分销关系的ID组成商城主页，从而确定到三层关系与分销员的唯一商城地址
@@ -21,143 +43,7 @@ public class EhaisCommonController extends CommonController{
 	@Autowired
 	protected EWPPublicService eWPPublicService;
 	
-	/**
-	 * 加密设置
-	 * 0-5+商家ID
-	 * 6-10+代理ID
-	 * 11-15+上级分销人ID
-	 * 16-20+自己或分销的人ID
-	 * 21-25+文章ID
-	 * 26-30+商品ID
-	 * 31-32原字符串
-	 * @param agencyId
-	 * @param articleId
-	 * @param userId
-	 * @param goodsId
-	 * @param store_id
-	 * @param parentId
-	 * @return
-	 * @throws Exception
-	 */
-	protected String setSid(Integer store_id,Integer agencyId,Long parentId,Long userId,Integer articleId,Long goodsId,String secret) throws Exception{
-		String md5 = EncryptUtils.md5(store_id.toString()+agencyId.toString()+parentId.toString()+userId.toString()+articleId.toString()+goodsId.toString()+secret);
-		String sid = md5.substring(0, 5)+store_id.toString()+"0-0"+
-				md5.substring(5,10)+agencyId.toString()+"1-1"+
-				md5.substring(10,15)+parentId.toString()+"2-2"+
-				md5.substring(15,20)+userId.toString()+"3-3"+
-				md5.substring(20,25)+articleId.toString()+"4-4"+
-				md5.substring(25,30)+goodsId.toString()+"5-5"+
-				md5.substring(30,32);
-		return sid;
-	}
 	
-	public static void main(String[] args) throws Exception {
-		Integer store_id = 56;
-		Integer agencyId = 15;
-		Long parentId = 12l;
-		Long userId = 29l;
-		Integer articleId = 209;
-		Long goodsId = 203l;
-		String secret = "ehais_wxdev";
-		EhaisCommonController wc = new EhaisCommonController();
-		String sid = wc.setSid(store_id, agencyId, parentId, userId, articleId, goodsId, secret);
-		Integer n0 = sid.indexOf("0-0");
-		Integer n1 = sid.indexOf("1-1");
-		Integer n2 = sid.indexOf("2-2");
-		Integer n3 = sid.indexOf("3-3");
-		Integer n4 = sid.indexOf("4-4");
-		Integer n5 = sid.indexOf("5-5");
-		
-		System.out.println(n0+"-"+n1+"-"+n2+"-"+n3+"-"+n4+"-"+n5);
-		
-		String s0 = sid.substring(0, 5);
-		String s_store_id = sid.substring(5,n0);
-		
-		String s1 = sid.substring(n0+3,n0+8);
-		String s_agencyId = sid.substring(n0+8, n1);
-		
-		String s2 = sid.substring(n1+3, n1+8);
-		String s_parendId = sid.substring(n1+8, n2);
-		
-		String s3 = sid.substring(n2+3,n2+8);
-		String s_userId = sid.substring(n2+8, n3);
-		
-		String s4 = sid.substring(n3+3,n3+8);
-		String s_articleId = sid.substring(n3+8, n4);
-		
-		String s5 = sid.substring(n4+3,n4+8);
-		String s_goodsId = sid.substring(n4+8, n5);
-		
-		String s6 = sid.substring(n5+3,n5+5);
-		
-		System.out.println(s0+"-"+s1+"-"+s2+"-"+s3+"-"+s4+"-"+s5+"-"+s6);
-		
-		System.out.println(s_store_id+"-"+s_agencyId+"-"+s_parendId+"-"+s_userId+"-"+s_articleId+"-"+s_goodsId);
-		
-		Map<String,Object> map = wc.getSid(sid, secret);
-		if(map!=null){
-			System.out.println(map.get("store_id"));
-			System.out.println(map.get("agencyId"));
-			System.out.println(map.get("parendId"));
-			System.out.println(map.get("userId"));
-			System.out.println(map.get("articleId"));
-			System.out.println(map.get("goodsId"));
-		}
-	}
-	
-	/**
-	 * 解析参数
-	 * @param sid
-	 * @return
-	 */
-	protected Map<String,Object> getSid(String sid,String secret){
-		if(StringUtils.isEmpty(sid))return null;
-		Map<String,Object> map = null;
-		try{
-			Integer n0 = sid.indexOf("0-0");
-			Integer n1 = sid.indexOf("1-1");
-			Integer n2 = sid.indexOf("2-2");
-			Integer n3 = sid.indexOf("3-3");
-			Integer n4 = sid.indexOf("4-4");
-			Integer n5 = sid.indexOf("5-5");
-			
-			String s0 = sid.substring(0, 5);
-			String s_store_id = sid.substring(5,n0);
-			
-			String s1 = sid.substring(n0+3,n0+8);
-			String s_agencyId = sid.substring(n0+8, n1);
-			
-			String s2 = sid.substring(n1+3, n1+8);
-			String s_parendId = sid.substring(n1+8, n2);
-			
-			String s3 = sid.substring(n2+3,n2+8);
-			String s_userId = sid.substring(n2+8, n3);
-			
-			String s4 = sid.substring(n3+3,n3+8);
-			String s_articleId = sid.substring(n3+8, n4);
-			
-			String s5 = sid.substring(n4+3,n4+8);
-			String s_goodsId = sid.substring(n4+8, n5);
-			
-			String s6 = sid.substring(n5+3,n5+5);
-			
-			if(EncryptUtils.md5(s_store_id+s_agencyId+s_parendId+s_userId+s_articleId+s_goodsId+secret).equals(s0+s1+s2+s3+s4+s5+s6)){
-				map = new HashMap<String,Object>();
-				map.put("store_id", s_store_id);
-				map.put("agencyId", s_agencyId);
-				map.put("parendId", s_parendId);
-				map.put("userId", s_userId);
-				map.put("articleId", s_articleId);				
-				map.put("goodsId", s_goodsId);
-			}
-			
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-				
-		return map;
-	}
 	
 	/**
 	 * 通过地址栏获取商家编号
@@ -180,6 +66,196 @@ public class EhaisCommonController extends CommonController{
 		REDIRECT_URI = java.net.URLEncoder.encode(REDIRECT_URI, "utf-8");
 		return "redirect:"+WeiXinUtil.authorize_snsapi(appid, "snsapi_base", REDIRECT_URI);
 	}
+	
+	
+	protected void article_qrcode(HttpServletRequest request,
+			HttpServletResponse response,
+			EHaiArticleMapper eHaiArticleMapper,
+			HaiGoodsMapper haiGoodsMapper,
+			HaiArticleGoodsMapper haiArticleGoodsMapper,
+			Integer store_id,
+			Integer agencyId,
+			Long parentId,
+			Long userId,
+			Integer articleId,
+			Integer download) throws Exception{
+		EHaiArticleExample articleExample = new EHaiArticleExample();
+		articleExample.createCriteria().andArticleIdEqualTo(articleId).andStoreIdEqualTo(store_id);
+		List<EHaiArticle> listArticle = eHaiArticleMapper.selectByExample(articleExample);
+		if(listArticle == null || listArticle.size() == 0){
+			response.setHeader("Content-type", "text/html;charset=UTF-8");
+			response.getWriter().print("错误信息");
+			return ;
+		}
+		EHaiArticle article = listArticle.get(0);
+		Long goodsId = 0l;
+		
+		HaiArticleGoodsExample agExample = new HaiArticleGoodsExample();
+		agExample.createCriteria().andArticleIdEqualTo(articleId);
+		List<HaiArticleGoods> listArticleGoods = haiArticleGoodsMapper.selectByExample(agExample);
+		if(listArticleGoods != null && listArticleGoods.size() > 0){
+			HaiArticleGoods articleGoods = listArticleGoods.get(0);
+			goodsId = articleGoods.getGoodsId();
+			HaiGoodsExample goodsExample = new HaiGoodsExample();
+			goodsExample.createCriteria().andGoodsIdEqualTo(goodsId).andStoreIdEqualTo(store_id);
+			List<HaiGoods> listGoods = haiGoodsMapper.selectByExample(goodsExample);
+			if(listGoods == null || listGoods.size() == 0){
+				response.setHeader("Content-type", "text/html;charset=UTF-8");
+				response.getWriter().print("关联商品错误信息");
+				return ;
+			}
+		}
+		
+		
+		WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
+		String content = request.getScheme()+"://"+request.getServerName()+"/w_article_detail!"+SignUtil.setSid(store_id,agencyId,parentId,userId,articleId,goodsId,wp.getToken());
+		System.out.println(content);
+		MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+		@SuppressWarnings("rawtypes")
+        Map hints = new HashMap();
+        
+        //设置UTF-8， 防止中文乱码
+        hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+        //设置二维码四周白色区域的大小
+        hints.put(EncodeHintType.MARGIN,1);
+        //设置二维码的容错性
+        hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H); 
+        
+        //width:图片完整的宽;height:图片完整的高
+        //因为要在二维码下方附上文字，所以把图片设置为长方形（高大于宽）
+        int width = 400;
+        int height = 500;
+        
+        //画二维码，记得调用multiFormatWriter.encode()时最后要带上hints参数，不然上面设置无效
+        BitMatrix bitMatrix = multiFormatWriter.encode(content, BarcodeFormat.QR_CODE, width, height, hints);
+        BufferedImage image = MatrixToImageWriter.toBufferedImage(bitMatrix);
+//        
+        Graphics2D g = image.createGraphics();
+        String pressText = article.getTitle();
+        int fontSize = 25; //字体大小
+        int fontStyle = 1; //字体风格
+        
+        int startX = (width-(fontSize*pressText.length()))/2;
+        //y开始的位置：图片高度-（图片高度-图片宽度）/2
+        int startY = height-(height-width)/2; 
+        g.setColor(Color.BLACK);
+        g.setFont(new Font(null, fontStyle, fontSize));
+        g.drawString(pressText, startX, startY);
+        
+        
+        fontSize = 12; //字体大小
+        g.setFont(new Font(null, fontStyle, fontSize));
+        pressText = "广州易海司信息科技有限公司";
+        startX = (width-(fontSize*pressText.length()))/2;
+        g.drawString(pressText, startX, startY + 30);
+        
+        fontSize = 10; //字体大小
+        g.setFont(new Font(null, fontStyle, fontSize));
+        pressText = "www.ehais.com";
+        startX = (width-(fontSize*pressText.length()) / 2 )/2;
+        g.drawString(pressText, startX, startY + 40);
+        
+        g.dispose();
+        
+        if(download != null && download == 1){//下载
+        	response.setContentType("application/octet-stream");  
+            response.setHeader("Accept-Ranges", "bytes");  
+            response.setHeader("Content-Disposition", "attachment;fileName=" + new String(article.getTitle().getBytes("utf-8"), "ISO8859-1")+".jpg");  
+            
+        }
+         
+        
+        OutputStream stream = response.getOutputStream();
+        ImageIO.write(image, "jpg", stream);
+        
+	}
+
+	protected void goods_qrcode(HttpServletRequest request,
+			HttpServletResponse response,
+			HaiGoodsMapper haiGoodsMapper,
+			Integer store_id,
+			Integer agencyId,
+			Long parentId,
+			Long userId,
+			Long goodsId,
+			Integer download) throws Exception{
+		
+		Integer articleId=0;
+		HaiGoodsExample goodsExample = new HaiGoodsExample();
+		goodsExample.createCriteria()
+		.andGoodsIdEqualTo(goodsId)
+		.andStoreIdEqualTo(store_id);
+		List<HaiGoods> listGoods = haiGoodsMapper.selectByExample(goodsExample);
+		if(listGoods == null || listGoods.size() == 0){
+			response.setHeader("Content-type", "text/html;charset=UTF-8");
+			response.getWriter().print("商品错误信息");
+			return ;
+		}
+		HaiGoods goods = listGoods.get(0);
+		
+		WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
+		String content = request.getScheme()+"://"+request.getServerName()+"/w_article_detail!"+SignUtil.setSid(store_id,agencyId,parentId,userId,articleId,goodsId,wp.getToken());
+		System.out.println(content);
+		MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+		@SuppressWarnings("rawtypes")
+        Map hints = new HashMap();
+        
+        //设置UTF-8， 防止中文乱码
+        hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+        //设置二维码四周白色区域的大小
+        hints.put(EncodeHintType.MARGIN,1);
+        //设置二维码的容错性
+        hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H); 
+        
+        //width:图片完整的宽;height:图片完整的高
+        //因为要在二维码下方附上文字，所以把图片设置为长方形（高大于宽）
+        int width = 400;
+        int height = 500;
+        
+        //画二维码，记得调用multiFormatWriter.encode()时最后要带上hints参数，不然上面设置无效
+        BitMatrix bitMatrix = multiFormatWriter.encode(content, BarcodeFormat.QR_CODE, width, height, hints);
+        BufferedImage image = MatrixToImageWriter.toBufferedImage(bitMatrix);
+//        
+        Graphics2D g = image.createGraphics();
+        String pressText = goods.getGoodsName();
+        int fontSize = 25; //字体大小
+        int fontStyle = 1; //字体风格
+        
+        int startX = (width-(fontSize*pressText.length()))/2;
+        //y开始的位置：图片高度-（图片高度-图片宽度）/2
+        int startY = height-(height-width)/2; 
+        g.setColor(Color.BLACK);
+        g.setFont(new Font(null, fontStyle, fontSize));
+        g.drawString(pressText, startX, startY);
+        
+        
+        fontSize = 12; //字体大小
+        g.setFont(new Font(null, fontStyle, fontSize));
+        pressText = "广州易海司信息科技有限公司";
+        startX = (width-(fontSize*pressText.length()))/2;
+        g.drawString(pressText, startX, startY + 30);
+        
+        fontSize = 10; //字体大小
+        g.setFont(new Font(null, fontStyle, fontSize));
+        pressText = "www.ehais.com";
+        startX = (width-(fontSize*pressText.length()) / 2 )/2;
+        g.drawString(pressText, startX, startY + 40);
+        
+        g.dispose();
+        
+        if(download != null && download == 1){//下载
+        	response.setContentType("application/octet-stream");  
+            response.setHeader("Accept-Ranges", "bytes");  
+            response.setHeader("Content-Disposition", "attachment;fileName=" + new String(goods.getGoodsName().getBytes("utf-8"), "ISO8859-1")+".jpg");  
+            
+        }
+         
+        
+        OutputStream stream = response.getOutputStream();
+        ImageIO.write(image, "jpg", stream);
+        
+	}
+	
 	
 	
 

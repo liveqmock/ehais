@@ -36,6 +36,7 @@ import org.ehais.shop.model.HaiGoods;
 import org.ehais.shop.model.HaiGoodsExample;
 import org.ehais.shop.model.HaiOrderGoods;
 import org.ehais.shop.model.HaiOrderInfo;
+import org.ehais.shop.model.HaiOrderInfoWithBLOBs;
 import org.ehais.shop.model.HaiPayment;
 import org.ehais.shop.model.HaiPaymentWithBLOBs;
 import org.ehais.shop.model.HaiShipping;
@@ -255,7 +256,7 @@ public class ShoppingServiceImpl extends CommonServiceImpl implements ShoppingSe
 			return rm;
 		}
 		Date date = new Date();
-		HaiOrderInfo order = new HaiOrderInfo();
+		HaiOrderInfoWithBLOBs order = new HaiOrderInfoWithBLOBs();
 		
 		String year = String.valueOf(date.getYear()+1900);
 		String month = String.format("%02d",date.getMonth()+1);
@@ -264,7 +265,7 @@ public class ShoppingServiceImpl extends CommonServiceImpl implements ShoppingSe
 		String minutes = String.format("%02d",date.getMinutes());
 		String second = String.format("%02d",date.getSeconds());
 		
-		order.setOrderSn(year + month + todate + hours + minutes + second + ECommon.nonceInt(6));
+		order.setOrderSn("800"+year + month + todate + hours + minutes + second + ECommon.nonceInt(6));
 		order.setUserId(user_id);
 		
 		order.setOrderStatus(EOrderStatusEnum.init);
@@ -338,10 +339,12 @@ public class ShoppingServiceImpl extends CommonServiceImpl implements ShoppingSe
 		order.setPayName(pay.getPayName());
 		
 		Integer total_amount = 0;
+		StringBuffer sb = new StringBuffer();
 		for (HaiCart haiCart : cart_list) {
 			total_amount += haiCart.getGoodsPrice().intValue() * haiCart.getGoodsNumber();
+			sb.append(haiCart.getGoodsName()+"【"+haiCart.getGoodsNumber()+"】  ");
 		}
-		
+		order.setGoodsDesc(sb.toString());
 		order.setGoodsAmount(total_amount);
 		
 		int code = haiOrderInfoMapper.insert(order);
@@ -640,6 +643,7 @@ public class ShoppingServiceImpl extends CommonServiceImpl implements ShoppingSe
 		}
 		
 		Integer totalPrice = 0 ;//以分为单位
+		StringBuffer sb = new StringBuffer();
 		//根据商品取价
 		for (HaiCart cart : cart_list) {
 			for (HaiGoods goods : goodsList){
@@ -648,14 +652,16 @@ public class ShoppingServiceImpl extends CommonServiceImpl implements ShoppingSe
 						rm.setMsg("商品数量不足");return rm;
 					}
 					totalPrice += cart.getGoodsNumber() * goods.getShopPrice();//以分为单位
+					sb.append(cart.getGoodsName()+"【"+cart.getGoodsNumber()+"】  ");
 					continue;
 				}
 			}
 		}
 		
+		
 		Date date = new Date();
 		//插入订单主表
-		HaiOrderInfo orderInfo = new HaiOrderInfo();
+		HaiOrderInfoWithBLOBs orderInfo = new HaiOrderInfoWithBLOBs();
 		String orderSn = "100"+DateUtil.formatDate(date, DateUtil.FORMATSTR_4) + ECommon.nonceInt(4) + order_done.getUser_id().toString();
 		orderInfo.setOrderSn(orderSn);
 		orderInfo.setUserId(order_done.getUser_id());
@@ -743,6 +749,8 @@ public class ShoppingServiceImpl extends CommonServiceImpl implements ShoppingSe
 		orderInfo.setParentId(0L);// '能获得推荐分成的用户id，id取值于表ecs_users',
 		orderInfo.setDiscount(0F);//'折扣金额',
 		orderInfo.setIsVoid(EIsVoidEnum.valid);
+		orderInfo.setGoodsDesc(sb.toString());
+		orderInfo.setRemark("");
 		
 		int code = haiOrderInfoMapper.insert(orderInfo);
 		Long order_id = orderInfo.getOrderId();

@@ -535,10 +535,11 @@ public class WeiXinUtil {
 	
 	
 	public static String TemplateSend(String token,WeiXinTemplateMessage template) throws Exception {
-		String url = WXConstants.template_send.replace("TOKEN", token);
+		String url = WXConstants.template_send.replace("ACCESS_TOKEN", token);
 		System.out.println(url);
 		
 		JSONObject json = JSONObject.fromObject(template);
+		System.out.println(json.toString());
 		return EHttpClientUtil.httpPostEntity(url, json.toString());
 	}
 	

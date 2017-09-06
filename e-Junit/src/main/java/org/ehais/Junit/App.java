@@ -88,4 +88,20 @@ public class App {
 		JSONArray arr = JSONArray.fromObject(list);
 		System.out.println(arr.toString());
 	}
+	
+	@Test
+	public void jtype(){
+		Integer fee = 1;
+		long l = fee.longValue() / 100;
+		float f = fee.floatValue() /100;
+		double d = fee.doubleValue() / 100;
+		
+		System.out.println(l);
+		System.out.println(f);
+		System.out.println(d);
+		
+		System.out.println(String.format("%.2f", f));
+		System.out.println(String.format("%.2f", d));
+		System.out.println(String.format("%.2f", fee.doubleValue() / 100));
+	}
 }
