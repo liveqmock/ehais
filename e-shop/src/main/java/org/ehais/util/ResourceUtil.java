@@ -1,4 +1,4 @@
-package org.ehais.shop.controller.ehais;
+package org.ehais.util;
 
 import java.util.Locale;
 import java.util.ResourceBundle;

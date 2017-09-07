@@ -74,3 +74,54 @@ body {
   padding: 0 20px 0 20px;
   box-sizing: border-box;
 }
+
+.file-preview {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    padding: 5px;
+    width: 100%;
+}
+.file-drop-zone, .krajee-default .file-preview-audio audio, .krajee-default .file-preview-image, .krajee-default .file-preview-other {
+    vertical-align: middle;
+}
+.file-drop-zone {
+    border: 1px dashed #aaa;
+    border-radius: 4px;
+    height: 100%;
+    margin: 12px 15px 12px 12px;
+    padding: 5px;
+    text-align: center;
+}
+.file-drop-zone .file-preview-thumbnails {
+    cursor: default;
+}
+.krajee-default.file-preview-frame {
+    border: 1px solid #ddd;
+    box-shadow: 1px 1px 5px 0 #a2958a;
+    display: table;
+    float: left;
+    margin: 8px;
+    padding: 6px;
+    position: relative;
+    text-align: center;
+}
+.krajee-default .file-actions, .krajee-default .file-other-error {
+    text-align: left;
+}
+.krajee-default .file-actions {
+    margin-top: 15px;
+}
+.krajee-default .file-footer-buttons {
+    float: right;
+}
+.file-caption-name {
+    display: inline-block;
+    height: 20px;
+    overflow: hidden;
+    word-break: break-all;
+}
+.btn-file {
+    overflow: hidden;
+    position: relative;
+}

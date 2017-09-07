@@ -14,7 +14,7 @@ public interface EHaiArticleMapper {
 	 * 阅读量增加
 	 * @param articleId
 	 */
-	@Update("update hai_article read_count = ifnull(read_count,0) + 1 where article_id = #{articleId}")
+	@Update("update hai_article set read_count = ifnull(read_count,0) + 1 where article_id = #{articleId}")
 	public void plusReadCount(@Param("articleId") Integer articleId);
 	
 	@ResultMap(value = "BaseResultMap")

@@ -254,23 +254,6 @@
 			<version>0.0.1-SNAPSHOT</version>
 	    </dependency>
 	    
-	    <!-- 
-	   <dependency>
-		    <groupId>org.apache.mina</groupId>
-		    <artifactId>mina-integration-beans</artifactId>
-		    <version>2.0.16</version>
-		</dependency>
-		<dependency>
-		    <groupId>org.apache.mina</groupId>
-		    <artifactId>mina-core</artifactId>
-		    <version>2.0.16</version>
-		</dependency>
-		<dependency>
-		    <groupId>org.apache.mina</groupId>
-		    <artifactId>mina-integration-spring</artifactId>
-		    <version>1.1.7</version>
-		</dependency>
-	     -->
 	    
 		
   </dependencies>

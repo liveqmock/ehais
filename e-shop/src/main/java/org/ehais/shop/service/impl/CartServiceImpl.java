@@ -381,6 +381,8 @@ public class CartServiceImpl  extends CommonServiceImpl implements CartService{
 		
 		long total = haiCartMapper.countByExample(example);
 		rm.setTotal(total);//购物车的数量
+		rm.setModel(model);
+		
 		
 		return rm;
 	}

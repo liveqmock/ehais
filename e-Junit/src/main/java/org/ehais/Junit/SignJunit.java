@@ -92,6 +92,7 @@ public class SignJunit {
 	@Test
 	public void tsid(){
 		String sid = "3e4ca680-0838c501-1e80f902-2b29e21243-34a6da91504-45a90623765-5db";
+		sid = "d4529680-0d4d2e01-19af9202-2983c903-36345104-4983a123765-57d";
 		Map<String,Object> map = SignUtil.getSid(sid, "ehais_wxdev");
 		Bean2Utils.printMap(map);
 		

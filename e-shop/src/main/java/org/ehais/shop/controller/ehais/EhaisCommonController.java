@@ -194,7 +194,7 @@ public class EhaisCommonController extends CommonController{
 		HaiGoods goods = listGoods.get(0);
 		
 		WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
-		String content = request.getScheme()+"://"+request.getServerName()+"/w_article_detail!"+SignUtil.setSid(store_id,agencyId,parentId,userId,articleId,goodsId,wp.getToken());
+		String content = request.getScheme()+"://"+request.getServerName()+"/w_goods_detail!"+SignUtil.setSid(store_id,agencyId,parentId,userId,articleId,goodsId,wp.getToken());
 		System.out.println(content);
 		MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
 		@SuppressWarnings("rawtypes")

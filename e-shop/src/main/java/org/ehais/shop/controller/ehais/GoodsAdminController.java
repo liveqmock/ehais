@@ -24,6 +24,8 @@ import org.ehais.shop.service.GoodsGalleryService;
 import org.ehais.shop.service.GoodsService;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
+import org.ehais.util.QiniuUtil;
+import org.ehais.util.ResourceUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +56,12 @@ public class  GoodsAdminController extends EhaisCommonController {
 	private GoodsGalleryService goodsGalleryService; 
 	@Autowired
 	private HaiGoodsMapper haiGoodsMapper;
+	
+	
+	private static String accessKey = ResourceUtil.getProValue("qiniu.accesskey");
+	private static String secretKey = ResourceUtil.getProValue("qiniu.secretkey");
+	private static String bucket = ResourceUtil.getProValue("qiniu.bucket");
+	private static String domain = ResourceUtil.getProValue("qiniu.domain");
 	
 	
 	@EPermissionMethod(intro="打开红酒信息页面",value="ehaisGoodsView",type=PermissionProtocol.URL)
@@ -101,6 +109,8 @@ public class  GoodsAdminController extends EhaisCommonController {
 		try{
 			ReturnObject<HaiGoodsWithBLOBs> rm = ehaisGoodsService.goods_insert(request);
 			modelMap.addAttribute("rm", rm);
+			modelMap.addAttribute("uptoken", QiniuUtil.getUpToken(accessKey,secretKey,bucket));
+			modelMap.addAttribute("domain", domain);
 			return "/"+this.getStoreTheme(request)+"/goods/detail";
 			
 		}catch(Exception e){
@@ -146,6 +156,8 @@ public class  GoodsAdminController extends EhaisCommonController {
 		try{
 			ReturnObject<HaiGoodsWithBLOBs> rm = ehaisGoodsService.goods_update(request,goodsId);
 			modelMap.addAttribute("rm", rm);
+			modelMap.addAttribute("uptoken", QiniuUtil.getUpToken(accessKey,secretKey,bucket));
+			modelMap.addAttribute("domain", domain);
 			return "/"+this.getStoreTheme(request)+"/goods/detail";
 		}catch(Exception e){
 			e.printStackTrace();

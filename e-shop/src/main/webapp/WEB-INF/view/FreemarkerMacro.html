@@ -100,3 +100,277 @@ $(function(){
 	</select>	
 </#macro>
 
+
+
+<!-- 图片控件：《@bsQiniuImagesPicker id="a" value="b" domain="a" uptoken="a"/> -->
+<#macro bsQiniuImagesPicker id value domain uptoken>
+<!-- ////// -->
+<div id="eq_qiniuPicker_${id}" class="file-input file-input-ajax-new">
+	<div id="eq_preview_wrapper_${id}" class="file-preview hide">
+	    <div class=" file-drop-zone">
+		    <div class="file-preview-thumbnails" id="eq_preview_${id}">
+		    </div>
+		    <div class="clearfix"></div>
+	    </div>
+	</div>
+	<div class="kv-upload-progress hide" id="eq_progress_${id}">
+		<div class="progress">
+		    <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%;">
+		        0%
+		     </div>
+		</div>
+	</div>
+<div class="input-group file-caption-main">
+
+<div tabindex="500" class="form-control file-caption  kv-fileinput-caption">
+   <div class="file-caption-name" title=""></div>
+</div>
+
+   <div class="input-group-btn" id="eq_pickfiles_${id}">
+       <div class="btn btn-primary btn-file">
+	       <i class="glyphicon glyphicon-folder-open"></i>&nbsp;  
+	       <span class="hidden-xs">选择 …</span>
+       </div>
+   </div>
+</div>
+</div>
+
+<input type="hidden" id="${id}" name="${id}" value="${value!''}" >
+
+	<!-- /////////// -->
+	
+<script type="text/javascript">
+$(function() {
+	
+	show_${id}_pic("${value!''}");
+	
+    var u_${id}_ploader = Qiniu.uploader({
+        disable_statistics_report: true,
+        makeLogFunc: 1,
+        runtimes: 'html5,flash,html4',
+        browse_button: 'eq_pickfiles_${id}',
+        max_file_size: '10000mb',
+        dragdrop: true,
+        chunk_size: '4mb',
+        multi_selection: !(moxie.core.utils.Env.OS.toLowerCase()==="ios"),
+        uptoken: '${uptoken}',
+        unique_names: true,
+        max_retries: 7,                     // 上传失败最大重试次数
+        domain: "${domain}",
+        get_new_uptoken: true,
+        auto_start: true,
+        log_level: 5,
+        init: {
+            'BeforeChunkUpload':function (up,file) {
+                console.log("before chunk upload:",file.name);
+            },
+            'FilesAdded': function(up, files) {
+                plupload.each(files, function(file) {
+                    console.log('filetype: ' + file.type);
+                    if(file.type=='image/jpeg'||file.type=='image/jpg'||file.type=='image/png'||file.type=='image/gif' || file.type=='video/x-matroska' || file.type=='video/mp4'){
+                        console.log('type:' + file.type);
+                    }else {
+                        console.log('上传类型只能是.jpg,.png,.gif,.mkv');
+                        return false;
+                    }});
+            },
+            'BeforeUpload': function(up, file) {
+                console.log("this is a beforeupload function from init");
+				$("#eq_progress_${id}").removeClass("hide");
+				$("#eq_progress_${id} .progress .progress-bar").css({width:"0%"}).html(0);
+            },
+            'UploadProgress': function(up, file) {
+            	console.log(file.percent+"+"+file.speed);
+				$("#eq_progress_${id} .progress .progress-bar").css({width:file.percent+"%"}).html(file.percent);
+            },
+            'UploadComplete': function() {
+            	$("#eq_progress_${id}").addClass("hide");
+            },
+            'FileUploaded': function(up, file, info) {
+                var response = JSON.parse(info.response);
+                
+                $("#${id}").val("${domain}"+response.key);
+                
+                show_${id}_pic("${domain}"+response.key);
+            },
+            'Error': function(up, err, errTip) {
+            }
+        }
+    });
+});
+
+function show_${id}_pic(path){
+	if(path == null || path == "")return ;
+	$("#eq_preview_wrapper_${id}").removeClass("hide");
+	$("#eq_preview_${id}").html("<div id=\"qiniu_image_${id}\" class=\"file-preview-frame krajee-default  kv-preview-thumb\" ><div class=\"kv-file-content\">"+
+			"<img src=\""+path+"\"  style=\"max-width:220px;max-height:220px;\">"+
+	"</div>"+
+	"<div class=\"file-thumbnail-footer\">"+
+		"<div class=\"file-actions\">"+
+		    "<div class=\"file-footer-buttons\">"+			        
+		        "<button type=\"button\" class=\"kv-file-remove btn btn-xs btn-default\" title=\"删除文件\" onclick=\"trash_${id}_pic('${id}');\">"+
+		        	"<i class=\"glyphicon glyphicon-trash text-danger\"></i>"+
+		        "</button>"+
+		 	"</div>"+
+		    "<div class=\"clearfix\"></div>"+
+		"</div>"+
+	"</div>"+
+	"</div>");
+}
+
+function trash_${id}_pic(imgId){
+	if(confirm("确认要删除?")){
+		$("#qiniu_image_"+imgId).remove();
+		$("#eq_preview_wrapper_"+imgId).addClass("hide");
+		$("#${id}").val("");
+	}
+}
+</script> 
+</#macro>
+
+
+
+
+<!-- 多图片相册控件：《@bsQiniuGalleryPicker id="a" gallery={} domain="a" uptoken="a"/> -->
+<#macro bsQiniuGalleryPicker id gallery domain uptoken>
+<!-- ////// -->
+<div id="eq_qiniuPicker_${id}" class="file-input file-input-ajax-new">
+	<div id="eq_preview_wrapper_${id}" class="file-preview hide">
+	    <div class=" file-drop-zone">
+		    <div class="file-preview-thumbnails" id="eq_preview_${id}">
+		    </div>
+		    <div class="clearfix"></div>
+	    </div>
+	</div>
+	<div class="kv-upload-progress hide" id="eq_progress_${id}">
+		<div class="progress">
+		    <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%;">
+		        0%
+		     </div>
+		</div>
+	</div>
+<div class="input-group file-caption-main">
+
+<div tabindex="500" class="form-control file-caption  kv-fileinput-caption">
+   <div class="file-caption-name" title=""></div>
+</div>
+
+   <div class="input-group-btn" id="eq_pickfiles_${id}">
+       <div class="btn btn-primary btn-file">
+	       <i class="glyphicon glyphicon-folder-open"></i>&nbsp;  
+	       <span class="hidden-xs">选择 …</span>
+       </div>
+   </div>
+</div>
+</div>
+
+<div id="gallery_hidden_${id}"></div>
+
+	<!-- /////////// -->
+	
+<script type="text/javascript">
+$(function() {
+	
+	<#if gallery??&&gallery?size gt 0>
+	<#list gallery as pic>
+		gallery_${id}_pic("${pic.imgOriginal!''}");
+	</#list>
+	</#if>
+	
+	
+	
+    var u_${id}_ploader = Qiniu.uploader({
+        disable_statistics_report: true,
+        makeLogFunc: 1,
+        runtimes: 'html5,flash,html4',
+        browse_button: 'eq_pickfiles_${id}',
+        max_file_size: '10000mb',
+        dragdrop: true,
+        chunk_size: '4mb',
+        multi_selection: !(moxie.core.utils.Env.OS.toLowerCase()==="ios"),
+        uptoken: '${uptoken}',
+        unique_names: true,
+        max_retries: 7,                     // 上传失败最大重试次数
+        domain: "${domain}",
+        get_new_uptoken: true,
+        auto_start: true,
+        log_level: 5,
+        init: {
+            'BeforeChunkUpload':function (up,file) {
+                console.log("before chunk upload:",file.name);
+            },
+            'FilesAdded': function(up, files) {
+                plupload.each(files, function(file) {
+                    console.log('filetype: ' + file.type);
+                    if(file.type=='image/jpeg'||file.type=='image/jpg'||file.type=='image/png'||file.type=='image/gif' || file.type=='video/x-matroska' || file.type=='video/mp4'){
+                        console.log('type:' + file.type);
+                    }else {
+                        console.log('上传类型只能是.jpg,.png,.gif,.mkv');
+                        return false;
+                    }});
+            },
+            'BeforeUpload': function(up, file) {
+                console.log("this is a beforeupload function from init");
+				$("#eq_progress_${id}").removeClass("hide");
+				$("#eq_progress_${id} .progress .progress-bar").css({width:"0%"}).html(0);
+            },
+            'UploadProgress': function(up, file) {
+            	console.log(file.percent+"+"+file.speed);
+				$("#eq_progress_${id} .progress .progress-bar").css({width:file.percent+"%"}).html(file.percent);
+            },
+            'UploadComplete': function() {
+            	$("#eq_progress_${id}").addClass("hide");
+            },
+            'FileUploaded': function(up, file, info) {
+                var response = JSON.parse(info.response);
+                
+                $("#${id}").val("${domain}"+response.key);
+                
+                gallery_${id}_pic("${domain}"+response.key);
+            },
+            'Error': function(up, err, errTip) {
+            }
+        }
+    });
+});
+
+function gallery_${id}_pic(path){
+	if(path == null || path == "")return ;
+	var maxNo = 0;
+	if($("#eq_preview_${id} > div").length > 0){
+		maxNo = $("#eq_preview_${id} > div").last().attr("quantity")
+	}
+	maxNo = parseInt(maxNo)+1;
+	
+	$("#gallery_hidden_${id}").append("<input type=\"hidden\" id=\"${id}"+maxNo+"\" name=\"${id}\" value=\""+path+"\" >");
+	
+	$("#eq_preview_wrapper_${id}").removeClass("hide");
+	$("#eq_preview_${id}").append("<div id=\"qiniu_image_${id}_"+maxNo+"\" class=\"file-preview-frame krajee-default  kv-preview-thumb\" quantity=\""+maxNo+"\"><div class=\"kv-file-content\">"+
+			"<img src=\""+path+"\"  style=\"max-width:220px;max-height:220px;\">"+
+	"</div>"+
+	"<div class=\"file-thumbnail-footer\">"+
+		"<div class=\"file-actions\">"+
+		    "<div class=\"file-footer-buttons\">"+			        
+		        "<button type=\"button\" class=\"kv-file-remove btn btn-xs btn-default\" title=\"删除文件\" onclick=\"trash_gallery_${id}_pic('${id}',"+maxNo+");\">"+
+		        	"<i class=\"glyphicon glyphicon-trash text-danger\"></i>"+
+		        "</button>"+
+		 	"</div>"+
+		    "<div class=\"clearfix\"></div>"+
+		"</div>"+
+	"</div>"+
+	"</div>");
+}
+
+function trash_gallery_${id}_pic(imgId,no){
+	if(confirm("确认要删除?")){
+		$("#qiniu_image_"+imgId+"_"+no).remove();
+		$("#${id}"+no+"").remove();
+		if($("#eq_preview_${id} > div").length == 0){
+			$("#eq_preview_wrapper_"+imgId).addClass("hide");
+		}
+	}
+}
+</script> 
+</#macro>
+
+

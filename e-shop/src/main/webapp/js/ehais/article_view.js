@@ -55,6 +55,9 @@ $(function(){
 			    field: 'title',
 			    title: '标题'
 			},{
+			    field: 'readCount',
+			    title: '阅读量'
+			},{
 			    field: 'articleDate',
 			    title: '发布日期',
 			    formatter : function(value,rows,index){

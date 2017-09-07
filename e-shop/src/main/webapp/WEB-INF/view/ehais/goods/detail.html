@@ -4,7 +4,6 @@
 <head>
 <script type="text/javascript" src="/js/jquery-2.1.4.min.js" ></script>
 		
-<link href="/js/fileinput/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
 <script src="/js/fileinput/js/plugins/piexif.js" type="text/javascript"></script>
 <script src="/js/fileinput/js/fileinput.js" type="text/javascript"></script>
 <script src="/js/fileinput/js/locales/zh.js" type="text/javascript"></script>
@@ -25,6 +24,10 @@
 
 <link rel="stylesheet" href="/js/bootstrap/spinner/bootstrap-spinner.css" />
 <script type="text/javascript" src="/js/bootstrap/spinner/jquery.spinner.js" ></script>
+
+<script type="text/javascript" src="/js/qiniu/qiniu.js" ></script>
+<script type="text/javascript" src="/js/qiniu/plupload.full.min.js" ></script>
+<script type="text/javascript" src="/js/qiniu/moxie.min.js" ></script>
 
 <#include "/FreemarkerMacro.html"/>
 
@@ -80,14 +83,6 @@
 </div>
 </div>
 
-<div class="form-group">
-<label class="col-sm-2 control-label">分销成本</label>
-<div class="col-sm-2">
-	<@currencyPicker id="costPriceFloat" value="${(rm.model.costPrice!0) / 100}" />
-</div>
-<div class="col-sm-8">非进货成本价，此成本价与出货价的计算利润，会根据三级分销，计算分销提成金额</div>
-</div>
-
 
 
 
@@ -132,20 +127,25 @@
 </div>
 </div>
 
-<div class="form-group">
-<label class="col-sm-2 control-label">封面图片</label>
-<div class="col-sm-5">
-	<@bsImagesPicker id="originalImg" value="${rm.model.originalImg!''}" />
-</div>
-</div>
 
+<div class="form-group">
+<label class="col-sm-2 control-label">图片</label>
+<div class="col-sm-4">
+	
+	<@bsQiniuImagesPicker id="originalImg" value="${rm.model.originalImg!''}" domain="${domain}" uptoken="${uptoken}" />
+	
+</div>
+</div>
 
 <div class="form-group">
 <label class="col-sm-2 control-label">相册图片</label>
 <div class="col-sm-8">
-	<@bsGalleryPicker id="imgOriginal" gallery=rm.map.gallery />
+	<@bsQiniuGalleryPicker id="imgOriginal" gallery=rm.map.gallery domain="${domain}" uptoken="${uptoken}"/>
 </div>
 </div>
+
+
+
 
 <div class="form-group">
 <label class="col-sm-2 control-label">描述</label>
