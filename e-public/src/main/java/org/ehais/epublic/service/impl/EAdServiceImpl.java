@@ -57,6 +57,8 @@ public class EAdServiceImpl  extends CommonServiceImpl implements EAdService{
 		example.setOrderByClause("ad_id desc");
 		List<EHaiAd> list = eHaiAdMapper.hai_ad_list_by_example(example);
 		Integer total = eHaiAdMapper.countByExample(example);
+		
+		
 		rm.setCode(1);
 		rm.setRows(list);
 		rm.setTotal(total);
@@ -71,7 +73,16 @@ public class EAdServiceImpl  extends CommonServiceImpl implements EAdService{
 		ReturnObject<EHaiAd> rm = new ReturnObject<EHaiAd>();	
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		EHaiAd model = new EHaiAd();
-		rm.setBootStrapList(this.formatBootStrapList(request,model));
+//		rm.setBootStrapList(this.formatBootStrapList(request,model));
+		
+		Map<String,Object> map = new HashMap<String,Object>();
+		EHaiAdPositionExample adExample = new EHaiAdPositionExample();
+		adExample.createCriteria().andStoreIdEqualTo(store_id);
+		List<EHaiAdPosition> listPosition = eHaiAdPositionMapper.selectByExample(adExample);
+		map.put("listPosition", listPosition);
+		rm.setMap(map);
+		
+		rm.setModel(model);
 		rm.setCode(1);
 		return rm;
 	}
@@ -113,7 +124,13 @@ public class EAdServiceImpl  extends CommonServiceImpl implements EAdService{
 		ReturnObject<EHaiAd> rm = new ReturnObject<EHaiAd>();
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		EHaiAd model = eHaiAdMapper.selectByPrimaryKey(Short.valueOf(adId+""));
-		rm.setBootStrapList(this.formatBootStrapList(request,model));
+		
+		Map<String,Object> map = new HashMap<String,Object>();
+		EHaiAdPositionExample adExample = new EHaiAdPositionExample();
+		adExample.createCriteria().andStoreIdEqualTo(store_id);
+		List<EHaiAdPosition> listPosition = eHaiAdPositionMapper.selectByExample(adExample);
+		map.put("listPosition", listPosition);
+		rm.setMap(map);
 		
 		rm.setCode(1);
 		rm.setModel(model);
