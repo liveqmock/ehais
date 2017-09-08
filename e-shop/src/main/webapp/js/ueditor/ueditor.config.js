@@ -495,3 +495,19 @@
     };
 
 })();
+
+
+$(function(){
+
+	UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;
+    UE.Editor.prototype.getActionUrl = function(action) {
+        if (action == 'uploadimage' || action == 'uploadscrawl' || action == 'uploadimage'
+                || action == 'uploadvideo' || action == 'uploadfile') {
+            return '/upload/qiniu_upload?action='+action;
+        }else {
+            return this._bkGetActionUrl.call(this, action);
+        }
+    }
+    
+    
+});

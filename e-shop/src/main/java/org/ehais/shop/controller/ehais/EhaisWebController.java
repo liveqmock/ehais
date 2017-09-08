@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
+import org.ehais.enums.EArticleRecordEnum;
 import org.ehais.epublic.mapper.EHaiArticleCatMapper;
 import org.ehais.epublic.mapper.EHaiArticleMapper;
 import org.ehais.epublic.mapper.EHaiUsersMapper;
@@ -261,7 +262,8 @@ public class EhaisWebController extends EhaisCommonController {
 						ar.setUserId(Long.valueOf(map.get("userId").toString()));
 						ar.setArticleId(Integer.valueOf(map.get("articleId").toString()));
 						ar.setGoodsId(Long.valueOf(map.get("goodsId").toString()));
-						ar.setReadTime(new Date());
+						ar.setRecordTime(new Date());
+						ar.setReadPraise(EArticleRecordEnum.READ);
 						haiArticleRecordMapper.insert(ar);
 						eHaiArticleMapper.plusReadCount(Integer.valueOf(map.get("articleId").toString()));
 					}
