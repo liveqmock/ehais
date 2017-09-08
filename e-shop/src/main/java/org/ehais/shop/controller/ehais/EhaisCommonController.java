@@ -45,20 +45,6 @@ public class EhaisCommonController extends CommonController{
 	
 	
 	
-	/**
-	 * 通过地址栏获取商家编号
-	 * @param sid
-	 * @return
-	 */
-	protected Integer getUriStoreId(String sid){
-		Integer n0 = sid.indexOf("0-0");
-		if(n0 < 6)return 0;
-		String s_store_id = sid.substring(5,n0);
-		if(StringUtils.isNotEmpty(s_store_id)){
-			return Integer.valueOf(s_store_id);
-		}
-		return 0;
-	}
 	
 	//跳转微信认证
 	protected String redirect_wx_authorize(HttpServletRequest request ,String appid , String path ) throws Exception {

@@ -34,9 +34,36 @@
 				</div>
 			</div>
 			
+			<div class="statistics"><span class="fa fa-eye">${article.readCount!0}</span><span class="fa fa-thumbs-o-up">${article.praiseCount!0}</span></div>
+			
+			<#if (recommendList?? && recommendList?size gt 0)>
+			<div class="recommend_title">推荐文章</div>
+			<div class="recommend">
+				<#list recommendList as article>
+				<div class="item" href="${article.link}">
+					<div class="pic"><img src="${article.articleImages!defaultimg}" /></div>
+					<div class="desc">
+						<h4>${article.title!''}</h4>
+						<div class="intro">${article.description!''}</div>
+					</div>
+				</div>
+				</#list>
+				
+			</div>
+			</#if>
+			
 			<div class="qrcode">
 				<img src="../images/qrcode.gif" />
 			</div>
+		</div>
+		
+		<div class="write">
+			写留言<i class="fa fa-pencil"></i>
+		</div>
+		<div class="message">
+			<ul id="message">
+				
+			</ul>
 		</div>
 		
 		<div class="share_wrapper">
@@ -57,6 +84,7 @@
 	<script type="text/javascript" src="../js/wxsdk.js" ></script>
 	<script type="text/javascript" src="../js/ehais/w_article_detail.js" ></script>
 	<script type="text/javascript">
+	var sid = "${sid}";
 	$(function(){
 		wx_config(${signature});
 	});

@@ -156,6 +156,16 @@ public class SignUtil {
 		return map;
 	}
 	
+	public static Integer getUriStoreId(String sid){
+		Integer n0 = sid.indexOf("0-0");
+		if(n0 < 6)return 0;
+		String s_store_id = sid.substring(5,n0);
+		if(StringUtils.isNotEmpty(s_store_id)){
+			return Integer.valueOf(s_store_id);
+		}
+		return 0;
+	}
+	
 	/**
 	 * 订单详情查看算法
 	 * @param store_id

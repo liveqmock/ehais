@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultMap;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.ehais.epublic.model.EHaiArticle;
 import org.ehais.epublic.model.EHaiArticleExample;
@@ -16,6 +17,24 @@ public interface EHaiArticleMapper {
 	 */
 	@Update("update hai_article set read_count = ifnull(read_count,0) + 1 where article_id = #{articleId}")
 	public void plusReadCount(@Param("articleId") Integer articleId);
+	
+	
+	/**
+	 * 根据关键字标签查找关联文章
+	 * @param store_id
+	 * @param keywordSql
+	 * @param start
+	 * @param len
+	 * @return
+	 */
+	@Select("select * from hai_article where store_id = #{store_id} and article_id != #{article_id} and (${keywordSql}) order by article_id desc limit #{start},#{len}")
+	@ResultMap(value = "BaseResultMap")
+	public List<EHaiArticle> recommendArticle(@Param("store_id") Integer store_id,
+			@Param("article_id") Integer article_id,
+			@Param("keywordSql") String keywordSql,
+			@Param("start") Integer start,
+			@Param("len") Integer len);
+	
 	
 	@ResultMap(value = "BaseResultMap")
 	public List<EHaiArticle> article_list_by_catcode(

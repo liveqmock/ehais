@@ -1,0 +1,40 @@
+body {
+  background: #f9f9f9;
+}
+.wirte_message {
+  font-size: 0.14rem;
+  width: 100%;
+  margin: 0 auto;
+}
+.wirte_message > h3 {
+  font-size: 0.22rem;
+  padding: 0.15rem 0.1rem;
+  box-sizing: border-box;
+}
+.wirte_message > h3,
+.wirte_message > div {
+  width: 100%;
+  float: left;
+  margin: 0.05rem 0;
+}
+.wirte_message > div {
+  text-align: center;
+}
+.wirte_message > div textarea {
+  width: 100%;
+  height: 1.5rem;
+  border: 0;
+  padding: 0.1rem;
+  box-sizing: border-box;
+  margin-bottom: 0.1rem;
+}
+.wirte_message > div button {
+  width: 80%;
+  border: 0;
+  background: #CA1818;
+  margin: 0 auto;
+  text-align: center;
+  color: #fff;
+  padding: 0.08rem 0;
+  border-radius: 0.05rem;
+}

@@ -176,14 +176,14 @@ public class JavaXMail {
     	String mailHost = "smtp.qq.com"; // 邮箱类型不同值也会不同
     	String mailAccount = "346799512@qq.com";
     	String mailPassword = "lgjun628819ok";
-    	String mailZh = "广州中恒软件科技有限公司";
+    	String mailZh = "广州易海司科技有限公司";
         
         
         // 邮件主题
-        String title = "广州中恒软件科技有限公司面试题";
+        String title = "广州易海司科技有限公司";
 
         // 邮件正文
-        String htmlContent = "tyler:<p>您好，我司(广州中恒软件科技有限公司)已经收到您发来的应聘资料，由于人数众多，我们也为进一步增加双方间的了解，希望您能够抽空完成一下我们的试题，然后再按排面谈时间。<p><p>应聘职位:java开发工程师<p>如果有问题，可以联系下面联系人<p><p>tyler<p>联系电话 : 13560217994<p>联系QQ : 346799512";
+        String htmlContent = "tyler:<p>您好，我司(广州易海司科技有限公司)已经收到您发来的资料，联系QQ : 346799512";
 
         // 收件人
         List<String> receivers = new ArrayList<String>();

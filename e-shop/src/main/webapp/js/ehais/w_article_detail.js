@@ -1,8 +1,15 @@
-var store_id = 56;
 $(function(){
 	$("#shareTip").click(function(){$(".share_wrapper").addClass("active");});
 	$(".share_wrapper .pic").click(function(){$(".share_wrapper").removeClass("active");});
 	$("#buynow").click(function(){buynow();});//立即购买
+	$(".write").click(function(){
+		window.location.href = "w_write_message!"+sid;
+	});
+	$(".recommend > .item").click(function(){
+		window.location.href = $(this).attr("href");
+	});
+	
+	message();//查看留言
 });
 
 //立即购买
@@ -27,5 +34,26 @@ function buynow(){
 		}
 	});
 	
+}
+
+function message(){
+	$.ajax({
+		url : "/ws/listArticleForum",type:"post",dataType:"json",
+		data : {sid:sid},
+		success : function(result){
+			if(result.code != 1)return ;
+			var rows = result.rows;
+			
+			$.each(rows,function(index,value){
+				$("#message").append("<li>"+
+					"<img class=\"pic\" src=\""+value.faceImage+"\">"+
+					"<div class=\"info\">"+
+						"<div class=\"t\">"+value.nickname+"</div>"+
+						"<div class=\"d\">"+value.content+"</div>"+
+					"</div>"+
+				"</li>");
+			});
+		}
+	});
 }
 
