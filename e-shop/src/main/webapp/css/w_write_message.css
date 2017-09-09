@@ -2,7 +2,7 @@ body {
   background: #f9f9f9;
 }
 .wirte_message {
-  font-size: 0.14rem;
+  font-size: 0.16rem;
   width: 100%;
   margin: 0 auto;
 }
@@ -21,6 +21,7 @@ body {
   text-align: center;
 }
 .wirte_message > div textarea {
+  font-size: 0.16rem;
   width: 100%;
   height: 1.5rem;
   border: 0;
@@ -29,6 +30,7 @@ body {
   margin-bottom: 0.1rem;
 }
 .wirte_message > div button {
+  font-size: 0.18rem;
   width: 80%;
   border: 0;
   background: #CA1818;

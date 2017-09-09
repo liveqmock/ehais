@@ -24,6 +24,9 @@
 				<img src="${article.articleImages!''}" />
 			</div>
 			<div class="article">${article.content!''}</div>
+			
+			
+			<#if goods??>
 			<div class="product">
 				<img src="${goods.goodsThumb!''}" />
 				<div class="name">${goods.goodsName!''}</div>
@@ -33,24 +36,18 @@
 					<span id="shareTip"><a href="javascript:;">分享</a></span>
 				</div>
 			</div>
+			<input type="hidden" id="goodsId" name="goodsId" value="${goods.goodsId}"/>
+			<input type="hidden" id="parentId" name="parentId" value="${parentId}"/>
+			<input type="hidden" id="articleId" name="articleId" value="${articleId}"/>
+			<input type="hidden" id="agencyId" name="agencyId" value="${agencyId}"/>
+			
+			</#if>
+			
 			
 			<div class="statistics"><span class="fa fa-eye">${article.readCount!0}</span><span class="fa fa-thumbs-o-up">${article.praiseCount!0}</span></div>
 			
-			<#if (recommendList?? && recommendList?size gt 0)>
-			<div class="recommend_title">推荐文章</div>
-			<div class="recommend">
-				<#list recommendList as article>
-				<div class="item" href="${article.link}">
-					<div class="pic"><img src="${article.articleImages!defaultimg}" /></div>
-					<div class="desc">
-						<h4>${article.title!''}</h4>
-						<div class="intro">${article.description!''}</div>
-					</div>
-				</div>
-				</#list>
-				
-			</div>
-			</#if>
+			<div class="recommend_title dn">推荐文章</div>
+			<div class="recommend dn"></div>
 			
 			<div class="qrcode">
 				<img src="../images/qrcode.gif" />
@@ -71,10 +68,6 @@
 			<div class="pic"></div>
 		</div>
 		
-		<input type="hidden" id="goodsId" name="goodsId" value="${goods.goodsId}"/>
-		<input type="hidden" id="parentId" name="parentId" value="${parentId}"/>
-		<input type="hidden" id="articleId" name="articleId" value="${articleId}"/>
-		<input type="hidden" id="agencyId" name="agencyId" value="${agencyId}"/>
 		
 		
 	</body>

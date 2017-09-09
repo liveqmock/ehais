@@ -151,44 +151,13 @@ public class EhaisWebController extends EhaisCommonController {
 			}
 			
 			//读取微信的分享信息与链接整理
-			if(goodsId == null || goodsId == 0L){
-				return "redirect:"+website; //错误的链接，跳转商城
+			if(goodsId.longValue() > 0){
+				HaiGoods goods = haiGoodsMapper.selectByPrimaryKey(goodsId);
+				modelMap.addAttribute("goods", goods);
 			}
-			HaiGoods goods = haiGoodsMapper.selectByPrimaryKey(goodsId);
-			modelMap.addAttribute("goods", goods);
 			
 		}
 		
-		
-		
-		
-		
-		
-		//读取关联商品信息
-		String keywords = article.getKeywords();
-		keywords = keywords.replaceAll("，", ",");//将中文的逗号也过滤一下
-		
-		StringBuffer sb = new StringBuffer();
-		String[] sqlKeywords = keywords.split(",");
-		for (String string : sqlKeywords) {
-			sb.append(" keywords like '%"+string+"%' or");
-		}
-		keywords = sb.toString();
-		if(keywords.length() > 0){
-			keywords = keywords.substring(0,keywords.length() - 2);
-		}
-		List<EHaiArticle> recommendList = eHaiArticleMapper.recommendArticle(Integer.valueOf(map.get("store_id").toString()), Integer.valueOf(map.get("articleId").toString()),keywords, 0, 5);
-		for (EHaiArticle eHaiArticle : recommendList) {
-			eHaiArticle.setLink("/w_article_detail!"+SignUtil.setSid(
-					Integer.valueOf(map.get("store_id").toString()), 
-					Integer.valueOf(map.get("agencyId").toString()), 
-					Long.valueOf(map.get("parentId").toString()), 
-					Long.valueOf(map.get("userId").toString()), 
-					eHaiArticle.getArticleId(), 
-					Long.valueOf(map.get("goodsId").toString()), 
-					wp.getToken()));
-		}
-		modelMap.addAttribute("recommendList", recommendList);
 		
 		modelMap.addAttribute("sid", sid);
 		modelMap.addAttribute("article", article);
@@ -269,7 +238,6 @@ public class EhaisWebController extends EhaisCommonController {
 			return "redirect:"+website; //错误的链接，跳转商城
 		}
 		request.getSession().setAttribute(EConstants.SESSION_STORE_ID, store_id);
-		request.getSession().setAttribute(EConstants.SESSION_USER_ID, 15L);///////////////////
 		try{
 			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
 			Map<String,Object> map = SignUtil.getSid(sid,wp.getToken());
@@ -506,9 +474,22 @@ public class EhaisWebController extends EhaisCommonController {
 			HttpServletRequest request,HttpServletResponse response	,
 			@PathVariable(value = "sid") String sid
 			) {
-		
+		Integer store_id = SignUtil.getUriStoreId(sid);
+		if(store_id == 0){
+			return "redirect:"+website; //错误的链接，跳转商城
+		}
 		try{
 			modelMap.addAttribute("sid", sid);
+			
+			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
+			Map<String,Object> map = SignUtil.getSid(sid,wp.getToken());
+			if(map == null){
+			    return "redirect:"+website; //错误的链接，跳转商城
+			}
+			//读取文章信息
+			EHaiArticle article = eHaiArticleMapper.selectByPrimaryKey(Integer.valueOf(map.get("articleId").toString()));
+			modelMap.addAttribute("article", article);
+			
 		}catch(Exception e){
 			e.printStackTrace();
 		}

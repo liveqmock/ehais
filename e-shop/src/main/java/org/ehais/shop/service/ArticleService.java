@@ -28,6 +28,14 @@ public interface ArticleService extends CommonService{
 	public ReturnObject<EHaiArticle> article_find(HttpServletRequest request,Integer articleId) throws Exception;
 	public ReturnObject<EHaiArticle> article_delete(HttpServletRequest request,Integer articleId) throws Exception;
 	
+	/**
+	 * 文章的推荐与评论信息
+	 * @param request
+	 * @param sid
+	 * @return
+	 * @throws Exception
+	 */
+	public ReturnObject<EHaiArticle> article_extends_list_json(HttpServletRequest request,String sid) throws Exception;
 	
 	
 }

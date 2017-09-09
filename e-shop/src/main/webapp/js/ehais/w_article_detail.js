@@ -5,11 +5,9 @@ $(function(){
 	$(".write").click(function(){
 		window.location.href = "w_write_message!"+sid;
 	});
-	$(".recommend > .item").click(function(){
-		window.location.href = $(this).attr("href");
-	});
 	
-	message();//查看留言
+	
+	article_extends_list_json();
 });
 
 //立即购买
@@ -36,23 +34,45 @@ function buynow(){
 	
 }
 
-function message(){
+function article_extends_list_json(){
 	$.ajax({
-		url : "/ws/listArticleForum",type:"post",dataType:"json",
+		url : "/ws/article_extends_list_json",type:"post",dataType:"json",
 		data : {sid:sid},
 		success : function(result){
 			if(result.code != 1)return ;
-			var rows = result.rows;
 			
-			$.each(rows,function(index,value){
-				$("#message").append("<li>"+
-					"<img class=\"pic\" src=\""+value.faceImage+"\">"+
-					"<div class=\"info\">"+
-						"<div class=\"t\">"+value.nickname+"</div>"+
-						"<div class=\"d\">"+value.content+"</div>"+
+			var listRecommend = result.map.listRecommend;
+			if(listRecommend.length > 0){
+				$(".recommend_title,.recommend").removeClass("dn");
+				$.each(listRecommend,function(index,value){
+					$(".recommend").append("<div class=\"item\" href=\""+value.link+"\">"+
+					"<div class=\"pic\"><img src=\""+value.articleImages+"\" /></div>"+
+					"<div class=\"desc\">"+
+						"<h4>"+value.title+"</h4>"+
+						"<div class=\"intro\""+value.description+"></div>"+
 					"</div>"+
-				"</li>");
+					"</div>");
+				});
+			}
+			
+			$(".recommend > .item").click(function(){
+				window.location.href = $(this).attr("href");
 			});
+			
+			var listForum = result.map.listForum;
+			if(listForum.length > 0){
+				$.each(listForum,function(index,value){
+					$("#message").append("<li>"+
+						"<img class=\"pic\" src=\""+value.faceImage+"\">"+
+						"<div class=\"info\">"+
+							"<div class=\"t\">"+value.nickname+"</div>"+
+							"<div class=\"d\">"+value.content+"</div>"+
+						"</div>"+
+					"</li>");
+				});
+			}
+			
+			
 		}
 	});
 }

@@ -17,16 +17,23 @@ import org.ehais.epublic.model.EHaiArticle;
 import org.ehais.epublic.model.EHaiArticleCat;
 import org.ehais.epublic.model.EHaiArticleCatExample;
 import org.ehais.epublic.model.EHaiArticleExample;
+import org.ehais.epublic.model.WpPublicWithBLOBs;
+import org.ehais.epublic.service.EWPPublicService;
 import org.ehais.service.impl.CommonServiceImpl;
 import org.ehais.shop.mapper.HaiArticleGoodsMapper;
+import org.ehais.shop.mapper.HaiForumUserMapper;
 import org.ehais.shop.mapper.HaiGoodsMapper;
+import org.ehais.shop.mapper.WArticleGoodsMapper;
 import org.ehais.shop.model.HaiArticleGoods;
 import org.ehais.shop.model.HaiArticleGoodsExample;
+import org.ehais.shop.model.HaiForumUser;
 import org.ehais.shop.model.HaiGoods;
 import org.ehais.shop.model.HaiGoodsExample;
+import org.ehais.shop.model.WArticleGoods;
 import org.ehais.shop.service.ArticleService;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
+import org.ehais.util.SignUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +48,13 @@ public class ArticleServiceImpl  extends CommonServiceImpl implements ArticleSer
 	private HaiGoodsMapper haiGoodsMapper;
 	@Autowired
 	private HaiArticleGoodsMapper haiArticleGoodsMapper;
+	@Autowired
+	private WArticleGoodsMapper wArticleGoodsMapper;
+	@Autowired
+	protected EWPPublicService eWPPublicService;
+	@Autowired
+	private HaiForumUserMapper haiForumUserMapper;
+	
 
 	public ReturnObject<EHaiArticle> article_list_cid(Integer store_id, Integer cat_id,Integer page,Integer len) throws Exception {
 		// TODO Auto-generated method stub
@@ -399,6 +413,94 @@ bean.setArticleLabel(model.getArticleLabel());
 		rm.setCode(code);
 		rm.setMsg("删除成功");
 		return rm;
+	}
+
+
+	@Override
+	public ReturnObject<EHaiArticle> article_extends_list_json(HttpServletRequest request, String sid)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
+		rm.setCode(0);
+		Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
+		if(user_id == null || user_id == 0){
+			rm.setMsg("未登录");
+			return rm;
+		}
+		Integer store_id = SignUtil.getUriStoreId(sid);
+		if(store_id == 0){
+			rm.setMsg("商码不正确");
+			return rm;
+		}
+		try{
+			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
+			Map<String,Object> map = SignUtil.getSid(sid,wp.getToken());
+			if(map == null){
+				rm.setMsg("参数不正确");
+				return rm;
+			}
+			if(user_id.longValue() != Long.parseLong(map.get("userId").toString())){
+				rm.setMsg("用户不正确");
+				return rm;
+			}
+			
+			//读取文章信息
+			EHaiArticle article = eHaiArticleMapper.selectByPrimaryKey(Integer.valueOf(map.get("articleId").toString()));
+			
+			
+			List<HaiForumUser> listForum = haiForumUserMapper.listForumUser(
+					Integer.valueOf(map.get("store_id").toString()), 
+					Long.valueOf(map.get("articleId").toString()), 
+					"hai_article");
+			
+			
+			String keywords = article.getKeywords();
+			keywords = keywords.replaceAll("，", ",");//将中文的逗号也过滤一下
+			
+			StringBuffer sb = new StringBuffer();
+			String[] sqlKeywords = keywords.split(",");
+			for (String string : sqlKeywords) {
+				sb.append(" keywords like '%"+string+"%' or");
+			}
+			keywords = sb.toString();
+			if(keywords.length() > 0){
+				keywords = keywords.substring(0,keywords.length() - 2);
+			}
+			
+			List<WArticleGoods> listRecommend = wArticleGoodsMapper.listRecommendArticle(Integer.valueOf(map.get("store_id").toString()), 
+					Integer.valueOf(map.get("articleId").toString()), 
+					keywords, 0, 5);
+			
+			for (WArticleGoods eHaiArticle : listRecommend) {
+				eHaiArticle.setLink("/w_article_detail!"+SignUtil.setSid(
+						Integer.valueOf(map.get("store_id").toString()), 
+						Integer.valueOf(map.get("agencyId").toString()), 
+						Long.valueOf(map.get("parentId").toString()), 
+						Long.valueOf(map.get("userId").toString()), 
+						eHaiArticle.getArticleId(), 
+						eHaiArticle.getGoodsId() == null ? 0 : eHaiArticle.getGoodsId(), 
+						wp.getToken()));
+			}
+			
+			
+			
+			Map<String, Object> mapReturn = new HashMap<String,Object>();
+			mapReturn.put("listForum", listForum);
+			mapReturn.put("listRecommend", listRecommend);
+			
+			rm.setMap(mapReturn);
+			
+			rm.setCode(1);
+			
+			return rm;
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		
+		return null;
 	}
 	
 	

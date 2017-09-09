@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
-		<title></title>
+		<title>${article.title!''}</title>
 		<link rel="stylesheet" href="/css/common.css" />
 		<link rel="stylesheet" href="/css/w_write_message.css" />
 		<script type="text/javascript" src="../js/jquery-2.1.4.min.js" ></script>
@@ -13,7 +13,7 @@
 	</head>
 	<body>
 		<div class="wirte_message">
-			<h3>微信腾讯1亿美元收购红酒市场最热门APP以及团队</h3>
+			<h3>${article.title!''}</h3>
 			<div class="textarea">
 				<textarea placeholder="请输入你的留言" id="content"></textarea>
 				<button class="btn" id="write">提交</button>

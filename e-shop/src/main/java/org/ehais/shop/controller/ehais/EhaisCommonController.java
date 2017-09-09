@@ -82,14 +82,17 @@ public class EhaisCommonController extends CommonController{
 		if(listArticleGoods != null && listArticleGoods.size() > 0){
 			HaiArticleGoods articleGoods = listArticleGoods.get(0);
 			goodsId = articleGoods.getGoodsId();
-			HaiGoodsExample goodsExample = new HaiGoodsExample();
-			goodsExample.createCriteria().andGoodsIdEqualTo(goodsId).andStoreIdEqualTo(store_id);
-			List<HaiGoods> listGoods = haiGoodsMapper.selectByExample(goodsExample);
-			if(listGoods == null || listGoods.size() == 0){
-				response.setHeader("Content-type", "text/html;charset=UTF-8");
-				response.getWriter().print("关联商品错误信息");
-				return ;
+			if(goodsId.longValue() != 0){
+				HaiGoodsExample goodsExample = new HaiGoodsExample();
+				goodsExample.createCriteria().andGoodsIdEqualTo(goodsId).andStoreIdEqualTo(store_id);
+				List<HaiGoods> listGoods = haiGoodsMapper.selectByExample(goodsExample);
+				if(listGoods == null || listGoods.size() == 0){
+					response.setHeader("Content-type", "text/html;charset=UTF-8");
+					response.getWriter().print("关联商品错误信息");
+					return ;
+				}
 			}
+			
 		}
 		
 		
