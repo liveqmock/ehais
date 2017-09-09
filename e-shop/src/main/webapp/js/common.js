@@ -14,9 +14,9 @@ $.ajaxSetup({
 	dataType:"json",
 	beforeSend: function () {
 	    //ajax请求之前
-	    this.layerIndex = layer.load({
-				type: 1,
-				shade:[0.1,"#fff"]
+	    this.layerIndex = layer.open({
+				type: 2
+				,content: '陛下请稍等...'
 			});
 	},
 	complete: function () {

@@ -62,8 +62,7 @@ public class EhaisWebController extends EhaisCommonController {
 	private HaiGoodsMapper haiGoodsMapper;
 	@Autowired
 	private HaiArticleGoodsMapper haiArticleGoodsMapper;
-	@Autowired
-	private EHaiUsersMapper eHaiUsersMapper;
+	
 	@Autowired
 	private HaiCartMapper haiCartMapper;
 	@Autowired
@@ -79,50 +78,7 @@ public class EhaisWebController extends EhaisCommonController {
 	
 	//sid 32位md5[{5}{agencyId}-{15}{articleId}_{26}{userId}-{6}{goodsId}]
 
-	/**
-	 * 1.判断session的userid,openid随便一个不存在，即走微信网络请求链接
-	 * 2.如果userid与openid同时存在，则判断链接的userid与session的userid是否一样，如果不一样，则清空session同时走微信网络请求链接
-	 * @param request
-	 * @param code
-	 * @param map
-	 * @return
-	 * @throws Exception
-	 */
-	private EHaiUsers saveUserByOpenIdInfo(HttpServletRequest request,String code,Map<String ,Object> map) throws Exception{
-		//获取openid
-		WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(Integer.valueOf(map.get("store_id").toString()));
-		OpenidInfo open = WeiXinUtil.getOpenid(code,wp.getAppid(),wp.getSecret());
-		//根据openid获取用户是否存在
-		EHaiUsersExample userExp = new EHaiUsersExample();
-		EHaiUsersExample.Criteria userC = userExp.createCriteria();
-		userC.andOpenidEqualTo(open.getOpenid());
-		System.out.println("openid:"+open.getOpenid());
-		List<EHaiUsers> list = eHaiUsersMapper.selectByExample(userExp);
-		Date date = new Date();
-		EHaiUsers user = null;
-		if(list == null || list.size() == 0){//用户不存在，入库
-			user = new EHaiUsers();
-			user.setOpenid(open.getOpenid());
-			user.setParentId(Long.valueOf(map.get("userId").toString()));
-			user.setAgencyId(Integer.valueOf(map.get("agencyId").toString()));
-			user.setStoreId(Integer.valueOf(map.get("store_id").toString()));
-			user.setEmail("");
-			user.setUserName(open.getOpenid());
-			user.setPassword("");					
-			user.setRegTime(date);
-			user.setLastLogin(date);
-			eHaiUsersMapper.insert(user);
-			request.getSession().setAttribute(EConstants.SESSION_USER_ID, user.getUserId());
-		}else{
-			user = list.get(0);
-			user.setLastLogin(date);
-			eHaiUsersMapper.updateByPrimaryKeyWithBLOBs(user);
-			request.getSession().setAttribute(EConstants.SESSION_USER_ID, user.getUserId());
-		}
-//		request.getSession(true).setAttribute(EConstants.SESSION_OPEN_ID, open.getOpenid());
-		
-		return user;
-	}
+	
 	
 	/**
 	 * 获取软文与商品的所有信息

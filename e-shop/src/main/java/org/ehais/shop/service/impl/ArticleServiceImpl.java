@@ -445,6 +445,9 @@ bean.setArticleLabel(model.getArticleLabel());
 				return rm;
 			}
 			
+			Map<String, Object> mapReturn = new HashMap<String,Object>();
+			
+			
 			//读取文章信息
 			EHaiArticle article = eHaiArticleMapper.selectByPrimaryKey(Integer.valueOf(map.get("articleId").toString()));
 			
@@ -453,41 +456,44 @@ bean.setArticleLabel(model.getArticleLabel());
 					Integer.valueOf(map.get("store_id").toString()), 
 					Long.valueOf(map.get("articleId").toString()), 
 					"hai_article");
+			mapReturn.put("listForum", listForum);
+			
+			
 			
 			
 			String keywords = article.getKeywords();
-			keywords = keywords.replaceAll("，", ",");//将中文的逗号也过滤一下
-			
-			StringBuffer sb = new StringBuffer();
-			String[] sqlKeywords = keywords.split(",");
-			for (String string : sqlKeywords) {
-				sb.append(" keywords like '%"+string+"%' or");
+			if(StringUtils.isNotEmpty(keywords)){
+
+				keywords = keywords.replaceAll("，", ",");//将中文的逗号也过滤一下
+				
+				StringBuffer sb = new StringBuffer();
+				String[] sqlKeywords = keywords.split(",");
+				for (String string : sqlKeywords) {
+					sb.append(" keywords like '%"+string+"%' or");
+				}
+				keywords = sb.toString();
+				if(keywords.length() > 0){
+					keywords = keywords.substring(0,keywords.length() - 2);
+				}
+				
+				List<WArticleGoods> listRecommend = wArticleGoodsMapper.listRecommendArticle(Integer.valueOf(map.get("store_id").toString()), 
+						Integer.valueOf(map.get("articleId").toString()), 
+						keywords, 0, 5);
+				
+				for (WArticleGoods eHaiArticle : listRecommend) {
+					eHaiArticle.setLink("/w_article_detail!"+SignUtil.setSid(
+							Integer.valueOf(map.get("store_id").toString()), 
+							Integer.valueOf(map.get("agencyId").toString()), 
+							Long.valueOf(map.get("parentId").toString()), 
+							Long.valueOf(map.get("userId").toString()), 
+							eHaiArticle.getArticleId(), 
+							eHaiArticle.getGoodsId() == null ? 0 : eHaiArticle.getGoodsId(), 
+							wp.getToken()));
+				}
+				
+				mapReturn.put("listRecommend", listRecommend);
+				
 			}
-			keywords = sb.toString();
-			if(keywords.length() > 0){
-				keywords = keywords.substring(0,keywords.length() - 2);
-			}
-			
-			List<WArticleGoods> listRecommend = wArticleGoodsMapper.listRecommendArticle(Integer.valueOf(map.get("store_id").toString()), 
-					Integer.valueOf(map.get("articleId").toString()), 
-					keywords, 0, 5);
-			
-			for (WArticleGoods eHaiArticle : listRecommend) {
-				eHaiArticle.setLink("/w_article_detail!"+SignUtil.setSid(
-						Integer.valueOf(map.get("store_id").toString()), 
-						Integer.valueOf(map.get("agencyId").toString()), 
-						Long.valueOf(map.get("parentId").toString()), 
-						Long.valueOf(map.get("userId").toString()), 
-						eHaiArticle.getArticleId(), 
-						eHaiArticle.getGoodsId() == null ? 0 : eHaiArticle.getGoodsId(), 
-						wp.getToken()));
-			}
-			
-			
-			
-			Map<String, Object> mapReturn = new HashMap<String,Object>();
-			mapReturn.put("listForum", listForum);
-			mapReturn.put("listRecommend", listRecommend);
 			
 			rm.setMap(mapReturn);
 			

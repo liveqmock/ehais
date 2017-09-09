@@ -72,6 +72,7 @@ public class SignUtil {
 	
 	
 	/**
+	 * 适用软文加密
 	 * 加密设置
 	 * 0-5+商家ID
 	 * 6-10+代理ID
@@ -103,6 +104,7 @@ public class SignUtil {
 	
 		
 	/**
+	 * 适用软文加密
 	 * 解析参数
 	 * @param sid
 	 * @return
@@ -156,6 +158,11 @@ public class SignUtil {
 		return map;
 	}
 	
+	/**
+	 * 获取商户编号，适用 所有
+	 * @param sid
+	 * @return
+	 */
 	public static Integer getUriStoreId(String sid){
 		Integer n0 = sid.indexOf("0-0");
 		if(n0 < 6)return 0;
@@ -238,17 +245,153 @@ public class SignUtil {
 		return map;
 	}
 	
+	
+	/**
+	 * 适用通用型商家模式
+	 * @param store_id
+	 * @param agencyId
+	 * @param parentId
+	 * @param userId
+	 * @param secret
+	 * @return
+	 * @throws Exception
+	 */
+	public static String setCid(Integer store_id,Integer agencyId,Long parentId,Long userId,String secret) throws Exception{
+		String md5 = EncryptUtils.md5(store_id.toString()+agencyId.toString()+parentId.toString()+userId.toString()+secret);
+		String did = md5.substring(0, 5)+store_id.toString()+"0-0"+
+				md5.substring(5,10)+agencyId.toString()+"1-1"+
+				md5.substring(10,15)+parentId.toString()+"2-2"+
+				md5.substring(15,20)+userId.toString()+"3-3"+
+				md5.substring(20,32);
+		return did;
+	}
+	
+	public static Map<String,Object> getCid(String did,String secret){
+		if(StringUtils.isEmpty(did))return null;
+		Map<String,Object> map = null;
+		try{
+			Integer n0 = did.indexOf("0-0");
+			Integer n1 = did.indexOf("1-1");
+			Integer n2 = did.indexOf("2-2");
+			Integer n3 = did.indexOf("3-3");
+			
+			String s0 = did.substring(0, 5);
+			String s_store_id = did.substring(5,n0);
+			
+			String s1 = did.substring(n0+3,n0+8);
+			String s_agencyId = did.substring(n0+8, n1);
+			
+			String s2 = did.substring(n1+3, n1+8);
+			String s_parentId = did.substring(n1+8, n2);
+			
+			String s3 = did.substring(n2+3,n2+8);
+			String s_userId = did.substring(n2+8, n3);
+			
+			String s4 = did.substring(n3+3,n3+15);
+			
+			if(EncryptUtils.md5(s_store_id+s_agencyId+s_parentId+s_userId+secret).equals(s0+s1+s2+s3+s4)){
+				map = new HashMap<String,Object>();
+				map.put("store_id", s_store_id);
+				map.put("agencyId", s_agencyId);
+				map.put("parentId", s_parentId);
+				map.put("userId", s_userId);
+			}
+			
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+				
+		return map;
+	}
+	
+	
+	/**
+	 * 适应点餐模式
+	 * @param store_id
+	 * @param agencyId
+	 * @param parentId
+	 * @param userId
+	 * @param secret
+	 * @return
+	 * @throws Exception
+	 */
+	public static String setDiningId(Integer store_id,
+			Integer agencyId,
+			Long parentId,
+			Long userId,
+			String tableNo,
+			String secret) throws Exception{
+		String md5 = EncryptUtils.md5(store_id.toString()+agencyId.toString()+parentId.toString()+userId.toString()+tableNo+secret);
+		String did = md5.substring(0, 5)+store_id.toString()+"0-0"+
+				md5.substring(5,10)+agencyId.toString()+"1-1"+
+				md5.substring(10,15)+parentId.toString()+"2-2"+
+				md5.substring(15,20)+userId.toString()+"3-3"+
+				md5.substring(20,25)+tableNo+"4-4"+
+				md5.substring(25,32);
+		return did;
+	}
+	
+	
+	public static Map<String,Object> getDiningId(String did,String secret){
+		if(StringUtils.isEmpty(did))return null;
+		Map<String,Object> map = null;
+		try{
+			Integer n0 = did.indexOf("0-0");
+			Integer n1 = did.indexOf("1-1");
+			Integer n2 = did.indexOf("2-2");
+			Integer n3 = did.indexOf("3-3");
+			Integer n4 = did.indexOf("4-4");
+			
+			String s0 = did.substring(0, 5);
+			String s_store_id = did.substring(5,n0);
+			
+			String s1 = did.substring(n0+3,n0+8);
+			String s_agencyId = did.substring(n0+8, n1);
+			
+			String s2 = did.substring(n1+3, n1+8);
+			String s_parentId = did.substring(n1+8, n2);
+			
+			String s3 = did.substring(n2+3,n2+8);
+			String s_userId = did.substring(n2+8, n3);
+			
+			String s4 = did.substring(n3+3,n3+8);
+			String s_tableNo = did.substring(n3+8, n4);
+			
+			String s5 = did.substring(n4+3,n4+10);
+			if(EncryptUtils.md5(s_store_id+s_agencyId+s_parentId+s_userId+s_tableNo+secret).equals(s0+s1+s2+s3+s4+s5)){
+				map = new HashMap<String,Object>();
+				map.put("store_id", s_store_id);
+				map.put("agencyId", s_agencyId);
+				map.put("parentId", s_parentId);
+				map.put("userId", s_userId);
+				map.put("tableNo", s_tableNo);
+			}
+			
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+				
+		return map;
+	}
+	
+	
+	
 	public static void main(String[] args) throws Exception {
-		Integer store_id = 56;
+		Integer store_id = 58;
 		Long orderId = 23l;
 		String orderSn = "201709061320282629125";
-		Long userId = 10l;
+		Long userId = 0l;
 		String openId = "sdfsrewrsdfsdfsdf";
-		String secret = "ehais";
+		String secret = "ehais_wxdev";
+		Integer agencyId = 0;
+		Long parentId = 0L;
+		String tableNo = "C10";
 		
-		String oid = SignUtil.setOid(store_id, orderId, orderSn, userId, openId, secret);
-		System.out.println(oid);
-		Map<String,Object> mid = SignUtil.getOid(oid, secret);
+		String did = SignUtil.setDiningId(store_id, agencyId, parentId, userId,tableNo, secret);
+		System.out.println(did);
+		Map<String,Object> mid = SignUtil.getDiningId(did, secret);
 		Bean2Utils.printMap(mid);
 		
 	}

@@ -6,10 +6,15 @@ $(function(){
 		window.location.href = "w_write_message!"+sid;
 	});
 	
-	
 	article_extends_list_json();
+	
 });
-
+//返回强制刷新的代码
+window.onpageshow = function(event){
+	if (event.persisted) {
+		article_extends_list_json();
+	}
+}
 //立即购买
 function buynow(){
 	
@@ -42,6 +47,7 @@ function article_extends_list_json(){
 			if(result.code != 1)return ;
 			
 			var listRecommend = result.map.listRecommend;
+			$(".recommend div.item").remove();
 			if(listRecommend.length > 0){
 				$(".recommend_title,.recommend").removeClass("dn");
 				$.each(listRecommend,function(index,value){
@@ -60,6 +66,7 @@ function article_extends_list_json(){
 			});
 			
 			var listForum = result.map.listForum;
+			$("#message li").remove();
 			if(listForum.length > 0){
 				$.each(listForum,function(index,value){
 					$("#message").append("<li>"+

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	import="com.baidu.ueditor.ActionEnter"
+	import="com.baidu.ueditor.ActionEnter,org.ehais.util.RequestUtils"
     pageEncoding="UTF-8"%>
 <%@ page trimDirectiveWhitespaces="true" %>
 <%
@@ -8,7 +8,9 @@
 	response.setHeader("Content-Type" , "text/html");
 	
 	String rootPath = application.getRealPath( "/" );
-	
+	System.out.println("rootPath:"+rootPath);
 	out.write( new ActionEnter( request, rootPath ).exec() );
+	
+	RequestUtils.printAllRequestParam(request);
 	
 %>

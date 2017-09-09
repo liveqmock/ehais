@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<title></title>
+		<script type="text/javascript" src="js/jquery-2.1.4.min.js" ></script>
+		
+		<link rel="stylesheet" href="js/swiper/swiper-3.4.2.min.css" />
+		<script type="text/javascript" src="js/swiper/swiper-3.4.2.jquery.min.js" ></script>
+		
+		<script type="text/javascript" src="js/jroll/jroll.js" ></script>
+		
+		<link rel="stylesheet" href="js/layer/mobile/need/layer.css" />
+		<script type="text/javascript" src="js/layer/mobile/layer.js" ></script>
+		
+		<script type="text/javascript" src="js/common.js" ></script>
+		
+		<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js" ></script>
+		<script type="text/javascript" src="js/wxsdk.js" ></script>
+		
+		<script type="text/javascript" src="js/weixinJSBridge.js" ></script>
+		
+		
+		<link rel="stylesheet" href="css/dining.css" />
+		
+	</head>
+	<body>
+		<div class="wrapper_dining">
+			<div class="scroll swiper-container">
+				<ul class="swiper-wrapper">
+					<li class="swiper-slide"><img src="upload/dining/1.png" /></li>
+					<li class="swiper-slide"><img src="upload/dining/2.png" /></li>
+					<li class="swiper-slide"><img src="upload/dining/3.png" /></li>
+					<li class="swiper-slide"><img src="upload/dining/4.png" /></li>
+					<li class="swiper-slide"><img src="upload/dining/5.png" /></li>
+				</ul>
+				<!-- 如果需要分页器 -->
+			    <div class="swiper-pagination"></div>
+			</div>
+			<div class="tabs">
+				<ul>					
+					<li id="orderFood" class="active"><span class="fa fa-coffee"></span>点餐</li>
+					<li id="myOrder"><span class="fa fa-book"></span>订单</li>
+					<li ><span class="fa fa-user"></span>我的</li>
+					<li ><a href="tel:13560217994"><span class="fa fa-phone"></span>电话</a></li>					
+				</ul>
+			</div>
+			<div class="menu">
+				<div class="left" id="menu_cate">
+				<ul id="scroller_menu_cate">
+					<li value="0" class="active">热销类</li>
+					<#if (listCategory?? && listCategory?size > 0 )>
+					<#list listCategory as cate>
+					<li value="${cate.catId}">${cate.catName!'未设置'}</li>
+					</#list>
+					</#if>
+				</ul>
+				</div>
+				<div class="right" id="menu_list">
+					<ul id="scroller_menu_goods_list">
+					<#if (listGoods?? && listGoods?size > 0 )>
+					<#list listGoods as goods>
+					<li class="" catId="${goods.catId!0}" isHot="${goods.isHot?string('1','0')}">
+						<div class="pic">
+							<img src="${goods.originalImg!defaultimg}" />
+						</div>
+						<div class="goodsname">${goods.goodsName}</div>
+						<div class="price">￥${goods.shopPrice / 100}</div>
+						<div value="${goods.goodsId}" price="${goods.shopPrice}" class="addCart glyphicon glyphicon-plus-sign"></div>
+						<div id="badge_${goods.goodsId}" class="badge"></div>
+					</li>
+					</#list>
+					</#if>
+					</ul>
+				</div>
+			</div>
+			<div class="myOrder">
+				<ul class="myOrderUl"></ul>
+			</div>
+		
+		</div>
+		<footer class="footer_dining">
+			<div id="shoppingCart" class="cart fa fa-shopping-cart">
+				<i id="quantity"></i>
+				<span id="total"></span>
+			</div>
+			<button id="checkOut" class="">选好了</button>
+			
+			
+			<div id="orderCart" class="orderCart">
+				<span id="orderTotal"></span>
+				<span id="orderQuantity"></span>				
+			</div>
+			<button id="orderSubmit" class="orderSubmit">确认下单</button>
+			
+		</footer>
+		
+		<div id="cart_layer" class="cart_layer">
+			<div class="bg"></div>
+			<div id="cart_dl" class="dl">
+				<div class="title">
+					<div>点餐清单</div>
+					<div class="close_cart" ><span class="glyphicon glyphicon-remove"></span>关闭</div>
+					<div class="clear_cart" ><span class="glyphicon glyphicon-trash"></span>清空</div>
+				</div>
+				<div id="cart_list" class="list"></div>
+			</div>
+		</div>
+		
+		
+		
+		<div id="localCheckOut" class="check_out_layer" >
+			<div class="bg"></div>
+			<div id="check_out_dl" class="dl">
+				<div class="title">
+					<div>点餐清单</div>
+					<div class="goOrderFood"><span class="fa fa-chevron-left"></span>继续点餐</div>
+				</div>
+				<div id="check_out_list" class="list checkout"></div>
+				<div id="check_out_pay" class="check_out_pay">
+					<div class="weixin active"><span class="fa fa-weixin"></span>微信支付<i class="fa fa-check"></i></div>
+					<div class="cash"><span class="fa fa-credit-card-alt"></span>现场支付<i class="fa fa-check"></i></div>
+				</div>
+			</div>
+		</div>
+		
+		
+		<script type="text/javascript" src="js/diningStore.js" ></script>
+	</body>
+</html>

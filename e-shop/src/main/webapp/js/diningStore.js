@@ -1,9 +1,12 @@
+//餐厅的识别码
 var dining = GetQueryString("dining");
-if(dining == null || dining == "")dining = "tyler";
-localStorage.setItem("dining",dining);
-
 //通过二维码扫描当前台号
 var tableno = GetQueryString("tableno");
+//别人,分销用户
+var user_id = GetQueryString("user_id");
+
+//if(dining == null || dining == "")dining = "tyler";
+localStorage.setItem("dining",dining);
 
 
 
@@ -17,10 +20,21 @@ function category(){
 	$.ajax({
 		type:"post",
 		url:"/api.php/Api/DiningApi/category_dining",
-		data:{dining : dining,path : path},
+		data:{dining : dining,path : path , tableno : tableno , user_id : user_id},
 		dataType:"json",
 		async:true,
 		success:function(result){
+			if(result.code == -1){
+				layer.open({
+					content: result.msg
+					,btn: '我知道了'
+				});
+				return ;
+			}
+			if(result.code == 2){
+				window.location.href = result.redirect;
+				return ;
+			}
 			var cateList = result.cateList;
 			var goodsList = result.goodsList;
 			//设置热销推荐数据
@@ -169,30 +183,30 @@ function cartTotalAmount(){
 	}
 	
 	var total = 0,quantity = 0;
-	$("#cart_dl dd .fa-plus-square").unbind();
-	$("#cart_dl dd .fa-minus-square").unbind();
-	$("#cart_dl dd").remove();
+	$("#cart_list .dd .fa-plus-square").unbind();
+	$("#cart_list .dd .fa-minus-square").unbind();
+	$("#cart_list .dd").remove();
 	$.each(cartArray,function(index,ele){
 		
 		var amount = parseFloat(ele.price) * parseInt(ele.badge); 
 		total += amount;
 		quantity += parseInt(ele.badge);
 		
-		$("#cart_dl").append("<dd id=\"cart_dd_"+index+"\" value=\""+index+"\">"+
+		$("#cart_list").append("<div id=\"cart_dd_"+index+"\" class=\"dd\" value=\""+index+"\">"+
 				"<div class=\"fl\">"+ele.goodsname.substr(0,10)+"</div>"+
 				"<div class=\"fr fa fa-plus-square\"></div>"+
 				"<div class=\"fr quantity\">"+ele.badge+"</div>"+
 				"<div class=\"fr fa fa-minus-square\"></div>"+
 				"<div class=\"fr price\">￥"+amount+"</div>"+
-			"</dd>");
+			"</div>");
 		amount = null;		
 	});
 	
-	$("#cart_dl dd .fa-plus-square").click(function(){plusSquare(this);});
-	$("#cart_dl dd .fa-minus-square").click(function(){minusSquare(this);});
+	$("#cart_list .dd .fa-plus-square").click(function(){plusSquare(this);});
+	$("#cart_list .dd .fa-minus-square").click(function(){minusSquare(this);});
 	
 	$("#quantity").html(quantity);
-	$("#total").html("￥"+total);
+	$("#total").html("￥"+total.toFixed(2));
 	if(total > 0 || quantity > 0){
 		$(".footer_dining").addClass("active");
 	}else{
@@ -212,7 +226,7 @@ function totalAmount(_cartArray){
 		amount = parseFloat(ele.price) * parseInt(ele.badge); 
 		total += amount;		
 	});
-	$("#total").html("￥"+total);
+	$("#total").html("￥"+total.toFixed(2));
 	$("#quantity").html(quantity);
 	amount = null;
 	total = null;
@@ -250,7 +264,6 @@ function minusSquare(that){
 		var layerIndex = layer.open({
 		    content: '确定要删除此菜吗？'
 		    ,btn: ['确定' , '取消']
-		    ,skin: 'footer'
 		    ,yes: function(index){  
 		    	//清空购物车数组
 		    	cartArray = JSON.parse(localStorage.getItem("localCartArray"));
@@ -280,6 +293,38 @@ function minusSquare(that){
 }
 
 
+//选好了，查看订单
+function checkOutCart(){
+	if(localStorage.getItem("localCartArray") == null || localStorage.getItem("localCartArray") == "" || localStorage.getItem("localCartArray") == "null"){
+		cartArray = new Array();
+	}else{
+		cartArray = JSON.parse(localStorage.getItem("localCartArray"));
+	}
+	
+	var total = 0,quantity = 0;
+	$("#check_out_list >div.dd").remove();
+	$.each(cartArray,function(index,ele){
+		
+		var amount = parseFloat(ele.price) * parseInt(ele.badge); 
+		total += amount;
+		quantity += parseInt(ele.badge);
+		
+		$("#check_out_list").append("<div class=\"dd\" id=\"cart_dd_"+index+"\" value=\""+index+"\">"+
+				"<div class=\"fl\">"+ele.goodsname.substr(0,10)+"</div>"+
+				"<div class=\"fr quantity\">* "+ele.badge+"</div>"+
+				"<div class=\"fr price\">￥"+amount+"</div>"+
+			"</div>");
+		amount = null;		
+	});
+
+	$("#orderQuantity").html("数量:"+quantity);
+	$("#orderTotal").html("合计:￥"+total.toFixed(2));
+	
+	total = null ; quantity = null;
+	cartArray = null;
+}
+
+//////////////##########################%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 $(function(){
 	//扫描二维码的默认台号
@@ -317,45 +362,56 @@ $(function(){
 		}
 	});
 	//清空购物车事件
-	$(".clear_cart").click(function(){
-		
+	$(".clear_cart").click(function(){		  
 		var layerIndex = layer.open({
 		    content: '确定要清空点餐清单吗？'
 		    ,btn: ['清空' , '取消']
-		    ,skin: 'footer'
 		    ,yes: function(index){  
-		    	clearCart();//清空购物车
-		    	
-				layer.close(layerIndex);
-				
-				layerIndex = null;
-				
+		    	clearCart();//清空购物车		    	
+				layer.close(layerIndex);				
+				layerIndex = null;				
 		    }
 		 });		
 	});//end 清空购物车
 	
-	$("#cart_layer .bg").click(function(){$("#cart_layer").removeClass("active");});
-	$(".tabs > ul > li").click(function(){
-		$(".tabs > ul > li").removeClass("active");
-		$(this).addClass("active");
-		if($(this).attr("value") == 1){
-			$("#checkOut").html("我要下单");
-		}else{
-			$("#checkOut").html("外卖结算");
+
+	
+	$("#cart_layer .bg , .close_cart").click(function(){$("#cart_layer").removeClass("active");});
+	
+	///////////////选好了
+	$("#checkOut").click(function(){
+		if($("footer.footer_dining").hasClass("active")){
+			$("#localCheckOut").addClass("active");
+			$("#shoppingCart,#checkOut").hide();
+			$(".orderCart,.orderSubmit,#orderTotal,#orderQuantity").show();
+			
+			checkOutCart();
 		}
 	});
 	
-	$("#checkOut").click(function(){
-		if($("footer.footer_dining").hasClass("active")){
-			if($(".tabs > ul > li.active").attr("value") == 1){
-				//直接支付
-				$("#localCheckOut").addClass("active");
-			}else{
-				//获取订单信息与收货人信息
-				window.location.href = "diningOrder.html";
-			}
-			
-		}
+	//继续点餐
+	$(".goOrderFood").click(function(){
+		$("#localCheckOut,#cart_layer").removeClass("active");
+		$("#shoppingCart,#checkOut").show();
+		$(".orderCart,.orderSubmit,#orderTotal,#orderQuantity").hide();
+		
+	});
+	
+	//确认下单
+	$("#orderSubmit").click(function(){
+		var layerIndex = layer.open({
+		    content: '陛下，订单'+$("#orderTotal").html()+'确认提交吗'
+		    ,btn: ['确认' , '取消']
+		    ,yes: function(index){		    	
+				layer.close(layerIndex);				
+				layerIndex = null;	
+				if($("#check_out_pay >.weixin").hasClass("active")){
+					localSubmitOrder(1);
+				}else if($("#check_out_pay >.cash").hasClass("active")){
+					localSubmitOrder(0);
+				}
+		    }
+		 });
 	});
 	
 	//现场点餐暂不提交订单
@@ -366,6 +422,31 @@ $(function(){
 	$("#submitOrderPay").click(function(){localSubmitOrder(1)});
 	//现场点餐暂不支付
 	$("#submitOrderOnly").click(function(){localSubmitOrder(0)});
+	//点餐选项
+	$("#orderFood").click(function(){
+		if(!$("#orderFood").hasClass("active")){
+			$(this).addClass("active");
+			$("#myOrder").removeClass("active");
+			$(".menu , footer").show();
+			$(".myOrder").hide();
+		}
+		
+	});
+	//我的订单
+	$("#myOrder").click(function(){
+		if(!$("#myOrder").hasClass("active")){
+			$(this).addClass("active");
+			$("#orderFood").removeClass("active");
+			$(".menu , footer").hide();
+			$(".myOrder").show();
+		}
+	});
+	
+	//支付方式选择
+	$("#check_out_pay >div").click(function(){
+		$("#check_out_pay >div").removeClass("active");
+		$(this).addClass("active");
+	});
 });
 
 /**
@@ -373,8 +454,8 @@ $(function(){
  * @param tpay，0暂不支付，1立即支付
  */
 function localSubmitOrder(tPay){
-	if($.trim($("#tableno").val()) == ""){
-		layer.open({content: '客官，您在哪张餐台',skin: 'msg',time: 3 });
+	if(tableno == null || tableno == ""){
+		layer.open({content: '陛下，请扫描你桌子上的二维码',skin: 'msg',time: 3 });
 		$("#tableno").focus(); 
 		return ;
 	}
@@ -382,7 +463,7 @@ function localSubmitOrder(tPay){
 	$.ajax({
 		url : "/api.php/Api/DiningApi/localSubmitOrder",
 		data : {
-			tableno:$.trim($("#tableno").val()),
+			tableno:tableno,
 			tPay:tPay,
 			cart:localStorage.getItem("localCartArray"),
 			dining:localStorage.getItem("dining"),
@@ -412,7 +493,8 @@ function clearCart(){
 	$("#quantity").html("");
 	$("#total").html("");
 	$("footer.footer_dining").removeClass("active");	
-	
+	$("#shoppingCart,#checkOut").show();
+	$("#orderCart,#orderSubmit").hide();
 }
 
 
