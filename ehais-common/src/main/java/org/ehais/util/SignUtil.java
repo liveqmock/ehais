@@ -382,7 +382,7 @@ public class SignUtil {
 		Integer store_id = 58;
 		Long orderId = 23l;
 		String orderSn = "201709061320282629125";
-		Long userId = 0l;
+		Long userId = 125l;
 		String openId = "sdfsrewrsdfsdfsdf";
 		String secret = "ehais_wxdev";
 		Integer agencyId = 0;

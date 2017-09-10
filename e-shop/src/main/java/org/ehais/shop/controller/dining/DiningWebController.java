@@ -82,7 +82,7 @@ public class DiningWebController extends EhaisCommonController{
 	private OrderInfoService orderInfoService;
 	
 	
-	//http://127.0.0.1/diningStore!272bb580-04dd7b01-14f11b02-20ae4903-3f8bfaC104-481adf49
+	//http://127.0.0.1/diningStore!7574d580-0e5f8801-1272b802-2942971253-3544a1C104-4d9ef075
 	@RequestMapping("/diningStore!{sid}")
 	public String tpDiningView(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -128,6 +128,9 @@ public class DiningWebController extends EhaisCommonController{
 					return "redirect:"+website; //错误的链接，跳转商城
 				}
 			}else{
+				if(this.isLocalHost(request)){
+					request.getSession().setAttribute(EConstants.SESSION_USER_ID, 125L);
+				}
 				this.dining(modelMap, request, response,wp,store,store_id, sid);
 			}
 		}catch(Exception e){
@@ -294,7 +297,7 @@ public class DiningWebController extends EhaisCommonController{
 			orderInfo.setOrderStatus(EOrderStatusEnum.init);
 			orderInfo.setShippingStatus(EShippingStatusEnum.init);
 			orderInfo.setPayStatus(EPayStatusEnum.init);
-			orderInfo.setPostscript(message);//订单附言
+			orderInfo.setPostscript(message!=null?message:"");//订单附言
 			orderInfo.setGoodsAmount(amount);//总价钱
 			orderInfo.setAddTime(date);
 			orderInfo.setOrderSource(EOrderSourceEnum.weixin);
