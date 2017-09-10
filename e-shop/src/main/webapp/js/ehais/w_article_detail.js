@@ -31,7 +31,7 @@ function buynow(){
 			}
 			//更新购物车数量
 			sessionStorage.setItem("recIds",result.model.recId);
-			window.location.href = "w_check_order";
+			window.location.href = "w_check_order!"+sid;
 		},error : function(err,xhr){
 			
 		}

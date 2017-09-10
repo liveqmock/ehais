@@ -28,15 +28,14 @@ public interface WeiXinPayService {
 	 * @throws Exception
 	 */
 	public WeiXinWCPay WeiXinPayApi(HttpServletRequest request,
-			Integer store_id,
-			Long user_id,
+			String sid,
 			String openid,
 			String orderSn,
 			Integer amount,
 			String body,
 			String table_name,
-			Long table_id
-			
+			Long table_id,
+			String classify			
 			) throws Exception;
 	
 	/**
@@ -46,6 +45,9 @@ public interface WeiXinPayService {
 	 * @return
 	 * @throws Exception
 	 */
-	public ReturnObject<WeiXinNotifyPay> WeiXinNotifyPay(HttpServletRequest request,WeiXinNotifyPay notifyPay,Integer store_id) throws Exception;
+	public ReturnObject<WeiXinNotifyPay> WeiXinNotifyPay(HttpServletRequest request,
+			WeiXinNotifyPay notifyPay,
+			String sid,
+			String classify) throws Exception;
 	
 }

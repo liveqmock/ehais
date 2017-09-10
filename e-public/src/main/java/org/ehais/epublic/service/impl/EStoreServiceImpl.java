@@ -1,9 +1,9 @@
-package org.ehais.shop.service.impl;
+package org.ehais.epublic.service.impl;
 
-import org.ehais.cache.EStoreCacheManager;
-import org.ehais.shop.mapper.HaiStoreMapper;
-import org.ehais.shop.model.HaiStore;
-import org.ehais.shop.service.EStoreService;
+import org.ehais.epublic.cache.EStoreCacheManager;
+import org.ehais.epublic.mapper.EHaiStoreMapper;
+import org.ehais.epublic.model.EHaiStore;
+import org.ehais.epublic.service.EStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,12 +12,12 @@ import org.springframework.stereotype.Service;
 public class EStoreServiceImpl implements EStoreService{
 	
 	@Autowired
-	private HaiStoreMapper haiStoreMapper;
+	private EHaiStoreMapper haiStoreMapper;
 
 	@Override
-	public HaiStore getEStore(Integer store_id) throws Exception {
+	public EHaiStore getEStore(Integer store_id) throws Exception {
 		// TODO Auto-generated method stub
-		HaiStore store = EStoreCacheManager.getInstance().getEStore(store_id);
+		EHaiStore store = EStoreCacheManager.getInstance().getEStore(store_id);
 		if(store == null){
 			store = haiStoreMapper.selectByPrimaryKey(store_id);
 			if(store!=null)EStoreCacheManager.getInstance().putEStore(store_id, store);

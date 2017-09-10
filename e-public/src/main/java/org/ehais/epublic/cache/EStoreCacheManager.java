@@ -1,6 +1,7 @@
-package org.ehais.cache;
+package org.ehais.epublic.cache;
 
-import org.ehais.shop.model.HaiStore;
+import org.ehais.cache.BaseOSCache;
+import org.ehais.epublic.model.EHaiStore;
 
 public class EStoreCacheManager {
 	private BaseOSCache eStoreCache;
@@ -28,7 +29,7 @@ public class EStoreCacheManager {
 	
 	
 
-	public void putEStore(Integer storeId, HaiStore eStore) {
+	public void putEStore(Integer storeId, EHaiStore eStore) {
 		// TODO 自动生成方法存根
 		eStoreCache.put(storeId, eStore);
 	}
@@ -38,10 +39,10 @@ public class EStoreCacheManager {
 		eStoreCache.remove(storeId);
 	}
 
-	public HaiStore getEStore(Integer storeId) {
+	public EHaiStore getEStore(Integer storeId) {
 		// TODO 自动生成方法存根
 		try {
-			return (HaiStore) eStoreCache.get(storeId);
+			return (EHaiStore) eStoreCache.get(storeId);
 		} catch (Exception e) {
 			// TODO 自动生成 catch 块
 			System.out.println("eStoreCache>>storeId[" + storeId + "]>>"

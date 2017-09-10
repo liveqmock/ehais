@@ -1,6 +1,7 @@
 package org.ehais.shop.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.ehais.common.EConstants;
+import org.ehais.enums.EIsVoidEnum;
 import org.ehais.model.BootStrapModel;
 import org.ehais.service.impl.CommonServiceImpl;
 import org.ehais.shop.mapper.HaiOrderGoodsMapper;
@@ -16,6 +18,7 @@ import org.ehais.shop.model.HaiOrderGoods;
 import org.ehais.shop.model.HaiOrderGoodsExample;
 import org.ehais.shop.model.HaiOrderInfo;
 import org.ehais.shop.model.HaiOrderInfoExample;
+import org.ehais.shop.model.HaiOrderInfoWithBLOBs;
 import org.ehais.shop.service.OrderInfoService;
 import org.ehais.tools.ReturnObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -226,6 +229,86 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 		rm.setCode(1);
 		rm.setModel(model);
 		return rm;
+	}
+
+	@Override
+	public void setDefaultOrder(HaiOrderInfoWithBLOBs orderInfo,Date date,Integer store_id) {
+		// TODO Auto-generated method stub
+		//暂时未确认运输方式，这里是空的先
+		orderInfo.setShippingId(0);
+		orderInfo.setShippingName("");
+		
+		orderInfo.setPayId(0);
+		orderInfo.setPayName("");
+		
+		orderInfo.setConsignee("");
+		orderInfo.setCountry(0);
+		orderInfo.setProvince(0);
+		orderInfo.setCity(0);
+		orderInfo.setCounty(0);
+		orderInfo.setDistrict(0);
+		orderInfo.setAddress("");
+		orderInfo.setZipcode("");
+		orderInfo.setTel("");
+		orderInfo.setMobile("");
+		orderInfo.setEmail("");
+		orderInfo.setBestTime("");
+		orderInfo.setSignBuilding("");
+		
+		orderInfo.setPostscript("");//订单附言
+		orderInfo.setShippingId(0);
+		orderInfo.setShippingName("");
+		orderInfo.setPayId(0);
+		orderInfo.setPayName("");
+		orderInfo.setInvPayee("");
+		
+		orderInfo.setConfirmTime(0);
+		orderInfo.setPayTime(0);
+		orderInfo.setShippingTime(0);
+		orderInfo.setTax(0F);
+		orderInfo.setIsSeparate(0);
+		orderInfo.setStoreId(store_id);
+		orderInfo.setParentId(0L);
+		orderInfo.setHowOos("");//缺货处理方式，等待所有商品备齐后再发； 取消订单；与店主协商
+		orderInfo.setHowSurplus("");//根据字段猜测应该是余额处理方式，程序未作这部分实现
+		orderInfo.setPackName("");//包装名称，取值表ecs_pack
+		orderInfo.setCardName("");//贺卡的名称，取值ecs_card
+		orderInfo.setCardMessage("");//'贺卡内容，由用户提交',
+		orderInfo.setInvPayee("");//'发票抬头，用户页面填写',
+		orderInfo.setInvContent("");//'发票内容，用户页面选择，取值ecs_shop_config的code字段的值为invoice_content的value',
+		orderInfo.setShippingFee(0);//'配送费用',
+		orderInfo.setInsureFee(0);//'保价费用',
+		orderInfo.setPayFee(0);//'支付费用,跟支付方式的配置相关，取值表ecs_payment',
+		orderInfo.setPackFee(0);//'包装费用，取值表取值表ecs_pack',
+		orderInfo.setCardFee(0);//'贺卡费用，取值ecs_card ',
+		orderInfo.setMoneyPaid(0);//'已付款金额',
+		orderInfo.setSurplus(0);//'该订单使用余额的数量，取用户设定余额，用户可用余额，订单金额中最小者',
+		orderInfo.setIntegral(0);//'使用的积分的数量，取用户使用积分，商品可用积分，用户拥有积分中最小者',
+		orderInfo.setIntegralMoney(0);//'使用积分金额',
+		orderInfo.setBonus(0);//'使用红包金额',
+		orderInfo.setOrderAmount(0);//'应付款金额',
+		orderInfo.setFromAd(0);//'订单由某广告带来的广告id，应该取值于ecs_ad',
+		orderInfo.setReferer("");//'订单的来源页面',
+		orderInfo.setAddTime(date);//'订单生成时间',
+		orderInfo.setConfirmTime(0);//'订单确认时间',Long.valueOf(System.currentTimeMillis() / 1000).intValue()
+		orderInfo.setPayTime(0);//'订单支付时间',
+		orderInfo.setShippingTime(0);//'订单配送时间',
+		orderInfo.setPackId(0);//'包装id，取值取值表ecs_pack',
+		orderInfo.setCardId(0);//'贺卡id，用户在页面选择，取值取值ecs_card ',
+		orderInfo.setBonusId(0);//'红包的id，ecs_user_bonus的bonus_id',
+		orderInfo.setInvoiceNo("");//'发货单号，发货时填写，可在订单查询查看',
+		orderInfo.setExtensionCode("");//'通过活动购买的商品的代号；GROUP_BUY是团购；AUCTION，是拍卖；SNATCH，夺宝奇兵；正常普通产品该处为空',
+		orderInfo.setExtensionId(0);//'通过活动购买的物品的id，取值ecs_goods_activity；如果是正常普通商品，该处为0',
+		orderInfo.setToBuyer("");//'商家给客户的留言,当该字段有值时可以在订单查询看到',
+		orderInfo.setPayNote("");//'付款备注，在订单管理里编辑修改',
+		orderInfo.setAgencyId(0);//'该笔订单被指派给的办事处的id，根据订单内容和办事处负责范围自动决定，也可以有管理员修改，取值于表ecs_agency',
+		orderInfo.setInvType("");//'发票类型，用户页面选择，取值ecs_shop_config的code字段的值为invoice_type的value',
+		orderInfo.setTax(0F);//'发票税额',
+		orderInfo.setIsSeparate(0);//'0，未分成或等待分成；1，已分成；2，取消分成；',
+		orderInfo.setParentId(0L);// '能获得推荐分成的用户id，id取值于表ecs_users',
+		orderInfo.setDiscount(0F);//'折扣金额',
+		orderInfo.setIsVoid(EIsVoidEnum.valid);
+		orderInfo.setRemark("");
 	}
 	
 }

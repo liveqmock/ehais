@@ -42,7 +42,7 @@ function orderSubmit(){
 	
 	$.ajax({
 		url : "/ws/wxdone",type:"post",dataType:"json",
-		data : {pay_id:1,ship_id:1,address_id:addressId,message:message,recIds:recIds},
+		data : {sid:sid,pay_id:1,ship_id:1,address_id:addressId,message:message,recIds:recIds},
 		success : function(result){
 			if(result.code != 1){
 				layer.open({content:result.msg,btn:"朕知道了"});

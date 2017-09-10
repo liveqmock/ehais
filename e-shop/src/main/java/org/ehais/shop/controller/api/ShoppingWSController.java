@@ -76,6 +76,7 @@ public class ShoppingWSController extends ShoppingIController {
 	@RequestMapping("/wxdone")
 	public String wxdone(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "sid", required = true) String sid,
 			@RequestParam(value = "pay_id", required = true) Integer pay_id,
 			@RequestParam(value = "ship_id", required = true) Integer ship_id,
 			@RequestParam(value = "address_id", required = true) Long address_id,
@@ -89,7 +90,8 @@ public class ShoppingWSController extends ShoppingIController {
 			param.setRec_id_data(recIds);
 			param.setPostscript(message);
 			ReturnObject<OrderDoneParam> rm = shoppingService.WeixinOrderDone( request,
-					param
+					param,
+					sid
 					);
 			return this.writeJson(rm);
 		}catch(Exception e){

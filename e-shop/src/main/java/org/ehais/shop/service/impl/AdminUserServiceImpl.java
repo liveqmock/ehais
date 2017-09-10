@@ -8,14 +8,13 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
 import org.ehais.epublic.mapper.EHaiAdminUserMapper;
+import org.ehais.epublic.mapper.EHaiStoreMapper;
 import org.ehais.epublic.model.EHaiAdminUser;
 import org.ehais.epublic.model.EHaiAdminUserExample;
+import org.ehais.epublic.model.EHaiStore;
 import org.ehais.service.impl.CommonServiceImpl;
-import org.ehais.shop.mapper.HaiStoreMapper;
 import org.ehais.shop.mapper.tp.TpAdminMapper;
 import org.ehais.shop.mapper.tp.TpSuppliersMapper;
-import org.ehais.shop.model.HaiStore;
-import org.ehais.shop.model.HaiStoreExample;
 import org.ehais.shop.model.tp.TpAdmin;
 import org.ehais.shop.model.tp.TpAdminExample;
 import org.ehais.shop.model.tp.TpSuppliers;
@@ -36,7 +35,7 @@ public class AdminUserServiceImpl extends CommonServiceImpl implements AdminUser
 	@Autowired
 	private TpSuppliersMapper tpSuppliersMapper;
 	@Autowired
-	private HaiStoreMapper haiStoreMapper;
+	private EHaiStoreMapper haiStoreMapper;
 	
 	
 	public ReturnObject<EHaiAdminUser> admin_login(String username, String password) throws Exception {
@@ -115,7 +114,7 @@ public class AdminUserServiceImpl extends CommonServiceImpl implements AdminUser
 			return rm;
 		}
 		//读取相应的商家
-		HaiStore store = haiStoreMapper.selectByPrimaryKey(adminuser.getStoreId());
+		EHaiStore store = haiStoreMapper.selectByPrimaryKey(adminuser.getStoreId());
 		if(store == null){
 			rm.setMsg("非本商家后台的用户");
 			return rm;

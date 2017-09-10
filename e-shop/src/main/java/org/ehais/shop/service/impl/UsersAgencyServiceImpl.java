@@ -7,15 +7,15 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
+import org.ehais.epublic.mapper.EHaiStoreMapper;
 import org.ehais.epublic.mapper.EHaiUsersMapper;
+import org.ehais.epublic.model.EHaiStore;
+import org.ehais.epublic.model.EHaiStoreExample;
 import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.epublic.model.EHaiUsersExample;
 import org.ehais.shop.mapper.HaiAgencyMapper;
-import org.ehais.shop.mapper.HaiStoreMapper;
 import org.ehais.shop.model.HaiAgency;
 import org.ehais.shop.model.HaiAgencyExample;
-import org.ehais.shop.model.HaiStore;
-import org.ehais.shop.model.HaiStoreExample;
 import org.ehais.shop.service.UsersAgencyService;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.EncryptUtils;
@@ -28,7 +28,7 @@ public class UsersAgencyServiceImpl implements UsersAgencyService {
 	@Autowired
 	private EHaiUsersMapper eHaiUsersMapper;
 	@Autowired
-	private HaiStoreMapper haiStoreMapper;
+	private EHaiStoreMapper haiStoreMapper;
 	@Autowired
 	private HaiAgencyMapper haiAgencyMapper;
 	
@@ -86,14 +86,14 @@ public class UsersAgencyServiceImpl implements UsersAgencyService {
 			return rm;
 		}
 		//查找代理是否存在
-		HaiStoreExample storeExample = new HaiStoreExample();
+		EHaiStoreExample storeExample = new EHaiStoreExample();
 		storeExample.createCriteria().andStoreIdEqualTo(users.getStoreId());
-		List<HaiStore> listStore = haiStoreMapper.selectByExample(storeExample);
+		List<EHaiStore> listStore = haiStoreMapper.selectByExample(storeExample);
 		if(listStore == null || listStore.size() == 0){
 			rm.setMsg("您所在的商家非法，请联系微信管理员：haisoftware");
 			return rm;
 		}
-		HaiStore store = listStore.get(0);
+		EHaiStore store = listStore.get(0);
 		
 		//查找商家是否存在
 		HaiAgencyExample agencyExample = new HaiAgencyExample();

@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
-import org.ehais.enums.EIsVoidEnum;
 import org.ehais.enums.EOrderClassifyEnum;
 import org.ehais.enums.EOrderSourceEnum;
 import org.ehais.enums.EOrderStatusEnum;
@@ -20,24 +19,24 @@ import org.ehais.enums.EPayStatusEnum;
 import org.ehais.enums.EShippingStatusEnum;
 import org.ehais.enums.EUserTypeEnum;
 import org.ehais.epublic.mapper.EHaiUsersMapper;
+import org.ehais.epublic.model.EHaiStore;
 import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.epublic.model.EHaiUsersExample;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
+import org.ehais.epublic.service.EStoreService;
 import org.ehais.epublic.service.WeiXinPayService;
 import org.ehais.shop.controller.ehais.EhaisCommonController;
 import org.ehais.shop.mapper.HaiCategoryMapper;
 import org.ehais.shop.mapper.HaiGoodsMapper;
 import org.ehais.shop.mapper.HaiOrderGoodsMapper;
 import org.ehais.shop.mapper.HaiOrderInfoMapper;
-import org.ehais.shop.model.HaiCart;
 import org.ehais.shop.model.HaiCategory;
 import org.ehais.shop.model.HaiCategoryExample;
 import org.ehais.shop.model.HaiGoods;
 import org.ehais.shop.model.HaiGoodsExample;
 import org.ehais.shop.model.HaiOrderGoods;
 import org.ehais.shop.model.HaiOrderInfoWithBLOBs;
-import org.ehais.shop.model.HaiStore;
-import org.ehais.shop.service.EStoreService;
+import org.ehais.shop.service.OrderInfoService;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.DateUtil;
 import org.ehais.util.ECommon;
@@ -79,7 +78,8 @@ public class DiningWebController extends EhaisCommonController{
 	private EHaiUsersMapper eHaiUsersMapper;
 	@Autowired
 	private EStoreService eStoreService;
-	
+	@Autowired
+	private OrderInfoService orderInfoService;
 	
 	
 	//http://127.0.0.1/diningStore!272bb580-04dd7b01-14f11b02-20ae4903-3f8bfaC104-481adf49
@@ -96,7 +96,7 @@ public class DiningWebController extends EhaisCommonController{
 		
 		try{
 			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
-			HaiStore store = eStoreService.getEStore(store_id);
+			EHaiStore store = eStoreService.getEStore(store_id);
 			if(store == null){
 				return "redirect:"+website; //错误的链接，跳转商城
 			}
@@ -152,7 +152,7 @@ public class DiningWebController extends EhaisCommonController{
 			HttpServletRequest request,
 			HttpServletResponse response,
 			WpPublicWithBLOBs wp,
-			HaiStore store,
+			EHaiStore store,
 			Integer store_id,
 			String sid) throws Exception{
 		
@@ -222,7 +222,7 @@ public class DiningWebController extends EhaisCommonController{
 				rm.setMsg("ses store is wrong");
 				return this.writeJson(rm);
 			}
-			HaiStore store = eStoreService.getEStore(store_id);
+			EHaiStore store = eStoreService.getEStore(store_id);
 			if(store == null){
 				return "redirect:"+website; //错误的链接，跳转商城
 			}
@@ -286,90 +286,19 @@ public class DiningWebController extends EhaisCommonController{
 			Date date = new Date();
 			//插入订单主表
 			HaiOrderInfoWithBLOBs orderInfo = new HaiOrderInfoWithBLOBs();
+			orderInfoService.setDefaultOrder(orderInfo,date,store_id);//公共设置订单的默认值
+			
 			String orderSn = "101"+DateUtil.formatDate(date, DateUtil.FORMATSTR_4) + ECommon.nonceInt(4) + map.get("userId").toString();
 			orderInfo.setOrderSn(orderSn);
 			orderInfo.setUserId(Long.valueOf(map.get("userId").toString()));
 			orderInfo.setOrderStatus(EOrderStatusEnum.init);
 			orderInfo.setShippingStatus(EShippingStatusEnum.init);
 			orderInfo.setPayStatus(EPayStatusEnum.init);
-			//暂时未确认运输方式，这里是空的先
-			orderInfo.setShippingId(0);
-			orderInfo.setShippingName("");
-			
-			orderInfo.setPayId(0);
-			orderInfo.setPayName("");
-			
-			orderInfo.setConsignee("");
-			orderInfo.setCountry(0);
-			orderInfo.setProvince(0);
-			orderInfo.setCity(0);
-			orderInfo.setCounty(0);
-			orderInfo.setDistrict(0);
-			orderInfo.setAddress("");
-			orderInfo.setZipcode("");
-			orderInfo.setTel("");
-			orderInfo.setMobile("");
-			orderInfo.setEmail("");
-			orderInfo.setBestTime("");
-			orderInfo.setSignBuilding("");
-			
 			orderInfo.setPostscript(message);//订单附言
-			orderInfo.setShippingId(0);
-			orderInfo.setShippingName("");
-			orderInfo.setPayId(0);
-			orderInfo.setPayName("");
-			orderInfo.setInvPayee("");
 			orderInfo.setGoodsAmount(amount);//总价钱
 			orderInfo.setAddTime(date);
 			orderInfo.setOrderSource(EOrderSourceEnum.weixin);
-			orderInfo.setConfirmTime(0);
-			orderInfo.setPayTime(0);
-			orderInfo.setShippingTime(0);
-			orderInfo.setTax(0F);
-			orderInfo.setIsSeparate(0);
-			orderInfo.setStoreId(store_id);
-			orderInfo.setParentId(0L);
-			orderInfo.setHowOos("");//缺货处理方式，等待所有商品备齐后再发； 取消订单；与店主协商
-			orderInfo.setHowSurplus("");//根据字段猜测应该是余额处理方式，程序未作这部分实现
-			orderInfo.setPackName("");//包装名称，取值表ecs_pack
-			orderInfo.setCardName("");//贺卡的名称，取值ecs_card
-			orderInfo.setCardMessage("");//'贺卡内容，由用户提交',
-			orderInfo.setInvPayee("");//'发票抬头，用户页面填写',
-			orderInfo.setInvContent("");//'发票内容，用户页面选择，取值ecs_shop_config的code字段的值为invoice_content的value',
-			orderInfo.setShippingFee(0);//'配送费用',
-			orderInfo.setInsureFee(0);//'保价费用',
-			orderInfo.setPayFee(0);//'支付费用,跟支付方式的配置相关，取值表ecs_payment',
-			orderInfo.setPackFee(0);//'包装费用，取值表取值表ecs_pack',
-			orderInfo.setCardFee(0);//'贺卡费用，取值ecs_card ',
-			orderInfo.setMoneyPaid(0);//'已付款金额',
-			orderInfo.setSurplus(0);//'该订单使用余额的数量，取用户设定余额，用户可用余额，订单金额中最小者',
-			orderInfo.setIntegral(0);//'使用的积分的数量，取用户使用积分，商品可用积分，用户拥有积分中最小者',
-			orderInfo.setIntegralMoney(0);//'使用积分金额',
-			orderInfo.setBonus(0);//'使用红包金额',
-			orderInfo.setOrderAmount(0);//'应付款金额',
-			orderInfo.setFromAd(0);//'订单由某广告带来的广告id，应该取值于ecs_ad',
-			orderInfo.setReferer("");//'订单的来源页面',
-			orderInfo.setAddTime(date);//'订单生成时间',
-			orderInfo.setConfirmTime(0);//'订单确认时间',Long.valueOf(System.currentTimeMillis() / 1000).intValue()
-			orderInfo.setPayTime(0);//'订单支付时间',
-			orderInfo.setShippingTime(0);//'订单配送时间',
-			orderInfo.setPackId(0);//'包装id，取值取值表ecs_pack',
-			orderInfo.setCardId(0);//'贺卡id，用户在页面选择，取值取值ecs_card ',
-			orderInfo.setBonusId(0);//'红包的id，ecs_user_bonus的bonus_id',
-			orderInfo.setInvoiceNo("");//'发货单号，发货时填写，可在订单查询查看',
-			orderInfo.setExtensionCode("");//'通过活动购买的商品的代号；GROUP_BUY是团购；AUCTION，是拍卖；SNATCH，夺宝奇兵；正常普通产品该处为空',
-			orderInfo.setExtensionId(0);//'通过活动购买的物品的id，取值ecs_goods_activity；如果是正常普通商品，该处为0',
-			orderInfo.setToBuyer("");//'商家给客户的留言,当该字段有值时可以在订单查询看到',
-			orderInfo.setPayNote("");//'付款备注，在订单管理里编辑修改',
-			orderInfo.setAgencyId(0);//'该笔订单被指派给的办事处的id，根据订单内容和办事处负责范围自动决定，也可以有管理员修改，取值于表ecs_agency',
-			orderInfo.setInvType("");//'发票类型，用户页面选择，取值ecs_shop_config的code字段的值为invoice_type的value',
-			orderInfo.setTax(0F);//'发票税额',
-			orderInfo.setIsSeparate(0);//'0，未分成或等待分成；1，已分成；2，取消分成；',
-			orderInfo.setParentId(0L);// '能获得推荐分成的用户id，id取值于表ecs_users',
-			orderInfo.setDiscount(0F);//'折扣金额',
-			orderInfo.setIsVoid(EIsVoidEnum.valid);
 			orderInfo.setGoodsDesc(sb.toString());
-			orderInfo.setRemark("");
 			orderInfo.setClassify(EOrderClassifyEnum.dining);
 			
 			int code = haiOrderInfoMapper.insert(orderInfo);
@@ -406,99 +335,29 @@ public class DiningWebController extends EhaisCommonController{
 			if(tPay.intValue() == 1){
 				
 				//跳转支付信息返回
-				WeiXinWCPay cpay = weiXinPayService.WeiXinPayApi(request, store_id, 
-						Long.valueOf(map.get("userId").toString()), users.getOpenid(), orderSn, amount, "易海司微信支付订单", "hai_order", order_id);
+				WeiXinWCPay cpay = weiXinPayService.WeiXinPayApi(request,sid, 
+						users.getOpenid(), 
+						orderSn, 
+						amount, 
+						"易海司微信支付订单", 
+						"hai_order", 
+						order_id,EOrderClassifyEnum.dining);
 				Map<String,Object> mapPay = new HashMap<String,Object>();
 				mapPay.put("WeiXinWCPay", cpay);
 				rm.setMap(mapPay);
 			}else{
 				//推送消息
 				//给用户推送消息
-				WeiXinTemplateMessage template = new WeiXinTemplateMessage();
-				template.setTemplate_id("LFdLrMKmvqCgJ3sbIB2cbaZsEChQmFwfnvpn1VrbhOI");//订单支付成功通知
-				template.setTouser(users.getOpenid());
-				template.setUrl(request.getScheme()+"://"+request.getServerName()+"/dining_order_detail!"+SignUtil.setOid(store_id, orderInfo.getOrderId(), orderInfo.getOrderSn(), orderInfo.getUserId(), users.getOpenid(), wp.getToken()));
-				template.setTopcolor("#FF0000");
-				
-				Map<String,Object> mapTemplateUser = new HashMap<String,Object>();
-	            
-				Map<String,String> first = new HashMap<String,String>();
-				first.put("value", map.get("tableNo").toString() + "餐台/房的客官您好，你刚下的订单已成功交结掌柜，请等待送餐！");
-				first.put("color", "#173177");
-				mapTemplateUser.put("first", first);
-				
-				Map<String,String> keyword1 = new HashMap<String,String>();
-				keyword1.put("value", store.getStoreName());
-				keyword1.put("color", "#173177");
-				mapTemplateUser.put("keyword1", keyword1);
-				
-				Map<String,String> keyword2 = new HashMap<String,String>();
-				keyword2.put("value", DateUtil.formatDate(date, DateUtil.FORMATSTR_2));
-				keyword2.put("color", "#173177");
-				mapTemplateUser.put("keyword2", keyword2);
-				
-				Map<String,String> keyword3 = new HashMap<String,String>();
-				keyword3.put("value", String.format("%.2f", amount.doubleValue() / 100));
-				keyword3.put("color", "#173177");
-				mapTemplateUser.put("keyword3", keyword3);
-				
-				Map<String,String> remark = new HashMap<String,String>();
-				remark.put("value", "陛下，掌柜已吩咐厨房开火了，请稍等！");
-				remark.put("color", "#173177");
-				mapTemplateUser.put("remark", remark);
-				
-				template.setData(mapTemplateUser);
-				
-				String template_result = WeiXinUtil.TemplateSend(WeiXinUtil.getAccessToken(store_id, wp.getAppid(), wp.getSecret()).getAccess_token(), template);
-				
+				String diningUserTemp = this.diningUserTemplateMessage(request, wp, store, orderInfo, users, map, store_id, date, sb);
+				System.out.println(diningUserTemp);
 				
 				EHaiUsersExample userExample = new EHaiUsersExample();
 				userExample.createCriteria().andStoreIdEqualTo(store_id).andUserTypeEqualTo(EUserTypeEnum.dining);
 				List<EHaiUsers> listUsers = eHaiUsersMapper.selectByExample(userExample);
 				if(listUsers != null && listUsers.size() > 0){
 					//给商家发信息
-					WeiXinTemplateMessage templateStore = new WeiXinTemplateMessage();
-					templateStore.setTemplate_id("Vlmhl4el_dW2Zcq_5cf9KkgRlDx7XI5G_XLuJQ4f2gM");//订单支付成功通知
-					templateStore.setTouser(listUsers.get(0).getOpenid());
-					templateStore.setUrl(request.getScheme()+"://"+request.getServerName()+"/dining_store_order_detail!"+SignUtil.setOid(store_id, orderInfo.getOrderId(), orderInfo.getOrderSn(), orderInfo.getUserId(), users.getOpenid(), wp.getToken()));
-					templateStore.setTopcolor("#FF0000");
-					
-					Map<String,Object> mapTemplateStore = new HashMap<String,Object>();
-		            
-					Map<String,String> firstStore = new HashMap<String,String>();
-					firstStore.put("value", map.get("tableNo").toString() + "餐台/房的客官已下了订单");
-					firstStore.put("color", "#173177");
-					mapTemplateStore.put("first", firstStore);
-					
-					Map<String,String> keyword1Store = new HashMap<String,String>();
-					keyword1Store.put("value", orderInfo.getOrderSn());
-					keyword1Store.put("color", "#173177");
-					mapTemplateStore.put("keyword1", keyword1Store);
-					
-					Map<String,String> keyword2Store = new HashMap<String,String>();
-					keyword2Store.put("value", DateUtil.formatDate(date, DateUtil.FORMATSTR_2));
-					keyword2Store.put("color", "#173177");
-					mapTemplateStore.put("keyword2", keyword2Store);
-					
-					Map<String,String> keyword3Store = new HashMap<String,String>();
-					keyword3Store.put("value", String.format("%.2f", amount.doubleValue() / 100));
-					keyword3Store.put("color", "#173177");
-					mapTemplateStore.put("keyword3", keyword3Store);
-					
-					Map<String,String> keyword4Store = new HashMap<String,String>();
-					keyword4Store.put("value", "现金付款");
-					keyword4Store.put("color", "#173177");
-					mapTemplateStore.put("keyword4", keyword4Store);
-					
-					Map<String,String> remarkStore = new HashMap<String,String>();
-					remarkStore.put("value", "客官点了"+sb.toString()+"，掌柜您可以为客官出菜了！");
-					remarkStore.put("color", "#173177");
-					mapTemplateStore.put("remark", remarkStore);
-					
-					templateStore.setData(mapTemplateStore);
-					
-					String template_result_store = WeiXinUtil.TemplateSend(WeiXinUtil.getAccessToken(store_id, wp.getAppid(), wp.getSecret()).getAccess_token(), templateStore);
-					
+					String diningStoreTemp = this.diningStoreTemplateMessage(request, wp, store, orderInfo, listUsers.get(0), map, store_id, date, sb);
+					System.out.println(diningStoreTemp);
 				}
 	            
 	            
@@ -514,5 +373,125 @@ public class DiningWebController extends EhaisCommonController{
 		
 		return this.writeJson(rm);
 	}
+	
+	
+	
+	/**
+	 * 点餐模式给用户发送消息
+	 * @param request
+	 * @param notifyPay
+	 * @param orderInfo
+	 * @param wpPublic
+	 * @param store_id
+	 * @throws Exception 
+	 */
+	private String diningUserTemplateMessage(HttpServletRequest request,
+			WpPublicWithBLOBs wp,
+			EHaiStore store,
+			HaiOrderInfoWithBLOBs orderInfo,
+			EHaiUsers users,
+			Map<String,Object> map,
+			Integer store_id,
+			Date date,
+			StringBuffer sb
+			) throws Exception{
+		WeiXinTemplateMessage template = new WeiXinTemplateMessage();
+		template.setTemplate_id("LFdLrMKmvqCgJ3sbIB2cbaZsEChQmFwfnvpn1VrbhOI");//订单支付成功通知
+		template.setTouser(users.getOpenid());
+		template.setUrl(request.getScheme()+"://"+request.getServerName()+"/dining_user_order_detail!"+SignUtil.setOid(store_id, orderInfo.getOrderId(), orderInfo.getOrderSn(), orderInfo.getUserId(), users.getOpenid(), wp.getToken()));
+		template.setTopcolor("#FF0000");
+		
+		Map<String,Object> mapTemplateUser = new HashMap<String,Object>();
+        
+		Map<String,String> first = new HashMap<String,String>();
+		first.put("value", map.get("tableNo").toString() + "餐台/房的客官您好，你刚下的订单已成功交结掌柜，请等待送餐！");
+		first.put("color", "#173177");
+		mapTemplateUser.put("first", first);
+		
+		Map<String,String> keyword1 = new HashMap<String,String>();
+		keyword1.put("value", store.getStoreName());
+		keyword1.put("color", "#173177");
+		mapTemplateUser.put("keyword1", keyword1);
+		
+		Map<String,String> keyword2 = new HashMap<String,String>();
+		keyword2.put("value", DateUtil.formatDate(date, DateUtil.FORMATSTR_2));
+		keyword2.put("color", "#173177");
+		mapTemplateUser.put("keyword2", keyword2);
+		
+		Map<String,String> keyword3 = new HashMap<String,String>();
+		keyword3.put("value", String.format("%.2f", orderInfo.getGoodsAmount().doubleValue() / 100));
+		keyword3.put("color", "#173177");
+		mapTemplateUser.put("keyword3", keyword3);
+		
+		Map<String,String> remark = new HashMap<String,String>();
+		remark.put("value", "陛下，您点了"+sb.toString()+"，掌柜已吩咐厨房开火了，请稍等！");
+		remark.put("color", "#173177");
+		mapTemplateUser.put("remark", remark);
+		
+		template.setData(mapTemplateUser);
+		
+		return WeiXinUtil.TemplateSend(WeiXinUtil.getAccessToken(store_id, wp.getAppid(), wp.getSecret()).getAccess_token(), template);
+		
+	}
+	
+	/**
+	 * 点餐模式给商户发送消息
+	 * @throws Exception 
+	 */
+	private String diningStoreTemplateMessage(HttpServletRequest request,
+			WpPublicWithBLOBs wp,
+			EHaiStore store,
+			HaiOrderInfoWithBLOBs orderInfo,
+			EHaiUsers users,
+			Map<String,Object> map,
+			Integer store_id,
+			Date date,
+			StringBuffer sb) throws Exception{
+		WeiXinTemplateMessage templateStore = new WeiXinTemplateMessage();
+		templateStore.setTemplate_id("Vlmhl4el_dW2Zcq_5cf9KkgRlDx7XI5G_XLuJQ4f2gM");//订单支付成功通知
+		templateStore.setTouser(users.getOpenid());
+		templateStore.setUrl(request.getScheme()+"://"+request.getServerName()+"/dining_store_order_detail!"+SignUtil.setOid(store_id, orderInfo.getOrderId(), orderInfo.getOrderSn(), orderInfo.getUserId(), users.getOpenid(), wp.getToken()));
+		templateStore.setTopcolor("#FF0000");
+		
+		Map<String,Object> mapTemplateStore = new HashMap<String,Object>();
+        
+		Map<String,String> firstStore = new HashMap<String,String>();
+		firstStore.put("value", map.get("tableNo").toString() + "餐台/房的客官已下了订单");
+		firstStore.put("color", "#173177");
+		mapTemplateStore.put("first", firstStore);
+		
+		Map<String,String> keyword1Store = new HashMap<String,String>();
+		keyword1Store.put("value", orderInfo.getOrderSn());
+		keyword1Store.put("color", "#173177");
+		mapTemplateStore.put("keyword1", keyword1Store);
+		
+		Map<String,String> keyword2Store = new HashMap<String,String>();
+		keyword2Store.put("value", DateUtil.formatDate(date, DateUtil.FORMATSTR_2));
+		keyword2Store.put("color", "#173177");
+		mapTemplateStore.put("keyword2", keyword2Store);
+		
+		Map<String,String> keyword3Store = new HashMap<String,String>();
+		keyword3Store.put("value", String.format("%.2f", orderInfo.getGoodsAmount().doubleValue() / 100));
+		keyword3Store.put("color", "#173177");
+		mapTemplateStore.put("keyword3", keyword3Store);
+		
+		Map<String,String> keyword4Store = new HashMap<String,String>();
+		keyword4Store.put("value", "现金付款");
+		keyword4Store.put("color", "#173177");
+		mapTemplateStore.put("keyword4", keyword4Store);
+		
+		Map<String,String> remarkStore = new HashMap<String,String>();
+		remarkStore.put("value", "客官点了"+sb.toString()+"，掌柜您可以为客官出菜了！");
+		remarkStore.put("color", "#173177");
+		mapTemplateStore.put("remark", remarkStore);
+		
+		templateStore.setData(mapTemplateStore);
+		
+		return WeiXinUtil.TemplateSend(WeiXinUtil.getAccessToken(store_id, wp.getAppid(), wp.getSecret()).getAccess_token(), templateStore);
+		
+	}
+	
+	
+	
 	
 }

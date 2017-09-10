@@ -29,10 +29,11 @@ public class WeiXinPayController extends CommonController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/notify_url-{store_id}")
+	@RequestMapping("/notify_url!{sid}&{classify}")
 	public String notify_url(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
-			@PathVariable(value = "store_id") Integer store_id
+			@PathVariable(value = "sid") String sid,
+			@PathVariable(value = "classify") String classify
 			) {
 		try{
 			String inputLine = null;
@@ -43,7 +44,8 @@ public class WeiXinPayController extends CommonController {
 			log.info("notityPayXml:"+notityPayXml);
 			if(notityPayXml != null && !notityPayXml.equals("")){
 				WeiXinNotifyPay notifyPay = WeiXinUtil.toNotifyPayXml(notityPayXml);
-				ReturnObject<WeiXinNotifyPay> rm = weiXinPayService.WeiXinNotifyPay(request, notifyPay,store_id);
+				ReturnObject<WeiXinNotifyPay> rm = weiXinPayService.WeiXinNotifyPay(request, 
+						notifyPay,sid,classify);
 				WeiXinNotifyPay wnp = new WeiXinNotifyPay();
 				if(rm.getCode() != 1){
 					wnp.setReturn_code("FAIL");

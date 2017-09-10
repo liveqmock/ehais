@@ -57,5 +57,13 @@
 		<input type="hidden" id="articleId" name="articleId" value="${articleId}"/>
 		<input type="hidden" id="agencyId" name="agencyId" value="${agencyId}"/>
 		<script src="../js/ehais/w_goods_detail.js"></script>
+		
+		<script type="text/javascript">
+		var sid = "${sid}";
+		$(function(){
+			wx_config(${signature});
+		});
+		</script>
+	
 	</body>
 </html>

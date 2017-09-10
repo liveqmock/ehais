@@ -152,6 +152,7 @@ public class EhaisWebController extends EhaisCommonController {
 		}
 		HaiGoods goods = haiGoodsMapper.selectByPrimaryKey(goodsId);
 		
+		modelMap.addAttribute("sid", sid);
 		modelMap.addAttribute("goods", goods);
 		modelMap.addAttribute("parentId", map.get("parentId"));
 		modelMap.addAttribute("agencyId", map.get("agencyId"));
@@ -329,9 +330,10 @@ public class EhaisWebController extends EhaisCommonController {
 	
 	
 	
-	@RequestMapping("/w_cart")
+	@RequestMapping("/w_cart!{sid}")
 	public String w_cart(ModelMap modelMap,
-			HttpServletRequest request,HttpServletResponse response	) {
+			HttpServletRequest request,HttpServletResponse response,
+			@PathVariable(value = "sid") String sid) {
 		
 		try{
 			HaiCartExample example = new HaiCartExample();
@@ -340,23 +342,24 @@ public class EhaisWebController extends EhaisCommonController {
 			List<HaiCart> cartList = haiCartMapper.selectByExample(example);
 			
 			modelMap.addAttribute("cartList", cartList);
-			
+			modelMap.addAttribute("sid", sid);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 		return "/ehais/w_cart";
 	}
 	
-	@RequestMapping("/w_check_order")
+	@RequestMapping("/w_check_order!{sid}")
 	public String w_check_order(ModelMap modelMap,
-			HttpServletRequest request,HttpServletResponse response	) {
+			HttpServletRequest request,HttpServletResponse response,
+			@PathVariable(value = "sid") String sid) {
 		
 		
 		if(this.isLocalHost(request)){
 			request.getSession().setAttribute(EConstants.SESSION_USER_ID, 55L);			
 		}
 		try{
-			
+			modelMap.addAttribute("sid", sid);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
