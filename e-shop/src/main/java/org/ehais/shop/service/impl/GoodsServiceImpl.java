@@ -86,7 +86,7 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		example.setStart(start);
 		example.setLen(len);
 		List<HaiGoods> list = haiGoodsMapper.hai_goods_list_by_example(example);
-		Integer total = haiGoodsMapper.countByExample(example);
+		Long total = haiGoodsMapper.countByExample(example);
 		rm.setCode(1);
 		rm.setRows(list);
 		rm.setTotal(total);
@@ -110,7 +110,7 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		example.setLen(condition.getRows());
 		example.setOrderByClause("goods_id desc");
 		List<HaiGoods> list = haiGoodsMapper.hai_goods_list_by_example(example);
-		Integer total = haiGoodsMapper.countByExample(example);
+		Long total = haiGoodsMapper.countByExample(example);
 		rm.setCode(1);
 		rm.setRows(list);
 		rm.setTotal(total);
@@ -703,7 +703,7 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		example.setLen(len);
 		example.setOrderByClause("goods_id desc");
 		
-		Integer total = haiGoodsMapper.countByExample(example);		
+		Long total = haiGoodsMapper.countByExample(example);		
 		List<HaiGoods> list = haiGoodsMapper.hai_goods_list_by_example(example);
 		
 		rm.setTotal(total);

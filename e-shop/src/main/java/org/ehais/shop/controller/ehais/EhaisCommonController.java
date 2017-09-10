@@ -31,6 +31,7 @@ import org.ehais.shop.model.HaiArticleGoods;
 import org.ehais.shop.model.HaiArticleGoodsExample;
 import org.ehais.shop.model.HaiGoods;
 import org.ehais.shop.model.HaiGoodsExample;
+import org.ehais.shop.service.EStoreService;
 import org.ehais.util.MatrixToImageWriter;
 import org.ehais.util.SignUtil;
 import org.ehais.weixin.model.OpenidInfo;
@@ -50,6 +51,8 @@ public class EhaisCommonController extends CommonController{
 	protected EWPPublicService eWPPublicService;
 	@Autowired
 	private EHaiUsersMapper eHaiUsersMapper;
+	@Autowired
+	protected EStoreService eStoreService;
 	
 	/**
 	 * 1.判断session的userid,openid随便一个不存在，即走微信网络请求链接

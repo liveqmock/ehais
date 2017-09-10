@@ -11,8 +11,8 @@
 		
 		<script type="text/javascript" src="js/jroll/jroll.js" ></script>
 		
-		<link rel="stylesheet" href="js/layer/mobile/need/layer.css" />
-		<script type="text/javascript" src="js/layer/mobile/layer.js" ></script>
+		<link rel="stylesheet" href="js/elay/elay.css" />
+		<script type="text/javascript" src="js/elay/elay.js" ></script>
 		
 		<script type="text/javascript" src="js/common.js" ></script>
 		
@@ -29,11 +29,11 @@
 		<div class="wrapper_dining">
 			<div class="scroll swiper-container">
 				<ul class="swiper-wrapper">
-					<li class="swiper-slide"><img src="upload/dining/1.png" /></li>
-					<li class="swiper-slide"><img src="upload/dining/2.png" /></li>
-					<li class="swiper-slide"><img src="upload/dining/3.png" /></li>
-					<li class="swiper-slide"><img src="upload/dining/4.png" /></li>
-					<li class="swiper-slide"><img src="upload/dining/5.png" /></li>
+					<li class="swiper-slide"><img src="http://ovug9f17p.bkt.clouddn.com/dining1.png" /></li>
+					<li class="swiper-slide"><img src="http://ovug9f17p.bkt.clouddn.com/dining2.png" /></li>
+					<li class="swiper-slide"><img src="http://ovug9f17p.bkt.clouddn.com/dining3.png" /></li>
+					<li class="swiper-slide"><img src="http://ovug9f17p.bkt.clouddn.com/dining4.png" /></li>
+					<li class="swiper-slide"><img src="http://ovug9f17p.bkt.clouddn.com/dining5.png" /></li>
 				</ul>
 				<!-- 如果需要分页器 -->
 			    <div class="swiper-pagination"></div>
@@ -49,10 +49,10 @@
 			<div class="menu">
 				<div class="left" id="menu_cate">
 				<ul id="scroller_menu_cate">
-					<li value="0" class="active">热销类</li>
+					<li v="0" class="active">热销类</li>
 					<#if (listCategory?? && listCategory?size > 0 )>
 					<#list listCategory as cate>
-					<li value="${cate.catId}">${cate.catName!'未设置'}</li>
+					<li v="${cate.catId}">${cate.catName!'未设置'}</li>
 					</#list>
 					</#if>
 				</ul>
@@ -61,7 +61,7 @@
 					<ul id="scroller_menu_goods_list">
 					<#if (listGoods?? && listGoods?size > 0 )>
 					<#list listGoods as goods>
-					<li class="" catId="${goods.catId!0}" isHot="${goods.isHot?string('1','0')}">
+					<li class="dn ${goods.isHot?string('cat0','')} cat${goods.catId!''}" >
 						<div class="pic">
 							<img src="${goods.originalImg!defaultimg}" />
 						</div>
@@ -125,7 +125,12 @@
 			</div>
 		</div>
 		
-		
+		<script type="text/javascript">
+		var sid = "${sid}";
+		$(function(){
+			wx_config(${signature});
+		});		
+		</script>
 		<script type="text/javascript" src="js/diningStore.js" ></script>
 	</body>
 </html>

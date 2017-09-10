@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.ehais.common.EConstants;
 import org.ehais.enums.EIsVoidEnum;
+import org.ehais.enums.EOrderClassifyEnum;
 import org.ehais.enums.EOrderSourceEnum;
 import org.ehais.enums.EOrderStatusEnum;
 import org.ehais.enums.EPayStatusEnum;
@@ -750,6 +751,7 @@ public class ShoppingServiceImpl extends CommonServiceImpl implements ShoppingSe
 		orderInfo.setDiscount(0F);//'折扣金额',
 		orderInfo.setIsVoid(EIsVoidEnum.valid);
 		orderInfo.setGoodsDesc(sb.toString());
+		orderInfo.setClassify(EOrderClassifyEnum.shop);
 		orderInfo.setRemark("");
 		
 		int code = haiOrderInfoMapper.insert(orderInfo);
@@ -787,7 +789,7 @@ public class ShoppingServiceImpl extends CommonServiceImpl implements ShoppingSe
 		int codeBatch = haiOrderGoodsMapper.insertBatch(orderGoodsList);
 		
 		//清空购物车
-//		haiCartMapper.deleteByExample(cartExample);
+		haiCartMapper.deleteByExample(cartExample);
 		
 		//跳转支付信息返回
 		WeiXinWCPay cpay = weiXinPayService.WeiXinPayApi(request, store_id, user_id, users.getOpenid(), orderSn, totalPrice, "易海司微信支付订单", "hai_order", order_id);

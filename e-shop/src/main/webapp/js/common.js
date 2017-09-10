@@ -14,28 +14,17 @@ $.ajaxSetup({
 	dataType:"json",
 	beforeSend: function () {
 	    //ajax请求之前
-	    this.layerIndex = layer.open({
-				type: 2
-				,content: '陛下请稍等...'
-			});
+	    elay.loading();
 	},
 	complete: function () {
 	    //ajax请求完成，不管成功失败
-	    layer.close(this.layerIndex);
+		elay.hide();
 	},
 	error: function () {
     	//ajax请求失败
-        layer.open({
+        elay.open({
 		  content: '部分数据加载失败，可能会导致页面显示异常，请刷新后重试',
-		  btn: '我知道了',
-		  shadeClose: false,
-		  yes: function(){
-		    layer.open({
-		      content: '稍后请重试~！'
-		  ,time: 2
-		  ,skin: 'msg'
-		    });
-		  }
+		  btn: '我知道了'
 		});
 
 
