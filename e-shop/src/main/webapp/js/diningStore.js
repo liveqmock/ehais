@@ -1,17 +1,6 @@
-//餐厅的识别码
-var dining = GetQueryString("dining");
-//通过二维码扫描当前台号
-var tableno = GetQueryString("tableno");
-//别人,分销用户
-var user_id = GetQueryString("user_id");
-
-//if(dining == null || dining == "")dining = "tyler";
-localStorage.setItem("dining",dining);
-
-
-
-var jroll_menu_cate ;
-var jroll_menu_list ;
+var jroll_menu_cate;
+var jroll_menu_list;
+var jroll_myOrderUl;
 var cartArray = null;//购物车数据
 var path = window.location.search;//页面跟的参数地址
 
@@ -226,11 +215,24 @@ $(function(){
 	
 	$("#menu_cate").height($(window).height() - $(".swiper-container").height() / 2 - $(".tabs").height() - $("footer").height() - 20);
 	$("#menu_list").height($(window).height() - $(".swiper-container").height() / 2 - $(".tabs").height() - $("footer").height() - 20);
+	$("#myOrderUl").height($(window).height() - $(".swiper-container").height() / 2 - $(".tabs").height() - $("footer").height() - 20);
 
 	
 	jroll_menu_cate = new JRoll("#menu_cate", {scrollBarY:false});
 	jroll_menu_list = new JRoll("#menu_list", {scrollBarY:false});
-	
+	jroll_myOrderUl = new JRoll("#myOrderUl", {scrollBarY:false});
+	jroll.infinite({
+	    getData: function(page, callback, errorCallback) {
+	    	alert(JSON.stringify(page));
+	        /*$.ajax({
+	            url : "getdata.php?page="+page+"&filter=a",
+	            success : function(data) {
+	                jroll.options.total = data.total;
+	                callback(data.items);
+	            }
+	        });*/
+	    }
+	});
 	
 	$(".cat0").removeClass("dn");//推荐、热门菜品
 	$("#scroller_menu_cate > li").click(function(){$("#scroller_menu_goods_list > li").addClass("dn");$("#scroller_menu_cate > li").removeClass("active");$(this).addClass("active");$("#scroller_menu_goods_list > li.cat"+$(this).attr("v")).removeClass("dn");jroll_menu_list.refresh();});
@@ -348,6 +350,9 @@ $(function(){
 		$("#check_out_pay >div").removeClass("active");
 		$(this).addClass("active");
 	});
+	
+	diningUserOrderList();//获取用户的订单列表
+	
 });
 
 /**
@@ -395,5 +400,22 @@ function clearCart(){
 	$("#orderCart,#orderSubmit").hide();
 }
 
+var page = 1;
+var rows = 10;
+function diningUserOrderList(){
+	$.ajax({
+		url : "diningUserOrderList",data : {page:page,rows:rows},
+		success:function(result){
+			var rows = result.rows;
+			$.each(rows,function(k,v){
+				$("#myOrderUl").append("<li>"+
+						"<div>消费餐厅："+v.consignee+"</div>"+
+						"<div>消费时间："+v.addTime+"</div>"+
+						"<div>消费金额："+v.orderAmount+"元</div>"+
+					"</li>");
+			})
+		},beforeSend: function () {}
+	});
+}
 
 

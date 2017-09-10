@@ -378,20 +378,76 @@ public class SignUtil {
 	
 	
 	
+	public static String setPartnerId(
+			Integer partnerId,
+			Long parentId,
+			Long userId,
+			String secret) throws Exception{
+		String md5 = EncryptUtils.md5(partnerId.toString()+parentId.toString()+userId.toString()+secret);
+		String pid = md5.substring(0, 5)+partnerId.toString()+"0-0"+
+				md5.substring(5,10)+parentId.toString()+"1-1"+
+				md5.substring(10,15)+userId.toString()+"2-2"+
+				md5.substring(15,32);
+		return pid;
+	}
+	
+	public static Map<String,Object> getPartnerId(String pid,String secret){
+		if(StringUtils.isEmpty(pid))return null;
+		Map<String,Object> map = null;
+		try{
+			Integer n0 = pid.indexOf("0-0");
+			Integer n1 = pid.indexOf("1-1");
+			Integer n2 = pid.indexOf("2-2");
+			
+			String s0 = pid.substring(0, 5);
+			String partnerId = pid.substring(5,n0);
+			
+			String s1 = pid.substring(n0+3,n0+8);
+			String parentId = pid.substring(n0+8, n1);
+			
+			String s2 = pid.substring(n1+3, n1+8);
+			String userId = pid.substring(n1+8, n2);
+			
+			String s3 = pid.substring(n2+3,n2+20);
+			if(EncryptUtils.md5(partnerId+parentId+userId+secret).equals(s0+s1+s2+s3)){
+				map = new HashMap<String,Object>();
+				map.put("partnerId", partnerId);
+				map.put("parentId", parentId);
+				map.put("userId", userId);
+			}
+			
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+				
+		return map;
+	}
+	
 	public static void main(String[] args) throws Exception {
-		Integer store_id = 58;
+		Integer store_id = 20;
 		Long orderId = 23l;
 		String orderSn = "201709061320282629125";
 		Long userId = 125l;
 		String openId = "sdfsrewrsdfsdfsdf";
 		String secret = "ehais_wxdev";
 		Integer agencyId = 0;
-		Long parentId = 0L;
+		Long parentId = 30L;
 		String tableNo = "C10";
+		Integer articleId = 9086;
+		Long goodsId = 2381L;
+		Integer partnerId = 10;
 		
-		String did = SignUtil.setDiningId(store_id, agencyId, parentId, userId,tableNo, secret);
-		System.out.println(did);
-		Map<String,Object> mid = SignUtil.getDiningId(did, secret);
+//		String sid = SignUtil.setSid(store_id, agencyId, parentId, userId, articleId, goodsId, secret);
+//		System.out.println(sid);
+//		String did = SignUtil.setDiningId(store_id, agencyId, parentId, userId,tableNo, secret);
+//		System.out.println(did);
+//		Map<String,Object> mid = SignUtil.getDiningId(did, secret);
+//		Bean2Utils.printMap(mid);
+		
+		String pid = SignUtil.setPartnerId(partnerId, parentId, userId, secret);
+		System.out.println(pid);
+		Map<String,Object> mid = SignUtil.getPartnerId(pid, secret);
 		Bean2Utils.printMap(mid);
 		
 	}

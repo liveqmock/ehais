@@ -54,7 +54,7 @@ public class EUsersServiceImpl  extends CommonServiceImpl implements EUsersServi
 		example.setLimitStart(start);
 		example.setLimitEnd(len);
 		List<EHaiUsers> list = eHaiUsersMapper.hai_users_list_by_example(example);
-		Integer total = eHaiUsersMapper.countByExample(example);
+		Long total = eHaiUsersMapper.countByExample(example);
 		rm.setCode(1);
 		rm.setRows(list);
 		rm.setTotal(total);
@@ -92,7 +92,7 @@ public class EUsersServiceImpl  extends CommonServiceImpl implements EUsersServi
 		EHaiUsersExample.Criteria c = example.createCriteria();
 		c.andUserNameEqualTo(model.getUserName());
 		c.andStoreIdEqualTo(store_id);
-		int count = eHaiUsersMapper.countByExample(example);
+		long count = eHaiUsersMapper.countByExample(example);
 		if(count > 0){
 			rm.setMsg("存在相同的记录");
 			return rm;
@@ -130,7 +130,7 @@ public class EUsersServiceImpl  extends CommonServiceImpl implements EUsersServi
 		c.andUserIdEqualTo(model.getUserId());
 		c.andStoreIdEqualTo(store_id);
 
-		int count = eHaiUsersMapper.countByExample(example);
+		long count = eHaiUsersMapper.countByExample(example);
 		if(count == 0){
 			rm.setMsg("记录不存在");
 			return rm;
@@ -249,7 +249,7 @@ public class EUsersServiceImpl  extends CommonServiceImpl implements EUsersServi
 		EHaiUsersExample example = new EHaiUsersExample();
 		EHaiUsersExample.Criteria c = example.createCriteria();
 		c.andUserNameEqualTo(username);
-		int count = eHaiUsersMapper.countByExample(example);
+		long count = eHaiUsersMapper.countByExample(example);
 		if(count > 0){
 			rm.setMsg("用户名已存在");
 			return rm;
@@ -293,7 +293,7 @@ public class EUsersServiceImpl  extends CommonServiceImpl implements EUsersServi
 		
 		c.andUserIdEqualTo(model.getUserId());
 		
-		int count = eHaiUsersMapper.countByExample(example);
+		long count = eHaiUsersMapper.countByExample(example);
 		if(count == 0){
 			rm.setMsg("用户不存在");
 			return rm;

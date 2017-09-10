@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.ehais.shop.model.HaiOrderInfo;
+import org.ehais.shop.model.HaiOrderInfoWithBLOBs;
 import org.ehais.shop.service.OrderInfoService;
 import org.ehais.tools.ReturnObject;
 import org.slf4j.Logger;
@@ -79,7 +80,7 @@ public class  OrderInfoController extends CommonController {
 	@RequestMapping(value="/orderinfo_insert_submit",method=RequestMethod.POST)
 	public String orderinfo_insert_submit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
-			@ModelAttribute HaiOrderInfo orderinfo
+			@ModelAttribute HaiOrderInfoWithBLOBs orderinfo
 			) {
 		try{
 			ReturnObject<HaiOrderInfo> rm = orderinfoService.orderinfo_insert_submit(request,orderinfo);
@@ -110,7 +111,7 @@ public class  OrderInfoController extends CommonController {
 	@RequestMapping(value="/orderinfo_update_submit",method=RequestMethod.POST)
 	public String orderinfo_update_submit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
-			@ModelAttribute HaiOrderInfo orderinfo
+			@ModelAttribute HaiOrderInfoWithBLOBs orderinfo
 			) {
 		try{
 			ReturnObject<HaiOrderInfo> rm = orderinfoService.orderinfo_update_submit(request,orderinfo);

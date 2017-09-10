@@ -316,6 +316,10 @@ public class EhaisWebController extends EhaisCommonController {
 				}
 				
 			}else{
+				if(this.isLocalHost(request)){
+//					request.getSession().removeAttribute(EConstants.SESSION_USER_ID);
+					request.getSession().setAttribute(EConstants.SESSION_USER_ID, 125L);			
+				}
 				this.shop_encode(request);
 				return this.goods_detail(modelMap, request, response,wp, sid,map,"/ehais/w_goods_detail");//整理此软文与商品所有内容
 			}
@@ -334,10 +338,15 @@ public class EhaisWebController extends EhaisCommonController {
 	public String w_cart(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@PathVariable(value = "sid") String sid) {
-		
+		if(this.isLocalHost(request)){
+			request.getSession().setAttribute(EConstants.SESSION_USER_ID, 125L);			
+		}
 		try{
+			
 			HaiCartExample example = new HaiCartExample();
 			example.createCriteria().andUserIdEqualTo((Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID));
+//			String session_shop_encode = (String)request.getSession().getAttribute(EConstants.SESSION_SHOP_ENCODE);
+//			if(StringUtils.isNotEmpty(session_shop_encode))example.or().andSessionIdEqualTo(session_shop_encode);
 			example.setOrderByClause("rec_id desc");
 			List<HaiCart> cartList = haiCartMapper.selectByExample(example);
 			
@@ -356,7 +365,7 @@ public class EhaisWebController extends EhaisCommonController {
 		
 		
 		if(this.isLocalHost(request)){
-			request.getSession().setAttribute(EConstants.SESSION_USER_ID, 55L);			
+			request.getSession().setAttribute(EConstants.SESSION_USER_ID, 125L);			
 		}
 		try{
 			modelMap.addAttribute("sid", sid);

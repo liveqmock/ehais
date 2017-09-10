@@ -48,7 +48,7 @@ function article_extends_list_json(){
 			
 			var listRecommend = result.map.listRecommend;
 			$(".recommend div.item").remove();
-			if(listRecommend.length > 0){
+			if(listRecommend!=null && listRecommend.length > 0){
 				$(".recommend_title,.recommend").removeClass("dn");
 				$.each(listRecommend,function(index,value){
 					$(".recommend").append("<div class=\"item\" href=\""+value.link+"\">"+

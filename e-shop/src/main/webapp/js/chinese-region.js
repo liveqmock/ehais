@@ -1,3 +1,14 @@
+/**
+ * $("#chinaRegion").chineseRegion({
+				province:"province",provinceValue:${model.province!0},
+				city:"city",cityValue:${model.city!0},
+				county:"county",countyValue:${model.county!0},
+				district:"district",districtValue:${model.district!0},
+				url:"/wx/region_id_list",
+				param:"parent_id"
+			});
+ * @param $
+ */
 (function($) {
 	
 
@@ -14,6 +25,7 @@ $.fn.chineseRegion = function(data) {
 	this.id = $(this).attr("id"),
 	this.param = data.param,
 	this.url=data.url,
+	this.regionarray= [this.province,this.city,this.county,this.district],
     this.onClose = function(){
 		$(this).children(".dropdown-chinese-region").removeClass("active");
     },
@@ -78,10 +90,14 @@ $.fn.chineseRegion = function(data) {
 			
 			for(var i = num+1 ; i < 4 ; i++){
 				$("#"+that.id+" div.tab-content > div.tab-pane").eq(num+1).children("div").remove();
+				$("#"+that.regionarray[i]).val("").attr("text","");
 			}
 			$("#chinese_region_"+that.id).val("");
 			for(var i = 0 ; i < 4 ; i ++){
-				$("#chinese_region_"+that.id).val($("#chinese_region_"+that.id).val()+$(".chinese-region input[type='hidden']").eq(i).attr("text"));
+				var txt = $(".chinese-region input[type='hidden']").eq(i).attr("text");
+				if(txt == null || txt == "undefined")txt = "";
+				$("#chinese_region_"+that.id).val($("#chinese_region_"+that.id).val()+txt);
+				txt = null;
 			}			
 			if(num == 3){
 				that.onClose();

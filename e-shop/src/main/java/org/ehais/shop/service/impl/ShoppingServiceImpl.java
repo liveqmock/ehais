@@ -473,7 +473,7 @@ public class ShoppingServiceImpl extends CommonServiceImpl implements ShoppingSe
 		
 		Date date = new Date();
 		//插入订单主表
-		HaiOrderInfo orderInfo = new HaiOrderInfo();
+		HaiOrderInfoWithBLOBs orderInfo = new HaiOrderInfoWithBLOBs();
 		String orderSn = DateUtil.formatDate(date, DateUtil.FORMATSTR_4) + ECommon.nonceInt(4) + order_done.getUser_id().toString();
 		orderInfo.setOrderSn(orderSn);
 		orderInfo.setUserId(order_done.getUser_id());
@@ -704,11 +704,12 @@ public class ShoppingServiceImpl extends CommonServiceImpl implements ShoppingSe
 			orderInfo.setPayId(payment.getPayId());
 			orderInfo.setPayName(payment.getPayName());
 		}
-		orderInfo.setInvPayee(order_done.getInvPayee());
-		orderInfo.setGoodsAmount(totalPrice);//总价钱		
+		orderInfo.setGoodsAmount(totalPrice);//总价钱	
+		orderInfo.setOrderAmount(totalPrice);//订单价格
 		orderInfo.setOrderSource(EOrderSourceEnum.weixin);
 		orderInfo.setGoodsDesc(sb.toString());
 		orderInfo.setClassify(EOrderClassifyEnum.shop);
+		orderInfo.setSid(sid);
 		
 		int code = haiOrderInfoMapper.insert(orderInfo);
 		Long order_id = orderInfo.getOrderId();

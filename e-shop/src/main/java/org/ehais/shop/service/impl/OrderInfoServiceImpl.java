@@ -57,7 +57,7 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 //		example.setStart(start);
 //		example.setLen(len);
 		List<HaiOrderInfo> list = haiOrderInfoMapper.hai_order_info_list_by_example(example);
-		Integer total = haiOrderInfoMapper.countByExample(example);
+		Long total = haiOrderInfoMapper.countByExample(example);
 		rm.setCode(1);
 		rm.setRows(list);
 		rm.setTotal(total);
@@ -77,7 +77,7 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 		return rm;
 	}
 	
-	public ReturnObject<HaiOrderInfo> orderinfo_insert_submit(HttpServletRequest request,HaiOrderInfo model)
+	public ReturnObject<HaiOrderInfo> orderinfo_insert_submit(HttpServletRequest request,HaiOrderInfoWithBLOBs model)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiOrderInfo> rm = new ReturnObject<HaiOrderInfo>();
@@ -95,7 +95,7 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 		HaiOrderInfoExample.Criteria c = example.createCriteria();
 		c.andOrderSnEqualTo(model.getOrderSn());
 		c.andStoreIdEqualTo(store_id);
-		int count = haiOrderInfoMapper.countByExample(example);
+		Long count = haiOrderInfoMapper.countByExample(example);
 		if(count > 0){
 			rm.setMsg("存在相同的记录");
 			return rm;
@@ -121,7 +121,7 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 		return rm;
 	}
 	
-	public ReturnObject<HaiOrderInfo> orderinfo_update_submit(HttpServletRequest request,HaiOrderInfo model)
+	public ReturnObject<HaiOrderInfo> orderinfo_update_submit(HttpServletRequest request,HaiOrderInfoWithBLOBs model)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiOrderInfo> rm = new ReturnObject<HaiOrderInfo>();
@@ -133,7 +133,7 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 		c.andOrderIdEqualTo(model.getOrderId());
 		c.andStoreIdEqualTo(store_id);
 
-		int count = haiOrderInfoMapper.countByExample(example);
+		Long count = haiOrderInfoMapper.countByExample(example);
 		if(count == 0){
 			rm.setMsg("记录不存在");
 			return rm;
@@ -194,7 +194,7 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 //		example.setStart(start);
 //		example.setLen(len);
 		List<HaiOrderInfo> list = haiOrderInfoMapper.hai_order_info_list_by_example(example);
-		Integer total = haiOrderInfoMapper.countByExample(example);
+		Long total = haiOrderInfoMapper.countByExample(example);
 		
 		List<Long> orderIds = new ArrayList<Long>();
 		for (HaiOrderInfo haiOrderInfo : list) {
@@ -260,7 +260,6 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 		orderInfo.setShippingName("");
 		orderInfo.setPayId(0);
 		orderInfo.setPayName("");
-		orderInfo.setInvPayee("");
 		
 		orderInfo.setConfirmTime(0);
 		orderInfo.setPayTime(0);

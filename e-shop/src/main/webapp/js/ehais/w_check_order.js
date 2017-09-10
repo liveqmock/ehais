@@ -7,7 +7,7 @@ $(function(){
 	chooseAddressId = sessionStorage.getItem("chooseAddressId");//地址选择页面选择地配送地址对象信息
 	
 	$("#coupon").click(function(){
-		layer.open({content:"暂无优惠券",btn:"朕知道了"});
+		elay.open({content:"暂无优惠券",btn:"朕知道了"});
 	});
 	
 	w_check_order_data();//加载购物车信息
@@ -27,6 +27,13 @@ $(function(){
 	});
 });
 
+//返回强制刷新的代码
+window.onpageshow = function(event){
+	if (event.persisted) {
+		w_check_order_data();//加载购物车信息
+	}
+}
+
 /**
  * 提交信息
  */
@@ -36,7 +43,7 @@ function orderSubmit(){
 	var addressId = $("#address").attr("value");
 	var message = $("#message").val();
 	if(addressId == null || addressId.length == 0 ){
-		layer.open({content:"请选择或添加收货人信息",btn:"朕马上处理"});
+		elay.open({content:"请选择或添加收货人信息",btn:"朕马上处理"});
 		return ;
 	}
 	
@@ -45,7 +52,7 @@ function orderSubmit(){
 		data : {sid:sid,pay_id:1,ship_id:1,address_id:addressId,message:message,recIds:recIds},
 		success : function(result){
 			if(result.code != 1){
-				layer.open({content:result.msg,btn:"朕知道了"});
+				elay.open({content:result.msg,btn:"朕知道了"});
 				return ;
 			}
 			
@@ -95,7 +102,7 @@ function w_check_order_data(){
 		data : {recIds : recIds},
 		success : function(result){
 			if(result.code != 1){
-				layer.open({content:result.msg + recIds, btn:"朕知道了"});
+				elay.open({content:result.msg + recIds, btn:"朕知道了"});
 				return ;
 			}
 			//alert("加载中.."+chooseAddressId);
@@ -118,7 +125,8 @@ function w_check_order_data(){
 			
 			if(result.map == null || result.map.cart == null){
 				//购物车为空，返回上一层
-				layer.open({content:"购物车已清空",btn:["朕知道了"],yes:function(index){layer.closeAll();window.history.go(-1);}});
+				//elay.confirm({content:"购物车已清空",btn:["朕知道了",""],sure:function(index){elay.closeAll();window.history.go(-1);}});
+				window.history.go(-1);
 				return ;
 			}
 			

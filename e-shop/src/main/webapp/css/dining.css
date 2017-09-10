@@ -246,6 +246,16 @@
   display: none;
   width: 100%;
 }
+.wrapper_dining > div.myOrder ul {
+  padding: 0.15rem;
+  box-sizing: border-box;
+}
+.wrapper_dining > div.myOrder ul li {
+  width: 100%;
+  float: left;
+  padding: 0.08rem 0;
+  border-bottom: 0.01rem solid #DCDCDC;
+}
 footer {
   position: fixed;
   width: 100%;

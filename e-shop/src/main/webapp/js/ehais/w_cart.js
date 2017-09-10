@@ -40,13 +40,10 @@ $(function(){
 	$(".fa-trash-o").click(function(){
 		var recid = $(this).parent().parent().parent().attr("recid");
 		var that = $(this).parent().parent().parent();
-		var layerIndex = layer.open({
+		elay.confirm({
 		    content: '确定要删除此商品吗？'
 		    ,btn: ['确定' , '取消']
-		    ,yes: function(index){  
-		    	
-				layer.close(layerIndex);				
-				layerIndex = null;
+		    ,sure: function(index){  
 				cart_delete_submit(that,recid);
 		    }
 		 });
@@ -79,13 +76,13 @@ $(function(){
 			}
 		});
 		if(recIds.length == 0){
-			var layerIndex = layer.open({
+			var layerIndex = elay.open({
 			    content: '请选择购物车要结算的商品'
-			    ,btn: ['朕知道了']
+			    ,btn: '朕知道了'
 			});
 		}else{
 			sessionStorage.setItem("recIds",recIds.join(","));
-			window.location.href = "w_check_order";
+			window.location.href = "w_check_order!"+sid;
 		}
 	});
 });

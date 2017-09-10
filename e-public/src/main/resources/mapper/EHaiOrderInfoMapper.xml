@@ -71,6 +71,7 @@
     <result column="is_void" jdbcType="CHAR" property="isVoid" />
     <result column="order_source" jdbcType="VARCHAR" property="orderSource" />
     <result column="classify" jdbcType="VARCHAR" property="classify" />
+    <result column="sid" jdbcType="VARCHAR" property="sid" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="org.ehais.epublic.model.EHaiOrderInfo">
     <result column="remark" jdbcType="LONGVARCHAR" property="remark" />

@@ -80,6 +80,7 @@ public class EhaisCommonController extends CommonController{
 			user.setParentId(Long.valueOf(map.get("userId").toString()));
 			user.setAgencyId(Integer.valueOf(map.get("agencyId").toString()));
 			user.setStoreId(Integer.valueOf(map.get("store_id").toString()));
+			user.setPartnerId(Integer.valueOf(map.get("partnerId").toString()));
 			user.setEmail("");
 			user.setUserName(open.getOpenid());
 			user.setPassword("");					

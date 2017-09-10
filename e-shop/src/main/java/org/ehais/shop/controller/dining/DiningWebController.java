@@ -35,8 +35,10 @@ import org.ehais.shop.model.HaiCategoryExample;
 import org.ehais.shop.model.HaiGoods;
 import org.ehais.shop.model.HaiGoodsExample;
 import org.ehais.shop.model.HaiOrderGoods;
+import org.ehais.shop.model.HaiOrderInfoExample;
 import org.ehais.shop.model.HaiOrderInfoWithBLOBs;
 import org.ehais.shop.service.OrderInfoService;
+import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.DateUtil;
 import org.ehais.util.ECommon;
@@ -51,6 +53,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -84,7 +87,7 @@ public class DiningWebController extends EhaisCommonController{
 	
 	//http://127.0.0.1/diningStore!7574d580-0e5f8801-1272b802-2942971253-3544a1C104-4d9ef075
 	@RequestMapping("/diningStore!{sid}")
-	public String tpDiningView(ModelMap modelMap,
+	public String diningStore(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@PathVariable(value = "sid") String sid	,
 			@RequestParam(value = "code", required = false) String code ) {	
@@ -106,7 +109,7 @@ public class DiningWebController extends EhaisCommonController{
 			}
 			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			
-			if(this.isWeiXin(request) && false){//微信端登录
+			if(this.isWeiXin(request)){//微信端登录
 				if((user_id == null || user_id == 0 ) && StringUtils.isEmpty(code)){
 					return this.redirect_wx_authorize(request , wp.getAppid() , "/diningStore!"+sid);
 				}else if(StringUtils.isNotEmpty(code)){
@@ -197,6 +200,49 @@ public class DiningWebController extends EhaisCommonController{
 	}
 	
 	
+	/**
+	 * 返回用户的订单列表
+	 * @param modelMap
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/diningUserOrderList")
+	public String diningUserOrderList(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@ModelAttribute EConditionObject condition ){
+		ReturnObject<HaiOrderInfoWithBLOBs> rm = new ReturnObject<HaiOrderInfoWithBLOBs>();
+		rm.setCode(0);
+		Long user_id = (Long) request.getSession().getAttribute(EConstants.SESSION_USER_ID);
+		HaiOrderInfoExample example = new HaiOrderInfoExample();
+		example.createCriteria()
+		.andOrderStatusEqualTo(EOrderStatusEnum.success)
+		.andUserIdEqualTo(user_id);
+		example.setOrderByClause("order_id desc");
+		example.setLimitStart(condition.getStart());
+		example.setLimitEnd(condition.getRows());
+		
+		List<HaiOrderInfoWithBLOBs> list = haiOrderInfoMapper.selectByExampleWithBLOBs(example);
+		try{
+			for (HaiOrderInfoWithBLOBs haiOrderInfoWithBLOBs : list) {
+				EHaiStore store = eStoreService.getEStore(haiOrderInfoWithBLOBs.getStoreId());
+				if(store!=null)haiOrderInfoWithBLOBs.setConsignee(store.getStoreName());
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		Long total = haiOrderInfoMapper.countByExample(example);
+		
+		rm.setRows(list);
+		rm.setTotal(total);
+		
+		rm.setCode(1);
+		
+		return this.writeJson(rm);
+	}
+	
 	@ResponseBody
 	@RequestMapping("/diningSubmitOrder")
 	public String diningSubmitOrder(ModelMap modelMap,
@@ -205,7 +251,6 @@ public class DiningWebController extends EhaisCommonController{
 			@RequestParam(value = "tPay", required = true) Integer tPay,
 			@RequestParam(value = "cart", required = true) String cart,
 			@RequestParam(value = "message", required = false) String message){
-		System.out.println(cart);
 		ReturnObject<HaiOrderInfoWithBLOBs> rm = new ReturnObject<HaiOrderInfoWithBLOBs>();
 		rm.setCode(0);
 		try{
@@ -298,11 +343,13 @@ public class DiningWebController extends EhaisCommonController{
 			orderInfo.setShippingStatus(EShippingStatusEnum.init);
 			orderInfo.setPayStatus(EPayStatusEnum.init);
 			orderInfo.setPostscript(message!=null?message:"");//订单附言
-			orderInfo.setGoodsAmount(amount);//总价钱
+			orderInfo.setGoodsAmount(amount);//商品价格
+			orderInfo.setOrderAmount(amount);//订单价格
 			orderInfo.setAddTime(date);
-			orderInfo.setOrderSource(EOrderSourceEnum.weixin);
+			orderInfo.setOrderSource(EOrderSourceEnum.dining_in_store);
 			orderInfo.setGoodsDesc(sb.toString());
 			orderInfo.setClassify(EOrderClassifyEnum.dining);
+			orderInfo.setSid(sid);
 			
 			int code = haiOrderInfoMapper.insert(orderInfo);
 			Long order_id = orderInfo.getOrderId();
