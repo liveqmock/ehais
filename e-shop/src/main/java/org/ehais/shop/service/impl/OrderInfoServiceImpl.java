@@ -8,10 +8,17 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
 import org.ehais.enums.EIsVoidEnum;
+import org.ehais.enums.EOrderClassifyEnum;
 import org.ehais.enums.EPayStatusEnum;
 import org.ehais.enums.EShippingStatusEnum;
+import org.ehais.epublic.mapper.EHaiUsersMapper;
+import org.ehais.epublic.model.EHaiUsers;
+import org.ehais.epublic.model.EHaiUsersExample;
+import org.ehais.epublic.model.WpPublicWithBLOBs;
+import org.ehais.epublic.service.EWPPublicService;
 import org.ehais.model.BootStrapModel;
 import org.ehais.service.impl.CommonServiceImpl;
 import org.ehais.shop.mapper.HaiOrderGoodsMapper;
@@ -22,7 +29,9 @@ import org.ehais.shop.model.HaiOrderInfo;
 import org.ehais.shop.model.HaiOrderInfoExample;
 import org.ehais.shop.model.HaiOrderInfoWithBLOBs;
 import org.ehais.shop.service.OrderInfoService;
+import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
+import org.ehais.util.SignUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +45,10 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 	private HaiOrderInfoMapper haiOrderInfoMapper;
 	@Autowired
 	private HaiOrderGoodsMapper haiOrderGoodsMapper;
+	@Autowired
+	protected EWPPublicService eWPPublicService;
+	@Autowired
+	private EHaiUsersMapper eHaiUsersMapper;
 	
 	public ReturnObject<HaiOrderInfo> orderinfo_list(HttpServletRequest request) throws Exception{
 		
@@ -309,6 +322,67 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 		orderInfo.setDiscount(0F);//'折扣金额',
 		orderInfo.setIsVoid(EIsVoidEnum.valid);
 		orderInfo.setRemark("");
+	}
+	
+	
+	@Override
+	public ReturnObject<HaiOrderInfoWithBLOBs> order_list_json(HttpServletRequest request,EConditionObject condition,Integer orderStatus,String orderSn,String classify) throws Exception {
+		// TODO Auto-generated method stub
+		ReturnObject<HaiOrderInfoWithBLOBs> rm = new ReturnObject<HaiOrderInfoWithBLOBs>();
+		rm.setCode(0);
+		if(condition.getStore_id() == null)condition.setStore_id((Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID));
+		
+		
+		HaiOrderInfoExample example = new HaiOrderInfoExample();
+		HaiOrderInfoExample.Criteria c = example.createCriteria();
+		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+		c.andOrderStatusEqualTo(orderStatus);
+		c.andClassifyEqualTo(classify);
+		example.setLimitStart(condition.getStart());
+		example.setLimitEnd(condition.getRows());
+		example.setOrderByClause("pay_time desc");
+		if(StringUtils.isNotEmpty(orderSn))c.andOrderSnLike("%"+orderSn+"%");
+		List<HaiOrderInfoWithBLOBs> list = haiOrderInfoMapper.selectByExampleWithBLOBs(example);
+		long total = haiOrderInfoMapper.countByExample(example);
+		
+		try{
+			if(classify.equals(EOrderClassifyEnum.dining)){//餐饮模式.........
+				WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(condition.getStore_id());
+				String sid = null;
+				List<Long> userIdList = new ArrayList<Long>();
+				for (HaiOrderInfoWithBLOBs order : list) {
+					userIdList.add(order.getUserId());
+					sid = order.getSid();
+					if(StringUtils.isNotEmpty(sid)){
+						Map<String, Object> m = SignUtil.getDiningId(sid, wp.getToken());
+						order.setZipcode(m.get("tableNo").toString());
+					}
+				}
+				
+				EHaiUsersExample userExample = new EHaiUsersExample();
+				userExample.createCriteria().andUserIdIn(userIdList);
+				List<EHaiUsers> usersList = eHaiUsersMapper.selectByExample(userExample);
+				for (HaiOrderInfoWithBLOBs order : list) {
+					for (EHaiUsers eHaiUsers : usersList) {
+						if(order.getUserId().longValue() == eHaiUsers.getUserId().longValue()){
+							order.setCardName(eHaiUsers.getFaceImage());
+							break;
+						}
+					}
+				}
+			}//餐饮模式=================
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		
+
+		rm.setCode(1);
+		rm.setRows(list);
+		rm.setTotal(total);
+		
+		
+		return rm;
 	}
 	
 }

@@ -31,11 +31,29 @@
 		</div>
 		<div class="body">
 			<div class="container_box">
+				<div class="col_side dn">
+					<h4>
+						<i class="fa fa-cubes"></i>
+						订单管理分类
+						<i id="deleteCate" class="fr fa fa-trash-o"></i>
+						<i id="editCate" class="fr fa fa-edit"></i>
+						<i id="addCate" class="fr fa fa-plus"></i>
+						
+					</h4>
+					<div class="category">
+						<div id="tree"></div>
+					</div>
+				</div>
 				<div class="col_main body">
+					<h4>
+						<i class="fa fa-list"></i>
+						订单管理信息列表
+						<a href="haiOrderAddDetail" class="fa fa-plus btn btn-primary" >添加</a>
+					</h4>			
 					<div class="panel panel-default">
 						<div class="panel-heading">搜索条件</div>
 						<div class="panel-body single">					    
-							<div><label>订单号：</label><input id="orderSn" class="control"/></div>
+							<div><label>标题：</label><input id="orderSn" class="control"/></div>
 							<div><button id="btnSearch" class="fa fa-search btn btn-default control">搜索</button></div>
 						</div>
 					</div>

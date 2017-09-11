@@ -21,7 +21,7 @@
 	</script>
 </#macro>
 
-<!-- 图片控件：<@bsImagesPicker id="a" value="b" /> -->
+<!-- 图片控件：< @ bsImagesPicker id="a" value="b" /> -->
 <#macro bsImagesPicker id value >
 <input type="file" id="${id}_" name="${id}_">
 <input type="hidden" id="${id}" name="${id}" value="${value!''}" >
@@ -32,7 +32,7 @@ $(function(){
 </script> 
 </#macro>
 
-<!-- 多图片相册控件：<@bsGalleryPicker id="a" gallery={} /> -->
+<!-- 多图片相册控件：< @ bsGalleryPicker id="a" gallery={} /> -->
 <#macro bsGalleryPicker id gallery >
 <input type="file" id="${id}_" name="${id}_">
 <div id="gallery_${id}" class="dn">
@@ -49,7 +49,7 @@ $(function(){
 </script> 
 </#macro>
 
-<!-- 在线编辑控件：<@ueditorPicker id="a" value="b" /> -->
+<!-- 在线编辑控件：< @ ueditorPicker id="a" value="b" /> -->
 <#macro ueditorPicker id value >
 <textarea  id="${id}" name="${id}" >${value!''}</textarea>
 <script type="text/javascript">
@@ -62,7 +62,7 @@ $(function(){
 </#macro>
 
 
-<!-- 数字控件：<@quantityPicker id="a" value="b" /> -->
+<!-- 数字控件：< @ quantityPicker id="a" value="b" /> -->
 <#macro quantityPicker id value >
 	<div class="input-group spinner" data-trigger="spinner">
 		<input type="text" class="form-control text-center" id="${id}" name="${id}" value="${value!''}" data-rule="quantity">
@@ -73,7 +73,7 @@ $(function(){
 	</div>
 </#macro>
 
-<!-- 货币控件：<@currencyPicker id="a" value="b" /> -->
+<!-- 货币控件：< @ currencyPicker id="a" value="b" /> -->
 <#macro currencyPicker id value >
 	<div class="input-group spinner" data-trigger="spinner">
 		<input type="text" class="form-control text-center" id="${id}" name="${id}" value="${value!''}" data-rule="currency">
@@ -84,7 +84,7 @@ $(function(){
 	</div>
 </#macro>
 
-<!-- 复选项控件：<@checkboxPicker id="XX" value="{rm.model.bool?string('yes', 'no')}" /> -->
+<!-- 复选项控件：< @ checkboxPicker id="XX" value="{rm.model.bool?string('yes', 'no')}" /> -->
 <#macro checkboxPicker id value >
 	<input type="checkbox"  id="${id}" name="${id}" value="1" placeholder="" <#if value == 'yes'> checked="checked" </#if> >
 </#macro>
@@ -104,7 +104,7 @@ $(function(){
 
 
 
-<!-- 图片控件：《@bsQiniuImagesPicker id="a" value="b" domain="a" uptoken="a"/> -->
+<!-- 图片控件：< @ bsQiniuImagesPicker id="a" value="b" domain="a" uptoken="a"/> -->
 <#macro bsQiniuImagesPicker id value domain uptoken>
 <!-- ////// -->
 <div id="eq_qiniuPicker_${id}" class="file-input file-input-ajax-new">
@@ -233,7 +233,7 @@ function trash_${id}_pic(imgId){
 
 
 
-<!-- 多图片相册控件：《@bsQiniuGalleryPicker id="a" gallery={} domain="a" uptoken="a"/> -->
+<!-- 多图片相册控件：< @ bsQiniuGalleryPicker id="a" gallery={} domain="a" uptoken="a"/> -->
 <#macro bsQiniuGalleryPicker id gallery domain uptoken>
 <!-- ////// -->
 <div id="eq_qiniuPicker_${id}" class="file-input file-input-ajax-new">

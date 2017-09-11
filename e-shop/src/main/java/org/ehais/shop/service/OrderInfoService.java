@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.ehais.service.CommonService;
 import org.ehais.shop.model.HaiOrderInfo;
 import org.ehais.shop.model.HaiOrderInfoWithBLOBs;
+import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
 
 
@@ -31,6 +32,9 @@ public interface OrderInfoService extends CommonService{
 	 * @param orderInfo
 	 */
 	public void setDefaultOrder(HaiOrderInfoWithBLOBs orderInfo,Date date,Integer store_id) ;
+	
+	
+	public ReturnObject<HaiOrderInfoWithBLOBs> order_list_json(HttpServletRequest request,EConditionObject condition,Integer orderStatus,String orderSn,String classify) throws Exception;
 	
 }
 

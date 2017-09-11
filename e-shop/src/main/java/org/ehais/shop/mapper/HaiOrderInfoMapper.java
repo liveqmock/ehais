@@ -10,11 +10,31 @@ import org.apache.ibatis.annotations.Select;
 import org.ehais.shop.model.HaiOrderInfo;
 import org.ehais.shop.model.HaiOrderInfoExample;
 import org.ehais.shop.model.HaiOrderInfoWithBLOBs;
+import org.ehais.shop.model.OrderDiningStatistics;
 import org.ehais.shop.model.OrderStatus;
 
 public interface HaiOrderInfoMapper {
 	
 	
+	@Select("select "+
+			" sum(case when pay_name='微信支付' then order_amount end) as weixin_amount, "+
+			" sum(case when pay_name='现金支付' then order_amount end) as cash_amount, "+
+			" truncate((pay_time / 100),0) as pay_time "+
+			" from hai_order_info where store_id = #{store_id} and order_status = 1 "
+			+ " and truncate((pay_time / 100),0) >= #{start_time} and truncate((pay_time / 100),0) <= #{end_time} "
+			+ " GROUP BY truncate((pay_time / 100),0)")	
+	@Results(value = {
+			@Result(property="weixinAmount", column="weixin_amount"),
+			@Result(property="cashAmount", column="cash_amount"),
+			@Result(property="payTime", column="pay_time")
+	})
+	List<OrderDiningStatistics> order_dining_statistics(
+			@Param("store_id") Integer store_id,
+			@Param("start_time") Integer start_time,
+			@Param("end_time") Integer end_time
+			);
+	
+
 	@Select(
 			"select count(*) as count , 'order_0' as ostatus from hai_order_info where order_status = 0 and user_id = #{user_id} "+
 			" union " +
