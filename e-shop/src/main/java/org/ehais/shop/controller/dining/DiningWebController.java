@@ -15,6 +15,7 @@ import org.ehais.common.EConstants;
 import org.ehais.enums.EOrderClassifyEnum;
 import org.ehais.enums.EOrderSourceEnum;
 import org.ehais.enums.EOrderStatusEnum;
+import org.ehais.enums.EPayEnum;
 import org.ehais.enums.EPayStatusEnum;
 import org.ehais.enums.EShippingStatusEnum;
 import org.ehais.enums.EUserTypeEnum;
@@ -109,7 +110,7 @@ public class DiningWebController extends EhaisCommonController{
 			}
 			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			
-			if(this.isWeiXin(request)){//微信端登录
+			if(this.isWeiXin(request) && false){//微信端登录
 				if((user_id == null || user_id == 0 ) && StringUtils.isEmpty(code)){
 					return this.redirect_wx_authorize(request , wp.getAppid() , "/diningStore!"+sid);
 				}else if(StringUtils.isNotEmpty(code)){
@@ -248,7 +249,7 @@ public class DiningWebController extends EhaisCommonController{
 	public String diningSubmitOrder(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "sid", required = true) String sid,
-			@RequestParam(value = "tPay", required = true) Integer tPay,
+			@RequestParam(value = "tPay", required = true) String tPay,
 			@RequestParam(value = "cart", required = true) String cart,
 			@RequestParam(value = "message", required = false) String message){
 		ReturnObject<HaiOrderInfoWithBLOBs> rm = new ReturnObject<HaiOrderInfoWithBLOBs>();
@@ -340,8 +341,15 @@ public class DiningWebController extends EhaisCommonController{
 			orderInfo.setOrderSn(orderSn);
 			orderInfo.setUserId(Long.valueOf(map.get("userId").toString()));
 			orderInfo.setOrderStatus(EOrderStatusEnum.init);
-			orderInfo.setShippingStatus(EShippingStatusEnum.init);
-			orderInfo.setPayStatus(EPayStatusEnum.init);
+			if(tPay.equals(EPayEnum.cash)){
+				orderInfo.setOrderStatus(EOrderStatusEnum.success);//现金支付，不需要理订单状态
+				orderInfo.setPayTime(Long.valueOf(System.currentTimeMillis() / 1000).intValue());
+				orderInfo.setPayStatus(EPayStatusEnum.cash);
+				orderInfo.setPayName("现金支付");
+			}else if(tPay.equals(EPayEnum.weixin)){
+				orderInfo.setPayName("微信支付");
+			}
+			
 			orderInfo.setPostscript(message!=null?message:"");//订单附言
 			orderInfo.setGoodsAmount(amount);//商品价格
 			orderInfo.setOrderAmount(amount);//订单价格
@@ -382,7 +390,7 @@ public class DiningWebController extends EhaisCommonController{
 			
 			int codeBatch = haiOrderGoodsMapper.insertBatch(orderGoodsList);
 			
-			if(tPay.intValue() == 1){
+			if(tPay.equals(EPayEnum.weixin)){
 				
 				//跳转支付信息返回
 				WeiXinWCPay cpay = weiXinPayService.WeiXinPayApi(request,sid, 

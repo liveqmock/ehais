@@ -7,8 +7,10 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.ibatis.annotations.Param;
 import org.ehais.enums.EOrderClassifyEnum;
 import org.ehais.enums.EOrderStatusEnum;
+import org.ehais.enums.EPayStatusEnum;
 import org.ehais.epublic.mapper.EHaiOrderInfoMapper;
 import org.ehais.epublic.mapper.weixin.WxNotifyPayMapper;
 import org.ehais.epublic.mapper.weixin.WxUnifiedorderMapper;
@@ -190,7 +192,13 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 				rm.setMsg("订单状态异常");return rm;
 			}
 			
-			eHaiOrderInfoMapper.updateOrderPayStatus(store_id, notifyPay.getOut_trade_no(), EOrderStatusEnum.success);
+			eHaiOrderInfoMapper.updateOrderPayStatus(
+					store_id, 
+					notifyPay.getOut_trade_no(), 
+					EOrderStatusEnum.success,
+					EPayStatusEnum.success,
+					Long.valueOf(System.currentTimeMillis() / 1000).intValue(),
+					0,"微信支付");
 			
 			wxUnifiedorderMapper.UpdatePayStatue(store_id, notifyPay.getOut_trade_no(), EOrderStatusEnum.success);
 			
@@ -212,7 +220,7 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 	}
 
 	
-	public WxNotifyPay toWxNotityPay(WeiXinNotifyPay model) {
+	private WxNotifyPay toWxNotityPay(WeiXinNotifyPay model) {
 		WxNotifyPay p = new WxNotifyPay();
 		p.setReturnCode(model.getReturn_code());
 		p.setReturnMsg(model.getReturn_msg());

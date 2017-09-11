@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.ehais.common.EConstants;
 import org.ehais.enums.EIsVoidEnum;
+import org.ehais.enums.EPayStatusEnum;
+import org.ehais.enums.EShippingStatusEnum;
 import org.ehais.model.BootStrapModel;
 import org.ehais.service.impl.CommonServiceImpl;
 import org.ehais.shop.mapper.HaiOrderGoodsMapper;
@@ -240,6 +242,11 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 		
 		orderInfo.setPayId(0);
 		orderInfo.setPayName("");
+		orderInfo.setPayStatus(EPayStatusEnum.init);
+		
+		orderInfo.setShippingId(0);
+		orderInfo.setShippingName("");
+		orderInfo.setShippingStatus(EShippingStatusEnum.init);
 		
 		orderInfo.setConsignee("");
 		orderInfo.setCountry(0);
@@ -256,14 +263,8 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 		orderInfo.setSignBuilding("");
 		
 		orderInfo.setPostscript("");//订单附言
-		orderInfo.setShippingId(0);
-		orderInfo.setShippingName("");
-		orderInfo.setPayId(0);
-		orderInfo.setPayName("");
 		
-		orderInfo.setConfirmTime(0);
-		orderInfo.setPayTime(0);
-		orderInfo.setShippingTime(0);
+		
 		orderInfo.setTax(0F);
 		orderInfo.setIsSeparate(0);
 		orderInfo.setStoreId(store_id);

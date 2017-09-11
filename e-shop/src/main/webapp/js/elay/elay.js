@@ -10,14 +10,16 @@
 			if($(".e-lay-view .alert").length == 0){
 				$(".e-lay-view").append("<div class=\"alert\">"+
 					"<div class=\"msg\">"+e.content+"</div>"+
-					"<div class=\"btn\" onclick='elay.close();'>"+e.btn+"</div>"+
+					"<div class=\"btn\" >"+e.btn+"</div>"+
 				"</div>");
 				$(".e-lay-view > .bg").addClass("b");
+				$(".e-lay-view .alert .btn").unbind();
+				$(".e-lay-view .alert .btn").click(function(){
+					if(typeof(eval(e.yes))=="function"){e.yes();}
+					$(".e-lay-view .alert").remove();
+					layremove();
+				});
 			}
-		},
-		close: function(e) {
-			$(".e-lay-view .alert").remove();
-			layremove();
 		},
 		toast:function(e){
 			if(e==null)e={};
@@ -63,8 +65,8 @@
 	};
 	var layview = function(){
 		if($(".e-lay-view").length == 0) $(document.body).append("<div class='e-lay-view'><div class='bg'></div></div>");
-	}
-	var layremove = function(){if($(".e-lay-view > div").length == 1)$(".e-lay-view").remove();}
+	};
+	var layremove = function(){if($(".e-lay-view > div").length == 1)$(".e-lay-view").remove();};
 	var cancel = function(){
 		$(".e-lay-view .confirm .b .sure").unbind();
 		$(".e-lay-view .confirm .b .cancel").unbind();

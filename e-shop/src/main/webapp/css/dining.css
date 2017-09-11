@@ -2,7 +2,7 @@
 .wrapper_dining,
 .wrapper_sign,
 .wrapper_dining_order {
-  font-size: 0.14rem;
+  font-size: 0.16rem;
   padding: 0;
   box-sizing: border-box;
   margin: 0;
@@ -62,6 +62,9 @@
   font-size: 0.2rem;
   border-right: 0.01rem solid #e5e5e5;
   margin-right: -0.01rem;
+}
+.wrapper_dining .header .w50 {
+  width: 50%;
 }
 .wrapper_dining .swiper-container {
   position: relative;

@@ -31,10 +31,16 @@ public interface EHaiOrderInfoMapper {
 	 * @param pay_status
 	 * @return
 	 */
-	@Update("update hai_order_info set pay_status = #{pay_status} where store_id = #{store_id} and order_sn = #{order_sn}")
+	@Update("update hai_order_info set order_status = #{order_status},pay_status = #{pay_status} , "
+			+ " pay_time = #{pay_time},pay_id = #{pay_id},pay_name = #{pay_name} "
+			+ " where store_id = #{store_id} and order_sn = #{order_sn}")
 	public int updateOrderPayStatus(
 			@Param("store_id") Integer store_id,
 			@Param("order_sn") String order_sn,
-			@Param("pay_status") Integer pay_status
+			@Param("order_status") Integer order_status,
+			@Param("pay_status") Integer pay_status,
+			@Param("pay_time") Integer pay_time,
+			@Param("pay_id") Integer pay_id,
+			@Param("pay_name") String pay_name
 			);
 }

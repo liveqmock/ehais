@@ -1,6 +1,6 @@
 var jroll_menu_cate;
 var jroll_menu_list;
-var jroll_myOrderUl;
+var jroll_myOrder;
 var cartArray = null;//购物车数据
 var path = window.location.search;//页面跟的参数地址
 
@@ -215,24 +215,25 @@ $(function(){
 	
 	$("#menu_cate").height($(window).height() - $(".swiper-container").height() / 2 - $(".tabs").height() - $("footer").height() - 20);
 	$("#menu_list").height($(window).height() - $(".swiper-container").height() / 2 - $(".tabs").height() - $("footer").height() - 20);
-	$("#myOrderUl").height($(window).height() - $(".swiper-container").height() / 2 - $(".tabs").height() - $("footer").height() - 20);
+	$("#myOrderList").height($(window).height() - $(".swiper-container").height() / 2 - $(".tabs").height() - 300 );
 
 	
 	jroll_menu_cate = new JRoll("#menu_cate", {scrollBarY:false});
 	jroll_menu_list = new JRoll("#menu_list", {scrollBarY:false});
-	jroll_myOrderUl = new JRoll("#myOrderUl", {scrollBarY:false});
-	jroll.infinite({
+	jroll_myOrderList = new JRoll("#myOrderList", {scrollBarY:false});
+	
+	/*jroll_myOrderList.infinite({
 	    getData: function(page, callback, errorCallback) {
-	    	alert(JSON.stringify(page));
-	        /*$.ajax({
+	    	
+	        $.ajax({
 	            url : "getdata.php?page="+page+"&filter=a",
 	            success : function(data) {
 	                jroll.options.total = data.total;
 	                callback(data.items);
 	            }
-	        });*/
+	        });
 	    }
-	});
+	});*/
 	
 	$(".cat0").removeClass("dn");//推荐、热门菜品
 	$("#scroller_menu_cate > li").click(function(){$("#scroller_menu_goods_list > li").addClass("dn");$("#scroller_menu_cate > li").removeClass("active");$(this).addClass("active");$("#scroller_menu_goods_list > li.cat"+$(this).attr("v")).removeClass("dn");jroll_menu_list.refresh();});
@@ -309,9 +310,9 @@ $(function(){
 		    ,btn: ['确认' , '取消']
 		    ,sure: function(){		    	
 				if($("#check_out_pay >.weixin").hasClass("active")){
-					diningSubmitOrder(1);
+					diningSubmitOrder("weixin");
 				}else if($("#check_out_pay >.cash").hasClass("active")){
-					diningSubmitOrder(0);
+					diningSubmitOrder("cash");
 				}
 		    }
 		 });
@@ -342,6 +343,7 @@ $(function(){
 			$("#orderFood").removeClass("active");
 			$(".menu , footer").hide();
 			$(".myOrder").show();
+			jroll_myOrderList.refresh();
 		}
 	});
 	
@@ -371,14 +373,11 @@ function diningSubmitOrder(tPay){
 		type:"post",
 		dataType:"json",
 		success:function(result){
-			return;
-			
-			
 			elay.toast({content: result.msg,time: 3 });
 			if(result.code != 1)return ;
 			$("#localCheckOut").removeClass("active");
 			clearCart();//下单成功，清空购物车
-			if(tPay == 1){
+			if(tPay == "weixin"){
 				onBridgeReady(result.payment);
 			}
 		}
@@ -413,7 +412,8 @@ function diningUserOrderList(){
 						"<div>消费时间："+v.addTime+"</div>"+
 						"<div>消费金额："+v.orderAmount+"元</div>"+
 					"</li>");
-			})
+			});
+			jroll_myOrderList.refresh();
 		},beforeSend: function () {}
 	});
 }

@@ -64,16 +64,26 @@ function submitUnion(){
 		type:"post",
 		dataType:"json",
 		success:function(result){
-			elay.toast({content: result.msg,skin: 'msg',time: 3 });
 			
 			if(result.code != 1){
+				elay.toast({content: result.msg,skin: 'msg',time: 3 });
 				return ;
 			}
+			
 			$("#submitUnion").attr("disabled",true);
-			$("#suppliers_name").val("");
+			$("#username").val("");
+			$("#password").val("");
+			$("#confirmPassword").val("");
+			$("#store_name").val("");
 			$("#mobile").val("");
 			$("#address").val("");
 			$("#contacts").val("");
+			
+			elay.open({content:result.msg,btn : "朕知道了",yes:function(){window.reload();}});
+			
+			
+			
+			
 		}
 	});
 }

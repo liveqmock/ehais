@@ -54,7 +54,7 @@ public class EHaiAdminUserServiceImpl  extends CommonServiceImpl implements EHai
 		example.setLimitEnd(len);
 		
 		List<EHaiAdminUser> list = eHaiAdminUserMapper.hai_admin_user_list_by_example(example);
-		Integer total = eHaiAdminUserMapper.countByExample(example);
+		Long total = eHaiAdminUserMapper.countByExample(example);
 		rm.setCode(1);
 		rm.setRows(list);
 		rm.setTotal(total);
