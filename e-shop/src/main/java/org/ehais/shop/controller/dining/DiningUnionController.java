@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
+import org.ehais.enums.EAdminClassifyEnum;
 import org.ehais.enums.EOrderStatusEnum;
 import org.ehais.enums.EUserTypeEnum;
 import org.ehais.epublic.mapper.EHaiAdminUserMapper;
@@ -84,7 +85,7 @@ public class DiningUnionController extends EhaisCommonController{
 			
 			modelMap.addAttribute("pid", pid);
 			
-			if(this.isWeiXin(request) && false){//微信端登录
+			if(this.isWeiXin(request)){//微信端登录
 				if((user_id == null || user_id == 0 ) && StringUtils.isEmpty(code)){
 					return this.redirect_wx_authorize(request , weixin_appid , "/diningUnion!"+pid);
 				}else if(StringUtils.isNotEmpty(code)){
@@ -147,8 +148,9 @@ public class DiningUnionController extends EhaisCommonController{
 			) {	
 		ReturnObject<EHaiAdminUser> rm = new ReturnObject<EHaiAdminUser>();
 		rm.setCode(0);
+		Map<String,Object> map = SignUtil.getPartnerId(pid,weixin_token);
 		try{
-
+			
 			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			if(user_id == null || user_id == 0){rm.setMsg("user sess empty");return this.writeJson(rm);}
 			
@@ -172,16 +174,18 @@ public class DiningUnionController extends EhaisCommonController{
 			long sUser = eHaiStoreMapper.countByExample(storeExp);
 			if(sUser > 0){rm.setMsg("此商户名称已存在，如同名请联系管理员微信:haisoftware");return this.writeJson(rm);}
 			
+			Integer addTime = Long.valueOf(System.currentTimeMillis() / 1000).intValue();
 			EHaiStore store = new EHaiStore();
 			store.setStoreName(store_name);
 			store.setContacts(contacts);
 			store.setMobile(mobile);
 			store.setAddress(address);
-			store.setTheme("dining");
+			store.setTheme(EAdminClassifyEnum.dining);
 			store.setOwnerName(contacts);
 			store.setZipcode("");
 			store.setTel(mobile);
-			
+			store.setAddTime(addTime);
+			store.setPartnerId(Integer.valueOf(map.get("partnerId").toString()));
 			eHaiStoreMapper.insert(store);
 			
 			user.setStoreId(store.getStoreId());
@@ -193,6 +197,10 @@ public class DiningUnionController extends EhaisCommonController{
 			admin.setPassword(EncryptUtils.md5(password));
 			admin.setStoreId(store.getStoreId());
 			admin.setEmail("");
+			admin.setClassify(EAdminClassifyEnum.dining);
+			admin.setAddTime(addTime);
+			admin.setLastLogin(addTime);
+			admin.setPartnerId(Integer.valueOf(map.get("partnerId").toString()));
 			eHaiAdminUserMapper.insert(admin);
 			
 			rm.setModel(admin);

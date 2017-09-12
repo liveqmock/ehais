@@ -9,6 +9,10 @@ public class EConstants {
 	//代理
 	public static final String SESSION_AGENCY_ID = "session_agency_id";
 	public static final String SESSION_AGENCY_NAME = "session_agency_name";
+	//合作商号
+	public static final String SESSION_PARTNER_ID = "session_partner_id";
+	public static final String SESSION_PARTNER_NAME = "session_partner_name";
+	public static final String SESSION_PARTNER_THEME = "session_partner_theme";//商家后台模板
 	
 	/** 用户登录商城或手机时，都会产生一个随机数传给后台临时存储 字符串类型 **/
 	public static final String SESSION_SHOP_ENCODE = "session_shop_encode";

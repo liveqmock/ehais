@@ -25,6 +25,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+/**
+ * 作废。。。。。。。。。。。。。
+ * @author lgj628
+ *
+ */
 @Controller
 @RequestMapping("/dining")
 public class DiningAdminController extends CommonController{
@@ -182,7 +187,6 @@ public class DiningAdminController extends CommonController{
 			@RequestParam(value = "id", required = true) Integer id) {	
 		
 		Integer store_id = (Integer)request.getSession().getAttribute("store_id");
-		if(store_id == null)store_id = 55;
 		try{
 			ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
 			EHaiArticle model = new EHaiArticle();

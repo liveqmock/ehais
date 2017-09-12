@@ -7,14 +7,18 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
+import org.ehais.enums.EAdminClassifyEnum;
 import org.ehais.epublic.mapper.EHaiAdminUserMapper;
 import org.ehais.epublic.mapper.EHaiStoreMapper;
 import org.ehais.epublic.model.EHaiAdminUser;
 import org.ehais.epublic.model.EHaiAdminUserExample;
 import org.ehais.epublic.model.EHaiStore;
 import org.ehais.service.impl.CommonServiceImpl;
+import org.ehais.shop.mapper.HaiPartnerMapper;
 import org.ehais.shop.mapper.tp.TpAdminMapper;
 import org.ehais.shop.mapper.tp.TpSuppliersMapper;
+import org.ehais.shop.model.HaiPartner;
+import org.ehais.shop.model.HaiPartnerExample;
 import org.ehais.shop.model.tp.TpAdmin;
 import org.ehais.shop.model.tp.TpAdminExample;
 import org.ehais.shop.model.tp.TpSuppliers;
@@ -36,6 +40,8 @@ public class AdminUserServiceImpl extends CommonServiceImpl implements AdminUser
 	private TpSuppliersMapper tpSuppliersMapper;
 	@Autowired
 	private EHaiStoreMapper haiStoreMapper;
+	@Autowired
+	private HaiPartnerMapper haiPartnerMapper;
 	
 	
 	public ReturnObject<EHaiAdminUser> admin_login(String username, String password) throws Exception {
@@ -109,24 +115,40 @@ public class AdminUserServiceImpl extends CommonServiceImpl implements AdminUser
 			return rm;
 		}
 		EHaiAdminUser adminuser = listAdmin.get(0);
-		if(adminuser.getStoreId() == null || adminuser.getStoreId() == 0){
-			rm.setMsg("非本后台的用户");
-			return rm;
-		}
-		//读取相应的商家
-		EHaiStore store = haiStoreMapper.selectByPrimaryKey(adminuser.getStoreId());
-		if(store == null){
-			rm.setMsg("非本商家后台的用户");
-			return rm;
-		}
-		
 		session.setAttribute(EConstants.SESSION_ADMIN_ID, adminuser.getAdminId());
 		session.setAttribute(EConstants.SESSION_ADMIN_NAME, adminuser.getUserName());
-		session.setAttribute(EConstants.SESSION_STORE_ID, store.getStoreId());
-		session.setAttribute(EConstants.SESSION_STORE_NAME, store.getStoreName());
-		session.setAttribute(EConstants.SESSION_STORE_THEME, store.getTheme());
 		
-		
+		if(adminuser.getClassify() != null && adminuser.getClassify().equals(EAdminClassifyEnum.partner)){
+			//合作伙伴
+			HaiPartner partner = haiPartnerMapper.selectByPrimaryKey(adminuser.getPartnerId());
+			if(partner == null){
+				rm.setMsg("非本后台的用户");
+				return rm;
+			}
+			session.setAttribute(EConstants.SESSION_PARTNER_ID, partner.getPartnerId());
+			session.setAttribute(EConstants.SESSION_PARTNER_NAME, partner.getPartnerName());
+			session.setAttribute(EConstants.SESSION_PARTNER_THEME, partner.getTheme());
+			//强行做法
+			session.setAttribute(EConstants.SESSION_STORE_THEME, partner.getTheme());
+			
+		}else{
+			if(adminuser.getStoreId() == null || adminuser.getStoreId() == 0){
+				rm.setMsg("非本后台的用户");
+				return rm;
+			}
+			//读取相应的商家
+			EHaiStore store = haiStoreMapper.selectByPrimaryKey(adminuser.getStoreId());
+			if(store == null){
+				rm.setMsg("非本商家后台的用户");
+				return rm;
+			}
+			
+			session.setAttribute(EConstants.SESSION_STORE_ID, store.getStoreId());
+			session.setAttribute(EConstants.SESSION_STORE_NAME, store.getStoreName());
+			session.setAttribute(EConstants.SESSION_STORE_THEME, store.getTheme());
+			
+		}
+				
 		rm.setCode(1);
 		rm.setMsg("登录成功");
 		

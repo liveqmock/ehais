@@ -1,0 +1,422 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+<script type="text/javascript" src="/js/jquery-2.1.4.min.js" ></script>
+		
+<link href="/js/fileinput/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
+<script src="/js/fileinput/js/plugins/piexif.js" type="text/javascript"></script>
+<script src="/js/fileinput/js/fileinput.js" type="text/javascript"></script>
+<script src="/js/fileinput/js/locales/zh.js" type="text/javascript"></script>
+
+<script src="/js/adminCommon.js" type="text/javascript"></script>        
+      
+<link rel="stylesheet" href="/js/bootstrap/css/bootstrap.min.css" />
+<script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js" ></script>
+<link rel="stylesheet" href="/css/admin.css" />
+
+
+<link rel="stylesheet" href="/js/layer/skin/default/layer.css" />
+<script type="text/javascript" src="/js/layer/layer.js" ></script>
+
+<script type="text/javascript" charset="utf-8" src="/js/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/ueditor/ueditor.all.min.js"> </script>
+<script type="text/javascript" charset="utf-8" src="/js/ueditor/lang/zh-cn/zh-cn.js"></script>
+
+<link rel="stylesheet" href="/js/bootstrap/datetimepicker/css/bootstrap-datetimepicker.min.css" />
+<script type="text/javascript" src="/js/bootstrap/datetimepicker/js/bootstrap-datetimepicker.min.js" ></script>
+<script type="text/javascript" src="/js/bootstrap/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" ></script>
+
+<link rel="stylesheet" href="/js/bootstrap/spinner/bootstrap-spinner.css" />
+<script type="text/javascript" src="/js/bootstrap/spinner/jquery.spinner.js" ></script>
+
+<#include "/FreemarkerMacro.html"/>
+
+<title>Insert title here</title>
+</head>
+<body>
+<div class="header">
+	<div class="nav">
+		<i id="back" class="icon fa fa-arrow-left">&nbsp;</i>
+		<div class="nav0">会员管理</div>
+		<div class="nav1">信息编辑</div>
+	</div>
+</div>
+<div style="width: 100%;height: 40px;"></div>
+<div class="container-fluid">
+<form id="myForm" name="myForm" class="form-horizontal" action="${rm.action?default('')}" method="post">
+
+
+<input type="hidden" class="form-control" id="userId" name="userId" value="${rm.model.userId!''}" >
+<div class="form-group">
+<label class="col-sm-2 control-label">email</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="email" name="email" value="${rm.model.email!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">userName</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="userName" name="userName" value="${rm.model.userName!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">password</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="password" name="password" value="${rm.model.password!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">nickname</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="nickname" name="nickname" value="${rm.model.nickname!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">realname</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="realname" name="realname" value="${rm.model.realname!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">question</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="question" name="question" placeholder="">${rm.model.question!''}</textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">answer</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="answer" name="answer" placeholder="">${rm.model.answer!''}</textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">sex</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="sex" name="sex" value="${rm.model.sex!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">birthday</label>
+<div class="col-sm-8">
+	<@bsDatePicker id="birthday" value="${rm.model.birthday!''}" />
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">userMoney</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="userMoney" name="userMoney" value="${rm.model.userMoney!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">frozenMoney</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="frozenMoney" name="frozenMoney" value="${rm.model.frozenMoney!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">payPoints</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="payPoints" name="payPoints" value="${rm.model.payPoints!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">rankPoints</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="rankPoints" name="rankPoints" value="${rm.model.rankPoints!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">address</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="address" name="address" value="${rm.model.address!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">addressId</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="addressId" name="addressId" value="${rm.model.addressId!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">regTime</label>
+<div class="col-sm-8">
+	<@bsDatePicker id="regTime" value="${rm.model.regTime!''}" />
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">lastLogin</label>
+<div class="col-sm-8">
+	<@bsDatePicker id="lastLogin" value="${rm.model.lastLogin!''}" />
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">lastTime</label>
+<div class="col-sm-8">
+	<@bsDatePicker id="lastTime" value="${rm.model.lastTime!''}" />
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">lastIp</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="lastIp" name="lastIp" value="${rm.model.lastIp!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">visitCount</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="visitCount" name="visitCount" value="${rm.model.visitCount!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">userRank</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="userRank" name="userRank" value="${rm.model.userRank!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">isSpecial</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="isSpecial" name="isSpecial" value="${rm.model.isSpecial!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">ecSalt</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="ecSalt" name="ecSalt" value="${rm.model.ecSalt!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">salt</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="salt" name="salt" value="${rm.model.salt!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">parentId</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="parentId" name="parentId" value="${rm.model.parentId!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">flag</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="flag" name="flag" value="${rm.model.flag!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">alias</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="alias" name="alias" value="${rm.model.alias!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">msn</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="msn" name="msn" value="${rm.model.msn!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">qq</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="qq" name="qq" value="${rm.model.qq!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">officePhone</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="officePhone" name="officePhone" value="${rm.model.officePhone!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">homePhone</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="homePhone" name="homePhone" value="${rm.model.homePhone!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">mobilePhone</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="mobilePhone" name="mobilePhone" value="${rm.model.mobilePhone!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">isValidated</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="isValidated" name="isValidated" value="${rm.model.isValidated!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">creditLine</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="creditLine" name="creditLine" value="${rm.model.creditLine!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">passwdQuestion</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="passwdQuestion" name="passwdQuestion" value="${rm.model.passwdQuestion!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">passwdAnswer</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="passwdAnswer" name="passwdAnswer" placeholder="">${rm.model.passwdAnswer!''}</textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">storeId</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="storeId" name="storeId" value="${rm.model.storeId!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">country</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="country" name="country" value="${rm.model.country!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">province</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="province" name="province" value="${rm.model.province!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">city</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="city" name="city" value="${rm.model.city!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">county</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="county" name="county" value="${rm.model.county!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">district</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="district" name="district" value="${rm.model.district!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">street</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="street" name="street" value="${rm.model.street!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">selfDescription</label>
+<div class="col-sm-8">
+	<@ueditorPicker id="selfDescription" value="${rm.model.selfDescription!''}" />
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">userType</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="userType" name="userType" value="${rm.model.userType!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">faceImage</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="faceImage" name="faceImage" value="${rm.model.faceImage!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">openid</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="openid" name="openid" value="${rm.model.openid!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">subscribe</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="subscribe" name="subscribe" value="${rm.model.subscribe!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">agencyId</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="agencyId" name="agencyId" value="${rm.model.agencyId!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">partnerId</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="partnerId" name="partnerId" value="${rm.model.partnerId!''}" placeholder="">
+</div>
+</div>
+
+
+
+
+
+<div class="form-group">
+	<div class="col-sm-3"></div>
+	<div class="col-sm-6"><button id="saveSubmit" type="button" class="btn btn-primary">提交信息</button></div>
+</div>
+       
+
+
+
+
+</form>
+</div>    
+
+
+<script type="text/javascript" src="/js/partner/users/detail.js" ></script>             
+
+
+</body>
+</html>

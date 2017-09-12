@@ -49,23 +49,12 @@ $(function(){
 			    field: 'goodsId',
 			    title: '编号'
 			},{
-			    field: 'catId',
+			    field: 'catName',
 			    title: '菜品分类'
 			},{
 			    field: 'goodsName',
 			    title: '菜品名称'
-			},
-//			{
-//			    field: 'costPrice',
-//			    title: '分销成本价',formatter : function(value,rows,index){
-//			    	if(value != null && value != ""){
-//			    		return (parseFloat(value) / 100 ).toFixed(2);
-//			    	}else{
-//			    		return 0;
-//			    	}
-//			    }
-//			},
-			{
+			},{
 			    field: 'shopPrice',
 			    title: '出售价格',formatter : function(value,rows,index){
 			    	if(value != null && value != ""){
@@ -99,7 +88,20 @@ $(function(){
             }
         }
         
-        ]
+        ],responseHandler : function (res){
+        	
+        	var cat = res.map.categoryList ;
+        	var catObj = {};
+        	for(var i = 0 ; i < cat.length ; i ++){
+        		catObj[cat[i].catId] = cat[i].catName;
+        	}
+        	var rows = res.rows;
+        	for(var i = 0 ; i < rows.length ; i++){
+        		rows[i].catName = catObj[rows[i].catId];
+        	}
+        	
+        	return res;
+        }
     });
     
     

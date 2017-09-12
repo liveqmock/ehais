@@ -110,7 +110,7 @@ public class DiningWebController extends EhaisCommonController{
 			}
 			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			
-			if(this.isWeiXin(request) && false){//微信端登录
+			if(this.isWeiXin(request)){//微信端登录
 				if((user_id == null || user_id == 0 ) && StringUtils.isEmpty(code)){
 					return this.redirect_wx_authorize(request , wp.getAppid() , "/diningStore!"+sid);
 				}else if(StringUtils.isNotEmpty(code)){

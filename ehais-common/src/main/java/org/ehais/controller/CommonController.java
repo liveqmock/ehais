@@ -80,6 +80,17 @@ public class CommonController {
 		return theme;
 	}
 	
+	/**
+	 * 获取合伙伴的主题模板
+	 * @param request
+	 * @return
+	 */
+	protected String getPartnerTheme(HttpServletRequest request){
+		String theme = (String) request.getSession().getAttribute(EConstants.SESSION_PARTNER_THEME);
+		if(StringUtils.isEmpty(theme))theme = "ehais";
+		return theme;
+	}
+	
 	
 	//成功后统一返回的信息提示页
 	protected String successJump(ModelMap modelMap,String successMsg,String jumpUrl){

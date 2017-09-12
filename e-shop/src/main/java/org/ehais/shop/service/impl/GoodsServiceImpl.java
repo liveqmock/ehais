@@ -116,6 +116,13 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		rm.setTotal(total);
 		
 		
+		HaiCategoryExample categoryExample = new HaiCategoryExample();
+		categoryExample.createCriteria().andStoreIdEqualTo(store_id);
+		List<HaiCategory> categoryList = haiCategoryMapper.selectByExample(categoryExample);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("categoryList", categoryList);
+		rm.setMap(map);
+		
 		return rm;
 	}
 	
