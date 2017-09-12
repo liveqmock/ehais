@@ -13,6 +13,12 @@
 		<script type="text/javascript" src="/js/bootstrap/addtabs/bootstrap.addtabs.js" ></script>
 		
 		<script type="text/javascript" src="/js/jquery.qrcode.min.js" ></script>
+		
+		<link rel="stylesheet" href="/js/bootstrap/datetimepicker/css/daterangepicker-bs3.css" />
+		<script type="text/javascript" src="/js/bootstrap/datetimepicker/js/moment.js" ></script>
+		<script type="text/javascript" src="/js/bootstrap/datetimepicker/js/daterangepicker.js" ></script>
+		
+	
 <style type="text/css">
 .mylayout .list-group-item.gray > a{
 	color: #cfcfcf;
@@ -20,6 +26,7 @@
 </style>		
 	</head>
 	<body>
+		
 		<div class="mylayout">
 				<div class="north">
 					<div style="float: left;padding: 5px 0 0 20px;font-size: 24px;color: #fff;">${session_partner_name }LOGO</div>
@@ -54,6 +61,13 @@
 						</li>
 						
 						
+						<li class="list-group-item active">
+							<a data-addtab="ad" data-url="haiAdView">
+								<i class="glyphicon glyphicon-globe"></i>广告信息
+							</a>							
+						</li>
+						
+						
 					</ul>
 				</div>
 				<div class="center">
@@ -68,7 +82,7 @@
 						<!-- Tab panes -->
 						<div id="my-tab-content" class="tab-content">
 							<div role="tabpanel" class="tab-pane active" id="home">
-							<div id="jqrcode" ></div>
+							<#include "statistics.html">
 							</div>
 						</div>
 

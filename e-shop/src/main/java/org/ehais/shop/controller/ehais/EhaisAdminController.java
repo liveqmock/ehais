@@ -1,19 +1,19 @@
 package org.ehais.shop.controller.ehais;
 
 import java.io.IOException;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.ehais.epublic.model.EHaiAdminUser;
-import org.ehais.shop.model.tp.TpAdmin;
 import org.ehais.shop.service.AdminUserService;
-import org.ehais.shop.service.ArticleCatService;
-import org.ehais.shop.service.ArticleService;
 import org.ehais.tools.ReturnObject;
+import org.ehais.util.DateUtil;
 import org.ehais.util.VerifyCodeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -111,6 +111,11 @@ public class EhaisAdminController extends CommonController{
 	public String main(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) {	
 		try{
+			Date date = new Date();
+			String statisticsStartDate =  DateUtil.formatDate(DateUtils.addDays(date, -30), DateUtil.FORMATSTR_3);
+			String statisticsEndDate =  DateUtil.formatDate(date, DateUtil.FORMATSTR_3);
+			modelMap.addAttribute("statisticsStartDate", statisticsStartDate);
+			modelMap.addAttribute("statisticsEndDate", statisticsEndDate);
 			
 		}catch(Exception e){
 			e.printStackTrace();

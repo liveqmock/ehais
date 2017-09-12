@@ -1,0 +1,22 @@
+<#include "/FreemarkerMacro.html"/>
+<div id="statistics" class="statistics">
+
+	<div class="panel panel-default">
+		<div class="panel-body single">					    
+			<div class="date btn-group" role="group" aria-label="...">
+			  <button id="before30" type="button" class="btn btn-success">前30天</button>
+			  <button id="previousWeek" type="button" class="btn btn-default">上周</button>
+			  <button id="currentWeek" type="button" class="btn btn-default">本周</button>
+			  <button id="previousMonth" type="button" class="btn btn-default">上月</button>
+			  <button id="currentMonth" type="button" class="btn btn-default">本月</button>
+			</div>
+			<@bsGroupDatePicker id="statistics_date" startId="statistics_start_date" endId="statistics_end_date" startDate="${statisticsStartDate}" endDate="${statisticsEndDate}" />
+		</div>
+	</div>
+	
+	<div id="main" style="width: 600px;height:400px;" class="main_table"></div>
+	<div class="main_table">
+		<table id="bsTable" data-show-columns="false"></table>
+	</div>
+
+</div>

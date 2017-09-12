@@ -21,6 +21,26 @@
 	</script>
 </#macro>
 
+<!-- 日期控件：< @ bsGroupDatePicker id="" startId="" endId="" startDate="" endDate="" /> -->
+<#macro bsGroupDatePicker id="" startId="" endId="" startDate="" endDate="" >
+    <div id="group_date_${id}" class="btn" style="display: inline-block; background: #fff; cursor: pointer; padding: 6px 10px; border: 1px solid #ccc">
+	   <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+	   <span>${startDate} ~ ${endDate}</span> 
+	   <b class="caret"></b>
+	</div>
+	<input type="hidden" id="group_start_date_${id}"/>
+	<input type="hidden" id="group_end_date_${id}"/>
+	<script type="text/javascript">
+		$(function(){
+		    $('#group_date_${id}').daterangepicker(null, function(start, end, label) {
+		    	$("#group_start_date_${id}").val(start.format('YYYY-MM-DD'));
+		    	$("#group_end_date_${id}").val(end.format('YYYY-MM-DD'));
+		 		$('#group_date_${id} span').html( start.format('YYYY-MM-DD') + ' ~ ' + end.format('YYYY-MM-DD') );
+		    });
+		});
+	</script>
+</#macro>
+
 <!-- 图片控件：< @ bsImagesPicker id="a" value="b" /> -->
 <#macro bsImagesPicker id value >
 <input type="file" id="${id}_" name="${id}_">
