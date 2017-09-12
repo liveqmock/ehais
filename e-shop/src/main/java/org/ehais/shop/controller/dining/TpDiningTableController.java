@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @EPermissionController(intro="通用资讯框架功能",value="tpDiningTableController")
 @Controller
-@RequestMapping("/dining")
+@RequestMapping("/ehais")
 public class  TpDiningTableController extends CommonController {
 
 	private static Logger log = LoggerFactory.getLogger(TpDiningTableController.class);
@@ -43,7 +43,7 @@ public class  TpDiningTableController extends CommonController {
 	
 	
 	@EPermissionMethod(intro="打开通用资讯框架页面",value="tpDiningTableView",type=PermissionProtocol.URL)
-	@RequestMapping("/tpDiningTableView")
+	@RequestMapping("/manage/tpDiningTableView")
 	public String tpDiningTableView(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) {	
 		try{
@@ -61,7 +61,7 @@ public class  TpDiningTableController extends CommonController {
 
 	@ResponseBody
 	@EPermissionMethod(intro="返回通用资讯框架数据",value="tpDiningTableListJson",type=PermissionProtocol.JSON)
-	@RequestMapping(value="/tpDiningTableListJson",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
+	@RequestMapping(value="/manage/tpDiningTableListJson",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String tpDiningTableListJson(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@ModelAttribute EConditionObject condition,
@@ -80,7 +80,7 @@ public class  TpDiningTableController extends CommonController {
 	
 	
 	@EPermissionMethod(name="新增",intro="新增通用资讯框架",value="tpDiningTableAddDetail",type=PermissionProtocol.BUTTON)
-	@RequestMapping(value="/tpDiningTableAddDetail",method=RequestMethod.GET)
+	@RequestMapping(value="/manage/tpDiningTableAddDetail",method=RequestMethod.GET)
 	public String tpDiningTableAddDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response
 			) {
@@ -100,7 +100,7 @@ public class  TpDiningTableController extends CommonController {
 	
 	@ResponseBody
 	@EPermissionMethod(intro="新增提交通用资讯框架",value="tpDiningTableAddSubmit",type=PermissionProtocol.DATA)
-	@RequestMapping(value="/tpDiningTableAddSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
+	@RequestMapping(value="/manage/tpDiningTableAddSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String tpDiningTableAddSubmit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@Validated({EInsertValidator.class,EUniqueValidator.class})  @ModelAttribute("diningtable") TpDiningTable diningtable,
@@ -122,7 +122,7 @@ public class  TpDiningTableController extends CommonController {
 
 	
 	@EPermissionMethod(name="编辑",intro="编辑通用资讯框架",value="tpDiningTableEditDetail",type=PermissionProtocol.BUTTON)
-	@RequestMapping(value="/tpDiningTableEditDetail",method=RequestMethod.GET)
+	@RequestMapping(value="/manage/tpDiningTableEditDetail",method=RequestMethod.GET)
 	public String tpDiningTableEditDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "dtId", required = true) Long dtId
@@ -141,7 +141,7 @@ public class  TpDiningTableController extends CommonController {
 	
 	@ResponseBody
 	@EPermissionMethod(intro="编辑提交通用资讯框架",value="tpDiningTableEditSubmit",type=PermissionProtocol.DATA)
-	@RequestMapping(value="/tpDiningTableEditSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
+	@RequestMapping(value="/manage/tpDiningTableEditSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String tpDiningTableEditSubmit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@Validated({EUpdateValidator.class}) @ModelAttribute("diningtable") TpDiningTable diningtable,
@@ -160,7 +160,7 @@ public class  TpDiningTableController extends CommonController {
 	
 	@ResponseBody
 	@EPermissionMethod(name="删除",intro="删除通用资讯框架",value="tpDiningTableDelete",type=PermissionProtocol.BUTTON)
-	@RequestMapping(value="/tpDiningTableDelete",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
+	@RequestMapping(value="/manage/tpDiningTableDelete",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String tpDiningTableDelete(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "dtId", required = true) Long dtId
@@ -176,9 +176,54 @@ public class  TpDiningTableController extends CommonController {
 	
 	
 	
+	
+	
+	@EPermissionMethod(name="新增",intro="新增通用资讯框架",value="tpDiningTableAddDetail",type=PermissionProtocol.BUTTON)
+	@RequestMapping(value="/manage/tpDiningTableBatchAddDetail",method=RequestMethod.GET)
+	public String tpDiningTableBatchAddDetail(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response
+			) {
+		try{
+			ReturnObject<TpDiningTable> rm = tpDiningTableService.diningtable_insert(request);
+			modelMap.addAttribute("rm", rm);
+			return "/dining/diningtable/batch_detail";
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("diningtable", e);
+			return this.errorJump(modelMap, e.getMessage());
+		}
+		
+	}
+	
+	
+	@ResponseBody
+	@EPermissionMethod(intro="新增提交通用资讯框架",value="tpDiningTableAddSubmit",type=PermissionProtocol.DATA)
+	@RequestMapping(value="/manage/tpDiningTableBatchAddSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
+	public String tpDiningTableBatchAddSubmit(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "prifix", required = true) String prifix,
+			@RequestParam(value = "startNo", required = true) Integer startNo,
+			@RequestParam(value = "endNo", required = true) Integer endNo
+			) {
+			
+		try{
+			
+			ReturnObject<TpDiningTable> rm = tpDiningTableService.diningtable_insert_batch_submit(request, prifix,startNo,endNo);
+			return this.writeJson(rm);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("diningtable", e);
+			return this.errorJSON(e);
+		}
+	}
+	
+	
+	
 	@ResponseBody
 	@EPermissionMethod(intro="打开通用资讯框架页面",value="tpDiningTableView",type=PermissionProtocol.URL)
-	@RequestMapping("/tpDiningTableQRCodeExport")
+	@RequestMapping("/manage/tpDiningTableQRCodeExport")
 	public void tpDiningTableQRCodeExport(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "dtId", required = true) Long dtId,

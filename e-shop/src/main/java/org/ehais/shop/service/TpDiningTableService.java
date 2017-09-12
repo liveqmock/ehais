@@ -7,6 +7,7 @@ import org.ehais.service.CommonService;
 import org.ehais.shop.model.tp.TpDiningTable;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
+import org.springframework.web.bind.annotation.RequestParam;
 
 public interface TpDiningTableService extends CommonService{
 	
@@ -14,6 +15,7 @@ public interface TpDiningTableService extends CommonService{
 	public ReturnObject<TpDiningTable> diningtable_list_json(HttpServletRequest request,EConditionObject condition,String tablename) throws Exception;
 	public ReturnObject<TpDiningTable> diningtable_insert(HttpServletRequest request) throws Exception;
 	public ReturnObject<TpDiningTable> diningtable_insert_submit(HttpServletRequest request,TpDiningTable model) throws Exception;
+	public ReturnObject<TpDiningTable> diningtable_insert_batch_submit(HttpServletRequest request,String prifix,Integer startNo,Integer endNo) throws Exception;
 	public ReturnObject<TpDiningTable> diningtable_update(HttpServletRequest request,Long dtId) throws Exception;
 	public ReturnObject<TpDiningTable> diningtable_update_submit(HttpServletRequest request,TpDiningTable model) throws Exception;
 	public ReturnObject<TpDiningTable> diningtable_info(HttpServletRequest request,Long dtId) throws Exception;

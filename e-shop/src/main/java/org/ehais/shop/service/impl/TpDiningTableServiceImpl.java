@@ -64,8 +64,7 @@ public class TpDiningTableServiceImpl  extends CommonServiceImpl implements TpDi
 		TpDiningTableExample.Criteria c = example.createCriteria();
 		example.setLimitStart(condition.getStart());
 		example.setLimitEnd(condition.getRows());
-		Long suppliers_id = (Long)request.getSession().getAttribute(EConstants.SESSION_SUPPLIERS_ID);
-		c.andSuppliersIdEqualTo(suppliers_id);
+		c.andStoreIdEqualTo(condition.getStore_id());
 		if(StringUtils.isNotEmpty(tablename))c.andTablenameLike("%"+tablename+"%");
 		List<TpDiningTable> list = tpDiningTableMapper.selectByExample(example);
 		long total = tpDiningTableMapper.countByExample(example);
@@ -98,13 +97,13 @@ public class TpDiningTableServiceImpl  extends CommonServiceImpl implements TpDi
 		ReturnObject<TpDiningTable> rm = new ReturnObject<TpDiningTable>();
 		rm.setCode(0);
 
-		Long suppliers_id = (Long)request.getSession().getAttribute(EConstants.SESSION_SUPPLIERS_ID);
-		model.setSuppliersId(suppliers_id);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		model.setStoreId(store_id);
 
 		TpDiningTableExample example = new TpDiningTableExample();
 		TpDiningTableExample.Criteria c = example.createCriteria();
 		c.andTablenameEqualTo(model.getTablename());
-		c.andSuppliersIdEqualTo(suppliers_id);
+		c.andStoreIdEqualTo(store_id);
 		long count = tpDiningTableMapper.countByExample(example);
 		if(count > 0){
 			rm.setMsg("存在相同的记录");
@@ -114,6 +113,40 @@ public class TpDiningTableServiceImpl  extends CommonServiceImpl implements TpDi
 
 		int code = tpDiningTableMapper.insertSelective(model);
 		rm.setCode(code);
+		rm.setMsg("添加成功");
+		return rm;
+	}
+	
+	
+	public ReturnObject<TpDiningTable> diningtable_insert_batch_submit(HttpServletRequest request,String prifix,Integer startNo,Integer endNo)
+			throws Exception {
+		// TODO Auto-generated method stub
+		ReturnObject<TpDiningTable> rm = new ReturnObject<TpDiningTable>();
+		rm.setCode(0);
+		
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		
+		
+		TpDiningTableExample example = new TpDiningTableExample();
+		TpDiningTableExample.Criteria c = example.createCriteria();
+		
+		for(Integer i = startNo ; i <= endNo ; i++){
+			example.clear();
+			c = example.createCriteria();
+			c.andTablenameEqualTo(prifix+i.toString());
+			c.andStoreIdEqualTo(store_id);
+			long count = tpDiningTableMapper.countByExample(example);
+			if(count == 0){
+				TpDiningTable model = new TpDiningTable();
+				model.setStoreId(store_id);
+				model.setTablename(prifix+i.toString());
+				model.setIsValid(Short.valueOf("1"));
+				tpDiningTableMapper.insertSelective(model);
+			}
+		}
+
+
+		rm.setCode(1);
 		rm.setMsg("添加成功");
 		return rm;
 	}
@@ -127,8 +160,7 @@ public class TpDiningTableServiceImpl  extends CommonServiceImpl implements TpDi
 		TpDiningTableExample example = new TpDiningTableExample();
 		TpDiningTableExample.Criteria c = example.createCriteria();
 		c.andDtIdEqualTo(dtId);
-		Long suppliers_id = (Long)request.getSession().getAttribute(EConstants.SESSION_SUPPLIERS_ID);
-		c.andSuppliersIdEqualTo(suppliers_id);
+		c.andStoreIdEqualTo(store_id);
 		List<TpDiningTable> list = tpDiningTableMapper.selectByExample(example);
 		if(list == null || list.size() == 0){
 			rm.setMsg("记录不存在");
@@ -154,8 +186,7 @@ public class TpDiningTableServiceImpl  extends CommonServiceImpl implements TpDi
 		TpDiningTableExample.Criteria c = example.createCriteria();
 		
 		c.andDtIdEqualTo(model.getDtId());
-		Long suppliers_id = (Long)request.getSession().getAttribute(EConstants.SESSION_SUPPLIERS_ID);
-		c.andSuppliersIdEqualTo(suppliers_id);
+		c.andStoreIdEqualTo(store_id);
 
 		long count = tpDiningTableMapper.countByExample(example);
 		if(count == 0){
@@ -184,8 +215,7 @@ bean.setIsValid(model.getIsValid());
 		TpDiningTableExample example = new TpDiningTableExample();
 		TpDiningTableExample.Criteria c = example.createCriteria();
 		c.andDtIdEqualTo(dtId);
-		Long suppliers_id = (Long)request.getSession().getAttribute(EConstants.SESSION_SUPPLIERS_ID);
-		c.andSuppliersIdEqualTo(suppliers_id);
+		c.andStoreIdEqualTo(store_id);
 		List<TpDiningTable> list = tpDiningTableMapper.selectByExample(example);
 		if(list == null || list.size() == 0){
 			rm.setMsg("记录不存在");
@@ -210,8 +240,7 @@ bean.setIsValid(model.getIsValid());
 		TpDiningTableExample example = new TpDiningTableExample();
 		TpDiningTableExample.Criteria c = example.createCriteria();
 		c.andDtIdEqualTo(dtId);
-		Long suppliers_id = (Long)request.getSession().getAttribute(EConstants.SESSION_SUPPLIERS_ID);
-		c.andSuppliersIdEqualTo(suppliers_id);
+		c.andStoreIdEqualTo(store_id);
 		List<TpDiningTable> list = tpDiningTableMapper.selectByExample(example);
 		if(list == null || list.size() == 0){
 			rm.setMsg("记录不存在");
@@ -233,8 +262,7 @@ bean.setIsValid(model.getIsValid());
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		TpDiningTableExample example = new TpDiningTableExample();
 		TpDiningTableExample.Criteria c = example.createCriteria();
-		Long suppliers_id = (Long)request.getSession().getAttribute(EConstants.SESSION_SUPPLIERS_ID);
-		c.andSuppliersIdEqualTo(suppliers_id);
+		c.andStoreIdEqualTo(store_id);
 		c.andDtIdEqualTo(dtId);
 
 		long count = tpDiningTableMapper.countByExample(example);
@@ -269,8 +297,8 @@ bean.setIsValid(model.getIsValid());
 		TpDiningTableExample example = new TpDiningTableExample();
 		TpDiningTableExample.Criteria c = example.createCriteria();
 		c.andDtIdEqualTo(dtId);
-		Long suppliers_id = (Long)request.getSession().getAttribute(EConstants.SESSION_SUPPLIERS_ID);
-		c.andSuppliersIdEqualTo(suppliers_id);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		c.andStoreIdEqualTo(store_id);
 		List<TpDiningTable> list = tpDiningTableMapper.selectByExample(example);
 		if(list == null || list.size() == 0){
 			return ;

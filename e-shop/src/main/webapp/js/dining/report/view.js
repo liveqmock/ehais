@@ -1,5 +1,5 @@
 var myChart = null;
-
+var bsTable = null;
 $(function(){
 	$("#startDate").val(moment().subtract('days', 5).format('YYYY-MM-DD'));
 	$("#endDate").val(moment().format('YYYY-MM-DD'));
@@ -45,6 +45,56 @@ $(function(){
 	
     myChart = echarts.init(document.getElementById('main'));
 
+    
+    bsTable = $('#bsTable').bootstrapTable({
+    	contentType: "application/x-www-form-urlencoded",
+        dataType: "json",
+        striped: true,//是否显示行间隔色
+        cache: false,
+        sortable: true,//是否启用排序
+        sortOrder: 'asc',//排序方式
+        clickToSelect: true,//是否启用点击选中行
+        pageNumber: 1,
+	    pageSize: 10,
+	    pageList: [10,20,30,40,50],
+	    queryParamsType:'',
+	    queryParams: function (params) {
+	        return {
+	            rows: params.pageSize,   //页面大小  
+                page: params.pageNumber,  //页码        
+                sort: params.sort,  //排序列名  
+                sortOrder: params.order,//排位命令（desc，asc）
+                orderStatus : 1,
+                classify : "dining",
+                orderSn : orderSn
+	        }
+	    },
+        columns: [
+
+			{
+			    field: 'payTime',
+			    title: '日期',
+			    formatter : function(value,rows,index){
+			    	if(parseInt(value) > 0){
+			    		var date =  new Date(value * 100000);
+			    		return date.format("yyyy-MM-dd");
+			    	}else{
+			    		return "";
+			    	}
+			    }
+			},{
+			    field: 'weixinAmount',
+			    title: '微信收益'
+			},{
+			    field: 'cashAmount',
+			    title: '现金收益'
+			}
+        
+        ],responseHandler : function (res){
+        	
+        	return res;
+        }
+    });
     
     OrderDinintStatistics();
 });
@@ -150,6 +200,9 @@ function OrderDinintStatistics(){
 			option.xAxis.data = dateList;
 			
 			myChart.setOption(option);
+			
+			bsTable.bootstrapTable("load",rows);
+			bsTable.bootstrapTable('refresh');
 		}
 	});
 }
