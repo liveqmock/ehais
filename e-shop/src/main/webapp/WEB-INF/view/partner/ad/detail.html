@@ -4,10 +4,9 @@
 <head>
 <script type="text/javascript" src="/js/jquery-2.1.4.min.js" ></script>
 		
-<link href="/js/fileinput/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
-<script src="/js/fileinput/js/plugins/piexif.js" type="text/javascript"></script>
-<script src="/js/fileinput/js/fileinput.js" type="text/javascript"></script>
-<script src="/js/fileinput/js/locales/zh.js" type="text/javascript"></script>
+<script type="text/javascript" src="/js/qiniu/qiniu.js" ></script>
+<script type="text/javascript" src="/js/qiniu/plupload.full.min.js" ></script>
+<script type="text/javascript" src="/js/qiniu/moxie.min.js" ></script>
 
 <script src="/js/adminCommon.js" type="text/javascript"></script>        
       
@@ -49,148 +48,49 @@
 
 <input type="hidden" class="form-control" id="adId" name="adId" value="${rm.model.adId!''}" >
 <div class="form-group">
-<label class="col-sm-2 control-label">positionId</label>
+<label class="col-sm-2 control-label">位置</label>
 <div class="col-sm-5">
-	<input type="text" class="form-control" id="positionId" name="positionId" value="${rm.model.positionId!''}" placeholder="">
+	<select id="positionId" name="positionId" class="form-control" >
+		<option value="">请选择位置</option>
+		<#if (rm.map.adpositionList?? && rm.map.adpositionList?size > 0 )>
+		<#list rm.map.adpositionList as p>
+			<option value="${p.positionId}"  <#if (p.positionId == rm.model.positionId)>selected="selected"</#if> >${p["positionName"]}【${p.adWidth}*${p.adHeight}】</option>
+		</#list>
+		</#if>
+	</select>
 </div>
 </div>
 
 <div class="form-group">
-<label class="col-sm-2 control-label">mediaType</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="mediaType" name="mediaType" value="${rm.model.mediaType!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">adName</label>
+<label class="col-sm-2 control-label">广告名称</label>
 <div class="col-sm-5">
 	<input type="text" class="form-control" id="adName" name="adName" value="${rm.model.adName!''}" placeholder="">
+	可当作广告标语使用
 </div>
 </div>
 
 <div class="form-group">
-<label class="col-sm-2 control-label">adLink</label>
+<label class="col-sm-2 control-label">链接</label>
 <div class="col-sm-8">
-	<textarea class="form-control" id="adLink" name="adLink" placeholder="">${rm.model.adLink!''}</textarea>
+	<input type="text" class="form-control" id="adLink" name="adLink" value="${rm.model.adLink!''}" placeholder="">
 </div>
 </div>
 
 <div class="form-group">
-<label class="col-sm-2 control-label">adPic</label>
+<label class="col-sm-2 control-label">图片</label>
 <div class="col-sm-5">
-	<input type="text" class="form-control" id="adPic" name="adPic" value="${rm.model.adPic!''}" placeholder="">
+	<@bsQiniuImagesPicker id="adPic" value="${rm.model.adPic!''}" domain="${domain}" uptoken="${uptoken}"/>
 </div>
 </div>
 
 <div class="form-group">
-<label class="col-sm-2 control-label">adCode</label>
-<div class="col-sm-8">
-	<@ueditorPicker id="adCode" value="${rm.model.adCode!''}" />
+<label class="col-sm-2 control-label">排序</label>
+<div class="col-sm-2">
+	<@quantityPicker id="sort" value="${rm.model.sort!1}" />
 </div>
 </div>
 
-<div class="form-group">
-<label class="col-sm-2 control-label">linkMan</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="linkMan" name="linkMan" value="${rm.model.linkMan!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">linkEmail</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="linkEmail" name="linkEmail" value="${rm.model.linkEmail!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">linkPhone</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="linkPhone" name="linkPhone" value="${rm.model.linkPhone!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">clickCount</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="clickCount" name="clickCount" value="${rm.model.clickCount!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">enabled</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="enabled" name="enabled" value="${rm.model.enabled!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">storeId</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="storeId" name="storeId" value="${rm.model.storeId!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">startTime</label>
-<div class="col-sm-8">
-	<@bsDatePicker id="startTime" value="${rm.model.startTime!''}" />
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">endTime</label>
-<div class="col-sm-8">
-	<@bsDatePicker id="endTime" value="${rm.model.endTime!''}" />
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">navId</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="navId" name="navId" value="${rm.model.navId!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">sort</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="sort" name="sort" value="${rm.model.sort!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">isMobile</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="isMobile" name="isMobile" value="${rm.model.isMobile!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">agencyId</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="agencyId" name="agencyId" value="${rm.model.agencyId!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">partnerId</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="partnerId" name="partnerId" value="${rm.model.partnerId!''}" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">isVoid</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="isVoid" name="isVoid" value="${rm.model.isVoid!''}" placeholder="">
-</div>
-</div>
-
-
-
-
+<input type="hidden" id="adCode" name="adCode" value="${rm.model.adCode!''}">
 
 <div class="form-group">
 	<div class="col-sm-3"></div>

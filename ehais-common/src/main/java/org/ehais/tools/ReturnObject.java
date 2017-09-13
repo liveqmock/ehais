@@ -25,6 +25,7 @@ public class ReturnObject<T> {
 	
 	private Integer code;//返回值,1:成功,非1则异常，参考异常码附件
 	private String msg;//返回的值
+	private String token;//返回的token
 	private String[] msgs;//多信息返回
 	private Map<String, Object> map;
 	private List<T> rows;//兼容easyui datagirl
@@ -118,6 +119,12 @@ public class ReturnObject<T> {
 	}
 	public void setCurrentPage(Integer currentPage) {
 		this.currentPage = currentPage;
+	}
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
 	}
 	
 	

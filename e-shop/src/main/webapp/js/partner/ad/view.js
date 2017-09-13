@@ -4,6 +4,10 @@ var adName = "";
 
 
 $(function(){
+	
+	$('#myModal').modal({ keyboard: false  , show:false }) 
+    
+    
 	getTree();
 	
 	
@@ -44,70 +48,29 @@ $(function(){
         sidePagination: "server", //服务端处理分页
         uniqueId: 'adId',//每一行的唯一标识，一般为主键列
         columns: [
-
 {
-    field: 'adId',
-    title: 'adId'
-},{
-    field: 'positionId',
-    title: 'positionId'
-},{
-    field: 'mediaType',
-    title: 'mediaType'
-},{
     field: 'adName',
-    title: 'adName'
+    title: '广告名称'
 },{
     field: 'adLink',
-    title: 'adLink'
+    title: '链接'
 },{
     field: 'adPic',
-    title: 'adPic'
-},{
-    field: 'adCode',
-    title: 'adCode'
-},{
-    field: 'linkMan',
-    title: 'linkMan'
-},{
-    field: 'linkEmail',
-    title: 'linkEmail'
-},{
-    field: 'linkPhone',
-    title: 'linkPhone'
-},{
-    field: 'clickCount',
-    title: 'clickCount'
-},{
-    field: 'enabled',
-    title: 'enabled'
-},{
-    field: 'storeId',
-    title: 'storeId'
-},{
-    field: 'startTime',
-    title: 'startTime'
-},{
-    field: 'endTime',
-    title: 'endTime'
-},{
-    field: 'navId',
-    title: 'navId'
+    title: '图片',formatter:function(value,rows,index){
+    	if(value != null && value!=""){
+    		return "<img src='"+value+"' style='max-width:100px;max-height:100px;'>";
+    	}else{
+    		return "";
+    	}
+    }
 },{
     field: 'sort',
-    title: 'sort'
-},{
-    field: 'isMobile',
-    title: 'isMobile'
-},{
-    field: 'agencyId',
-    title: 'agencyId'
-},{
-    field: 'partnerId',
-    title: 'partnerId'
+    title: '排序'
 },{
     field: 'isVoid',
-    title: 'isVoid'
+    title: '生效',formatter : function(value,rows,index){
+    	return value == 1 ? "生效":"无效";
+    }
 },
 
         {
@@ -195,25 +158,41 @@ function getTree() {
 
 
 function addCate(){
-	layer.prompt({title: '请输入广告管理分类名称', formType: 0}, function(text, index){
-	    
-		if(text == null || text == ""){
+	$("#positionName").val("");
+	$("#adWidth").val("");
+	$("#adHeight").val("");
+	$('#myModal').modal('show')  ;
+	
+	$("#savePosition").unbind();
+	$("#savePosition").click(function(){
+		
+		if($("#positionName").val() == null || $("#positionName").val() == ""){
+			layer.msg("请输入广告管理分类名称");return ;
+		}
+		if($("#adWidth").val() == null || $("#adWidth").val() == ""){
+			layer.msg("请输入广告管理分类名称");return ;
+		}
+		if($("#adHeight").val() == null || $("#adHeight").val() == ""){
 			layer.msg("请输入广告管理分类名称");return ;
 		}
 		$.ajax({
 			url : "haiAdPositionAddSubmit",
-			data  : {positionName : text},
+			data  : {positionName : $("#positionName").val(),adWidth : $("#adWidth").val(),adHeight : $("#adHeight").val()},
 			success : function(result){
 				if(result.code != 1){
 					layer.msg(result.msg);
 					return ;
 				}
-				layer.close(index);
+				layer.closeAll();
 				layer.msg(result.msg);
 				getTree();
+				$('#myModal').modal('hide')  ;
 			}
 		});
+		
 	});
+	
+	
 }
 function editCate(){
 	var node = $('#tree').treeview('getSelected');	
@@ -222,6 +201,63 @@ function editCate(){
 		return ;
 	}
 	var positionId = node[0].id;
+	$.ajax({
+		url : "haiAdPositionEditDetail",
+		data  : {positionId : positionId },
+		success : function(result){
+			if(result.code != 1){
+				layer.msg(result.msg);
+				return ;
+			}
+			$("#positionName").val(result.model.positionName);
+			$("#adWidth").val(result.model.adWidth);
+			$("#adHeight").val(result.model.adHeight);
+			$('#myModal').modal('show')  ;
+			$("#savePosition").unbind();
+			
+			$("#savePosition").click(function(){
+				
+				if($("#positionName").val() == null || $("#positionName").val() == ""){
+					layer.msg("请输入广告管理分类名称");return ;
+				}
+				if($("#adWidth").val() == null || $("#adWidth").val() == ""){
+					layer.msg("请输入广告管理分类名称");return ;
+				}
+				if($("#adHeight").val() == null || $("#adHeight").val() == ""){
+					layer.msg("请输入广告管理分类名称");return ;
+				}
+				$.ajax({
+					url : "haiAdPositionEditSubmit",
+					data  : {positionId : positionId , positionName : $("#positionName").val(),adWidth : $("#adWidth").val(),adHeight : $("#adHeight").val()},
+					success : function(result){
+						if(result.code != 1){
+							layer.msg(result.msg);
+							return ;
+						}
+						layer.closeAll();
+						layer.msg(result.msg);
+						getTree();
+						
+						$('#myModal').modal('hide')  ;
+						
+					}
+				});
+				
+			});
+			
+			
+		}
+	});
+	
+	
+
+	
+	
+	
+	
+	
+	
+	/*
 	layer.prompt({title: '请输入广告管理分类名称', formType: 0 ,value : node[0].text}, function(text, index){
 	    
 		if(text == null || text == ""){
@@ -241,7 +277,7 @@ function editCate(){
 			}
 		});
 	});
-	
+	*/
 }
 function deleteCate(){
 	var node = $('#tree').treeview('getSelected');	

@@ -17,6 +17,8 @@ import org.ehais.shop.model.HaiAdPosition;
 import org.ehais.shop.service.HaiAdService;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
+import org.ehais.util.QiniuUtil;
+import org.ehais.util.ResourceUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,11 @@ public class  AdAdminController extends CommonController {
 
 	@Autowired
 	private HaiAdService haiAdService;
+	private static String accessKey = ResourceUtil.getProValue("qiniu.accesskey");
+	private static String secretKey = ResourceUtil.getProValue("qiniu.secretkey");
+	private static String bucket = ResourceUtil.getProValue("qiniu.bucket");
+	private static String domain = ResourceUtil.getProValue("qiniu.domain");
+	
 	
 	
 	@EPermissionMethod(intro="打开广告管理页面",value="haiAdView",type=PermissionProtocol.URL)
@@ -88,6 +95,8 @@ public class  AdAdminController extends CommonController {
 		try{
 			ReturnObject<HaiAd> rm = haiAdService.ad_insert(request);
 			modelMap.addAttribute("rm", rm);
+			modelMap.addAttribute("uptoken", QiniuUtil.getUpToken(accessKey,secretKey,bucket));
+			modelMap.addAttribute("domain", domain);
 			return "/"+this.getStoreTheme(request)+"/ad/detail";
 			
 		}catch(Exception e){
@@ -131,7 +140,9 @@ public class  AdAdminController extends CommonController {
 		try{
 			ReturnObject<HaiAd> rm = haiAdService.ad_update(request,adId);
 			modelMap.addAttribute("rm", rm);
-			return "/admin/ad/detail";
+			modelMap.addAttribute("uptoken", QiniuUtil.getUpToken(accessKey,secretKey,bucket));
+			modelMap.addAttribute("domain", domain);
+			return "/"+this.getStoreTheme(request)+"/ad/detail";
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("ad", e);
@@ -259,17 +270,18 @@ public class  AdAdminController extends CommonController {
 	}
 	
 
-	
+	@ResponseBody
 	@EPermissionMethod(name="编辑",intro="编辑广告管理",value="haiAdPositionEditDetail",type=PermissionProtocol.BUTTON)
-	@RequestMapping(value="/manage/haiAdPositionEditDetail",method=RequestMethod.GET)
+	@RequestMapping(value="/manage/haiAdPositionEditDetail",method=RequestMethod.POST)
 	public String haiAdPositionEditDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "positionId", required = true) Integer positionId
 			) {
 		try{
 			ReturnObject<HaiAdPosition> rm = haiAdService.adposition_update(request,positionId);
-			modelMap.addAttribute("rm", rm);
-			return "/"+this.getStoreTheme(request)+"/ad/adposition_detail";
+			return this.writeJson(rm);
+//			modelMap.addAttribute("rm", rm);
+//			return "/"+this.getStoreTheme(request)+"/ad/adposition_detail";
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("adposition", e);
