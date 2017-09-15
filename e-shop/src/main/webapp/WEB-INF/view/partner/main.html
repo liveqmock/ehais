@@ -17,7 +17,18 @@
 		<link rel="stylesheet" href="/js/bootstrap/datetimepicker/css/daterangepicker-bs3.css" />
 		<script type="text/javascript" src="/js/bootstrap/datetimepicker/js/moment.js" ></script>
 		<script type="text/javascript" src="/js/bootstrap/datetimepicker/js/daterangepicker.js" ></script>
+	
+		<link rel="stylesheet" href="/js/layer/skin/default/layer.css" />
+		<script type="text/javascript" src="/js/layer/layer.js" ></script>
 		
+		
+		<script type="text/javascript" src="/js/adminCommon.js" ></script>
+		<script type="text/javascript" src="/js/DateUtils.js" ></script>
+		<script type="text/javascript" src="/ehais/js/echarts.min.js" ></script>
+	
+	<link rel="stylesheet" href="/js/bootstrap/table/bootstrap-table.min.css" />
+	<script type="text/javascript" src="/js/bootstrap/table/bootstrap-table.min.js" ></script>
+	<script type="text/javascript" src="/js/bootstrap/table/locale/bootstrap-table-zh-CN.min.js" ></script>
 	
 <style type="text/css">
 .mylayout .list-group-item.gray > a{
@@ -116,30 +127,12 @@ $(function(){
 	$(".tab-content > div[role = \"tabpanel\"] > iframe").height(center_h - my_nav_tabs_h);
 	my_tab_content_h = $("#my-tab-content").height();
 	
+	$("#statistics").width(my_tab_content_w).height(my_tab_content_h);
+	
 	$("#layerx").html("layerx"+(center_h - my_nav_tabs_h));
 	
-	
-	
-/* 	
- 	$(".north").html(north_w+"+"+north_h +
-	"="+
-	west_w+"+"+west_h+
-	"=="+
-	center_w+"+"+center_h+
-	"==="+
-	my_nav_tabs_w+"+"+my_nav_tabs_h+
-	"==="+
-	my_tab_content_w+"+"+my_tab_content_h+
-	"====="+
-	menu_height+";==;"+$(document).height()+";===;"+$(window).height()
-	
-	); 
- 	 */
 	south_w = $(".south").width();
 	south_h = $(".south").height();	
-	//$(".south").html(south_w+"+"+south_h);
-	//$.addtabs({settings:{iframeHeight:500}});
-//	alert($.addtabs.settings.iframeHeight);
 });
 
 $(window).resize(function () {          //当浏览器大小变化时
@@ -167,6 +160,7 @@ $(window).resize(function () {          //当浏览器大小变化时
 	$(".tab-content > div[role = \"tabpanel\"] > iframe").height(center_h - my_nav_tabs_h);
 	my_tab_content_h = $("#my-tab-content").height();
 	
+	$("#statistics").width(my_tab_content_w).height(my_tab_content_h);
 //	$("#layerx").html("layerx"+(center_h - my_nav_tabs_h));
 /* 	
 	$(".north").html(north_w+"+"+north_h +

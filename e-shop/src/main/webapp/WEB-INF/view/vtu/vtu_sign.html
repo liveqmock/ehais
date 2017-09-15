@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<title>微签设置</title>
+		
+		<link rel="stylesheet" href="css/vtu.css" />
+		
+		<script type="text/javascript" src="js/jquery-2.1.4.min.js" ></script>
+		
+		<link rel="stylesheet" href="js/elay/elay.css" />
+		<script type="text/javascript" src="js/elay/elay.js" ></script>
+		
+		<script type="text/javascript" src="js/vtu_sign.js" ></script>
+		
+		<script type="text/javascript" src="js/common.js" ></script>
+		
+		<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js" ></script>
+		<script type="text/javascript" src="js/wxsdk.js" ></script>
+		
+	</head>
+	<body>
+		<div class="vtu_wrapper">
+			<dl>
+				<dt>签到时间</dt>
+				<dd>
+					<ul>
+				    	<li id="morning"><label>早上</label><i class="fa fa-chevron-right"></i><span id="morning_time">${vtuSign.morningTime!'08:30'}</span></li>
+				    	<li id="midday"><label>中午</label><i class="fa fa-chevron-right"></i><span id="midday_time">${vtuSign.middayTime!'12:30'}</span></li>
+				    	<li id="night"><label>晚上</label><i class="fa fa-chevron-right"></i><span id="night_time">${vtuSign.nightTime!'22:30'}</span></li>
+				    </ul>
+				</dd>
+			</dl>
+			<textarea id="inspire" placeholder="感言、激励">${vtuSign.inspire!''}</textarea>
+			<dl>
+				<dt>个人名片</dt>
+				<dd>
+					<ul id="person">
+				    	<li><label>姓名</label><input type="text" id="realname" value="${vtuSign.realname!''}"/></li>
+				    	<li>
+				    		<label>手机</label><input type="tel" id="mobile" value="${vtuSign.mobile!''}"/>
+				    		<i>适用于销售业务员公开自己的电话号码让朋友圈的人联系</i>
+				    	</li>
+				    	<li>
+				    		<label>签名</label><input type="text" id="business" placeholder="如：客服、游戏专员、保险业务" value="${vtuSign.business!''}"/>
+				    	</li>
+				    	<li class="qr">
+				    	<label>二维码</label>
+				    	<input type="button" id="qrcode" ><i class="fa fa-picture-o"></i>
+				    	</li>
+				    	<li class="pic">
+				    		<img id="showPic" src="${vtuSign.pic!''}">
+				    	</li>
+				    </ul>
+				</dd>
+			</dl>
+			<input id="pic" type="hidden" value="${vtuSign.pic!''}"/>
+			<button id="saveSign" type="button">保存设置</button>
+		</div>
+		<div class="vtu_time ">
+			<div class="bg"></div>
+			<div class="time">
+				<dl class="hour"><dt>时间</dt></dl>
+				<dl class="minute"><dt>精确</dt></dl>
+				<button id="sureTime" type="button">确定</button>
+			</div>
+		</div>
+		<script type="text/javascript">
+			var sid = "${sid}";
+			$(function(){
+				wx_config(${signature});
+			});
+			
+			function chooseImage(img,hid){
+				//选择图片
+				wx.chooseImage({
+				    count: 1, // 默认9
+				    sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+				    sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+				    success: function (res) {
+				        var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+				        
+				        //即上传选择的图片
+				        wx.uploadImage({
+				            localId: localIds, // 需要上传的图片的本地ID，由chooseImage接口获得
+				            isShowProgressTips: 1, // 默认为1，显示进度提示
+				            success: function (res) {
+				                var serverId = res.serverId; // 返回图片的服务器端ID
+				                alert(serverId);
+				                $.ajax({
+				        			url : "/upload/weixin_media_to_qiniu",data:{media_id:serverId},
+				        			success : function(result){
+				        				$("#"+img).attr("src",result.url);
+				        				$("#"+hid).val(result.url);
+				        			}
+				        		});
+				            }
+				        });
+				        
+				        
+				    }
+				});
+			}
+			
+			
+		</script>
+	</body>
+</html>

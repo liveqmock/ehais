@@ -112,10 +112,10 @@ public class EhaisAdminController extends CommonController{
 			HttpServletRequest request,HttpServletResponse response ) {	
 		try{
 			Date date = new Date();
-			String statisticsStartDate =  DateUtil.formatDate(DateUtils.addDays(date, -30), DateUtil.FORMATSTR_3);
-			String statisticsEndDate =  DateUtil.formatDate(date, DateUtil.FORMATSTR_3);
-			modelMap.addAttribute("statisticsStartDate", statisticsStartDate);
-			modelMap.addAttribute("statisticsEndDate", statisticsEndDate);
+			String startDate =  DateUtil.formatDate(DateUtils.addDays(date, -30), DateUtil.FORMATSTR_3);
+			String endDate =  DateUtil.formatDate(date, DateUtil.FORMATSTR_3);
+			modelMap.addAttribute("startDate", startDate);
+			modelMap.addAttribute("endDate", endDate);
 			
 		}catch(Exception e){
 			e.printStackTrace();

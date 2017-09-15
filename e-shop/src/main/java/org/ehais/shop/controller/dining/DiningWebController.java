@@ -101,6 +101,7 @@ public class DiningWebController extends EhaisCommonController{
 		try{
 			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
 			EHaiStore store = eStoreService.getEStore(store_id);
+			modelMap.addAttribute("store", store);
 			if(store == null){
 				return "redirect:"+website; //错误的链接，跳转商城
 			}
@@ -132,9 +133,7 @@ public class DiningWebController extends EhaisCommonController{
 					return "redirect:"+website; //错误的链接，跳转商城
 				}
 			}else{
-				if(this.isLocalHost(request)){
-					request.getSession().setAttribute(EConstants.SESSION_USER_ID, 125L);
-				}
+				
 				this.dining(modelMap, request, response,wp,store,store_id, sid);
 			}
 		}catch(Exception e){

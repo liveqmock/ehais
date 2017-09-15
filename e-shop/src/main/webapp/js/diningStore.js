@@ -215,7 +215,7 @@ $(function(){
 	
 	$("#menu_cate").height($(window).height() - $(".swiper-container").height() / 2 - $(".tabs").height() - $("footer").height() - 20);
 	$("#menu_list").height($(window).height() - $(".swiper-container").height() / 2 - $(".tabs").height() - $("footer").height() - 20);
-	$("#myOrderList").height($(window).height() - $(".swiper-container").height() / 2 - $(".tabs").height() - 300 );
+	$("#myOrderList").height($(window).height() - $(".swiper-container").height() / 2 - $(".tabs").height() - $("footer").height() - 69 );
 
 	
 	jroll_menu_cate = new JRoll("#menu_cate", {scrollBarY:false});
@@ -410,7 +410,7 @@ function diningUserOrderList(){
 				$("#myOrderUl").append("<li>"+
 						"<div>消费餐厅："+v.consignee+"</div>"+
 						"<div>消费时间："+v.addTime+"</div>"+
-						"<div>消费金额："+v.orderAmount+"元</div>"+
+						"<div>消费金额："+(v.orderAmount / 100).toFixed(2)+"元</div>"+
 					"</li>");
 			});
 			jroll_myOrderList.refresh();

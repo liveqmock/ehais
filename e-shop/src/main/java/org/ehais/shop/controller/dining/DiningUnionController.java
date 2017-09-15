@@ -14,6 +14,7 @@ import org.ehais.enums.EUserTypeEnum;
 import org.ehais.epublic.mapper.EHaiAdminUserMapper;
 import org.ehais.epublic.mapper.EHaiStoreMapper;
 import org.ehais.epublic.mapper.EHaiUsersMapper;
+import org.ehais.epublic.mapper.WpPublicMapper;
 import org.ehais.epublic.model.EHaiAdminUser;
 import org.ehais.epublic.model.EHaiAdminUserExample;
 import org.ehais.epublic.model.EHaiAdminUserWithBLOBs;
@@ -53,6 +54,8 @@ public class DiningUnionController extends EhaisCommonController{
 	public static String weixin_appid = ResourceUtil.getProValue("weixin_appid");
 	public static String weixin_appsecret = ResourceUtil.getProValue("weixin_appsecret");
 	public static String weixin_token = ResourceUtil.getProValue("weixin_token");
+	public static String weixin_mch_id = ResourceUtil.getProValue("weixin_mch_id");
+	public static String weixin_mch_secret = ResourceUtil.getProValue("weixin_mch_secret");
 	
 	@Autowired
 	private EHaiUsersMapper eHaiUsersMapper;
@@ -65,7 +68,10 @@ public class DiningUnionController extends EhaisCommonController{
 	@Autowired
 	private EStoreService eStoreService;
 	@Autowired
-	protected EWPPublicService eWPPublicService;
+	private EWPPublicService eWPPublicService;
+	@Autowired
+	protected WpPublicMapper wpPublicMapper;
+	
 	
 	
 	//http://127.0.0.1/diningUnion!5674d100-033b4b301-1299581252-2e64baa931f09d6c22
@@ -153,6 +159,7 @@ public class DiningUnionController extends EhaisCommonController{
 			
 			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			if(user_id == null || user_id == 0){rm.setMsg("user sess empty");return this.writeJson(rm);}
+			if(user_id.longValue() != Long.valueOf(map.get("userId").toString()).longValue()){rm.setMsg("user sess wrong");return this.writeJson(rm);}
 			
 			EHaiUsers user = eHaiUsersMapper.selectByPrimaryKey(user_id);
 			if(user == null){rm.setMsg("user obj empty");return this.writeJson(rm);}
@@ -203,6 +210,17 @@ public class DiningUnionController extends EhaisCommonController{
 			admin.setPartnerId(Integer.valueOf(map.get("partnerId").toString()));
 			eHaiAdminUserMapper.insert(admin);
 			
+			WpPublicWithBLOBs wp = new WpPublicWithBLOBs();
+			wp.setPublicName(store_name);
+			wp.setToken(weixin_token);
+			wp.setAppid(weixin_appid);
+			wp.setSecret(weixin_appsecret);
+			wp.setMchId(weixin_mch_id);
+			wp.setMchSecret(weixin_mch_secret);
+			wp.setStoreId(store.getStoreId());
+			wpPublicMapper.insert(wp);
+			
+			
 			rm.setModel(admin);
 			rm.setCode(1);
 			rm.setMsg("注册成功");
@@ -226,7 +244,7 @@ public class DiningUnionController extends EhaisCommonController{
 		ReturnObject<HaiOrderInfoWithBLOBs> rm = new ReturnObject<HaiOrderInfoWithBLOBs>();
 		rm.setCode(0);
 //		Integer storeId = SignUtil.getUriStoreId(sid);
-		request.getSession().setAttribute(EConstants.SESSION_STORE_ID,58);
+//		request.getSession().setAttribute(EConstants.SESSION_STORE_ID,58);
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 //		if(store_id.intValue() != storeId.intValue()){
 //			rm.setMsg("store is wrong");return this.writeJson(rm);

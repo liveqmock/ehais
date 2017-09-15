@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
+import org.ehais.epublic.model.WpPublicWithBLOBs;
+import org.ehais.epublic.service.EWPPublicService;
 import org.ehais.model.BootStrapModel;
 import org.ehais.service.impl.CommonServiceImpl;
 import org.ehais.shop.mapper.tp.TpDiningTableMapper;
@@ -25,6 +27,7 @@ import org.ehais.shop.service.TpDiningTableService;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.MatrixToImageWriter;
+import org.ehais.util.SignUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +45,9 @@ public class TpDiningTableServiceImpl  extends CommonServiceImpl implements TpDi
 	
 	@Autowired
 	private TpDiningTableMapper tpDiningTableMapper;
+
+	@Autowired
+	protected EWPPublicService eWPPublicService;
 
 	
 	public ReturnObject<TpDiningTable> diningtable_list(HttpServletRequest request) throws Exception{
@@ -304,8 +310,10 @@ bean.setIsValid(model.getIsValid());
 			return ;
 		}
 		TpDiningTable model = list.get(0);
-		String session_supplierssn = (String)request.getSession().getAttribute("session_supplierssn");
-		String content = "http://w.ehais.com/api.php/Api/DiningApi/wxgo?dining="+session_supplierssn+"&tableno="+model.getTablename();
+//		String session_supplierssn = (String)request.getSession().getAttribute("session_supplierssn");
+//		String content = "http://w.ehais.com/api.php/Api/DiningApi/wxgo?dining="+session_supplierssn+"&tableno="+model.getTablename();
+		WpPublicWithBLOBs wpPublic = eWPPublicService.getWpPublic(store_id);
+		String content = request.getScheme()+"://"+request.getServerName()+"/diningStore!"+SignUtil.setDiningId(store_id, 0, 0L, 0L, model.getTablename(), wpPublic.getToken());
 		
 		MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
 		@SuppressWarnings("rawtypes")

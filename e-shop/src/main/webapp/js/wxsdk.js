@@ -95,3 +95,5 @@ function wx_config(data){
 	
 	
 }
+
+

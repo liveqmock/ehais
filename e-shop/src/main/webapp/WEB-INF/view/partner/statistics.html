@@ -1,5 +1,5 @@
 <#include "/FreemarkerMacro.html"/>
-<div id="statistics" class="statistics">
+<div id="statistics" class="statistics" style="width:100%;height: 500px;overflow-y: scroll;box-sizing: border-box;">
 
 	<div class="panel panel-default">
 		<div class="panel-body single">					    
@@ -10,13 +10,22 @@
 			  <button id="previousMonth" type="button" class="btn btn-default">上月</button>
 			  <button id="currentMonth" type="button" class="btn btn-default">本月</button>
 			</div>
-			<@bsGroupDatePicker id="statistics_date" startId="statistics_start_date" endId="statistics_end_date" startDate="${statisticsStartDate}" endDate="${statisticsEndDate}" />
+			<@bsGroupDatePicker id="statistics_date" startId="startDate" endId="endDate" startDate="${startDate}" endDate="${endDate}" />
 		</div>
 	</div>
 	
-	<div id="main" style="width: 600px;height:400px;" class="main_table"></div>
-	<div class="main_table">
-		<table id="bsTable" data-show-columns="false"></table>
+	<div id="listSUserCount" style="width: 600px;height:400px;" class="main_table"></div>
+	
+	<div id="listSStoreCount" style="width: 600px;height:400px; margin-top: 20px;" class="main_table"></div>
+	
+	<div class="main_table" style=" margin-top: 20px;">
+		<h4>会员注册数</h4>
+		<table id="listSUserTable" data-show-columns="false"></table>
+	</div>
+	<div class="main_table" style=" margin-top: 20px; margin-bottom: 40px;">
+		<h4>商家加盟数</h4>
+		<table id="listSStoreTable" data-show-columns="false"></table>
 	</div>
 
 </div>
+<script type="text/javascript" src="/js/partner/partnerStatistics.js"></script>
