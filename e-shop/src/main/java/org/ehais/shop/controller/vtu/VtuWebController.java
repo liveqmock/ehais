@@ -118,7 +118,7 @@ public class VtuWebController extends EhaisCommonController{
 					return "redirect:"+website; //错误的链接，跳转商城
 				}
 			}else{
-				return "/vtu/vtu_sign";
+				return "redirect:"+website;
 			}
 		}catch(Exception e){
 			e.printStackTrace();
@@ -204,6 +204,94 @@ public class VtuWebController extends EhaisCommonController{
 		}
 		
 		return this.writeJson(rm);
+	}
+	
+	
+	@RequestMapping("/vtu_share!{vid}")
+	public String vtu_share(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@PathVariable(value = "vid") String vid	,
+			@RequestParam(value = "code", required = false) String code
+			){
+		Integer store_id = SignUtil.getUriStoreId(vid);
+		if(store_id == 0){
+			return "redirect:"+website; //错误的链接，跳转商城
+		}
+		
+		request.getSession().setAttribute(EConstants.SESSION_STORE_ID, store_id);
+		
+		try{
+			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
+			Map<String,Object> map = SignUtil.getVtuId ( vid,wp.getToken());
+			if(map == null){
+			    return "redirect:"+website; //错误的链接，跳转商城
+			}
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
+			modelMap.addAttribute("vid", vid); 
+			
+			
+			if(this.isWeiXin(request)){//微信端登录
+				if((user_id == null || user_id == 0 ) && StringUtils.isEmpty(code)){
+					return this.redirect_wx_authorize(request , wp.getAppid() , "/vtu_share!"+vid);
+				}else if(StringUtils.isNotEmpty(code)){
+					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map);
+					String newSid = SignUtil.setVtuId(store_id,Long.valueOf(map.get("userId").toString()), user.getUserId(),Long.valueOf(map.get("vtuId").toString()),Long.valueOf(map.get("vtuShareId").toString()),wp.getToken());
+					String link = request.getScheme() + "://" + request.getServerName() + "/vtu_share!"+newSid;
+					System.out.println("code:"+link);
+					return "redirect:"+link;
+				}else if(user_id > 0 && Long.valueOf(map.get("userId").toString()).longValue() == user_id.longValue()){//经过code获取用户信息跳回自己的链接中来
+					//判断是否已设置签到记录
+					VtuSignExample vs_exp = new VtuSignExample();
+					vs_exp.createCriteria().andUserIdEqualTo(user_id);
+					List<VtuSign> list = vtuSignMapper.selectByExample(vs_exp);
+					if(list == null || list.size() == 0){
+						modelMap.addAttribute("vtuSign", new VtuSign());
+					}else{
+						modelMap.addAttribute("vtuSign", list.get(0));
+					}
+					String link = request.getScheme() + "://" + request.getServerName() + "/vtu_share!"+vid;
+					
+					WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, Integer.valueOf(map.get("store_id").toString()), wp.getAppid(), wp.getSecret(), null);
+					signature.setTitle("微签");
+					signature.setLink(link);
+					signature.setDesc("每天定时提醒你在朋友圈签到，让朋友知道你从事哪种职业，增加朋友圈的曝光率!");
+					signature.setImgUrl(defaultimg);
+					List<String> jsApiList = new ArrayList<String>();
+					jsApiList.add("onMenuShareTimeline");
+					jsApiList.add("onMenuShareAppMessage");
+					jsApiList.add("onMenuShareQQ");
+					jsApiList.add("onMenuShareWeibo");
+					jsApiList.add("onMenuShareQZone");
+					jsApiList.add("chooseImage");
+					jsApiList.add("uploadImage");
+					signature.setJsApiList(jsApiList);
+					modelMap.addAttribute("signature", JSONObject.fromObject(signature).toString());
+					
+					return "/vtu/vtu_share";
+					
+				}else if(Long.valueOf(map.get("userId").toString()).longValue() != user_id.longValue()){
+					System.out.println("user_id != map.userId condition is worng");
+					request.getSession().removeAttribute(EConstants.SESSION_USER_ID);
+
+				    return this.redirect_wx_authorize(request,wp.getAppid(), "/vtu_share!"+vid);
+				}else{
+					System.out.println(vid+" condition is worng");
+					return "redirect:"+website; //错误的链接，跳转商城
+				}
+			}else{
+				return "redirect:"+website;
+			}
+			
+			
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+		return "/vtu/vtu_share";
 	}
 	
 	public static void main(String[] args) {

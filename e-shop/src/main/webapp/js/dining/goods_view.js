@@ -81,10 +81,9 @@ $(function(){
             field: 'goodsId',
             title: '操作',
             formatter : function(value,row,index){
-            	var c = "<a href='javascript:;' onclick='qrformPost("+value+");'>分享</a>";
-            	var a = "&nbsp;|&nbsp;<a href ='ehaisGoodsEditDetail?goodsId="+value+"'>编辑</a>";
+            	var a = "<a href ='ehaisGoodsEditDetail?goodsId="+value+"'>编辑</a>";
             	var b = "&nbsp;|&nbsp;<a href ='javascript:;' onclick='ehaisGoodsDelete("+value+");' >删除</a>";
-            	return c+a+b;
+            	return a+b;
             }
         }
         

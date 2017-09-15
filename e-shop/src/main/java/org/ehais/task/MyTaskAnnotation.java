@@ -49,8 +49,6 @@ public class MyTaskAnnotation {
     	Date date = new Date();
         System.out.println(DateUtil.formatDate(date, DateUtil.FORMATSTR_1)+"========================================updateUserNickFace");
         
-        
-        
         EHaiUsersExample example = new EHaiUsersExample();
         example.createCriteria()
         .andOpenidIsNotNull()
@@ -80,5 +78,11 @@ public class MyTaskAnnotation {
         
     }
     
+    
+    @Scheduled(cron="0 0/5 *  * * ? ")
+    public void vtuShareRemind(){
+    	Date date = new Date();
+        System.out.println(DateUtil.formatDate(date, DateUtil.FORMATSTR_1)+"========vtuShareRemind");
+    }
     
 }  

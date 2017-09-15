@@ -36,6 +36,7 @@ import org.ehais.shop.model.HaiCategoryExample;
 import org.ehais.shop.model.HaiGoods;
 import org.ehais.shop.model.HaiGoodsExample;
 import org.ehais.shop.model.HaiOrderGoods;
+import org.ehais.shop.model.HaiOrderInfo;
 import org.ehais.shop.model.HaiOrderInfoExample;
 import org.ehais.shop.model.HaiOrderInfoWithBLOBs;
 import org.ehais.shop.service.OrderInfoService;
@@ -86,7 +87,7 @@ public class DiningWebController extends EhaisCommonController{
 	private OrderInfoService orderInfoService;
 	
 	
-	//http://127.0.0.1/diningStore!7574d580-0e5f8801-1272b802-2942971253-3544a1C104-4d9ef075
+	//http://127.0.0.1/diningStore!934a1580-0c1e0501-156ed21242-2b36621253-314dd0C104-49175b56
 	@RequestMapping("/diningStore!{sid}")
 	public String diningStore(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -133,7 +134,7 @@ public class DiningWebController extends EhaisCommonController{
 					return "redirect:"+website; //错误的链接，跳转商城
 				}
 			}else{
-				
+//				return "redirect:"+website; //错误的链接，跳转商城
 				this.dining(modelMap, request, response,wp,store,store_id, sid);
 			}
 		}catch(Exception e){
@@ -549,6 +550,128 @@ public class DiningWebController extends EhaisCommonController{
 	}
 	
 	
+	@RequestMapping("/dining_user_order_detail!{oid}")
+	public String dining_user_order_detail(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@PathVariable(value = "oid") String oid	,
+			@RequestParam(value = "code", required = false) String code ){
+		Integer store_id = SignUtil.getUriStoreId(oid);
+		if(store_id == 0){
+			return "redirect:"+website; //错误的链接，跳转商城
+		}
+		request.getSession().setAttribute(EConstants.SESSION_STORE_ID, store_id);
+		try{
+			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
+			EHaiStore store = eStoreService.getEStore(store_id);
+			modelMap.addAttribute("store", store);
+			if(store == null){
+				return "redirect:"+website; //错误的链接，跳转商城
+			}
+			Map<String,Object> map = SignUtil.getOid(oid,wp.getToken());
+			if(map == null){
+			    return "redirect:"+website; //错误的链接，跳转商城
+			}
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
+			
+			if(this.isWeiXin(request)){//微信端登录
+				if((user_id == null || user_id == 0 ) && StringUtils.isEmpty(code)){
+					return this.redirect_wx_authorize(request , wp.getAppid() , "/dining_user_order_detail!"+oid);
+				}else if(StringUtils.isNotEmpty(code)){
+					System.out.println(code);
+					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map);
+					if(user == null){
+						return "redirect:"+website; //错误的链接，跳转商城
+					}
+					Long orderId = Long.valueOf(map.get("orderId").toString());
+					
+					HaiOrderInfoExample orderExample = new HaiOrderInfoExample();
+					orderExample.createCriteria().andStoreIdEqualTo(store_id).andOrderIdEqualTo(orderId).andUserIdEqualTo(user_id);
+					
+					List<HaiOrderInfoWithBLOBs> listOrder = haiOrderInfoMapper.selectByExampleWithBLOBs(orderExample);
+					if(listOrder == null || listOrder.size() == 0){
+						return "redirect:"+website; //错误的链接，跳转商城
+					}
+					modelMap.addAttribute("orderInfo", listOrder.get(0));
+				}
+			}else{
+
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("dining", e);
+			return this.errorJump(modelMap, e.getMessage());
+		}
+		
+		return "/dining/dining_user_order_detail";
+	}
+	
+	
+	@RequestMapping("/dining_store_order_detail!{oid}")
+	public String dining_store_order_detail(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@PathVariable(value = "oid") String oid	,
+			@RequestParam(value = "code", required = false) String code ){
+		
+		Integer store_id = SignUtil.getUriStoreId(oid);
+		if(store_id == 0){
+			return "redirect:"+website; //错误的链接，跳转商城
+		}
+		request.getSession().setAttribute(EConstants.SESSION_STORE_ID, store_id);
+		try{
+			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
+			EHaiStore store = eStoreService.getEStore(store_id);
+			modelMap.addAttribute("store", store);
+			if(store == null){
+				return "redirect:"+website; //错误的链接，跳转商城
+			}
+			Map<String,Object> map = SignUtil.getOid(oid,wp.getToken());
+			if(map == null){
+			    return "redirect:"+website; //错误的链接，跳转商城
+			}
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
+			
+			if(this.isWeiXin(request)){//微信端登录
+				if((user_id == null || user_id == 0 ) && StringUtils.isEmpty(code)){
+					return this.redirect_wx_authorize(request , wp.getAppid() , "/dining_store_order_detail!"+oid);
+				}else if(StringUtils.isNotEmpty(code)){
+					System.out.println(code);
+					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map);
+					if(user == null){
+						return "redirect:"+website; //错误的链接，跳转商城
+					}
+					Long orderId = Long.valueOf(map.get("orderId").toString());
+					
+					HaiOrderInfoExample orderExample = new HaiOrderInfoExample();
+					orderExample.createCriteria().andStoreIdEqualTo(store_id).andOrderIdEqualTo(orderId).andUserIdEqualTo(user_id);
+					
+					List<HaiOrderInfoWithBLOBs> listOrder = haiOrderInfoMapper.selectByExampleWithBLOBs(orderExample);
+					if(listOrder == null || listOrder.size() == 0){
+						return "redirect:"+website; //错误的链接，跳转商城
+					}
+					modelMap.addAttribute("orderInfo", listOrder.get(0));
+				}
+			}else{
+
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("dining", e);
+			return this.errorJump(modelMap, e.getMessage());
+		}
+		
+		return "/dining/dining_store_order_detail";
+	}
+	
+	
+	public static void main(String[] args) {
+		try {
+			String newSid = SignUtil.setDiningId(58,0,124L,125L, "C10", "ehais_wxdev");
+			System.out.println(newSid);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	
 }

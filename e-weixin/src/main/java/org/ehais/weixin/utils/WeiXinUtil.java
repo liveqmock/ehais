@@ -282,9 +282,8 @@ public class WeiXinUtil {
 	
 	public static OpenidInfo getOpenid(String code,String weixin_appid,String weixin_appsecret) throws Exception {
 		//code从这里来https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9439cbf94f9235f0&redirect_uri=http://www.gz96833.com/test.jsp&response_type=code&scope=snsapi_base&state=123#wechat_redirect
-		OpenidInfo info = new OpenidInfo();
-		if(StringUtil.NullOrEqual(weixin_appsecret) || StringUtil.NullOrEqual(weixin_appid) || 
-				StringUtil.NullOrEqual(code) ){
+		OpenidInfo info = null;
+		if(StringUtil.NullOrEqual(weixin_appsecret) || StringUtil.NullOrEqual(weixin_appid) || StringUtil.NullOrEqual(code) ){
 			return null;
 		}
 		String requestUrl = WXConstants.get_opendid_url + "&appid=" + weixin_appid + "&secret=" + weixin_appsecret + "&code=" +code;
@@ -294,6 +293,7 @@ public class WeiXinUtil {
 		JSONObject jsonObject = JSONObject.fromObject(request);
 		if(null != jsonObject){
 			try {
+				info = new OpenidInfo();
 				info.setOpenid(jsonObject.getString("openid"));
 				info.setExpires_in(jsonObject.getInt("expires_in"));
 			} catch (Exception e) {
