@@ -432,12 +432,12 @@ public class SignUtil {
 			Long vtuId,
 			Long vtuShareId,
 			String secret) throws Exception{
-		String md5 = EncryptUtils.md5(store_id.toString()+parentId.toString()+userId.toString()+vtuId.toString()+secret);
+		String md5 = EncryptUtils.md5(store_id.toString()+parentId.toString()+userId.toString()+vtuId.toString()+vtuShareId.toString()+secret);
 		String pid = md5.substring(0, 5)+store_id.toString()+"0-0"+
 				md5.substring(5,10)+parentId.toString()+"1-1"+
 				md5.substring(10,15)+userId.toString()+"2-2"+
 				md5.substring(15,20)+vtuId.toString()+"3-3"+
-				md5.substring(21,25)+vtuShareId.toString()+"4-4"+
+				md5.substring(20,25)+vtuShareId.toString()+"4-4"+
 				md5.substring(25,32);
 		return pid;
 	}

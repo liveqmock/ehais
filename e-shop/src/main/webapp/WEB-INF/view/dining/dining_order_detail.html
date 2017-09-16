@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<title></title>
+		<link rel="stylesheet" href="css/dining.css" />
+		
+	</head>
+	<body>
+		<div class="wrapper_dining">
+			<ul class="order_detail">
+				<li class="store">
+					${store.storeName!''}
+				</li>
+				<li>
+					<span>订单号</span>
+					<span>${orderInfo.orderSn!''}</span>
+				</li>
+				<li>
+					<span>金额</span>
+					<span>￥${((orderInfo.orderAmount!0) / 100 )}</span>
+				</li>
+				<li>
+					<span>付款方式</span>
+					<span>${orderInfo.payName!''}</span>
+				</li>
+				<li class="tline">
+					${orderInfo.goodsDesc!''}
+				</li>
+			</ul>
+		</div>
+	</body>
+</html>

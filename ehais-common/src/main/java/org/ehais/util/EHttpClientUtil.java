@@ -5,6 +5,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.List;
@@ -544,5 +547,22 @@ public class EHttpClientUtil {
 		return responseBody;
 	}
 	
+	/**
+	 * 获取图片输出流
+	 * @param path
+	 * @return
+	 * @throws Exception
+	 */
+	public static InputStream getUriStream(String path) throws Exception{
+		URL url = new URL(path);
+		// 打开连接
+		URLConnection con = url.openConnection();
+		// 设置请求超时为120s
+		con.setConnectTimeout(120 * 1000);
+		// 输入流
+		InputStream is = con.getInputStream();
+		
+		return is;
+	}
 	
 }

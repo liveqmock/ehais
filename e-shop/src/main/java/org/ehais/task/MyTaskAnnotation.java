@@ -13,6 +13,7 @@ import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.epublic.service.EWPPublicService;
 import org.ehais.shop.service.VtuService;
 import org.ehais.util.DateUtil;
+import org.ehais.util.ResourceUtil;
 import org.ehais.weixin.model.AccessToken;
 import org.ehais.weixin.model.WeiXinUserInfo;
 import org.ehais.weixin.utils.WeiXinUtil;
@@ -37,6 +38,13 @@ public class MyTaskAnnotation {
 	private HttpServletRequest request;
 	@Autowired
 	private VtuService vtuService;
+	
+	
+	public static String webapp_domain = ResourceUtil.getProValue("webapp.domain");
+	public static String webapp_vtu = ResourceUtil.getProValue("webapp.vtu");
+	
+	
+	
       
 //    /**  
 //     * 定时计算。每天凌晨 01:00 执行一次  
@@ -94,12 +102,12 @@ public class MyTaskAnnotation {
     	Date date = new Date();
         System.out.println(DateUtil.formatDate(date, DateUtil.FORMATSTR_1)+"========vtuShareRemind");
         
-        WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
-        ServletContext servletContext = webApplicationContext.getServletContext();
+//        WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
+//        ServletContext servletContext = webApplicationContext.getServletContext();
 //        servletContext.getContextPath().
 //        servletContext.get
         try {
-//			vtuService.vtuMessage(request, DateUtil.formatDate(date, "HH:mm"));
+			vtuService.vtuMessage(webapp_domain , webapp_vtu, DateUtil.formatDate(date, "HH:mm"));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

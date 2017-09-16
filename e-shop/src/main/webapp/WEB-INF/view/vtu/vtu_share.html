@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<title>微签设置</title>
+		
+		<link rel="stylesheet" href="css/vtu.css" />
+		
+		<script type="text/javascript" src="js/jquery-2.1.4.min.js" ></script>
+
+		<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js" ></script>
+		<script type="text/javascript" src="js/wxsdk.js" ></script>
+		
+	</head>
+	<body>
+		<div class="share_wrapper">
+			<img class="share" src="${vtuShare.vtuPic!''}">
+		</div>
+		
+		<script type="text/javascript">
+			var vid = "${vid}";
+			$(function(){
+				wx_config(${signature});
+			});
+			
+			function shareSuccess(""){
+				$.get("/vtuShareSuccess!"+vid);
+			}
+			
+			function shareCancel(""){
+				
+			}
+			
+			
+		</script>
+	</body>
+</html>

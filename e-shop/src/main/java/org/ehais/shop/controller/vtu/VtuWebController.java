@@ -236,7 +236,6 @@ public class VtuWebController extends EhaisCommonController{
 		try{
 			Map<String,Object> map = SignUtil.getVtuId ( vid,weixin_token);
 			if(map == null){
-				System.out.println("====================10002");
 			    return "redirect:"+website; //错误的链接，跳转商城
 			}
 			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
@@ -245,17 +244,14 @@ public class VtuWebController extends EhaisCommonController{
 			
 			if(this.isWeiXin(request)){//微信端登录
 				if((user_id == null || user_id == 0 ) && StringUtils.isEmpty(code)){
-					System.out.println("====================10003");
 					return this.redirect_wx_authorize(request , weixin_appid , "/vtu_share!"+vid);
 				}else if(StringUtils.isNotEmpty(code)){
-					System.out.println("====================10004");
 					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map);
 					String newSid = SignUtil.setVtuId(store_id,Long.valueOf(map.get("userId").toString()), user.getUserId(),Long.valueOf(map.get("vtuId").toString()),Long.valueOf(map.get("vtuShareId").toString()),weixin_token);
 					String link = request.getScheme() + "://" + request.getServerName() + "/vtu_share!"+newSid;
 					System.out.println("code:"+link);
 					return "redirect:"+link;
 				}else if(user_id > 0 && Long.valueOf(map.get("userId").toString()).longValue() == user_id.longValue()){//经过code获取用户信息跳回自己的链接中来
-					System.out.println("====================10005");
 					//判断是否已设置签到记录
 					VtuShareExample vs_exp = new VtuShareExample();
 					vs_exp.createCriteria()
@@ -291,18 +287,15 @@ public class VtuWebController extends EhaisCommonController{
 					return "/vtu/vtu_share";
 					
 				}else if(Long.valueOf(map.get("userId").toString()).longValue() != user_id.longValue()){
-					System.out.println("====================10006");
 					System.out.println("user_id != map.userId condition is worng");
 					request.getSession().removeAttribute(EConstants.SESSION_USER_ID);
 
 				    return this.redirect_wx_authorize(request,weixin_appid, "/vtu_share!"+vid);
 				}else{
-					System.out.println("====================10007");
 					System.out.println(vid+" condition is worng");
 					return "redirect:"+website; //错误的链接，跳转商城
 				}
 			}else{
-				System.out.println("====================10008");
 				return "redirect:"+website;
 			}
 					
@@ -410,7 +403,11 @@ public class VtuWebController extends EhaisCommonController{
 			HttpServletRequest request,HttpServletResponse response){
 		String img = "";
 		try {
-			String path = vtuService.vtuMessage(request, "08:30");
+			
+			String domain = request.getScheme()+"://"+request.getServerName();
+			String vtujson = request.getRealPath("/vtu")+"/vtu.json";
+			
+			String path = vtuService.vtuMessage(domain ,vtujson, "08:30");
 			img = "<img src='"+path+"'>";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

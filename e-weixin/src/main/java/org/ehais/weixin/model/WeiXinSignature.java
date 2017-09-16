@@ -22,7 +22,8 @@ public class WeiXinSignature implements Serializable{
 	private String type;// 分享类型,music、video或link，不填默认为link
 	private String dataUrl;// 如果type是music或video，则要提供数据链接，默认为空
 	private List<String> jsApiList;//api接口列表
-
+	private String shareSuccess;
+	private String shareCancel;
 
 	public String getAppId() {
 		return appId;
@@ -141,6 +142,26 @@ public class WeiXinSignature implements Serializable{
 
 	public void setJsApiList(List<String> jsApiList) {
 		this.jsApiList = jsApiList;
+	}
+
+
+	public String getShareSuccess() {
+		return shareSuccess;
+	}
+
+
+	public void setShareSuccess(String shareSuccess) {
+		this.shareSuccess = shareSuccess;
+	}
+
+
+	public String getShareCancel() {
+		return shareCancel;
+	}
+
+
+	public void setShareCancel(String shareCancel) {
+		this.shareCancel = shareCancel;
 	}
 
 	
