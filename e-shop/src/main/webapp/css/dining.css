@@ -262,6 +262,33 @@
   padding: 0.08rem 0;
   border-bottom: 0.01rem solid #DCDCDC;
 }
+.wrapper_dining .order_detail {
+  width: 100%;
+  float: left;
+  padding: 0.15rem;
+  box-sizing: border-box;
+}
+.wrapper_dining .order_detail li {
+  width: 100%;
+  float: left;
+  padding: 0.08rem 0;
+  box-sizing: border-box;
+}
+.wrapper_dining .order_detail li span:first-child {
+  float: left;
+  color: #aaa;
+}
+.wrapper_dining .order_detail li span:last-child {
+  float: right;
+}
+.wrapper_dining .order_detail li.store {
+  font-size: 0.18rem;
+}
+.wrapper_dining .order_detail li.tline {
+  border-top: 0.01rem dashed #D2D2D2;
+  margin-top: 0.15rem;
+  padding-top: 0.15rem;
+}
 footer {
   position: fixed;
   width: 100%;

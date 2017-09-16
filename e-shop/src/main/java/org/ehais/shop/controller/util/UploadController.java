@@ -130,7 +130,7 @@ public class UploadController extends CommonController {
 	@RequestMapping(value = "/weixin_media_to_qiniu", method = RequestMethod.POST)
 	public JSONObject weixin_media_to_qiniu(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response,
 			@RequestParam(value = "media_id", required = true) String media_id) {
-		
+		System.out.println("media_id:"+media_id);
 		try {
 			Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 			
@@ -140,7 +140,7 @@ public class UploadController extends CommonController {
 			String url = WXConstants.download_media
 					.replace("ACCESS_TOKEN", accessToken.getAccess_token())
 					.replace("MEDIA_ID", media_id);
-			
+			System.out.println("media_id:"+url);
 			return this.downToQiniu(url);
 		} catch (Exception e) {
 			e.printStackTrace();

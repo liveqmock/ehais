@@ -549,7 +549,7 @@ public class DiningWebController extends EhaisCommonController{
 		
 	}
 	
-	
+	//http://127.0.0.1/dining_user_order_detail!d3172580-0ff0d6231-1b45db1012017091511435351591252-2bf77a1253-36d5b3oiGBot1K1vYJA2DFv2B-0W2xL9O04-44cdc5ba
 	@RequestMapping("/dining_user_order_detail!{oid}")
 	public String dining_user_order_detail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -572,29 +572,31 @@ public class DiningWebController extends EhaisCommonController{
 			    return "redirect:"+website; //错误的链接，跳转商城
 			}
 			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
-			
 			if(this.isWeiXin(request)){//微信端登录
-				if((user_id == null || user_id == 0 ) && StringUtils.isEmpty(code)){
+				if(StringUtils.isEmpty(code)){
 					return this.redirect_wx_authorize(request , wp.getAppid() , "/dining_user_order_detail!"+oid);
 				}else if(StringUtils.isNotEmpty(code)){
-					System.out.println(code);
 					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map);
 					if(user == null){
 						return "redirect:"+website; //错误的链接，跳转商城
 					}
+					user_id = user.getUserId();
 					Long orderId = Long.valueOf(map.get("orderId").toString());
 					
 					HaiOrderInfoExample orderExample = new HaiOrderInfoExample();
-					orderExample.createCriteria().andStoreIdEqualTo(store_id).andOrderIdEqualTo(orderId).andUserIdEqualTo(user_id);
-					
+					orderExample.createCriteria()
+					.andStoreIdEqualTo(store_id)
+					.andOrderIdEqualTo(orderId)
+					.andUserIdEqualTo(user_id);
 					List<HaiOrderInfoWithBLOBs> listOrder = haiOrderInfoMapper.selectByExampleWithBLOBs(orderExample);
 					if(listOrder == null || listOrder.size() == 0){
 						return "redirect:"+website; //错误的链接，跳转商城
 					}
 					modelMap.addAttribute("orderInfo", listOrder.get(0));
+				}else{
 				}
+				
 			}else{
-
 			}
 		}catch(Exception e){
 			e.printStackTrace();
@@ -602,7 +604,7 @@ public class DiningWebController extends EhaisCommonController{
 			return this.errorJump(modelMap, e.getMessage());
 		}
 		
-		return "/dining/dining_user_order_detail";
+		return "/dining/dining_order_detail";
 	}
 	
 	
@@ -629,9 +631,8 @@ public class DiningWebController extends EhaisCommonController{
 			    return "redirect:"+website; //错误的链接，跳转商城
 			}
 			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
-			
 			if(this.isWeiXin(request)){//微信端登录
-				if((user_id == null || user_id == 0 ) && StringUtils.isEmpty(code)){
+				if(StringUtils.isEmpty(code)){
 					return this.redirect_wx_authorize(request , wp.getAppid() , "/dining_store_order_detail!"+oid);
 				}else if(StringUtils.isNotEmpty(code)){
 					System.out.println(code);
@@ -639,10 +640,15 @@ public class DiningWebController extends EhaisCommonController{
 					if(user == null){
 						return "redirect:"+website; //错误的链接，跳转商城
 					}
+					user_id = user.getUserId();
+					
 					Long orderId = Long.valueOf(map.get("orderId").toString());
 					
 					HaiOrderInfoExample orderExample = new HaiOrderInfoExample();
-					orderExample.createCriteria().andStoreIdEqualTo(store_id).andOrderIdEqualTo(orderId).andUserIdEqualTo(user_id);
+					orderExample.createCriteria()
+					.andStoreIdEqualTo(store_id)
+					.andOrderIdEqualTo(orderId)
+					.andUserIdEqualTo(user_id);
 					
 					List<HaiOrderInfoWithBLOBs> listOrder = haiOrderInfoMapper.selectByExampleWithBLOBs(orderExample);
 					if(listOrder == null || listOrder.size() == 0){
@@ -659,13 +665,13 @@ public class DiningWebController extends EhaisCommonController{
 			return this.errorJump(modelMap, e.getMessage());
 		}
 		
-		return "/dining/dining_store_order_detail";
+		return "/dining/dining_order_detail";
 	}
 	
 	
 	public static void main(String[] args) {
 		try {
-			String newSid = SignUtil.setDiningId(58,0,124L,125L, "C10", "ehais_wxdev");
+			String newSid = SignUtil.setOid(58, 23L , "101201709151143535159125", 125L, "oiGBot1K1vYJA2DFv2B-0W2xL9O0", "ehais_wxdev");
 			System.out.println(newSid);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

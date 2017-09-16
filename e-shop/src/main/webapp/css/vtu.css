@@ -62,7 +62,7 @@
 .vtu_wrapper > dl dd ul li input[type='button'] {
   border: 0;
   border-bottom: 0.01rem solid #ddd;
-  width: 65%;
+  width: 60%;
   background: none;
   float: left;
   font-size: 0.16rem;
@@ -105,6 +105,9 @@
   border: 1px solid #ddd;
   border-radius: 4px;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+.share_wrapper img.share {
+  max-width: 100%;
 }
 .vtu_time {
   font-size: 0.16rem;

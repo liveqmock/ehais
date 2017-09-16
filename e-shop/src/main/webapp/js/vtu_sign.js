@@ -46,6 +46,9 @@ $(function(){
 		});
 		
 	});
+	if($("#pic").val() != null && $("#pic").val()!=""){
+		$(".pic").addClass("active");
+	}
 });
 
 function create_time(start,end,time){

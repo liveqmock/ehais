@@ -3,18 +3,24 @@ package org.ehais.task;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+
 import org.ehais.epublic.mapper.EHaiUsersMapper;
 import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.epublic.model.EHaiUsersExample;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.epublic.service.EWPPublicService;
+import org.ehais.shop.service.VtuService;
 import org.ehais.util.DateUtil;
 import org.ehais.weixin.model.AccessToken;
 import org.ehais.weixin.model.WeiXinUserInfo;
 import org.ehais.weixin.utils.WeiXinUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;  
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.context.WebApplicationContext;  
   
 /** 
  * 基于注解的定时器 
@@ -26,7 +32,11 @@ public class MyTaskAnnotation {
 	@Autowired
 	private EHaiUsersMapper eHaiUsersMapper;
 	@Autowired
-	protected EWPPublicService eWPPublicService;
+	private EWPPublicService eWPPublicService;
+	@Autowired
+	private HttpServletRequest request;
+	@Autowired
+	private VtuService vtuService;
       
 //    /**  
 //     * 定时计算。每天凌晨 01:00 执行一次  
@@ -83,6 +93,18 @@ public class MyTaskAnnotation {
     public void vtuShareRemind(){
     	Date date = new Date();
         System.out.println(DateUtil.formatDate(date, DateUtil.FORMATSTR_1)+"========vtuShareRemind");
+        
+        WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
+        ServletContext servletContext = webApplicationContext.getServletContext();
+//        servletContext.getContextPath().
+//        servletContext.get
+        try {
+//			vtuService.vtuMessage(request, DateUtil.formatDate(date, "HH:mm"));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
     }
     
 }  
