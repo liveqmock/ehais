@@ -247,10 +247,19 @@ public class VtuWebController extends EhaisCommonController{
 					return this.redirect_wx_authorize(request , weixin_appid , "/vtu_share!"+vid);
 				}else if(StringUtils.isNotEmpty(code)){
 					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map);
-					String newSid = SignUtil.setVtuId(store_id,Long.valueOf(map.get("userId").toString()), user.getUserId(),Long.valueOf(map.get("vtuId").toString()),Long.valueOf(map.get("vtuShareId").toString()),weixin_token);
-					String link = request.getScheme() + "://" + request.getServerName() + "/vtu_share!"+newSid;
-					System.out.println("code:"+link);
-					return "redirect:"+link;
+					
+					if(Long.valueOf(map.get("userId").toString()).longValue() == user_id.longValue()){
+						String newSid = SignUtil.setVtuId(store_id,Long.valueOf(map.get("userId").toString()), user.getUserId(),Long.valueOf(map.get("vtuId").toString()),Long.valueOf(map.get("vtuShareId").toString()),weixin_token);
+						String link = request.getScheme() + "://" + request.getServerName() + "/vtu_share!"+newSid;
+						System.out.println("code:"+link);
+						return "redirect:"+link;
+					}else{
+						String newSid = SignUtil.setCid(store_id,0,Long.valueOf(map.get("userId").toString()), user.getUserId(),weixin_token);
+						String link = request.getScheme() + "://" + request.getServerName() + "/vtu_sign!"+newSid;
+						System.out.println("code:"+link);
+						return "redirect:"+link;
+					}
+					
 				}else if(user_id > 0 && Long.valueOf(map.get("userId").toString()).longValue() == user_id.longValue()){//经过code获取用户信息跳回自己的链接中来
 					//判断是否已设置签到记录
 					VtuShareExample vs_exp = new VtuShareExample();
@@ -268,7 +277,7 @@ public class VtuWebController extends EhaisCommonController{
 					String link = request.getScheme() + "://" + request.getServerName() + "/vtu_share!"+vid;
 					
 					WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, Integer.valueOf(map.get("store_id").toString()), weixin_appid, weixin_appsecret, null);
-					signature.setTitle("微签");
+					signature.setTitle("微签 每一天朋友圈签到");
 					signature.setLink(link);
 					signature.setDesc("每天定时提醒你在朋友圈签到，让朋友知道你从事哪种职业，增加朋友圈的曝光率!");
 					signature.setImgUrl(defaultimg);
@@ -290,7 +299,12 @@ public class VtuWebController extends EhaisCommonController{
 					System.out.println("user_id != map.userId condition is worng");
 					request.getSession().removeAttribute(EConstants.SESSION_USER_ID);
 
-				    return this.redirect_wx_authorize(request,weixin_appid, "/vtu_share!"+vid);
+					String newSid = SignUtil.setCid(store_id,0,Long.valueOf(map.get("userId").toString()), user_id,weixin_token);
+					String link = request.getScheme() + "://" + request.getServerName() + "/vtu_sign!"+newSid;
+					System.out.println("code:"+link);
+					return "redirect:"+link;
+				    
+				    
 				}else{
 					System.out.println(vid+" condition is worng");
 					return "redirect:"+website; //错误的链接，跳转商城
@@ -355,6 +369,10 @@ public class VtuWebController extends EhaisCommonController{
 				}
 				
 				VtuShare share = list.get(0);
+				if(share.getIsShare()){
+					rm.setMsg("vtu share id has share 1040");
+					return this.writeJson(rm);
+				}
 				Date date = new Date();
 				share.setShareTime(date);
 				share.setIsShare(true);

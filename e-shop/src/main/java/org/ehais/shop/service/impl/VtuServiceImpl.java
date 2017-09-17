@@ -78,18 +78,15 @@ public class VtuServiceImpl implements VtuService {
 	public String vtuMessage(String appdomain,String vtujson,String vtime) throws Exception {
 		// TODO Auto-generated method stub
 		
-		VtuSignExample exp = new VtuSignExample();
-		VtuSignExample.Criteria c = exp.createCriteria();
-		c.andIsValidEqualTo(true);
-		List<VtuSign> listVtuSign = vtuSignMapper.selectByExample(exp);
-		if(listVtuSign == null || listVtuSign.size() == 0){
-			return null;
-		}
-
 		String vtuContent = FSO.ReadFileName(vtujson);
 		JSONObject json = JSONObject.fromObject(vtuContent);
 		InputStream orgImg = EHttpClientUtil.getUriStream(json.getJSONArray("org").get(3).toString());
 		InputStream hourImg = null;
+		
+		
+		VtuSignExample exp = new VtuSignExample();
+		VtuSignExample.Criteria c = exp.createCriteria();
+		c.andIsValidEqualTo(true);
 		
 		
 		int hour = Integer.parseInt(vtime.substring(0,2));
@@ -106,6 +103,12 @@ public class VtuServiceImpl implements VtuService {
 			return null;
 		}
 		
+		List<VtuSign> listVtuSign = vtuSignMapper.selectByExample(exp);
+		if(listVtuSign == null || listVtuSign.size() == 0){
+			return null;
+		}
+
+			
 		EHaiArticleExample expArt = new EHaiArticleExample();
 		expArt.createCriteria().andStoreIdEqualTo(store_id);
 		List<EHaiArticle> listArticle = eHaiArticleMapper.selectByExample(expArt);
@@ -118,6 +121,7 @@ public class VtuServiceImpl implements VtuService {
 		Date date = new Date();
 		String path = null;
 		for (VtuSign vtuSign : listVtuSign) {
+			System.out.println("vtu service message ,.........."+vtuSign.getVtuId());
 			path = this.sharePic(orgImg, hourImg, 
 					vtuSign.getRealname(), 
 					vtuSign.getMobile(), 

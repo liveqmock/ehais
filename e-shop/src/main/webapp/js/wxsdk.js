@@ -22,11 +22,11 @@ function wx_config(data){
 		    imgUrl: data.imgUrl, // 分享图标
 		    success: function () { 
 		        // 用户确认分享后执行的回调函数
-		    	if(typeof(eval(data.shareSuccess))=="function"){e.shareSuccess("onMenuShareTimeline");}
+		    	if(typeof(eval(data.shareSuccess))=="function"){data.shareSuccess("onMenuShareTimeline");}
 		    },
 		    cancel: function () { 
 		        // 用户取消分享后执行的回调函数
-		    	if(typeof(eval(data.shareCancel))=="function"){e.shareCancel("onMenuShareTimeline");}
+		    	if(typeof(eval(data.shareCancel))=="function"){data.shareCancel("onMenuShareTimeline");}
 		    }
 		});
 		
@@ -40,11 +40,11 @@ function wx_config(data){
 		    dataUrl: data.dataUrl, // 如果type是music或video，则要提供数据链接，默认为空
 		    success: function () { 
 		        // 用户确认分享后执行的回调函数
-		    	if(typeof(eval(data.shareSuccess))=="function"){e.shareSuccess("onMenuShareAppMessage");}
+		    	if(typeof(eval(data.shareSuccess))=="function"){data.shareSuccess("onMenuShareAppMessage");}
 		    },
 		    cancel: function () { 
 		        // 用户取消分享后执行的回调函数
-		    	if(typeof(eval(data.shareCancel))=="function"){e.shareCancel("onMenuShareAppMessage");}
+		    	if(typeof(eval(data.shareCancel))=="function"){data.shareCancel("onMenuShareAppMessage");}
 		    }
 		});
 		
@@ -56,11 +56,11 @@ function wx_config(data){
 		    imgUrl: data.imgUrl, // 分享图标
 		    success: function () { 
 		       // 用户确认分享后执行的回调函数
-		    	if(typeof(eval(data.shareSuccess))=="function"){e.shareSuccess("onMenuShareQQ");}
+		    	if(typeof(eval(data.shareSuccess))=="function"){data.shareSuccess("onMenuShareQQ");}
 		    },
 		    cancel: function () { 
 		       // 用户取消分享后执行的回调函数
-		    	if(typeof(eval(data.shareCancel))=="function"){e.shareCancel("onMenuShareQQ");}
+		    	if(typeof(eval(data.shareCancel))=="function"){data.shareCancel("onMenuShareQQ");}
 		    }
 		});
 		
@@ -72,11 +72,11 @@ function wx_config(data){
 		    imgUrl: data.imgUrl, // 分享图标
 		    success: function () { 
 		       // 用户确认分享后执行的回调函数
-		    	if(typeof(eval(data.shareSuccess))=="function"){e.shareSuccess("onMenuShareWeibo");}
+		    	if(typeof(eval(data.shareSuccess))=="function"){data.shareSuccess("onMenuShareWeibo");}
 		    },
 		    cancel: function () { 
 		        // 用户取消分享后执行的回调函数
-		    	if(typeof(eval(data.shareCancel))=="function"){e.shareCancel("onMenuShareWeibo");}
+		    	if(typeof(eval(data.shareCancel))=="function"){data.shareCancel("onMenuShareWeibo");}
 		    }
 		});
 		
@@ -88,11 +88,11 @@ function wx_config(data){
 		    imgUrl: data.imgUrl, // 分享图标
 		    success: function () { 
 		       // 用户确认分享后执行的回调函数
-		    	if(typeof(eval(data.shareSuccess))=="function"){e.shareSuccess("onMenuShareQZone");}
+		    	if(typeof(eval(data.shareSuccess))=="function"){data.shareSuccess("onMenuShareQZone");}
 		    },
 		    cancel: function () { 
 		        // 用户取消分享后执行的回调函数
-		    	if(typeof(eval(data.shareCancel))=="function"){e.shareCancel("onMenuShareQZone");}
+		    	if(typeof(eval(data.shareCancel))=="function"){data.shareCancel("onMenuShareQZone");}
 		    }
 		});
 		

@@ -102,10 +102,6 @@ public class MyTaskAnnotation {
     	Date date = new Date();
         System.out.println(DateUtil.formatDate(date, DateUtil.FORMATSTR_1)+"========vtuShareRemind");
         
-//        WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
-//        ServletContext servletContext = webApplicationContext.getServletContext();
-//        servletContext.getContextPath().
-//        servletContext.get
         try {
 			vtuService.vtuMessage(webapp_domain , webapp_vtu, DateUtil.formatDate(date, "HH:mm"));
 		} catch (Exception e) {

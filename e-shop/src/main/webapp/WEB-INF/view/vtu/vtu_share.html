@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
-		<title>微签设置</title>
+		<title>微签分享</title>
 		
 		<link rel="stylesheet" href="css/vtu.css" />
 		
@@ -16,21 +16,25 @@
 	<body>
 		<div class="share_wrapper">
 			<img class="share" src="${vtuShare.vtuPic!''}">
+			
 		</div>
 		
 		<script type="text/javascript">
 			var vid = "${vid}";
+			var signature = ${signature};
+			
 			$(function(){
-				wx_config(${signature});
+				signature.shareSuccess = function (m){
+					$.get("/vtuShareSuccess!"+vid);
+				}
+				signature.shareCancel = function (m){
+					
+				}
+				wx_config(signature);
 			});
 			
-			function shareSuccess(""){
-				$.get("/vtuShareSuccess!"+vid);
-			}
 			
-			function shareCancel(""){
-				
-			}
+			
 			
 			
 		</script>
