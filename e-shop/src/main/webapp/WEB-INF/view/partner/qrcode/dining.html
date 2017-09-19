@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="/js/jquery-2.1.4.min.js" ></script>
+<script type="text/javascript" src="/js/jquery.qrcode.min.js" ></script>
+
+</head>
+<body>
+	<div style="padding: 50px;box-sizing: border-box;">
+		<div id="qrcode"></div>
+	</div>
+	<script type="text/javascript">
+	var qrcode = "${qrcode}";
+	$(function(){
+
+	    $('#qrcode').qrcode({width:200,height:200,correctLevel:0,text:qrcode});  
+
+	});
+	</script>
+</body>
+</html>

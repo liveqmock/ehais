@@ -425,7 +425,65 @@ public class SignUtil {
 	}
 	
 	
-	public static String setVtuId(
+	
+	public static String setVtuSignId(
+			Integer store_id,
+			Long parentId,
+			Long userId,
+			Long vtuId,
+			String secret) throws Exception{
+		String md5 = EncryptUtils.md5(store_id.toString()+parentId.toString()+userId.toString()+vtuId.toString()+secret);
+		String pid = md5.substring(0, 5)+store_id.toString()+"0-0"+
+				md5.substring(5,10)+parentId.toString()+"1-1"+
+				md5.substring(10,15)+userId.toString()+"2-2"+
+				md5.substring(15,20)+vtuId.toString()+"3-3"+
+				md5.substring(20,32);
+		return pid;
+	}
+	
+	
+
+	public static Map<String,Object> getVtuSignId(String vid,String secret){
+		if(StringUtils.isEmpty(vid))return null;
+		Map<String,Object> map = null;
+		try{
+			Integer n0 = vid.indexOf("0-0");
+			Integer n1 = vid.indexOf("1-1");
+			Integer n2 = vid.indexOf("2-2");
+			Integer n3 = vid.indexOf("3-3");
+			
+			String s0 = vid.substring(0, 5);
+			String store_id = vid.substring(5,n0);
+			
+			String s1 = vid.substring(n0+3,n0+8);
+			String parentId = vid.substring(n0+8, n1);
+			
+			String s2 = vid.substring(n1+3, n1+8);
+			String userId = vid.substring(n1+8, n2);
+			
+			String s3 = vid.substring(n2+3,n2+8);
+			String vtuId = vid.substring(n2+8, n3);
+			
+			String s4 = vid.substring(n3+3,n3+15);
+			if(EncryptUtils.md5(store_id+parentId+userId+vtuId+secret).equals(s0+s1+s2+s3+s4)){
+				map = new HashMap<String,Object>();
+				map.put("store_id", store_id);
+				map.put("parentId", parentId);
+				map.put("userId", userId);
+				map.put("vtuId", vtuId);
+			}
+			
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+				
+		return map;
+	}
+	
+	
+	
+	public static String setVtuShareId(
 			Integer store_id,
 			Long parentId,
 			Long userId,
@@ -443,7 +501,7 @@ public class SignUtil {
 	}
 	
 	
-	public static Map<String,Object> getVtuId(String vid,String secret){
+	public static Map<String,Object> getVtuShareId(String vid,String secret){
 		if(StringUtils.isEmpty(vid))return null;
 		Map<String,Object> map = null;
 		try{
@@ -501,6 +559,7 @@ public class SignUtil {
 		Integer articleId = 9086;
 		Long goodsId = 2381L;
 		Integer partnerId = 10;
+		Long vtuId = 1L;
 		
 //		String sid = SignUtil.setSid(store_id, agencyId, parentId, userId, articleId, goodsId, secret);
 //		System.out.println(sid);
@@ -509,10 +568,14 @@ public class SignUtil {
 //		Map<String,Object> mid = SignUtil.getDiningId(did, secret);
 //		Bean2Utils.printMap(mid);
 		
-		String pid = SignUtil.setPartnerId(partnerId, parentId, userId, secret);
-		System.out.println(pid);
-		Map<String,Object> mid = SignUtil.getPartnerId(pid, secret);
-		Bean2Utils.printMap(mid);
+//		String pid = SignUtil.setPartnerId(partnerId, parentId, userId, secret);
+//		System.out.println(pid);
+//		Map<String,Object> mid = SignUtil.getPartnerId(pid, secret);
+//		Bean2Utils.printMap(mid);
+		
+		String vid = SignUtil.setVtuSignId(store_id, parentId, userId, vtuId, secret);
+		Map<String,Object> vsid = SignUtil.getVtuSignId(vid, secret);
+		Bean2Utils.printMap(vsid);
 		
 	}
 	

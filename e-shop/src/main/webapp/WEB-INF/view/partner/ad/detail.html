@@ -54,7 +54,7 @@
 		<option value="">请选择位置</option>
 		<#if (rm.map.adpositionList?? && rm.map.adpositionList?size > 0 )>
 		<#list rm.map.adpositionList as p>
-			<option value="${p.positionId}"  <#if (p.positionId == rm.model.positionId)>selected="selected"</#if> >${p["positionName"]}【${p.adWidth}*${p.adHeight}】</option>
+			<option value="${p.positionId}"  <#if (p.positionId == rm.model.positionId!0)>selected="selected"</#if> >${p["positionName"]}【${p.adWidth}*${p.adHeight}】</option>
 		</#list>
 		</#if>
 	</select>

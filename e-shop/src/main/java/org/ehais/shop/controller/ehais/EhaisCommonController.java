@@ -62,12 +62,7 @@ public class EhaisCommonController extends CommonController{
 	 * @return
 	 * @throws Exception
 	 */
-	protected EHaiUsers saveUserByOpenIdInfo(HttpServletRequest request,String code,Map<String ,Object> map) throws Exception{
-		//获取openid
-		WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(Integer.valueOf(map.get("store_id").toString()));
-		OpenidInfo open = WeiXinUtil.getOpenid(code,wp.getAppid(),wp.getSecret());
-		if(open == null) return null;
-		//根据openid获取用户是否存在
+	private EHaiUsers saveUserOpen(HttpServletRequest request,OpenidInfo open,Map<String ,Object> map){
 		EHaiUsersExample userExp = new EHaiUsersExample();
 		EHaiUsersExample.Criteria userC = userExp.createCriteria();
 		userC.andOpenidEqualTo(open.getOpenid());
@@ -97,9 +92,21 @@ public class EhaisCommonController extends CommonController{
 			eHaiUsersMapper.updateByPrimaryKeyWithBLOBs(user);
 			request.getSession().setAttribute(EConstants.SESSION_USER_ID, user.getUserId());
 		}
-//		request.getSession(true).setAttribute(EConstants.SESSION_OPEN_ID, open.getOpenid());
 		
 		return user;
+	}
+	protected EHaiUsers saveUserByOpenIdInfo(HttpServletRequest request,String code,Map<String ,Object> map,String appid,String secret ,String token) throws Exception{
+		OpenidInfo open = WeiXinUtil.getOpenid(code,appid,secret);
+		
+		return this.saveUserOpen(request, open, map);
+	}
+	protected EHaiUsers saveUserByOpenIdInfo(HttpServletRequest request,String code,Map<String ,Object> map) throws Exception{
+		//获取openid
+		WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(Integer.valueOf(map.get("store_id").toString()));
+		OpenidInfo open = WeiXinUtil.getOpenid(code,wp.getAppid(),wp.getSecret());
+		if(open == null) return null;
+		//根据openid获取用户是否存在
+		return this.saveUserOpen(request, open, map);
 	}
 	
 	//跳转微信认证

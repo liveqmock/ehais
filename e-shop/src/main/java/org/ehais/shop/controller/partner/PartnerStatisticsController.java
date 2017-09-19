@@ -54,23 +54,24 @@ public class PartnerStatisticsController extends PartnerCommonController {
 			for (EHaiStore store : list) {
 				sb.append(store.getStoreId()+",");
 			}
-			
-			String store_id_s = sb.substring(0, sb.length()-1).toString();
-			
-			Map<String,Object> map = new HashMap<String,Object>();
-			
-			List<PartnerStatisticsUsersCount> listSUserCount = partnerStatisticsMapper.statisticsUsers(store_id_s, start_date, end_date);
-			
-			map.put("listSUserCount",listSUserCount);
-			
-			Date startDate = DateUtil.formatDate(start_date, DateUtil.FORMATSTR_3);
-			Date endDate = DateUtil.formatDate(end_date, DateUtil.FORMATSTR_3);
-			Integer start_time = Long.valueOf(startDate.getTime() / 100000).intValue();
-			Integer end_time = Long.valueOf(endDate.getTime() / 100000).intValue();
-			List<PartnerStatisticsStoreCount> listSStoreCount = partnerStatisticsMapper.statisticsStore(store_id_s, start_time, end_time);
-			map.put("listSStoreCount",listSStoreCount);
-			
-			rm.setMap(map);			
+			if(sb.length() > 0){
+				String store_id_s = sb.substring(0, sb.length()-1).toString();
+				Map<String,Object> map = new HashMap<String,Object>();
+				
+				List<PartnerStatisticsUsersCount> listSUserCount = partnerStatisticsMapper.statisticsUsers(store_id_s, start_date, end_date);
+				
+				map.put("listSUserCount",listSUserCount);
+				
+				Date startDate = DateUtil.formatDate(start_date, DateUtil.FORMATSTR_3);
+				Date endDate = DateUtil.formatDate(end_date, DateUtil.FORMATSTR_3);
+				Integer start_time = Long.valueOf(startDate.getTime() / 100000).intValue();
+				Integer end_time = Long.valueOf(endDate.getTime() / 100000).intValue();
+				List<PartnerStatisticsStoreCount> listSStoreCount = partnerStatisticsMapper.statisticsStore(store_id_s, start_time, end_time);
+				map.put("listSStoreCount",listSStoreCount);
+				
+				rm.setMap(map);	
+			}
+				
 			rm.setCode(1);
 			
 		}catch(Exception e){

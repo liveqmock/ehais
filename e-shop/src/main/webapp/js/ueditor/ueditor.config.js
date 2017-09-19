@@ -295,7 +295,7 @@
 
         //设置远程图片是否抓取到本地保存
         //,catchRemoteImageEnable: true //设置是否抓取远程图片
-
+    	, catchRemoteImageEnable : false
         //pageBreakTag
         //分页标识符,默认是_ueditor_page_break_tag_
         //,pageBreakTag:'_ueditor_page_break_tag_'

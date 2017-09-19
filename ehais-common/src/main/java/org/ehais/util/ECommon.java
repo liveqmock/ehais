@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -281,7 +282,30 @@ public class ECommon {
 		return RandomStringUtils.random(len,"1234567890");
 	}
 	
-	
+	/**
+	 * 获取两个数之间的随机数
+	 * @param min
+	 * @param max
+	 * @return
+	 */
+	public static int getRand(int min,int max){
+		Random random = new Random();
+        int i = random.nextInt(max+1)%(max+1-min+1) + min;
+        return i;
+	}
 
+	public static void main(String[] args) {
+		System.out.println(ECommon.getRand(0, 4));
+		System.out.println(ECommon.getRand(0, 4));
+		System.out.println(ECommon.getRand(0, 4));
+		System.out.println(ECommon.getRand(0, 4));
+		System.out.println(ECommon.getRand(0, 4));
+		System.out.println(ECommon.getRand(0, 4));
+		System.out.println(ECommon.getRand(0, 4));
+		System.out.println(ECommon.getRand(0, 4));
+		System.out.println(ECommon.getRand(0, 4));
+		System.out.println(ECommon.getRand(0, 4));
+		System.out.println(ECommon.getRand(0, 4));
+	}
 	
 }

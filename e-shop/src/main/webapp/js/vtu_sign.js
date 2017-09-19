@@ -16,7 +16,7 @@ $(function(){
 		$(".vtu_time").removeClass("active");
 		var hour = $("dl.hour .active").text();
 		var minute = $("dl.minute .active").text();
-		$("#"+$("dl.hour").attr("val")).children("span").html(hour + minute.substr(2));
+		$("#"+$("dl.hour").attr("val")).html(hour + minute.substr(2));
 	});
 	
 	
@@ -25,12 +25,16 @@ $(function(){
 		$(".pic").addClass("active");
 	});
 	
+	$("#nowShare").click(function(){
+		window.location.href = $(this).attr("href");
+	});
+	
 	
 	//保存事件
 	$("#saveSign").click(function(){
-		var morning = $("#morning span").text();
-		var midday = $("#midday span").text();
-		var night = $("#night span").text();
+		var morning = $("#morning").text();
+		var midday = $("#midday").text();
+		var night = $("#night").text();
 		var inspire = $("#inspire").val();
 		var mobile = $("#mobile").val();
 		var realname = $("#realname").val();
@@ -41,7 +45,10 @@ $(function(){
 			url:"/vtuSignSave!"+sid,
 			data : {morning:morning,midday:midday,night:night,inspire:inspire,mobile:mobile,realname:realname,business:business,pic:pic},
 			success : function(result){
-				elay.open({content:result.msg,btn:"朕知道了"});
+//				elay.open({content:result.msg,btn:"朕知道了"});
+				elay.confirm({content:result.msg,btn:["即时签到","朕知道了"],sure:function(){
+					window.location.href = result.action;
+				}});
 			}
 		});
 		
@@ -55,6 +62,7 @@ function create_time(start,end,time){
 	$(".vtu_time").addClass("active");
 	$("dl.hour dd").unbind();
 	$("dl.hour dd").remove();
+	$("dl.minute dd").removeClass("active");
 	$("dl.hour").attr("val",time);
 	for(var i = start ; i <= end ; i++){
 		$("dl.hour").append("<dd >"+PrefixInteger(i,2)+"<i class=\"fa fa-hand-o-left\"></i></dd>");
@@ -63,7 +71,7 @@ function create_time(start,end,time){
 		$("dl.hour dd").removeClass("active");
 		$(this).addClass("active");
 	});
-	var timeValue = $("#"+time).children("span").text();
+	var timeValue = $("#"+time).text();
 	var tve = timeValue.split(":");
 	$("dl.hour dd").each(function(){
 		if(parseInt($(this).text()) == parseInt(tve[0])){

@@ -186,6 +186,9 @@ function partnerStatistics(){
 		url : "partnerStatistics",
 		data : {start_date:$("#startDate").val(),end_date:$("#endDate").val()},
 		success : function(result){
+			if(result.map == null){
+				return ;
+			}
 			var listSUserCount = result.map.listSUserCount;
 			var listSStoreCount = result.map.listSStoreCount;
 			var listSUserOption = new Array();

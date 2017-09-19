@@ -7,7 +7,6 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,10 +17,10 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
+import org.ehais.common.EConstants;
 import org.ehais.epublic.mapper.EHaiArticleMapper;
 import org.ehais.epublic.mapper.EHaiUsersMapper;
 import org.ehais.epublic.model.EHaiArticle;
-import org.ehais.epublic.model.EHaiArticleExample;
 import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.shop.mapper.vtu.VtuShareMapper;
 import org.ehais.shop.mapper.vtu.VtuSignMapper;
@@ -29,7 +28,9 @@ import org.ehais.shop.model.vtu.VtuShare;
 import org.ehais.shop.model.vtu.VtuSign;
 import org.ehais.shop.model.vtu.VtuSignExample;
 import org.ehais.shop.service.VtuService;
+import org.ehais.tools.ReturnObject;
 import org.ehais.util.DateUtil;
+import org.ehais.util.ECommon;
 import org.ehais.util.EHttpClientUtil;
 import org.ehais.util.FSO;
 import org.ehais.util.ResourceUtil;
@@ -48,6 +49,7 @@ import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
 import com.qiniu.util.StringMap;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 @Service("vtuService")
@@ -74,13 +76,79 @@ public class VtuServiceImpl implements VtuService {
 	private static String bucket = ResourceUtil.getProValue("qiniu.bucket");
 	private static String domain = ResourceUtil.getProValue("qiniu.domain");
 	
+	
+	@Override
+	public ReturnObject<VtuShare> vtuMessage(HttpServletRequest request,Long vtuId) throws Exception {
+		ReturnObject<VtuShare> rm = new ReturnObject<VtuShare>();
+		rm.setCode(0);
+		VtuSign vtuSign = vtuSignMapper.selectByPrimaryKey(vtuId);
+		Long user_id = (Long) request.getSession().getAttribute(EConstants.SESSION_USER_ID);
+		if(user_id == null || user_id == 0 || user_id.longValue() != vtuSign.getUserId().longValue()){
+			rm.setMsg("user session wrong");
+			return rm;
+		}
+		
+		String vtujson = request.getRealPath("/vtu")+"/vtu.json";
+		
+		String vtuContent = FSO.ReadFileName(vtujson);
+		JSONObject json = JSONObject.fromObject(vtuContent);
+		JSONArray arr = json.getJSONArray("org");
+		InputStream orgImg = EHttpClientUtil.getUriStream(arr.get(ECommon.getRand(0, arr.size()-1)).toString());
+		InputStream hourImg = null;
+
+		String art = "";
+		EHaiArticle article = eHaiArticleMapper.article_rand(store_id);
+		if(article != null ){
+			art = article.getTitle();
+		}
+		
+		Date date = new Date();
+		String vtime = DateUtil.formatDate(date, "HH:mm");
+		
+		int hour = Integer.parseInt(vtime.substring(0,2));
+		if(hour < 12){
+			hourImg = EHttpClientUtil.getUriStream(json.getJSONArray("morning").get(0).toString());
+		}else if(hour >= 12 && hour < 18){
+			hourImg = EHttpClientUtil.getUriStream(json.getJSONArray("midday").get(0).toString());
+		}else if(hour >= 18 && hour < 24){
+			hourImg = EHttpClientUtil.getUriStream(json.getJSONArray("night").get(0).toString());
+		}else{
+			hourImg = EHttpClientUtil.getUriStream(json.getJSONArray("night").get(0).toString());
+		}
+		
+//		String path = this.sharePic(orgImg, hourImg, 
+//				vtuSign.getRealname(), 
+//				vtuSign.getMobile(), 
+//				vtuSign.getBusiness(), 
+//				vtuSign.getInspire(),
+//				vtuSign.getPic(),
+//				art
+//				);
+//		
+//		//将路径保存数据库中
+//		VtuShare share = new VtuShare();
+//		share.setVtuId(vtuSign.getVtuId());
+//		share.setUserId(vtuSign.getUserId());
+//		share.setVtuTime(DateUtil.formatDate(date, "HH:mm"));
+//		share.setVtuPic(path);
+//		share.setCreateDate(date);
+//		
+//		vtuShareMapper.insert(share);
+		VtuShare share = vtuShareMapper.selectByPrimaryKey(1L);
+		
+		rm.setModel(share);
+		rm.setCode(1);
+
+		return rm;
+	}
 	@Override
 	public String vtuMessage(String appdomain,String vtujson,String vtime) throws Exception {
 		// TODO Auto-generated method stub
 		
 		String vtuContent = FSO.ReadFileName(vtujson);
 		JSONObject json = JSONObject.fromObject(vtuContent);
-		InputStream orgImg = EHttpClientUtil.getUriStream(json.getJSONArray("org").get(3).toString());
+		JSONArray arr = json.getJSONArray("org");
+		InputStream orgImg = EHttpClientUtil.getUriStream(arr.get(ECommon.getRand(0, arr.size()-1)).toString());
 		InputStream hourImg = null;
 		
 		
@@ -107,14 +175,10 @@ public class VtuServiceImpl implements VtuService {
 		if(listVtuSign == null || listVtuSign.size() == 0){
 			return null;
 		}
-
 			
-		EHaiArticleExample expArt = new EHaiArticleExample();
-		expArt.createCriteria().andStoreIdEqualTo(store_id);
-		List<EHaiArticle> listArticle = eHaiArticleMapper.selectByExample(expArt);
 		String art = "";
-		if(listArticle != null && listArticle.size() > 0){
-			EHaiArticle article = listArticle.get(0);
+		EHaiArticle article = eHaiArticleMapper.article_rand(store_id);
+		if(article != null ){
 			art = article.getTitle();
 		}
 		
@@ -305,7 +369,7 @@ public class VtuServiceImpl implements VtuService {
 		template.setTemplate_id("LFdLrMKmvqCgJ3sbIB2cbaZsEChQmFwfnvpn1VrbhOI");//订单支付成功通知
 		template.setTouser(users.getOpenid());
 		
-		template.setUrl(webappdomain+"/vtu_share!"+SignUtil.setVtuId(store_id, 0L, users.getUserId(), vtuSign.getVtuId(), share.getVtuShareId() , weixin_token));
+		template.setUrl(webappdomain+"/vtu_share!"+SignUtil.setVtuShareId(store_id, 0L, users.getUserId(), vtuSign.getVtuId(), share.getVtuShareId() , weixin_token));
 		System.out.println("template.getUrl():::::::::::::"+template.getUrl());
 		template.setTopcolor("#FF0000");
 		

@@ -22,16 +22,17 @@
 	</head>
 	<body>
 		<div class="vtu_wrapper">
-			<dl>
-				<dt>签到时间</dt>
-				<dd>
-					<ul>
-				    	<li id="morning"><label>早上</label><i class="fa fa-chevron-right"></i><span id="morning_time">${vtuSign.morningTime!'08:30'}</span></li>
-				    	<li id="midday"><label>中午</label><i class="fa fa-chevron-right"></i><span id="midday_time">${vtuSign.middayTime!'12:30'}</span></li>
-				    	<li id="night"><label>晚上</label><i class="fa fa-chevron-right"></i><span id="night_time">${vtuSign.nightTime!'22:30'}</span></li>
-				    </ul>
-				</dd>
+			<dl class="intro">
+				<dt>微签介绍</dt>
+				<dd>微签是提醒您每天在微信朋友圈签到的一款应用小程序，让你可以在朋友圈内每天都曝光自己，保持与朋友的热度，提升个人的营销人气</dd>
 			</dl>
+			<dl class="settime">
+				<dt>签到时间设置</dt>
+				<dd id="morning">08:30</dd>
+				<dd id="midday">12:30</dd>
+				<dd id="night">22:30</dd>
+			</dl>
+			
 			<textarea id="inspire" placeholder="感言、激励">${vtuSign.inspire!''}</textarea>
 			<dl>
 				<dt>个人名片</dt>
@@ -57,6 +58,9 @@
 			</dl>
 			<input id="pic" type="hidden" value="${vtuSign.pic!''}"/>
 			<button id="saveSign" type="button">保存设置</button>
+			<#if vtu_share_now??>
+			<button id="nowShare" type="button" href="${vtu_share_now!''}">即时签到</button>
+			</#if>
 		</div>
 		<div class="vtu_time ">
 			<div class="bg"></div>

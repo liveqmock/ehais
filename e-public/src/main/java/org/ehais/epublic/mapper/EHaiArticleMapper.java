@@ -36,6 +36,17 @@ public interface EHaiArticleMapper {
 			@Param("len") Integer len);
 	
 	
+	/**
+	 * 获取随机的文章数
+	 * @param store_id
+	 * @return
+	 */
+	@Select("SELECT * FROM hai_article WHERE article_id >= ((SELECT MAX(article_id) FROM hai_article where store_id = #{store_id} )-(SELECT MIN(article_id) FROM hai_article where store_id = #{store_id})) * RAND() + (SELECT MIN(article_id) FROM hai_article where store_id = #{store_id}) and store_id = #{store_id} LIMIT 1")
+	@ResultMap(value = "ResultMapWithBLOBs")
+    EHaiArticle article_rand(@Param("store_id") Integer store_id);
+
+	
+	
 	@ResultMap(value = "BaseResultMap")
 	public List<EHaiArticle> article_list_by_catcode(
 			@Param("store_id") Integer store_id,

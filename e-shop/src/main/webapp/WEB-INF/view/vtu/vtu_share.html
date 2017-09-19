@@ -16,27 +16,25 @@
 	<body>
 		<div class="share_wrapper">
 			<img class="share" src="${vtuShare.vtuPic!''}">
-			
+			<#if link??>
+			<dl class="step">
+				<dt>参与签到流程</dt>
+				<dd><i class="fa fa-hand-o-down"></i>点击参与</dd>
+				<dd><i class="fa fa-pencil"></i>填写设置</dd>
+				<dd><i class="fa fa-hourglass"></i>定时提醒</dd>
+				<dd><i class="fa fa-share-alt"></i>查看分享</dd>
+			</dl>
+			<div>
+				参与微签的好处：让朋友圈每天都可以关注你的签到状态，增加你在朋友圈的曝光率，做营销的朋友就可以提升自己的人气
+			</div>
+			<button id="vtuSign" href="${link}">参与微签</button>
+			</#if>
 		</div>
 		
 		<script type="text/javascript">
 			var vid = "${vid}";
 			var signature = ${signature};
-			
-			$(function(){
-				signature.shareSuccess = function (m){
-					$.get("/vtuShareSuccess!"+vid);
-				}
-				signature.shareCancel = function (m){
-					
-				}
-				wx_config(signature);
-			});
-			
-			
-			
-			
-			
 		</script>
+		<script type="text/javascript" src="js/vtu_share.js" ></script>
 	</body>
 </html>

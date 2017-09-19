@@ -200,7 +200,8 @@ function checkOutCart(){
 }
 
 //////////////##########################%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+var pos;
+var wPos;
 $(function(){
 	var mySwiper = new Swiper ('.swiper-container', {
 	    direction: 'horizontal',
@@ -217,9 +218,33 @@ $(function(){
 	$("#menu_list").height($(window).height() - $(".swiper-container").height() / 2 - $(".tabs").height() - $("footer").height() - 20);
 	$("#myOrderList").height($(window).height() - $(".swiper-container").height() / 2 - $(".tabs").height() - $("footer").height() - 40 );
 
+	console.log("window height:"+$(window).outerHeight(true));
+	console.log("body height:"+$(document.body).outerHeight(true));
+	
+	wPos = $(document.body).outerHeight(true) - $(window).outerHeight(true);
+	
 	jroll_menu_cate = new JRoll("#menu_cate", {scrollBarY:false});
 	jroll_menu_list = new JRoll("#menu_list", {scrollBarY:false});
 	jroll_myOrderList = new JRoll("#myOrderList", {scrollBarY:false});
+	
+	jroll_menu_cate.on("scrollEnd", function() {
+	    if(-this.y > wPos && $(window).scrollTop() < wPos ){
+	    	$('body,html').animate({scrollTop: wPos}, 800);
+	    }
+	});
+	jroll_menu_list.on("scrollEnd", function() {
+	    if(-this.y > wPos && $(window).scrollTop() < wPos ){
+	    	$('body,html').animate({scrollTop: wPos}, 800);
+	    }
+	});
+	
+	jroll_menu_list.on("touchEnd", function() {
+	    if(this.y < this.maxScrollY - 40){
+	    	changeNext($("#scroller_menu_cate li.active").index());
+	    }else if(this.y > 40){
+	    	changePrevious($("#scroller_menu_cate li.active").index());
+	    }
+	});
 	
 	$(".cat0").removeClass("dn");//推荐、热门菜品
 	$("#scroller_menu_cate > li").click(function(){$("#scroller_menu_goods_list > li").addClass("dn");$("#scroller_menu_cate > li").removeClass("active");$(this).addClass("active");$("#scroller_menu_goods_list > li.cat"+$(this).attr("v")).removeClass("dn");jroll_menu_list.refresh();});
@@ -342,6 +367,26 @@ $(function(){
 	diningUserOrderList();//获取用户的订单列表
 	
 });
+
+function changePrevious(index){
+	if(index > 0){
+		if($("#scroller_menu_goods_list li.cat"+$("#scroller_menu_cate li").eq(index - 1).attr("v")).length > 0){
+			$("#scroller_menu_cate li").eq(index - 1).click();
+		}else{
+			changePrevious(index-1);
+		}
+	}
+}
+//下拉显示下一个菜单
+function changeNext(index){
+	if(index < $("#scroller_menu_cate li").length - 1){			
+		if($("#scroller_menu_goods_list li.cat"+$("#scroller_menu_cate li").eq(index + 1).attr("v")).length > 0){
+			$("#scroller_menu_cate li").eq(index + 1).click();
+		}else{
+			changeNext(index+1);
+		}
+	}
+}
 
 /**
  * 现场点餐

@@ -85,6 +85,11 @@
 .vtu_wrapper > dl dd ul li.pic.active {
   display: block;
 }
+.vtu_wrapper > dl.settime dd {
+  width: 33.33%;
+  float: left;
+  text-align: center;
+}
 .vtu_wrapper > textarea {
   width: 100%;
   float: left;
@@ -111,6 +116,31 @@
 }
 .share_wrapper img.share {
   max-width: 100%;
+}
+.share_wrapper > dl {
+  width: 100%;
+  float: left;
+}
+.share_wrapper > dl dt {
+  padding: 10px 15px;
+  width: 100%;
+  float: left;
+  box-sizing: border-box;
+}
+.share_wrapper > dl.step dd {
+  width: 25%;
+  float: left;
+  text-align: center;
+  padding: 0.5rem 0;
+}
+.share_wrapper > button {
+  width: 100%;
+  float: left;
+  height: 0.5rem;
+  font-size: 0.16rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
 }
 .vtu_time {
   font-size: 0.16rem;
@@ -174,10 +204,12 @@
 }
 .vtu_time .time button {
   width: 100%;
+  font-size: 0.16rem;
   z-index: 12;
   float: left;
   border: 0;
   padding: 0.08rem 0;
+  border-top: 0.01rem solid #CDCDCD;
 }
 .vtu_time.active {
   display: block;

@@ -82,9 +82,10 @@ public class DiningUnionController extends EhaisCommonController{
 			@RequestParam(value = "code", required = false) String code ) {	
 		
 		try{
-			
+			System.out.println("==========11111");
 			Map<String,Object> map = SignUtil.getPartnerId(pid,weixin_token);
 			if(map == null){
+				System.out.println("==========2222");
 			    return "redirect:"+website; //错误的链接，跳转商城
 			}
 			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
@@ -95,7 +96,7 @@ public class DiningUnionController extends EhaisCommonController{
 				if((user_id == null || user_id == 0 ) && StringUtils.isEmpty(code)){
 					return this.redirect_wx_authorize(request , weixin_appid , "/diningUnion!"+pid);
 				}else if(StringUtils.isNotEmpty(code)){
-					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map);
+					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map,weixin_appid,weixin_appsecret,weixin_token);
 					String newPid = SignUtil.setPartnerId(Integer.valueOf(map.get("partnerId").toString()),Long.valueOf(map.get("userId").toString()), user.getUserId(), weixin_token);
 					String link = request.getScheme() + "://" + request.getServerName() + "/diningUnion!"+newPid;
 					return "redirect:"+link;
@@ -115,25 +116,12 @@ public class DiningUnionController extends EhaisCommonController{
 					System.out.println(pid+" condition is worng");
 					return "redirect:"+website; //错误的链接，跳转商城
 				}
-			}else{
-				if(this.isLocalHost(request)){
-					request.getSession().setAttribute(EConstants.SESSION_USER_ID, 125L);
-					
-					EHaiUsers user = eHaiUsersMapper.selectByPrimaryKey(user_id);
-					if(user == null){
-						return "/dining/diningUnion";
-					}else{
-						request.getSession().setAttribute(EConstants.SESSION_STORE_ID,user.getStoreId());
-						return "/dining/diningManage";
-					}
-					
-				}
 			}
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 		
-		return "/dining/diningUnion";
+		return "redirect:"+website;
 		
 	}
 	
