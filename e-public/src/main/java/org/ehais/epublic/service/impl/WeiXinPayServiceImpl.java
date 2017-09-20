@@ -12,11 +12,13 @@ import org.ehais.enums.EOrderClassifyEnum;
 import org.ehais.enums.EOrderStatusEnum;
 import org.ehais.enums.EPayStatusEnum;
 import org.ehais.epublic.mapper.EHaiOrderInfoMapper;
+import org.ehais.epublic.mapper.HaiStoreStatisticsMapper;
 import org.ehais.epublic.mapper.weixin.WxNotifyPayMapper;
 import org.ehais.epublic.mapper.weixin.WxUnifiedorderMapper;
 import org.ehais.epublic.mapper.weixin.WxUnifiedorderResultMapper;
 import org.ehais.epublic.model.EHaiOrderInfo;
 import org.ehais.epublic.model.EHaiStore;
+import org.ehais.epublic.model.HaiStoreStatistics;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.epublic.model.weixin.WxNotifyPay;
 import org.ehais.epublic.model.weixin.WxUnifiedorder;
@@ -59,6 +61,8 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 	private EHaiOrderInfoMapper eHaiOrderInfoMapper;
 	@Autowired
 	private EStoreService eStoreService;
+	@Autowired
+	private HaiStoreStatisticsMapper haiStoreStatisticsMapper;
 		
 	@Override
 	public WeiXinWCPay WeiXinPayApi(HttpServletRequest request, String sid,
@@ -202,12 +206,40 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 			
 			wxUnifiedorderMapper.UpdatePayStatue(store_id, notifyPay.getOut_trade_no(), EOrderStatusEnum.success);
 			
+			HaiStoreStatistics storeStatistics = haiStoreStatisticsMapper.selectByPrimaryKey(store_id);
+			if(storeStatistics == null){
+				storeStatistics = new HaiStoreStatistics();
+				storeStatistics.setStoreId(store_id);
+			}
+			storeStatistics.setWeixinAmount((storeStatistics.getWeixinAmount() == null ? 0 : storeStatistics.getWeixinAmount()) + notifyPay.getTotal_fee());
+			storeStatistics.setWeixinQuantity((storeStatistics.getWeixinQuantity() == null ? 0 : storeStatistics.getWeixinQuantity()) + 1);
+			haiStoreStatisticsMapper.updateByPrimaryKey(storeStatistics);
+			
 			if(orderInfo.getClassify().equals(EOrderClassifyEnum.shop)){
 				//商城订单通知用户
 				this.shopUserTemplateMessage(request, notifyPay, orderInfo, wpPublic, store_id);
 				//商城订单通知商户
 				
 			}else if(orderInfo.getClassify().equals(EOrderClassifyEnum.dining)){
+				EHaiStore store = eStoreService.getEStore(store_id);
+				Date date = new Date();
+				//通知餐饮用户
+				this.diningUserTemplateMessage(request,
+						wpPublic,
+						store,
+						notifyPay,
+						orderInfo,
+						date,
+						map);
+				
+				//通知餐饮商户
+				this.diningStoreTemplateMessage(request,
+						wpPublic,
+						store,
+						notifyPay,
+						orderInfo,
+						date,
+						map);
 				
 			}
 			

@@ -51,8 +51,8 @@ public class ReportAdminController extends CommonController {
 	
 	
 	@ResponseBody
-	@RequestMapping(value="/manage/OrderDinintStatistics",method=RequestMethod.POST)
-	public String haiOrderDinintStatistics(ModelMap modelMap,
+	@RequestMapping(value="/manage/OrderDiningStatistics",method=RequestMethod.POST)
+	public String haiOrderDiningStatistics(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "state_date", required = true) String state_date,
 			@RequestParam(value = "end_date", required = true) String end_date
@@ -63,8 +63,9 @@ public class ReportAdminController extends CommonController {
 			Integer store_id = (Integer) request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 			Date startDate = DateUtil.formatDate(state_date, DateUtil.FORMATSTR_3);
 			Date endDate = DateUtil.formatDate(end_date, DateUtil.FORMATSTR_3);
-			Integer start_time = Long.valueOf(startDate.getTime() / 100000).intValue();
-			Integer end_time = Long.valueOf(endDate.getTime() / 100000).intValue();
+			endDate = DateUtil.addDate(endDate, 1);
+			Integer start_time = Long.valueOf(startDate.getTime() / 1000).intValue();
+			Integer end_time = Long.valueOf(endDate.getTime() / 1000).intValue();
 			List<OrderDiningStatistics> list = haiOrderInfoMapper.order_dining_statistics(store_id, start_time, end_time);
 			rm.setRows(list);
 			rm.setCode(1);

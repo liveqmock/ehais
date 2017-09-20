@@ -64,8 +64,9 @@ public class PartnerStatisticsController extends PartnerCommonController {
 				
 				Date startDate = DateUtil.formatDate(start_date, DateUtil.FORMATSTR_3);
 				Date endDate = DateUtil.formatDate(end_date, DateUtil.FORMATSTR_3);
-				Integer start_time = Long.valueOf(startDate.getTime() / 100000).intValue();
-				Integer end_time = Long.valueOf(endDate.getTime() / 100000).intValue();
+				endDate = DateUtil.addDate(endDate, 1);
+				Integer start_time = Long.valueOf(startDate.getTime() / 1000).intValue();
+				Integer end_time = Long.valueOf(endDate.getTime() / 1000).intValue();
 				List<PartnerStatisticsStoreCount> listSStoreCount = partnerStatisticsMapper.statisticsStore(store_id_s, start_time, end_time);
 				map.put("listSStoreCount",listSStoreCount);
 				

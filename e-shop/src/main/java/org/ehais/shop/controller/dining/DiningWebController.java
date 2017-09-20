@@ -20,9 +20,11 @@ import org.ehais.enums.EPayStatusEnum;
 import org.ehais.enums.EShippingStatusEnum;
 import org.ehais.enums.EUserTypeEnum;
 import org.ehais.epublic.mapper.EHaiUsersMapper;
+import org.ehais.epublic.mapper.HaiStoreStatisticsMapper;
 import org.ehais.epublic.model.EHaiStore;
 import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.epublic.model.EHaiUsersExample;
+import org.ehais.epublic.model.HaiStoreStatistics;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.epublic.service.EStoreService;
 import org.ehais.epublic.service.WeiXinPayService;
@@ -85,6 +87,8 @@ public class DiningWebController extends EhaisCommonController{
 	private EStoreService eStoreService;
 	@Autowired
 	private OrderInfoService orderInfoService;
+	@Autowired
+	private HaiStoreStatisticsMapper haiStoreStatisticsMapper;
 	
 	
 	//http://127.0.0.1/diningStore!934a1580-0c1e0501-156ed21242-2b36621253-314dd0C104-49175b56
@@ -404,6 +408,16 @@ public class DiningWebController extends EhaisCommonController{
 				mapPay.put("WeiXinWCPay", cpay);
 				rm.setMap(mapPay);
 			}else{
+				
+				HaiStoreStatistics storeStatistics = haiStoreStatisticsMapper.selectByPrimaryKey(store_id);
+				if(storeStatistics == null){
+					storeStatistics = new HaiStoreStatistics();
+					storeStatistics.setStoreId(store_id);
+				}
+				storeStatistics.setCashAmount((storeStatistics.getCashAmount() == null ? 0 : storeStatistics.getCashAmount()) + amount);
+				storeStatistics.setCashQuantity((storeStatistics.getCashQuantity() == null ? 0 : storeStatistics.getCashQuantity()) + 1);
+				haiStoreStatisticsMapper.updateByPrimaryKey(storeStatistics);
+				
 				//推送消息
 				//给用户推送消息
 				String diningUserTemp = this.diningUserTemplateMessage(request, wp, store, orderInfo, users, map, store_id, date, sb);

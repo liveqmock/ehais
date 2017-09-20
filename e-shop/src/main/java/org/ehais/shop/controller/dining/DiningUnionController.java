@@ -15,6 +15,7 @@ import org.ehais.enums.EUserTypeEnum;
 import org.ehais.epublic.mapper.EHaiAdminUserMapper;
 import org.ehais.epublic.mapper.EHaiStoreMapper;
 import org.ehais.epublic.mapper.EHaiUsersMapper;
+import org.ehais.epublic.mapper.HaiStoreStatisticsMapper;
 import org.ehais.epublic.mapper.WpPublicMapper;
 import org.ehais.epublic.model.EHaiAdminUser;
 import org.ehais.epublic.model.EHaiAdminUserExample;
@@ -23,6 +24,7 @@ import org.ehais.epublic.model.EHaiStore;
 import org.ehais.epublic.model.EHaiStoreExample;
 import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.epublic.model.EHaiUsersExample;
+import org.ehais.epublic.model.HaiStoreStatistics;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.epublic.service.EStoreService;
 import org.ehais.epublic.service.EWPPublicService;
@@ -77,7 +79,8 @@ public class DiningUnionController extends EhaisCommonController{
 	private EWPPublicService eWPPublicService;
 	@Autowired
 	protected WpPublicMapper wpPublicMapper;
-	
+	@Autowired
+	private HaiStoreStatisticsMapper haiStoreStatisticsMapper;
 	
 	
 	//http://127.0.0.1/diningUnion!5674d100-033b4b301-1299581252-2e64baa931f09d6c22
@@ -127,6 +130,16 @@ public class DiningUnionController extends EhaisCommonController{
 					if(user == null || user.getUserType() != EUserTypeEnum.dining){
 						return "/dining/diningUnion";
 					}else{
+						HaiStoreStatistics storeStatistics = haiStoreStatisticsMapper.selectByPrimaryKey(Integer.valueOf(map.get("store_id").toString()));
+						if(storeStatistics == null){
+							storeStatistics = new HaiStoreStatistics();
+							storeStatistics.setStoreId(Integer.valueOf(map.get("store_id").toString()));
+							storeStatistics.setWeixinAmount(0);
+							storeStatistics.setWeixinQuantity(0);
+							storeStatistics.setCashAmount(0);
+							storeStatistics.setCashQuantity(0);
+						}
+						modelMap.addAttribute("storeStatistics", storeStatistics);
 						request.getSession().setAttribute(EConstants.SESSION_STORE_ID,user.getStoreId());
 						return "/dining/diningManage";
 					}

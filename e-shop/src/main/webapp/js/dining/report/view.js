@@ -15,28 +15,28 @@ $(function(){
     	$("#endDate").val(getWeekEndDate());
  		$('#reportrange span').html( $("#startDate").val() + ' ~ ' + $("#endDate").val() );
  		changeDate(this);
- 		OrderDinintStatistics();
+ 		OrderDiningStatistics();
     });
     $("#previousWeek").click(function(){
     	$("#startDate").val(getLastWeekStartDate());
     	$("#endDate").val(getLastWeekEndDate());
  		$('#reportrange span').html( $("#startDate").val() + ' ~ ' + $("#endDate").val() );
  		changeDate(this);
- 		OrderDinintStatistics();
+ 		OrderDiningStatistics();
     });
 	$("#currentMonth").click(function(){
 		$("#startDate").val(getMonthStartDate());
     	$("#endDate").val(getMonthEndDate());
  		$('#reportrange span').html( $("#startDate").val() + ' ~ ' + $("#endDate").val() );
  		changeDate(this);
- 		OrderDinintStatistics();
+ 		OrderDiningStatistics();
 	});
 	$("#previousMonth").click(function(){
 		$("#startDate").val(getLastMonthStartDate());
     	$("#endDate").val(getLastMonthEndDate());
  		$('#reportrange span').html( $("#startDate").val() + ' ~ ' + $("#endDate").val() );
  		changeDate(this);
- 		OrderDinintStatistics();
+ 		OrderDiningStatistics();
 	});
     
 	// 基于准备好的dom，初始化echarts实例
@@ -96,7 +96,7 @@ $(function(){
         }
     });
     
-    OrderDinintStatistics();
+    OrderDiningStatistics();
 });
 
 
@@ -180,9 +180,9 @@ function changeDate(that){
 	$(that).removeClass("btn-default").addClass("btn-success");
 }
 
-function OrderDinintStatistics(){
+function OrderDiningStatistics(){
 	$.ajax({
-		url : "OrderDinintStatistics",
+		url : "OrderDiningStatistics",
 		data : {state_date:$("#startDate").val(),end_date:$("#endDate").val()},
 		success : function(result){
 			var rows = result.rows;

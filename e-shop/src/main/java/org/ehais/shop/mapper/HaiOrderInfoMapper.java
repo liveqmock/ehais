@@ -20,9 +20,9 @@ public interface HaiOrderInfoMapper {
 			" sum(case when pay_name='微信支付' then order_amount end) as weixin_amount, "+
 			" sum(case when pay_name='现金支付' then order_amount end) as cash_amount, "+
 			" truncate((pay_time / 100),0) as pay_time "+
-			" from hai_order_info where store_id = #{store_id} and order_status = 1 "
-			+ " and truncate((pay_time / 100),0) >= #{start_time} and truncate((pay_time / 100),0) <= #{end_time} "
-			+ " GROUP BY truncate((pay_time / 100),0)")	
+			" from hai_order_info where store_id = #{store_id} and order_status = 1 " + 
+			" and pay_time >= #{start_time} and pay_time < #{end_time} " + 
+			" GROUP BY truncate((pay_time / 100),0)")	
 	@Results(value = {
 			@Result(property="weixinAmount", column="weixin_amount"),
 			@Result(property="cashAmount", column="cash_amount"),

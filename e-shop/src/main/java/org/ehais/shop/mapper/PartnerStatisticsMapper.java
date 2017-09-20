@@ -31,7 +31,7 @@ public interface PartnerStatisticsMapper {
 	@Select("select count(*) as count ,truncate((add_time / 100),0) as addTime "+
 			" from hai_store  "+
 			" where store_id in (${store_id_s}) and IFNULL(add_time,0)!=0 " +
-			" and truncate((add_time / 100),0) >= #{start_time} and truncate((add_time / 100),0) <= #{end_time} "+
+			" and add_time >= #{start_time} and add_time < #{end_time} "+
 			" group by truncate((add_time / 100),0) "+
 			" order by add_time asc")
 			@Results(value = {
