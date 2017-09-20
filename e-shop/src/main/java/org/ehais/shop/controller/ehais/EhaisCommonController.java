@@ -14,12 +14,14 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.ehais.epublic.mapper.EHaiArticleMapper;
 import org.ehais.epublic.mapper.EHaiUsersMapper;
 import org.ehais.epublic.model.EHaiArticle;
 import org.ehais.epublic.model.EHaiArticleExample;
+import org.ehais.epublic.model.EHaiStore;
 import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.epublic.model.EHaiUsersExample;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
@@ -36,6 +38,10 @@ import org.ehais.util.SignUtil;
 import org.ehais.weixin.model.OpenidInfo;
 import org.ehais.weixin.utils.WeiXinUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -73,12 +79,11 @@ public class EhaisCommonController extends CommonController{
 		if(list == null || list.size() == 0){//用户不存在，入库
 			user = new EHaiUsers();
 			user.setOpenid(open.getOpenid());
-			user.setParentId(Long.valueOf(map.get("userId").toString()));
-			user.setAgencyId(Integer.valueOf(map.get("agencyId").toString()));
-			user.setStoreId(Integer.valueOf(map.get("store_id").toString()));
-			if(map.get("partnerId")!=null){
-				user.setPartnerId(Integer.valueOf(map.get("partnerId").toString()));
-			}			
+			user.setParentId(map.get("userId") != null ? Long.valueOf(map.get("userId").toString()) : 0);
+			user.setAgencyId(map.get("agencyId") != null ? Integer.valueOf(map.get("agencyId").toString()) : 0);
+			user.setStoreId(map.get("store_id") != null ? Integer.valueOf(map.get("store_id").toString()) : 0);
+			user.setPartnerId(map.get("partnerId")!=null ? Integer.valueOf(map.get("partnerId").toString()) : 0 );
+			
 			user.setEmail("");
 			user.setUserName(open.getOpenid());
 			user.setPassword("");					
@@ -308,7 +313,59 @@ public class EhaisCommonController extends CommonController{
         
 	}
 	
-	
+	/**
+	 * 
+	@RequestMapping("/shop!{sid}")
+	public String index_simple(ModelMap modelMap,
+			HttpServletRequest request,
+			HttpServletResponse response ,
+			@PathVariable(value = "sid") String sid,
+			@RequestParam(value = "code", required = false) String code
+			) {	
+		Integer store_id = SignUtil.getUriStoreId(sid);
+		if(store_id == 0){
+			return "redirect:"+website; //错误的链接，跳转商城
+		}
+		
+		try{
+			EHaiStore store = eStoreService.getEStore(store_id);
+			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
+			if(StringUtils.isNotBlank(store.getTheme()))themes = store.getTheme();
+			Map<String,Object> map = SignUtil.getCid(sid,wp.getToken());
+			if(map == null){
+			    return "redirect:"+website; //错误的链接，跳转商城
+			}
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
+			
+			if(this.isWeiXin(request)){//微信端登录
+				if((user_id == null || user_id == 0 ) && StringUtils.isEmpty(code)){
+					return this.redirect_wx_authorize(request , wp.getAppid() , "/shop!"+sid);
+				}else if(StringUtils.isNotEmpty(code)){
+					System.out.println(code);
+					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map);
+					String newSid = SignUtil.setCid(store_id,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), user.getUserId(), wp.getToken());
+					String link = request.getScheme() + "://" + request.getServerName() + "/shop!"+newSid;
+					System.out.println("code:"+link);
+					return "redirect:"+link;
+				}else if(user_id > 0 && Long.valueOf(map.get("userId").toString()).longValue() == user_id.longValue()){//经过code获取用户信息跳回自己的链接中来
+					
+				}else if(Long.valueOf(map.get("userId").toString()).longValue() != user_id.longValue()){
+					System.out.println("user_id != map.userId condition is worng");
+					request.getSession().removeAttribute(EConstants.SESSION_USER_ID);
+				    return this.redirect_wx_authorize(request,wp.getAppid(), "/shop!"+sid);
+				}else{
+					System.out.println(sid+" condition is worng");
+					return "redirect:"+website; //错误的链接，跳转商城
+				}
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("MobileController", e);
+		}
+		return "/wxshop/"+themes+"/index_simple";
+	}
+	 */
 	
 
 }

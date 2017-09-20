@@ -13,11 +13,17 @@ import org.ehais.common.EConstants;
 import org.ehais.epublic.mapper.EHaiUsersMapper;
 import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.epublic.model.EHaiUsersExample;
+import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.epublic.service.EUsersService;
+import org.ehais.epublic.service.EWPPublicService;
 import org.ehais.model.BootStrapModel;
 import org.ehais.service.impl.CommonServiceImpl;
 import org.ehais.tools.ReturnObject;
+import org.ehais.util.EmojiFilterUtils;
 import org.ehais.util.EncryptUtils;
+import org.ehais.weixin.model.AccessToken;
+import org.ehais.weixin.model.WeiXinUserInfo;
+import org.ehais.weixin.utils.WeiXinUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +35,8 @@ public class EUsersServiceImpl  extends CommonServiceImpl implements EUsersServi
 	
 	@Autowired
 	private EHaiUsersMapper eHaiUsersMapper;
+	@Autowired
+	private EWPPublicService eWPPublicService;
 	
 	public ReturnObject<EHaiUsers> users_list(HttpServletRequest request) throws Exception{
 		
@@ -369,6 +377,71 @@ public class EUsersServiceImpl  extends CommonServiceImpl implements EUsersServi
 		}
 		rm.setModel(users);
 		rm.setCode(1);
+		return rm;
+	}
+
+	@Override
+	public ReturnObject<EHaiUsers> wx_user_save(HttpServletRequest request, Long userId) throws Exception {
+		// TODO Auto-generated method stub
+		
+		ReturnObject<EHaiUsers> rm = new ReturnObject<EHaiUsers>();
+		rm.setCode(0);
+		EHaiUsers users = eHaiUsersMapper.selectByPrimaryKey(userId);
+		WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(users.getStoreId());
+		AccessToken access_token = WeiXinUtil.getAccessToken(users.getStoreId(), wp.getAppid(), wp.getSecret());
+    	WeiXinUserInfo userInfo = WeiXinUtil.getUserInfo(access_token.getAccess_token(), users.getOpenid());
+    	
+    	users.setNickname(EmojiFilterUtils.filterEmoji(userInfo.getNickname()));
+    	users.setFaceImage(userInfo.getHeadimgurl());
+    	users.setSubscribe(userInfo.getSubscribe());
+    	            	
+    	eHaiUsersMapper.updateByPrimaryKeySelective(users);
+    	
+    	rm.setCode(1);
+    	rm.setModel(users);
+		return rm;
+	}
+
+	@Override
+	public ReturnObject<EHaiUsers> wx_user_save(HttpServletRequest request, String openId) throws Exception {
+		// TODO Auto-generated method stub
+		ReturnObject<EHaiUsers> rm = new ReturnObject<EHaiUsers>();
+		rm.setCode(0);
+		
+		EHaiUsers users = eHaiUsersMapper.userInfoOpenId(openId);
+		WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(users.getStoreId());
+		AccessToken access_token = WeiXinUtil.getAccessToken(users.getStoreId(), wp.getAppid(), wp.getSecret());
+    	WeiXinUserInfo userInfo = WeiXinUtil.getUserInfo(access_token.getAccess_token(), users.getOpenid());
+    	
+    	users.setNickname(EmojiFilterUtils.filterEmoji(userInfo.getNickname()));
+    	users.setFaceImage(userInfo.getHeadimgurl());
+    	users.setSubscribe(userInfo.getSubscribe());
+    	            	
+    	eHaiUsersMapper.updateByPrimaryKeySelective(users);
+    	
+    	rm.setCode(1);
+    	rm.setModel(users);
+		return rm;
+	}
+
+	@Override
+	public ReturnObject<EHaiUsers> wx_user_save(HttpServletRequest request, EHaiUsers users) throws Exception {
+		// TODO Auto-generated method stub
+		ReturnObject<EHaiUsers> rm = new ReturnObject<EHaiUsers>();
+		rm.setCode(0);
+		
+		WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(users.getStoreId());
+		AccessToken access_token = WeiXinUtil.getAccessToken(users.getStoreId(), wp.getAppid(), wp.getSecret());
+    	WeiXinUserInfo userInfo = WeiXinUtil.getUserInfo(access_token.getAccess_token(), users.getOpenid());
+    	
+    	users.setNickname(EmojiFilterUtils.filterEmoji(userInfo.getNickname()));
+    	users.setFaceImage(userInfo.getHeadimgurl());
+    	users.setSubscribe(userInfo.getSubscribe());
+    	            	
+    	eHaiUsersMapper.updateByPrimaryKeySelective(users);
+    	
+    	rm.setCode(1);
+    	rm.setModel(users);
 		return rm;
 	}
 	

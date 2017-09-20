@@ -1,10 +1,14 @@
 package org.ehais.shop.controller.mobile;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
+import org.ehais.shop.model.HaiCategory;
+import org.ehais.shop.model.HaiCategoryExample;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +32,8 @@ public class MobileController extends CommonController{
 			) {	
 		modelMap.addAttribute("store_id", store_id);
 		try{
+			
+			
 			
 		}catch(Exception e){
 			e.printStackTrace();

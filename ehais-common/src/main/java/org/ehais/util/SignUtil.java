@@ -158,6 +158,64 @@ public class SignUtil {
 		return map;
 	}
 	
+	
+	
+	public static String setGid(Integer store_id,Integer agencyId,Long parentId,Long userId,Long goodsId,String secret) throws Exception{
+		String md5 = EncryptUtils.md5(store_id.toString()+agencyId.toString()+parentId.toString()+userId.toString()+goodsId.toString()+secret);
+		String sid = md5.substring(0, 5)+store_id.toString()+"0-0"+
+				md5.substring(5,10)+agencyId.toString()+"1-1"+
+				md5.substring(10,15)+parentId.toString()+"2-2"+
+				md5.substring(15,20)+userId.toString()+"3-3"+
+				md5.substring(20,25)+goodsId.toString()+"4-4"+
+				md5.substring(25,32);
+		return sid;
+	}
+	
+	public static Map<String,Object> getGid(String sid,String secret){
+		if(StringUtils.isEmpty(sid))return null;
+		Map<String,Object> map = null;
+		try{
+			Integer n0 = sid.indexOf("0-0");
+			Integer n1 = sid.indexOf("1-1");
+			Integer n2 = sid.indexOf("2-2");
+			Integer n3 = sid.indexOf("3-3");
+			Integer n4 = sid.indexOf("4-4");
+			
+			String s0 = sid.substring(0, 5);
+			String s_store_id = sid.substring(5,n0);
+			
+			String s1 = sid.substring(n0+3,n0+8);
+			String s_agencyId = sid.substring(n0+8, n1);
+			
+			String s2 = sid.substring(n1+3, n1+8);
+			String s_parentId = sid.substring(n1+8, n2);
+			
+			String s3 = sid.substring(n2+3,n2+8);
+			String s_userId = sid.substring(n2+8, n3);
+			
+			String s4 = sid.substring(n3+3,n3+8);
+			String s_goodsId = sid.substring(n3+8, n4);
+			
+			String s5 = sid.substring(n4+3,n4+10);
+			
+			if(EncryptUtils.md5(s_store_id+s_agencyId+s_parentId+s_userId+s_goodsId+secret).equals(s0+s1+s2+s3+s4+s5)){
+				map = new HashMap<String,Object>();
+				map.put("store_id", s_store_id);
+				map.put("agencyId", s_agencyId);
+				map.put("parentId", s_parentId);
+				map.put("userId", s_userId);			
+				map.put("goodsId", s_goodsId);
+			}
+			
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+				
+		return map;
+	}
+	
+	
 	/**
 	 * 获取商户编号，适用 所有
 	 * @param sid
@@ -377,43 +435,47 @@ public class SignUtil {
 	}
 	
 	
-	
-	public static String setPartnerId(
-			Integer partnerId,
-			Long parentId,
-			Long userId,
-			String secret) throws Exception{
-		String md5 = EncryptUtils.md5(partnerId.toString()+parentId.toString()+userId.toString()+secret);
-		String pid = md5.substring(0, 5)+partnerId.toString()+"0-0"+
-				md5.substring(5,10)+parentId.toString()+"1-1"+
-				md5.substring(10,15)+userId.toString()+"2-2"+
-				md5.substring(15,32);
-		return pid;
+	public static String setPartnerId(Integer store_id,Integer partnerId,Long parentId,Long userId,String secret) throws Exception{
+		String md5 = EncryptUtils.md5(store_id.toString()+partnerId.toString()+parentId.toString()+userId.toString()+secret);
+		String did = md5.substring(0, 5)+store_id.toString()+"0-0"+
+				md5.substring(5,10)+partnerId.toString()+"1-1"+
+				md5.substring(10,15)+parentId.toString()+"2-2"+
+				md5.substring(15,20)+userId.toString()+"3-3"+
+				md5.substring(20,32);
+		return did;
 	}
 	
-	public static Map<String,Object> getPartnerId(String pid,String secret){
-		if(StringUtils.isEmpty(pid))return null;
+	
+	
+	public static Map<String,Object> getPartnerId(String did,String secret){
+		if(StringUtils.isEmpty(did))return null;
 		Map<String,Object> map = null;
 		try{
-			Integer n0 = pid.indexOf("0-0");
-			Integer n1 = pid.indexOf("1-1");
-			Integer n2 = pid.indexOf("2-2");
+			Integer n0 = did.indexOf("0-0");
+			Integer n1 = did.indexOf("1-1");
+			Integer n2 = did.indexOf("2-2");
+			Integer n3 = did.indexOf("3-3");
 			
-			String s0 = pid.substring(0, 5);
-			String partnerId = pid.substring(5,n0);
+			String s0 = did.substring(0, 5);
+			String s_store_id = did.substring(5,n0);
 			
-			String s1 = pid.substring(n0+3,n0+8);
-			String parentId = pid.substring(n0+8, n1);
+			String s1 = did.substring(n0+3,n0+8);
+			String s_partnerId = did.substring(n0+8, n1);
 			
-			String s2 = pid.substring(n1+3, n1+8);
-			String userId = pid.substring(n1+8, n2);
+			String s2 = did.substring(n1+3, n1+8);
+			String s_parentId = did.substring(n1+8, n2);
 			
-			String s3 = pid.substring(n2+3,n2+20);
-			if(EncryptUtils.md5(partnerId+parentId+userId+secret).equals(s0+s1+s2+s3)){
+			String s3 = did.substring(n2+3,n2+8);
+			String s_userId = did.substring(n2+8, n3);
+			
+			String s4 = did.substring(n3+3,n3+15);
+			
+			if(EncryptUtils.md5(s_store_id+s_partnerId+s_parentId+s_userId+secret).equals(s0+s1+s2+s3+s4)){
 				map = new HashMap<String,Object>();
-				map.put("partnerId", partnerId);
-				map.put("parentId", parentId);
-				map.put("userId", userId);
+				map.put("store_id", s_store_id);
+				map.put("partnerId", s_partnerId);
+				map.put("parentId", s_parentId);
+				map.put("userId", s_userId);
 			}
 			
 			
@@ -568,14 +630,14 @@ public class SignUtil {
 //		Map<String,Object> mid = SignUtil.getDiningId(did, secret);
 //		Bean2Utils.printMap(mid);
 		
-//		String pid = SignUtil.setPartnerId(partnerId, parentId, userId, secret);
-//		System.out.println(pid);
-//		Map<String,Object> mid = SignUtil.getPartnerId(pid, secret);
-//		Bean2Utils.printMap(mid);
+		String pid = SignUtil.setPartnerId(store_id,partnerId, parentId, userId, secret);
+		System.out.println(pid);
+		Map<String,Object> mid = SignUtil.getPartnerId(pid, secret);
+		Bean2Utils.printMap(mid);
 		
-		String vid = SignUtil.setVtuSignId(store_id, parentId, userId, vtuId, secret);
-		Map<String,Object> vsid = SignUtil.getVtuSignId(vid, secret);
-		Bean2Utils.printMap(vsid);
+//		String vid = SignUtil.setVtuSignId(store_id, parentId, userId, vtuId, secret);
+//		Map<String,Object> vsid = SignUtil.getVtuSignId(vid, secret);
+//		Bean2Utils.printMap(vsid);
 		
 	}
 	

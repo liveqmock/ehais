@@ -13,6 +13,7 @@ import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.epublic.service.EWPPublicService;
 import org.ehais.shop.service.VtuService;
 import org.ehais.util.DateUtil;
+import org.ehais.util.EmojiFilterUtils;
 import org.ehais.util.ResourceUtil;
 import org.ehais.weixin.model.AccessToken;
 import org.ehais.weixin.model.WeiXinUserInfo;
@@ -83,7 +84,7 @@ public class MyTaskAnnotation {
             	System.out.println("userInfo.getNickname()"+userInfo.getNickname());
             	System.out.println("userInfo.getHeadimgurl()"+userInfo.getHeadimgurl());
             	System.out.println("userInfo.getSubscribe()"+userInfo.getSubscribe());
-            	eHaiUsers.setNickname(userInfo.getNickname());
+            	eHaiUsers.setNickname(EmojiFilterUtils.filterEmoji(userInfo.getNickname()));
             	eHaiUsers.setFaceImage(userInfo.getHeadimgurl());
             	eHaiUsers.setSubscribe(userInfo.getSubscribe());
             	            	

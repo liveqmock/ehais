@@ -83,8 +83,8 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		HaiGoodsExample example = new HaiGoodsExample();
 		HaiGoodsExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
-		example.setStart(start);
-		example.setLen(len);
+		example.setLimitStart(start);
+		example.setLimitEnd(len);
 		List<HaiGoods> list = haiGoodsMapper.hai_goods_list_by_example(example);
 		Long total = haiGoodsMapper.countByExample(example);
 		rm.setCode(1);
@@ -106,8 +106,8 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
 		if(cat_id > 0)c.andCatIdEqualTo(cat_id);
 		if(StringUtils.isNotEmpty(goods_name))c.andGoodsNameLike("%"+goods_name+"%");
-		example.setStart(condition.getStart());
-		example.setLen(condition.getRows());
+		example.setLimitStart(condition.getStart());
+		example.setLimitEnd(condition.getRows());
 		example.setOrderByClause("goods_id desc");
 		List<HaiGoods> list = haiGoodsMapper.hai_goods_list_by_example(example);
 		Long total = haiGoodsMapper.countByExample(example);
@@ -706,8 +706,8 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		HaiGoodsExample.Criteria c = example.createCriteria();
 		c.andStoreIdEqualTo(store_id);
 		if(catId!=null && catId.intValue() != 0)c.andCatIdEqualTo(catId);
-		example.setStart((page - 1 ) * len);
-		example.setLen(len);
+		example.setLimitStart((page - 1 ) * len);
+		example.setLimitEnd(len);
 		example.setOrderByClause("goods_id desc");
 		
 		Long total = haiGoodsMapper.countByExample(example);		
@@ -811,8 +811,8 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		HaiGoodsExample.Criteria c = example.createCriteria();
 		c.andStoreIdEqualTo((Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID));
 		if(catId!=null && catId != 0)c.andCatIdEqualTo(catId);
-		example.setStart((page-1) * len );
-		example.setLen(len);
+		example.setLimitStart((page-1) * len );
+		example.setLimitEnd(len);
 		List<HaiGoods> list = haiGoodsMapper.hai_goods_list_by_example(example);
 		return list;
 	}

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<title></title>
+		<link rel="stylesheet" href="css/shop-r.css" />
+		
+		<script type="text/javascript" src="js/jquery-2.1.4.min.js" ></script>
+		
+		<link rel="stylesheet" href="js/swiper/swiper-3.4.2.min.css" />
+		<script type="text/javascript" src="js/swiper/swiper-3.4.2.jquery.min.js" ></script>
+		
+		<script type="text/javascript" src="js/shop.js" ></script>
+		
+	</head>
+	<body>
+		<div class="w_shop">
+			<header>
+				<i class="fa fa-search"></i>
+				微易分销
+				<i class="fa fa-shopping-cart"></i>
+			</header>
+			<div class="scroll swiper-container">
+				<ul class="swiper-wrapper">
+					<#if (adList?? && adList?size > 0 )>
+					<#list adList as ad>
+					<li class="swiper-slide"><img src="${ad.adPic!''}" /></li>
+					</#list>
+					<#else>
+					<li class="swiper-slide"><img src="upload/dining/1.png" /></li>
+					<li class="swiper-slide"><img src="upload/dining/2.png" /></li>
+					<li class="swiper-slide"><img src="upload/dining/3.png" /></li>
+					<li class="swiper-slide"><img src="upload/dining/4.png" /></li>
+					<li class="swiper-slide"><img src="upload/dining/5.png" /></li>
+					</#if>
+				</ul>
+				<!-- 如果需要分页器 -->
+			    <div class="swiper-pagination"></div>
+			</div>
+			<div class="s">
+				——  推荐商品   ——
+			</div>
+			<ul class="u">
+				<#if (goodsList?? && goodsList?size > 0 )>
+				<#list goodsList as goods>
+				<li>
+					<a href="${goods.goodsUrl!''}">
+					<div class="img"><img src="${goods.originalImg}"></div>
+					<div class="i">
+						<div class="t">${goods.goodsName!''}</div>
+						<div class="d">
+							<div>￥</div>
+							<div>${goods.shopPrice / 100}</div>
+							<div>${goods.marketPrice / 100}</div>
+							<div>[购买]</div>
+						</div>
+					</div>
+					</a>
+				</li>
+				</#list>
+				</#if>
+				
+			</ul>
+		</div>
+	</body>
+</html>

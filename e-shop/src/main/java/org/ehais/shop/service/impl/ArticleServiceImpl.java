@@ -273,26 +273,22 @@ public ReturnObject<EHaiArticle> article_list(HttpServletRequest request) throws
 	}
 	
 	private void saveArticleGoods(HttpServletRequest request,Integer articleId,Long goodsId){
+		Integer store_id = (Integer)request.getSession(true).getAttribute(EConstants.SESSION_STORE_ID);
 		HaiArticleGoodsExample example = new HaiArticleGoodsExample();
 		HaiArticleGoodsExample.Criteria c = example.createCriteria();
-		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+		c.andStoreIdEqualTo(store_id);
 		c.andArticleIdEqualTo(articleId);
 		
 		haiArticleGoodsMapper.deleteByExample(example);
 		
-		HaiArticleGoods ag = new HaiArticleGoods();
-		ag.setArticleId(articleId);
-		ag.setGoodsId(goodsId);
-		ag.setStoreId((Integer)request.getSession(true).getAttribute(EConstants.SESSION_STORE_ID));
-		haiArticleGoodsMapper.insert(ag);
+		if(goodsId != null && goodsId != 0){
+			HaiArticleGoods ag = new HaiArticleGoods();
+			ag.setArticleId(articleId);
+			ag.setGoodsId(goodsId);
+			ag.setStoreId(store_id);
+			haiArticleGoodsMapper.insert(ag);
+		}
 		
-//		c.andGoodsIdEqualTo(goodsId);
-//		List<HaiArticleGoods> list = haiArticleGoodsMapper.selectByExample(example);
-//		if(list == null || list.size() == 0){
-//			
-//		}else{
-//			
-//		}
 	}
 	
 	public ReturnObject<EHaiArticle> article_update_submit(HttpServletRequest request,EHaiArticle model,Long goodsId)

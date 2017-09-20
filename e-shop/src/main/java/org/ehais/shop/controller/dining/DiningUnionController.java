@@ -1,5 +1,6 @@
 package org.ehais.shop.controller.dining;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -34,6 +35,8 @@ import org.ehais.tools.ReturnObject;
 import org.ehais.util.EncryptUtils;
 import org.ehais.util.ResourceUtil;
 import org.ehais.util.SignUtil;
+import org.ehais.weixin.model.WeiXinSignature;
+import org.ehais.weixin.utils.WeiXinUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,10 +48,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import net.sf.json.JSONObject;
+
 @Controller
 @RequestMapping("/")
 public class DiningUnionController extends EhaisCommonController{
 	private static Logger log = LoggerFactory.getLogger(DiningUnionController.class);
+	public static Integer default_store_id = Integer.valueOf(ResourceUtil.getProValue("default_store_id"));
 	public static String website = ResourceUtil.getProValue("website");
 	public static String defaultimg = ResourceUtil.getProValue("defaultimg");
 	public static String weixin_appid = ResourceUtil.getProValue("weixin_appid");
@@ -82,10 +88,8 @@ public class DiningUnionController extends EhaisCommonController{
 			@RequestParam(value = "code", required = false) String code ) {	
 		
 		try{
-			System.out.println("==========11111");
 			Map<String,Object> map = SignUtil.getPartnerId(pid,weixin_token);
 			if(map == null){
-				System.out.println("==========2222");
 			    return "redirect:"+website; //错误的链接，跳转商城
 			}
 			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
@@ -97,12 +101,30 @@ public class DiningUnionController extends EhaisCommonController{
 					return this.redirect_wx_authorize(request , weixin_appid , "/diningUnion!"+pid);
 				}else if(StringUtils.isNotEmpty(code)){
 					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map,weixin_appid,weixin_appsecret,weixin_token);
-					String newPid = SignUtil.setPartnerId(Integer.valueOf(map.get("partnerId").toString()),Long.valueOf(map.get("userId").toString()), user.getUserId(), weixin_token);
+					String newPid = SignUtil.setPartnerId(default_store_id,Integer.valueOf(map.get("partnerId").toString()),Long.valueOf(map.get("userId").toString()), user.getUserId(), weixin_token);
 					String link = request.getScheme() + "://" + request.getServerName() + "/diningUnion!"+newPid;
 					return "redirect:"+link;
 				}else if(user_id > 0 && Long.valueOf(map.get("userId").toString()).longValue() == user_id.longValue()){//经过code获取用户信息跳回自己的链接中来
 					EHaiUsers user = eHaiUsersMapper.selectByPrimaryKey(user_id);
-					if(user == null){
+					
+					
+					String link = request.getScheme() + "://" + request.getServerName() + "/diningUnion!"+pid;
+					WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, Integer.valueOf(map.get("store_id").toString()), weixin_appid, weixin_appsecret, null);
+					signature.setTitle("微信点餐应用");
+					signature.setLink(link);
+					signature.setDesc("帮助餐厅“互联网+”转型的移动O2O服务平台");
+					signature.setImgUrl(defaultimg);
+					List<String> jsApiList = new ArrayList<String>();
+					jsApiList.add("onMenuShareTimeline");
+					jsApiList.add("onMenuShareAppMessage");
+					jsApiList.add("onMenuShareQQ");
+					jsApiList.add("onMenuShareWeibo");
+					jsApiList.add("onMenuShareQZone");
+					signature.setJsApiList(jsApiList);
+					modelMap.addAttribute("signature", JSONObject.fromObject(signature).toString());
+					
+					
+					if(user == null || user.getUserType() != EUserTypeEnum.dining){
 						return "/dining/diningUnion";
 					}else{
 						request.getSession().setAttribute(EConstants.SESSION_STORE_ID,user.getStoreId());
@@ -117,6 +139,8 @@ public class DiningUnionController extends EhaisCommonController{
 					return "redirect:"+website; //错误的链接，跳转商城
 				}
 			}
+			
+			
 		}catch(Exception e){
 			e.printStackTrace();
 		}

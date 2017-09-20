@@ -31,6 +31,10 @@ public interface EHaiUsersMapper {
 	@ResultMap(value = "BaseResultMap")
 	public EHaiUsers userInfo(@Param("userIds") Long userIds);
 	
+	@Select("select * from hai_users where openid = #{openid} limit 0,1")
+	@ResultMap(value = "BaseResultMap")
+	public EHaiUsers userInfoOpenId(@Param("openid") String openid);
+	
 	
 	public void modifyPassword(@Param("userId") Long userId,@Param("password") String password) ;
 	

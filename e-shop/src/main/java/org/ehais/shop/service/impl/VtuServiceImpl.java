@@ -145,7 +145,10 @@ public class VtuServiceImpl implements VtuService {
 	public String vtuMessage(String appdomain,String vtujson,String vtime) throws Exception {
 		// TODO Auto-generated method stub
 		
+		if(!FSO.FolderExists(vtujson))return "";
 		String vtuContent = FSO.ReadFileName(vtujson);
+		if(StringUtils.isNotBlank(vtuContent))return "";
+		
 		JSONObject json = JSONObject.fromObject(vtuContent);
 		JSONArray arr = json.getJSONArray("org");
 		InputStream orgImg = EHttpClientUtil.getUriStream(arr.get(ECommon.getRand(0, arr.size()-1)).toString());

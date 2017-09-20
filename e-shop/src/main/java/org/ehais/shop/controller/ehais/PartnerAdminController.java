@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/ehais")
 public class PartnerAdminController extends EhaisCommonController {
 	private static Logger log = LoggerFactory.getLogger(PartnerAdminController.class);
+	public static Integer default_store_id = Integer.valueOf(ResourceUtil.getProValue("default_store_id"));
 	public static String weixin_token = ResourceUtil.getProValue("weixin_token");
 	
 	
@@ -26,7 +27,7 @@ public class PartnerAdminController extends EhaisCommonController {
 			HttpServletRequest request,HttpServletResponse response ) {	
 		try{
 			Integer partner_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_PARTNER_ID);
-			String qrcode = request.getScheme()+"://"+request.getServerName()+"/diningUnion!"+SignUtil.setPartnerId(partner_id, 0L, 0L, weixin_token);
+			String qrcode = request.getScheme()+"://"+request.getServerName()+"/diningUnion!"+SignUtil.setPartnerId(default_store_id,partner_id, 0L, 0L, weixin_token);
 			modelMap.addAttribute("qrcode", qrcode);
 			return "/"+this.getStoreTheme(request)+"/qrcode/dining";
 		}catch(Exception e){

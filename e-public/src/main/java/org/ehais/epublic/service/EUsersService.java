@@ -45,7 +45,11 @@ public interface EUsersService extends CommonService{
 			String remark,
 			Integer groupid) throws Exception;
 	
-
+	
+	
+	public ReturnObject<EHaiUsers> wx_user_save(HttpServletRequest request,Long userId) throws Exception;
+	public ReturnObject<EHaiUsers> wx_user_save(HttpServletRequest request,String openId) throws Exception;
+	public ReturnObject<EHaiUsers> wx_user_save(HttpServletRequest request,EHaiUsers user) throws Exception;
 
 }
 

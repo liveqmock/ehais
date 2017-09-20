@@ -161,7 +161,7 @@ public class EhaisWebController extends EhaisCommonController {
 		WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, Integer.valueOf(map.get("store_id").toString()), wp.getAppid(), wp.getSecret(), null);
 		signature.setTitle(goods.getGoodsName());
 		signature.setLink(link);
-		signature.setDesc(goods.getGoodsBrief());
+		signature.setDesc(goods.getActDesc());
 		signature.setImgUrl(goods.getGoodsThumb());
 		List<String> jsApiList = new ArrayList<String>();
 		jsApiList.add("onMenuShareTimeline");
