@@ -33,7 +33,7 @@
 					</div>
 					<div class="fa fa-check-circle singleCheck active"></div>
 				</div>
-				<#assign total=total + cart.goodsPrice * cart.goodsNumber >
+				<#assign total=total + cart.goodsPrice!0 * cart.goodsNumber!0 >
 				</#list>
 				</#if>
 			</div>

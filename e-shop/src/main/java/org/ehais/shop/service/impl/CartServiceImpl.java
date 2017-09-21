@@ -322,9 +322,9 @@ public class CartServiceImpl  extends CommonServiceImpl implements CartService{
 
 		//即时返回此用户的购物车存在商品
 		HaiCartExample example = new HaiCartExample();
-		if(user_id != null)example.or().andUserIdEqualTo(user_id);
-		if(session_shop_encode != null)example.or().andSessionIdEqualTo(session_shop_encode);
-				
+		if(user_id != null)example.or().andUserIdEqualTo(user_id).andGoodsIdEqualTo(goods_id);
+		if(session_shop_encode != null)example.or().andSessionIdEqualTo(session_shop_encode).andGoodsIdEqualTo(goods_id);
+		
 		List<HaiCartWithBLOBs> listCart = haiCartMapper.selectByExampleWithBLOBs(example);
 		if(listCart!=null && listCart.size()>0){
 			rm.setCode(2);
@@ -378,6 +378,10 @@ public class CartServiceImpl  extends CommonServiceImpl implements CartService{
 		rm.setCode(code);
 		rm.setMsg(code==1?"添加成功":"添加失败");
 		
+		
+		example.clear();
+		if(user_id != null)example.or().andUserIdEqualTo(user_id);
+		if(session_shop_encode != null)example.or().andSessionIdEqualTo(session_shop_encode);
 		
 		long total = haiCartMapper.countByExample(example);
 		rm.setTotal(total);//购物车的数量

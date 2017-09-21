@@ -25,15 +25,14 @@ function w_address_add(){
 		url : "/ws/useraddress_add_submit",type:"post",dataType:"json",
 		data : $("form").serialize(),
 		success : function(result){
-			var layerIndex = layer.open({
+			elay.open({
 			    content: result.msg
-			    ,btn: ['朕知道了']
+			    ,btn: '朕知道了'
 			    ,yes: function(index){  
 			    	if(result.code ==1){
 			    		window.history.go(-1);
 			    	}
-			    	layer.close(layerIndex);
-			    	layerIndex = null;
+			    	
 			    }
 			});
 		},error : function(err,xhr){

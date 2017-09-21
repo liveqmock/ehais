@@ -16,24 +16,32 @@ import org.ehais.epublic.mapper.EHaiArticleMapper;
 import org.ehais.epublic.mapper.EHaiUsersMapper;
 import org.ehais.epublic.model.EHaiArticle;
 import org.ehais.epublic.model.EHaiArticleExample;
+import org.ehais.epublic.model.EHaiStore;
 import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.epublic.model.EHaiUsersExample;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
+import org.ehais.shop.mapper.HaiAdMapper;
 import org.ehais.shop.mapper.HaiArticleGoodsMapper;
 import org.ehais.shop.mapper.HaiArticleRecordMapper;
 import org.ehais.shop.mapper.HaiCartMapper;
+import org.ehais.shop.mapper.HaiCategoryMapper;
 import org.ehais.shop.mapper.HaiForumMapper;
 import org.ehais.shop.mapper.HaiGoodsMapper;
 import org.ehais.shop.mapper.HaiUserAddressMapper;
+import org.ehais.shop.model.HaiAd;
+import org.ehais.shop.model.HaiAdExample;
 import org.ehais.shop.model.HaiArticleGoods;
 import org.ehais.shop.model.HaiArticleGoodsExample;
 import org.ehais.shop.model.HaiArticleRecord;
 import org.ehais.shop.model.HaiArticleRecordExample;
 import org.ehais.shop.model.HaiCart;
 import org.ehais.shop.model.HaiCartExample;
+import org.ehais.shop.model.HaiCategory;
+import org.ehais.shop.model.HaiCategoryExample;
 import org.ehais.shop.model.HaiForum;
 import org.ehais.shop.model.HaiForumExample;
 import org.ehais.shop.model.HaiGoods;
+import org.ehais.shop.model.HaiGoodsExample;
 import org.ehais.shop.model.HaiUserAddress;
 import org.ehais.shop.model.HaiUserAddressExample;
 import org.ehais.util.ResourceUtil;
@@ -62,7 +70,6 @@ public class EhaisWebController extends EhaisCommonController {
 	private HaiGoodsMapper haiGoodsMapper;
 	@Autowired
 	private HaiArticleGoodsMapper haiArticleGoodsMapper;
-	
 	@Autowired
 	private HaiCartMapper haiCartMapper;
 	@Autowired
@@ -75,9 +82,128 @@ public class EhaisWebController extends EhaisCommonController {
 	
 	public static String website = ResourceUtil.getProValue("website");
 	public static String defaultimg = ResourceUtil.getProValue("defaultimg");
-	
-	//sid 32位md5[{5}{agencyId}-{15}{articleId}_{26}{userId}-{6}{goodsId}]
 
+	@Autowired
+	private HaiAdMapper haiAdMapper;
+	@Autowired
+	private HaiCategoryMapper haiCategoryMapper;
+
+	
+	//http://127.0.0.1/w_shop!9771520-0ac51801-1bd44602-2f40141253-32a82a04-4495cf05-560
+	@RequestMapping("/w_shop!{sid}")
+	public String shop(ModelMap modelMap,
+			HttpServletRequest request,
+			HttpServletResponse response ,
+			@PathVariable(value = "sid") String sid,
+			@RequestParam(value = "code", required = false) String code
+			) {	
+		Integer store_id = SignUtil.getUriStoreId(sid);
+		if(store_id == 0 || store_id == null){
+			return "redirect:"+website; //错误的链接，跳转商城
+		}
+		request.getSession().setAttribute(EConstants.SESSION_STORE_ID, store_id);
+		try{
+			EHaiStore store = eStoreService.getEStore(store_id);
+			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
+			Map<String,Object> map = SignUtil.getSid(sid,wp.getToken());
+			if(map == null){
+			    return "redirect:"+website; //错误的链接，跳转商城
+			}
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
+			
+			if(this.isWeiXin(request)){//微信端登录
+				if((user_id == null || user_id == 0 ) && StringUtils.isEmpty(code)){
+					return this.redirect_wx_authorize(request , wp.getAppid() , "/w_shop!"+sid);
+				}else if(StringUtils.isNotEmpty(code)){
+					System.out.println(code);
+					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map);
+					String newSid = SignUtil.setSid(store_id,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), user.getUserId(),0,0L, wp.getToken());
+					String link = request.getScheme() + "://" + request.getServerName() + "/w_shop!"+newSid;
+					System.out.println("code:"+link);
+					return "redirect:"+link;
+				}else if(user_id > 0 && Long.valueOf(map.get("userId").toString()).longValue() == user_id.longValue()){//经过code获取用户信息跳回自己的链接中来
+					
+					return this.shopData(modelMap, request, response, wp, store, sid, store_id, user_id, map);
+					
+				}else if(Long.valueOf(map.get("userId").toString()).longValue() != user_id.longValue()){
+					System.out.println("user_id != map.userId condition is worng");
+					request.getSession().removeAttribute(EConstants.SESSION_USER_ID);
+				    return this.redirect_wx_authorize(request,wp.getAppid(), "/w_shop!"+sid);
+				}else{
+					System.out.println(sid+" condition is worng");
+					return "redirect:"+website; //错误的链接，跳转商城
+				}
+			}else{
+				return this.shopData(modelMap, request, response, wp, store, sid, store_id, user_id, map);
+				
+			}
+			
+			
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("MobileController", e);
+		}
+		
+		return "/ehais/w_shop";
+	}
+	
+	private String shopData(ModelMap modelMap,
+			HttpServletRequest request,
+			HttpServletResponse response ,
+			WpPublicWithBLOBs wp ,
+			EHaiStore store,
+			String sid,
+			Integer store_id,
+			Long user_id ,
+			Map<String,Object> map ) throws Exception{
+		modelMap.addAttribute("store", store);
+		
+		HaiAdExample adExample = new HaiAdExample();
+		adExample.createCriteria().andStoreIdEqualTo(store_id).andIsVoidEqualTo(1);
+		List<HaiAd> adList = haiAdMapper.selectByExample(adExample);
+		
+		HaiCategoryExample categoryExample = new HaiCategoryExample();
+		categoryExample.createCriteria()
+		.andStoreIdEqualTo(store_id)
+		.andIsShowEqualTo(true);
+		categoryExample.setOrderByClause("sort_order asc");
+		List<HaiCategory> categoryList = haiCategoryMapper.selectByExample(categoryExample);
+		
+		HaiGoodsExample goodsExample = new HaiGoodsExample();
+		goodsExample.createCriteria()
+		.andStoreIdEqualTo(store_id)
+		.andIsOnSaleEqualTo(true);
+		goodsExample.setLimitStart(0);
+		goodsExample.setLimitEnd(20);
+		goodsExample.setOrderByClause("sort_order asc");
+		List<HaiGoods> goodsList = haiGoodsMapper.selectByExample(goodsExample);
+		for (HaiGoods haiGoods : goodsList) {
+			haiGoods.setGoodsUrl("w_goods_detail!"+SignUtil.setSid(store_id, Integer.valueOf(map.get("agencyId").toString()), Long.valueOf(map.get("parentId").toString()), user_id, 0 , haiGoods.getGoodsId(), wp.getToken()));
+		}
+		modelMap.addAttribute("adList", adList);
+		modelMap.addAttribute("categoryList", categoryList);
+		modelMap.addAttribute("goodsList", goodsList);
+		
+		String newSid = SignUtil.setSid(store_id,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), user_id , 0 , 0L , wp.getToken());
+		String link = request.getScheme() + "://" + request.getServerName() + "/w_shop!"+newSid;
+		
+		WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, Integer.valueOf(map.get("store_id").toString()), wp.getAppid(), wp.getSecret(), null);
+		signature.setTitle(store.getStoreName());
+		signature.setLink(link);
+		signature.setDesc(store.getDescription());
+		signature.setImgUrl(store.getStoreLogo());
+		List<String> jsApiList = new ArrayList<String>();
+		jsApiList.add("onMenuShareTimeline");
+		jsApiList.add("onMenuShareAppMessage");
+		jsApiList.add("onMenuShareQQ");
+		jsApiList.add("onMenuShareWeibo");
+		jsApiList.add("onMenuShareQZone");
+		signature.setJsApiList(jsApiList);
+		modelMap.addAttribute("signature", JSONObject.fromObject(signature).toString());
+		
+		return "/ehais/w_shop";
+	}
 	
 	
 	/**
@@ -274,7 +400,7 @@ public class EhaisWebController extends EhaisCommonController {
 			@PathVariable(value = "sid") String sid	,
 			@RequestParam(value = "code", required = false) String code) {
 		Integer store_id = SignUtil.getUriStoreId(sid);
-		if(store_id == 0){
+		if(store_id == 0 || store_id == null){
 			System.out.println(sid+" store_id is worng");
 			return "redirect:"+website; //错误的链接，跳转商城
 		}
@@ -443,7 +569,7 @@ public class EhaisWebController extends EhaisCommonController {
 			@PathVariable(value = "sid") String sid
 			) {
 		Integer store_id = SignUtil.getUriStoreId(sid);
-		if(store_id == 0){
+		if(store_id == 0 || store_id == null){
 			return "redirect:"+website; //错误的链接，跳转商城
 		}
 		try{
@@ -464,5 +590,8 @@ public class EhaisWebController extends EhaisCommonController {
 		return "/ehais/w_write_message";
 	}
 	
-	
+	public static void main(String[] args) throws Exception {
+		String sid = SignUtil.setSid(2, 0, 0L, 125L, 0, 0L, "ehais_wxdev");
+		System.out.println(sid);
+	}
 }

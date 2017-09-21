@@ -604,13 +604,13 @@ public class ShoppingServiceImpl extends CommonServiceImpl implements ShoppingSe
 		
 		
 		//读取购物车的信息是否正确
-		if(!RequestUtils.sqlValidate(order_done.getRec_id_data())){
-			rm.setMsg("参数不安全");return rm;
-		}
 		String rec_cart = order_done.getRec_id_data();
 		String[] recCart = rec_cart.split(",");
 		List<Long> recCartList = new ArrayList<Long>();
 		for (String string : recCart) {
+			if(!RequestUtils.sqlValidate(string)){
+				rm.setMsg("参数不安全001");return rm;
+			}
 			recCartList.add(Long.valueOf(string));
 		}
 		
