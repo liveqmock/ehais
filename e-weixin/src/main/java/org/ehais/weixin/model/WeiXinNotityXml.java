@@ -14,6 +14,7 @@ public class WeiXinNotityXml {
 	private String EventKey;
 	private String Ticket;
 	private String Content;
+	private String Encrypt;
 	private Long MsgId;
 	private WeiXinImage Image;
 	private Integer ArticleCount;
@@ -96,6 +97,12 @@ public class WeiXinNotityXml {
 	}
 	public void setMenuId(String menuId) {
 		MenuId = menuId;
+	}
+	public String getEncrypt() {
+		return Encrypt;
+	}
+	public void setEncrypt(String encrypt) {
+		Encrypt = encrypt;
 	}
 	
 	
