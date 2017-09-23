@@ -75,30 +75,33 @@ function minusSquare(that){
 
 //选好了，查看订单
 function checkOutCart(){
-	if(localStorage.getItem("localCartArray") == null || localStorage.getItem("localCartArray") == "" || localStorage.getItem("localCartArray") == "null"){
-		cartArray = new Array();
-	}else{
-		cartArray = JSON.parse(localStorage.getItem("localCartArray"));
-	}
+	
 	
 	var total = 0,quantity = 0;
-	$("#check_out_list >div.dd").remove();
-	$.each(cartArray,function(index,ele){
-		
-		var amount = parseFloat(ele.price) * parseInt(ele.badge); 
-		total += amount;
-		quantity += parseInt(ele.badge);
-		
-		$("#check_out_list").append("<div class=\"dd\" id=\"cart_dd_"+index+"\" value=\""+index+"\">"+
-				"<div class=\"fl\">"+ele.goodsname.substr(0,10)+"</div>"+
-				"<div class=\"fr quantity\">* "+ele.badge+"</div>"+
-				"<div class=\"fr price\">￥"+(amount / 100 ).toFixed(2)+"</div>"+
-			"</div>");
-		amount = null;		
+	$("#wcod dd").remove();
+	
+	$(".badge.active").each(function(){
+		if(parseInt($(this).parent().attr("cid")) > 0){
+			var amount = parseFloat($(this).parent().attr("price")) * parseInt($(this).html()); 
+			total += amount;
+			quantity += parseInt($(this).html());
+				
+			
+			$("#wcod").append("<dd>"+
+					"<div>"+$(this).parent().children(".img").html()+"</div>"+
+					"<div class='t'>"+$(this).parent().children(".i").children(".t").html()+"</div>"+
+					"<div class='p'>￥"+(amount / 100).toFixed(2)+"</div>"+
+					"<div class='g'>份</div>"+
+					"<div class='g'>x "+$(this).html()+"</div>"+
+				"</dd>");
+			
+			amount = null;
+			
+		}
 	});
 
-	$("#orderQuantity").html("数量:"+quantity);
-	$("#orderTotal").html("合计:￥"+(total / 100).toFixed(2));
+	$("#oq").html("数量:"+quantity);
+	$("#ot").html("￥"+(total / 100).toFixed(2));
 	
 	total = null ; quantity = null;
 	cartArray = null;
@@ -238,10 +241,7 @@ $(function(){
 		 }, "首页", "");
 		
 		if($("footer.fd").hasClass("active")){
-			$("#localCheckOut").addClass("active");
-			$(".sCart,#checkOut").hide();
-			$(".orderCart,.orderSubmit,#orderTotal,#orderQuantity").show();
-			
+			$(".wco").addClass("active");
 			checkOutCart();
 		}
 	});
@@ -257,26 +257,18 @@ $(function(){
 	//确认下单
 	$("#orderSubmit").click(function(){
 		var layerIndex = elay.confirm({
-		    content: '陛下，订单'+$("#orderTotal").html()+'确认提交吗'
+		    content: '订单'+$("#ot").html()+'确认用'+($(".icon-weixin").hasClass("active")?"微信支付":"现金支付")+'吗'
 		    ,btn: ['确认' , '取消']
 		    ,sure: function(){		    	
-				if($("#check_out_pay >.weixin").hasClass("active")){
+				if($(".icon-weixin").hasClass("active")){
 					diningSubmitOrder("weixin");
-				}else if($("#check_out_pay >.cash").hasClass("active")){
+				}else if($(".icon-xianjin").hasClass("active")){
 					diningSubmitOrder("cash");
 				}
 		    }
 		 });
 	});
 	
-	//现场点餐暂不提交订单
-	$("#cancelLocalSOrder,#localCheckOut .layui-m-layershade").click(function(){
-		$("#localCheckOut").removeClass("active");
-	});
-	//现场点餐并支付
-	$("#submitOrderPay").click(function(){diningSubmitOrder("weixin")});
-	//现场点餐暂不支付
-	$("#submitOrderOnly").click(function(){diningSubmitOrder("cash")});
 	//点餐选项
 	$("#orderFood").click(function(){
 		if(!$("#orderFood").hasClass("active")){
@@ -299,13 +291,18 @@ $(function(){
 	});
 	
 	//支付方式选择
-	$("#check_out_pay >div").click(function(){
-		$("#check_out_pay >div").removeClass("active");
+	$(".icon-weixin").click(function(){
+		$(".icon-xianjin").removeClass("active");
+		$(this).addClass("active");
+	});
+	$(".icon-xianjin").click(function(){
+		$(".icon-weixin").removeClass("active");
 		$(this).addClass("active");
 	});
 	
 	diningUserOrderList();//获取用户的订单列表
 	
+	$("#resultBtn").click(function(){$(".result").removeClass("active");});
 	
 	window.onpopState = function(){
 	    var json = window.history.state;//获取当前所在的state
@@ -333,38 +330,32 @@ function getScrollTop(){
 	});
 }
 
-function changePrevious(index){
-	if(index > 0){
-		if($("#scroller_menu_goods_list li.cat"+$("#scroller_menu_cate li").eq(index - 1).attr("v")).length > 0){
-			$("#scroller_menu_cate li").eq(index - 1).click();
-		}else{
-			changePrevious(index-1);
-		}
-	}
-}
-//下拉显示下一个菜单
-function changeNext(index){
-	if(index < $("#scroller_menu_cate li").length - 1){			
-		if($("#scroller_menu_goods_list li.cat"+$("#scroller_menu_cate li").eq(index + 1).attr("v")).length > 0){
-			$("#scroller_menu_cate li").eq(index + 1).click();
-		}else{
-			changeNext(index+1);
-		}
-	}
-}
+
 
 /**
  * 现场点餐
  * @param tpay，0暂不支付，1立即支付
  */
 function diningSubmitOrder(tPay){
+	var cartArray = new Object();
+	
+	$(".badge.active").each(function(){
+		if(parseInt($(this).parent().attr("cid")) > 0){
+			cartArray[""+$(this).parent().attr("value")+""] = {
+					"goods_id":$(this).parent().attr("value"),
+					"price" : $(this).parent().attr("price"),
+					"badge" : $(this).html(),
+				}
+		}
+	});
 	
 	$.ajax({
 		url : "/diningSubmitOrder",
 		data : {
 			sid:sid,
 			tPay:tPay,
-			cart:localStorage.getItem("localCartArray")
+			cart:JSON.stringify(cartArray),
+			message:$("#postscript").val()
 		},
 		type:"post",
 		dataType:"json",
@@ -379,15 +370,31 @@ function diningSubmitOrder(tPay){
 				WeiXinWCPay["package"] = WeiXinWCPay["pack_age"] 
 				//支付调起
 				onBridgeReadyCall(WeiXinWCPay,function(){
+					orderSuccess();
 					diningUserOrderList();
 				},function(){
+					orderFail();
 					diningUserOrderList();
 				});
 			}else{
+				orderSuccess();
 				diningUserOrderList();
 			}
 		}
 	});
+}
+
+function orderSuccess(){
+	$(".cart_layer,.wco").removeClass("active");
+	$(".result").addClass("active");
+	$(".result i").attr("class","iconfont icon-chenggong");
+	$(".result div").html("下单成功");
+}
+function orderFail(){
+	$(".cart_layer,.wco").removeClass("active");
+	$(".result").addClass("active");
+	$(".result i").attr("class","icon-shibai");
+	$(".result div").html("下单失败");
 }
 
 //清空购物车事件
@@ -415,14 +422,16 @@ function diningUserOrderList(){
 				var item = "";
 				var quantity = 0;
 				if(goods_desc != null && $.trim(goods_desc) != ""){
-					var gd = $.trim(goods_desc).split(" ");
+					goods_desc = goods_desc.replaceAll(" ","");
+					var gd = $.trim(goods_desc).split("】");
 					$.each(gd,function(k,v){
+						if(v == null || v == "")return false;
 						item += "<li>"+
 							"<span>"+v.substring(0,v.indexOf("【"))+"</span>"+
-							"<span>x "+v.substring(v.indexOf("【")+1,v.indexOf("】"))+"</span>"+
+							"<span>x "+v.substring(v.indexOf("【")+1,v.length)+"</span>"+
 						"</li>";
 						
-						quantity += parseInt(v.substring(v.indexOf("【")+1,v.indexOf("】")));
+						quantity += parseInt(v.substring(v.indexOf("【")+1,v.length));
 					});
 					
 				}
@@ -435,7 +444,7 @@ function diningUserOrderList(){
 							"<span>订单已完成</span>"+
 						"</div>"+
 						"<ul>"+item+"</ul>"+
-						"<div>共"+quantity+"件菜品，微信支付￥"+(v.orderAmount / 100).toFixed(2)+"元</div>"+
+						"<div>共"+quantity+"件菜品，"+v.payName+"￥"+(v.orderAmount / 100).toFixed(2)+"元</div>"+
 					"</li>");
 				
 				item = null;

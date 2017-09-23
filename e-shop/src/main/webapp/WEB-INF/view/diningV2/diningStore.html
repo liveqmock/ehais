@@ -101,13 +101,6 @@
 			</div>
 			<button id="checkOut" >选好了</button>
 			
-			
-			<div id="orderCart" class="orderCart">
-				<span id="orderTotal"></span>
-				<span id="orderQuantity"></span>				
-			</div>
-			<button id="orderSubmit" class="orderSubmit">确认下单</button>
-			
 		</footer>
 		
 		<div class="cart_layer">
@@ -123,78 +116,34 @@
 			
 		</div>
 		
-		
-		
-		<div id="localCheckOut" class="check_out_layer" >
-			<div class="bg"></div>
-			<div id="check_out_dl" class="dl">
-				<div class="title">
-					<div>点餐清单</div>
-					<div class="goOrderFood"><span class="fa fa-chevron-left"></span>继续点餐</div>
-				</div>
-				<div id="check_out_list" class="list checkout"></div>
-				<div id="check_out_pay" class="check_out_pay">
-					<div class="weixin active"><span class="fa fa-weixin"></span>微信支付<i class="fa fa-check"></i></div>
-					<div class="cash"><span class="fa fa-credit-card-alt"></span>现场支付<i class="fa fa-check"></i></div>
-				</div>
-			</div>
-		</div>
-		
-		
 		<div class="wco">
 			<div>
 				桌/台/房：A1005
 			</div>
-			<div>
-				<dl>
-					<dt>购物车/订单列表</dt>
-					<dd>
-						<div>
-							<img src="css/images/cart.png">
-						</div>
-						<div class="t">海鲜大餐加烧鸡翅</div>
-						<div class="p">￥177.00</div>
-						<div class="g">份</div>
-						<div class="g">x 1</div>
-					</dd>
-					<dd>
-						<div>
-							<img src="css/images/cart.png">
-						</div>
-						<div class="t">海鲜大餐加烧鸡翅</div>
-						<div class="p">￥177.00</div>
-						<div class="g">份</div>
-						<div class="g">x 1</div>
-					</dd>
-					<dd>
-						<div>
-							<img src="css/images/cart.png">
-						</div>
-						<div class="t">海鲜大餐加烧鸡翅</div>
-						<div class="p">￥177.00</div>
-						<div class="g">份</div>
-						<div class="g">x 1</div>
-					</dd>
-				</dl>
-			</div>
+			<dl id="wcod">
+				<dt>购物车/订单列表</dt>				
+			</dl>
 			
+			<dl>
+				<dt>支付方式</dt>
+				<dd class="iconfont icon-weixin active"> 微信支付<i class="iconfont icon-gou"></i></dd>
+				<dd class="iconfont icon-xianjin"> 现金支付<i class="iconfont icon-gou"></i></dd>
+			</dl>
 			<div>
-				<dl>
-					<dt>支付方式</dt>
-					<dd class="iconfont icon-weixin"> 微信支付<i class="iconfont icon-gou active"></i></dd>
-					<dd class="iconfont icon-xianjin"> 现金支付<i class="iconfont icon-gou"></i></dd>
-				</dl>
+				<textarea id="postscript" placeholder="填写用餐备注"></textarea>
 			</div>
-			
-			<div>
-				
-				<button>提交订单</button>
-				<div>￥50.00</div>
+			<div>				
+				<button id="orderSubmit">提交订单</button>
+				<div id="ot"></div>
 				合计：
 			</div>
-			
 		</div>
 		
+		<div class="result">
+			<i class="iconfont icon-chenggong"></i>
+			<div>下单成功</div>
+			<button id="resultBtn">确定</button>
+		</div>
 		
 		<script type="text/javascript">
 		var sid = "${sid}";
