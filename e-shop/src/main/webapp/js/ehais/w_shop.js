@@ -9,7 +9,7 @@ $(function(){
 	    pagination: '.swiper-pagination',
 	});  
 	
-	$(".fa-shopping-cart").click(function(){
+	$(".icon-gouwuche").click(function(){
 		window.location.href="w_cart!"+sid;
 	});
 

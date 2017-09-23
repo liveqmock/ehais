@@ -707,7 +707,7 @@ public class ShoppingServiceImpl extends CommonServiceImpl implements ShoppingSe
 		orderInfo.setGoodsAmount(totalPrice);//总价钱	
 		orderInfo.setOrderAmount(totalPrice);//订单价格
 		orderInfo.setOrderSource(EOrderSourceEnum.weixin);
-		orderInfo.setGoodsDesc(sb.toString());
+		if(sb.length() > 0)orderInfo.setGoodsDesc(sb.toString().trim());
 		orderInfo.setClassify(EOrderClassifyEnum.shop);
 		orderInfo.setSid(sid);
 		

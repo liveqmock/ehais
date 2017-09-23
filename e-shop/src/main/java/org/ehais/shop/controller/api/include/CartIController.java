@@ -35,11 +35,11 @@ public class  CartIController extends CommonController {
 	@RequestMapping("/cart_delete")
 	public String cart_delete(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
-			@RequestParam(value = "recId", required = false) Long recId,
+			@RequestParam(value = "recIds", required = false) String recIds,
 			@RequestParam(value = "user_id", required = true) Long user_id
 			) {
 		try{
-			ReturnObject<HaiCart> rm = cartService.cart_delete(request, recId , user_id);
+			ReturnObject<HaiCart> rm = cartService.cart_delete(request, recIds , user_id);
 			return this.writeJson(rm);
 		}catch(Exception e){
 			e.printStackTrace();

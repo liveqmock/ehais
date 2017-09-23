@@ -7,16 +7,22 @@
   box-sizing: border-box;
 }
 .w_shop header {
+  font-size: 0.18rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background: #fff;
   width: 100%;
   border-bottom: 0.01rem solid #DCDCDC;
   height: 0.45rem;
-  line-height: 0.3rem;
+  line-height: 0.25rem;
   text-align: center;
   padding: 0.1rem 0.15rem;
   font-weight: bold;
 }
 .w_shop header i {
-  padding-top: 0.04rem;
   font-size: 0.2rem;
 }
 .w_shop header i:first-child {
@@ -26,6 +32,7 @@
   float: right;
 }
 .w_shop .swiper-container {
+  padding-top: 0.45rem ;
   width: 100%;
 }
 .w_shop .swiper-container *:not(span) {
@@ -41,6 +48,14 @@
   font-weight: bold;
   text-align: center;
   border-bottom: 0.01rem solid #DCDCDC;
+}
+.w_shop ul.b li {
+  width: 25%;
+  padding: 0.15rem;
+}
+.w_shop ul.b li img {
+  max-width: 100%;
+  border-radius: 50%;
 }
 .w_shop ul.u li {
   padding: 0.1rem;
@@ -83,4 +98,14 @@
 }
 .w_shop ul.u li .i .d div:last-child {
   float: right;
+  font-size: 0.12rem;
+}
+.w_shop footer {
+  font-size: 0.12rem;
+  text-align: center;
+  color: #ccc;
+  width: 100%;
+  border-top: 0.05rem solid #dcdcdc;
+  margin-top: 0.15rem;
+  padding: 0.15rem 0;
 }

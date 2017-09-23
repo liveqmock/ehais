@@ -1,4 +1,5 @@
 @import url("bt_font.css");
+@import url("../fonts/iconfont.css");
 html,
 body {
   font-size: 100px;
@@ -6,6 +7,8 @@ body {
   padding: 0;
   color: #333;
   font-family: "Helvetica Neue", Helvetica, "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
+  width: 100%;
+  float: left;
 }
 ul,
 li,
@@ -15,6 +18,10 @@ dt {
   list-style: none;
   margin: 0;
   padding: 0;
+}
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 .dn {
   display: none;

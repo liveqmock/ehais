@@ -90,6 +90,7 @@ public class EhaisWebController extends EhaisCommonController {
 
 	
 	//http://127.0.0.1/w_shop!9771520-0ac51801-1bd44602-2f40141253-32a82a04-4495cf05-560
+	//http://4db7deca.ngrok.io/w_shop!9771520-0ac51801-1bd44602-2f40141253-32a82a04-4495cf05-560
 	@RequestMapping("/w_shop!{sid}")
 	public String shop(ModelMap modelMap,
 			HttpServletRequest request,
@@ -464,11 +465,22 @@ public class EhaisWebController extends EhaisCommonController {
 	public String w_cart(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@PathVariable(value = "sid") String sid) {
-		if(this.isLocalHost(request)){
-			request.getSession().setAttribute(EConstants.SESSION_USER_ID, 125L);			
+		
+		Integer store_id = SignUtil.getUriStoreId(sid);
+		if(store_id == 0 || store_id == null){
+			System.out.println(sid+" store_id is worng");
+			return "redirect:"+website; //错误的链接，跳转商城
 		}
+		request.getSession().setAttribute(EConstants.SESSION_STORE_ID, store_id);
+		
 		try{
-			
+			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
+			Map<String,Object> map = SignUtil.getSid(sid,wp.getToken());
+			if(map == null){
+				System.out.println(sid+" sid is worng");
+			    return "redirect:"+website; //错误的链接，跳转商城
+			}
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			HaiCartExample example = new HaiCartExample();
 			example.createCriteria().andUserIdEqualTo((Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID));
 //			String session_shop_encode = (String)request.getSession().getAttribute(EConstants.SESSION_SHOP_ENCODE);
@@ -478,6 +490,11 @@ public class EhaisWebController extends EhaisCommonController {
 			
 			modelMap.addAttribute("cartList", cartList);
 			modelMap.addAttribute("sid", sid);
+			
+			String newSid = SignUtil.setSid(store_id,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), user_id,0,0L, wp.getToken());
+			String link = request.getScheme() + "://" + request.getServerName() + "/w_shop!"+newSid;
+			modelMap.addAttribute("link", link);
+			
 		}catch(Exception e){
 			e.printStackTrace();
 		}

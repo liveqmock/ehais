@@ -1,6 +1,7 @@
 package org.ehais.shop.service.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,8 @@ import org.ehais.shop.model.HaiCartWithBLOBs;
 import org.ehais.shop.model.HaiGoods;
 import org.ehais.shop.service.CartService;
 import org.ehais.tools.ReturnObject;
+import org.ehais.util.RequestUtils;
+import org.ehais.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -367,7 +370,8 @@ public class CartServiceImpl  extends CommonServiceImpl implements CartService{
 		model.setGoodsName(goods.getGoodsName());
 		model.setMarketPrice(goods.getMarketPrice());
 		model.setGoodsPrice(goods.getShopPrice());
-		model.setGoodsThumb(StringUtils.isEmpty(goods.getGoodsThumb())?goods.getOriginalImg():goods.getGoodsThumb());
+//		model.setGoodsThumb(StringUtils.isEmpty(goods.getGoodsThumb())?goods.getOriginalImg():goods.getGoodsThumb());
+		model.setGoodsThumb(goods.getOriginalImg());
 		model.setGoodsAttr("");
 		model.setStoreId(goods.getStoreId());
 		model.setParentUserId(parent_user_id);//来源分销的用户
@@ -467,7 +471,7 @@ public class CartServiceImpl  extends CommonServiceImpl implements CartService{
 		return rm;
 	}
 
-	public ReturnObject<HaiCart> cart_delete(HttpServletRequest request, Long recId, Long user_id)
+	public ReturnObject<HaiCart> cart_delete(HttpServletRequest request, String recIds, Long user_id)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiCart> rm = new ReturnObject<HaiCart>();
@@ -475,13 +479,29 @@ public class CartServiceImpl  extends CommonServiceImpl implements CartService{
 		if(user_id == null ){
 			user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 		}
+		if(StringUtils.isBlank(recIds)){
+			rm.setMsg("请选择删除购物车的商品");
+			return rm;
+		}
+		
+		String[] recIda = recIds.split(",");
+//		List<String> listA = Arrays.asList(recIda);
+		List<Long> recIdArr = new ArrayList<Long>();
+		for (String string : recIda) {
+			if(!RequestUtils.sqlValidate(string)){
+				rm.setMsg("非法参数");
+				return rm;
+			}
+			recIdArr.add(Long.valueOf(string));
+		}
+		
 		HaiCartExample example = new HaiCartExample();
 		HaiCartExample.Criteria c = example.createCriteria();
-		c.andRecIdEqualTo(recId);
+		c.andRecIdIn(recIdArr);
 		c.andUserIdEqualTo(user_id);
-		int code = haiCartMapper.deleteByExample(example);
-		rm.setCode(code);
-		rm.setMsg(code==1?"删除成功":"删除失败");
+		haiCartMapper.deleteByExample(example);
+		rm.setCode(1);
+		rm.setMsg("删除成功");
 		return rm;
 	}
 

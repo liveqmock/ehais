@@ -1,18 +1,19 @@
 @import url("common.css");
-.w_check_order_wrapper {
-  box-sizing: border-box;
+.wcow {
   margin-bottom: 0.49rem;
   font-size: 0.16rem;
   width: 100%;
   float: left;
 }
-.w_check_order_wrapper > div,
-.w_check_order_wrapper > div > div {
-  float: left;
-  width: 100%;
+.wcow * {
   box-sizing: border-box;
 }
-.w_check_order_wrapper header {
+.wcow > div,
+.wcow > div > div {
+  float: left;
+  width: 100%;
+}
+.wcow header {
   position: fixed;
   top: 0;
   left: 0;
@@ -25,148 +26,145 @@
   border-bottom: 1px solid #dedede;
   z-index: 11;
 }
-.w_check_order_wrapper header > div {
+.wcow header > div {
   float: left;
   width: 25%;
-  box-sizing: border-box;
   height: 0.45rem;
 }
-.w_check_order_wrapper header > div.middle {
+.wcow header > div.middle {
   width: 50%;
 }
-.w_check_order_wrapper header > div.fa-chevron-left,
-.w_check_order_wrapper header div.fa-list {
+.wcow header > div.fa-chevron-left,
+.wcow header div.fa-list {
   padding: 0.18rem;
   text-align: left;
 }
-.w_check_order_wrapper header > div.fa-list {
+.wcow header > div.fa-list {
   text-align: right;
 }
-.w_check_order_wrapper header > div.active {
+.wcow header > div.active {
   font-weight: bold;
   border-bottom: 0.02rem solid #232326;
 }
-.w_check_order_wrapper > .main {
+.wcow > .main {
   padding: 0;
   width: 100%;
   float: left;
-  box-sizing: border-box;
 }
-.w_check_order_wrapper > .main > .item {
+.wcow > .main > .item {
   width: 100%;
   float: left;
   padding: 0.1rem 0.15rem;
-  box-sizing: border-box;
 }
-.w_check_order_wrapper > .main > .item .new_addr {
+.wcow > .main > .item .new_addr {
   border: 0.01rem #cdcdcd dashed;
   text-align: center;
   padding: 0.2rem;
-  box-sizing: border-box;
 }
-.w_check_order_wrapper > .main > .item .new_addr span {
+.wcow > .main > .item .new_addr span {
   margin-right: 0.08rem;
 }
-.w_check_order_wrapper > .main > .item > .info {
+.wcow > .main > .item > .info {
   width: 100%;
-  box-sizing: border-box;
+  padding: 0 0.25rem;
 }
-.w_check_order_wrapper > .main > .item > .info .username {
+.wcow > .main > .item > .info .username {
   margin-bottom: 0.1rem;
 }
-.w_check_order_wrapper > .main > .item > .info .username .consignee {
-  width: 40%;
+.wcow > .main > .item > .info .username .consignee {
   display: inline-block;
   font-weight: 600;
 }
-.w_check_order_wrapper > .main > .item > .info .username .fa-mobile {
-  margin-left: 0.1rem;
-}
-.w_check_order_wrapper > .main > .item > .info .username .mobile {
+.wcow > .main > .item > .info .username .mobile {
   margin-left: 0.06rem;
 }
-.w_check_order_wrapper > .main > .item label {
+.wcow > .main > .item label {
   width: 25%;
   float: left;
-  box-sizing: border-box;
   line-height: 0.38rem;
 }
-.w_check_order_wrapper > .main > .item input {
+.wcow > .main > .item input {
   width: 65%;
   float: left;
   display: inline-block;
-  padding: 0.06rem;
+  padding: 0.08rem;
   border: 0;
   font-size: 0.15rem;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
-  box-sizing: border-box;
 }
-.w_check_order_wrapper > .main > .item .fa-chevron-right {
+.wcow > .main > .item .fa-chevron-right {
   float: right;
   color: #CDCDCD;
   padding-top: 0.05rem;
 }
-.w_check_order_wrapper > .main .item.order {
+.wcow > .main > .item.pr i {
+  position: absolute;
+  top: 0.3rem;
+}
+.wcow > .main > .item.pr i:first-child {
+  left: 0.15rem;
+}
+.wcow > .main > .item.pr i:last-child {
+  right: 0.15rem;
+}
+.wcow > .main .item.order {
   padding-top: 0;
   padding-bottom: 0;
 }
-.w_check_order_wrapper > .main .item.order .item {
+.wcow > .main .item.order .item {
   position: relative;
   float: left;
   width: 100%;
-  box-sizing: border-box;
   border-bottom: 0.01rem solid #f8f8f8;
 }
-.w_check_order_wrapper > .main .item.order .item .pic {
+.wcow > .main .item.order .item .pic {
   float: left;
   width: 25%;
   padding: 0.08rem 0.08rem 0 0;
 }
-.w_check_order_wrapper > .main .item.order .item .pic img {
+.wcow > .main .item.order .item .pic img {
   width: 100%;
 }
-.w_check_order_wrapper > .main .item.order .item .desc {
-  padding: 0.08rem;
-}
-.w_check_order_wrapper > .main .item.order .item .desc h4 {
+.wcow > .main .item.order .item .t {
   margin: 0;
-  padding: 0;
+  padding: 0.08rem 0 0 0 ;
   height: 0.64rem;
+  box-sizing: border-box;
 }
-.w_check_order_wrapper > .main .item.order .item .desc .intro {
+.wcow > .main .item.order .item .intro {
   position: absolute;
   bottom: 0.05rem;
   padding-left: 25%;
-  box-sizing: border-box;
   z-index: 10;
 }
-.w_check_order_wrapper > .main .item.order .item .desc .intro > div {
+.wcow > .main .item.order .item .intro > div {
   font-size: 0.16rem;
   line-height: 1;
   padding: 0 0.1rem;
+  float: left;
 }
-.w_check_order_wrapper > .main .item.order .item .desc .intro .price {
+.wcow > .main .item.order .item .intro .price {
   color: #ca1816;
   padding-left: 0;
 }
-.w_check_order_wrapper > .main .item.order .item .desc .intro .fa-plus-square {
+.wcow > .main .item.order .item .intro .fa-plus-square {
   color: #ca1816;
 }
-.w_check_order_wrapper > .main .item.order .item .desc .intro .fa-minus-square,
-.w_check_order_wrapper > .main .item.order .item .desc .intro .fa-trash-o {
+.wcow > .main .item.order .item .intro .fa-minus-square,
+.wcow > .main .item.order .item .intro .fa-trash-o {
   color: #B0B0B0;
 }
-.w_check_order_wrapper > .main .item.space {
+.wcow > .main .item.space {
   padding: 0;
   margin: 0;
   height: 0.08rem;
   background: #f8f8f8;
 }
-.w_check_order_wrapper > .main .item.line {
+.wcow > .main .item.line {
   border-bottom: 0.01rem solid #f8f8f8;
 }
-.w_check_order_wrapper footer {
+.wcow footer {
   position: fixed;
   width: 100%;
   height: 0.45rem;
@@ -174,25 +172,23 @@
   right: 0;
   bottom: 0;
   background: #f3f5f7;
-  box-sizing: border-box;
   font-size: 0.12rem;
   z-index: 101;
 }
-.w_check_order_wrapper footer > div {
+.wcow footer > div {
   width: 60%;
   float: left;
   font-size: 0.16rem;
   line-height: 0.45rem;
 }
-.w_check_order_wrapper footer > div > div.total {
+.wcow footer > div > div.total {
   padding-left: 0.15rem;
-  box-sizing: border-box;
   float: left;
 }
-.w_check_order_wrapper footer > div > div.total span {
+.wcow footer > div > div.total span {
   color: #CA1816;
 }
-.w_check_order_wrapper footer button {
+.wcow footer button {
   float: right;
   border: 0;
   background: none;
@@ -219,7 +215,6 @@
 }
 .w_pay_result_wrapper > div {
   padding: 0 0.15rem;
-  box-sizing: border-box;
 }
 .w_pay_result_wrapper button {
   font-size: 0.16rem;

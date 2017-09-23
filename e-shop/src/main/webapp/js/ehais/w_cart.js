@@ -4,12 +4,12 @@ var recid = 0 ;
 var quantity = 0;
 $(function(){
 	$("header .fa-chevron-left").click(function(){window.history.go(-1);});
-	$(".fa-plus-square").click(function(){
-		var recid = $(this).parent().parent().parent().attr("recid");
-		var goodsid = $(this).parent().parent().parent().attr("goodsid");
-		var quantity = $(this).parent().parent().parent().attr("quantity");
+	$(".icon-jia-xianxingfangkuang").click(function(){
+		var recid = $(this).parent().parent().attr("recid");
+		var goodsid = $(this).parent().parent().attr("goodsid");
+		var quantity = $(this).parent().parent().attr("quantity");
 		quantity = parseInt(quantity) + 1;
-		$(this).parent().parent().parent().attr("quantity",quantity);
+		$(this).parent().parent().attr("quantity",quantity);
 		$(this).parent().children(".quantity").html(quantity);
 		
 		if(recIdTemp == recid)clearTimeout(recIdTime);
@@ -20,13 +20,13 @@ $(function(){
 		recIdTemp = recid;
 		cartListItem();
 	});
-	$(".fa-minus-square").click(function(){
-		var recid = $(this).parent().parent().parent().attr("recid");
-		var goodsid = $(this).parent().parent().parent().attr("goodsid");
-		var quantity = $(this).parent().parent().parent().attr("quantity");
+	$(".icon-jian-xianxingfangkuang").click(function(){
+		var recid = $(this).parent().parent().attr("recid");
+		var goodsid = $(this).parent().parent().attr("goodsid");
+		var quantity = $(this).parent().parent().attr("quantity");
 		if(parseInt(quantity) <= 1 )return ;
 		quantity = parseInt(quantity) - 1;
-		$(this).parent().parent().parent().attr("quantity",quantity);
+		$(this).parent().parent().attr("quantity",quantity);
 		$(this).parent().children(".quantity").html(quantity);
 		
 		if(recIdTemp == recid)clearTimeout(recIdTime);
@@ -37,16 +37,8 @@ $(function(){
 		recIdTemp = recid;
 		cartListItem();
 	});
-	$(".fa-trash-o").click(function(){
-		var recid = $(this).parent().parent().parent().attr("recid");
-		var that = $(this).parent().parent().parent();
-		elay.confirm({
-		    content: '确定要删除此商品吗？'
-		    ,btn: ['确定' , '取消']
-		    ,sure: function(index){  
-				cart_delete_submit(that,recid);
-		    }
-		 });
+	$(".icon-lajixiang").click(function(){
+		cart_delete_submit();
 	});
 	
 	$(".singleCheck").click(function(){
@@ -76,7 +68,7 @@ $(function(){
 			}
 		});
 		if(recIds.length == 0){
-			var layerIndex = elay.open({
+			elay.open({
 			    content: '请选择购物车要结算的商品'
 			    ,btn: '朕知道了'
 			});
@@ -85,29 +77,71 @@ $(function(){
 			window.location.href = "w_check_order!"+sid;
 		}
 	});
+	$("#indexLink").click(function(){window.location.href=$(this).attr("href");});
 });
 
 function cart_edit_submit(recid,goodsid,quantity){
 	$.ajax({
 		url : "/ws/cart_edit_submit",type:"post",dataType:"json",
 		data:{recId:recid,goods_id:goodsid,quantity:quantity},
+		beforeSend: function () {},
 		success:function(result){
 			
 		}
 	});
 }
 
-function cart_delete_submit(that,recid){
-	$.ajax({
-		url : "/ws/cart_delete_submit",type:"post",dataType:"json",
-		data:{recId:recid},
-		success:function(result){
-			if(result.code == 1){
-				that.remove();
-				cartListItem();
-			}
+function cart_delete_submit(){
+	var recIds = new Array();
+	$(".list > .item").each(function(index,ele){
+		if($(ele).children(".singleCheck").hasClass("active")){
+			recIds.push($(ele).attr("recid"));
 		}
 	});
+	if(recIds.length == 0){
+		elay.open({
+		    content: '请选择购物车要结算的商品',
+		    btn: '朕知道了'
+		});
+		return ;
+	}
+	
+	var recid = recIds.join(",");
+	elay.confirm({
+	    content: '确定要删除此商品吗？'
+	    ,btn: ['确定' , '取消']
+	    ,sure: function(index){ 
+	    	
+	    	$.ajax({
+	    		url : "/ws/cart_delete_submit",
+	    		data:{recIds:recid},
+	    		success:function(result){
+	    			if(result.code != 1){
+	    				elay.open({content:result.msg});
+	    				return ;
+	    			}
+	    			
+	    			$(".list > .item").each(function(index,ele){
+    					if($(ele).children(".singleCheck").hasClass("active")){
+    						$(ele).remove();
+    					}
+    				});
+	    			
+	    			if($(".list > .item").length > 0){
+	    				cartListItem();
+	    			}else{
+	    				$(".empty").addClass("active");
+	    				$(".icon-lajixiang").hide();
+	    				$("footer").hide();
+	    			}
+    				
+    				
+	    		}
+	    	});
+	    }
+	 });
+	
+	
 }
 
 function cartListItem(){

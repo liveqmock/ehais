@@ -18,10 +18,6 @@
 .w_shop header * {
   width: auto;
 }
-.w_shop header i {
-  padding-top: 0.04rem;
-  font-size: 0.2rem;
-}
 .w_shop header i:first-child {
   float: left;
 }

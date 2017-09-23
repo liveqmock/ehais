@@ -29,10 +29,13 @@ import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.epublic.service.EStoreService;
 import org.ehais.epublic.service.WeiXinPayService;
 import org.ehais.shop.controller.ehais.EhaisCommonController;
+import org.ehais.shop.mapper.HaiAdMapper;
 import org.ehais.shop.mapper.HaiCategoryMapper;
 import org.ehais.shop.mapper.HaiGoodsMapper;
 import org.ehais.shop.mapper.HaiOrderGoodsMapper;
 import org.ehais.shop.mapper.HaiOrderInfoMapper;
+import org.ehais.shop.model.HaiAd;
+import org.ehais.shop.model.HaiAdExample;
 import org.ehais.shop.model.HaiCategory;
 import org.ehais.shop.model.HaiCategoryExample;
 import org.ehais.shop.model.HaiGoods;
@@ -80,6 +83,8 @@ public class DiningWebController extends EhaisCommonController{
 	@Autowired
 	private HaiOrderGoodsMapper haiOrderGoodsMapper;
 	@Autowired
+	private HaiAdMapper haiAdMapper;
+	@Autowired
 	private WeiXinPayService weiXinPayService;
 	@Autowired
 	private EHaiUsersMapper eHaiUsersMapper;
@@ -92,6 +97,7 @@ public class DiningWebController extends EhaisCommonController{
 	
 	
 	//http://127.0.0.1/diningStore!934a1580-0c1e0501-156ed21242-2b36621253-314dd0C104-49175b56
+	//http://41b71ba0.ngrok.io/diningStore!934a1580-0c1e0501-156ed21242-2b36621253-314dd0C104-49175b56
 	@RequestMapping("/diningStore!{sid}")
 	public String diningStore(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -141,13 +147,16 @@ public class DiningWebController extends EhaisCommonController{
 //				return "redirect:"+website; //错误的链接，跳转商城
 				this.dining(modelMap, request, response,wp,store,store_id, sid);
 			}
+			
+			return "/"+store.getTheme()+"/diningStore";
+			
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("dining", e);
 			return this.errorJump(modelMap, e.getMessage());
 		}
 		
-		return "/dining/diningStore";
+//		return "/dining/diningStore";
 		
 	}
 	
@@ -167,6 +176,10 @@ public class DiningWebController extends EhaisCommonController{
 			Integer store_id,
 			String sid) throws Exception{
 		
+		HaiAdExample adExample = new HaiAdExample();
+		adExample.createCriteria().andStoreIdEqualTo(store_id).andIsVoidEqualTo(1);
+		List<HaiAd> adList = haiAdMapper.selectByExample(adExample);
+		
 		//读取菜谱列表信息
 		HaiCategoryExample cExp = new HaiCategoryExample();
 		cExp.createCriteria().andStoreIdEqualTo(store_id);
@@ -183,7 +196,7 @@ public class DiningWebController extends EhaisCommonController{
 		modelMap.addAttribute("listGoods", listGoods);
 		
 		modelMap.addAttribute("defaultimg", defaultimg);
-		
+
 		String link = request.getScheme() + "://" + request.getServerName() + "/diningStore!"+sid;
 		WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, 
 				store_id, 

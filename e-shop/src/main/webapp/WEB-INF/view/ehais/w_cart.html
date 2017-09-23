@@ -13,31 +13,43 @@
 		<link rel="stylesheet" href="../css/w_cart.css" />
 	</head>
 	<body>
-		<div class="w_cart_wrapper">
-
-			<div class="list">
+		<div class="wcw">
+			<header>
+				购物车
+				<i class="iconfont icon-lajixiang"></i>
+			</header>
+			<ul class="list">
 				<#if cartList??>
 				<#assign total=0>
 				<#list cartList as cart>
-				<div class="item" recid="${cart.recId}" goodsid="${cart.goodsId}" price="${cart.goodsPrice}" quantity="${cart.goodsNumber}">
-					<div class="pic"><img src="${cart.goodsThumb}" /></div>
-					<div class="desc">
-						<h4>${cart.goodsName}</h4>
-						<div class="intro">
-							<div class="fl price">￥${(cart.goodsPrice / 100)?string('0.00')}</div>
-							<div class="fr fa fa-plus-square"></div>
-							<div class="fr quantity">${cart.goodsNumber}</div>
-							<div class="fr fa fa-minus-square"></div>
-							<div class="fr fa fa-trash-o"></div>
-						</div>
+				
+				<li class="item" recid="${cart.recId}" goodsid="${cart.goodsId}" price="${cart.goodsPrice}" quantity="${cart.goodsNumber}">
+					<i class="fa fa-check-circle singleCheck active"></i>
+					<div class="pic"><img src="${cart.goodsThumb!''}" /></div>
+					<div class="t">${cart.goodsName!''}</div>
+					<div class="intro">
+						<div class="price">￥${(cart.goodsPrice / 100)?string('0.00')}</div>
+						<i class="iconfont icon-jia-xianxingfangkuang"></i>
+						<div class="quantity">${cart.goodsNumber}</div>
+						<i class="iconfont icon-jian-xianxingfangkuang"></i>
 					</div>
-					<div class="fa fa-check-circle singleCheck active"></div>
-				</div>
+				</li>
 				<#assign total=total + cart.goodsPrice!0 * cart.goodsNumber!0 >
 				</#list>
 				</#if>
+			</ul>
+			
+			<div class="empty <#if (!cartList?? || cartList?size == 0 )>active</#if>">
+				<i class="iconfont icon-cart1"></i>
+				<div>您的购物车内还没有商品</div>
+				<div>
+					<button>个人中心</button>
+					<button id="indexLink" href="${link!''}">立即逛逛</button>
+				</div>
 			</div>
-			<footer>
+			
+			
+			<footer <#if (!cartList?? || cartList?size == 0 )>class="dn"</#if>>
 				<div class="">
 					<div class="all"><span class="fa fa-check-circle allCheck active"></span>全选</div>
 					<div class="total">结算金额：<span id="total">￥${(total/100)?string("0.00")}</span></div>

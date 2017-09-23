@@ -6,7 +6,7 @@
   box-sizing: border-box;
   position: relative;
   margin-bottom: 0.49rem;
-  font-size: 0.14rem;
+  font-size: 0.16rem;
 }
 .w_goods_wrapper > div,
 .w_goods_wrapper > div > div {
@@ -21,6 +21,9 @@
 .w_goods_wrapper > div.base.active,
 .w_goods_wrapper > div.detail.active {
   display: block;
+}
+.w_goods_wrapper > div.base {
+  box-sizing: border-box;
 }
 .w_goods_wrapper > div.base .scroll img {
   width: 100%;
@@ -54,6 +57,7 @@
 }
 .w_goods_wrapper > div.detail {
   padding: 0.15rem;
+  box-sizing: border-box;
   line-height: 0.28rem;
   font-size: 0.18rem;
 }
@@ -73,23 +77,28 @@
   width: 100%;
   background: #fff;
   z-index: 2;
+  box-sizing: border-box;
 }
 .w_goods_wrapper footer > div {
-  width: 25%;
+  width: 15%;
   height: 0.49rem;
   float: left;
-  text-align: center;
   line-height: 0.49rem;
+  font-size: 0.12rem;
+  text-align: center;
+  color: #777;
 }
-.w_goods_wrapper footer > div span {
-  margin-right: 0.06rem;
-  font-size: 0.28rem;
+.w_goods_wrapper footer > div i {
+  font-size: 0.22rem;
+  display: block;
+  height: 0.16rem;
 }
 .w_goods_wrapper footer > div.cart {
+  width: 15%;
   position: relative;
   text-align: left;
 }
-.w_goods_wrapper footer > div.cart i {
+.w_goods_wrapper footer > div.cart i:last-child {
   width: 0.2rem;
   height: 0.2rem;
   border: 0.01rem solid #ca1818;
@@ -105,14 +114,18 @@
   top: -0.05rem;
   left: 0.2rem;
 }
-.w_goods_wrapper footer > div.cart i.active {
+.w_goods_wrapper footer > div.cart i:last-child.active {
   display: inline-block;
 }
 .w_goods_wrapper footer > div.addCart {
   background: #ffb03f;
   color: #fff;
+  width: 35%;
+  font-size: 0.18rem;
 }
 .w_goods_wrapper footer > div.buynow {
   background: #f23030;
   color: #fff;
+  width: 35%;
+  font-size: 0.18rem;
 }

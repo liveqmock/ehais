@@ -37,7 +37,7 @@ public interface CartService extends CommonService{
 	 */
 	public ReturnObject<HaiCartWithBLOBs> cart_add_submit(HttpServletRequest request,Long goods_id,Integer store_id,Integer quantity,Long user_id,String session_shop_encode,Long parent_user_id,Integer agency_id,Integer article_id) throws Exception;
 	public ReturnObject<HaiCartWithBLOBs> cart_edit_quantity(HttpServletRequest request,Long recId,Long goods_id,Integer store_id,Integer quantity,Long user_id,String session_shop_encode) throws Exception;
-	public ReturnObject<HaiCart> cart_delete(HttpServletRequest request,Long recId,Long user_id) throws Exception;
+	public ReturnObject<HaiCart> cart_delete(HttpServletRequest request,String recIds,Long user_id) throws Exception;
 	public ReturnObject<HaiCart> cart_clear(HttpServletRequest request,Long user_id) throws Exception;
 	public ReturnObject<HaiCart> cart_update_user_session(HttpServletRequest request,Long user_id,String session_id) throws Exception;
 	

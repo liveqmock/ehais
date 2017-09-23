@@ -79,19 +79,23 @@ function shippingAddress(region,address){
 	}
 	
 	$("#address").html(
-		"<div class=\"info\">"+
-			"<div class=\"username\">"+
-				"<span class=\"consignee\">"+address.consignee+"</span>"+
-				"<span class=\"fa fa-mobile\"></span>"+
-				"<span class=\"mobile\">"+address.mobile+"</span>"+
+			"<i class='iconfont icon-shouhuodizhi'></i>"+
+			"<div class='info'>"+
+				"<div class='username'>"+
+					"收货人：<span class='consignee'>"+address.consignee+"</span>"+
+					"<span class='mobile'>"+address.mobile+"</span>"+
+				"</div>"+
+				"<div class='address'>"+regionStr+address.address+"</div>"+
 			"</div>"+
-			"<div class=\"address\">"+regionStr+address.address+"</div>"+
-		"</div>")
+			"<i class='iconfont icon-xiangyoujiantou'></i>")
 		.attr("value",address.addressId);
 	
 	regionStr = null;
 	
 	$("#address_edit").removeClass("dn").click(function(){
+		window.location.href = "w_address_list";
+	});
+	$("#address").click(function(){
 		window.location.href = "w_address_list";
 	});
 }
@@ -133,16 +137,14 @@ function w_check_order_data(){
 			var cart = result.map.cart;
 			var total = 0;
 			for(var i in cart){
-				$("#cart").append("<div class=\"item\">"+
-						"<div class=\"pic\"><img src=\""+cart[i].goodsThumb+"\" /></div>"+
-						"<div class=\"desc\">"+
-							"<h4>"+cart[i].goodsName+"</h4>"+
-							"<div class=\"intro\">"+
-								"<div class=\"fl price\">￥"+(cart[i].goodsPrice / 100 ).toFixed(2)+"</div>"+
-								"<div class=\"fl quantity\">x "+cart[i].goodsNumber+"</div>"+
-							"</div>"+
+				$("#cart").append("<li class='item'>"+
+						"<div class='pic'><img src='"+cart[i].goodsThumb+"' /></div>"+
+						"<div class='t'>"+cart[i].goodsName+"</div>"+
+						"<div class='intro'>"+
+							"<div class='price'>￥"+(cart[i].goodsPrice / 100 ).toFixed(2)+"</div>"+
+							"<div class='quantity'>数量  x "+cart[i].goodsNumber+"</div>"+
 						"</div>"+
-					"</div>");
+					"</li>");
 				total+=parseInt(cart[i].goodsPrice);
 			}
 			

@@ -13,12 +13,26 @@
 		<link rel="stylesheet" href="../css/w_address.css" />
 	</head>
 	<body>
-		<div class="w_address_wrapper">
+		<div class="waw">
 
-			<div class="list">
+			<ul class="list">
 				<#if userAddressList??>
 				<#list userAddressList as addr>
-				<div class="item" addressid="${addr.addressId}">
+				
+				<li addressid="${addr.addressId}">
+					<div class="info">
+						<div class="consignee">${addr.consignee!''}</div>
+						<div class="mobile">${addr.mobile}</div>
+						<div class="address">${addr.address}</div>
+					</div>
+					<div class="operate">
+						<i class="iconfont icon-default <#if addr.isDefault == '1'>active</#if>">  默认</i>
+						<i class="iconfont icon-lajixiang">  删除</i>
+						<i class="iconfont icon-edit">  编辑</i>
+					</div>
+				</li>
+				
+				<!-- <div class="item" addressid="${addr.addressId}">
 					
 					<div class="info">
 						<div class="username">
@@ -35,10 +49,10 @@
 						<div class="trash"><i class="fa fa-trash"></i></div>
 					</div>
 					
-				</div>
+				</div> -->
 				</#list>
 				</#if>
-			</div>
+			</ul>
 			<footer>
 				
 				<button id="newAddress">新增地址</button>

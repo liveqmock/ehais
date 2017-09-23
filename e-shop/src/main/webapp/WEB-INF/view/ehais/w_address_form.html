@@ -15,38 +15,33 @@
 		<link rel="stylesheet" href="../css/chinese-region.css" />
 	</head>
 	<body>
-		<div class="w_address_wrapper">
+		<div class="waw">
 			<div class="form">
 				<form id="form" name="form" >
 				<input type="hidden" id="addressId" name="addressId" value="${model.addressId!0}"/>
-				<div class="erow">
+				<div class="r">
 					<label>收货人</label>
 					<input type="text" id="consignee" name="consignee" value="${model.consignee!''}" placeholder="名字"/>
-					<span class="fa fa-user-o"></span>
 				</div>
-				<div class="erow">
+				<div class="r">
 					<label>手机号码</label>
 					<input type="tel" id="" name="mobile" value="${model.mobile!''}" placeholder="11位手机号"/>
-					<span class="fa fa-phone"></span>
 				</div>
-				<div class="erow">
+				<div class="r">
 					<label>选择地区</label>
 					<div id="chinaRegion" class="region">地区信息</div>
-					<span class="fa fa-map-marker"></span>
 				</div>
-				<div class="erow">
+				<div class="r">
 					<label>详细地址</label>
 					<input type="text" id="address" name="address" value="${model.address!''}" placeholder="街道门牌号"/>
-					<span class="fa fa-map-o"></span>
 				</div>
-				<div class="erow">
+				<div class="r">
 					<label>邮政编码</label>
 					<input type="number" id="zipcode" name="zipcode" value="${model.zipcode!''}" placeholder="邮政编码"/>
-					<span class="fa fa-map-pin"></span>
 				</div>
-				<div class="erow">
+				<div class="r">
 					<label>是否默认</label>
-					<div class="input isDefault <#if ((model.isDefault!'0') == '1')>active</#if>"><span class="fa fa-check-circle"></span></div>
+					<i class="iconfont icon-default <#if ((model.isDefault!'0') == '1')>active</#if>"></i>
 					<input type="hidden" id="isDefault" name="isDefault" value="${model.isDefault!0}"/>
 					
 				</div>

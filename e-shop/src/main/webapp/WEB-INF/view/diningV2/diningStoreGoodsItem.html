@@ -1,0 +1,25 @@
+<li cid="${cid}" value="${goods.goodsId}" price="${goods.shopPrice}">
+	<div class="img"><img src="${goods.originalImg!defaultimg}"></div>
+	<div class="i">
+		<div class="t">${goods.goodsName!''}</div>
+		<div class="g">${goods.actDesc!''}</div>
+		<div class="d dn">
+			<div>
+				<i class="iconfont icon-jinlingyingcaiwangtubiao49"></i>
+				<i class="iconfont icon-jinlingyingcaiwangtubiao49"></i>
+				<i class="iconfont icon-jinlingyingcaiwangtubiao49"></i>
+				<i class="iconfont icon-jinlingyingcaiwangtubiao49"></i>
+				<i class="iconfont icon-jinlingyingcaiwangtubiao49"></i>
+			</div>
+			<div>10000评价</div>
+			<div>月售999份</div>
+		</div>
+		<div class="p"><b>￥</b>${goods.shopPrice / 100}元
+		<i class="addCart iconfont icon-14052229"></i>
+		</div>
+	</div>
+	<i class="badge badge_${goods.goodsId}"></i>
+	<#if (cid == "0")>
+	<i class="iconfont icon-remai"></i>
+	</#if>
+</li>

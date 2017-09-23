@@ -1,5 +1,8 @@
 @import url("common.css");
-.w_cart_wrapper {
+body {
+  background: #f0f2f5;
+}
+.wcw {
   margin: 0 auto;
   box-sizing: border-box;
   position: relative;
@@ -7,80 +10,143 @@
   font-size: 0.16rem;
   width: 100%;
   float: left;
+  background: #f0f2f5;
 }
-.w_cart_wrapper > div,
-.w_cart_wrapper > div > div {
+.wcw * {
+  box-sizing: border-box;
+}
+.wcw header {
+  height: 0.45rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  border-bottom: 0.01rem solid #DCDCDC;
+  z-index: 20;
+  text-align: center;
+  font-size: 0.18rem;
+  line-height: 0.45rem;
+  background: #fff;
+}
+.wcw header i {
+  position: absolute;
+  right: 0.15rem;
+  z-index: 21;
+}
+.wcw > div,
+.wcw > div > div {
   float: left;
   width: 100%;
-  box-sizing: border-box;
 }
-.w_cart_wrapper > .list {
-  padding: 0 0.15rem ;
-  box-sizing: border-box;
+.wcw > .list {
+  padding: 0 0.15rem;
+  margin: 0.55rem 0 0;
+  background: #fff;
+  width: 100%;
+  float: left;
 }
-.w_cart_wrapper > .list .item {
+.wcw > .list .item {
   border-bottom: 0.01rem solid #f0f0f0;
   padding: 0.05rem 0;
   width: 100%;
   float: left;
   position: relative;
 }
-.w_cart_wrapper > .list .item .pic {
+.wcw > .list .item .pic {
   float: left;
-  width: 25%;
-  padding: 0.08rem 0.08rem 0 0;
+  width: 35%;
+  padding: 0.08rem 0.08rem 0 0.28rem;
 }
-.w_cart_wrapper > .list .item .pic img {
+.wcw > .list .item .pic img {
   width: 100%;
 }
-.w_cart_wrapper > .list .item .desc {
-  padding: 0.08rem;
-}
-.w_cart_wrapper > .list .item .desc h4 {
+.wcw > .list .item .t {
   margin: 0;
-  padding: 0 0.15rem 0 0 ;
+  padding: 0.08rem 0 0 0 ;
   height: 0.64rem;
   box-sizing: border-box;
 }
-.w_cart_wrapper > .list .item .desc .intro {
+.wcw > .list .item .intro {
   position: absolute;
-  bottom: 0.15rem;
-  width: 100%;
-  padding-left: 25%;
+  right: 0;
+  bottom: 0.04rem;
   box-sizing: border-box;
   z-index: 10;
+  width: 75%;
+  padding-left: 0.3rem;
 }
-.w_cart_wrapper > .list .item .desc .intro > div {
-  font-size: 0.16rem;
+.wcw > .list .item .intro div {
   line-height: 1;
   padding: 0 0.1rem;
+  float: right;
 }
-.w_cart_wrapper > .list .item .desc .intro .price {
+.wcw > .list .item .intro div:first-child {
+  float: left;
+}
+.wcw > .list .item .intro .price {
   color: #ca1816;
   padding-left: 0;
 }
-.w_cart_wrapper > .list .item .desc .intro .fa-plus-square {
-  color: #ca1816;
+.wcw > .list .item .intro i {
+  font-size: 0.18rem;
+  float: right;
+  color: #c5c5c5;
+  margin: 0;
+  padding: 0;
+  margin-top: -0.03rem;
 }
-.w_cart_wrapper > .list .item .desc .intro .fa-minus-square,
-.w_cart_wrapper > .list .item .desc .intro .fa-trash-o {
-  color: #B0B0B0;
-}
-.w_cart_wrapper > .list .item .desc .intro .fa {
-  font-size: 0.2rem;
-}
-.w_cart_wrapper > .list .item .fa-check-circle {
+.wcw > .list .item .fa-check-circle {
   position: absolute;
-  top: 0.1rem;
-  right: 0rem;
+  top: 0.38rem;
+  left: 0rem;
   font-size: 0.28rem;
   color: #f0f0f0;
   z-index: 10;
 }
-.w_cart_wrapper > .list .item .fa-check-circle.active {
+.wcw > .list .item .fa-check-circle.active {
   color: #ca1816;
 }
-.w_cart_wrapper footer {
+.wcw .empty {
+  display: none;
+  background: #f0f2f5;
+  position: fixed;
+  top: 0.85rem;
+  left: 0;
+  right: 0;
+  height: 2.5rem;
+  z-index: 12;
+  text-align: center;
+  padding-top: 0.5rem;
+  color: #666;
+}
+.wcw .empty > div:last-child {
+  margin-top: 0.5rem;
+}
+.wcw .empty .icon-cart1 {
+  color: #ca1818;
+  font-size: 0.8rem;
+}
+.wcw .empty button {
+  background: #ff981d;
+  border-radius: 0.06rem;
+  box-shadow: 0 0.02rem 0.05rem #f4cfa3;
+  color: #fff;
+  display: inline-block;
+  font-size: 0.16rem;
+  height: 0.38rem;
+  line-height: 0.38rem;
+  margin: 0 0.05rem;
+  padding: 0 0.15rem;
+  text-align: center;
+  width: 1rem;
+}
+.wcw .empty button:last-child {
+  background: #ff812c;
+}
+.wcw .empty.active {
+  display: block;
+}
+.wcw footer {
   position: fixed;
   width: 100%;
   height: 0.45rem;
@@ -92,33 +158,33 @@
   font-size: 0.12rem;
   z-index: 101;
 }
-.w_cart_wrapper footer > div {
+.wcw footer > div {
   width: 60%;
   float: left;
   font-size: 0.16rem;
   line-height: 0.45rem;
 }
-.w_cart_wrapper footer > div > div.all {
+.wcw footer > div > div.all {
   padding-left: 0.15rem;
   box-sizing: border-box;
   float: left;
   margin-right: 0.15rem;
 }
-.w_cart_wrapper footer > div > div.all span {
+.wcw footer > div > div.all span {
   margin-right: 0.1rem;
   color: #f0f0f0;
   font-size: 0.25rem;
 }
-.w_cart_wrapper footer > div > div.all span.active {
+.wcw footer > div > div.all span.active {
   color: #CA1816;
 }
-.w_cart_wrapper footer > div > div.total {
+.wcw footer > div > div.total {
   float: left;
 }
-.w_cart_wrapper footer > div > div.total span {
+.wcw footer > div > div.total span {
   color: #CA1816;
 }
-.w_cart_wrapper footer button {
+.wcw footer button {
   float: right;
   border: 0;
   background: none;
