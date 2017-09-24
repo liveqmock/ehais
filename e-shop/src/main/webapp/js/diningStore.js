@@ -75,8 +75,6 @@ function minusSquare(that){
 
 //选好了，查看订单
 function checkOutCart(){
-	
-	
 	var total = 0,quantity = 0;
 	$("#wcod dd").remove();
 	
@@ -85,8 +83,6 @@ function checkOutCart(){
 			var amount = parseFloat($(this).parent().attr("price")) * parseInt($(this).html()); 
 			total += amount;
 			quantity += parseInt($(this).html());
-				
-			
 			$("#wcod").append("<dd>"+
 					"<div>"+$(this).parent().children(".img").html()+"</div>"+
 					"<div class='t'>"+$(this).parent().children(".i").children(".t").html()+"</div>"+
@@ -105,6 +101,8 @@ function checkOutCart(){
 	
 	total = null ; quantity = null;
 	cartArray = null;
+	
+	
 }
 
 //////////////##########################%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -235,16 +233,12 @@ $(function(){
 	
 	///////////////选好了
 	$("#checkOut").click(function(){
-		
-		history.pushState({
-		     "page": "checkOut"
-		 }, "首页", "");
-		
 		if($("footer.fd").hasClass("active")){
 			$(".wco").addClass("active");
 			checkOutCart();
 		}
 	});
+	$(".icon-xiangzuojiantou").click(function(){$(".wco").removeClass("active");});
 	
 	//继续点餐
 	$(".goOrderFood").click(function(){
@@ -303,18 +297,6 @@ $(function(){
 	diningUserOrderList();//获取用户的订单列表
 	
 	$("#resultBtn").click(function(){$(".result").removeClass("active");});
-	
-	window.onpopState = function(){
-	    var json = window.history.state;//获取当前所在的state
-	    alert("onpopState:"+json);
-	   
-	}
-
-	window.onhashchange = function() {
-	    var viewName = location.hash.replace("#", "");
-	    alert("onhashchange:"+viewName);
-	};
-	
 	
 });
 var offsets = [];
@@ -458,8 +440,3 @@ function diningUserOrderList(){
 
 
 
-window.addEventListener('popstate', function (e) {
-
-    alert('popstate'+window.history.state)
-
-});

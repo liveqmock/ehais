@@ -97,7 +97,7 @@ public class DiningWebController extends EhaisCommonController{
 	
 	
 	//http://127.0.0.1/diningStore!934a1580-0c1e0501-156ed21242-2b36621253-314dd0C104-49175b56
-	//http://41b71ba0.ngrok.io/diningStore!934a1580-0c1e0501-156ed21242-2b36621253-314dd0C104-49175b56
+	//http://e477c865.ngrok.io/diningStore!934a1580-0c1e0501-156ed21242-2b36621253-314dd0C104-49175b56
 	@RequestMapping("/diningStore!{sid}")
 	public String diningStore(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -121,7 +121,7 @@ public class DiningWebController extends EhaisCommonController{
 			    return "redirect:"+website; //错误的链接，跳转商城
 			}
 			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
-			
+			modelMap.addAttribute("sidMap", map);
 			if(this.isWeiXin(request)){//微信端登录
 				if((user_id == null || user_id == 0 ) && StringUtils.isEmpty(code)){
 					return this.redirect_wx_authorize(request , wp.getAppid() , "/diningStore!"+sid);
@@ -657,7 +657,6 @@ public class DiningWebController extends EhaisCommonController{
 			if(map == null){
 			    return "redirect:"+website; //错误的链接，跳转商城
 			}
-			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			if(this.isWeiXin(request)){//微信端登录
 				if(StringUtils.isEmpty(code)){
 					return this.redirect_wx_authorize(request , wp.getAppid() , "/dining_store_order_detail!"+oid);
@@ -667,7 +666,6 @@ public class DiningWebController extends EhaisCommonController{
 					if(user == null){
 						return "redirect:"+website; //错误的链接，跳转商城
 					}
-					user_id = user.getUserId();
 					
 					Long orderId = Long.valueOf(map.get("orderId").toString());
 					
@@ -675,7 +673,7 @@ public class DiningWebController extends EhaisCommonController{
 					orderExample.createCriteria()
 					.andStoreIdEqualTo(store_id)
 					.andOrderIdEqualTo(orderId)
-					.andUserIdEqualTo(user_id);
+					.andUserIdEqualTo(Long.valueOf(map.get("userId").toString()));
 					
 					List<HaiOrderInfoWithBLOBs> listOrder = haiOrderInfoMapper.selectByExampleWithBLOBs(orderExample);
 					if(listOrder == null || listOrder.size() == 0){

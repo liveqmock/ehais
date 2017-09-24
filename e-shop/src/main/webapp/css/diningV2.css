@@ -224,8 +224,7 @@ footer {
   font-size: 0.12rem;
   z-index: 105;
 }
-footer > div.sCart,
-footer > div.orderCart {
+footer > div.sCart {
   width: 60%;
   float: left;
   font-size: 0.33rem;
@@ -235,8 +234,7 @@ footer > div.orderCart {
   position: relative;
   text-align: left;
 }
-footer > div.sCart > i:nth-child(1),
-footer > div.orderCart > i:nth-child(1) {
+footer > div.sCart > i:nth-child(1) {
   width: 0.5rem;
   height: 0.5rem;
   border-radius: 50%;
@@ -247,14 +245,12 @@ footer > div.orderCart > i:nth-child(1) {
   line-height: 0.6rem;
   display: inline-block;
 }
-footer > div.sCart > i:nth-child(1) i,
-footer > div.orderCart > i:nth-child(1) i {
+footer > div.sCart > i:nth-child(1) i {
   font-size: 0.5rem;
   color: #fff;
   margin-left: -0.03rem;
 }
-footer > div.sCart > i:nth-child(2),
-footer > div.orderCart > i:nth-child(2) {
+footer > div.sCart > i:nth-child(2) {
   width: 0.15rem;
   height: 0.15rem;
   font-size: 0.1rem;
@@ -269,28 +265,15 @@ footer > div.orderCart > i:nth-child(2) {
   color: #fff;
   display: none;
 }
-footer > div.sCart span,
-footer > div.orderCart span {
+footer > div.sCart span {
   font-size: 0.18rem;
   margin-left: 0.05rem;
   width: auto;
   color: #fff;
 }
 footer > div.sCart i.active,
-footer > div.orderCart i.active,
-footer > div.sCart span.active,
-footer > div.orderCart span.active {
+footer > div.sCart span.active {
   display: inline-block;
-}
-footer > div.orderCart {
-  line-height: 0.45rem;
-  padding: 0;
-}
-footer > div.orderCart span {
-  color: #ca1816;
-  margin-left: 0;
-  font-size: 0.16rem;
-  line-height: 0.45rem;
 }
 footer button {
   float: right;
@@ -302,12 +285,6 @@ footer button {
   text-align: center;
   line-height: 0.45rem;
   font-size: 0.18rem;
-}
-footer > div.orderCart {
-  display: none;
-}
-footer > button.orderSubmit {
-  display: none;
 }
 footer.active button {
   color: #fff;
@@ -329,6 +306,7 @@ footer.active > div.sCart > i:nth-child(2) {
 }
 .cart_layer {
   bottom: 0.45rem;
+  z-index: 101;
 }
 .cart_layer .bg {
   background: #000;
@@ -337,7 +315,7 @@ footer.active > div.sCart > i:nth-child(2) {
   bottom: 0.45rem;
   left: 0;
   right: 0;
-  z-index: 100;
+  z-index: 101;
   filter: alpha(opacity=50);
   -moz-opacity: 0.5;
   opacity: 0.5;
@@ -434,9 +412,8 @@ footer.active > div.sCart > i:nth-child(2) {
   right: 0;
   bottom: 0;
   z-index: 106;
-  padding: 0.1rem 0.15rem;
+  padding: 0.55rem 0.15rem 0.59rem;
   overflow-y: scroll;
-  margin-bottom: 0.49rem;
 }
 .wco > div,
 .wco > dl {
@@ -493,16 +470,37 @@ footer.active > div.sCart > i:nth-child(2) {
   border: 0;
   font-size: 0.14rem;
 }
+.wco > div:first-child {
+  padding: 0;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 107;
+  height: 0.45rem;
+  line-height: 0.45rem;
+  text-align: center;
+  border-bottom: 0.01rem solid #cdcdcd;
+}
+.wco > div:first-child i {
+  width: auto;
+  padding: 0 0.15rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
 .wco > div:last-child {
   padding: 0;
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
-  margin-bottom: 0;
+  z-index: 107;
+  margin: 0;
   height: 0.49rem;
   line-height: 0.49rem;
   text-align: right;
+  border-top: 0.01rem solid #cdcdcd;
 }
 .wco > div:last-child * {
   width: auto;
@@ -518,6 +516,7 @@ footer.active > div.sCart > i:nth-child(2) {
   background: #FD402C;
   color: #fff;
   margin-left: 0.15rem;
+  font-size: 0.16rem;
 }
 .result {
   background: #fff;

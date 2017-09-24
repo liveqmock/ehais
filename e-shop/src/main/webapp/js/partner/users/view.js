@@ -58,6 +58,9 @@ $(function(){
     field: 'subscribe',
     title: '是否关注',formatter:function(value,rows,index){return value == 1 ? "关注":"未关注"}
 },{
+    field: 'openid',
+    title: '微信识别码'
+},{
     field: 'parentNickName',
     title: '推荐人昵称'
 },{

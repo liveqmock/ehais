@@ -22,11 +22,11 @@
 		<script type="text/javascript" src="js/weixinJSBridge.js" ></script>
 		
 		
-		<link rel="stylesheet" href="css/dining.css" />
+		<link rel="stylesheet" href="css/diningV2.css" />
 		
 	</head>
 	<body>
-		<div class="wrapper_dining">
+		<div class="w">
 			<div class="scroll swiper-container">
 				<ul class="swiper-wrapper">
 					<#if (adList?? && adList?size > 0 )>
@@ -40,26 +40,21 @@
 					<li class="swiper-slide"><img src="http://ovug9f17p.bkt.clouddn.com/dining4.png" /></li>
 					<li class="swiper-slide"><img src="http://ovug9f17p.bkt.clouddn.com/dining5.png" /></li>
 					</#if>
-					
 				</ul>
 				<!-- 如果需要分页器 -->
 			    <div class="swiper-pagination"></div>
 			</div>
-			<div class="tabs">
-				<ul>					
-					<li id="orderFood" class="active"><span class="fa fa-coffee"></span>点餐</li>
-					<li id="myOrder"><span class="fa fa-book"></span>订单</li>
-					<li ><span class="fa fa-user"></span>我的</li>
-					<li ><a href="tel:13560217994"><span class="fa fa-phone"></span>电话</a></li>					
-				</ul>
-			</div>
+			<ul class="tab">					
+				<li id="orderFood" class="active">我要点餐</li>
+				<li id="myOrder">历史订单</li>
+			</ul>
 			<div class="menu">
 				<div class="left" id="menu_cate">
 				<ul id="scroller_menu_cate">
-					<li v="0" class="active">热销类</li>
+					<li v="0" class="c0 active">热销类</li>
 					<#if (listCategory?? && listCategory?size > 0 )>
 					<#list listCategory as cate>
-					<li v="${cate.catId}">${cate.catName!'未设置'}</li>
+					<li v="${cate.catId}" class="c${cate.catId}">${cate.catName!'未设置'}</li>
 					</#list>
 					</#if>
 				</ul>
@@ -68,68 +63,90 @@
 					<ul id="scroller_menu_goods_list">
 					<#if (listGoods?? && listGoods?size > 0 )>
 					<#list listGoods as goods>
-					<li class="dn ${goods.isHot?string('cat0','')} cat${goods.catId!''}" >
-						<div class="pic">
-							<img src="${goods.originalImg!defaultimg}" />
-						</div>
-						<div class="goodsname">${goods.goodsName}</div>
-						<div class="price">￥${goods.shopPrice / 100}</div>
-						<div value="${goods.goodsId}" price="${goods.shopPrice}" class="addCart glyphicon glyphicon-plus-sign"></div>
-						<div id="badge_${goods.goodsId}" class="badge"></div>
-					</li>
+						<#if (goods.isHot?string('y','n') == "y")>
+							<#assign cid="0">
+							<#include "diningStoreGoodsItem.html">
+						</#if>
 					</#list>
+					
+					<#if (listCategory?? && listCategory?size > 0 )>
+					<#list listCategory as cate>
+					<#list listGoods as goods>
+						<#if (cate.catId == goods.catId)>
+						<#assign cid="${goods.catId}">
+						<#include "diningStoreGoodsItem.html">
+						</#if>
+					</#list>
+					</#list>
+					</#if>
+					
+					
+					
 					</#if>
 					</ul>
 				</div>
 			</div>
-			<div class="myOrder" id="myOrderList">
+			<div class="myOrder dn" id="myOrderList">
 				<ul id="myOrderUl"></ul>
 			</div>
 		
 		</div>
-		<footer class="footer_dining">
-			<div id="shoppingCart" class="cart fa fa-shopping-cart">
+		<footer class="fd">
+			<div class="sCart">
+				<i>
+					<i class="iconfont icon-gouwuche1"></i>
+				</i>
 				<i id="quantity"></i>
-				<span id="total"></span>
+				<span id="total">￥0.00</span>
 			</div>
-			<button id="checkOut" class="">选好了</button>
-			
-			
-			<div id="orderCart" class="orderCart">
-				<span id="orderTotal"></span>
-				<span id="orderQuantity"></span>				
-			</div>
-			<button id="orderSubmit" class="orderSubmit">确认下单</button>
+			<button id="checkOut" >选好了</button>
 			
 		</footer>
 		
-		<div id="cart_layer" class="cart_layer">
-			<div class="bg"></div>
-			<div id="cart_dl" class="dl">
-				<div class="title">
-					<div>点餐清单</div>
-					<div class="close_cart" ><span class="glyphicon glyphicon-remove"></span>关闭</div>
-					<div class="clear_cart" ><span class="glyphicon glyphicon-trash"></span>清空</div>
-				</div>
-				<div id="cart_list" class="list"></div>
+		<div class="cart_layer">
+			<i class="bg"></i>
+			<dl>
+				<dt>
+					点餐清单
+					<i class="clear_cart iconfont icon-lajixiang" >
+						 清空
+					</i>
+				</dt>
+			</dl>
+			
+		</div>
+		
+		<div class="wco">
+			<div>
+				<i class="iconfont icon-xiangzuojiantou"></i>
+				订单提交
+			</div>
+			<div>
+				桌/台/房：${sidMap.tableNo}
+			</div>
+			<dl id="wcod">
+				<dt>购物车/订单列表</dt>				
+			</dl>
+			
+			<dl>
+				<dt>支付方式</dt>
+				<dd class="iconfont icon-weixin active"> 微信支付<i class="iconfont icon-gou"></i></dd>
+				<dd class="iconfont icon-xianjin"> 现金支付<i class="iconfont icon-gou"></i></dd>
+			</dl>
+			<div>
+				<textarea id="postscript" placeholder="填写用餐备注"></textarea>
+			</div>
+			<div>				
+				<button id="orderSubmit">提交订单</button>
+				<div id="ot"></div>
+				合计：
 			</div>
 		</div>
 		
-		
-		
-		<div id="localCheckOut" class="check_out_layer" >
-			<div class="bg"></div>
-			<div id="check_out_dl" class="dl">
-				<div class="title">
-					<div>点餐清单</div>
-					<div class="goOrderFood"><span class="fa fa-chevron-left"></span>继续点餐</div>
-				</div>
-				<div id="check_out_list" class="list checkout"></div>
-				<div id="check_out_pay" class="check_out_pay">
-					<div class="weixin active"><span class="fa fa-weixin"></span>微信支付<i class="fa fa-check"></i></div>
-					<div class="cash"><span class="fa fa-credit-card-alt"></span>现场支付<i class="fa fa-check"></i></div>
-				</div>
-			</div>
+		<div class="result">
+			<i class="iconfont icon-chenggong"></i>
+			<div>下单成功</div>
+			<button id="resultBtn">确定</button>
 		</div>
 		
 		<script type="text/javascript">
@@ -139,5 +156,6 @@
 		});		
 		</script>
 		<script type="text/javascript" src="js/diningStore.js" ></script>
+		
 	</body>
 </html>

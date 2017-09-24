@@ -769,7 +769,7 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		HaiFavoritesExample fExample = new HaiFavoritesExample();
 		if(user_id != null)fExample.or().andUserIdEqualTo(user_id);
 		if(session_shop_encode != null)fExample.or().andSesskeyEqualTo(session_shop_encode);
-		Integer favorites_quantity = haiFavoritesMapper.countByExample(fExample);
+		long favorites_quantity = haiFavoritesMapper.countByExample(fExample);
 		map.put("favorites_quantity", favorites_quantity);
 		
 		rm.setMap(map);

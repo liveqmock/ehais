@@ -50,10 +50,10 @@ public class FavoritesServiceImpl  extends CommonServiceImpl implements Favorite
 		HaiFavoritesExample example = new HaiFavoritesExample();
 		HaiFavoritesExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
-		example.setStart(start);
-		example.setLen(len);
-		List<HaiFavorites> list = haiFavoritesMapper.hai_favorites_list_by_example(example);
-		Integer total = haiFavoritesMapper.countByExample(example);
+		example.setLimitStart(start);
+		example.setLimitEnd(len);
+		List<HaiFavorites> list = haiFavoritesMapper.selectByExample(example);
+		long total = haiFavoritesMapper.countByExample(example);
 		rm.setCode(1);
 		rm.setRows(list);
 		rm.setTotal(total);
@@ -91,7 +91,7 @@ public class FavoritesServiceImpl  extends CommonServiceImpl implements Favorite
 		HaiFavoritesExample.Criteria c = example.createCriteria();
 //		c.anduser_idEqualTo(model.getuser_id());
 		c.andStoreIdEqualTo(store_id);
-		int count = haiFavoritesMapper.countByExample(example);
+		long count = haiFavoritesMapper.countByExample(example);
 		if(count > 0){
 			rm.setMsg("存在相同的记录");
 			return rm;
@@ -129,7 +129,7 @@ public class FavoritesServiceImpl  extends CommonServiceImpl implements Favorite
 //		c.andidEqualTo(model.getid());
 		c.andStoreIdEqualTo(store_id);
 
-		int count = haiFavoritesMapper.countByExample(example);
+		long count = haiFavoritesMapper.countByExample(example);
 		if(count == 0){
 			rm.setMsg("记录不存在");
 			return rm;
@@ -196,13 +196,13 @@ public class FavoritesServiceImpl  extends CommonServiceImpl implements Favorite
 		HaiFavoritesExample fExample = new HaiFavoritesExample();
 		if(user_id != null)fExample.or().andUserIdEqualTo(user_id).andGoodsIdEqualTo(goods_id);
 		if(session_shop_encode != null)fExample.or().andSesskeyEqualTo(session_shop_encode).andGoodsIdEqualTo(goods_id);
-		Integer favorites_quantity = haiFavoritesMapper.countByExample(fExample);
+		long favorites_quantity = haiFavoritesMapper.countByExample(fExample);
 		if(favorites_quantity > 0){
 			rm.setMsg("此商品已收藏了");
 		}
 		
 		HaiFavorites favorites = new HaiFavorites();
-		favorites.setAddTime(System.currentTimeMillis());
+		favorites.setAddTime(new Date());
 		favorites.setGoodsId(goods_id);
 		favorites.setUserId(user_id);
 		favorites.setSesskey(session_shop_encode);

@@ -52,7 +52,7 @@
 			<footer <#if (!cartList?? || cartList?size == 0 )>class="dn"</#if>>
 				<div class="">
 					<div class="all"><span class="fa fa-check-circle allCheck active"></span>全选</div>
-					<div class="total">结算金额：<span id="total">￥${(total/100)?string("0.00")}</span></div>
+					<div class="total"><span id="total">￥${(total/100)?string("0.00")}</span></div>
 				</div>
 				<button id="checkOrder">立即结算</button>
 			</footer>
