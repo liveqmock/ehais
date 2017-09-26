@@ -25,6 +25,10 @@ $(function(){
 	$("#btnRepay").click(function(){
 		if(WeiXinWCPay!=null)onBridgeReady(WeiXinWCPay);
 	});
+	
+	$(".goindex").click(function(){
+		window.location.href = "/w_shop!"+sid;
+	});
 });
 
 //返回强制刷新的代码

@@ -15,15 +15,15 @@
 	<body>
 		<div class="wcw">
 			<header>
+				<i class="iconfont icon-xiangzuojiantou"></i>
 				购物车
 				<i class="iconfont icon-lajixiang"></i>
 			</header>
-			<ul class="list">
+			<ul>
 				<#if cartList??>
 				<#assign total=0>
 				<#list cartList as cart>
-				
-				<li class="item" recid="${cart.recId}" goodsid="${cart.goodsId}" price="${cart.goodsPrice}" quantity="${cart.goodsNumber}">
+				<li recid="${cart.recId}" goodsid="${cart.goodsId}" price="${cart.goodsPrice}" quantity="${cart.goodsNumber}">
 					<i class="fa fa-check-circle singleCheck active"></i>
 					<div class="pic"><img src="${cart.goodsThumb!''}" /></div>
 					<div class="t">${cart.goodsName!''}</div>

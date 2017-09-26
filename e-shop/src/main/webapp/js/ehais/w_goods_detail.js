@@ -29,8 +29,17 @@ $(function(){
 	$("#cart").click(function(){window.location.href="w_cart!"+sid});
 	
 	quantityCart();//读取当前购物车数量
+	
+	wx_config(signature);
+	
 });
 
+window.onpageshow = function(event){
+	if (event.persisted) {
+		alert("wx_config");
+		wx_config(signature);
+	}
+}
 
 function favorites(){
 	$.ajax({

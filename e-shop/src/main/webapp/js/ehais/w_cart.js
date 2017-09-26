@@ -62,7 +62,7 @@ $(function(){
 	//立即结算
 	$("#checkOrder").click(function(){
 		var recIds = new Array();
-		$(".list > .item").each(function(index,ele){
+		$("ul > li").each(function(index,ele){
 			if($(ele).children(".singleCheck").hasClass("active")){
 				recIds.push($(ele).attr("recid"));
 			}

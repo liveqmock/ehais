@@ -1,73 +1,80 @@
 @import url("common.css");
-.w_goods_wrapper {
+* {
+  box-sizing: border-box;
+}
+.wgw {
   width: 100%;
   float: left;
   margin: 0 auto;
-  box-sizing: border-box;
-  position: relative;
+  rposition: relative;
   margin-bottom: 0.49rem;
   font-size: 0.16rem;
+  padding-top: 0.45rem;
 }
-.w_goods_wrapper > div,
-.w_goods_wrapper > div > div {
+.wgw header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0.45rem;
+  text-align: center;
+  line-height: 0.45rem;
+  font-size: 0.18rem;
+  background: #fff;
+  z-index: 105;
+  border-bottom: 0.01rem solid #eee ;
+}
+.wgw header i {
+  position: absolute;
+  left: 0;
+  padding: 0 0.15rem;
+}
+.wgw > div,
+.wgw > div > div {
   float: left;
   width: 100%;
-  box-sizing: border-box;
 }
-.w_goods_wrapper > div.base,
-.w_goods_wrapper > div.detail {
-  display: none;
+.wgw > div.base {
+  padding-bottom: 0.15rem;
 }
-.w_goods_wrapper > div.base.active,
-.w_goods_wrapper > div.detail.active {
-  display: block;
-}
-.w_goods_wrapper > div.base {
-  box-sizing: border-box;
-}
-.w_goods_wrapper > div.base .scroll img {
+.wgw > div.base .scroll img {
   width: 100%;
 }
-.w_goods_wrapper > div.base .goods {
+.wgw > div.base .goods {
   padding: 0.15rem;
 }
-.w_goods_wrapper > div.base .goods .goods_name {
+.wgw > div.base .goods .goods_name {
   font-weight: bold;
   float: left;
 }
-.w_goods_wrapper > div.base .goods .fav {
+.wgw > div.base .goods .fav {
   float: right;
 }
-.w_goods_wrapper > div.base .price {
+.wgw > div.base .price {
   padding: 0 0.15rem;
 }
-.w_goods_wrapper > div.base .price .shop_price {
+.wgw > div.base .price .shop_price {
   font-weight: bold;
   float: left;
   color: #ca1816;
 }
-.w_goods_wrapper > div.base .price .market_price {
+.wgw > div.base .price .market_price {
   float: left;
   text-decoration: line-through;
   color: #999999;
 }
-.w_goods_wrapper > div.base .price .goods_stock {
+.wgw > div.base .price .goods_stock {
   color: #999999;
   float: right;
 }
-.w_goods_wrapper > div.detail {
-  padding: 0.15rem;
-  box-sizing: border-box;
+.wgw > div.detail {
+  padding: 0 0.15rem 0.64rem;
   line-height: 0.28rem;
-  font-size: 0.18rem;
 }
-.w_goods_wrapper > div.detail img {
+.wgw > div.detail img {
   max-width: 100%;
 }
-.w_goods_wrapper .foot-bottom {
-  margin-bottom: 0.49rem;
-}
-.w_goods_wrapper footer {
+.wgw footer {
   position: fixed;
   bottom: 0;
   left: 0;
@@ -77,9 +84,8 @@
   width: 100%;
   background: #fff;
   z-index: 2;
-  box-sizing: border-box;
 }
-.w_goods_wrapper footer > div {
+.wgw footer > div {
   width: 15%;
   height: 0.49rem;
   float: left;
@@ -88,17 +94,17 @@
   text-align: center;
   color: #777;
 }
-.w_goods_wrapper footer > div i {
+.wgw footer > div i {
   font-size: 0.22rem;
   display: block;
   height: 0.16rem;
 }
-.w_goods_wrapper footer > div.cart {
+.wgw footer > div.cart {
   width: 15%;
   position: relative;
   text-align: left;
 }
-.w_goods_wrapper footer > div.cart i:last-child {
+.wgw footer > div.cart i:last-child {
   width: 0.2rem;
   height: 0.2rem;
   border: 0.01rem solid #ca1818;
@@ -114,18 +120,23 @@
   top: -0.05rem;
   left: 0.2rem;
 }
-.w_goods_wrapper footer > div.cart i:last-child.active {
+.wgw footer > div.cart i:last-child.active {
   display: inline-block;
 }
-.w_goods_wrapper footer > div.addCart {
+.wgw footer > div.addCart {
   background: #ffb03f;
   color: #fff;
   width: 35%;
   font-size: 0.18rem;
 }
-.w_goods_wrapper footer > div.buynow {
+.wgw footer > div.buynow {
   background: #f23030;
   color: #fff;
   width: 35%;
   font-size: 0.18rem;
+}
+.wgw .interval {
+  padding: 0.15rem;
+  color: #ccc;
+  border-top: 0.05rem solid #eee;
 }

@@ -41,3 +41,7 @@ String.prototype.replaceAll = function(reallyDo, replaceWith, ignoreCase) {
         return this.replace(reallyDo, replaceWith);  
     }  
 }
+
+$(function(){
+	$("header .icon-xiangzuojiantou").click(function(){history.back();});
+});

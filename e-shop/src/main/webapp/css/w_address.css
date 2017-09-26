@@ -6,7 +6,7 @@ body {
   margin: 0 auto;
   box-sizing: border-box;
   position: relative;
-  margin-bottom: 0.49rem;
+  padding: 0.45rem 0 0.59rem;
   font-size: 0.16rem;
   width: 100%;
   float: left;
@@ -24,15 +24,24 @@ body {
 }
 .waw header {
   height: 0.45rem;
-  background: #fff;
-  line-height: 0.45rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  border-bottom: 0.01rem solid #DCDCDC;
+  z-index: 20;
   text-align: center;
-  font-size: 0.2rem;
-  padding-right: 0.5rem;
+  font-size: 0.18rem;
+  line-height: 0.45rem;
+  background: #fff;
 }
 .waw header i {
-  font-size: 0.22rem;
-  padding: 0 0.1rem;
+  position: absolute;
+  z-index: 106;
+  padding: 0 0.15rem;
+}
+.waw header i:first-child {
+  left: 0rem;
 }
 .waw > div.form {
   width: 100%;
@@ -83,7 +92,6 @@ body {
 }
 .waw > ul {
   padding: 0 0.1rem;
-  margin-top: 0.1rem;
 }
 .waw > ul li {
   padding: 0.1rem 0.1rem;

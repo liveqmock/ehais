@@ -19,13 +19,21 @@
 		<link rel="stylesheet" href="../css/w_goods.css" />
 	</head>
 	<body>
-		<div class="w_goods_wrapper">
-
+		<div class="wgw">
+			<header>
+				<i class="iconfont icon-xiangzuojiantou"></i>
+				商品详情
+			</header>
 			<div class="base active">
 				
 				<div class="scroll swiper-container">
 					<ul class="swiper-wrapper">
 						<li class="swiper-slide"><img src="${goods.originalImg}" /></li>
+						<#if (galleryList?? && galleryList?size > 0)>
+						<#list galleryList as gallery>
+						<li class="swiper-slide"><img src="${gallery.imgOriginal}" /></li>
+						</#list>
+						</#if>
 					</ul>
 					<!-- 如果需要分页器 -->
 				    <div class="swiper-pagination"></div>
@@ -41,6 +49,7 @@
 				</div>
 				
 			</div>
+			<div class="interval"><i class="iconfont icon-xiangqing"></i> 商品详情</div>
 			<div class="detail active">
 				${goods.goodsDesc!''}
 			</div>
@@ -65,9 +74,7 @@
 		
 		<script type="text/javascript">
 		var sid = "${sid}";
-		$(function(){
-			wx_config(${signature});
-		});
+		var signature = ${signature};
 		</script>
 	
 	</body>

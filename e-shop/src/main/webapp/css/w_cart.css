@@ -30,43 +30,49 @@ body {
 }
 .wcw header i {
   position: absolute;
-  right: 0.15rem;
-  z-index: 21;
+  z-index: 106;
+  padding: 0 0.15rem;
+}
+.wcw header i:first-child {
+  left: 0rem;
+}
+.wcw header i:last-child {
+  right: 0rem;
 }
 .wcw > div,
 .wcw > div > div {
   float: left;
   width: 100%;
 }
-.wcw > .list {
+.wcw ul {
   padding: 0 0.15rem;
   margin: 0.55rem 0 0;
   background: #fff;
   width: 100%;
   float: left;
 }
-.wcw > .list .item {
+.wcw ul li {
   border-bottom: 0.01rem solid #f0f0f0;
   padding: 0.05rem 0;
   width: 100%;
   float: left;
   position: relative;
 }
-.wcw > .list .item .pic {
+.wcw ul li .pic {
   float: left;
   width: 35%;
   padding: 0.08rem 0.08rem 0 0.28rem;
 }
-.wcw > .list .item .pic img {
+.wcw ul li .pic img {
   width: 100%;
 }
-.wcw > .list .item .t {
+.wcw ul li .t {
   margin: 0;
   padding: 0.08rem 0 0 0 ;
   height: 0.64rem;
   box-sizing: border-box;
 }
-.wcw > .list .item .intro {
+.wcw ul li .intro {
   position: absolute;
   right: 0;
   bottom: 0.04rem;
@@ -75,19 +81,19 @@ body {
   width: 75%;
   padding-left: 0.3rem;
 }
-.wcw > .list .item .intro div {
+.wcw ul li .intro div {
   line-height: 1;
   padding: 0 0.1rem;
   float: right;
 }
-.wcw > .list .item .intro div:first-child {
+.wcw ul li .intro div:first-child {
   float: left;
 }
-.wcw > .list .item .intro .price {
+.wcw ul li .intro .price {
   color: #ca1816;
   padding-left: 0;
 }
-.wcw > .list .item .intro i {
+.wcw ul li .intro i {
   font-size: 0.18rem;
   float: right;
   color: #c5c5c5;
@@ -95,7 +101,7 @@ body {
   padding: 0;
   margin-top: -0.03rem;
 }
-.wcw > .list .item .fa-check-circle {
+.wcw ul li .fa-check-circle {
   position: absolute;
   top: 0.38rem;
   left: 0rem;
@@ -103,7 +109,7 @@ body {
   color: #f0f0f0;
   z-index: 10;
 }
-.wcw > .list .item .fa-check-circle.active {
+.wcw ul li .fa-check-circle.active {
   color: #ca1816;
 }
 .wcw .empty {

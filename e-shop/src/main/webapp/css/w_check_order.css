@@ -1,53 +1,41 @@
 @import url("common.css");
 .wcow {
-  margin-bottom: 0.49rem;
   font-size: 0.16rem;
   width: 100%;
   float: left;
+  overflow-y: scroll;
 }
 .wcow * {
   box-sizing: border-box;
+}
+.wcow header {
+  height: 0.45rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  border-bottom: 0.01rem solid #DCDCDC;
+  z-index: 20;
+  text-align: center;
+  font-size: 0.18rem;
+  line-height: 0.45rem;
+  background: #fff;
+}
+.wcow header i {
+  position: absolute;
+  z-index: 106;
+  padding: 0 0.15rem;
+}
+.wcow header i:first-child {
+  left: 0rem;
 }
 .wcow > div,
 .wcow > div > div {
   float: left;
   width: 100%;
 }
-.wcow header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 0.45rem;
-  line-height: 0.49rem;
-  font-size: 0.16rem;
-  text-align: center;
-  background: #f8f8f8;
-  border-bottom: 1px solid #dedede;
-  z-index: 11;
-}
-.wcow header > div {
-  float: left;
-  width: 25%;
-  height: 0.45rem;
-}
-.wcow header > div.middle {
-  width: 50%;
-}
-.wcow header > div.fa-chevron-left,
-.wcow header div.fa-list {
-  padding: 0.18rem;
-  text-align: left;
-}
-.wcow header > div.fa-list {
-  text-align: right;
-}
-.wcow header > div.active {
-  font-weight: bold;
-  border-bottom: 0.02rem solid #232326;
-}
 .wcow > .main {
-  padding: 0;
+  padding: 0.45rem 0 0.49rem;
   width: 100%;
   float: left;
 }
@@ -167,7 +155,7 @@
 .wcow footer {
   position: fixed;
   width: 100%;
-  height: 0.45rem;
+  height: 0.49rem;
   left: 0;
   right: 0;
   bottom: 0;
@@ -179,7 +167,7 @@
   width: 60%;
   float: left;
   font-size: 0.16rem;
-  line-height: 0.45rem;
+  line-height: 0.49rem;
 }
 .wcow footer > div > div.total {
   padding-left: 0.15rem;
@@ -194,7 +182,7 @@
   background: none;
   width: 40%;
   background: #ca1816;
-  height: 0.45rem;
+  height: 0.49rem;
   text-align: center;
   line-height: 0.45rem;
   font-size: 0.18rem;

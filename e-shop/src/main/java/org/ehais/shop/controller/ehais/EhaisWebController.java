@@ -26,6 +26,7 @@ import org.ehais.shop.mapper.HaiArticleRecordMapper;
 import org.ehais.shop.mapper.HaiCartMapper;
 import org.ehais.shop.mapper.HaiCategoryMapper;
 import org.ehais.shop.mapper.HaiForumMapper;
+import org.ehais.shop.mapper.HaiGoodsGalleryMapper;
 import org.ehais.shop.mapper.HaiGoodsMapper;
 import org.ehais.shop.mapper.HaiUserAddressMapper;
 import org.ehais.shop.model.HaiAd;
@@ -42,6 +43,8 @@ import org.ehais.shop.model.HaiForum;
 import org.ehais.shop.model.HaiForumExample;
 import org.ehais.shop.model.HaiGoods;
 import org.ehais.shop.model.HaiGoodsExample;
+import org.ehais.shop.model.HaiGoodsGallery;
+import org.ehais.shop.model.HaiGoodsGalleryExample;
 import org.ehais.shop.model.HaiUserAddress;
 import org.ehais.shop.model.HaiUserAddressExample;
 import org.ehais.util.ResourceUtil;
@@ -78,6 +81,8 @@ public class EhaisWebController extends EhaisCommonController {
 	private HaiArticleRecordMapper haiArticleRecordMapper;
 	@Autowired
 	private HaiForumMapper haiForumMapper;
+	@Autowired
+	private HaiGoodsGalleryMapper haiGoodsGalleryMapper;
 	
 	
 	public static String website = ResourceUtil.getProValue("website");
@@ -284,6 +289,11 @@ public class EhaisWebController extends EhaisCommonController {
 		modelMap.addAttribute("parentId", map.get("parentId"));
 		modelMap.addAttribute("agencyId", map.get("agencyId"));
 		modelMap.addAttribute("articleId", map.get("articleId"));
+		
+		HaiGoodsGalleryExample galleryExample = new HaiGoodsGalleryExample();
+		galleryExample.createCriteria().andGoodsIdEqualTo(goodsId);
+		List<HaiGoodsGallery> galleryList = haiGoodsGalleryMapper.selectByExample(galleryExample);
+		modelMap.addAttribute("galleryList", galleryList);
 		
 		WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, Integer.valueOf(map.get("store_id").toString()), wp.getAppid(), wp.getSecret(), null);
 		signature.setTitle(goods.getGoodsName());
@@ -506,10 +516,6 @@ public class EhaisWebController extends EhaisCommonController {
 			HttpServletRequest request,HttpServletResponse response,
 			@PathVariable(value = "sid") String sid) {
 		
-		
-		if(this.isLocalHost(request)){
-			request.getSession().setAttribute(EConstants.SESSION_USER_ID, 125L);			
-		}
 		try{
 			modelMap.addAttribute("sid", sid);
 		}catch(Exception e){
