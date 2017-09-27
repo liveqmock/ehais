@@ -1,0 +1,227 @@
+@import url("common.css");
+* {
+  box-sizing: border-box;
+  float: left;
+  width: 100%;
+}
+.wm {
+  padding: 0.45rem 0 0;
+  font-size: 0.14rem;
+}
+.wm header {
+  height: 0.45rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  border-bottom: 0.01rem solid #DCDCDC;
+  z-index: 20;
+  text-align: center;
+  font-size: 0.18rem;
+  line-height: 0.45rem;
+  background: #fff;
+}
+.wm header i {
+  position: absolute;
+  z-index: 106;
+  padding: 0 0.15rem;
+  width: auto;
+}
+.wm header i:first-child {
+  left: 0rem;
+}
+.wm header i:last-child {
+  right: 0rem;
+}
+.wm .m {
+  background: #F24630;
+  padding: 0.25rem 0.15rem;
+  position: relative;
+}
+.wm .m * {
+  width: auto;
+  color: #fff;
+}
+.wm .m img {
+  width: 25%;
+  border-radius: 50%;
+  border: 0.02rem solid #fff;
+}
+.wm .m > div {
+  width: 75%;
+  padding: 0 0 0.08rem 0.15rem;
+}
+.wm .m > div:nth-child(2) {
+  font-size: 0.16rem;
+}
+.wm .m > div:nth-child(4) {
+  padding-bottom: 0;
+}
+.wm .m i {
+  float: right;
+  position: absolute;
+  right: 0;
+  padding: 0.24rem 0.15rem 0;
+  color: #CDCDCD;
+}
+.wm .a,
+.wm .b {
+  display: none;
+  background: #DE3C2D;
+  text-align: left;
+  padding: 0.05rem 0.15rem;
+}
+.wm .a *,
+.wm .b * {
+  width: auto;
+  color: #f9f9f9;
+  padding-right: 0.15rem;
+}
+.wm .a b,
+.wm .b b {
+  float: right;
+  padding: 0.01rem 0.08rem;
+  border-radius: 0.06rem;
+  background: #CD2919;
+  margin-top: -0.01rem;
+}
+.wm .t {
+  text-align: center;
+}
+.wm .t b {
+  width: 50%;
+  color: #fff;
+  background: #CD2919;
+  padding: 0.1rem 0;
+}
+.wm .t b.active {
+  color: #CD2919;
+  background: #fff;
+}
+.wm .s,
+.wm .f {
+  display: none;
+  text-align: center;
+}
+.wm .s ul,
+.wm .f ul {
+  border-bottom: 0.08rem solid #EEEEEE;
+}
+.wm .s ul li,
+.wm .f ul li {
+  position: relative;
+  padding: 0.15rem 0;
+  width: 25%;
+}
+.wm .s ul li i,
+.wm .f ul li i {
+  font-size: 0.28rem;
+}
+.wm .s ul li b,
+.wm .f ul li b {
+  position: absolute;
+  border: 0.02rem solid #FD5633;
+  width: 0.28rem;
+  height: 0.28rem;
+  line-height: 0.26rem;
+  color: #FD5633;
+  border-radius: 50%;
+  top: 0.02rem;
+  left: 50%;
+  margin-left: 0.05rem;
+  display: none;
+}
+.wm .s ul li b.active,
+.wm .f ul li b.active {
+  display: block;
+}
+.wm .s .icon-jifen,
+.wm .f .icon-jifen {
+  color: #E64746;
+}
+.wm .s .icon-youhuiquan,
+.wm .f .icon-youhuiquan {
+  color: #FF0000;
+}
+.wm .s .icon-chongzhi,
+.wm .f .icon-chongzhi {
+  color: #64B532;
+}
+.wm .s .icon-tixian,
+.wm .f .icon-tixian {
+  color: #FFA000;
+}
+.wm .s .icon-jixugouwu,
+.wm .f .icon-jixugouwu {
+  color: #B0C2F4;
+}
+.wm .s .icon-daipingjia,
+.wm .f .icon-daipingjia {
+  color: #5F9FE4;
+}
+.wm .s .icon-jinlingyingcaiwangtubiao29,
+.wm .f .icon-jinlingyingcaiwangtubiao29 {
+  color: #FFA000;
+}
+.wm .s .icon-shouhuodizhi,
+.wm .f .icon-shouhuodizhi {
+  color: #B3C738;
+}
+.wm .s .icon-tongji,
+.wm .f .icon-tongji {
+  color: #F76721;
+}
+.wm .s .icon-jingzhunpipei,
+.wm .f .icon-jingzhunpipei {
+  color: #FCB429;
+}
+.wm .s .icon-dingdan1,
+.wm .f .icon-dingdan1 {
+  color: #EFD434;
+}
+.wm .s .icon-order,
+.wm .f .icon-order {
+  color: #00A0E9;
+}
+.wm .s .icon-dingdan,
+.wm .f .icon-dingdan {
+  color: #EFD434;
+}
+.wm .s .icon-liebiao1,
+.wm .f .icon-liebiao1 {
+  color: #DA9EC5;
+}
+.wm .s .icon-xiaozhushou,
+.wm .f .icon-xiaozhushou {
+  color: #FA5566;
+}
+.wm .s .icon-juxing2,
+.wm .f .icon-juxing2 {
+  color: #D93828;
+}
+.wm .s .icon-tuandui,
+.wm .f .icon-tuandui {
+  color: #F76721;
+}
+.wm .s .icon-tubiao88,
+.wm .f .icon-tubiao88 {
+  color: #FFB63F;
+}
+.wm .s .icon-erweima,
+.wm .f .icon-erweima {
+  color: #B4C83A;
+}
+.wm .s.active,
+.wm .f.active,
+.wm .a.active,
+.wm .b.active {
+  display: block;
+}
+.wm footer {
+  font-size: 0.12rem;
+  text-align: center;
+  color: #ccc;
+  width: 100%;
+  margin-top: 0.15rem;
+  padding: 0.15rem 0;
+}

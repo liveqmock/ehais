@@ -13,10 +13,12 @@ import org.ehais.shop.model.HaiDiningPrintTime;
 import org.ehais.shop.model.HaiOrderInfo;
 import org.ehais.shop.model.HaiOrderInfoExample;
 import org.ehais.shop.model.HaiOrderInfoWithBLOBs;
+import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,11 +40,14 @@ public class OrderInfoApiController extends OrderInfoIController{
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "user_id", required = true) Long user_id,
 			@RequestParam(value = "m_code", required = true) Integer m_code,
-			@RequestParam(value = "page", required = true) Integer page,
-			@RequestParam(value = "len", required = true) Integer len){
+			@RequestParam(value = "order_status", required = false) Integer order_status,
+			@RequestParam(value = "pay_status", required = false) Integer pay_status,
+			@RequestParam(value = "shipping_status", required = false) Integer shipping_status,
+			@ModelAttribute EConditionObject condition
+			){
 		
 		try {
-			return this.writeJson(orderinfoService.orderinfo_list(request, user_id, page, len));
+			return this.writeJson(orderinfoService.orderinfo_list(request, user_id, order_status,pay_status,shipping_status,condition));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

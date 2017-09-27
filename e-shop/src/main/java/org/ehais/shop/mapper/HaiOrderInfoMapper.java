@@ -1,6 +1,7 @@
 package org.ehais.shop.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
@@ -15,6 +16,14 @@ import org.ehais.shop.model.OrderStatus;
 
 public interface HaiOrderInfoMapper {
 	
+	
+	@Select("select  "+
+			" count(CASE WHEN order_status = 4 THEN 1 ELSE NULL END) as returned, "+//退货
+			" count(CASE WHEN order_status = 1 and shipping_status = 1 THEN 1 ELSE NULL END) as shipments, "+//已发货
+			" count(CASE WHEN pay_status = 0 THEN 1 ELSE NULL END) as payWaiting "+//待付款
+			" from hai_order_info "+
+			" where user_id = #{user_id}")
+	public Map<String,Integer> order_statistics(@Param("user_id") Long user_id);
 	
 	@Select("select "+
 			" sum(case when pay_name='微信支付' then order_amount end) as weixin_amount, "+

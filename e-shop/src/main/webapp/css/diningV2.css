@@ -122,14 +122,13 @@ footer *,
 .w > div.menu .right ul li .badge {
   z-index: 100;
   position: absolute;
-  top: -0.01rem;
+  top: 0.01rem;
   left: 21%;
-  border: 0.01rem solid #ca1816;
+  background: #89D2F3;
   width: 0.22rem;
   height: 0.22rem;
   border-radius: 50%;
-  color: #ca1816;
-  background: #fff;
+  color: #fff;
   text-align: center;
   line-height: 0.22rem;
   font-size: 0.12rem;

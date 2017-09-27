@@ -36,8 +36,12 @@ public class MemberServiceImpl extends CommonServiceImpl implements MemberServic
 		rm.setModel(model);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
-		List<OrderStatus> list = haiOrderInfoMapper.statistics_member_order(user_id);
-		map.put("order_status", list);
+//		List<OrderStatus> list = haiOrderInfoMapper.statistics_member_order(user_id);
+//		map.put("order_status", list);
+		
+		Map<String,Integer> mOrder = haiOrderInfoMapper.order_statistics(user_id);
+		map.put("mOrder", mOrder);
+		
 		
 		rm.setMap(map);
 		rm.setCode(1);

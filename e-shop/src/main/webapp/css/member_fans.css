@@ -1,0 +1,87 @@
+@import url("common.css");
+* {
+  box-sizing: border-box;
+  float: left;
+  width: 100%;
+}
+.wm {
+  padding: 0.97rem 0 0;
+  font-size: 0.14rem;
+}
+.wm header {
+  height: 0.45rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  border-bottom: 0.01rem solid #DCDCDC;
+  z-index: 20;
+  text-align: center;
+  font-size: 0.18rem;
+  line-height: 0.45rem;
+  background: #fff;
+}
+.wm header i {
+  position: absolute;
+  z-index: 106;
+  padding: 0 0.15rem;
+  width: auto;
+}
+.wm header i:first-child {
+  left: 0rem;
+}
+.wm header i:last-child {
+  right: 0rem;
+}
+.wm > dl {
+  border-bottom: 0.05rem solid #F3F3F3;
+  background: #fff;
+  position: fixed;
+  top: 0.45rem;
+  left: 0;
+  right: 0;
+}
+.wm > dl dt {
+  padding: 0.1rem 0.15rem;
+  position: relative;
+}
+.wm > dl dt input {
+  padding: 0.05rem;
+  border: 0.01rem solid #cdcdce;
+  border-radius: 0.05rem;
+}
+.wm > dl dt i {
+  position: absolute;
+  right: 0.2rem;
+  top: 0.15rem;
+  width: auto;
+}
+.wm > ul > li {
+  padding: 0.1rem 0.15rem;
+  border-bottom: 0.05rem solid #F3F3F3;
+}
+.wm > ul > li * {
+  width: auto;
+}
+.wm > ul > li img {
+  width: 15%;
+  margin-right: 0.15rem;
+}
+.wm > ul > li b,
+.wm > ul > li i {
+  width: 85%;
+  margin-right: -0.15rem;
+}
+.wm > ul > li b {
+  padding-bottom: 0.08rem;
+}
+.wm > ul > li i {
+  font-size: 0.12rem;
+}
+.wm .e {
+  padding-top: 0.3rem;
+  text-align: center;
+}
+.wm .e i {
+  font-size: 0.8rem;
+}

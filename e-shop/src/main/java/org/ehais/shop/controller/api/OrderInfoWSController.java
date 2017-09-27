@@ -5,8 +5,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.ehais.common.EConstants;
 import org.ehais.shop.controller.api.include.OrderInfoIController;
+import org.ehais.tools.EConditionObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,12 +23,15 @@ public class OrderInfoWSController extends OrderInfoIController{
 	@RequestMapping("/orderinfo_list")
 	public String orderinfo_list(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
-			@RequestParam(value = "page", required = true) Integer page,
-			@RequestParam(value = "len", required = true) Integer len){
+			@RequestParam(value = "order_status", required = false) Integer order_status,
+			@RequestParam(value = "pay_status", required = false) Integer pay_status,
+			@RequestParam(value = "shipping_status", required = false) Integer shipping_status,
+			@ModelAttribute EConditionObject condition
+			){
 		Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 //		if(user_id==null) user_id = 1;//临时使用
 		try {
-			return this.writeJson(orderinfoService.orderinfo_list(request, user_id, page, len));
+			return this.writeJson(orderinfoService.orderinfo_list(request, user_id, order_status,pay_status,shipping_status,condition));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

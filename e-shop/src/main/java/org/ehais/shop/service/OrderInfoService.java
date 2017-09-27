@@ -23,7 +23,7 @@ public interface OrderInfoService extends CommonService{
 	public ReturnObject<HaiOrderInfo> orderinfo_delete(HttpServletRequest request,Long orderId) throws Exception;
 	
 	
-	public ReturnObject<HaiOrderInfo> orderinfo_list(HttpServletRequest request,Long user_id,Integer page,Integer len) throws Exception;
+	public ReturnObject<HaiOrderInfo> orderinfo_list(HttpServletRequest request,Long user_id,Integer order_status,Integer pay_status,Integer shipping_status,EConditionObject condition) throws Exception;
 	public ReturnObject<HaiOrderInfo> orderinfo_info(HttpServletRequest request,Long user_id,Long orderId) throws Exception;
 	
 
