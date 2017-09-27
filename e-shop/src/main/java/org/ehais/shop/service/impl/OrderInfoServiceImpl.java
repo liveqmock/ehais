@@ -198,7 +198,7 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 	}
 
 	@Override
-	public ReturnObject<HaiOrderInfo> orderinfo_list(HttpServletRequest request, Long user_id,Integer order_status,Integer pay_status,Integer shipping_status,EConditionObject condition) throws Exception {
+	public ReturnObject<HaiOrderInfo> orderinfo_list(HttpServletRequest request, Long user_id,Integer order_status,Integer pay_status,Integer shipping_status,EConditionObject condition,String order_sn) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiOrderInfo> rm = new ReturnObject<HaiOrderInfo>();
 		
@@ -208,8 +208,10 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 		if(order_status != null && order_status > 0)c.andOrderStatusEqualTo(order_status);
 		if(pay_status != null && pay_status > 0)c.andPayStatusEqualTo(pay_status);
 		if(shipping_status != null && shipping_status > 0)c.andShippingStatusEqualTo(shipping_status);
+		if(StringUtils.isNotBlank(order_sn))c.andOrderSnLike("%"+order_sn+"%");
 		example.setLimitStart(condition.getStart());
 		example.setLimitEnd(condition.getRows());
+		example.setOrderByClause("add_time desc");
 		List<HaiOrderInfo> list = haiOrderInfoMapper.selectByExample(example);
 		Long total = haiOrderInfoMapper.countByExample(example);
 		

@@ -43,11 +43,12 @@ public class OrderInfoApiController extends OrderInfoIController{
 			@RequestParam(value = "order_status", required = false) Integer order_status,
 			@RequestParam(value = "pay_status", required = false) Integer pay_status,
 			@RequestParam(value = "shipping_status", required = false) Integer shipping_status,
+			@RequestParam(value = "order_sn", required = false) String order_sn,
 			@ModelAttribute EConditionObject condition
 			){
 		
 		try {
-			return this.writeJson(orderinfoService.orderinfo_list(request, user_id, order_status,pay_status,shipping_status,condition));
+			return this.writeJson(orderinfoService.orderinfo_list(request, user_id, order_status,pay_status,shipping_status,condition,order_sn));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

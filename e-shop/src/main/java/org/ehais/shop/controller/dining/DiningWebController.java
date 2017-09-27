@@ -354,7 +354,7 @@ public class DiningWebController extends EhaisCommonController{
 			HaiOrderInfoWithBLOBs orderInfo = new HaiOrderInfoWithBLOBs();
 			orderInfoService.setDefaultOrder(orderInfo,date,store_id);//公共设置订单的默认值
 			
-			String orderSn = "101"+DateUtil.formatDate(date, DateUtil.FORMATSTR_4) + ECommon.nonceInt(4) + map.get("userId").toString();
+			String orderSn = "101"+DateUtil.formatDate(date, DateUtil.FORMATSTR_4) + map.get("userId").toString() + ECommon.nonceInt(4);
 			orderInfo.setOrderSn(orderSn);
 			orderInfo.setUserId(Long.valueOf(map.get("userId").toString()));
 			orderInfo.setOrderStatus(EOrderStatusEnum.init);
