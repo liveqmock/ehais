@@ -113,37 +113,57 @@ function orderinfo_list(){
 }
 
 function driverOrderInfo(result){
+	
 	if(result.rows != null && result.rows.length > 0){
 		$(".e").removeClass("active");
 		$.each(result.rows,function(k,v){
 			var goodslist = "";
+			var quantity = 0 ;
 			$.each(result.map.order_goods_list,function(i,d){
 				if(v.orderId == d.orderId){
 					goodslist += "<li>"+
 						"<img src='"+d.goodsThumb+"' />"+d.goodsName+
 					"</li>";
+					quantity += parseInt(d.goodsNumber);
 				}
 				
 			});
 			
-			
+			var state = "";
+			var btn = "";
+			if(v.orderStatus == 0){
+				state = "待付款";
+				btn = "<button class='o'>付款</button>";
+			}else if(v.orderStatus == 1){
+				state = "待收货";
+			}else if(v.orderStatus == 2){
+				state = "取消";
+			}else if(v.orderStatus == 3){
+				state = "无效";
+			}else if(v.orderStatus == 4){
+				state = "退换货";
+			}else if(v.orderStatus == 5){
+				state = "完成";
+			}
 			$("#order").append("<li>"+
 					"<div class='h'>"+
 						"订单："+v.orderSn+
-						"<b>已完成</b>"+
+						"<b>"+state+"</b>"+
 					"</div>"+
 					"<ul>"+goodslist+"</ul>"+
 					"<div class='t'>"+
-						"共2件商品 实付款：￥234.08元"+
+						"共"+quantity+"件商品 实付款：￥"+(v.orderAmount / 100 ).toFixed(2)+"元"+
 					"</div>"+
 					"<div class='b'>"+
 						"<button class='o'>详情</button>"+
-						"<button class='o'>付款</button>"+
+						btn+
 						"<button class='d'>删除订单</button>"+
 					"</div>"+
 				"</li>");
 			
 			goodslist = null;
+			quantity = null;
+			state = null;
 		});
 		jroll.refresh();
 	}

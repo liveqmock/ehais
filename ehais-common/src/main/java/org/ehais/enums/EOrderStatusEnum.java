@@ -8,6 +8,7 @@ public class EOrderStatusEnum {
 	public static Integer invalid = 3;//无效
 	public static Integer returned = 4;//退货
 	public static Integer success = 1;//成功
+	public static Integer finish = 5;//完成
 	
 
 }

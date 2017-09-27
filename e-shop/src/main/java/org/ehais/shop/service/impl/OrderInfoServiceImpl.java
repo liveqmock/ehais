@@ -209,6 +209,7 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 		if(pay_status != null && pay_status > 0)c.andPayStatusEqualTo(pay_status);
 		if(shipping_status != null && shipping_status > 0)c.andShippingStatusEqualTo(shipping_status);
 		if(StringUtils.isNotBlank(order_sn))c.andOrderSnLike("%"+order_sn+"%");
+		c.andIsVoidEqualTo("1");
 		example.setLimitStart(condition.getStart());
 		example.setLimitEnd(condition.getRows());
 		example.setOrderByClause("add_time desc");
