@@ -27,6 +27,8 @@ public class WXConstants {
 	public static String get_opendid_url = "https://api.weixin.qq.com/sns/oauth2/access_token?grant_type=authorization_code";
 	// 获取用户信息，并判断是否关注此微信号
 	public static String get_user_info = "https://api.weixin.qq.com/cgi-bin/user/info?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN";
+	//批量获取用户信息
+	public static String batchget = "https://api.weixin.qq.com/cgi-bin/user/info/batchget?access_token=ACCESS_TOKEN";
 	// 获取ip
 	public static String get_call_back_ip = "https://api.weixin.qq.com/cgi-bin/getcallbackip?access_token=ACCESS_TOKEN";
 	// 统一下单

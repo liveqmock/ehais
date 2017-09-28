@@ -110,6 +110,7 @@ public class EhaisCommonController extends CommonController{
 		WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(Integer.valueOf(map.get("store_id").toString()));
 		OpenidInfo open = WeiXinUtil.getOpenid(code,wp.getAppid(),wp.getSecret());
 		if(open == null) return null;
+		
 		//根据openid获取用户是否存在
 		return this.saveUserOpen(request, open, map);
 	}

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.http.client.ClientProtocolException;
 import org.ehais.util.ECommon;
 import org.ehais.util.EHttpClientUtil;
+import org.ehais.util.EmojiFilterUtils;
 import org.ehais.util.EncryptUtils;
 import org.ehais.util.StringUtil;
 import org.ehais.weixin.WXConstants;
@@ -29,9 +30,11 @@ import org.ehais.weixin.model.WeiXinTemplateMessage;
 import org.ehais.weixin.model.WeiXinUnifiedOrder;
 import org.ehais.weixin.model.WeiXinUnifiedOrderResult;
 import org.ehais.weixin.model.WeiXinUserInfo;
+import org.ehais.weixin.model.WeiXinUserInfoBatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.gson.Gson;
 import com.thoughtworks.xstream.XStream;
 
 import net.sf.json.JSONObject;
@@ -126,6 +129,7 @@ public class WeiXinUtil {
 	public static AccessToken getAccessToken(int wxid,String weixin_appid,String weixin_appsecret) throws Exception {
 		AccessToken accessToken = (AccessToken)AccessTokenCacheManager.getInstance().getAccessToken(wxid);
 		if(accessToken!=null){
+			log.info("oscache--accesstoken---time:"+System.currentTimeMillis()+"---"+accessToken.getExpire_time());
 			if(System.currentTimeMillis() < accessToken.getExpire_time()){
 				log.info("oscache缓存accesstoken:"+accessToken.getAccess_token());
 				return accessToken;
@@ -187,9 +191,9 @@ public class WeiXinUtil {
 
 		JsApiTicket jsapiticket = (JsApiTicket)JsApiTicketCacheManager.getInstance().getJsApiTicket(id);
 		if(jsapiticket!=null){
+			log.info("oscache--jsapiticket---time:"+System.currentTimeMillis()+"---"+jsapiticket.getExpire_time());
 			if(System.currentTimeMillis() < jsapiticket.getExpire_time()){
 				log.info("oscache缓存jsapiticket:"+jsapiticket.getTicket());
-				
 				return jsapiticket;
 			}
 				
@@ -201,7 +205,7 @@ public class WeiXinUtil {
 		String request = EHttpClientUtil.methodGet(requestUrl);
 		JSONObject jsonObject = JSONObject.fromObject(request);
 		
-		System.out.println("JsApiTicket:"+request);
+		System.out.println("request JsApiTicket:"+request);
 		// 如果请求成功
 		if (null != jsonObject) {
 			jsapiticket = new JsApiTicket();
@@ -306,38 +310,58 @@ public class WeiXinUtil {
 	}
 	
 	public static WeiXinUserInfo getUserInfo(String access_token,String openid) throws Exception {
-		WeiXinUserInfo userinfo = new WeiXinUserInfo();
+		WeiXinUserInfo userinfo = null;//new WeiXinUserInfo();
 		String requestUrl = WXConstants.get_user_info.replace("ACCESS_TOKEN", access_token).replace("OPENID", openid);
 		String request = EHttpClientUtil.methodGet(requestUrl);
 		log.info("微信获取用户信息接口返回："+request);
+		System.out.println("微信获取用户信息接口返回："+request);
 		JSONObject jsonObject = JSONObject.fromObject(request);
-		if(null != jsonObject){
+		if(jsonObject!=null && !jsonObject.has("errcode")){
 			
-			if(jsonObject.has("subscribe"))userinfo.setSubscribe(jsonObject.getInt("subscribe"));
-			if(jsonObject.has("openid"))userinfo.setOpenid(jsonObject.getString("openid"));
+			Gson gson = new Gson();
+			userinfo = gson.fromJson(request, WeiXinUserInfo.class);
+			if(userinfo!=null)userinfo.setNickname(EmojiFilterUtils.filterEmoji(userinfo.getNickname()));
 			
-			if(jsonObject.has("sex"))userinfo.setSex(jsonObject.getInt("sex"));
-			if(jsonObject.has("city"))userinfo.setCity(jsonObject.getString("city"));
-			if(jsonObject.has("country"))userinfo.setCountry(jsonObject.getString("country"));
-			if(jsonObject.has("province"))userinfo.setProvince(jsonObject.getString("province"));
-			if(jsonObject.has("language"))userinfo.setLanguage(jsonObject.getString("language"));
-			if(jsonObject.has("headimgurl"))userinfo.setHeadimgurl(jsonObject.getString("headimgurl"));
-			if(jsonObject.has("subscribe_time"))userinfo.setSubscribe_time(jsonObject.getLong("subscribe_time"));
-			if(jsonObject.has("unionid"))userinfo.setUnionid(jsonObject.getString("unionid"));
-			if(jsonObject.has("remark"))userinfo.setRemark(jsonObject.getString("remark"));
-			if(jsonObject.has("groupid"))userinfo.setGroupid(jsonObject.getInt("groupid"));
+//			if(jsonObject.has("subscribe"))userinfo.setSubscribe(jsonObject.getInt("subscribe"));
+//			if(jsonObject.has("openid"))userinfo.setOpenid(jsonObject.getString("openid"));
+			
+//			if(jsonObject.has("sex"))userinfo.setSex(jsonObject.getInt("sex"));
+//			if(jsonObject.has("city"))userinfo.setCity(jsonObject.getString("city"));
+//			if(jsonObject.has("country"))userinfo.setCountry(jsonObject.getString("country"));
+//			if(jsonObject.has("province"))userinfo.setProvince(jsonObject.getString("province"));
+//			if(jsonObject.has("language"))userinfo.setLanguage(jsonObject.getString("language"));
+//			if(jsonObject.has("headimgurl"))userinfo.setHeadimgurl(jsonObject.getString("headimgurl"));
+//			if(jsonObject.has("subscribe_time"))userinfo.setSubscribe_time(jsonObject.getLong("subscribe_time"));
+//			if(jsonObject.has("unionid"))userinfo.setUnionid(jsonObject.getString("unionid"));
+//			if(jsonObject.has("remark"))userinfo.setRemark(jsonObject.getString("remark"));
+//			if(jsonObject.has("groupid"))userinfo.setGroupid(jsonObject.getInt("groupid"));
 
-			//再单独处理
-			try{
-				if(jsonObject.has("nickname"))userinfo.setNickname(jsonObject.getString("nickname"));
-			}catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				log.error("解析昵称出错", e);
-			}
 		}
 		
 		return userinfo;
+	}
+	
+	
+	public static WeiXinUserInfoBatch batchUserInfo(String access_token,String content) throws Exception {
+		WeiXinUserInfoBatch batch = null;
+		String requestUrl = WXConstants.batchget.replace("ACCESS_TOKEN", access_token);
+		String request = EHttpClientUtil.httpPostEntity(requestUrl, content);
+		log.info("微信批量获取用户信息接口返回："+request);
+		System.out.println("微信批量获取用户信息接口返回："+request);
+		JSONObject jsonObject = JSONObject.fromObject(request);
+		if(jsonObject!=null && !jsonObject.has("errcode")){
+			Gson gson = new Gson();
+//	        List<Person> persons = gson.fromJson(json, new TypeToken<List<Person>>() {}.getType());//对于不是类的情况，用这个参数给出
+			
+			batch = gson.fromJson(request, WeiXinUserInfoBatch.class);
+//			List<WeiXinUserInfo> user_info_list = batch.getUser_info_list();
+//			for (WeiXinUserInfo weiXinUserInfo : user_info_list) {
+//				if(weiXinUserInfo!=null)weiXinUserInfo.setNickname(EmojiFilterUtils.filterEmoji(weiXinUserInfo.getNickname()));
+//			}
+			
+		}
+		
+		return batch;
 	}
 	
 	/**

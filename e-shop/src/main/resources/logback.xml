@@ -5,10 +5,10 @@
     <!--Appendar详解: http://logback.qos.ch/manual/appenders.html#RollingFileAppender -->  
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">  
         <!-- 当前Log文件名 -->  
-        <file>${catalina.base}/logs/m-weixin/project_file.log</file>  
+        <file>${catalina.base}/logs/e-shop/project_file.log</file>  
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">  
             <!-- 非当天的Log文件压缩备份为 archive/ldap-pwd.2014-08-10.zip -->  
-            <fileNamePattern>${catalina.base}/logs/m-weixin/archive/project-pwd.%d{yyyy-MM-dd}.zip</fileNamePattern>  
+            <fileNamePattern>${catalina.base}/logs/e-shop/archive/project-pwd.%d{yyyy-MM-dd}.zip</fileNamePattern>  
             <!-- 超过30天的备份文件会被删除 -->  
             <maxHistory>30</maxHistory>  
         </rollingPolicy>  
@@ -22,7 +22,7 @@
     
     
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender"> 
-  	<file>${catalina.base}/logs/m-weixin/project_info.log</file>  
+  	<file>${catalina.base}/logs/e-shop/project_info.log</file>  
 <!--     <encoder  class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">   
       <pattern>%d{yyyy/MM/dd-HH:mm:ss.SSS} %level [%thread] %class:%line>>%msg%n</pattern>   
     </encoder >  -->
@@ -34,15 +34,15 @@
             <level>INFO</level>  
         </filter>  
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">  
-            <fileNamePattern>${catalina.base}/logs/m-weixin/project_sensitive.%d{yyyy-MM-dd}.log</fileNamePattern>  
+            <fileNamePattern>${catalina.base}/logs/e-shop/project_sensitive.%d{yyyy-MM-dd}.log</fileNamePattern>  
         </rollingPolicy> 
           
   </appender>   
   
   	<appender name="ACCESS" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${catalina.base}/logs/m-weixin/container-access.log</file>
+		<file>${catalina.base}/logs/e-shop/container-access.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>${catalina.base}/logs/m-weixin/container-access.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<fileNamePattern>${catalina.base}/logs/e-shop/container-access.%d{yyyy-MM-dd}.log</fileNamePattern>
 			<maxHistory>60</maxHistory>
 		</rollingPolicy>
 		<encoder>
