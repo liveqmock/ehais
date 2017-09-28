@@ -3,9 +3,15 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
-		<title></title>
+		<title>粉丝中心</title>
 		<script type="text/javascript" src="js/jquery-2.1.4.min.js" ></script>
+		<script type="text/javascript" src="js/jroll/jroll.min.js" ></script>
+		
 		<script type="text/javascript" src="js/common.js" ></script>
+		
+		<link rel="stylesheet" href="/js/elay/elay.css" />
+		<script type="text/javascript" src="/js/elay/elay.js" ></script>
+		
 		<link rel="stylesheet" href="css/member_fans.css" />
 	</head>
 	<body>
@@ -17,17 +23,13 @@
 			</header>
 			<dl>
 				<dt>
-					<input type="text" id="ordersn" placeholder="输入用户昵称" />
-					<i class="iconfont icon-xingtaiduICON_sousuo--"></i>
+					<input type="text" id="nickname" placeholder="输入用户昵称" />
+					<i id="sou" class="iconfont icon-xingtaiduICON_sousuo--"></i>
 				</dt>
 			</dl>
-			<ul>
-				<li>
-					<img src="images/s3.jpg" />
-					<b>tyler</b>
-					<i>关注时间：2017-09-09 10:22:20</i>
-				</li>
-			</ul>
+			<div id="juser">
+			<ul id="uu"></ul>
+			</div>
 			<div class="e">
 				<i class="iconfont icon-kong"></i>
 			</div>

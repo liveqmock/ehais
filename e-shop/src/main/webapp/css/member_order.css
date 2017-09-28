@@ -92,6 +92,12 @@
   width: 20%;
   margin-right: 0.15rem;
 }
+.wm > div > ul > li > ul > li div {
+  font-size: 0.12rem;
+  color: #999;
+  width: 80%;
+  margin-right: -0.15rem;
+}
 .wm > div > ul > li .t {
   text-align: right;
 }
@@ -124,9 +130,4 @@
 }
 .wm .e.active {
   display: block;
-}
-.jroll-infinite-tip {
-  height: 44px;
-  line-height: 44px;
-  text-align: center;
 }

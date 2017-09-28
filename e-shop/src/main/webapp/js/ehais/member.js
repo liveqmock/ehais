@@ -12,7 +12,14 @@ $(function(){
 		$(this).addClass("active");
 	});
 	
-	console.log("window.location.hash:"+window.location.hash);
+	$("#oq li").click(function(){
+		window.location.href="w_member_order#"+$(this).attr("for");
+	});
+	
+	$("#mh li,#fh li").click(function(){
+		if($(this).attr("h") != null)window.location.href=$(this).attr("h");
+	});
+	
 });
 
 function member(){

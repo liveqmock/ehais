@@ -12,6 +12,7 @@ import org.ehais.common.EConstants;
 import org.ehais.epublic.model.EHaiRegion;
 import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.shop.controller.api.include.UserIController;
+import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -62,9 +63,25 @@ public class UserWSController extends UserIController {
 	public String user_info_edit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@ModelAttribute EHaiUsers user) {
-
 		try{
 			ReturnObject<EHaiUsers> rm = eUsersService.users_info_edit(request,user, null,null);
+			return this.writeJson(rm);
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("users", e);
+		}
+		return null;
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping("/fans_list")
+	public String fans_list(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@ModelAttribute EConditionObject condition,
+			@RequestParam(value = "nickname", required = true) String nickname) {
+		try{
+			ReturnObject<EHaiUsers> rm = eUsersService.fans_list(request, null, condition,nickname);
 			return this.writeJson(rm);
 		}catch(Exception e){
 			e.printStackTrace();

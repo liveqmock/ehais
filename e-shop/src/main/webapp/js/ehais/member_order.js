@@ -4,7 +4,9 @@ var jroll;
 var status;
 var loaded;
 $(function(){
-	status = $("dl dd:first").attr("for");
+	status = window.location.hash.replace("#","");
+	$("dl dd").removeClass("active");
+	$("dl dd").each(function(i,ele){if($(ele).attr("for") == status)$(ele).addClass("active");});
 	orderinfo_list();
 	
 	$("dl dd").click(function(){
@@ -122,11 +124,10 @@ function driverOrderInfo(result){
 			$.each(result.map.order_goods_list,function(i,d){
 				if(v.orderId == d.orderId){
 					goodslist += "<li>"+
-						"<img src='"+d.goodsThumb+"' />"+d.goodsName+
+						"<img src='"+d.goodsThumb+"' />"+d.goodsName+"<div>x "+d.goodsNumber+"</div>"+
 					"</li>";
 					quantity += parseInt(d.goodsNumber);
 				}
-				
 			});
 			
 			var state = "";
@@ -154,11 +155,11 @@ function driverOrderInfo(result){
 					"<div class='t'>"+
 						"共"+quantity+"件商品 实付款：￥"+(v.orderAmount / 100 ).toFixed(2)+"元"+
 					"</div>"+
-					"<div class='b'>"+
-						"<button class='o'>详情</button>"+
-						btn+
-						"<button class='d'>删除订单</button>"+
-					"</div>"+
+//					"<div class='b'>"+
+//						"<button class='o'>详情</button>"+
+//						btn+
+//						"<button class='d'>删除订单</button>"+
+//					"</div>"+
 				"</li>");
 			
 			goodslist = null;

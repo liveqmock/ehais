@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.service.CommonService;
+import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
 
 
@@ -51,5 +52,9 @@ public interface EUsersService extends CommonService{
 	public ReturnObject<EHaiUsers> wx_user_save(HttpServletRequest request,String openId) throws Exception;
 	public ReturnObject<EHaiUsers> wx_user_save(HttpServletRequest request,EHaiUsers user) throws Exception;
 
+	
+	public ReturnObject<EHaiUsers> fans_list(HttpServletRequest request,Long userId,EConditionObject condition,String nickname) throws Exception;
+	
+	
 }
 

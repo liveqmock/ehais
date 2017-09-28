@@ -18,6 +18,7 @@ import org.ehais.epublic.service.EUsersService;
 import org.ehais.epublic.service.EWPPublicService;
 import org.ehais.model.BootStrapModel;
 import org.ehais.service.impl.CommonServiceImpl;
+import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.EmojiFilterUtils;
 import org.ehais.util.EncryptUtils;
@@ -57,8 +58,6 @@ public class EUsersServiceImpl  extends CommonServiceImpl implements EUsersServi
 		EHaiUsersExample example = new EHaiUsersExample();
 		EHaiUsersExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
-//		example.setStart(start);
-//		example.setLen(len);
 		example.setLimitStart(start);
 		example.setLimitEnd(len);
 		List<EHaiUsers> list = eHaiUsersMapper.hai_users_list_by_example(example);
@@ -67,6 +66,29 @@ public class EUsersServiceImpl  extends CommonServiceImpl implements EUsersServi
 		rm.setRows(list);
 		rm.setTotal(total);
 		
+		
+		return rm;
+	}
+	
+	@Override
+	public ReturnObject<EHaiUsers> fans_list(HttpServletRequest request, Long userId,EConditionObject condition,String nickname) throws Exception {
+		// TODO Auto-generated method stub
+		ReturnObject<EHaiUsers> rm = new ReturnObject<EHaiUsers>();
+		rm.setCode(0);
+		if(userId == null) userId = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
+		
+		EHaiUsersExample example = new EHaiUsersExample();
+		EHaiUsersExample.Criteria c = example.createCriteria();
+		c.andParentIdEqualTo(userId);
+		if(StringUtils.isNotBlank(nickname))c.andNicknameLike("%"+nickname+"%");
+		example.setLimitStart(condition.getStart());
+		example.setLimitEnd(condition.getRows());
+		example.setOrderByClause("user_id desc");
+		List<EHaiUsers> list = eHaiUsersMapper.selectByExample(example);
+		Long total = eHaiUsersMapper.countByExample(example);
+		rm.setCode(1);
+		rm.setRows(list);
+		rm.setTotal(total);
 		
 		return rm;
 	}
@@ -444,6 +466,8 @@ public class EUsersServiceImpl  extends CommonServiceImpl implements EUsersServi
     	rm.setModel(users);
 		return rm;
 	}
+
+
 	
 }
 

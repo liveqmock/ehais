@@ -30,7 +30,6 @@ public class OrderInfoWSController extends OrderInfoIController{
 			@ModelAttribute EConditionObject condition
 			){
 		Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
-//		if(user_id==null) user_id = 1;//临时使用
 		try {
 			return this.writeJson(orderinfoService.orderinfo_list(request, user_id, order_status,pay_status,shipping_status,condition,order_sn));
 		} catch (Exception e) {
@@ -48,7 +47,6 @@ public class OrderInfoWSController extends OrderInfoIController{
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "orderId", required = true) Long orderId){
 		Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
-//		if(user_id==null) user_id = 1;//临时使用
 		try {
 			return this.writeJson(orderinfoService.orderinfo_info(request, user_id, orderId));
 		} catch (Exception e) {
@@ -58,5 +56,23 @@ public class OrderInfoWSController extends OrderInfoIController{
 		}
 		return null;
 	}
+	
+	//删除订单信息
+	@ResponseBody
+	@RequestMapping("/orderinfo_disvalid")
+	public String orderinfo_disvalid(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "orderId", required = true) Long orderId){
+		Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
+		try {
+			return this.writeJson(orderinfoService.orderinfo_disvalid(request, user_id, orderId));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			log.error("error :", e);
+		}
+		return null;
+	}
+	
 	
 }

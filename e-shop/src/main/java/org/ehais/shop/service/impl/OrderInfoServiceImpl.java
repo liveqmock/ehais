@@ -189,6 +189,31 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 		return rm;
 	}
 	
+	
+	public ReturnObject<HaiOrderInfo> orderinfo_disvalid(HttpServletRequest request,Long user_id,Long orderId) throws Exception{
+		ReturnObject<HaiOrderInfo> rm = new ReturnObject<HaiOrderInfo>();
+		rm.setCode(0);
+		HaiOrderInfoExample example = new HaiOrderInfoExample();
+		HaiOrderInfoExample.Criteria c = example.createCriteria();
+		c.andUserIdEqualTo(user_id);
+		c.andOrderIdEqualTo(orderId);
+		
+		List<HaiOrderInfo> list = haiOrderInfoMapper.selectByExample(example);
+		if(list == null || list.size() == 0){
+			rm.setMsg("订单不存在");
+			return rm;
+		}
+		HaiOrderInfo order = list.get(0);
+		order.setIsVoid("0");
+		haiOrderInfoMapper.updateByPrimaryKey(order);
+		
+		rm.setCode(1);
+		rm.setMsg("删除成功");
+		return rm;
+		
+	}
+	
+	
 	private List<BootStrapModel> formatBootStrapList(HaiOrderInfo model){
 		
 		List<BootStrapModel> bootStrapList = new ArrayList<BootStrapModel>();

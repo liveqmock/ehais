@@ -1,12 +1,15 @@
 @import url("common.css");
-* {
+.wm {
+  padding: 0.97rem 0 0;
+  font-size: 0.14rem;
   box-sizing: border-box;
   float: left;
   width: 100%;
 }
-.wm {
-  padding: 0.97rem 0 0;
-  font-size: 0.14rem;
+.wm * {
+  box-sizing: border-box;
+  float: left;
+  width: 100%;
 }
 .wm header {
   height: 0.45rem;
@@ -56,32 +59,36 @@
   top: 0.15rem;
   width: auto;
 }
-.wm > ul > li {
+.wm > div > ul > li {
   padding: 0.1rem 0.15rem;
   border-bottom: 0.05rem solid #F3F3F3;
 }
-.wm > ul > li * {
+.wm > div > ul > li * {
   width: auto;
 }
-.wm > ul > li img {
+.wm > div > ul > li img {
   width: 15%;
   margin-right: 0.15rem;
 }
-.wm > ul > li b,
-.wm > ul > li i {
+.wm > div > ul > li b,
+.wm > div > ul > li i {
   width: 85%;
   margin-right: -0.15rem;
 }
-.wm > ul > li b {
+.wm > div > ul > li b {
   padding-bottom: 0.08rem;
 }
-.wm > ul > li i {
+.wm > div > ul > li i {
   font-size: 0.12rem;
 }
 .wm .e {
   padding-top: 0.3rem;
+  display: none;
   text-align: center;
 }
 .wm .e i {
   font-size: 0.8rem;
+}
+.wm .e.active {
+  display: block;
 }
