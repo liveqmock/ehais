@@ -100,11 +100,6 @@
 			<version>${c3p0_ver}</version>
 		</dependency>
 
-
-
-
-
-
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>

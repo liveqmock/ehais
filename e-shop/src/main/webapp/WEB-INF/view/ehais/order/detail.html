@@ -1,0 +1,562 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+<script type="text/javascript" src="/js/jquery-2.1.4.min.js" ></script>
+		
+<link href="/js/fileinput/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
+<script src="/js/fileinput/js/plugins/piexif.js" type="text/javascript"></script>
+<script src="/js/fileinput/js/fileinput.js" type="text/javascript"></script>
+<script src="/js/fileinput/js/locales/zh.js" type="text/javascript"></script>
+
+<script src="/js/adminCommon.js" type="text/javascript"></script>        
+      
+<link rel="stylesheet" href="/js/bootstrap/css/bootstrap.min.css" />
+<script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js" ></script>
+<link rel="stylesheet" href="/css/admin.css" />
+
+
+<link rel="stylesheet" href="/js/layer/skin/default/layer.css" />
+<script type="text/javascript" src="/js/layer/layer.js" ></script>
+
+<script type="text/javascript" charset="utf-8" src="/js/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/ueditor/ueditor.all.min.js"> </script>
+<script type="text/javascript" charset="utf-8" src="/js/ueditor/lang/zh-cn/zh-cn.js"></script>
+
+<link rel="stylesheet" href="/js/bootstrap/datetimepicker/css/bootstrap-datetimepicker.min.css" />
+<script type="text/javascript" src="/js/bootstrap/datetimepicker/js/bootstrap-datetimepicker.min.js" ></script>
+<script type="text/javascript" src="/js/bootstrap/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" ></script>
+
+<link rel="stylesheet" href="/js/bootstrap/spinner/bootstrap-spinner.css" />
+<script type="text/javascript" src="/js/bootstrap/spinner/jquery.spinner.js" ></script>
+
+<#include "/FreemarkerMacro.html"/>
+
+<title>Insert title here</title>
+</head>
+<body>
+<div class="header">
+	<div class="nav">
+		<i id="back" class="icon fa fa-arrow-left">&nbsp;</i>
+		<div class="nav0">订单管理</div>
+		<div class="nav1">信息编辑</div>
+	</div>
+</div>
+<div style="width: 100%;height: 40px;"></div>
+<div class="container-fluid">
+<form id="myForm" name="myForm" class="form-horizontal" action="${rm.action?default('')}" method="post">
+
+
+<input type="hidden" class="form-control" id="orderId" name="orderId" value="${rm.model.orderId!''}" >
+<div class="form-group">
+<label class="col-sm-2 control-label">orderSn</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="orderSn" name="orderSn" value="${rm.model.orderSn!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">userId</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="userId" name="userId" value="${rm.model.userId!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">orderStatus</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="orderStatus" name="orderStatus" value="${rm.model.orderStatus!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">shippingStatus</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="shippingStatus" name="shippingStatus" value="${rm.model.shippingStatus!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">payStatus</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="payStatus" name="payStatus" value="${rm.model.payStatus!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">consignee</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="consignee" name="consignee" value="${rm.model.consignee!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">country</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="country" name="country" value="${rm.model.country!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">province</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="province" name="province" value="${rm.model.province!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">city</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="city" name="city" value="${rm.model.city!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">county</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="county" name="county" value="${rm.model.county!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">district</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="district" name="district" value="${rm.model.district!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">street</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="street" name="street" value="${rm.model.street!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">address</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="address" name="address" placeholder="">${rm.model.address!''}</textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">zipcode</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="zipcode" name="zipcode" value="${rm.model.zipcode!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">tel</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="tel" name="tel" value="${rm.model.tel!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">mobile</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="mobile" name="mobile" value="${rm.model.mobile!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">email</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="email" name="email" value="${rm.model.email!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">bestTime</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="bestTime" name="bestTime" value="${rm.model.bestTime!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">signBuilding</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="signBuilding" name="signBuilding" value="${rm.model.signBuilding!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">postscript</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="postscript" name="postscript" placeholder="">${rm.model.postscript!''}</textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">shippingId</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="shippingId" name="shippingId" value="${rm.model.shippingId!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">shippingName</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="shippingName" name="shippingName" value="${rm.model.shippingName!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">payId</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="payId" name="payId" value="${rm.model.payId!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">payName</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="payName" name="payName" value="${rm.model.payName!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">howOos</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="howOos" name="howOos" value="${rm.model.howOos!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">howSurplus</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="howSurplus" name="howSurplus" value="${rm.model.howSurplus!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">packName</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="packName" name="packName" value="${rm.model.packName!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">cardName</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="cardName" name="cardName" value="${rm.model.cardName!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">cardMessage</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="cardMessage" name="cardMessage" placeholder="">${rm.model.cardMessage!''}</textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">invPayee</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="invPayee" name="invPayee" value="${rm.model.invPayee!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">invContent</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="invContent" name="invContent" value="${rm.model.invContent!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">goodsAmount</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="goodsAmount" name="goodsAmount" value="${rm.model.goodsAmount!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">shippingFee</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="shippingFee" name="shippingFee" value="${rm.model.shippingFee!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">insureFee</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="insureFee" name="insureFee" value="${rm.model.insureFee!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">payFee</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="payFee" name="payFee" value="${rm.model.payFee!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">packFee</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="packFee" name="packFee" value="${rm.model.packFee!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">cardFee</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="cardFee" name="cardFee" value="${rm.model.cardFee!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">moneyPaid</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="moneyPaid" name="moneyPaid" value="${rm.model.moneyPaid!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">surplus</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="surplus" name="surplus" value="${rm.model.surplus!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">integral</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="integral" name="integral" value="${rm.model.integral!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">integralMoney</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="integralMoney" name="integralMoney" value="${rm.model.integralMoney!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">bonus</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="bonus" name="bonus" value="${rm.model.bonus!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">orderAmount</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="orderAmount" name="orderAmount" value="${rm.model.orderAmount!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">fromAd</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="fromAd" name="fromAd" value="${rm.model.fromAd!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">referer</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="referer" name="referer" placeholder="">${rm.model.referer!''}</textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">addTime</label>
+<div class="col-sm-8">
+	<@bsDatePicker id="addTime" value="${rm.model.addTime!''}" />
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">confirmTime</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="confirmTime" name="confirmTime" value="${rm.model.confirmTime!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">payTime</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="payTime" name="payTime" value="${rm.model.payTime!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">shippingTime</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="shippingTime" name="shippingTime" value="${rm.model.shippingTime!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">packId</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="packId" name="packId" value="${rm.model.packId!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">cardId</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="cardId" name="cardId" value="${rm.model.cardId!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">bonusId</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="bonusId" name="bonusId" value="${rm.model.bonusId!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">invoiceNo</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="invoiceNo" name="invoiceNo" placeholder="">${rm.model.invoiceNo!''}</textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">extensionCode</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="extensionCode" name="extensionCode" value="${rm.model.extensionCode!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">extensionId</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="extensionId" name="extensionId" value="${rm.model.extensionId!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">toBuyer</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="toBuyer" name="toBuyer" placeholder="">${rm.model.toBuyer!''}</textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">payNote</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="payNote" name="payNote" placeholder="">${rm.model.payNote!''}</textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">agencyId</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="agencyId" name="agencyId" value="${rm.model.agencyId!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">invType</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="invType" name="invType" value="${rm.model.invType!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">tax</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="tax" name="tax" value="${rm.model.tax!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">isSeparate</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="isSeparate" name="isSeparate" value="${rm.model.isSeparate!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">parentId</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="parentId" name="parentId" value="${rm.model.parentId!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">discount</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="discount" name="discount" value="${rm.model.discount!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">storeId</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="storeId" name="storeId" value="${rm.model.storeId!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">remark</label>
+<div class="col-sm-8">
+	<@ueditorPicker id="remark" value="${rm.model.remark!''}" />
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">isVoid</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="isVoid" name="isVoid" value="${rm.model.isVoid!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">orderSource</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="orderSource" name="orderSource" value="${rm.model.orderSource!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">goodsDesc</label>
+<div class="col-sm-8">
+	<@ueditorPicker id="goodsDesc" value="${rm.model.goodsDesc!''}" />
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">classify</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="classify" name="classify" value="${rm.model.classify!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">sid</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="sid" name="sid" value="${rm.model.sid!''}" placeholder="">
+</div>
+</div>
+
+
+
+
+
+<div class="form-group">
+	<div class="col-sm-3"></div>
+	<div class="col-sm-6"><button id="saveSubmit" type="button" class="btn btn-primary">提交信息</button></div>
+</div>
+       
+
+
+
+
+</form>
+</div>    
+
+
+<script type="text/javascript" src="/js/order/detail.js" ></script>             
+
+
+</body>
+</html>

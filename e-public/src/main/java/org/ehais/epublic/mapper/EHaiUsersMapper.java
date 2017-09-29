@@ -27,7 +27,7 @@ public interface EHaiUsersMapper {
 	public List<EHaiUsers> inUserIdList(@Param("userIds") String userIds);
 	
 	
-	@Select("select DISTINCT(store_id) from hai_users where ifnull(store_id,0) != 0 and openid is not null and nickname is not null ")
+	@Select("select DISTINCT(store_id) from hai_users where ifnull(store_id,0) != 0 and openid is not NULL and (nickname is NULL or face_image is NULL)")
 	public List<Integer> wxDistinctStoreId();
 	
 	

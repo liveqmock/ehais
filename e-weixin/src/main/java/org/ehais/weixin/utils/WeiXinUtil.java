@@ -347,18 +347,12 @@ public class WeiXinUtil {
 		String requestUrl = WXConstants.batchget.replace("ACCESS_TOKEN", access_token);
 		String request = EHttpClientUtil.httpPostEntity(requestUrl, content);
 		log.info("微信批量获取用户信息接口返回："+request);
-		System.out.println("微信批量获取用户信息接口返回："+request);
+		System.out.println(" 微信批量获取用户信息接口返回："+request);
 		JSONObject jsonObject = JSONObject.fromObject(request);
 		if(jsonObject!=null && !jsonObject.has("errcode")){
 			Gson gson = new Gson();
 //	        List<Person> persons = gson.fromJson(json, new TypeToken<List<Person>>() {}.getType());//对于不是类的情况，用这个参数给出
-			
 			batch = gson.fromJson(request, WeiXinUserInfoBatch.class);
-//			List<WeiXinUserInfo> user_info_list = batch.getUser_info_list();
-//			for (WeiXinUserInfo weiXinUserInfo : user_info_list) {
-//				if(weiXinUserInfo!=null)weiXinUserInfo.setNickname(EmojiFilterUtils.filterEmoji(weiXinUserInfo.getNickname()));
-//			}
-			
 		}
 		
 		return batch;
