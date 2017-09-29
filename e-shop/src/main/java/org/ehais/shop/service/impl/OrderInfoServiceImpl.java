@@ -392,18 +392,24 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 					}
 				}
 				
-				EHaiUsersExample userExample = new EHaiUsersExample();
-				userExample.createCriteria().andUserIdIn(userIdList);
-				List<EHaiUsers> usersList = eHaiUsersMapper.selectByExample(userExample);
-				for (HaiOrderInfoWithBLOBs order : list) {
-					for (EHaiUsers eHaiUsers : usersList) {
-						if(order.getUserId().longValue() == eHaiUsers.getUserId().longValue()){
-							order.setCardName(eHaiUsers.getFaceImage());
-							break;
+				
+				if(userIdList.size() > 0){
+					EHaiUsersExample userExample = new EHaiUsersExample();
+					userExample.createCriteria().andUserIdIn(userIdList);
+					List<EHaiUsers> usersList = eHaiUsersMapper.selectByExample(userExample);
+					for (HaiOrderInfoWithBLOBs order : list) {
+						for (EHaiUsers eHaiUsers : usersList) {
+							if(order.getUserId().longValue() == eHaiUsers.getUserId().longValue()){
+								order.setCardName(eHaiUsers.getFaceImage());
+								break;
+							}
 						}
 					}
 				}
-			}//餐饮模式=================
+			//餐饮模式=================	
+			}else if(classify.equals(EOrderClassifyEnum.shop)){
+				
+			}
 		}catch(Exception e){
 			e.printStackTrace();
 		}

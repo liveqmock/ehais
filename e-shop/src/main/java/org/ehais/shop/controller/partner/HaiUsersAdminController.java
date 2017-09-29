@@ -30,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -50,12 +51,18 @@ public class  HaiUsersAdminController extends CommonController {
 	private EHaiStoreMapper haiStoreMapper;
 	
 	@EPermissionMethod(intro="打开会员管理页面",value="haiUsersView",type=PermissionProtocol.URL)
-	@RequestMapping("/manage/haiUsersView")
+	@RequestMapping("/manage/haiUsersView!{classify}")
 	public String haiUsersView(ModelMap modelMap,
-			HttpServletRequest request,HttpServletResponse response ) {	
+			HttpServletRequest request,HttpServletResponse response,
+			@PathVariable(value = "classify") String classify) {	
 		try{
+			modelMap.addAttribute("classify", classify);
+			if(classify.equals("partner")){
+				return "/"+this.getPartnerTheme(request)+"/users/view";
+			}else{
+				return "/"+this.getStoreTheme(request)+"/users/view";
+			}
 			
-			return "/"+this.getPartnerTheme(request)+"/users/view";
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("users", e);
@@ -71,14 +78,21 @@ public class  HaiUsersAdminController extends CommonController {
 	public String haiUsersListJson(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@ModelAttribute EConditionObject condition,
+			@RequestParam(value = "classify", required = true) String classify,
 			@RequestParam(value = "userName", required = false) String userName) {
 		ReturnObject<EHaiUsers> rm = new ReturnObject<EHaiUsers>();
 		rm.setCode(0);
 		try{
 			EHaiStoreExample example = new EHaiStoreExample();
 			EHaiStoreExample.Criteria c = example.createCriteria();
-			Integer partner_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_PARTNER_ID);
-			c.andPartnerIdEqualTo(partner_id);
+			if(classify.equals("partner")){
+				Integer partner_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_PARTNER_ID);
+				c.andPartnerIdEqualTo(partner_id);
+			}else{
+				Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+				c.andStoreIdEqualTo(store_id);
+			}
+			
 			List<EHaiStore> list = haiStoreMapper.selectByExample(example);
 			List<Integer> storeIdList = new ArrayList<Integer>();
 			for (EHaiStore store : list) {

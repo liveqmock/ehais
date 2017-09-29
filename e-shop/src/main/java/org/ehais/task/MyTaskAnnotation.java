@@ -120,6 +120,7 @@ public class MyTaskAnnotation {
 				WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(integer);
 				AccessToken access_token = WeiXinUtil.getAccessToken(integer, wp.getAppid(), wp.getSecret());
 				WeiXinUserInfoBatch batch = WeiXinUtil.batchUserInfo(access_token.getAccess_token(), json.toString());
+				if(batch == null) return ;
 				List<WeiXinUserInfo> user_info_list = batch.getUser_info_list();
 				for (WeiXinUserInfo weiXinUserInfo : user_info_list) {
 					example.clear();
@@ -127,13 +128,11 @@ public class MyTaskAnnotation {
 					List<EHaiUsers> luser = eHaiUsersMapper.selectByExample(example);
 					if(luser != null && luser.size() > 0){
 						EHaiUsers record = luser.get(0);
-						System.out.println(record.getOpenid());
 						record.setNickname(weiXinUserInfo.getNickname());
 						record.setFaceImage(weiXinUserInfo.getHeadimgurl());
 						record.setSubscribe(weiXinUserInfo.getSubscribe());
 						eHaiUsersMapper.updateByExampleSelective(record, example);
 					}
-					
 				}
 			}catch(Exception e){
 				e.printStackTrace();

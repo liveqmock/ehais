@@ -18,23 +18,26 @@
 		
 		<link rel="stylesheet" href="/js/layer/skin/default/layer.css" />
 		<script type="text/javascript" src="/js/layer/layer.js" ></script>
-		
 		<script type="text/javascript" src="/js/adminCommon.js" ></script>
 		
+		<link rel="stylesheet" href="/js/bootstrap/datetimepicker/css/bootstrap-datetimepicker.min.css" />
+		<script type="text/javascript" src="/js/bootstrap/datetimepicker/js/bootstrap-datetimepicker.min.js" ></script>
+		
+		<#include "/FreemarkerMacro.html"/>
 	</head>
 	<body>
 		<div class="header">
 			<div class="nav">
 				<i class="icon fa fa-home">&nbsp;</i>
-				<div class="nav0">会员管理信息管理</div>
+				<div class="nav0">推广软文</div>
 			</div>
 		</div>
 		<div class="body">
 			<div class="container_box">
-				<div class="col_side dn">
+				<div class="col_side">
 					<h4>
 						<i class="fa fa-cubes"></i>
-						会员管理分类
+						分类
 						<i id="deleteCate" class="fr fa fa-trash-o"></i>
 						<i id="editCate" class="fr fa fa-edit"></i>
 						<i id="addCate" class="fr fa fa-plus"></i>
@@ -44,10 +47,16 @@
 						<div id="tree"></div>
 					</div>
 				</div>
-				<div class="col_main body">
+				<div class="col_main">
+					<h4>
+						<i class="fa fa-list"></i>
+						软文列表
+						<a href="ehaisArticleAddDetail" class="fa fa-plus btn btn-primary" >添加软文</a>
+					</h4>				
 					<div class="panel panel-default">
+						<div class="panel-heading">搜索条件</div>
 						<div class="panel-body single">					    
-							<div><label>昵称：</label><input id="userName" class="control"/></div>
+							<div><label>标题：</label><input id="keyword" class="control"/></div>
 							<div><button id="btnSearch" class="fa fa-search btn btn-default control">搜索</button></div>
 						</div>
 					</div>
@@ -60,9 +69,11 @@
 				</div>
 			</div>
 		</div>
-		<script type="text/javascript">
-		var classify = "${classify}";
-		</script>
-		<script type="text/javascript" src="/js/partner/users/view.js" ></script>
+		
+		<form id="qrform" name="qrform" action="article_qrcode" method="post" target="_blank">
+			<input type="hidden" id="articleId" name="articleId">
+		</form>
+		
+		<script type="text/javascript" src="/js/ehais/article_view.js" ></script>
 	</body>
 </html>
