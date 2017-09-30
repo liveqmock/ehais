@@ -21,14 +21,14 @@ public final class ChineseCharToEn {
      * @param str 给定汉字串 
      * @return 声母串 
      */  
-    public String getAllFirstLetter(String str) {  
+    public static String getAllFirstLetter(String str) {  
         if (str == null || str.trim().length() == 0) {  
             return "";  
         }  
   
         String _str = "";  
         for (int i = 0; i < str.length(); i++) {  
-            _str = _str + this.getFirstLetter(str.substring(i, i + 1));  
+            _str = _str + getFirstLetter(str.substring(i, i + 1));  
         }  
   
         return _str;  
@@ -39,11 +39,11 @@ public final class ChineseCharToEn {
      * @param chinese 给定的汉字 
      * @return 给定汉字的声母 
      */  
-    public String getFirstLetter(String chinese) {  
+    public static String getFirstLetter(String chinese) {  
         if (chinese == null || chinese.trim().length() == 0) {  
             return "";  
         }  
-        chinese = this.conversionStr(chinese, "GB2312", "ISO8859-1");  
+        chinese = conversionStr(chinese, "GB2312", "ISO8859-1");  
   
         if (chinese.length() > 1) // 判断是不是汉字  
         {  
@@ -62,7 +62,7 @@ public final class ChineseCharToEn {
                 }  
             } else // 非汉字字符,如图形符号或ASCII码  
             {  
-                chinese = this.conversionStr(chinese, "ISO8859-1", "GB2312");  
+                chinese = conversionStr(chinese, "ISO8859-1", "GB2312");  
                 chinese = chinese.substring(0, 1);  
             }  
         }  
@@ -77,7 +77,7 @@ public final class ChineseCharToEn {
      * @param toCharsetName 转换后的编码 
      * @return 经过编码转换后的字符串 
      */  
-    private String conversionStr(String str, String charsetName,String toCharsetName) {  
+    private static String conversionStr(String str, String charsetName,String toCharsetName) {  
         try {  
             str = new String(str.getBytes(charsetName), toCharsetName);  
         } catch (UnsupportedEncodingException ex) {  
@@ -87,8 +87,8 @@ public final class ChineseCharToEn {
     }  
   
     public static void main(String[] args) {  
-        ChineseCharToEn cte = new ChineseCharToEn();  
-        System.out.println("获取拼音首字母："+ cte.getAllFirstLetter("北京联席办"));  
+//        ChineseCharToEn cte = new ChineseCharToEn();  
+        System.out.println("获取拼音首字母："+ ChineseCharToEn.getAllFirstLetter("北京联席办"));  
     }  
   
 }

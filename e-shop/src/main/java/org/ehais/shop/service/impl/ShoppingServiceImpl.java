@@ -39,7 +39,7 @@ import org.ehais.shop.model.HaiOrderGoods;
 import org.ehais.shop.model.HaiOrderInfo;
 import org.ehais.shop.model.HaiOrderInfoWithBLOBs;
 import org.ehais.shop.model.HaiPayment;
-import org.ehais.shop.model.HaiPaymentWithBLOBs;
+import org.ehais.shop.model.HaiPayment;
 import org.ehais.shop.model.HaiShipping;
 import org.ehais.shop.model.HaiShippingWithBLOBs;
 import org.ehais.shop.model.HaiUserAddress;
@@ -409,7 +409,7 @@ public class ShoppingServiceImpl extends CommonServiceImpl implements ShoppingSe
 //			}
 		}
 				
-		HaiPaymentWithBLOBs payment = null;
+		HaiPayment payment = null;
 		//支付方式不为空的情况，检验支付方式是否正确
 		if(order_done.getPay_id()!=null && order_done.getPay_id()!=0){
 			payment = haiPaymentMapper.payment_info(order_done.getStore_id(), order_done.getPay_id());
@@ -584,7 +584,7 @@ public class ShoppingServiceImpl extends CommonServiceImpl implements ShoppingSe
 //			}
 		}
 				
-		HaiPaymentWithBLOBs payment = null;
+		HaiPayment payment = null;
 		//支付方式不为空的情况，检验支付方式是否正确
 		if(order_done.getPay_id()!=null && order_done.getPay_id()!=0){
 			payment = haiPaymentMapper.payment_info(order_done.getStore_id(), order_done.getPay_id());

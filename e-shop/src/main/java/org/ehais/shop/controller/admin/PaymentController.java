@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.ehais.shop.model.HaiPayment;
-import org.ehais.shop.model.HaiPaymentWithBLOBs;
 import org.ehais.shop.service.PaymentService;
 import org.ehais.tools.ReturnObject;
 import org.slf4j.Logger;
@@ -67,7 +66,7 @@ public class  PaymentController extends CommonController {
 			HttpServletRequest request,HttpServletResponse response
 			) {
 		try{
-			ReturnObject<HaiPaymentWithBLOBs> rm = paymentService.payment_insert(request);
+			ReturnObject<HaiPayment> rm = paymentService.payment_insert(request);
 			rm.setAction("payment_insert_submit");
 			modelMap.addAttribute("rm", rm);
 		}catch(Exception e){
@@ -80,10 +79,10 @@ public class  PaymentController extends CommonController {
 	@RequestMapping(value="/payment_insert_submit",method=RequestMethod.POST)
 	public String payment_insert_submit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
-			@ModelAttribute HaiPaymentWithBLOBs payment
+			@ModelAttribute HaiPayment payment
 			) {
 		try{
-			ReturnObject<HaiPaymentWithBLOBs> rm = paymentService.payment_insert_submit(request,payment);
+			ReturnObject<HaiPayment> rm = paymentService.payment_insert_submit(request,payment);
 			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "payment_insert");
 		}catch(Exception e){
 			e.printStackTrace();
@@ -98,7 +97,7 @@ public class  PaymentController extends CommonController {
 			@RequestParam(value = "payId", required = true) Integer payId
 			) {
 		try{
-			ReturnObject<HaiPaymentWithBLOBs> rm = paymentService.payment_update(request, payId);
+			ReturnObject<HaiPayment> rm = paymentService.payment_update(request, payId);
 			rm.setAction("payment_update_submit");
 			modelMap.addAttribute("rm", rm);
 		}catch(Exception e){
@@ -111,10 +110,10 @@ public class  PaymentController extends CommonController {
 	@RequestMapping(value="/payment_update_submit",method=RequestMethod.POST)
 	public String payment_update_submit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
-			@ModelAttribute HaiPaymentWithBLOBs payment
+			@ModelAttribute HaiPayment payment
 			) {
 		try{
-			ReturnObject<HaiPaymentWithBLOBs> rm = paymentService.payment_update_submit(request,payment);
+			ReturnObject<HaiPayment> rm = paymentService.payment_update_submit(request,payment);
 			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "payment_list");
 		}catch(Exception e){
 			e.printStackTrace();

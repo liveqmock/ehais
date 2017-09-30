@@ -57,8 +57,12 @@ public class  HaiUsersAdminController extends CommonController {
 			@PathVariable(value = "classify") String classify) {	
 		try{
 			modelMap.addAttribute("classify", classify);
-			if(classify.equals("partner")){
+			if(classify.equals("partner")){//合伙人查看会员
 				return "/"+this.getPartnerTheme(request)+"/users/view";
+			}else if(classify.equals("shop")){//商家查看会员
+				return "/"+this.getStoreTheme(request)+"/users/view";
+			}else if(classify.equals("shop_agency")){//商家查看会员中的代理
+				return "/"+this.getStoreTheme(request)+"/users/agency";
 			}else{
 				return "/"+this.getStoreTheme(request)+"/users/view";
 			}
@@ -78,7 +82,8 @@ public class  HaiUsersAdminController extends CommonController {
 	public String haiUsersListJson(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@ModelAttribute EConditionObject condition,
-			@RequestParam(value = "classify", required = true) String classify,
+			@RequestParam(value = "classify", required = true) String classify,//partner,shop,shop_agency 类型
+//			@RequestParam(value = "agency", required = false) Integer agency,//是否查看相应的代理信息
 			@RequestParam(value = "userName", required = false) String userName) {
 		ReturnObject<EHaiUsers> rm = new ReturnObject<EHaiUsers>();
 		rm.setCode(0);
@@ -88,9 +93,12 @@ public class  HaiUsersAdminController extends CommonController {
 			if(classify.equals("partner")){
 				Integer partner_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_PARTNER_ID);
 				c.andPartnerIdEqualTo(partner_id);
-			}else{
+			}else if(classify.equals("shop") || classify.equals("shop_agency")){
 				Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 				c.andStoreIdEqualTo(store_id);
+			}else{
+				rm.setMsg("错误参数001");
+				return this.writeJson(rm);
 			}
 			
 			List<EHaiStore> list = haiStoreMapper.selectByExample(example);
@@ -103,6 +111,8 @@ public class  HaiUsersAdminController extends CommonController {
 			EHaiUsersExample.Criteria uc = userExample.createCriteria();
 			uc.andStoreIdIn(storeIdList);
 			if(StringUtils.isNotEmpty(userName))uc.andNicknameLike("%"+userName+"%");
+			if(classify.equals("shop_agency"))uc.andAgencyIdGreaterThan(0);
+			
 			List<EHaiUsers> listUser = eHaiUsersMapper.selectByExample(userExample);
 			List<Long> parentIdList = new ArrayList<Long>();
 			for (EHaiUsers eHaiUsers : listUser) {
@@ -113,12 +123,13 @@ public class  HaiUsersAdminController extends CommonController {
 			rm.setRows(listUser);
 			rm.setTotal(count);
 			
-			userExample.clear();
-			userExample.createCriteria().andUserIdIn(parentIdList);
-			List<EHaiUsers> listUserParent = eHaiUsersMapper.selectByExample(userExample);
-			
 			Map<String,Object> map = new HashMap<String,Object>();
-			map.put("listUserParent", listUserParent);
+			if(parentIdList.size() > 0){
+				userExample.clear();
+				userExample.createCriteria().andUserIdIn(parentIdList);
+				List<EHaiUsers> listUserParent = eHaiUsersMapper.selectByExample(userExample);
+				map.put("listUserParent", listUserParent);
+			}
 			
 			rm.setMap(map);
 			

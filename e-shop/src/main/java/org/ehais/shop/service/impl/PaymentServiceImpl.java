@@ -11,9 +11,10 @@ import org.ehais.service.impl.CommonServiceImpl;
 import org.ehais.shop.mapper.HaiPaymentMapper;
 import org.ehais.shop.model.HaiPayment;
 import org.ehais.shop.model.HaiPaymentExample;
-import org.ehais.shop.model.HaiPaymentWithBLOBs;
+import org.ehais.shop.model.HaiPayment;
 import org.ehais.shop.service.PaymentService;
 import org.ehais.tools.ReturnObject;
+import org.ehais.util.ChineseCharToEn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,10 +46,10 @@ public class PaymentServiceImpl  extends CommonServiceImpl implements PaymentSer
 		HaiPaymentExample example = new HaiPaymentExample();
 		HaiPaymentExample.Criteria c = example.createCriteria();
 //		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
-		example.setStart(start);
-		example.setLen(len);
+		example.setLimitStart(start);
+		example.setLimitEnd(len);
 		List<HaiPayment> list = haiPaymentMapper.hai_payment_list_by_example(example);
-		Integer total = haiPaymentMapper.countByExample(example);
+		long total = haiPaymentMapper.countByExample(example);
 		rm.setCode(1);
 		rm.setRows(list);
 		rm.setTotal(total);
@@ -57,27 +58,26 @@ public class PaymentServiceImpl  extends CommonServiceImpl implements PaymentSer
 		return rm;
 	}
 
-	public ReturnObject<HaiPaymentWithBLOBs> payment_insert(HttpServletRequest request)
+	public ReturnObject<HaiPayment> payment_insert(HttpServletRequest request)
 			throws Exception {
 		// TODO Auto-generated method stub
-		ReturnObject<HaiPaymentWithBLOBs> rm = new ReturnObject<HaiPaymentWithBLOBs>();	
+		ReturnObject<HaiPayment> rm = new ReturnObject<HaiPayment>();	
 //		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
-		HaiPaymentWithBLOBs model = new HaiPaymentWithBLOBs();
+		HaiPayment model = new HaiPayment();
 		rm.setBootStrapList(this.formatBootStrapList(model));
 		rm.setCode(1);
 		return rm;
 	}
 	
-	public ReturnObject<HaiPaymentWithBLOBs> payment_insert_submit(HttpServletRequest request,HaiPaymentWithBLOBs model)
+	public ReturnObject<HaiPayment> payment_insert_submit(HttpServletRequest request,HaiPayment model)
 			throws Exception {
 		// TODO Auto-generated method stub
-		ReturnObject<HaiPaymentWithBLOBs> rm = new ReturnObject<HaiPaymentWithBLOBs>();
+		ReturnObject<HaiPayment> rm = new ReturnObject<HaiPayment>();
 
 		if(model.getPayName() == null || model.getPayName().equals("")){
 			rm.setMsg("必填项不能为空");
 			return rm;
 		}
-
 
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		model.setStoreId(store_id);
@@ -86,12 +86,13 @@ public class PaymentServiceImpl  extends CommonServiceImpl implements PaymentSer
 		HaiPaymentExample.Criteria c = example.createCriteria();
 		c.andPayNameEqualTo(model.getPayName());
 		c.andStoreIdEqualTo(store_id);
-		int count = haiPaymentMapper.countByExample(example);
+		long count = haiPaymentMapper.countByExample(example);
 		if(count > 0){
 			rm.setMsg("存在相同的记录");
 			return rm;
 		}
 
+		model.setPayCode(ChineseCharToEn.getAllFirstLetter(model.getPayName()));
 
 		int code = haiPaymentMapper.insertSelective(model);
 		rm.setCode(code);
@@ -99,12 +100,12 @@ public class PaymentServiceImpl  extends CommonServiceImpl implements PaymentSer
 		return rm;
 	}
 
-	public ReturnObject<HaiPaymentWithBLOBs> payment_update(HttpServletRequest request,Integer payId)
+	public ReturnObject<HaiPayment> payment_update(HttpServletRequest request,Integer payId)
 			throws Exception {
 		// TODO Auto-generated method stub
-		ReturnObject<HaiPaymentWithBLOBs> rm = new ReturnObject<HaiPaymentWithBLOBs>();
+		ReturnObject<HaiPayment> rm = new ReturnObject<HaiPayment>();
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
-		HaiPaymentWithBLOBs model = haiPaymentMapper.selectByPrimaryKey(payId);
+		HaiPayment model = haiPaymentMapper.selectByPrimaryKey(payId);
 		rm.setBootStrapList(this.formatBootStrapList(model));
 		
 		rm.setCode(1);
@@ -112,10 +113,10 @@ public class PaymentServiceImpl  extends CommonServiceImpl implements PaymentSer
 		return rm;
 	}
 	
-	public ReturnObject<HaiPaymentWithBLOBs> payment_update_submit(HttpServletRequest request,HaiPaymentWithBLOBs model)
+	public ReturnObject<HaiPayment> payment_update_submit(HttpServletRequest request,HaiPayment model)
 			throws Exception {
 		// TODO Auto-generated method stub
-		ReturnObject<HaiPaymentWithBLOBs> rm = new ReturnObject<HaiPaymentWithBLOBs>();
+		ReturnObject<HaiPayment> rm = new ReturnObject<HaiPayment>();
 //		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
 		HaiPaymentExample example = new HaiPaymentExample();
 		HaiPaymentExample.Criteria c = example.createCriteria();
@@ -124,7 +125,7 @@ public class PaymentServiceImpl  extends CommonServiceImpl implements PaymentSer
 		c.andPayIdEqualTo(model.getPayId());
 //		c.andStoreIdEqualTo(store_id);
 
-		int count = haiPaymentMapper.countByExample(example);
+		long count = haiPaymentMapper.countByExample(example);
 		if(count == 0){
 			rm.setMsg("记录不存在");
 			return rm;
@@ -136,13 +137,13 @@ public class PaymentServiceImpl  extends CommonServiceImpl implements PaymentSer
 		return rm;
 	}
 
-	public ReturnObject<HaiPaymentWithBLOBs> payment_find(HttpServletRequest request,Integer payId)
+	public ReturnObject<HaiPayment> payment_find(HttpServletRequest request,Integer payId)
 			throws Exception {
 		// TODO Auto-generated method stub
-		ReturnObject<HaiPaymentWithBLOBs> rm = new ReturnObject<HaiPaymentWithBLOBs>();
+		ReturnObject<HaiPayment> rm = new ReturnObject<HaiPayment>();
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
-		HaiPaymentWithBLOBs model = haiPaymentMapper.selectByPrimaryKey(payId);
+		HaiPayment model = haiPaymentMapper.selectByPrimaryKey(payId);
 		rm.setBootStrapList(this.formatBootStrapList(model));
 		
 		rm.setCode(1);
@@ -165,7 +166,7 @@ public class PaymentServiceImpl  extends CommonServiceImpl implements PaymentSer
 		return rm;
 	}
 	
-	private List<BootStrapModel> formatBootStrapList(HaiPaymentWithBLOBs model){
+	private List<BootStrapModel> formatBootStrapList(HaiPayment model){
 		
 		List<BootStrapModel> bootStrapList = new ArrayList<BootStrapModel>();
 		

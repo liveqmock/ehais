@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title></title>
+		<title>${session_store_name }</title>
 		<script type="text/javascript" src="/js/jquery-2.1.4.min.js" ></script>
 		
 		<link rel="stylesheet" href="/js/bootstrap/css/bootstrap.min.css" />
@@ -51,25 +51,25 @@
 								<i class="glyphicon glyphicon-glass"></i>红酒信息
 							</a>
 						</li>
-						
-						<li class="list-group-item active">
-							<a data-addtab="agency" data-url="haiAgencyView">
-								<i class="glyphicon glyphicon-leaf"></i>
-								代理等级
-							</a>
-						</li>
-						<li class="list-group-item active gray">
-							<a href="javascript:;">
-								<i class="glyphicon glyphicon-minus-sign"></i>
-								地区代理
-							</a>							
-						</li>
 						<li class="list-group-item active ">
 							<a data-addtab="order" data-url="ehaisOrderView">
 								<i class="glyphicon glyphicon-list-alt"></i>
 								订单信息
 							</a>							
 						</li>
+						<li class="list-group-item active">
+							<a data-addtab="agency" data-url="haiAgencyView">
+								<i class="glyphicon glyphicon-leaf"></i>
+								代理等级
+							</a>
+						</li>
+						<li class="list-group-item active">
+							<a data-addtab="user" data-url="haiUsersView!shop_agency">
+								<i class="glyphicon glyphicon-tree-deciduous"></i>
+								地区代理
+							</a>							
+						</li>
+						
 						<li class="list-group-item active">
 							<a data-addtab="user" data-url="haiUsersView!shop">
 								<i class="glyphicon glyphicon-leaf"></i>会员信息
@@ -91,6 +91,18 @@
 							<a href="javascript:;">
 								<i class="glyphicon glyphicon-minus-sign"></i>
 								促销管理
+							</a>							
+						</li>
+						<li class="list-group-item active ">
+							<a data-addtab="payment" data-url="haiPaymentView" >
+								<i class="glyphicon glyphicon-king"></i>
+								支付设置
+							</a>							
+						</li>
+						<li class="list-group-item active ">
+							<a data-addtab="shipping" data-url="haiShippingView" >
+								<i class="glyphicon glyphicon-knight"></i>
+								物流设置
 							</a>							
 						</li>
 						

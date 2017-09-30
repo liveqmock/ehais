@@ -4,6 +4,11 @@ var orderSn = "";
 
 
 $(function(){
+	
+	$('#myModal').modal({
+		keyboard: false
+	});
+		
 
     $("#btnSearch").click(function(){orderSn = $.trim($("#orderSn").val());bsTable.bootstrapTable('refresh', { query : {keySubId : keySubId , orderSn : orderSn , page : 1} });});
     
@@ -68,6 +73,12 @@ $(function(){
 },{
     field: 'goodsDesc',
     title: '购买红酒'
+},{
+	field: 'orderId',
+	title: '发货',
+	formatter : function(value,rows,index){
+		return "<a href='javascript:;' onclick='shipping("+value+");'>发货单<a>";
+	}
 }
         
         ],responseHandler : function (res){
@@ -80,4 +91,7 @@ $(function(){
 });
 
 
+function shipping(oid){
+	$('#myModal').modal('show');
+}
 
