@@ -23,11 +23,14 @@ import org.ehais.model.BootStrapModel;
 import org.ehais.service.impl.CommonServiceImpl;
 import org.ehais.shop.mapper.HaiOrderGoodsMapper;
 import org.ehais.shop.mapper.HaiOrderInfoMapper;
+import org.ehais.shop.mapper.HaiShippingMapper;
 import org.ehais.shop.model.HaiOrderGoods;
 import org.ehais.shop.model.HaiOrderGoodsExample;
 import org.ehais.shop.model.HaiOrderInfo;
 import org.ehais.shop.model.HaiOrderInfoExample;
 import org.ehais.shop.model.HaiOrderInfoWithBLOBs;
+import org.ehais.shop.model.HaiShipping;
+import org.ehais.shop.model.HaiShippingExample;
 import org.ehais.shop.service.OrderInfoService;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
@@ -46,6 +49,8 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 	@Autowired
 	private HaiOrderGoodsMapper haiOrderGoodsMapper;
 	@Autowired
+	private HaiShippingMapper haiShippingMapper;
+	@Autowired
 	protected EWPPublicService eWPPublicService;
 	@Autowired
 	private EHaiUsersMapper eHaiUsersMapper;
@@ -54,6 +59,16 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 		
 		ReturnObject<HaiOrderInfo> rm = new ReturnObject<HaiOrderInfo>();
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		
+		Map<String,Object> map = new HashMap<String,Object>();
+		
+		HaiShippingExample shippingExample = new HaiShippingExample();
+		shippingExample.createCriteria().andStoreIdEqualTo(store_id);
+		shippingExample.setOrderByClause("shipping_order asc");
+		List<HaiShipping> listShipping = haiShippingMapper.selectByExample(shippingExample);
+		map.put("listShipping", listShipping);
+		
+		rm.setMap(map);
 		
 		rm.setCode(1);
 		return rm;
@@ -164,10 +179,17 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiOrderInfo> rm = new ReturnObject<HaiOrderInfo>();
+		rm.setCode(0);
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
-		HaiOrderInfo model = haiOrderInfoMapper.selectByPrimaryKey(orderId);
-		rm.setBootStrapList(this.formatBootStrapList(model));
+		HaiOrderInfoExample oexa = new HaiOrderInfoExample();
+		oexa.createCriteria().andStoreIdEqualTo(store_id).andOrderIdEqualTo(orderId);
+		List<HaiOrderInfoWithBLOBs> list = haiOrderInfoMapper.selectByExampleWithBLOBs(oexa);
+		if(list==null || list.size()==0){
+			rm.setMsg("无此订单");
+			return rm;
+		}
+		HaiOrderInfoWithBLOBs model = list.get(0);
 		
 		rm.setCode(1);
 		rm.setModel(model);

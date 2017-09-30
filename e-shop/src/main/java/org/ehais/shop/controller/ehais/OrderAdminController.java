@@ -2,17 +2,23 @@ package org.ehais.shop.controller.ehais;
 
 
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.ehais.annotation.EPermissionController;
 import org.ehais.annotation.EPermissionMethod;
+import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
+import org.ehais.enums.EShippingStatusEnum;
 import org.ehais.epublic.validator.EInsertValidator;
 import org.ehais.epublic.validator.EUniqueValidator;
 import org.ehais.epublic.validator.EUpdateValidator;
 import org.ehais.protocol.PermissionProtocol;
+import org.ehais.shop.mapper.HaiOrderInfoMapper;
 import org.ehais.shop.model.HaiOrderInfo;
+import org.ehais.shop.model.HaiOrderInfoExample;
 import org.ehais.shop.model.HaiOrderInfoWithBLOBs;
 import org.ehais.shop.service.OrderInfoService;
 import org.ehais.tools.EConditionObject;
@@ -41,7 +47,8 @@ public class  OrderAdminController extends CommonController {
 
 	@Autowired
 	private OrderInfoService orderInfoService;
-	
+	@Autowired
+	private HaiOrderInfoMapper haiOrderInfoMapper;
 	
 	@EPermissionMethod(intro="打开订单管理页面",value="haiOrderView",type=PermissionProtocol.URL)
 	@RequestMapping("/manage/ehaisOrderView")
@@ -80,6 +87,72 @@ public class  OrderAdminController extends CommonController {
 		}
 	}
 	
+	
+	/**
+	 * 获取订单信息
+	 * @param modelMap
+	 * @param request
+	 * @param response
+	 * @param orderId
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/manage/orderinfoStore")
+	public String orderinfoStore(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "orderId", required = true) Long orderId){
+		try {
+			return this.writeJson(orderInfoService.orderinfo_find(request, orderId));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			log.error("error :", e);
+		}
+		return null;
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping("/manage/orderShippingSave")
+	public String orderShippingSave(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "orderId", required = true) Long orderId,
+			@RequestParam(value = "shippingId", required = true) Integer shippingId,
+			@RequestParam(value = "shippingName", required = true) String shippingName,
+			@RequestParam(value = "shippingNumber", required = true) String shippingNumber){
+		try {
+			
+			ReturnObject<HaiOrderInfo> rm = new ReturnObject<HaiOrderInfo>();
+			rm.setCode(0);
+			Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+			
+			HaiOrderInfoExample oexa = new HaiOrderInfoExample();
+			oexa.createCriteria().andStoreIdEqualTo(store_id).andOrderIdEqualTo(orderId);
+			List<HaiOrderInfoWithBLOBs> list = haiOrderInfoMapper.selectByExampleWithBLOBs(oexa);
+			if(list==null || list.size()==0){
+				rm.setMsg("无此订单");
+				return this.writeJson(rm);
+			}
+			HaiOrderInfoWithBLOBs model = list.get(0);
+			
+			model.setShippingId(shippingId);
+			model.setShippingName(shippingName);
+			model.setShippingNumber(shippingNumber);
+			model.setShippingStatus(EShippingStatusEnum.shipments);
+			
+			haiOrderInfoMapper.updateByPrimaryKeySelective(model);
+			
+			rm.setCode(1);
+			rm.setMsg("保存成功");
+			return this.writeJson(rm);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			log.error("error :", e);
+		}
+		return null;
+	}
 	
 	
 }

@@ -1,14 +1,15 @@
 var keySubId = 0;
 var bsTable ;
 var orderSn = "";
-
+var orderId ;
 
 $(function(){
 	
-	$('#myModal').modal({
+	$('#myShippingModal').modal({
 		keyboard: false
 	});
-		
+	
+	$("#shippingSave").click(function(){shippingSave();});
 
     $("#btnSearch").click(function(){orderSn = $.trim($("#orderSn").val());bsTable.bootstrapTable('refresh', { query : {keySubId : keySubId , orderSn : orderSn , page : 1} });});
     
@@ -74,6 +75,12 @@ $(function(){
     field: 'goodsDesc',
     title: '购买红酒'
 },{
+    field: 'shippingName',
+    title: '物流商'
+},{
+    field: 'shippingNumber',
+    title: '物流单号'
+},{
 	field: 'orderId',
 	title: '发货',
 	formatter : function(value,rows,index){
@@ -92,6 +99,54 @@ $(function(){
 
 
 function shipping(oid){
-	$('#myModal').modal('show');
+	orderId = oid;
+	$.ajax({
+		url : "orderinfoStore",data : {orderId : oid},
+		success : function(result){
+			
+			$('#myShippingModal').modal('show');
+			
+			if(result.model.shippingId!=null && result.model.shippingId!="" && result.model.shippingId!=0){
+				$("#shippingId").val(result.model.shippingId);
+			}
+			
+			$("#shippingNumber").val(result.model.shippingNumber);
+			
+		}
+	});
+	
+}
+
+function shippingSave(){
+	
+	if($("#shippingId").val().length == 0){
+		layer.msg('请选择物流商');
+		return ;
+	}
+	if($("#shippingNumber").val().length == 0){
+		layer.msg('请录入物流单号');
+		return ;
+	}
+	
+	$.ajax({
+		url : "orderShippingSave",
+		data:{
+			orderId : orderId,
+			shippingId:$("#shippingId").val(),
+			shippingName:$("#shippingId").find("option:selected").text(),
+			shippingNumber:$("#shippingNumber").val()
+		},success : function(result){
+			layer.alert(result.msg, {
+				  skin: 'layui-layer-molv' //样式类名
+				  ,closeBtn: 0
+				}, function(index){
+				  if(result.code == 1){
+					  $('#myShippingModal').modal('hide');
+					  layer.close(index);
+					  bsTable.bootstrapTable('refresh');
+				  }
+				});
+		}
+	})
 }
 
