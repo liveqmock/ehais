@@ -2,6 +2,7 @@ package org.ehais.shop.controller.ehais;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,12 +14,13 @@ import org.ehais.common.EConstants;
 import org.ehais.enums.EArticleRecordEnum;
 import org.ehais.epublic.mapper.EHaiArticleCatMapper;
 import org.ehais.epublic.mapper.EHaiArticleMapper;
-import org.ehais.epublic.mapper.EHaiUsersMapper;
 import org.ehais.epublic.model.EHaiArticle;
+import org.ehais.epublic.model.EHaiArticleCatExample;
+import org.ehais.epublic.model.EHaiArticleCatSimple;
 import org.ehais.epublic.model.EHaiArticleExample;
+import org.ehais.epublic.model.EHaiArticleSimple;
 import org.ehais.epublic.model.EHaiStore;
 import org.ehais.epublic.model.EHaiUsers;
-import org.ehais.epublic.model.EHaiUsersExample;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.shop.mapper.HaiAdMapper;
 import org.ehais.shop.mapper.HaiArticleGoodsMapper;
@@ -31,6 +33,7 @@ import org.ehais.shop.mapper.HaiGoodsMapper;
 import org.ehais.shop.mapper.HaiUserAddressMapper;
 import org.ehais.shop.model.HaiAd;
 import org.ehais.shop.model.HaiAdExample;
+import org.ehais.shop.model.HaiAdSimple;
 import org.ehais.shop.model.HaiArticleGoods;
 import org.ehais.shop.model.HaiArticleGoodsExample;
 import org.ehais.shop.model.HaiArticleRecord;
@@ -39,8 +42,6 @@ import org.ehais.shop.model.HaiCart;
 import org.ehais.shop.model.HaiCartExample;
 import org.ehais.shop.model.HaiCategory;
 import org.ehais.shop.model.HaiCategoryExample;
-import org.ehais.shop.model.HaiForum;
-import org.ehais.shop.model.HaiForumExample;
 import org.ehais.shop.model.HaiGoods;
 import org.ehais.shop.model.HaiGoodsExample;
 import org.ehais.shop.model.HaiGoodsGallery;
@@ -49,7 +50,6 @@ import org.ehais.shop.model.HaiUserAddress;
 import org.ehais.shop.model.HaiUserAddressExample;
 import org.ehais.util.ResourceUtil;
 import org.ehais.util.SignUtil;
-import org.ehais.weixin.model.OpenidInfo;
 import org.ehais.weixin.model.WeiXinSignature;
 import org.ehais.weixin.utils.WeiXinUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -311,6 +311,132 @@ public class EhaisWebController extends EhaisCommonController {
 		modelMap.addAttribute("w_goods_detail","w_goods_detail!"+sid);
 		modelMap.addAttribute("buynow","buynow!"+sid);
 		return path;
+	}
+	
+	//http://127.0.0.1/w_article!8314a20-092d5901-15336902-209a061253-3b6e311e8aa9c
+	@RequestMapping("/w_article!{sid}")
+	public String w_article(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@PathVariable(value = "sid") String sid	,
+			@RequestParam(value = "code", required = false) String code
+			) {
+		Integer store_id = SignUtil.getUriStoreId(sid);
+		if(store_id == null || store_id == 0){
+			return "redirect:"+website; //错误的链接，跳转商城
+		}
+		request.getSession().setAttribute(EConstants.SESSION_STORE_ID, store_id);
+		try{
+			
+			EHaiStore store = eStoreService.getEStore(store_id);
+			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
+			Map<String,Object> map = SignUtil.getCid(sid,wp.getToken());
+			if(map == null){
+			    return "redirect:"+website; //错误的链接，跳转商城
+			}
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
+			
+			if(this.isWeiXin(request)){//微信端登录
+				if((user_id == null || user_id == 0 ) && StringUtils.isEmpty(code)){
+					return this.redirect_wx_authorize(request , wp.getAppid() , "/w_article!"+sid);
+				}else if(StringUtils.isNotEmpty(code)){
+					System.out.println(code);
+					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map);
+					String newSid = SignUtil.setCid(store_id,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), user.getUserId(), wp.getToken());
+					String link = request.getScheme() + "://" + request.getServerName() + "/w_article!"+newSid;
+					System.out.println("code:"+link);
+					return "redirect:"+link;
+				}else if(user_id > 0 && Long.valueOf(map.get("userId").toString()).longValue() == user_id.longValue()){//经过code获取用户信息跳回自己的链接中来
+					
+					return this.articleData(modelMap, request, response, wp, store, sid, store_id, user_id, map);
+					
+				}else if(Long.valueOf(map.get("userId").toString()).longValue() != user_id.longValue()){
+					System.out.println("user_id != map.userId condition is worng");
+					request.getSession().removeAttribute(EConstants.SESSION_USER_ID);
+				    return this.redirect_wx_authorize(request,wp.getAppid(), "/w_article!"+sid);
+				}else{
+					System.out.println(sid+" condition is worng");
+					return "redirect:"+website; //错误的链接，跳转商城
+				}
+			}else{
+				return this.articleData(modelMap, request, response, wp, store, sid, store_id, user_id, map);
+				
+			}
+			
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return "redirect:"+website;
+	}
+	
+	private String articleData(ModelMap modelMap,
+			HttpServletRequest request,
+			HttpServletResponse response ,
+			WpPublicWithBLOBs wp ,
+			EHaiStore store,
+			String sid,
+			Integer store_id,
+			Long user_id ,
+			Map<String,Object> map ) throws Exception{
+		modelMap.addAttribute("store", store);
+		
+		Map<String,Object> mapData = new HashMap<String,Object>();
+		
+		//读取广告
+		HaiAdExample adExample = new HaiAdExample();
+		adExample.createCriteria().andStoreIdEqualTo(store_id).andIsVoidEqualTo(1);
+		List<HaiAdSimple> adList = haiAdMapper.mySelectByExample(adExample);
+		mapData.put("adList", adList);
+		//读取分类
+		EHaiArticleCatExample acatExample = new EHaiArticleCatExample();
+		acatExample.createCriteria().andStoreIdEqualTo(store_id).andIsValidEqualTo(true);
+		acatExample.setOrderByClause("sort_order asc");
+		List<EHaiArticleCatSimple> articleCatList = eHaiArticleCatMapper.mySelectByExample(acatExample);
+		mapData.put("articleCatList", articleCatList);
+		//读取资讯列表
+		EHaiArticleExample aExample = new EHaiArticleExample();
+		aExample.createCriteria().andStoreIdEqualTo(store_id).andIsHotEqualTo(true);
+		aExample.setOrderByClause("article_date desc");
+		List<EHaiArticleSimple> articleList = eHaiArticleMapper.mySelectByExample(aExample);
+//		List<Integer> articleIds = new ArrayList<Integer>();
+		for (EHaiArticleSimple eHaiArticle : articleList) {
+//			articleIds.add(eHaiArticle.getArticleId());
+			eHaiArticle.setLink(SignUtil.setAid(store_id, Integer.valueOf(map.get("agencyId").toString()), Long.valueOf(map.get("userId").toString()), user_id, eHaiArticle.getArticleId(), wp.getToken()));
+			
+		}
+//		if(articleIds.size() > 0){
+//			HaiArticleGoodsExample agExample = new HaiArticleGoodsExample();
+//			agExample.createCriteria().andStoreIdEqualTo(store_id).andArticleIdIn(articleIds);
+//			haiArticleGoodsMapper
+//		}
+		
+		
+		
+		mapData.put("hotArticleList", articleList);
+		
+		JSONObject json = JSONObject.fromObject(mapData,this.getDefaultJsonConfig());
+		modelMap.addAttribute("json", json.toString());
+		
+
+		String newSid = SignUtil.setCid(store_id,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), user_id , wp.getToken());
+		String link = request.getScheme() + "://" + request.getServerName() + "/w_article!"+newSid;
+		
+		WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, Integer.valueOf(map.get("store_id").toString()), wp.getAppid(), wp.getSecret(), null);
+		signature.setTitle(store.getStoreName());
+		signature.setLink(link);
+		signature.setDesc(store.getDescription());
+		signature.setImgUrl(store.getStoreLogo());
+		List<String> jsApiList = new ArrayList<String>();
+		jsApiList.add("onMenuShareTimeline");
+		jsApiList.add("onMenuShareAppMessage");
+		jsApiList.add("onMenuShareQQ");
+		jsApiList.add("onMenuShareWeibo");
+		jsApiList.add("onMenuShareQZone");
+		signature.setJsApiList(jsApiList);
+		modelMap.addAttribute("signature", JSONObject.fromObject(signature).toString());
+		
+		return "/ehais/w_article";
 	}
 		
 	/**
@@ -615,6 +741,8 @@ public class EhaisWebController extends EhaisCommonController {
 	
 	public static void main(String[] args) throws Exception {
 		String sid = SignUtil.setSid(2, 0, 0L, 125L, 0, 0L, "ehais_wxdev");
+		String cid = SignUtil.setCid(2, 0, 0L, 125L, "ehais_wxdev");
 		System.out.println(sid);
+		System.out.println(cid);
 	}
 }

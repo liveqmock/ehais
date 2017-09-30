@@ -159,7 +159,17 @@ public class SignUtil {
 	}
 	
 	
-	
+	/**
+	 * 适用于商品详情
+	 * @param store_id
+	 * @param agencyId
+	 * @param parentId
+	 * @param userId
+	 * @param goodsId
+	 * @param secret
+	 * @return
+	 * @throws Exception
+	 */
 	public static String setGid(Integer store_id,Integer agencyId,Long parentId,Long userId,Long goodsId,String secret) throws Exception{
 		String md5 = EncryptUtils.md5(store_id.toString()+agencyId.toString()+parentId.toString()+userId.toString()+goodsId.toString()+secret);
 		String sid = md5.substring(0, 5)+store_id.toString()+"0-0"+
@@ -215,6 +225,72 @@ public class SignUtil {
 		return map;
 	}
 	
+	
+	/**
+	 * 适用于文章详情
+	 * @param store_id
+	 * @param agencyId
+	 * @param parentId
+	 * @param userId
+	 * @param articleId
+	 * @param secret
+	 * @return
+	 * @throws Exception
+	 */
+	public static String setAid(Integer store_id,Integer agencyId,Long parentId,Long userId,Integer articleId,String secret) throws Exception{
+		String md5 = EncryptUtils.md5(store_id.toString()+agencyId.toString()+parentId.toString()+userId.toString()+articleId.toString()+secret);
+		String sid = md5.substring(0, 5)+store_id.toString()+"0-0"+
+				md5.substring(5,10)+agencyId.toString()+"1-1"+
+				md5.substring(10,15)+parentId.toString()+"2-2"+
+				md5.substring(15,20)+userId.toString()+"3-3"+
+				md5.substring(20,25)+articleId.toString()+"4-4"+
+				md5.substring(25,32);
+		return sid;
+	}
+	
+	public static Map<String,Object> getAid(String sid,String secret){
+		if(StringUtils.isEmpty(sid))return null;
+		Map<String,Object> map = null;
+		try{
+			Integer n0 = sid.indexOf("0-0");
+			Integer n1 = sid.indexOf("1-1");
+			Integer n2 = sid.indexOf("2-2");
+			Integer n3 = sid.indexOf("3-3");
+			Integer n4 = sid.indexOf("4-4");
+			
+			String s0 = sid.substring(0, 5);
+			String s_store_id = sid.substring(5,n0);
+			
+			String s1 = sid.substring(n0+3,n0+8);
+			String s_agencyId = sid.substring(n0+8, n1);
+			
+			String s2 = sid.substring(n1+3, n1+8);
+			String s_parentId = sid.substring(n1+8, n2);
+			
+			String s3 = sid.substring(n2+3,n2+8);
+			String s_userId = sid.substring(n2+8, n3);
+			
+			String s4 = sid.substring(n3+3,n3+8);
+			String s_articleId = sid.substring(n3+8, n4);
+			
+			String s5 = sid.substring(n4+3,n4+10);
+			
+			if(EncryptUtils.md5(s_store_id+s_agencyId+s_parentId+s_userId+s_articleId+secret).equals(s0+s1+s2+s3+s4+s5)){
+				map = new HashMap<String,Object>();
+				map.put("store_id", s_store_id);
+				map.put("agencyId", s_agencyId);
+				map.put("parentId", s_parentId);
+				map.put("userId", s_userId);			
+				map.put("articleId", s_articleId);
+			}
+			
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+				
+		return map;
+	}
 	
 	/**
 	 * 获取商户编号，适用 所有
@@ -434,7 +510,16 @@ public class SignUtil {
 		return map;
 	}
 	
-	
+	/**
+	 * 适用于合伙人开拓代理
+	 * @param store_id
+	 * @param partnerId
+	 * @param parentId
+	 * @param userId
+	 * @param secret
+	 * @return
+	 * @throws Exception
+	 */
 	public static String setPartnerId(Integer store_id,Integer partnerId,Long parentId,Long userId,String secret) throws Exception{
 		String md5 = EncryptUtils.md5(store_id.toString()+partnerId.toString()+parentId.toString()+userId.toString()+secret);
 		String did = md5.substring(0, 5)+store_id.toString()+"0-0"+

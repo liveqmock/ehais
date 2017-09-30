@@ -638,4 +638,41 @@
       is_void = #{isVoid,jdbcType=INTEGER}
     where ad_id = #{adId,jdbcType=INTEGER}
   </update>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <resultMap id="myBaseResultMap" type="org.ehais.shop.model.HaiAdSimple">
+
+    <id column="ad_id" jdbcType="INTEGER" property="adId" />
+    <result column="position_id" jdbcType="INTEGER" property="positionId" />
+    <result column="ad_name" jdbcType="VARCHAR" property="adName" />
+    <result column="ad_link" jdbcType="VARCHAR" property="adLink" />
+    <result column="ad_pic" jdbcType="VARCHAR" property="adPic" />
+  </resultMap>
+  
+  <select id="mySelectByExample" parameterType="org.ehais.shop.model.HaiAdExample" resultMap="myBaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from hai_ad
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart >= 0 and limitEnd > 0">
+       limit ${limitStart} , ${limitEnd}
+    </if>
+  </select>
 </mapper>

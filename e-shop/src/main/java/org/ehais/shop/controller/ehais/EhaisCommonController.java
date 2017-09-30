@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.OutputStream;
+import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -368,5 +369,49 @@ public class EhaisCommonController extends CommonController{
 	}
 	 */
 	
+	
+	/*
+	public String common_wx_redirect(ModelMap modelMap,
+			HttpServletRequest request,
+			String sid,
+			String code,
+			String signGMethod,
+			String signSMethod,
+			String url){
+		Integer store_id = SignUtil.getUriStoreId(sid);
+		if(store_id == null || store_id == 0){
+			return "redirect:"+website; //错误的链接，跳转商城
+		}
+		request.getSession().setAttribute(EConstants.SESSION_STORE_ID, store_id);
+		try{
+			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
+			Class clazz = Class.forName("org.ehais.util.SignUtil"); 
+			Method m = clazz.getDeclaredMethod("hi",new Class[]{int.class,String.class}); 
+			Map<String,Object> map = (Map<String, Object>) m.invoke(clazz.newInstance(),sid,wp);
+			if(map == null){
+			    return "redirect:"+website; //错误的链接，跳转商城
+			}
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
+			if(this.isWeiXin(request)){//微信端登录
+				if((user_id == null || user_id == 0 ) && StringUtils.isEmpty(code)){
+					return this.redirect_wx_authorize(request , wp.getAppid() , "/"+url+"!"+sid);
+				}else if(StringUtils.isNotEmpty(code)){
+					System.out.println(code);
+					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map);
+					String newSid = SignUtil.setSid(store_id,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), user.getUserId(), Integer.valueOf(map.get("articleId").toString()), Long.valueOf(map.get("goodsId").toString()),wp.getToken());
+					String link = request.getScheme() + "://" + request.getServerName() + "/w_article_detail!"+newSid;
+					System.out.println("code:"+link);
+					return "redirect:"+link;
+				}
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return "redirect:"+website;
+	}
+	
+	*/
 
 }

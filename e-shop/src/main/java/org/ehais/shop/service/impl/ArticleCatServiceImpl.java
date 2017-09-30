@@ -37,7 +37,7 @@ public class ArticleCatServiceImpl extends CommonServiceImpl implements ArticleC
 		EHaiArticleCatExample example = new EHaiArticleCatExample();
 		example.createCriteria()
 		.andStoreIdEqualTo(store_id)
-		.andParentIdEqualTo(Short.valueOf(parent_id+""));
+		.andParentIdEqualTo(parent_id);
 		
 		List<EHaiArticleCat> list = eHaiArticleCatMapper.selectByExample(example);
 		rm.setRows(list);
@@ -51,7 +51,7 @@ public class ArticleCatServiceImpl extends CommonServiceImpl implements ArticleC
 		EHaiArticleCatExample example = new EHaiArticleCatExample();
 		EHaiArticleCatExample.Criteria c = example.createCriteria();
 		c.andStoreIdEqualTo(store_id);
-		if(parent_id != 0)c.andParentIdEqualTo(Short.valueOf(parent_id+""));
+		if(parent_id != 0)c.andParentIdEqualTo(parent_id);
 		
 		List<EHaiArticleCat> list = eHaiArticleCatMapper.selectByExample(example);
 		return list;
@@ -171,6 +171,7 @@ public ReturnObject<EHaiArticleCat> articlecat_list(HttpServletRequest request) 
 			return rm;
 		}
 
+		model.setIsValid(true);
 
 		int code = eHaiArticleCatMapper.insertSelective(model);
 		rm.setCode(code);

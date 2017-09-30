@@ -9,7 +9,7 @@ public class EHaiArticle implements Serializable {
 	
     private Integer readCount;
     private Integer praiseCount;
-    
+    private Boolean isHot;
     
     /**
      *
@@ -1001,6 +1001,14 @@ public class EHaiArticle implements Serializable {
 
 	public void setPraiseCount(Integer praiseCount) {
 		this.praiseCount = praiseCount;
+	}
+
+	public Boolean getIsHot() {
+		return isHot;
+	}
+
+	public void setIsHot(Boolean isHot) {
+		this.isHot = isHot;
 	}
     
     
