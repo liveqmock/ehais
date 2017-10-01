@@ -45,8 +45,8 @@ $(function(){
 			url:"/vtuSignSave!"+sid,
 			data : {morning:morning,midday:midday,night:night,inspire:inspire,mobile:mobile,realname:realname,business:business,pic:pic},
 			success : function(result){
-//				elay.open({content:result.msg,btn:"朕知道了"});
-				elay.confirm({content:result.msg,btn:["即时签到","朕知道了"],sure:function(){
+//				elay.open({content:result.msg,btn:"知道了"});
+				elay.confirm({content:result.msg,btn:["即时签到","知道了"],sure:function(){
 					window.location.href = result.action;
 				}});
 			}

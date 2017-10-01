@@ -17,6 +17,12 @@
 .mylayout .list-group-item.gray > a{
 	color: #cfcfcf;
 }
+#jqrcode{
+	width:100px;text-align: center; float: right;margin-right: 5px;
+}
+#articleLink div,#shopLink div{
+	width:100px;height:100px;margin:10px 0 20px;
+}
 </style>		
 	</head>
 	<body>
@@ -81,6 +87,7 @@
 								品酒心语
 							</a>
 						</li>
+						<!-- 
 						<li class="list-group-item active gray">
 							<a href="javascript:;">
 								<i class="glyphicon glyphicon-minus-sign"></i>
@@ -92,13 +99,14 @@
 								<i class="glyphicon glyphicon-minus-sign"></i>
 								促销管理
 							</a>							
-						</li>
+						</li>						
 						<li class="list-group-item active ">
 							<a data-addtab="payment" data-url="haiPaymentView" >
 								<i class="glyphicon glyphicon-king"></i>
 								支付设置
 							</a>							
 						</li>
+						 -->
 						<li class="list-group-item active ">
 							<a data-addtab="shipping" data-url="haiShippingView" >
 								<i class="glyphicon glyphicon-knight"></i>
@@ -120,7 +128,17 @@
 						<!-- Tab panes -->
 						<div id="my-tab-content" class="tab-content">
 							<div role="tabpanel" class="tab-pane active" id="home">
-							<div id="jqrcode" ></div>
+							<div id="jqrcode" >
+								
+								<div id="articleLink">
+									软文推广码
+									<div id="articleQR"></div>
+								</div>
+								<div id="shopLink">
+									商城推广码
+									<div id="shopQR"></div>
+								</div>
+							</div>
 							</div>
 						</div>
 
@@ -129,10 +147,15 @@
 				<div class="south">技术支持：广州易海司信息科技有限公司</div>
 			</div>
 <script type="text/javascript">
+var articleLink = "${articleLink}";
+var shopLink = "${shopLink}";
+
 var north_w="",north_h="",south_w="",south_h="",west_w="",west_h="",center_w="",center_h="";
 var my_nav_tabs_w="",my_nav_tabs_h="",my_tab_content_w="",my_tab_content_h="";
 var menu_height = 0;
 $(function(){
+	$('#articleQR').qrcode({width:100,height:100,correctLevel:0,text:articleLink});
+	$('#shopQR').qrcode({width:100,height:100,correctLevel:0,text:shopLink});
 	
 	menu_height = $("#menu-list-group").height();
 	

@@ -48,7 +48,7 @@ function favorites(){
 		success : function(result){
 			elay.open({
 			    content: result.msg
-			    ,btn: '朕知道了'
+			    ,btn: '知道了'
 			    ,time: 3
 			});
 			if(result.code != 1){				
@@ -80,7 +80,7 @@ function addCart(){
 		success : function(result){
 			elay.open({
 			    content: result.msg
-			    ,btn: '朕知道了'
+			    ,btn: '知道了'
 			    ,time: 3
 			});
 			if(result.code != 1){				
@@ -105,7 +105,7 @@ function buynow(){
 			if(result.code != 1 && result.code != 2){
 				elay.open({
 				    content: result.msg
-				    ,btn: '朕知道了'
+				    ,btn: '知道了'
 				  });
 				return ;
 			}

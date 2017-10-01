@@ -7,5 +7,6 @@ public class EUserTypeEnum {
 	public static Short agency = Short.valueOf("2");//分销代理
 	public static Short partner = Short.valueOf("3");//合伙人
 	public static Short dining = Short.valueOf("4");//餐饮商家
+	public static Short shop = Short.valueOf("5");//商家
 
 }

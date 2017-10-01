@@ -5,8 +5,8 @@ $(function(){
 
 function submitUnion(){
 	if($.trim($("#store_name").val()) == ""){
-		elay.toast({content: '餐厅名称不能为空',skin: 'msg',time: 3 });
-		$("#store_name").focus(); 
+		elay.toast({content: '商家名称不能为空',skin: 'msg',time: 3 });
+		$("#username").focus(); 
 		return ;
 	}
 	if($.trim($("#password").val()) == ""){
@@ -47,7 +47,7 @@ function submitUnion(){
 	}
 	
 	$.ajax({
-		url : "/diningRegiterUnion!"+pid,
+		url : "/ehaisRegiterUnion!"+cid,
 		data : {
 			username:$.trim($("#store_name").val()),
 			password:$.trim($("#password").val()),
@@ -76,9 +76,6 @@ function submitUnion(){
 			$("#contacts").val("");
 			
 			elay.open({content:result.msg,btn : "知道了",yes:function(){window.location.reload();}});
-			
-			
-			
 			
 		}
 	});

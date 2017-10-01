@@ -16,7 +16,7 @@ $(function(){
 			success : function(result){
 				elay.open({
 					content : result.msg,
-					btn : "朕知道了",
+					btn : "知道了",
 					yes : function(index){
 						if(result.code == 1){
 							window.history.go(-1);

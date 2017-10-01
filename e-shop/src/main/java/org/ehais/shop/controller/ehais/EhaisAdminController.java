@@ -11,9 +11,12 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.ehais.epublic.model.EHaiAdminUser;
+import org.ehais.epublic.model.WpPublic;
+import org.ehais.epublic.service.EWPPublicService;
 import org.ehais.shop.service.AdminUserService;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.DateUtil;
+import org.ehais.util.SignUtil;
 import org.ehais.util.VerifyCodeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,6 +31,8 @@ public class EhaisAdminController extends CommonController{
 
 	@Autowired
 	private AdminUserService adminUserService;
+	@Autowired
+	protected EWPPublicService eWPPublicService;
 	
 	/**
 	 * 验证码
@@ -116,7 +121,15 @@ public class EhaisAdminController extends CommonController{
 			String endDate =  DateUtil.formatDate(date, DateUtil.FORMATSTR_3);
 			modelMap.addAttribute("startDate", startDate);
 			modelMap.addAttribute("endDate", endDate);
-			
+			Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+			WpPublic wp = eWPPublicService.getWpPublic(store_id);
+			String cid = SignUtil.setCid(store_id, 0, 0l, 0l, wp.getToken());
+			//软文链接
+			String articleLink = request.getScheme()+"://"+request.getServerName()+"/w_article!"+cid;
+			modelMap.addAttribute("articleLink", articleLink);
+			//商城链接
+			String shopLink = request.getScheme()+"://"+request.getServerName()+"/w_shop!"+cid;
+			modelMap.addAttribute("shopLink", shopLink);
 		}catch(Exception e){
 			e.printStackTrace();
 		}

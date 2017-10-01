@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<title>餐饮商家后台帐户</title>
+		<script type="text/javascript" src="js/jquery-2.1.4.min.js" ></script>
+		<script type="text/javascript" src="js/common.js" ></script>
+		
+		<link rel="stylesheet" href="js/elay/elay.css" />
+		<script type="text/javascript" src="js/elay/elay.js" ></script>
+		
+		<link rel="stylesheet" href="css/dining.css" />
+	</head>
+	<body>
+		<div class="wrapper_dining">
+			<div class="header">
+				<div class="fl w50">
+					<div ><i class="fa fa-weixin"></i>微信支付</div>
+					<div>金额：<i id="wa">${storeStatistics.weixinAmount / 100}元</i></div>
+					<div>数量：<i id="wq">${storeStatistics.weixinQuantity}</i></div>
+				</div>
+				<div class="fl w50">
+					<div ><i class="fa fa-cc-visa"></i>现金支付</div>
+					<div>金额：<i id="ca">${storeStatistics.cashAmount / 100}元</i></div>
+					<div>数量：<i id="cq">${storeStatistics.cashQuantity}</i></div>
+				</div>
+			</div>
+			<div class="content">
+				<ul id="order_in_store" class="active">
+					
+				</ul>
+			</div>	
+		</div>
+		
+		<script type="text/javascript" src="js/ehais/ehaisManage.js" ></script>
+	</body>
+</html>

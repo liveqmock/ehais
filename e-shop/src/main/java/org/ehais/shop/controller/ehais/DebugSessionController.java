@@ -18,8 +18,11 @@ public class DebugSessionController extends CommonController {
 	@RequestMapping("/debug")
 	public String debug(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) {
-		request.getSession().setAttribute(EConstants.SESSION_STORE_ID, 58);
-		request.getSession().setAttribute(EConstants.SESSION_USER_ID, 125L);
+		if(this.isLocalHost(request)){
+			request.getSession().setAttribute(EConstants.SESSION_STORE_ID, 58);
+			request.getSession().setAttribute(EConstants.SESSION_USER_ID, 125L);
+		}
+		
 		return "我们是做互联网的微商";
 	}
 	
@@ -28,10 +31,10 @@ public class DebugSessionController extends CommonController {
 			HttpServletRequest request,HttpServletResponse response ) {
 		
 		if(this.isLocalHost(request)){
-			
+			request.getSession().setAttribute(EConstants.SESSION_STORE_ID, 5);
+			request.getSession().setAttribute(EConstants.SESSION_USER_ID, 124L);
 		}
-		request.getSession().setAttribute(EConstants.SESSION_STORE_ID, 5);
-		request.getSession().setAttribute(EConstants.SESSION_USER_ID, 124L);
+		
 		return "redirect:/vtu_sign!5ab1650-0f864c01-1aa90b02-26ccab03-3a166089fc253";
 //		return "我们是做互联网的微商";
 	}

@@ -5,7 +5,7 @@
 		open: function(e) {
 			if(e==null)e={};
 			if(e.content == null)e.content = "温馨提示";
-			if(e.btn == null)e.btn = "朕知道了"; 
+			if(e.btn == null)e.btn = "知道了"; 
 			layview();
 			if($(".e-lay-view .alert").length == 0){
 				$(".e-lay-view").append("<div class=\"alert\">"+
@@ -38,7 +38,7 @@
 			}
 		},loading: function(e){
 			if(e==null)e={};
-			if(e.content == null)e.content = "陛下请稍等"; 
+			if(e.content == null)e.content = "请稍等"; 
 			layview();
 			if($(".e-lay-view .loading").length == 0) $(".e-lay-view").append("<div class=\"loading\" q=\"1\">"+
 					"<span class=\"fa fa-spinner\"></span>"+

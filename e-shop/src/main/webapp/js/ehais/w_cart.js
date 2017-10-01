@@ -70,7 +70,7 @@ $(function(){
 		if(recIds.length == 0){
 			elay.open({
 			    content: '请选择购物车要结算的商品'
-			    ,btn: '朕知道了'
+			    ,btn: '知道了'
 			});
 		}else{
 			sessionStorage.setItem("recIds",recIds.join(","));
@@ -101,7 +101,7 @@ function cart_delete_submit(){
 	if(recIds.length == 0){
 		elay.open({
 		    content: '请选择购物车要结算的商品',
-		    btn: '朕知道了'
+		    btn: '知道了'
 		});
 		return ;
 	}

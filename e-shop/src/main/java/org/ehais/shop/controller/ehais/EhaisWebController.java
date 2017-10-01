@@ -113,10 +113,10 @@ public class EhaisWebController extends EhaisCommonController {
 	public String shop(ModelMap modelMap,
 			HttpServletRequest request,
 			HttpServletResponse response ,
-			@PathVariable(value = "sid") String sid,
+			@PathVariable(value = "cid") String cid,
 			@RequestParam(value = "code", required = false) String code
 			) {	
-		Integer store_id = SignUtil.getUriStoreId(sid);
+		Integer store_id = SignUtil.getUriStoreId(cid);
 		if(store_id == 0 || store_id == null){
 			return "redirect:"+website; //错误的链接，跳转商城
 		}
@@ -124,7 +124,7 @@ public class EhaisWebController extends EhaisCommonController {
 		try{
 			EHaiStore store = eStoreService.getEStore(store_id);
 			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
-			Map<String,Object> map = SignUtil.getSid(sid,wp.getToken());
+			Map<String,Object> map = SignUtil.getCid(cid,wp.getToken());
 			if(map == null){
 			    return "redirect:"+website; //错误的链接，跳转商城
 			}
@@ -132,28 +132,28 @@ public class EhaisWebController extends EhaisCommonController {
 			
 			if(this.isWeiXin(request)){//微信端登录
 				if((user_id == null || user_id == 0 ) && StringUtils.isEmpty(code)){
-					return this.redirect_wx_authorize(request , wp.getAppid() , "/w_shop!"+sid);
+					return this.redirect_wx_authorize(request , wp.getAppid() , "/w_shop!"+cid);
 				}else if(StringUtils.isNotEmpty(code)){
 					System.out.println(code);
 					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map,false);
-					String newSid = SignUtil.setSid(store_id,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), user.getUserId(),0,0L, wp.getToken());
+					String newSid = SignUtil.setCid(store_id,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), user.getUserId(), wp.getToken());
 					String link = request.getScheme() + "://" + request.getServerName() + "/w_shop!"+newSid;
 					System.out.println("code:"+link);
 					return "redirect:"+link;
 				}else if(user_id > 0 && Long.valueOf(map.get("userId").toString()).longValue() == user_id.longValue()){//经过code获取用户信息跳回自己的链接中来
 					
-					return this.shopData(modelMap, request, response, wp, store, sid, store_id, user_id, map);
+					return this.shopData(modelMap, request, response, wp, store, cid, store_id, user_id, map);
 					
 				}else if(Long.valueOf(map.get("userId").toString()).longValue() != user_id.longValue()){
 					System.out.println("user_id != map.userId condition is worng");
 					request.getSession().removeAttribute(EConstants.SESSION_USER_ID);
-				    return this.redirect_wx_authorize(request,wp.getAppid(), "/w_shop!"+sid);
+				    return this.redirect_wx_authorize(request,wp.getAppid(), "/w_shop!"+cid);
 				}else{
-					System.out.println(sid+" condition is worng");
+					System.out.println(cid+" condition is worng");
 					return "redirect:"+website; //错误的链接，跳转商城
 				}
 			}else{
-				return this.shopData(modelMap, request, response, wp, store, sid, store_id, user_id, map);
+				return this.shopData(modelMap, request, response, wp, store, cid, store_id, user_id, map);
 				
 			}
 			
@@ -172,7 +172,7 @@ public class EhaisWebController extends EhaisCommonController {
 			HttpServletResponse response ,
 			WpPublicWithBLOBs wp ,
 			EHaiStore store,
-			String sid,
+			String cid,
 			Integer store_id,
 			Long user_id ,
 			Map<String,Object> map ) throws Exception{

@@ -7,7 +7,7 @@ $(function(){
 	chooseAddressId = sessionStorage.getItem("chooseAddressId");//地址选择页面选择地配送地址对象信息
 	
 	$("#coupon").click(function(){
-		elay.open({content:"暂无优惠券",btn:"朕知道了"});
+		elay.open({content:"暂无优惠券",btn:"知道了"});
 	});
 	
 	
@@ -50,7 +50,7 @@ function orderSubmit(){
 		data : {sid:sid,pay_id:1,ship_id:1,address_id:addressId,message:message,recIds:recIds},
 		success : function(result){
 			if(result.code != 1){
-				elay.open({content:result.msg,btn:"朕知道了"});
+				elay.open({content:result.msg,btn:"知道了"});
 				return ;
 			}
 			
@@ -104,7 +104,7 @@ function w_check_order_data(){
 		data : {recIds : recIds},
 		success : function(result){
 			if(result.code != 1){
-				elay.open({content:result.msg + recIds, btn:"朕知道了"});
+				elay.open({content:result.msg + recIds, btn:"知道了"});
 				return ;
 			}
 //			alert("加载中.."+chooseAddressId);
@@ -127,7 +127,7 @@ function w_check_order_data(){
 			
 			if(result.map == null || result.map.cart == null){
 				//购物车为空，返回上一层
-				//elay.confirm({content:"购物车已清空",btn:["朕知道了",""],sure:function(index){elay.closeAll();window.history.go(-1);}});
+				//elay.confirm({content:"购物车已清空",btn:["知道了",""],sure:function(index){elay.closeAll();window.history.go(-1);}});
 				window.history.go(-1);
 				return ;
 			}
