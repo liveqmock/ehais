@@ -29,6 +29,7 @@ function w_address_add(){
 			    ,btn: '朕知道了'
 			    ,yes: function(index){  
 			    	if(result.code ==1){
+			    		sessionStorage.setItem("chooseAddressId",result.model.addressId);
 			    		window.history.go(-1);
 			    	}
 			    	

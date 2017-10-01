@@ -32,10 +32,11 @@ public interface ArticleService extends CommonService{
 	 * 文章的推荐与评论信息
 	 * @param request
 	 * @param sid
+	 * @param g 1:有商品,0:无商品
 	 * @return
 	 * @throws Exception
 	 */
-	public ReturnObject<EHaiArticle> article_extends_list_json(HttpServletRequest request,String sid) throws Exception;
+	public ReturnObject<EHaiArticle> article_extends_list_json(HttpServletRequest request,String sid,Integer g) throws Exception;
 	
 	
 }

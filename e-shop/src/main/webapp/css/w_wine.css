@@ -47,7 +47,7 @@
   text-align: right;
   margin: 0;
 }
-.w_wine_wrapper .statistics span {
+.w_wine_wrapper .statistics i {
   display: inline-block;
   color: #607fa6;
   margin-right: 0.15rem;

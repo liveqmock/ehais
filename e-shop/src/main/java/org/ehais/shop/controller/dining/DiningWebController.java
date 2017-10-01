@@ -127,7 +127,7 @@ public class DiningWebController extends EhaisCommonController{
 					return this.redirect_wx_authorize(request , wp.getAppid() , "/diningStore!"+sid);
 				}else if(StringUtils.isNotEmpty(code)){
 					System.out.println(code);
-					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map);
+					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map,false);
 					String newSid = SignUtil.setDiningId(store_id,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), user.getUserId(),map.get("tableNo").toString(), wp.getToken());
 					String link = request.getScheme() + "://" + request.getServerName() + "/diningStore!"+newSid;
 					System.out.println("code:"+link);
@@ -603,7 +603,7 @@ public class DiningWebController extends EhaisCommonController{
 				if(StringUtils.isEmpty(code)){
 					return this.redirect_wx_authorize(request , wp.getAppid() , "/dining_user_order_detail!"+oid);
 				}else if(StringUtils.isNotEmpty(code)){
-					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map);
+					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map,false);
 					if(user == null){
 						return "redirect:"+website; //错误的链接，跳转商城
 					}
@@ -662,7 +662,7 @@ public class DiningWebController extends EhaisCommonController{
 					return this.redirect_wx_authorize(request , wp.getAppid() , "/dining_store_order_detail!"+oid);
 				}else if(StringUtils.isNotEmpty(code)){
 					System.out.println(code);
-					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map);
+					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map,false);
 					if(user == null){
 						return "redirect:"+website; //错误的链接，跳转商城
 					}

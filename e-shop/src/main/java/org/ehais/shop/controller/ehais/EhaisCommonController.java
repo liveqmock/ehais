@@ -5,7 +5,6 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.OutputStream;
-import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -15,14 +14,12 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.ehais.epublic.mapper.EHaiArticleMapper;
 import org.ehais.epublic.mapper.EHaiUsersMapper;
 import org.ehais.epublic.model.EHaiArticle;
 import org.ehais.epublic.model.EHaiArticleExample;
-import org.ehais.epublic.model.EHaiStore;
 import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.epublic.model.EHaiUsersExample;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
@@ -37,12 +34,9 @@ import org.ehais.shop.model.HaiGoodsExample;
 import org.ehais.util.MatrixToImageWriter;
 import org.ehais.util.SignUtil;
 import org.ehais.weixin.model.OpenidInfo;
+import org.ehais.weixin.model.WeiXinUserInfo;
 import org.ehais.weixin.utils.WeiXinUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -69,7 +63,7 @@ public class EhaisCommonController extends CommonController{
 	 * @return
 	 * @throws Exception
 	 */
-	private EHaiUsers saveUserOpen(HttpServletRequest request,OpenidInfo open,Map<String ,Object> map){
+	private EHaiUsers saveUserOpen(HttpServletRequest request,OpenidInfo open,WeiXinUserInfo wxUser,Map<String ,Object> map){
 		EHaiUsersExample userExp = new EHaiUsersExample();
 		EHaiUsersExample.Criteria userC = userExp.createCriteria();
 		userC.andOpenidEqualTo(open.getOpenid());
@@ -77,6 +71,7 @@ public class EhaisCommonController extends CommonController{
 		List<EHaiUsers> list = eHaiUsersMapper.selectByExample(userExp);
 		Date date = new Date();
 		EHaiUsers user = null;
+
 		if(list == null || list.size() == 0){//用户不存在，入库
 			user = new EHaiUsers();
 			user.setOpenid(open.getOpenid());
@@ -90,10 +85,23 @@ public class EhaisCommonController extends CommonController{
 			user.setPassword("");					
 			user.setRegTime(date);
 			user.setLastLogin(date);
+			
+			if(wxUser != null){
+				user.setSubscribe(wxUser.getSubscribe());
+				if(wxUser.getNickname()!=null)user.setNickname(wxUser.getNickname());
+				if(wxUser.getHeadimgurl()!=null)user.setFaceImage(wxUser.getHeadimgurl());
+			}
+			
+			
 			eHaiUsersMapper.insert(user);
 			request.getSession().setAttribute(EConstants.SESSION_USER_ID, user.getUserId());
 		}else{
 			user = list.get(0);
+			if(wxUser != null){
+				user.setSubscribe(wxUser.getSubscribe());
+				if(wxUser.getNickname()!=null)user.setNickname(wxUser.getNickname());
+				if(wxUser.getHeadimgurl()!=null)user.setFaceImage(wxUser.getHeadimgurl());
+			}
 			user.setLastLogin(date);
 			eHaiUsersMapper.updateByPrimaryKeyWithBLOBs(user);
 			request.getSession().setAttribute(EConstants.SESSION_USER_ID, user.getUserId());
@@ -101,19 +109,26 @@ public class EhaisCommonController extends CommonController{
 		
 		return user;
 	}
-	protected EHaiUsers saveUserByOpenIdInfo(HttpServletRequest request,String code,Map<String ,Object> map,String appid,String secret ,String token) throws Exception{
+	protected EHaiUsers saveUserByOpenIdInfo(HttpServletRequest request,String code,Map<String ,Object> map,String appid,String secret ,String token,boolean subscribe) throws Exception{
 		OpenidInfo open = WeiXinUtil.getOpenid(code,appid,secret);
-		
-		return this.saveUserOpen(request, open, map);
+		if(open == null) return null;
+		WeiXinUserInfo wxUser = null;
+		if(subscribe){
+			wxUser = WeiXinUtil.getUserInfo(open.getAccess_token(), open.getOpenid());
+		}
+		return this.saveUserOpen(request, open , wxUser , map);
 	}
-	protected EHaiUsers saveUserByOpenIdInfo(HttpServletRequest request,String code,Map<String ,Object> map) throws Exception{
+	protected EHaiUsers saveUserByOpenIdInfo(HttpServletRequest request,String code,Map<String ,Object> map,boolean subscribe) throws Exception{
 		//获取openid
 		WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(Integer.valueOf(map.get("store_id").toString()));
 		OpenidInfo open = WeiXinUtil.getOpenid(code,wp.getAppid(),wp.getSecret());
 		if(open == null) return null;
-		
+		WeiXinUserInfo wxUser = null;
+		if(subscribe){
+			wxUser = WeiXinUtil.getUserInfo(open.getAccess_token(), open.getOpenid());
+		}
 		//根据openid获取用户是否存在
-		return this.saveUserOpen(request, open, map);
+		return this.saveUserOpen(request, open , wxUser , map);
 	}
 	
 	//跳转微信认证
@@ -167,7 +182,7 @@ public class EhaisCommonController extends CommonController{
 		
 		
 		WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
-		String content = request.getScheme()+"://"+request.getServerName()+"/w_article_detail!"+SignUtil.setSid(store_id,agencyId,parentId,userId,articleId,goodsId,wp.getToken());
+		String content = request.getScheme()+"://"+request.getServerName()+"/w_article_goods!"+SignUtil.setSid(store_id,agencyId,parentId,userId,articleId,goodsId,wp.getToken());
 		System.out.println(content);
 		MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
 		@SuppressWarnings("rawtypes")
@@ -315,6 +330,7 @@ public class EhaisCommonController extends CommonController{
         
 	}
 	
+	
 	/**
 	 * 
 	@RequestMapping("/shop!{sid}")
@@ -399,7 +415,7 @@ public class EhaisCommonController extends CommonController{
 					System.out.println(code);
 					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map);
 					String newSid = SignUtil.setSid(store_id,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), user.getUserId(), Integer.valueOf(map.get("articleId").toString()), Long.valueOf(map.get("goodsId").toString()),wp.getToken());
-					String link = request.getScheme() + "://" + request.getServerName() + "/w_article_detail!"+newSid;
+					String link = request.getScheme() + "://" + request.getServerName() + "/w_article_goods!"+newSid;
 					System.out.println("code:"+link);
 					return "redirect:"+link;
 				}

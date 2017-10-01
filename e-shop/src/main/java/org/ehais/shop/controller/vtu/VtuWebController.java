@@ -84,7 +84,7 @@ public class VtuWebController extends EhaisCommonController{
 				if((user_id == null || user_id == 0 ) && StringUtils.isEmpty(code)){
 					return this.redirect_wx_authorize(request , weixin_appid , "/vtu_sign!"+sid);
 				}else if(StringUtils.isNotEmpty(code)){
-					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map);
+					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map,false);
 					String newSid = SignUtil.setCid(store_id,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), user.getUserId(),weixin_token);
 					String link = request.getScheme() + "://" + request.getServerName() + "/vtu_sign!"+newSid;
 					System.out.println("code:"+link);
@@ -249,7 +249,7 @@ public class VtuWebController extends EhaisCommonController{
 				if(StringUtils.isEmpty(code)){
 					return this.redirect_wx_authorize(request , weixin_appid , "/vtu_share!"+vid);
 				}else if(StringUtils.isNotEmpty(code)){
-					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map);
+					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map,false);
 					Long user_id = user.getUserId();
 					if(Long.valueOf(map.get("userId").toString()).longValue() != user_id.longValue()){
 						String newSid = SignUtil.setCid(store_id,0,Long.valueOf(map.get("userId").toString()), user.getUserId(),weixin_token);

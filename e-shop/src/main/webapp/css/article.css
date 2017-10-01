@@ -71,6 +71,7 @@
   width: auto;
   float: right;
   padding-left: 0.15rem;
+  font-size: 0.12rem;
 }
 .wa > ul li:last-child {
   border-bottom: 0;

@@ -103,7 +103,7 @@ public class DiningUnionController extends EhaisCommonController{
 				if((user_id == null || user_id == 0 ) && StringUtils.isEmpty(code)){
 					return this.redirect_wx_authorize(request , weixin_appid , "/diningUnion!"+pid);
 				}else if(StringUtils.isNotEmpty(code)){
-					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map,weixin_appid,weixin_appsecret,weixin_token);
+					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map,weixin_appid,weixin_appsecret,weixin_token,false);
 					String newPid = SignUtil.setPartnerId(default_store_id,Integer.valueOf(map.get("partnerId").toString()),Long.valueOf(map.get("userId").toString()), user.getUserId(), weixin_token);
 					String link = request.getScheme() + "://" + request.getServerName() + "/diningUnion!"+newPid;
 					return "redirect:"+link;

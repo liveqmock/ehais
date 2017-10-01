@@ -79,10 +79,12 @@ public class ArticleIController extends CommonController{
 	@RequestMapping("/article_extends_list_json")
 	public String article_extends_list_json(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
-			@RequestParam(value = "sid", required = true) String sid){
+			@RequestParam(value = "sid", required = true) String sid,
+			@RequestParam(value = "g", required = true) Integer g
+			){
 		
 		try {
-			return this.writeJson(articleService.article_extends_list_json(request, sid));
+			return this.writeJson(articleService.article_extends_list_json(request, sid,g));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

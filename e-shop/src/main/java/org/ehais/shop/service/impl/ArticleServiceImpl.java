@@ -401,8 +401,6 @@ bean.setArticleLabel(model.getArticleLabel());
 			rm.setMsg("记录不存在");
 			return rm;
 		}
-		
-		
 
 
 		int code = eHaiArticleMapper.deleteByExample(example);
@@ -413,7 +411,7 @@ bean.setArticleLabel(model.getArticleLabel());
 
 
 	@Override
-	public ReturnObject<EHaiArticle> article_extends_list_json(HttpServletRequest request, String sid)
+	public ReturnObject<EHaiArticle> article_extends_list_json(HttpServletRequest request, String sid,Integer g)
 			throws Exception {
 		// TODO Auto-generated method stub
 		
@@ -431,7 +429,13 @@ bean.setArticleLabel(model.getArticleLabel());
 		}
 		try{
 			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
-			Map<String,Object> map = SignUtil.getSid(sid,wp.getToken());
+			Map<String,Object> map = null;
+			if(g == 1){
+				map = SignUtil.getSid(sid,wp.getToken());
+			}else{
+				map = SignUtil.getAid(sid,wp.getToken());
+			}
+			
 			if(map == null){
 				rm.setMsg("参数不正确");
 				return rm;
@@ -477,7 +481,7 @@ bean.setArticleLabel(model.getArticleLabel());
 						keywords, 0, 5);
 				
 				for (WArticleGoods eHaiArticle : listRecommend) {
-					eHaiArticle.setLink("/w_article_detail!"+SignUtil.setSid(
+					eHaiArticle.setLink("/w_article_goods!"+SignUtil.setSid(
 							Integer.valueOf(map.get("store_id").toString()), 
 							Integer.valueOf(map.get("agencyId").toString()), 
 							Long.valueOf(map.get("parentId").toString()), 

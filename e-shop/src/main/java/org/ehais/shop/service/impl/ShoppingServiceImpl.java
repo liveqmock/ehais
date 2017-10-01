@@ -578,7 +578,7 @@ public class ShoppingServiceImpl extends CommonServiceImpl implements ShoppingSe
 		HaiShippingWithBLOBs ship = null;
 		//运输方式不为空，检验运输方式是否正确
 		if(order_done.getShipping_id()!=null && order_done.getShipping_id()!=0){
-			ship = haiShippingMapper.web_shipping_info(order_done.getStore_id(), order_done.getShipping_id());
+//			ship = haiShippingMapper.web_shipping_info(order_done.getStore_id(), order_done.getShipping_id());
 //			if(ship == null){
 //				rm.setMsg("运输方式错误");return rm;
 //			}
@@ -587,7 +587,7 @@ public class ShoppingServiceImpl extends CommonServiceImpl implements ShoppingSe
 		HaiPayment payment = null;
 		//支付方式不为空的情况，检验支付方式是否正确
 		if(order_done.getPay_id()!=null && order_done.getPay_id()!=0){
-			payment = haiPaymentMapper.payment_info(order_done.getStore_id(), order_done.getPay_id());
+//			payment = haiPaymentMapper.payment_info(order_done.getStore_id(), order_done.getPay_id());
 //			if(payment == null){
 //				rm.setMsg("支付方式错误");return rm;
 //			}

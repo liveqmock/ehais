@@ -29,7 +29,7 @@
 			
 			<#if goods??>
 			<div class="product">
-				<img src="${goods.goodsThumb!''}" />
+				<img src="${goods.originalImg!''}" />
 				<div class="name">${goods.goodsName!''}</div>
 				<div class="detail">
 					<span id="buynow"><a href="javascript:;">购买</a></span>
@@ -45,7 +45,7 @@
 			</#if>
 			
 			
-			<div class="statistics"><span class="fa fa-eye">${article.readCount!0}</span><span class="fa fa-thumbs-o-up">${article.praiseCount!0}</span></div>
+			<div class="statistics"><i class="iconfont icon-article">  ${article.readCount!0}</i><i class="iconfont icon-zan">  ${article.praiseCount!0}</i></div>
 			
 			<div class="recommend_title dn">推荐文章</div>
 			<div class="recommend dn"></div>
@@ -78,9 +78,14 @@
 	<script type="text/javascript" src="../js/elay/elay.js" ></script>
 	<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js" ></script>
 	<script type="text/javascript" src="../js/wxsdk.js" ></script>
-	<script type="text/javascript" src="../js/ehais/w_article_detail.js" ></script>
+	<script type="text/javascript" src="../js/ehais/w_article_goods.js" ></script>
 	<script type="text/javascript">
 	var sid = "${sid}";
+	<#if goods??>
+	var g = 1;
+	<#else>
+	var g = 0;
+	</#if>
 	$(function(){
 		wx_config(${signature});
 		

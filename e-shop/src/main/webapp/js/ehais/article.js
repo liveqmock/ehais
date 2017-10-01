@@ -28,7 +28,7 @@ $(function(){
 	
 	
 	$.each(json.hotArticleList,function(k,v){
-		$("#alist").append("<li>"+
+		$("#alist").append("<li link='"+v.link+"'>"+
 					"<div class='img'><img src='"+v.articleImages+"'></div>"+
 					"<div class='i'>"+
 						"<div class='t'>"+v.title+"</div>"+
@@ -40,6 +40,8 @@ $(function(){
 				"</li>");
 	});
 	
-	
+	$("#alist li").click(function(){
+		window.location.href = "w_article_detail!"+$(this).attr("link");
+	});
 	
 });

@@ -98,6 +98,9 @@ public class MyTaskAnnotation {
 
 	@Scheduled(cron = "0 0/7 *  * * ? ")
 	public void batchUserInfo() {
+		Date date = new Date();
+		System.out.println(DateUtil.formatDate(date, DateUtil.FORMATSTR_1)
+				+ "========================================batchUserInfo");
 		List<Integer> store_ids = eHaiUsersMapper.wxDistinctStoreId();
 		for (Integer integer : store_ids) {
 			List<Map<String,String>> user_list = new ArrayList<Map<String,String>>();

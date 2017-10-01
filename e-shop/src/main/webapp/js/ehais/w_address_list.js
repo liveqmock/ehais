@@ -39,15 +39,6 @@ $(function(){
 });
 
 
-//返回强制刷新的代码
-window.onpageshow = function(event){
-    if (event.persisted) {
-    	window.reload();
-    }
-}
-
-
-
 function w_address_delete(that){
 	var addressid = $(that).parent().parent().attr("addressid");
 	elay.confirm({

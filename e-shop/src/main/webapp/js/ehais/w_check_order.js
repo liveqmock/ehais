@@ -10,6 +10,7 @@ $(function(){
 		elay.open({content:"暂无优惠券",btn:"朕知道了"});
 	});
 	
+	
 	w_check_order_data();//加载购物车信息
 	
 	//添加新地址
@@ -30,13 +31,6 @@ $(function(){
 		window.location.href = "/w_shop!"+sid;
 	});
 });
-
-//返回强制刷新的代码
-window.onpageshow = function(event){
-	if (event.persisted) {
-		w_check_order_data();//加载购物车信息
-	}
-}
 
 /**
  * 提交信息
@@ -96,9 +90,9 @@ function shippingAddress(region,address){
 	
 	regionStr = null;
 	
-	$("#address_edit").removeClass("dn").click(function(){
-		window.location.href = "w_address_list";
-	});
+//	$("#address_edit").removeClass("dn").click(function(){
+//		window.location.href = "w_address_list";
+//	});
 	$("#address").click(function(){
 		window.location.href = "w_address_list";
 	});
@@ -113,10 +107,10 @@ function w_check_order_data(){
 				elay.open({content:result.msg + recIds, btn:"朕知道了"});
 				return ;
 			}
-			//alert("加载中.."+chooseAddressId);
+//			alert("加载中.."+chooseAddressId);
 			if(chooseAddressId != null){//重新选择的地址
 				useraddress_info(chooseAddressId);
-				localStorage.removeItem("chooseAddressId");
+				sessionStorage.removeItem("chooseAddressId");
 			}else{//初始化进入的地址
 				if(result.map == null || result.map.address == null){//显示添加收货人信息
 					$("#new_address").removeClass("dn");
