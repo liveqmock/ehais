@@ -18,46 +18,8 @@
 				<i class="iconfont icon-xiangzuojiantou"></i>
 				地址列表
 			</header>
-			<ul>
-				<#if userAddressList??>
-				<#list userAddressList as addr>
-				
-				<li addressid="${addr.addressId}">
-					<div class="info">
-						<div class="consignee">${addr.consignee!''}</div>
-						<div class="mobile">${addr.mobile}</div>
-						<div class="address">${addr.address}</div>
-					</div>
-					<div class="operate">
-						<i class="iconfont icon-default <#if addr.isDefault == '1'>active</#if>">  默认</i>
-						<i class="iconfont icon-lajixiang">  删除</i>
-						<i class="iconfont icon-edit">  编辑</i>
-					</div>
-				</li>
-				
-				<!-- <div class="item" addressid="${addr.addressId}">
-					
-					<div class="info">
-						<div class="username">
-							<span class="consignee">${addr.consignee!''}</span>
-							<span class="fa fa-mobile"></span>
-							<span class="mobile">${addr.mobile}</span>
-						</div>
-						<div class="address">${addr.address}</div>
-					</div>
-					<div class="operate">
-						<div class="choose"><i class="fa fa-hand-o-up"></i></div>
-						<div class="default <#if addr.isDefault == '1'>active</#if>"><i class="fa fa-leaf"></i>默认</div>
-						<div class="edit"><i class="fa fa-edit"></i></div>
-						<div class="trash"><i class="fa fa-trash"></i></div>
-					</div>
-					
-				</div> -->
-				</#list>
-				</#if>
-			</ul>
+			<ul id="alist"></ul>
 			<footer>
-				
 				<button id="newAddress">新增地址</button>
 			</footer>
 		</div>

@@ -10,15 +10,9 @@ $(function(){
 	});  
 	
 	$(".icon-gouwuche").click(function(){
-		window.location.href="w_cart!"+sid;
+		window.location.href="w_cart!"+cid;
 	});
 	wx_config(signature);
 });
 
-window.onpageshow = function(event){
-	alert(JSON.stringify(event));
-	if (event.persisted) {
-		
-		wx_config(signature);
-	}
-}
+

@@ -25,7 +25,6 @@ public class UserAddressWSController extends UserAddressIController{
 	public String useraddress_lists(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response) {
 		Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
-//		if(user_id==null) user_id = 1L;//临时使用
 		try{
 			ReturnObject<HaiUserAddress> rm = useraddressService.useraddress_lists(request,user_id);
 			return this.writeJson(rm);

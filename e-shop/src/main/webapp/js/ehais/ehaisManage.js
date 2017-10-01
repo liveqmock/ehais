@@ -1,12 +1,13 @@
 var page = 1;
 var rows = 10;
 $(function(){
-	diningOrder();
+//	ehaisOrder();
+	setInterval(ehaisOrder,30000);
 });
 
-function diningOrder(){
+function ehaisOrder(){
 	$.ajax({
-		url : "/ehaisOrder",
+		url : "ehaisOrder",
 		data : {page : page , rows : rows },
 		success : function(result){
 			

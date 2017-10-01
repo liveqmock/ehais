@@ -74,7 +74,7 @@ $(function(){
 			});
 		}else{
 			sessionStorage.setItem("recIds",recIds.join(","));
-			window.location.href = "w_check_order!"+sid;
+			window.location.href = "w_check_order!"+cid;
 		}
 	});
 	$("#indexLink").click(function(){window.location.href=$(this).attr("href");});

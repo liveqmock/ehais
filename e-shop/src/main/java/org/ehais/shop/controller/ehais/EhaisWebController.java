@@ -109,7 +109,7 @@ public class EhaisWebController extends EhaisCommonController {
 	
 	//http://127.0.0.1/w_shop!9771520-0ac51801-1bd44602-2f40141253-32a82a04-4495cf05-560
 	//http://4db7deca.ngrok.io/w_shop!9771520-0ac51801-1bd44602-2f40141253-32a82a04-4495cf05-560
-	@RequestMapping("/w_shop!{sid}")
+	@RequestMapping("/w_shop!{cid}")
 	public String shop(ModelMap modelMap,
 			HttpServletRequest request,
 			HttpServletResponse response ,
@@ -177,6 +177,7 @@ public class EhaisWebController extends EhaisCommonController {
 			Long user_id ,
 			Map<String,Object> map ) throws Exception{
 		modelMap.addAttribute("store", store);
+		modelMap.addAttribute("cid", cid);
 		
 		HaiAdExample adExample = new HaiAdExample();
 		adExample.createCriteria().andStoreIdEqualTo(store_id).andIsVoidEqualTo(1);
@@ -198,14 +199,14 @@ public class EhaisWebController extends EhaisCommonController {
 		goodsExample.setOrderByClause("sort_order asc");
 		List<HaiGoods> goodsList = haiGoodsMapper.selectByExample(goodsExample);
 		for (HaiGoods haiGoods : goodsList) {
-			haiGoods.setGoodsUrl("w_goods_detail!"+SignUtil.setSid(store_id, Integer.valueOf(map.get("agencyId").toString()), Long.valueOf(map.get("parentId").toString()), user_id, 0 , haiGoods.getGoodsId(), wp.getToken()));
+			haiGoods.setGoodsUrl("w_goods_detail!"+SignUtil.setSid(store_id, Integer.valueOf(map.get("agencyId").toString()), Long.valueOf(map.get("userId").toString()), user_id, 0 , haiGoods.getGoodsId(), wp.getToken()));
 		}
 		modelMap.addAttribute("adList", adList);
 		modelMap.addAttribute("categoryList", categoryList);
 		modelMap.addAttribute("goodsList", goodsList);
 		
-		String newSid = SignUtil.setSid(store_id,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), user_id , 0 , 0L , wp.getToken());
-		String link = request.getScheme() + "://" + request.getServerName() + "/w_shop!"+newSid;
+		String newCid = SignUtil.setCid(store_id,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), user_id , wp.getToken());
+		String link = request.getScheme() + "://" + request.getServerName() + "/w_shop!"+newCid;
 		
 		WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, Integer.valueOf(map.get("store_id").toString()), wp.getAppid(), wp.getSecret(), null);
 		signature.setTitle(store.getStoreName());
@@ -287,7 +288,7 @@ public class EhaisWebController extends EhaisCommonController {
 	}
 	
 	
-	private String goods_detail(ModelMap modelMap,	HttpServletRequest request,HttpServletResponse response,WpPublicWithBLOBs wp,String sid,Map<String,Object> map,String path) throws NumberFormatException, Exception{
+	private String goods_detail(ModelMap modelMap,	HttpServletRequest request,HttpServletResponse response,WpPublicWithBLOBs wp,String sid,Long user_id,Map<String,Object> map,String path) throws NumberFormatException, Exception{
 		String link = request.getScheme() + "://" + request.getServerName() + "/w_goods_detail!"+sid;
 		//读取文章信息
 		Long goodsId = Long.valueOf(map.get("goodsId").toString());
@@ -298,6 +299,7 @@ public class EhaisWebController extends EhaisCommonController {
 		HaiGoods goods = haiGoodsMapper.selectByPrimaryKey(goodsId);
 		
 		modelMap.addAttribute("sid", sid);
+		modelMap.addAttribute("cid", SignUtil.setCid(Integer.valueOf(map.get("store_id").toString()), Integer.valueOf(map.get("agencyId").toString()), Long.valueOf(map.get("userId").toString()), user_id, wp.getToken()));
 		modelMap.addAttribute("goods", goods);
 		modelMap.addAttribute("parentId", map.get("parentId"));
 		modelMap.addAttribute("agencyId", map.get("agencyId"));
@@ -713,27 +715,21 @@ public class EhaisWebController extends EhaisCommonController {
 				System.out.println(sid+" sid is worng");
 			    return "redirect:"+website; //错误的链接，跳转商城
 			}
-			
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			if(this.isWeiXin(request)){//微信端登录
-
-				Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
-//				String openid = (String)request.getSession().getAttribute(EConstants.SESSION_OPEN_ID);
 
 				if((user_id == null || user_id == 0) && StringUtils.isEmpty(code)){
 					return this.redirect_wx_authorize(request,wp.getAppid(), "/w_goods_detail!"+sid);
 				}else if(StringUtils.isNotEmpty(code)){
-					System.out.println(code);
 					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map,false);
 					String newSid = SignUtil.setSid(store_id,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), user.getUserId(), Integer.valueOf(map.get("articleId").toString()), Long.valueOf(map.get("goodsId").toString()),wp.getToken());
 					String link = request.getScheme() + "://" + request.getServerName() + "/w_goods_detail!"+newSid;
-					System.out.println("code:"+link);
 					return "redirect:"+link;
 				}else if(user_id > 0 && Long.valueOf(map.get("userId").toString()).longValue() == user_id.longValue()){
-					return this.goods_detail(modelMap, request, response,wp, sid,map,"/ehais/w_goods_detail");//整理此软文与商品所有内容
+					return this.goods_detail(modelMap, request, response,wp, sid,user_id,map,"/ehais/w_goods_detail");//整理此软文与商品所有内容
 				}else if(Long.valueOf(map.get("userId").toString()).longValue() != user_id.longValue()){
 					System.out.println("user_id != map.userId condition is worng");
 					request.getSession().removeAttribute(EConstants.SESSION_USER_ID);
-//					request.getSession().removeAttribute(EConstants.SESSION_OPEN_ID);
 
 				    return this.redirect_wx_authorize(request,wp.getAppid(), "/w_goods_detail!"+sid);
 				}else{
@@ -742,12 +738,9 @@ public class EhaisWebController extends EhaisCommonController {
 				}
 				
 			}else{
-				if(this.isLocalHost(request)){
-//					request.getSession().removeAttribute(EConstants.SESSION_USER_ID);
-					request.getSession().setAttribute(EConstants.SESSION_USER_ID, 125L);			
-				}
+				
 				this.shop_encode(request);
-				return this.goods_detail(modelMap, request, response,wp, sid,map,"/ehais/w_goods_detail");//整理此软文与商品所有内容
+				return this.goods_detail(modelMap, request, response,wp, sid,user_id,map,"/ehais/w_goods_detail");//整理此软文与商品所有内容
 			}
 			
 			
@@ -760,23 +753,23 @@ public class EhaisWebController extends EhaisCommonController {
 	
 	
 	
-	@RequestMapping("/w_cart!{sid}")
+	@RequestMapping("/w_cart!{cid}")
 	public String w_cart(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
-			@PathVariable(value = "sid") String sid) {
+			@PathVariable(value = "cid") String cid) {
 		
-		Integer store_id = SignUtil.getUriStoreId(sid);
+		Integer store_id = SignUtil.getUriStoreId(cid);
 		if(store_id == 0 || store_id == null){
-			System.out.println(sid+" store_id is worng");
+			System.out.println(cid+" store_id is worng");
 			return "redirect:"+website; //错误的链接，跳转商城
 		}
 		request.getSession().setAttribute(EConstants.SESSION_STORE_ID, store_id);
 		
 		try{
 			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
-			Map<String,Object> map = SignUtil.getSid(sid,wp.getToken());
+			Map<String,Object> map = SignUtil.getCid(cid,wp.getToken());
 			if(map == null){
-				System.out.println(sid+" sid is worng");
+				System.out.println(cid+" sid is worng");
 			    return "redirect:"+website; //错误的链接，跳转商城
 			}
 			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
@@ -788,7 +781,7 @@ public class EhaisWebController extends EhaisCommonController {
 			List<HaiCart> cartList = haiCartMapper.selectByExample(example);
 			
 			modelMap.addAttribute("cartList", cartList);
-			modelMap.addAttribute("sid", sid);
+			modelMap.addAttribute("cid", cid);
 			
 			String newSid = SignUtil.setSid(store_id,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), user_id,0,0L, wp.getToken());
 			String link = request.getScheme() + "://" + request.getServerName() + "/w_shop!"+newSid;
@@ -820,12 +813,12 @@ public class EhaisWebController extends EhaisCommonController {
 		
 		
 		try{
-			HaiUserAddressExample example = new HaiUserAddressExample();
-			example.createCriteria().andUserIdEqualTo((Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID));
-			example.setOrderByClause("is_default desc,address_id desc");
-			List<HaiUserAddress> userAddressList = haiUserAddressMapper.selectByExample(example);
-			
-			modelMap.addAttribute("userAddressList", userAddressList);
+//			HaiUserAddressExample example = new HaiUserAddressExample();
+//			example.createCriteria().andUserIdEqualTo((Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID));
+//			example.setOrderByClause("is_default desc,address_id desc");
+//			List<HaiUserAddress> userAddressList = haiUserAddressMapper.selectByExample(example);
+//			
+//			modelMap.addAttribute("userAddressList", userAddressList);
 			
 		}catch(Exception e){
 			e.printStackTrace();

@@ -110,7 +110,7 @@ public class EhaisUnionController extends EhaisCommonController{
 					String link = request.getScheme() + "://" + request.getServerName() + "/ehaisUnion!"+newPid;
 					return "redirect:"+link;
 				}else if(user_id > 0 && Long.valueOf(map.get("userId").toString()).longValue() == user_id.longValue()){//经过code获取用户信息跳回自己的链接中来
-					return this.ehaisUnionData(modelMap, request, store_id, user_id, cid, map);
+					return this.ehaisUnionData(modelMap, request, user_id, cid, map);
 				}else if(Long.valueOf(map.get("userId").toString()).longValue() != user_id.longValue()){
 					System.out.println("user_id != map.userId condition is worng");
 					request.getSession().removeAttribute(EConstants.SESSION_USER_ID);
@@ -120,7 +120,7 @@ public class EhaisUnionController extends EhaisCommonController{
 					return "redirect:"+website; //错误的链接，跳转商城
 				}
 			}else{
-				return this.ehaisUnionData(modelMap, request, store_id, user_id, cid, map);
+				return this.ehaisUnionData(modelMap, request, user_id, cid, map);
 			}
 		}catch(Exception e){
 			e.printStackTrace();
@@ -129,14 +129,14 @@ public class EhaisUnionController extends EhaisCommonController{
 	}
 	
 	private String ehaisUnionData(ModelMap modelMap,
-			HttpServletRequest request,Integer store_id,Long user_id,String cid,Map<String,Object> map) throws Exception{
+			HttpServletRequest request,Long user_id,String cid,Map<String,Object> map) throws Exception{
 		EHaiUsers user = eHaiUsersMapper.selectByPrimaryKey(user_id);
 		
 		String link = request.getScheme() + "://" + request.getServerName() + "/ehaisUnion!"+cid;
 		WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, Integer.valueOf(map.get("store_id").toString()), weixin_appid, weixin_appsecret, null);
 		signature.setTitle("易微销");
 		signature.setLink(link);
-		signature.setDesc("帮助餐厅“互联网+”转型的移动O2O服务平台");
+		signature.setDesc("帮助商家“互联网+”转型的移动O2O服务平台");
 		signature.setImgUrl(defaultimg);
 		List<String> jsApiList = new ArrayList<String>();
 		jsApiList.add("onMenuShareTimeline");
@@ -146,7 +146,7 @@ public class EhaisUnionController extends EhaisCommonController{
 		jsApiList.add("onMenuShareQZone");
 		signature.setJsApiList(jsApiList);
 		modelMap.addAttribute("signature", JSONObject.fromObject(signature).toString());
-		if(user == null || user.getUserType() != EUserTypeEnum.shop){
+		if(user == null || user.getUserType() != EUserTypeEnum.shop || user.getStoreId() == null || user.getStoreId().intValue() == 0){
 			return "/ehais/ehaisUnion";
 		}else{
 			HaiStoreStatistics storeStatistics = haiStoreStatisticsMapper.selectByPrimaryKey(Integer.valueOf(map.get("store_id").toString()));
@@ -265,24 +265,17 @@ public class EhaisUnionController extends EhaisCommonController{
 	@RequestMapping("/ehaisOrder")
 	public String ehaisOrder(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
-//			@RequestParam(value = "sid", required = true) String sid,
 			@ModelAttribute EConditionObject condition 
 			){
 		ReturnObject<HaiOrderInfoWithBLOBs> rm = new ReturnObject<HaiOrderInfoWithBLOBs>();
 		rm.setCode(0);
-//		Integer storeId = SignUtil.getUriStoreId(sid);
-//		request.getSession().setAttribute(EConstants.SESSION_STORE_ID,58);
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
-//		if(store_id.intValue() != storeId.intValue()){
-//			rm.setMsg("store is wrong");return this.writeJson(rm);
-//		}
-		
-//		EHaiStore store = eStoreService.getEStore(store_id);
-		
 		try{
 			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
 			HaiOrderInfoExample orderInfoExample = new HaiOrderInfoExample();
-			orderInfoExample.createCriteria().andStoreIdEqualTo(store_id).andOrderStatusEqualTo(EOrderStatusEnum.success).andClassifyEqualTo(EAdminClassifyEnum.shop);
+			orderInfoExample.createCriteria().andStoreIdEqualTo(store_id)
+			.andOrderStatusEqualTo(EOrderStatusEnum.success)
+			.andClassifyEqualTo(EAdminClassifyEnum.shop);
 			orderInfoExample.setOrderByClause("pay_time desc");
 			orderInfoExample.setLimitStart(condition.getStart());
 			orderInfoExample.setLimitEnd(condition.getRows());

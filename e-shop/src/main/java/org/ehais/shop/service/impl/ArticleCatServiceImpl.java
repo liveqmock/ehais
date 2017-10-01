@@ -242,7 +242,7 @@ bean.setStoreId(model.getStoreId());
 bean.setCode(model.getCode());
 bean.setUserId(model.getUserId());
 bean.setImages(model.getImages());
-
+bean.setIsValid(true);
 
 		int code = eHaiArticleCatMapper.updateByExampleSelective(bean, example);
 		rm.setCode(code);

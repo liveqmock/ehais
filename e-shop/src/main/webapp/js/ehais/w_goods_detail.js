@@ -26,7 +26,7 @@ $(function(){
 	$("#favorites").click(function(){favorites();});//添加到收藏
 	$("#addCart").click(function(){addCart();});//添加到购物车
 	$("#buynow").click(function(){buynow();});//立即购买
-	$("#cart").click(function(){window.location.href="w_cart!"+sid});
+	$("#cart").click(function(){window.location.href="w_cart!"+cid});
 	
 	quantityCart();//读取当前购物车数量
 	
@@ -34,12 +34,6 @@ $(function(){
 	
 });
 
-window.onpageshow = function(event){
-	if (event.persisted) {
-		alert("wx_config");
-		wx_config(signature);
-	}
-}
 
 function favorites(){
 	$.ajax({

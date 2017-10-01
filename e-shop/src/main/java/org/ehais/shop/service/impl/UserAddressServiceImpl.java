@@ -367,8 +367,9 @@ public class UserAddressServiceImpl  extends CommonServiceImpl implements UserAd
 		HaiUserAddressExample example = new HaiUserAddressExample();
 		HaiUserAddressExample.Criteria c = example.createCriteria();
 		c.andUserIdEqualTo(user_id);
-		example.setOrderByClause("update_time desc");
-		List<HaiUserAddress> list = haiUserAddressMapper.hai_user_address_list_by_example(example);
+//		example.setOrderByClause("update_time desc");
+		example.setOrderByClause("is_default desc,address_id desc");
+		List<HaiUserAddress> list = haiUserAddressMapper.selectByExample(example);
 		
 		List<Integer> regionids = new ArrayList<Integer>();
 		for (HaiUserAddress addr : list) {
