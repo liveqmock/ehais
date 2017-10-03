@@ -1,0 +1,111 @@
+@import url("common.css");
+.we {
+  font-size: 0.16rem;
+  padding: 0.95rem 0 0.49rem;
+  margin: 0;
+  padding-bottom: 0.45rem;
+  box-sizing: border-box;
+  float: left;
+  width: 100%;
+  overflow-x: hidden;
+}
+.we * {
+  box-sizing: border-box;
+  float: left;
+  width: 100%;
+}
+.we .header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  z-index: 100;
+  padding: 0.15rem;
+  border-bottom: 0.05rem solid #F3F3F3;
+}
+.we .header * {
+  width: auto;
+}
+.we .header > div {
+  width: 50%;
+}
+.we .header > div > div {
+  width: 100%;
+}
+.we #c > ul > li {
+  padding: 0.1rem 0.15rem;
+  border-bottom: 0.05rem solid #F3F3F3;
+}
+.we #c > ul > li > div * {
+  width: auto;
+}
+.we #c > ul > li .h {
+  padding-bottom: 0.05rem;
+}
+.we #c > ul > li .d,
+.we #c > ul > li .s {
+  border-bottom: 0.01rem solid #F0F0F0;
+  padding-bottom: 0.1rem;
+  margin-bottom: 0.1rem;
+}
+.we #c > ul > li .d b,
+.we #c > ul > li .s i {
+  float: right;
+  font-size: 0.13rem;
+}
+.we #c > ul > li .t i {
+  float: left;
+  font-size: 0.13rem;
+}
+.we #c > ul > li > ul > li {
+  margin-bottom: 0.1rem;
+}
+.we #c > ul > li > ul > li img {
+  width: 20%;
+  margin-right: 0.15rem;
+}
+.we #c > ul > li > ul > li div {
+  font-size: 0.12rem;
+  color: #999;
+  width: 80%;
+  margin-right: -0.15rem;
+}
+.we #c > ul > li .t {
+  text-align: right;
+}
+.we #c > ul > li .b {
+  text-align: right;
+  margin-top: 0.05rem;
+}
+.we #c > ul > li .b button {
+  padding: 0.05rem;
+  border-radius: 0.04rem;
+  font-size: 0.14rem;
+  float: right;
+  margin-left: 0.05rem;
+}
+.we #c > ul > li .b .d {
+  border: 0.01rem solid #C9C9C9;
+}
+.we #c > ul > li .b .o {
+  border: 0;
+  background: #FF8F09;
+  color: #fff;
+}
+footer {
+  position: fixed;
+  float: left;
+  width: 100%;
+  height: 0.49rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #fff;
+  box-sizing: border-box;
+  font-size: 0.12rem;
+  z-index: 101;
+  line-height: 0.49rem;
+  padding: 0 0.15rem;
+  border-top: 0.01rem solid #F3F3F3;
+}

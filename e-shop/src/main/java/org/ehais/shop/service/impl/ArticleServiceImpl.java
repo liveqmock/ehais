@@ -17,6 +17,7 @@ import org.ehais.epublic.model.EHaiArticle;
 import org.ehais.epublic.model.EHaiArticleCat;
 import org.ehais.epublic.model.EHaiArticleCatExample;
 import org.ehais.epublic.model.EHaiArticleExample;
+import org.ehais.epublic.model.EHaiArticleSimple;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.epublic.service.EWPPublicService;
 import org.ehais.service.impl.CommonServiceImpl;
@@ -56,17 +57,21 @@ public class ArticleServiceImpl  extends CommonServiceImpl implements ArticleSer
 	private HaiForumUserMapper haiForumUserMapper;
 	
 
-	public ReturnObject<EHaiArticle> article_list_cid(Integer store_id, Integer cat_id,Integer page,Integer len) throws Exception {
+	public ReturnObject<EHaiArticle> article_list_cid(HttpServletRequest request,String moduleEnum,Integer store_id, Integer cat_id,EConditionObject condition) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
-		Integer start = (((page == null)?1:page) - 1 ) * len;
+		if(store_id == null || store_id == 0){
+			store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		}
 		
 		EHaiArticleExample example = new EHaiArticleExample();
 		EHaiArticleExample.Criteria c = example.createCriteria();
 		c.andStoreIdEqualTo(store_id);
+		c.andModuleEqualTo(moduleEnum);
 		if(cat_id > 0)c.andCatIdEqualTo(cat_id);
-		example.setLimitStart(start);
-		example.setLimitEnd(len);
+		if(cat_id == 0)c.andIsHotEqualTo(true);
+		example.setLimitStart(condition.getStart());
+		example.setLimitEnd(condition.getRows());
 		List<EHaiArticle> list = eHaiArticleMapper.selectByExample(example);
 		rm.setTotal(eHaiArticleMapper.countByExample(example));
 		rm.setRows(list);
@@ -75,7 +80,7 @@ public class ArticleServiceImpl  extends CommonServiceImpl implements ArticleSer
 	}
 	
 	
-	public ReturnObject<EHaiArticle> article_list_code(Integer store_id, String cat_code,Integer page,Integer len) throws Exception {
+	public ReturnObject<EHaiArticle> article_list_code(String moduleEnum,Integer store_id, String cat_code,Integer page,Integer len) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
 		Integer start = (((page == null)?1:page) - 1 ) * len;
@@ -94,7 +99,7 @@ public class ArticleServiceImpl  extends CommonServiceImpl implements ArticleSer
 		return list;
 	}
 
-	public ReturnObject<EHaiArticle> article_info(Integer store_id, Integer article_id) throws Exception {
+	public ReturnObject<EHaiArticle> article_info(String moduleEnum,Integer store_id, Integer article_id) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
 		EHaiArticle model = eHaiArticleMapper.get_hai_article_info(store_id, article_id);
@@ -105,7 +110,7 @@ public class ArticleServiceImpl  extends CommonServiceImpl implements ArticleSer
 
 
 	@Override
-	public ReturnObject<EHaiArticle> article_list_json(HttpServletRequest request, EConditionObject condition,
+	public ReturnObject<EHaiArticle> article_list_json(HttpServletRequest request,String moduleEnum, EConditionObject condition,
 			Integer cat_id, String title) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
@@ -116,6 +121,7 @@ public class ArticleServiceImpl  extends CommonServiceImpl implements ArticleSer
 		EHaiArticleExample example = new EHaiArticleExample();
 		EHaiArticleExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+		c.andModuleEqualTo(moduleEnum);
 		if(cat_id > 0)c.andCatIdEqualTo(cat_id);
 		if(StringUtils.isNotEmpty(title))c.andTitleLike("%"+title+"%");
 		example.setLimitStart(condition.getStart());
@@ -140,7 +146,7 @@ public class ArticleServiceImpl  extends CommonServiceImpl implements ArticleSer
 	}
 	
 	
-public ReturnObject<EHaiArticle> article_list(HttpServletRequest request) throws Exception{
+public ReturnObject<EHaiArticle> article_list(HttpServletRequest request,String moduleEnum) throws Exception{
 		
 		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
 		rm.setCode(0);
@@ -150,7 +156,7 @@ public ReturnObject<EHaiArticle> article_list(HttpServletRequest request) throws
 		return rm;
 	}
 
-	public ReturnObject<EHaiArticle> article_list_json(HttpServletRequest request,EConditionObject condition) throws Exception {
+	public ReturnObject<EHaiArticle> article_list_json(HttpServletRequest request,String moduleEnum,EConditionObject condition) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
 		rm.setCode(0);
@@ -159,6 +165,7 @@ public ReturnObject<EHaiArticle> article_list(HttpServletRequest request) throws
 		
 		EHaiArticleExample example = new EHaiArticleExample();
 		EHaiArticleExample.Criteria c = example.createCriteria();
+		c.andModuleEqualTo(moduleEnum);
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
 		example.setLimitStart(condition.getStart());
 		example.setLimitEnd(condition.getRows());
@@ -172,16 +179,17 @@ public ReturnObject<EHaiArticle> article_list(HttpServletRequest request) throws
 		return rm;
 	}
 	
-	private List<EHaiArticleCat> articleCatList(HttpServletRequest request){
+	private List<EHaiArticleCat> articleCatList(HttpServletRequest request,String moduleEnum){
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		EHaiArticleCatExample acExample = new EHaiArticleCatExample();
 		EHaiArticleCatExample.Criteria c = acExample.createCriteria();
 		c.andStoreIdEqualTo(store_id);
+		c.andModuleEqualTo(moduleEnum);
 		List<EHaiArticleCat> acList = eHaiArticleCatMapper.selectByExample(acExample);
 		return acList;
 	}
 
-	public ReturnObject<EHaiArticle> article_insert(HttpServletRequest request)
+	public ReturnObject<EHaiArticle> article_insert(HttpServletRequest request,String moduleEnum)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
@@ -190,7 +198,7 @@ public ReturnObject<EHaiArticle> article_list(HttpServletRequest request) throws
 		EHaiArticle model = new EHaiArticle();
 
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("articleCatList", this.articleCatList(request));
+		map.put("articleCatList", this.articleCatList(request,moduleEnum));
 		map.put("goodsList", this.goodsList(request));
 		map.put("agId", 0);
 		
@@ -201,7 +209,7 @@ public ReturnObject<EHaiArticle> article_list(HttpServletRequest request) throws
 		return rm;
 	}
 	
-	public ReturnObject<EHaiArticle> article_insert_submit(HttpServletRequest request,EHaiArticle model,Long goodsId)
+	public ReturnObject<EHaiArticle> article_insert_submit(HttpServletRequest request,String moduleEnum,EHaiArticle model,Long goodsId)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
@@ -220,16 +228,21 @@ public ReturnObject<EHaiArticle> article_list(HttpServletRequest request) throws
 			return rm;
 		}
 		
-		model.setModule(EArticleModuleEnum.ARTICLE);
+		Date date = new Date();
+//		model.setModule(EArticleModuleEnum.ARTICLE);
+		model.setModule(moduleEnum);
+		if(model.getArticleDate() == null)model.setArticleDate(date);
+		model.setCreateDate(date);
+		model.setUpdateDate(date);
 
 		int code = eHaiArticleMapper.insertSelective(model);
-		this.saveArticleGoods(request, model.getArticleId(), goodsId);//保存更新信息的商品
+		if(goodsId != null && goodsId > 0)this.saveArticleGoods(request, model.getArticleId(), goodsId);//保存更新信息的商品
 		rm.setCode(code);
 		rm.setMsg("添加成功");
 		return rm;
 	}
 
-	public ReturnObject<EHaiArticle> article_update(HttpServletRequest request,Integer articleId)
+	public ReturnObject<EHaiArticle> article_update(HttpServletRequest request,String moduleEnum,Integer articleId)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
@@ -239,6 +252,7 @@ public ReturnObject<EHaiArticle> article_list(HttpServletRequest request) throws
 		EHaiArticleExample.Criteria c = example.createCriteria();
 		c.andArticleIdEqualTo(articleId);
 		c.andStoreIdEqualTo(store_id);
+		c.andModuleEqualTo(moduleEnum);
 		List<EHaiArticle> list = eHaiArticleMapper.selectByExampleWithBLOBs(example);
 		if(list == null || list.size() == 0){
 			rm.setMsg("记录不存在");
@@ -248,7 +262,7 @@ public ReturnObject<EHaiArticle> article_list(HttpServletRequest request) throws
 
 
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("articleCatList", this.articleCatList(request));
+		map.put("articleCatList", this.articleCatList(request,moduleEnum));
 		map.put("goodsList", this.goodsList(request));
 		map.put("agId", this.getAgId(request, model.getArticleId()));//查找关联商品
 		
@@ -291,7 +305,7 @@ public ReturnObject<EHaiArticle> article_list(HttpServletRequest request) throws
 		
 	}
 	
-	public ReturnObject<EHaiArticle> article_update_submit(HttpServletRequest request,EHaiArticle model,Long goodsId)
+	public ReturnObject<EHaiArticle> article_update_submit(HttpServletRequest request,String moduleEnum,EHaiArticle model,Long goodsId)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
@@ -303,7 +317,7 @@ public ReturnObject<EHaiArticle> article_list(HttpServletRequest request) throws
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
 		c.andArticleIdEqualTo(model.getArticleId());
 		c.andStoreIdEqualTo(store_id);
-
+		c.andModuleEqualTo(moduleEnum);
 		long count = eHaiArticleMapper.countByExample(example);
 		if(count == 0){
 			rm.setMsg("记录不存在");
@@ -311,15 +325,19 @@ public ReturnObject<EHaiArticle> article_list(HttpServletRequest request) throws
 		}
 
 		EHaiArticle bean = eHaiArticleMapper.selectByPrimaryKey(model.getArticleId());
-
+		Date date = new Date();
 bean.setCatId(model.getCatId());
 bean.setCode(model.getCode());
-bean.setModule(EArticleModuleEnum.ARTICLE);
+//bean.setModule(EArticleModuleEnum.ARTICLE);
 bean.setTitle(model.getTitle());
 bean.setContent(model.getContent());
 bean.setAuthor(model.getAuthor());
 bean.setAuthorEmail(model.getAuthorEmail());
-bean.setArticleDate(model.getArticleDate());
+if(model.getArticleDate()!=null){
+	bean.setArticleDate(model.getArticleDate());
+}else{
+	bean.setArticleDate(date);
+}
 bean.setStartPublishDate(model.getStartPublishDate());
 bean.setEndPublishDate(model.getEndPublishDate());
 bean.setStartApplyDate(model.getStartApplyDate());
@@ -339,16 +357,18 @@ bean.setArticleTypeCode(model.getArticleTypeCode());
 bean.setUserId(model.getUserId());
 bean.setUpdateDate(new Date());
 bean.setArticleLabel(model.getArticleLabel());
+bean.setIsHot(model.getIsHot());
+bean.setArticleSource(model.getArticleSource());//网络来源
 
 
 		int code = eHaiArticleMapper.updateByExampleSelective(bean, example);
-		this.saveArticleGoods(request, model.getArticleId(), goodsId);//保存更新信息的商品
+		if(goodsId != null && goodsId > 0)this.saveArticleGoods(request, model.getArticleId(), goodsId);//保存更新信息的商品
 		rm.setCode(code);
 		rm.setMsg("编辑成功");
 		return rm;
 	}
 
-	public ReturnObject<EHaiArticle> article_info(HttpServletRequest request,Integer articleId)
+	public ReturnObject<EHaiArticle> article_info(HttpServletRequest request,String moduleEnum,Integer articleId)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
@@ -358,6 +378,7 @@ bean.setArticleLabel(model.getArticleLabel());
 		EHaiArticleExample.Criteria c = example.createCriteria();
 		c.andArticleIdEqualTo(articleId);
 		c.andStoreIdEqualTo(store_id);
+		c.andModuleEqualTo(moduleEnum);
 		List<EHaiArticle> list = eHaiArticleMapper.selectByExampleWithBLOBs(example);
 		if(list == null || list.size() == 0){
 			rm.setMsg("记录不存在");
@@ -370,7 +391,7 @@ bean.setArticleLabel(model.getArticleLabel());
 	}
 
 
-	public ReturnObject<EHaiArticle> article_find(HttpServletRequest request,Integer articleId)
+	public ReturnObject<EHaiArticle> article_find(HttpServletRequest request,String moduleEnum,Integer articleId)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
@@ -385,7 +406,7 @@ bean.setArticleLabel(model.getArticleLabel());
 		return rm;
 	}
 
-	public ReturnObject<EHaiArticle> article_delete(HttpServletRequest request,Integer articleId)
+	public ReturnObject<EHaiArticle> article_delete(HttpServletRequest request,String moduleEnum,Integer articleId)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
@@ -395,6 +416,7 @@ bean.setArticleLabel(model.getArticleLabel());
 		EHaiArticleExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
 		c.andArticleIdEqualTo(articleId);
+		c.andModuleEqualTo(moduleEnum);
 
 		long count = eHaiArticleMapper.countByExample(example);
 		if(count == 0){

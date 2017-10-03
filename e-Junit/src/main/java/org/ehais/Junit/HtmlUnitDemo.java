@@ -15,7 +15,9 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.Test;
 
+import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
+import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
@@ -286,4 +288,20 @@ public class HtmlUnitDemo {
 	}
 	
 	
+	@Test
+    public void getAjaxPage() throws Exception{  
+        WebClient webClient = new WebClient(BrowserVersion.CHROME);  
+        webClient.getOptions().setJavaScriptEnabled(true);  
+        webClient.getOptions().setCssEnabled(false);  
+        webClient.setAjaxController(new NicelyResynchronizingAjaxController());  
+        webClient.getOptions().setTimeout(Integer.MAX_VALUE);  
+        webClient.getOptions().setThrowExceptionOnScriptError(false);  
+//        HtmlPage rootPage = webClient.getPage("http://127.0.0.1/admin.html");  
+        HtmlPage rootPage = webClient.getPage("http://127.0.0.1/ehais/adminlogin");  
+     
+        System.out.println(rootPage.asXml());  
+    } 
+
+    
+    
 }

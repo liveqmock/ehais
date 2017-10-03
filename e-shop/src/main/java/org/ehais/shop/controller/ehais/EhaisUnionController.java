@@ -1,6 +1,8 @@
 package org.ehais.shop.controller.ehais;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,11 +30,16 @@ import org.ehais.epublic.model.HaiStoreStatistics;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.epublic.service.EStoreService;
 import org.ehais.epublic.service.EWPPublicService;
+import org.ehais.shop.mapper.HaiOrderGoodsMapper;
 import org.ehais.shop.mapper.HaiOrderInfoMapper;
+import org.ehais.shop.model.HaiOrderGoods;
+import org.ehais.shop.model.HaiOrderGoodsExample;
 import org.ehais.shop.model.HaiOrderInfoExample;
 import org.ehais.shop.model.HaiOrderInfoWithBLOBs;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
+import org.ehais.util.DateUtil;
+import org.ehais.util.ECommon;
 import org.ehais.util.EncryptUtils;
 import org.ehais.util.ResourceUtil;
 import org.ehais.util.SignUtil;
@@ -72,6 +79,8 @@ public class EhaisUnionController extends EhaisCommonController{
 	private EHaiStoreMapper eHaiStoreMapper;
 	@Autowired
 	private HaiOrderInfoMapper haiOrderInfoMapper;
+	@Autowired
+	private HaiOrderGoodsMapper haiOrderGoodsMapper;
 	@Autowired
 	private EStoreService eStoreService;
 	@Autowired
@@ -260,11 +269,22 @@ public class EhaisUnionController extends EhaisCommonController{
 	}
 	
 	
-	
+	/**
+	 * 
+	 * @param modelMap
+	 * @param request
+	 * @param response
+	 * @param order_time 
+	 * @param orderSort New：即最新的，order_time的之后的订单；Old：即以往的订单，order_time之前的订单，配合获取订单数量rows
+	 * @param condition 预留，暂无用
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("/ehaisOrder")
 	public String ehaisOrder(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "order_time", required = false) String order_time,
+			@RequestParam(value = "orderSort", required = false) String orderSort,
 			@ModelAttribute EConditionObject condition 
 			){
 		ReturnObject<HaiOrderInfoWithBLOBs> rm = new ReturnObject<HaiOrderInfoWithBLOBs>();
@@ -273,15 +293,49 @@ public class EhaisUnionController extends EhaisCommonController{
 		try{
 			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
 			HaiOrderInfoExample orderInfoExample = new HaiOrderInfoExample();
-			orderInfoExample.createCriteria().andStoreIdEqualTo(store_id)
+			HaiOrderInfoExample.Criteria c = orderInfoExample.createCriteria();
+			c.andStoreIdEqualTo(store_id)
 			.andOrderStatusEqualTo(EOrderStatusEnum.success)
 			.andClassifyEqualTo(EAdminClassifyEnum.shop);
-			orderInfoExample.setOrderByClause("pay_time desc");
-			orderInfoExample.setLimitStart(condition.getStart());
-			orderInfoExample.setLimitEnd(condition.getRows());
-			List<HaiOrderInfoWithBLOBs> listOrder = haiOrderInfoMapper.selectByExampleWithBLOBs(orderInfoExample);
+			
+			if(StringUtils.isNotBlank(order_time) && ECommon.isDate(order_time)){				
+				Date d = DateUtil.formatDate(order_time, DateUtil.FORMATSTR_2);
+				if(orderSort.equals("New")){//定时器读取比当前时间之后的订单，不受数量限制
+					c.andAddTimeGreaterThan(d);
+					orderInfoExample.setOrderByClause("add_time asc");
+				}else if(orderSort.equals("Old")){//下拉列表获取此时间之前的订单
+					c.andAddTimeLessThan(d);
+					orderInfoExample.setOrderByClause("add_time desc");
+					orderInfoExample.setLimitStart(condition.getStart());
+					orderInfoExample.setLimitEnd(condition.getRows());
+				}else{
+					rm.setMsg("错误参数");
+					return this.writeJson(rm);
+				}				
+			}else{//第一次进入界面，获取最新的订单
+				orderInfoExample.setOrderByClause("add_time desc");
+				orderInfoExample.setLimitStart(condition.getStart());
+				orderInfoExample.setLimitEnd(condition.getRows());
+			}
+			
+			
 			
 			Long total = haiOrderInfoMapper.countByExample(orderInfoExample);
+			List<HaiOrderInfoWithBLOBs> listOrder = haiOrderInfoMapper.selectByExampleWithBLOBs(orderInfoExample);
+			List<Long> orderIds = new ArrayList<Long>();
+			
+			for (HaiOrderInfoWithBLOBs haiOrderInfoWithBLOBs : listOrder) {
+				orderIds.add(haiOrderInfoWithBLOBs.getOrderId());
+			}
+			Map<String,Object> map = new HashMap<String,Object>();
+			if(orderIds.size() > 0){
+				HaiOrderGoodsExample oge = new HaiOrderGoodsExample();
+				oge.createCriteria().andOrderIdIn(orderIds);
+				List<HaiOrderGoods> listOrderGoods = haiOrderGoodsMapper.selectByExampleWithBLOBs(oge);
+				map.put("listOrderGoods", listOrderGoods);
+			}
+			
+			rm.setMap(map);
 			rm.setRows(listOrder);
 			rm.setTotal(total);
 			rm.setCode(1);
@@ -291,6 +345,8 @@ public class EhaisUnionController extends EhaisCommonController{
 		}
 		return this.writeJson(rm);
 	}
+	
+	
 	
 	public static void main(String[] args) throws Exception {
 		String cid = SignUtil.setCid(1, 0, 0L, 125L, "ehais_wxdev");

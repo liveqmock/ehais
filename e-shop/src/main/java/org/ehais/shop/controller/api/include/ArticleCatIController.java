@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.ehais.controller.CommonController;
+import org.ehais.enums.EArticleModuleEnum;
 import org.ehais.shop.service.ArticleCatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
@@ -25,7 +26,7 @@ public class ArticleCatIController extends CommonController{
 			@RequestParam(value = "parent_id", required = true) Integer parent_id){
 		
 		try {
-			return this.writeJson(articleCatService.article_cat_parent_list(store_id, parent_id));
+			return this.writeJson(articleCatService.article_cat_parent_list(EArticleModuleEnum.ARTICLE,store_id, parent_id));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

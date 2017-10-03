@@ -10,10 +10,14 @@
 		<link rel="stylesheet" href="../css/common.css" />
 		<link rel="stylesheet" href="../js/elay/elay.css" />
 		<link rel="stylesheet" href="../css/w_wine.css" />
-				
+		
 	</head>
 	<body>
-		<div class="w_wine_wrapper">
+		<div class="ww">
+			<header>
+				<i class="iconfont icon-xiangzuojiantou"></i>
+				资讯详情
+			</header>
 			<div class="logo"></div>
 			<h3>${article.title!''}</h3>
 			<div class="lbl">
@@ -31,11 +35,17 @@
 			<div class="product">
 				<img src="${goods.originalImg!''}" />
 				<div class="name">${goods.goodsName!''}</div>
-				<div class="detail">
+				<div class="detail dn">
 					<span id="buynow"><a href="javascript:;">购买</a></span>
 					<span><a href="${w_goods_detail!''}">详情</a></span>
 					<span id="shareTip"><a href="javascript:;">分享</a></span>
 				</div>
+				
+				<div class="qr">
+					长按进入购买
+					<img id="gqr" />
+				</div>
+				
 			</div>
 			<input type="hidden" id="goodsId" name="goodsId" value="${goods.goodsId}"/>
 			<input type="hidden" id="parentId" name="parentId" value="${parentId}"/>
@@ -45,14 +55,16 @@
 			</#if>
 			
 			
-			<div class="statistics"><i class="iconfont icon-article">  ${article.readCount!0}</i><i class="iconfont icon-zan">  ${article.praiseCount!0}</i></div>
-			
 			<div class="recommend_title dn">推荐文章</div>
 			<div class="recommend dn"></div>
 			
 			<div class="qrcode">
 				<img src="../images/qrcode.gif" />
 			</div>
+			
+			<div class="statistics"><i class="iconfont icon-article">  ${article.readCount!0}</i><i class="iconfont icon-zan">  ${article.praiseCount!0}</i></div>
+			
+			
 		</div>
 		
 		<div class="write">
@@ -79,6 +91,8 @@
 	<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js" ></script>
 	<script type="text/javascript" src="../js/wxsdk.js" ></script>
 	<script type="text/javascript" src="../js/ehais/w_article_goods.js" ></script>
+	<script type="text/javascript" src="/js/jquery.qrcode.min.js" ></script>
+		
 	<script type="text/javascript">
 	var sid = "${sid}";
 	<#if goods??>
@@ -91,6 +105,12 @@
 		
 	});
 	
+	</script>
+	
+	<script type="text/javascript">
+		$(function(){
+			$("#gqr").attr("src","gqr!"+sid);
+		});
 	</script>
 		
 </html>

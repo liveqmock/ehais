@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
+import org.ehais.enums.EArticleModuleEnum;
 import org.ehais.epublic.model.EHaiArticle;
 import org.ehais.epublic.model.EHaiArticleCat;
 import org.ehais.shop.model.tp.TpAdmin;
@@ -144,7 +145,7 @@ public class DiningAdminController extends CommonController{
 	public String m_article_add(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) {	
 		Integer store_id = (Integer)request.getSession().getAttribute("store_id");
-		if(store_id == null)store_id = 55;
+		
 		try{
 			
 			ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
@@ -153,7 +154,7 @@ public class DiningAdminController extends CommonController{
 			rm.setAction("add");
 			modelMap.addAttribute("rm", rm);
 			
-			List<EHaiArticleCat> articleCatList = articleCatService.articleCatList(store_id, 0);
+			List<EHaiArticleCat> articleCatList = articleCatService.articleCatList(EArticleModuleEnum.ARTICLE,store_id, 0);
 			modelMap.addAttribute("articleCatList", articleCatList);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -170,7 +171,7 @@ public class DiningAdminController extends CommonController{
 		
 		try{
 			
-			ReturnObject<EHaiArticle> rm = articleCatService.article_insert_submit(request,article);
+			ReturnObject<EHaiArticle> rm = articleCatService.article_insert_submit(request,EArticleModuleEnum.ARTICLE,article);
 			return this.writeJson(rm);
 			
 		}catch(Exception e){
@@ -194,7 +195,7 @@ public class DiningAdminController extends CommonController{
 			rm.setAction("add");
 			modelMap.addAttribute("rm", rm);
 			
-			List<EHaiArticleCat> articleCatList = articleCatService.articleCatList(store_id, 0);
+			List<EHaiArticleCat> articleCatList = articleCatService.articleCatList(EArticleModuleEnum.ARTICLE,store_id, 0);
 			modelMap.addAttribute("articleCatList", articleCatList);
 		}catch(Exception e){
 			e.printStackTrace();

@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
+import org.ehais.enums.EArticleModuleEnum;
 import org.ehais.enums.EArticleRecordEnum;
 import org.ehais.epublic.mapper.EHaiArticleCatMapper;
 import org.ehais.epublic.mapper.EHaiArticleMapper;
@@ -54,6 +55,8 @@ import org.ehais.shop.model.HaiGoodsGallery;
 import org.ehais.shop.model.HaiGoodsGalleryExample;
 import org.ehais.shop.model.HaiUserAddress;
 import org.ehais.shop.model.HaiUserAddressExample;
+import org.ehais.tools.EConditionObject;
+import org.ehais.tools.ReturnObject;
 import org.ehais.util.MatrixToImageWriter;
 import org.ehais.util.ResourceUtil;
 import org.ehais.util.SignUtil;
@@ -62,9 +65,11 @@ import org.ehais.weixin.utils.WeiXinUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
@@ -107,8 +112,7 @@ public class EhaisWebController extends EhaisCommonController {
 	private HaiCategoryMapper haiCategoryMapper;
 
 	
-	//http://127.0.0.1/w_shop!9771520-0ac51801-1bd44602-2f40141253-32a82a04-4495cf05-560
-	//http://4db7deca.ngrok.io/w_shop!9771520-0ac51801-1bd44602-2f40141253-32a82a04-4495cf05-560
+	//http://127.0.0.1/w_shop!1ce27200-02bd7b01-1ed30c02-2a6a0103-3760edeb1acce
 	@RequestMapping("/w_shop!{cid}")
 	public String shop(ModelMap modelMap,
 			HttpServletRequest request,
@@ -328,8 +332,7 @@ public class EhaisWebController extends EhaisCommonController {
 		return path;
 	}
 	
-	//http://127.0.0.1/w_article!8314a20-092d5901-15336902-209a061253-3b6e311e8aa9c
-	//http://652c353b.ngrok.io/w_article!8314a20-092d5901-15336902-209a061253-3b6e311e8aa9c
+	//http://127.0.0.1/w_article!1ce27200-02bd7b01-1ed30c02-2a6a0103-3760edeb1acce
 	@RequestMapping("/w_article!{cid}")
 	public String w_article(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -420,14 +423,14 @@ public class EhaisWebController extends EhaisCommonController {
 		mapData.put("adList", adList);
 		//读取分类
 		EHaiArticleCatExample acatExample = new EHaiArticleCatExample();
-		acatExample.createCriteria().andStoreIdEqualTo(store_id).andIsValidEqualTo(true);
+		acatExample.createCriteria().andStoreIdEqualTo(store_id).andIsValidEqualTo(true).andModuleEqualTo(EArticleModuleEnum.ARTICLE);
 		acatExample.setOrderByClause("sort_order asc");
 		List<EHaiArticleCatSimple> articleCatList = eHaiArticleCatMapper.mySelectByExample(acatExample);
 		mapData.put("articleCatList", articleCatList);
 		//读取资讯列表
 		EHaiArticleExample aExample = new EHaiArticleExample();
-		aExample.createCriteria().andStoreIdEqualTo(store_id).andIsHotEqualTo(true);
-		aExample.setOrderByClause("article_date desc");
+		aExample.createCriteria().andStoreIdEqualTo(store_id).andIsHotEqualTo(true).andModuleEqualTo(EArticleModuleEnum.ARTICLE);
+		aExample.setOrderByClause("article_date desc,article_id desc");
 		List<EHaiArticleSimple> articleList = eHaiArticleMapper.mySelectByExample(aExample);
 //		List<Integer> articleIds = new ArrayList<Integer>();
 		for (EHaiArticleSimple eHaiArticle : articleList) {
@@ -447,6 +450,7 @@ public class EhaisWebController extends EhaisCommonController {
 		
 		JSONObject json = JSONObject.fromObject(mapData,this.getDefaultJsonConfig());
 		modelMap.addAttribute("json", json.toString());
+		modelMap.addAttribute("cid", cid);
 		
 
 //		String newSid = SignUtil.setCid(store_id,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), user_id , wp.getToken());
@@ -469,6 +473,51 @@ public class EhaisWebController extends EhaisCommonController {
 		return "/ehais/w_article";
 	}
 	
+	
+	@ResponseBody
+	@RequestMapping("/article_list_cat_id!{cid}")
+	public String article_list(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@PathVariable(value = "cid") String cid	,
+			@RequestParam(value = "cat_id", required = true) Integer cat_id,
+			@ModelAttribute EConditionObject condition ){
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
+		ReturnObject<EHaiArticleSimple> rm = new ReturnObject<EHaiArticleSimple>();
+		rm.setCode(0);
+		try {
+//			EHaiStore store = eStoreService.getEStore(store_id);
+			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
+			Map<String,Object> map = SignUtil.getCid(cid,wp.getToken());
+			if(map == null){
+				rm.setMsg("错误参数");
+			    return this.writeJson(rm);
+			}
+			EHaiArticleExample example = new EHaiArticleExample();
+			EHaiArticleExample.Criteria c = example.createCriteria();
+			c.andStoreIdEqualTo(store_id);
+			c.andModuleEqualTo(EArticleModuleEnum.ARTICLE);
+			if(cat_id > 0)c.andCatIdEqualTo(cat_id);
+			if(cat_id == 0)c.andIsHotEqualTo(true);
+			example.setOrderByClause("article_date desc,article_id desc");
+			example.setLimitStart(condition.getStart());
+			example.setLimitEnd(condition.getRows());
+			List<EHaiArticleSimple> list = eHaiArticleMapper.mySelectByExample(example);
+			for (EHaiArticleSimple eHaiArticle : list) {
+				eHaiArticle.setLink(SignUtil.setAid(store_id, Integer.valueOf(map.get("agencyId").toString()), Long.valueOf(map.get("userId").toString()), user_id, eHaiArticle.getArticleId(), wp.getToken()));
+				
+			}
+			rm.setTotal(eHaiArticleMapper.countByExample(example));
+			rm.setRows(list);
+			rm.setCode(1);
+			return this.writeJson(rm);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			log.error("error :", e);
+		}
+		return null;
+	}
 	
 	@RequestMapping("/w_article_detail!{aid}")
 	public String w_article_detail(ModelMap modelMap,
@@ -895,6 +944,55 @@ public class EhaisWebController extends EhaisCommonController {
 		return "/ehais/w_write_message";
 	}
 	
+	
+	/**
+	 * 商品二维码
+	 * @param modelMap
+	 * @param request
+	 * @param response
+	 * @param sid
+	 */
+	@RequestMapping(value="/gqr!{sid}")
+	public void gqr(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response	,
+			@PathVariable(value = "sid") String sid
+			) {
+		Integer store_id = SignUtil.getUriStoreId(sid);
+		if(store_id == 0 || store_id == null){
+			return ; //错误的链接，跳转商城
+		}
+		try{
+			String qrcode = request.getScheme()+"://"+request.getServerName()+"/w_goods_detail!"+sid;
+			
+			MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+			@SuppressWarnings("rawtypes")
+	        Map hints = new HashMap();
+	        
+	        //设置UTF-8， 防止中文乱码
+	        hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
+	        //设置二维码四周白色区域的大小
+	        hints.put(EncodeHintType.MARGIN,0);
+	        //设置二维码的容错性
+	        hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L); 
+	        
+	        //width:图片完整的宽;height:图片完整的高
+	        //因为要在二维码下方附上文字，所以把图片设置为长方形（高大于宽）
+	        int width = 120;
+	        int height = 120;
+	        
+	        //画二维码，记得调用multiFormatWriter.encode()时最后要带上hints参数，不然上面设置无效
+	        BitMatrix bitMatrix = multiFormatWriter.encode(qrcode, BarcodeFormat.QR_CODE, width, height, hints);
+	        BufferedImage image = MatrixToImageWriter.toBufferedImage(bitMatrix);
+//	         
+	        
+	        OutputStream stream = response.getOutputStream();
+	        ImageIO.write(image, "jpg", stream);
+	        
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 	
 	
 	

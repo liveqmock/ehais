@@ -40,7 +40,7 @@
 <div class="header">
 	<div class="nav">
 		<i id="back" class="icon fa fa-arrow-left">&nbsp;</i>
-		<div class="nav0">软文资讯</div>
+		<div class="nav0">品牌故事</div>
 		<div class="nav1">信息编辑</div>
 	</div>
 </div>
@@ -83,20 +83,23 @@
 </div>
 
 <div class="form-group">
-<label class="col-sm-2 control-label">标签</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="keywords" name="keywords" value="${rm.model.keywords!''}" placeholder="">
-	如多个标签可用英文逗号区分,标签用于软文的推荐文章作为关联依据
-</div>
-</div>
-
-<div class="form-group">
 <label class="col-sm-2 control-label">发布日期</label>
 <div class="col-sm-3">
 	<@bsDatePicker id="articleDate" value="${((rm.model.articleDate)?string('yyyy-MM-dd'))!''}" />
 </div>
 </div>
 
+
+<div class="form-group">
+<label class="col-sm-2 control-label">列表图片</label>
+<div class="col-sm-5">
+
+<@bsQiniuImagesPicker id="articleThumb" value="${rm.model.articleThumb!''}" domain="${domain}" uptoken="${uptoken}" />
+
+<br>
+请上传正方形的图片，尺寸建议使用200*200
+</div>
+</div>
 
 
 
@@ -112,20 +115,6 @@
 </div>
 
 
-<div class="form-group">
-<label class="col-sm-2 control-label">关联商品</label>
-<div class="col-sm-3">
-	<select class="form-control" id="goodsId" name="goodsId" >
-		<option value="0">--请选择关联商品--</option>
-		<#if rm.map.goodsList??&&rm.map.goodsList?size gt 0>
-		<#list rm.map.goodsList as goods>
-		<option value="${goods.goodsId!0}" <#if goods.goodsId == rm.map.agId!0 >selected="selected"</#if> >${goods.goodsName!''}</option>
-		</#list>
-		</#if>
-	</select>
-</div>
-</div>
-
 
 <div class="form-group">
 <label class="col-sm-2 control-label">热点</label>
@@ -135,13 +124,13 @@
 </div>
 
 
-
 <div class="form-group">
 <label class="col-sm-2 control-label">内容</label>
 <div class="col-sm-8">
 	<@ueditorPicker id="content" value="${rm.model.content!''}" />
 </div>
 </div>
+
 
 <div class="form-group">
 <label class="col-sm-2 control-label">网络来源</label>
@@ -172,7 +161,7 @@
 
 </form>
 </div>    
-<script type="text/javascript" src="/js/ehais/article_detail.js"></script>             
+<script type="text/javascript" src="/js/ehais/brand_story_detail.js"></script>             
 
 
 </body>

@@ -1,4 +1,5 @@
 $(function(){
+	if(sessionStorage.getItem("header")!=null)$(".ww").addClass("header");
 	$("#shareTip").click(function(){$(".share_wrapper").addClass("active");});
 	$(".share_wrapper .pic").click(function(){$(".share_wrapper").removeClass("active");});
 	$("#buynow").click(function(){buynow();});//立即购买

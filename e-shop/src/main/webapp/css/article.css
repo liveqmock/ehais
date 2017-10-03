@@ -23,35 +23,36 @@
 }
 .wa #cate ul li {
   width: auto;
-  padding: 0.08rem 0.1rem;
+  padding: 0 0.1rem;
+  height: 0.38rem;
+  line-height: 0.38rem;
 }
 .wa #cate ul li.active {
   background: #ca1818;
   color: #fff;
 }
-.wa .swiper-container .swiper-pagination-bullet {
-  float: none;
-  width: 8px;
+.wa #clist > div {
+  display: none;
 }
-.wa > ul li {
+.wa #clist > div > ul > li {
   padding: 0.1rem;
   border-bottom: 0.01rem solid #DCDCDC;
   width: 100%;
 }
-.wa > ul li .img {
+.wa #clist > div > ul > li .img {
   width: 25%;
 }
-.wa > ul li .img img {
+.wa #clist > div > ul > li .img img {
   max-width: 100%;
 }
-.wa > ul li .i {
+.wa #clist > div > ul > li .i {
   width: 75%;
 }
-.wa > ul li .i .t {
+.wa #clist > div > ul > li .i .t {
   padding: 0 0.1rem;
   font-weight: bold;
 }
-.wa > ul li .i .d {
+.wa #clist > div > ul > li .i .d {
   padding: 0.05rem 0.1rem 0;
   color: #999;
   font-size: 0.14rem;
@@ -62,19 +63,29 @@
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
-.wa > ul li .i .h {
+.wa #clist > div > ul > li .i .h {
   padding: 0.05rem 0.1rem 0;
   color: #999;
   font-size: 0.12rem;
 }
-.wa > ul li .i .h i {
+.wa #clist > div > ul > li .i .h i {
   width: auto;
   float: right;
   padding-left: 0.15rem;
   font-size: 0.12rem;
 }
-.wa > ul li:last-child {
+.wa #clist > div > ul > li:last-child {
   border-bottom: 0;
+}
+.wa #clist > div > ul > li.swiper-container {
+  padding: 0;
+}
+.wa #clist > div > ul > li.swiper-container .swiper-pagination-bullet {
+  float: none;
+  width: 8px;
+}
+.wa #clist > div.active {
+  display: block;
 }
 .wa footer {
   font-size: 0.12rem;

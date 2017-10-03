@@ -31,13 +31,14 @@ public class ArticleCatServiceImpl extends CommonServiceImpl implements ArticleC
 	protected EHaiArticleMapper eHaiArticleMapper;
 	
 	
-	public ReturnObject<EHaiArticleCat> article_cat_parent_list(Integer store_id, Integer parent_id) throws Exception {
+	public ReturnObject<EHaiArticleCat> article_cat_parent_list(String moduleEnum,Integer store_id, Integer parent_id) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticleCat> rm = new ReturnObject<EHaiArticleCat>();
 		EHaiArticleCatExample example = new EHaiArticleCatExample();
 		example.createCriteria()
 		.andStoreIdEqualTo(store_id)
-		.andParentIdEqualTo(parent_id);
+		.andParentIdEqualTo(parent_id)
+		.andModuleEqualTo(moduleEnum);
 		
 		List<EHaiArticleCat> list = eHaiArticleCatMapper.selectByExample(example);
 		rm.setRows(list);
@@ -46,18 +47,19 @@ public class ArticleCatServiceImpl extends CommonServiceImpl implements ArticleC
 	}
 
 	@Override
-	public List<EHaiArticleCat> articleCatList(Integer store_id, Integer parent_id) throws Exception {
+	public List<EHaiArticleCat> articleCatList(String moduleEnum,Integer store_id, Integer parent_id) throws Exception {
 		// TODO Auto-generated method stub
 		EHaiArticleCatExample example = new EHaiArticleCatExample();
 		EHaiArticleCatExample.Criteria c = example.createCriteria();
 		c.andStoreIdEqualTo(store_id);
+		c.andModuleEqualTo(moduleEnum);
 		if(parent_id != 0)c.andParentIdEqualTo(parent_id);
 		
 		List<EHaiArticleCat> list = eHaiArticleCatMapper.selectByExample(example);
 		return list;
 	}
 	
-	public ReturnObject<EHaiArticle> article_insert_submit(HttpServletRequest request,EHaiArticle model)
+	public ReturnObject<EHaiArticle> article_insert_submit(HttpServletRequest request,String moduleEnum,EHaiArticle model)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
@@ -69,14 +71,16 @@ public class ArticleCatServiceImpl extends CommonServiceImpl implements ArticleC
 
 
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
-		if(store_id == null)store_id = 55;
+		
 		model.setStoreId(store_id);
 		model.setCreateDate(new Date());
+		model.setModule(moduleEnum);
 
 		EHaiArticleExample example = new EHaiArticleExample();
 		EHaiArticleExample.Criteria c = example.createCriteria();
 		c.andTitleEqualTo(model.getTitle());
 		c.andStoreIdEqualTo(store_id);
+		c.andModuleEqualTo(moduleEnum);
 		int count = Long.valueOf(eHaiArticleMapper.countByExample(example)).intValue();
 		if(count > 0){
 			rm.setMsg("存在相同的记录");
@@ -102,7 +106,7 @@ public class ArticleCatServiceImpl extends CommonServiceImpl implements ArticleC
 	
 	
 	
-public ReturnObject<EHaiArticleCat> articlecat_list(HttpServletRequest request) throws Exception{
+	public ReturnObject<EHaiArticleCat> articlecat_list(HttpServletRequest request,String moduleEnum) throws Exception{
 		
 		ReturnObject<EHaiArticleCat> rm = new ReturnObject<EHaiArticleCat>();
 		rm.setCode(0);
@@ -112,7 +116,7 @@ public ReturnObject<EHaiArticleCat> articlecat_list(HttpServletRequest request) 
 		return rm;
 	}
 
-	public ReturnObject<EHaiArticleCat> articlecat_list_json(HttpServletRequest request,EConditionObject condition) throws Exception {
+	public ReturnObject<EHaiArticleCat> articlecat_list_json(HttpServletRequest request,String moduleEnum,EConditionObject condition) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticleCat> rm = new ReturnObject<EHaiArticleCat>();
 		rm.setCode(0);
@@ -121,6 +125,7 @@ public ReturnObject<EHaiArticleCat> articlecat_list(HttpServletRequest request) 
 		
 		EHaiArticleCatExample example = new EHaiArticleCatExample();
 		EHaiArticleCatExample.Criteria c = example.createCriteria();
+		c.andModuleEqualTo(moduleEnum);
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
 		example.setLimitStart(condition.getStart());
 		example.setLimitEnd(condition.getRows());
@@ -134,7 +139,7 @@ public ReturnObject<EHaiArticleCat> articlecat_list(HttpServletRequest request) 
 		return rm;
 	}
 
-	public ReturnObject<EHaiArticleCat> articlecat_insert(HttpServletRequest request)
+	public ReturnObject<EHaiArticleCat> articlecat_insert(HttpServletRequest request,String moduleEnum)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticleCat> rm = new ReturnObject<EHaiArticleCat>();
@@ -152,7 +157,7 @@ public ReturnObject<EHaiArticleCat> articlecat_list(HttpServletRequest request) 
 		return rm;
 	}
 	
-	public ReturnObject<EHaiArticleCat> articlecat_insert_submit(HttpServletRequest request,EHaiArticleCat model)
+	public ReturnObject<EHaiArticleCat> articlecat_insert_submit(HttpServletRequest request,String moduleEnum,EHaiArticleCat model)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticleCat> rm = new ReturnObject<EHaiArticleCat>();
@@ -160,11 +165,13 @@ public ReturnObject<EHaiArticleCat> articlecat_list(HttpServletRequest request) 
 
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		model.setStoreId(store_id);
-
+		model.setModule(moduleEnum);
+		
 		EHaiArticleCatExample example = new EHaiArticleCatExample();
 		EHaiArticleCatExample.Criteria c = example.createCriteria();
 		c.andCatNameEqualTo(model.getCatName());
 		c.andStoreIdEqualTo(store_id);
+		c.andModuleEqualTo(moduleEnum);
 		long count = eHaiArticleCatMapper.countByExample(example);
 		if(count > 0){
 			rm.setMsg("存在相同的记录");
@@ -179,7 +186,7 @@ public ReturnObject<EHaiArticleCat> articlecat_list(HttpServletRequest request) 
 		return rm;
 	}
 
-	public ReturnObject<EHaiArticleCat> articlecat_update(HttpServletRequest request,Integer catId)
+	public ReturnObject<EHaiArticleCat> articlecat_update(HttpServletRequest request,String moduleEnum,Integer catId)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticleCat> rm = new ReturnObject<EHaiArticleCat>();
@@ -189,6 +196,7 @@ public ReturnObject<EHaiArticleCat> articlecat_list(HttpServletRequest request) 
 		EHaiArticleCatExample.Criteria c = example.createCriteria();
 		c.andCatIdEqualTo(catId);
 		c.andStoreIdEqualTo(store_id);
+		c.andModuleEqualTo(moduleEnum);
 		List<EHaiArticleCat> list = eHaiArticleCatMapper.selectByExample(example);
 		if(list == null || list.size() == 0){
 			rm.setMsg("记录不存在");
@@ -208,7 +216,7 @@ public ReturnObject<EHaiArticleCat> articlecat_list(HttpServletRequest request) 
 		return rm;
 	}
 	
-	public ReturnObject<EHaiArticleCat> articlecat_update_submit(HttpServletRequest request,EHaiArticleCat model)
+	public ReturnObject<EHaiArticleCat> articlecat_update_submit(HttpServletRequest request,String moduleEnum,EHaiArticleCat model)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticleCat> rm = new ReturnObject<EHaiArticleCat>();
@@ -220,6 +228,7 @@ public ReturnObject<EHaiArticleCat> articlecat_list(HttpServletRequest request) 
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
 		c.andCatIdEqualTo(model.getCatId());
 		c.andStoreIdEqualTo(store_id);
+		c.andModuleEqualTo(moduleEnum);
 
 		long count = eHaiArticleCatMapper.countByExample(example);
 		if(count == 0){
@@ -232,7 +241,7 @@ public ReturnObject<EHaiArticleCat> articlecat_list(HttpServletRequest request) 
 		bean.setCatId(model.getCatId());
 bean.setCatName(model.getCatName());
 bean.setCatType(model.getCatType());
-bean.setModule(model.getModule());
+//bean.setModule(model.getModule());
 bean.setKeywords(model.getKeywords());
 bean.setCatDesc(model.getCatDesc());
 bean.setSortOrder(model.getSortOrder());
@@ -250,7 +259,7 @@ bean.setIsValid(true);
 		return rm;
 	}
 
-	public ReturnObject<EHaiArticleCat> articlecat_info(HttpServletRequest request,Integer catId)
+	public ReturnObject<EHaiArticleCat> articlecat_info(HttpServletRequest request,String moduleEnum,Integer catId)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticleCat> rm = new ReturnObject<EHaiArticleCat>();
@@ -260,6 +269,8 @@ bean.setIsValid(true);
 		EHaiArticleCatExample.Criteria c = example.createCriteria();
 		c.andCatIdEqualTo(catId);
 		c.andStoreIdEqualTo(store_id);
+		c.andModuleEqualTo(moduleEnum);
+		
 		List<EHaiArticleCat> list = eHaiArticleCatMapper.selectByExample(example);
 		if(list == null || list.size() == 0){
 			rm.setMsg("记录不存在");
@@ -272,7 +283,7 @@ bean.setIsValid(true);
 	}
 
 
-	public ReturnObject<EHaiArticleCat> articlecat_find(HttpServletRequest request,Integer catId)
+	public ReturnObject<EHaiArticleCat> articlecat_find(HttpServletRequest request,String moduleEnum,Integer catId)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticleCat> rm = new ReturnObject<EHaiArticleCat>();
@@ -287,7 +298,7 @@ bean.setIsValid(true);
 		return rm;
 	}
 
-	public ReturnObject<EHaiArticleCat> articlecat_delete(HttpServletRequest request,Integer catId)
+	public ReturnObject<EHaiArticleCat> articlecat_delete(HttpServletRequest request,String moduleEnum,Integer catId)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiArticleCat> rm = new ReturnObject<EHaiArticleCat>();
@@ -297,6 +308,7 @@ bean.setIsValid(true);
 		EHaiArticleCatExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
 		c.andCatIdEqualTo(catId);
+		c.andModuleEqualTo(moduleEnum);
 
 		long count = eHaiArticleCatMapper.countByExample(example);
 		if(count == 0){

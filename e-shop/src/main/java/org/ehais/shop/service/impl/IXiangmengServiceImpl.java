@@ -178,7 +178,6 @@ bean.setArticleImages(model.getArticleImages());
 bean.setVideoUrl(model.getVideoUrl());
 bean.setArticleTypeCode(model.getArticleTypeCode());
 bean.setUserId(model.getUserId());
-bean.setArticleEnum(model.getArticleEnum());
 bean.setArticleLabel(model.getArticleLabel());
 
 Date date = new Date();

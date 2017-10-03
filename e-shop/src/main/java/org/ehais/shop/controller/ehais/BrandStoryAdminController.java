@@ -1,12 +1,9 @@
 package org.ehais.shop.controller.ehais;
 
-
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.ehais.annotation.EPermissionController;
 import org.ehais.annotation.EPermissionMethod;
 import org.ehais.common.EConstants;
 import org.ehais.enums.EArticleModuleEnum;
@@ -34,13 +31,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
-@EPermissionController(intro="红酒软文功能",value="ehaisArticleController")
 @Controller
 @RequestMapping("/ehais")
-public class  ArticleAdminController extends EhaisCommonController {
-
-	private static Logger log = LoggerFactory.getLogger(ArticleAdminController.class);
+public class BrandStoryAdminController extends EhaisCommonController {
+	private static Logger log = LoggerFactory.getLogger(BrandStoryAdminController.class);
 
 	@Autowired
 	private ArticleService ehaisArticleService;
@@ -59,14 +53,14 @@ public class  ArticleAdminController extends EhaisCommonController {
 	private static String domain = ResourceUtil.getProValue("qiniu.domain");
 	
 	
-	@EPermissionMethod(intro="打开红酒软文页面",value="ehaisArticleView",type=PermissionProtocol.URL)
-	@RequestMapping("/manage/ehaisArticleView")
-	public String ehaisArticleView(ModelMap modelMap,
+	@EPermissionMethod(intro="打开品牌故事页面",value="ehaisBrandStoryView",type=PermissionProtocol.URL)
+	@RequestMapping("/manage/ehaisBrandStoryView")
+	public String ehaisBrandStoryView(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) {	
 		try{
-			ReturnObject<EHaiArticle> rm = ehaisArticleService.article_list(request,EArticleModuleEnum.ARTICLE);
+			ReturnObject<EHaiArticle> rm = ehaisArticleService.article_list(request,EArticleModuleEnum.BRANDSTORY);
 			modelMap.addAttribute("rm", rm);
-			return "/"+this.getStoreTheme(request)+"/article/view";
+			return "/"+this.getStoreTheme(request)+"/brand_story/view";
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("article", e);
@@ -75,17 +69,17 @@ public class  ArticleAdminController extends EhaisCommonController {
 		
 	}
 	
-
+	
 	@ResponseBody
-	@EPermissionMethod(intro="返回红酒软文数据",value="ehaisArticleListJson",type=PermissionProtocol.JSON)
-	@RequestMapping(value="/manage/ehaisArticleListJson",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
-	public String ehaisArticleListJson(ModelMap modelMap,
+	@EPermissionMethod(intro="返回红酒软文数据",value="ehaisBrandStoryListJson",type=PermissionProtocol.JSON)
+	@RequestMapping(value="/manage/ehaisBrandStoryListJson",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
+	public String ehaisBrandStoryListJson(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@ModelAttribute EConditionObject condition,
 			@RequestParam(value = "cat_id", required = false) Integer cat_id,
 			@RequestParam(value = "title", required = false) String title) {
 		try{
-			ReturnObject<EHaiArticle> rm = ehaisArticleService.article_list_json(request,EArticleModuleEnum.ARTICLE, condition , cat_id , title);
+			ReturnObject<EHaiArticle> rm = ehaisArticleService.article_list_json(request,EArticleModuleEnum.BRANDSTORY, condition , cat_id , title);
 			return this.writeJson(rm);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -96,17 +90,18 @@ public class  ArticleAdminController extends EhaisCommonController {
 	
 	
 	
-	@EPermissionMethod(name="新增",intro="新增红酒软文",value="ehaisArticleAddDetail",type=PermissionProtocol.BUTTON)
-	@RequestMapping(value="/manage/ehaisArticleAddDetail",method=RequestMethod.GET)
-	public String ehaisArticleAddDetail(ModelMap modelMap,
+
+	@EPermissionMethod(name="新增",intro="新增红酒软文",value="ehaisBrandStoryAddDetail",type=PermissionProtocol.BUTTON)
+	@RequestMapping(value="/manage/ehaisBrandStoryAddDetail",method=RequestMethod.GET)
+	public String ehaisBrandStoryAddDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response
 			) {
 		try{
-			ReturnObject<EHaiArticle> rm = ehaisArticleService.article_insert(request,EArticleModuleEnum.ARTICLE);
+			ReturnObject<EHaiArticle> rm = ehaisArticleService.article_insert(request,EArticleModuleEnum.BRANDSTORY);
 			modelMap.addAttribute("rm", rm);
 			modelMap.addAttribute("uptoken", QiniuUtil.getUpToken(accessKey,secretKey,bucket));
 			modelMap.addAttribute("domain", domain);
-			return "/"+this.getStoreTheme(request)+"/article/detail";
+			return "/"+this.getStoreTheme(request)+"/brand_story/detail";
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -118,18 +113,17 @@ public class  ArticleAdminController extends EhaisCommonController {
 	
 	
 	@ResponseBody
-	@EPermissionMethod(intro="新增提交红酒软文",value="ehaisArticleAddSubmit",type=PermissionProtocol.DATA)
-	@RequestMapping(value="/manage/ehaisArticleAddSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
-	public String ehaisArticleAddSubmit(ModelMap modelMap,
+	@EPermissionMethod(intro="新增提交红酒软文",value="ehaisBrandStoryAddSubmit",type=PermissionProtocol.DATA)
+	@RequestMapping(value="/manage/ehaisBrandStoryAddSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
+	public String ehaisBrandStoryAddSubmit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
-			@RequestParam(value = "goodsId", required = true) Long goodsId,
 			@Valid @ModelAttribute("article") EHaiArticle article,
 			BindingResult result
 			) {
 			if(result.hasErrors())return this.writeBindingResult(result);
 		try{
 			
-			ReturnObject<EHaiArticle> rm = ehaisArticleService.article_insert_submit(request,EArticleModuleEnum.ARTICLE, article,goodsId);
+			ReturnObject<EHaiArticle> rm = ehaisArticleService.article_insert_submit(request,EArticleModuleEnum.BRANDSTORY, article,0l);
 			return this.writeJson(rm);
 			
 		}catch(Exception e){
@@ -141,18 +135,18 @@ public class  ArticleAdminController extends EhaisCommonController {
 	
 
 	
-	@EPermissionMethod(name="编辑",intro="编辑红酒软文",value="ehaisArticleEditDetail",type=PermissionProtocol.BUTTON)
-	@RequestMapping(value="/manage/ehaisArticleEditDetail",method=RequestMethod.GET)
-	public String ehaisArticleEditDetail(ModelMap modelMap,
+	@EPermissionMethod(name="编辑",intro="编辑红酒软文",value="ehaisBrandStoryEditDetail",type=PermissionProtocol.BUTTON)
+	@RequestMapping(value="/manage/ehaisBrandStoryEditDetail",method=RequestMethod.GET)
+	public String ehaisBrandStoryEditDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "articleId", required = true) Integer articleId
 			) {
 		try{
-			ReturnObject<EHaiArticle> rm = ehaisArticleService.article_update(request,EArticleModuleEnum.ARTICLE,articleId);
+			ReturnObject<EHaiArticle> rm = ehaisArticleService.article_update(request,EArticleModuleEnum.BRANDSTORY,articleId);
 			modelMap.addAttribute("rm", rm);
 			modelMap.addAttribute("uptoken", QiniuUtil.getUpToken(accessKey,secretKey,bucket));
 			modelMap.addAttribute("domain", domain);
-			return "/"+this.getStoreTheme(request)+"/article/detail";
+			return "/"+this.getStoreTheme(request)+"/brand_story/detail";
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("article", e);
@@ -162,18 +156,17 @@ public class  ArticleAdminController extends EhaisCommonController {
 	}
 	
 	@ResponseBody
-	@EPermissionMethod(intro="编辑提交红酒软文",value="ehaisArticleEditSubmit",type=PermissionProtocol.DATA)
-	@RequestMapping(value="/manage/ehaisArticleEditSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
-	public String ehaisArticleEditSubmit(ModelMap modelMap,
+	@EPermissionMethod(intro="编辑提交红酒软文",value="ehaisBrandStoryEditSubmit",type=PermissionProtocol.DATA)
+	@RequestMapping(value="/manage/ehaisBrandStoryEditSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
+	public String ehaisBrandStoryEditSubmit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "articleId", required = true) Integer articleId,
-			@RequestParam(value = "goodsId", required = true) Long goodsId,
 			@Valid @ModelAttribute("article") EHaiArticle article,
 			BindingResult result
 			) {
 			if(result.hasErrors())return this.writeBindingResult(result);
 		try{
-			return this.writeJson(ehaisArticleService.article_update_submit(request,EArticleModuleEnum.ARTICLE,article,goodsId));
+			return this.writeJson(ehaisArticleService.article_update_submit(request,EArticleModuleEnum.BRANDSTORY,article,0l));
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("article", e);
@@ -183,15 +176,15 @@ public class  ArticleAdminController extends EhaisCommonController {
 	
 	
 	@ResponseBody
-	@EPermissionMethod(name="删除",intro="删除红酒软文",value="ehaisArticleDelete",type=PermissionProtocol.BUTTON)
-	@RequestMapping(value="/manage/ehaisArticleDelete",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
-	public String ehaisArticleDelete(ModelMap modelMap,
+	@EPermissionMethod(name="删除",intro="删除红酒软文",value="ehaisBrandStoryDelete",type=PermissionProtocol.BUTTON)
+	@RequestMapping(value="/manage/ehaisBrandStoryDelete",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
+	public String ehaisBrandStoryDelete(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "articleId", required = true) Integer articleId,
 			@RequestParam(value = "code", required = false) String code
 			) {
 		try{
-			return this.writeJson(ehaisArticleService.article_delete(request,EArticleModuleEnum.ARTICLE, articleId));
+			return this.writeJson(ehaisArticleService.article_delete(request,EArticleModuleEnum.BRANDSTORY, articleId));
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("article", e);
@@ -203,14 +196,14 @@ public class  ArticleAdminController extends EhaisCommonController {
 	
 	
 	@ResponseBody
-	@EPermissionMethod(intro="返回红酒软文数据",value="ehaisArticleCatListJson",type=PermissionProtocol.JSON)
-	@RequestMapping(value="/manage/ehaisArticleCatListJson",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
-	public String ehaisArticleCatListJson(ModelMap modelMap,
+	@EPermissionMethod(intro="返回红酒软文数据",value="ehaisBrandStoryCatListJson",type=PermissionProtocol.JSON)
+	@RequestMapping(value="/manage/ehaisBrandStoryCatListJson",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
+	public String ehaisBrandStoryCatListJson(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@ModelAttribute EConditionObject condition,
 			@RequestParam(value = "other", required = false) String other) {
 		try{
-			ReturnObject<EHaiArticleCat> rm = ehaisArticleCatService.articlecat_list_json(request,EArticleModuleEnum.ARTICLE, condition);
+			ReturnObject<EHaiArticleCat> rm = ehaisArticleCatService.articlecat_list_json(request,EArticleModuleEnum.BRANDSTORY, condition);
 			return this.writeJson(rm);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -222,9 +215,9 @@ public class  ArticleAdminController extends EhaisCommonController {
 	
 	
 	@ResponseBody
-	@EPermissionMethod(intro="新增提交红酒软文",value="ehaisArticleCatAddSubmit",type=PermissionProtocol.DATA)
-	@RequestMapping(value="/manage/ehaisArticleCatAddSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
-	public String ehaisArticleCatAddSubmit(ModelMap modelMap,
+	@EPermissionMethod(intro="新增提交红酒软文",value="ehaisBrandStoryCatAddSubmit",type=PermissionProtocol.DATA)
+	@RequestMapping(value="/manage/ehaisBrandStoryCatAddSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
+	public String ehaisBrandStoryCatAddSubmit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@Valid @ModelAttribute("articlecat") EHaiArticleCat articlecat,
 			BindingResult result
@@ -232,7 +225,7 @@ public class  ArticleAdminController extends EhaisCommonController {
 			if(result.hasErrors())return this.writeBindingResult(result);
 		try{
 			
-			ReturnObject<EHaiArticleCat> rm = ehaisArticleCatService.articlecat_insert_submit(request,EArticleModuleEnum.ARTICLE, articlecat);
+			ReturnObject<EHaiArticleCat> rm = ehaisArticleCatService.articlecat_insert_submit(request,EArticleModuleEnum.BRANDSTORY, articlecat);
 			return this.writeJson(rm);
 			
 		}catch(Exception e){
@@ -245,9 +238,9 @@ public class  ArticleAdminController extends EhaisCommonController {
 	
 	
 	@ResponseBody
-	@EPermissionMethod(intro="编辑提交红酒软文",value="ehaisArticleCatEditSubmit",type=PermissionProtocol.DATA)
-	@RequestMapping(value="/manage/ehaisArticleCatEditSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
-	public String ehaisArticleCatEditSubmit(ModelMap modelMap,
+	@EPermissionMethod(intro="编辑提交红酒软文",value="ehaisBrandStoryCatEditSubmit",type=PermissionProtocol.DATA)
+	@RequestMapping(value="/manage/ehaisBrandStoryCatEditSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
+	public String ehaisBrandStoryCatEditSubmit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "catId", required = true) Integer catId,
 			@Valid @ModelAttribute("articlecat") EHaiArticleCat articlecat,
@@ -255,7 +248,7 @@ public class  ArticleAdminController extends EhaisCommonController {
 			) {
 			if(result.hasErrors())return this.writeBindingResult(result);
 		try{
-			return this.writeJson(ehaisArticleCatService.articlecat_update_submit(request,EArticleModuleEnum.ARTICLE,articlecat));
+			return this.writeJson(ehaisArticleCatService.articlecat_update_submit(request,EArticleModuleEnum.BRANDSTORY,articlecat));
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("articlecat", e);
@@ -265,15 +258,15 @@ public class  ArticleAdminController extends EhaisCommonController {
 	
 	
 	@ResponseBody
-	@EPermissionMethod(name="删除",intro="删除红酒软文",value="ehaisArticleCatDelete",type=PermissionProtocol.BUTTON)
-	@RequestMapping(value="/manage/ehaisArticleCatDelete",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
-	public String ehaisArticleCatDelete(ModelMap modelMap,
+	@EPermissionMethod(name="删除",intro="删除红酒软文",value="ehaisBrandStoryCatDelete",type=PermissionProtocol.BUTTON)
+	@RequestMapping(value="/manage/ehaisBrandStoryCatDelete",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
+	public String ehaisBrandStoryCatDelete(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "catId", required = true) Integer catId,
 			@RequestParam(value = "code", required = false) String code
 			) {
 		try{
-			return this.writeJson(ehaisArticleCatService.articlecat_delete(request,EArticleModuleEnum.ARTICLE, catId));
+			return this.writeJson(ehaisArticleCatService.articlecat_delete(request,EArticleModuleEnum.BRANDSTORY, catId));
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("articlecat", e);
@@ -283,8 +276,8 @@ public class  ArticleAdminController extends EhaisCommonController {
 	
 	
 	
-	@RequestMapping(value="/manage/article_qrcode",method=RequestMethod.POST)
-	public void manage_article_qrcode(ModelMap modelMap,
+	@RequestMapping(value="/manage/brand_story_qrcode",method=RequestMethod.POST)
+	public void manage_brand_story_qrcode(ModelMap modelMap,
 			HttpServletRequest request,
 			HttpServletResponse response,
 			@RequestParam(value = "articleId", required = true) Integer articleId,
@@ -304,7 +297,4 @@ public class  ArticleAdminController extends EhaisCommonController {
 	
 	
 	
-	
 }
-
-

@@ -4,9 +4,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.ehais.controller.CommonController;
+import org.ehais.enums.EArticleModuleEnum;
 import org.ehais.shop.service.ArticleService;
+import org.ehais.tools.EConditionObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,13 +24,12 @@ public class ArticleIController extends CommonController{
 	@RequestMapping("/article_list_cid")
 	public String article_list(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
-			@RequestParam(value = "store_id", required = true) Integer store_id,
+			@RequestParam(value = "store_id", required = false) Integer store_id,
 			@RequestParam(value = "cat_id", required = true) Integer cat_id,
-			@RequestParam(value = "page", required = true) Integer page,
-			@RequestParam(value = "rows", required = true) Integer rows){
+			@ModelAttribute EConditionObject condition ){
 		
 		try {
-			return this.writeJson(articleService.article_list_cid(store_id, cat_id, page, rows));
+			return this.writeJson(articleService.article_list_cid(request,EArticleModuleEnum.ARTICLE,store_id, cat_id, condition));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -46,7 +48,7 @@ public class ArticleIController extends CommonController{
 			@RequestParam(value = "len", required = true) Integer len){
 		
 		try {
-			return this.writeJson(articleService.article_list_code(store_id, cat_code, page, len));
+			return this.writeJson(articleService.article_list_code(EArticleModuleEnum.ARTICLE,store_id, cat_code, page, len));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -65,7 +67,7 @@ public class ArticleIController extends CommonController{
 			@RequestParam(value = "article_id", required = true) Integer article_id){
 		
 		try {
-			return this.writeJson(articleService.article_info(store_id, article_id));
+			return this.writeJson(articleService.article_info(EArticleModuleEnum.ARTICLE,store_id, article_id));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
