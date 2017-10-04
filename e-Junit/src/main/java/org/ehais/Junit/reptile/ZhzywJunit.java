@@ -19,12 +19,12 @@ public class ZhzywJunit {
 	private static String web_url = "http://mg.ehais.com";
 	public static String appkey = "Ehais";
 	public static String secret = "EhaisSecret";
-	public static String store_id = "20";
+	public static String store_id = "71";
 	
 //	中药基础
 	@Test
 	public void test_zyjc(){
-		String url = website+"/zycs/zyjc/index_15.html";
+		String url = website+"/zycs/zyjc/index_107.html";
 		this.zyjc(url);
 	}
 	public void zyjc(String url){
