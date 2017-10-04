@@ -24,13 +24,13 @@ public class ZhzywJunit {
 //	中药基础
 	@Test
 	public void test_zyjc(){
-		String url = website+"/zycs/zyjc/index_107.html";
+		String url = website+"/zycs/zyjc/index_117.html";
 		this.zyjc(url);
 	}
 	public void zyjc(String url){
 		System.out.println("======================================"+url);
 		try {
-			String html = EHtmlUnit.getAjaxPage(url);
+			String html = EHtmlUnit.getPage(url);
 			Document doc = Jsoup.parse(html,"utf-8");
 			Element ullist01 = doc.getElementsByClass("ullist01").first();
 			Elements a = ullist01.getElementsByTag("a");
@@ -72,7 +72,8 @@ public class ZhzywJunit {
 	public static void zyjc_detail(String url){
 		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+url);
 		try {
-			String html = EHtmlUnit.getAjaxPage(url);
+//			String html = EHtmlUnit.getAjaxPage(url);
+			String html = EHtmlUnit.getPage(url);
 			Document doc = Jsoup.parse(html,"utf-8");
 			Element left = doc.getElementById("left");
 			
