@@ -32,7 +32,7 @@ public class EHtmlUnit {
 	
 	public static String getPage(String url) throws Exception{  
         WebClient webClient = new WebClient();  
-        webClient.getOptions().setJavaScriptEnabled(true);  
+        webClient.getOptions().setJavaScriptEnabled(false);  
         webClient.getOptions().setCssEnabled(false);  
         webClient.setAjaxController(new NicelyResynchronizingAjaxController());  
         webClient.getOptions().setTimeout(Integer.MAX_VALUE);  
