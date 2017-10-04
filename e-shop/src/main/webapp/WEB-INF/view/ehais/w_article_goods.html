@@ -42,7 +42,7 @@
 				</div>
 				
 				<div class="qr">
-					长按进入购买
+					长按二维码购买
 					<img id="gqr" />
 				</div>
 				
@@ -62,7 +62,7 @@
 				<img src="../images/qrcode.gif" />
 			</div>
 			
-			<div class="statistics"><i class="iconfont icon-article">  ${article.readCount!0}</i><i class="iconfont icon-zan">  ${article.praiseCount!0}</i></div>
+			<div class="statistics"><#if article.articleSource??>源自：${article.articleSource!'原创'}</#if><i class="iconfont icon-article">  ${article.readCount!0}</i><i class="iconfont icon-zan">  ${article.praiseCount!0}</i></div>
 			
 			
 		</div>
@@ -95,11 +95,6 @@
 		
 	<script type="text/javascript">
 	var sid = "${sid}";
-	<#if goods??>
-	var g = 1;
-	<#else>
-	var g = 0;
-	</#if>
 	$(function(){
 		wx_config(${signature});
 		

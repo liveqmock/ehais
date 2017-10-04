@@ -102,10 +102,6 @@ public class EhaisWebController extends EhaisCommonController {
 	@Autowired
 	private HaiGoodsGalleryMapper haiGoodsGalleryMapper;
 	
-	
-	public static String website = ResourceUtil.getProValue("website");
-	public static String defaultimg = ResourceUtil.getProValue("defaultimg");
-
 	@Autowired
 	private HaiAdMapper haiAdMapper;
 	@Autowired
@@ -613,9 +609,9 @@ public class EhaisWebController extends EhaisCommonController {
 				modelMap.addAttribute("goods", goods);
 			}
 			
-			aid = SignUtil.setSid(Integer.valueOf(map.get("store_id").toString()), Integer.valueOf(map.get("agencyId").toString()), Long.valueOf(map.get("userId").toString()), user_id, Integer.valueOf(map.get("articleId").toString()), goodsId, wp.getToken());
 		}
-		
+		//为了统一使用文章+商品编码，这里需要转一次Sid
+		aid = SignUtil.setSid(Integer.valueOf(map.get("store_id").toString()), Integer.valueOf(map.get("agencyId").toString()), Long.valueOf(map.get("userId").toString()), user_id, Integer.valueOf(map.get("articleId").toString()), goodsId, wp.getToken());
 		String link = request.getScheme() + "://" + request.getServerName() + "/w_article_detail!"+aid;
 		
 		modelMap.addAttribute("sid", aid);//将aid变成sid

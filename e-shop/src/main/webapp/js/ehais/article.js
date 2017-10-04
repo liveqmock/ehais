@@ -134,10 +134,12 @@ function jrollCat(catId){
 }
 
 function articleItem(d,catId){
-	
+	var t = "";
 	$.each(d,function(k,v){
-		$("#a"+catId).append("<li link='"+v.link+"'>"+
-					"<div class='img'><img src='"+v.articleImages+"'></div>"+
+		t = "";
+		if(v.articleImages == null || v.articleImages == "")t=" class='t' ";
+		$("#a"+catId).append("<li link='"+v.link+"' "+t+">"+
+				((v.articleImages == null || v.articleImages == "") ? "" : "<div class='img'><img src='"+v.articleImages+"'></div>") + 
 					"<div class='i'>"+
 						"<div class='t'>"+v.title+"</div>"+
 						"<div class='d'>"+

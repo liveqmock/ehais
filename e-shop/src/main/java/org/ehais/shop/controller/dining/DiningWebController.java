@@ -72,8 +72,6 @@ import net.sf.json.JSONObject;
 @RequestMapping("/")
 public class DiningWebController extends EhaisCommonController{
 	private static Logger log = LoggerFactory.getLogger(DiningWebController.class);
-	public static String website = ResourceUtil.getProValue("website");
-	public static String defaultimg = ResourceUtil.getProValue("defaultimg");
 	@Autowired
 	private HaiCategoryMapper haiCategoryMapper;
 	@Autowired

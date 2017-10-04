@@ -433,7 +433,7 @@ bean.setArticleSource(model.getArticleSource());//网络来源
 
 
 	@Override
-	public ReturnObject<EHaiArticle> article_extends_list_json(HttpServletRequest request, String sid,Integer g)
+	public ReturnObject<EHaiArticle> article_extends_list_json(HttpServletRequest request, String sid)
 			throws Exception {
 		// TODO Auto-generated method stub
 		
@@ -452,11 +452,7 @@ bean.setArticleSource(model.getArticleSource());//网络来源
 		try{
 			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
 			Map<String,Object> map = null;
-			if(g == 1){
-				map = SignUtil.getSid(sid,wp.getToken());
-			}else{
-				map = SignUtil.getAid(sid,wp.getToken());
-			}
+			map = SignUtil.getSid(sid,wp.getToken());
 			
 			if(map == null){
 				rm.setMsg("参数不正确");

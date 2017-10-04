@@ -10,12 +10,7 @@ $(function(){
 	article_extends_list_json();
 	
 });
-//返回强制刷新的代码
-window.onpageshow = function(event){
-	if (event.persisted) {
-		article_extends_list_json();
-	}
-}
+
 //立即购买
 function buynow(){
 	
@@ -43,7 +38,7 @@ function buynow(){
 function article_extends_list_json(){
 	$.ajax({
 		url : "/ws/article_extends_list_json",type:"post",dataType:"json",
-		data : {sid:sid,g:g},
+		data : {sid:sid},
 		success : function(result){
 			if(result.code != 1)return ;
 			
@@ -51,12 +46,16 @@ function article_extends_list_json(){
 			$(".recommend div.item").remove();
 			if(listRecommend!=null && listRecommend.length > 0){
 				$(".recommend_title,.recommend").removeClass("dn");
+				var t = "";
+				
 				$.each(listRecommend,function(index,value){
-					$(".recommend").append("<div class=\"item\" href=\""+value.link+"\">"+
-					"<div class=\"pic\"><img src=\""+value.articleImages+"\" /></div>"+
-					"<div class=\"desc\">"+
+					t = "";
+					if(value.articleImages == null || value.articleImages == "")t=" t ";
+					$(".recommend").append("<div class='item "+t+"' href='"+value.link+"'>"+
+					((value.articleImages == null || value.articleImages == "") ? "" : "<div class='pic'><img src='"+value.articleImages+"' /></div>")+
+					"<div class='desc'>"+
 						"<h4>"+value.title+"</h4>"+
-						"<div class=\"intro\""+value.description+"></div>"+
+						"<div class='intro'>"+value.description+"</div>"+
 					"</div>"+
 					"</div>");
 				});
@@ -71,10 +70,10 @@ function article_extends_list_json(){
 			if(listForum.length > 0){
 				$.each(listForum,function(index,value){
 					$("#message").append("<li>"+
-						"<img class=\"pic\" src=\""+value.faceImage+"\">"+
-						"<div class=\"info\">"+
-							"<div class=\"t\">"+value.nickname+"</div>"+
-							"<div class=\"d\">"+value.content+"</div>"+
+						"<img class='pic' src='"+value.faceImage+"'>"+
+						"<div class='info'>"+
+							"<div class='t'>"+value.nickname+"</div>"+
+							"<div class='d'>"+value.content+"</div>"+
 						"</div>"+
 					"</li>");
 				});

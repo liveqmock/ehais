@@ -39,8 +39,10 @@ public class ZhzywJunit {
 				
 //				this.zyjc_detail(website+e.attr("href"));//进入明细请求
 				
-				TheadZhzyw t = new TheadZhzyw(website+e.attr("href"));
-				t.run();
+//				TheadZhzyw t = new TheadZhzyw(website+e.attr("href"));
+//				t.run();
+				
+				new Thread(new TheadZhzyw(website+e.attr("href"))).start();
 			}
 			
 			//下一页

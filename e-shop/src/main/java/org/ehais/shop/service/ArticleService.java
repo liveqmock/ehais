@@ -29,14 +29,13 @@ public interface ArticleService extends CommonService{
 	public ReturnObject<EHaiArticle> article_delete(HttpServletRequest request,String moduleEnum,Integer articleId) throws Exception;
 	
 	/**
-	 * 文章的推荐与评论信息
+	 * 文章的推荐与评论信息，统一按有商品方式处理，无商品情况，商品ID=0
 	 * @param request
 	 * @param sid
-	 * @param g 1:有商品,0:无商品
 	 * @return
 	 * @throws Exception
 	 */
-	public ReturnObject<EHaiArticle> article_extends_list_json(HttpServletRequest request,String sid,Integer g) throws Exception;
+	public ReturnObject<EHaiArticle> article_extends_list_json(HttpServletRequest request,String sid) throws Exception;
 	
 	
 }

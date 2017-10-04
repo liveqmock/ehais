@@ -62,14 +62,6 @@ import net.sf.json.JSONObject;
 @RequestMapping("/")
 public class EhaisUnionController extends EhaisCommonController{
 	private static Logger log = LoggerFactory.getLogger(EhaisUnionController.class);
-	public static Integer default_store_id = Integer.valueOf(ResourceUtil.getProValue("default_store_id"));
-	public static String website = ResourceUtil.getProValue("website");
-	public static String defaultimg = ResourceUtil.getProValue("defaultimg");
-	public static String weixin_appid = ResourceUtil.getProValue("weixin_appid");
-	public static String weixin_appsecret = ResourceUtil.getProValue("weixin_appsecret");
-	public static String weixin_token = ResourceUtil.getProValue("weixin_token");
-	public static String weixin_mch_id = ResourceUtil.getProValue("weixin_mch_id");
-	public static String weixin_mch_secret = ResourceUtil.getProValue("weixin_mch_secret");
 	
 	@Autowired
 	private EHaiUsersMapper eHaiUsersMapper;
@@ -91,7 +83,9 @@ public class EhaisUnionController extends EhaisCommonController{
 	private HaiStoreStatisticsMapper haiStoreStatisticsMapper;
 	
 	
-	//http://127.0.0.1/ehaisUnion!2dcc910-0657d201-121d2202-2cd64c1253-3a55db12b9290
+	//http://127.0.0.1/ehaisUnion!7623c10-01151d01-10865702-2816ee03-32c12e32b9acd
+	//http://mg.ehais.com/ehaisUnion!7623c10-01151d01-10865702-2816ee03-32c12e32b9acd
+	//http://0f778f25.ngrok.io/ehaisUnion!7623c10-01151d01-10865702-2816ee03-32c12e32b9acd
 	@RequestMapping("/ehaisUnion!{cid}")
 	public String ehaisUnion(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -114,8 +108,11 @@ public class EhaisUnionController extends EhaisCommonController{
 				if((user_id == null || user_id == 0 ) && StringUtils.isEmpty(code)){
 					return this.redirect_wx_authorize(request , weixin_appid , "/ehaisUnion!"+cid);
 				}else if(StringUtils.isNotEmpty(code)){
-					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map,weixin_appid,weixin_appsecret,weixin_token,false);
-					String newPid = SignUtil.setCid(default_store_id,Integer.valueOf(map.get("partnerId").toString()),Long.valueOf(map.get("userId").toString()), user.getUserId(), weixin_token);
+					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map,weixin_appid,weixin_appsecret,weixin_token,true);
+//					if(user.getSubscribe() == null || user.getSubscribe() == 0){
+//						return "redirect:"+;
+//					}
+					String newPid = SignUtil.setCid(default_store_id,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), user.getUserId(), weixin_token);
 					String link = request.getScheme() + "://" + request.getServerName() + "/ehaisUnion!"+newPid;
 					return "redirect:"+link;
 				}else if(user_id > 0 && Long.valueOf(map.get("userId").toString()).longValue() == user_id.longValue()){//经过code获取用户信息跳回自己的链接中来
@@ -143,9 +140,9 @@ public class EhaisUnionController extends EhaisCommonController{
 		
 		String link = request.getScheme() + "://" + request.getServerName() + "/ehaisUnion!"+cid;
 		WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, Integer.valueOf(map.get("store_id").toString()), weixin_appid, weixin_appsecret, null);
-		signature.setTitle("易微销");
+		signature.setTitle("易微销事业加盟");
 		signature.setLink(link);
-		signature.setDesc("帮助商家“互联网+”转型的移动O2O服务平台");
+		signature.setDesc("帮助商家“互联网+”的移动O2O服务分销平台");
 		signature.setImgUrl(defaultimg);
 		List<String> jsApiList = new ArrayList<String>();
 		jsApiList.add("onMenuShareTimeline");
@@ -349,8 +346,13 @@ public class EhaisUnionController extends EhaisCommonController{
 	
 	
 	public static void main(String[] args) throws Exception {
-		String cid = SignUtil.setCid(1, 0, 0L, 125L, "ehais_wxdev");
+		String cid = SignUtil.setCid(1, 0, 0L, 0L, "ehais_wxdev");
 		System.out.println(cid);
+		Map<String,Object> map = SignUtil.getCid(cid,"ehais_wxdev");
+		
+		String newPid = SignUtil.setCid(1,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), 128L, "ehais_wxdev");
+		System.out.println(newPid);
+		
 	}
 	
 }

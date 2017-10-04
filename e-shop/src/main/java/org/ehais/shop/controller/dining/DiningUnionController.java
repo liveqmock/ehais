@@ -56,14 +56,6 @@ import net.sf.json.JSONObject;
 @RequestMapping("/")
 public class DiningUnionController extends EhaisCommonController{
 	private static Logger log = LoggerFactory.getLogger(DiningUnionController.class);
-	public static Integer default_store_id = Integer.valueOf(ResourceUtil.getProValue("default_store_id"));
-	public static String website = ResourceUtil.getProValue("website");
-	public static String defaultimg = ResourceUtil.getProValue("defaultimg");
-	public static String weixin_appid = ResourceUtil.getProValue("weixin_appid");
-	public static String weixin_appsecret = ResourceUtil.getProValue("weixin_appsecret");
-	public static String weixin_token = ResourceUtil.getProValue("weixin_token");
-	public static String weixin_mch_id = ResourceUtil.getProValue("weixin_mch_id");
-	public static String weixin_mch_secret = ResourceUtil.getProValue("weixin_mch_secret");
 	
 	@Autowired
 	private EHaiUsersMapper eHaiUsersMapper;

@@ -84,6 +84,12 @@
   float: none;
   width: 8px;
 }
+.wa #clist > div > ul > li.t .img {
+  display: none;
+}
+.wa #clist > div > ul > li.t .i {
+  width: 100%;
+}
 .wa #clist > div.active {
   display: block;
 }

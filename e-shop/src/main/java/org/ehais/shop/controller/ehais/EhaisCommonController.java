@@ -32,7 +32,9 @@ import org.ehais.shop.model.HaiArticleGoodsExample;
 import org.ehais.shop.model.HaiGoods;
 import org.ehais.shop.model.HaiGoodsExample;
 import org.ehais.util.MatrixToImageWriter;
+import org.ehais.util.ResourceUtil;
 import org.ehais.util.SignUtil;
+import org.ehais.weixin.model.AccessToken;
 import org.ehais.weixin.model.OpenidInfo;
 import org.ehais.weixin.model.WeiXinUserInfo;
 import org.ehais.weixin.utils.WeiXinUtil;
@@ -53,6 +55,17 @@ public class EhaisCommonController extends CommonController{
 	private EHaiUsersMapper eHaiUsersMapper;
 	@Autowired
 	protected EStoreService eStoreService;
+	
+	protected Integer default_store_id = Integer.valueOf(ResourceUtil.getProValue("default_store_id"));
+	protected String website = ResourceUtil.getProValue("website");
+	protected String defaultimg = ResourceUtil.getProValue("defaultimg");
+	protected String weixin_appid = ResourceUtil.getProValue("weixin_appid");
+	protected String weixin_appsecret = ResourceUtil.getProValue("weixin_appsecret");
+	protected String weixin_token = ResourceUtil.getProValue("weixin_token");
+	protected String weixin_mch_id = ResourceUtil.getProValue("weixin_mch_id");
+	protected String weixin_mch_secret = ResourceUtil.getProValue("weixin_mch_secret");
+	
+	
 	
 	/**
 	 * 1.判断session的userid,openid随便一个不存在，即走微信网络请求链接
@@ -114,7 +127,8 @@ public class EhaisCommonController extends CommonController{
 		if(open == null) return null;
 		WeiXinUserInfo wxUser = null;
 		if(subscribe){
-			wxUser = WeiXinUtil.getUserInfo(open.getAccess_token(), open.getOpenid());
+			AccessToken accesstoken = WeiXinUtil.getAccessToken(default_store_id, weixin_appid, weixin_appsecret);
+			wxUser = WeiXinUtil.getUserInfo(accesstoken.getAccess_token(), open.getOpenid());
 		}
 		return this.saveUserOpen(request, open , wxUser , map);
 	}
@@ -125,7 +139,8 @@ public class EhaisCommonController extends CommonController{
 		if(open == null) return null;
 		WeiXinUserInfo wxUser = null;
 		if(subscribe){
-			wxUser = WeiXinUtil.getUserInfo(open.getAccess_token(), open.getOpenid());
+			AccessToken token = WeiXinUtil.getAccessToken(default_store_id, weixin_appid, weixin_appsecret);
+			wxUser = WeiXinUtil.getUserInfo(token.getAccess_token(), open.getOpenid());
 		}
 		//根据openid获取用户是否存在
 		return this.saveUserOpen(request, open , wxUser , map);

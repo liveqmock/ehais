@@ -1,6 +1,7 @@
 
 $(function(){
 	$("#submitUnion").click(function(){submitUnion();});
+	wx_config(signature);
 });
 
 function submitUnion(){
