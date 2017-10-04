@@ -15,16 +15,16 @@ import org.junit.Test;
 
 public class ZhzywJunit {
 
-	private String website = "http://www.zhzyw.org";
-	private String web_url = "http://127.0.0.1";
-	public String appkey = "Ehais";
-	public String secret = "EhaisSecret";
-	public String store_id = "20";
+	private static String website = "http://www.zhzyw.org";
+	private static String web_url = "http://mg.ehais.com";
+	public static String appkey = "Ehais";
+	public static String secret = "EhaisSecret";
+	public static String store_id = "20";
 	
 //	中药基础
 	@Test
 	public void test_zyjc(){
-		String url = website+"/zycs/zyjc/";
+		String url = website+"/zycs/zyjc/index_15.html";
 		this.zyjc(url);
 	}
 	public void zyjc(String url){
@@ -37,7 +37,10 @@ public class ZhzywJunit {
 			for (Element e : a) {
 				System.out.println(e.html()+"--"+e.attr("href"));
 				
-				this.zyjc_detail(website+e.attr("href"));//进入明细请求
+//				this.zyjc_detail(website+e.attr("href"));//进入明细请求
+				
+				TheadZhzyw t = new TheadZhzyw(website+e.attr("href"));
+				t.run();
 			}
 			
 			//下一页
@@ -64,7 +67,7 @@ public class ZhzywJunit {
 		url = "http://www.zhzyw.org/zycs/zyjc/089614GB7G2CAJ9KG0AK489.html";
 		this.zyjc_detail(url);
 	}
-	public void zyjc_detail(String url){
+	public static void zyjc_detail(String url){
 		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+url);
 		try {
 			String html = EHtmlUnit.getAjaxPage(url);
@@ -85,7 +88,7 @@ public class ZhzywJunit {
 				for (Element e : a) {
 //					System.out.println(e.attr("title"));
 					if(e.attr("title") == null || e.attr("title").equals("")){
-						String subcontent = this.zyjc_detail_sub(website + e.attr("href"));
+						String subcontent = zyjc_detail_sub(website + e.attr("href"));
 						sb.append(subcontent);
 					}
 				}
@@ -97,7 +100,7 @@ public class ZhzywJunit {
 //			System.out.println(sb.toString());
 			
 			//保存
-			this.article_save("中药基础", H1.html(), daodu.html(), sb.toString(), url);
+			article_save("中药基础", H1.html(), daodu.html(), sb.toString(), url);
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -106,7 +109,7 @@ public class ZhzywJunit {
 		
 	}
 	
-	public String zyjc_detail_sub(String url){
+	private static String zyjc_detail_sub(String url){
 		
 		try {
 			String html = EHtmlUnit.getAjaxPage(url);
@@ -130,7 +133,7 @@ public class ZhzywJunit {
 	}
 	
 	
-	public void article_save(String cat_name,String title,String description,String content,String link){
+	public static void article_save(String cat_name,String title,String description,String content,String link){
 		Map<String, String> paramsMap = new HashMap<String, String>();
 		paramsMap.put("appkey", appkey);
     	paramsMap.put("version", "v1.0");
@@ -186,6 +189,22 @@ public class ZhzywJunit {
 
     	String req = EHttpClientUtil.httpPost(web_url+"/api/article_save", paramsMap);
 		System.out.println(req);
+	}
+	
+	class TheadZhzyw implements Runnable{
+		
+		private String link;
+		
+		public TheadZhzyw(String link){
+			this.link = link;
+		}
+
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			ZhzywJunit.zyjc_detail(link);
+		}
+		
 	}
 	
 }
