@@ -13,9 +13,25 @@ import java.nio.charset.StandardCharsets;
 
 
 public class EHtmlUnit {
+	
+	
+	public static String getAjaxPage(String url) throws Exception{  
+        WebClient webClient = new WebClient(BrowserVersion.CHROME);  
+        webClient.getOptions().setJavaScriptEnabled(true);  
+        webClient.getOptions().setCssEnabled(false);  
+        webClient.setAjaxController(new NicelyResynchronizingAjaxController());  
+        webClient.getOptions().setTimeout(Integer.MAX_VALUE);  
+        webClient.getOptions().setThrowExceptionOnScriptError(false);  
+        HtmlPage rootPage = webClient.getPage(url);  
+        String htmlContent = rootPage.asXml();
+		webClient.close();
+		return htmlContent;
+		
+    }
+	
 
 	public static String httpUnitRequest(String url) throws Exception {
-		WebClient webClient = new WebClient(BrowserVersion.FIREFOX_45);
+		WebClient webClient = new WebClient(BrowserVersion.CHROME);
  
         
         
