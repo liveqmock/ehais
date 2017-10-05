@@ -38,6 +38,8 @@ import org.ehais.util.SignUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import net.sf.json.JSONArray;
+
 @Service("articleService")
 public class ArticleServiceImpl  extends CommonServiceImpl implements ArticleService{
 
@@ -476,7 +478,7 @@ bean.setArticleSource(model.getArticleSource());//网络来源
 					"hai_article");
 			mapReturn.put("listForum", listForum);
 			
-			
+			System.out.println(JSONArray.fromObject(listForum).toString());
 			
 			
 			String keywords = article.getKeywords();

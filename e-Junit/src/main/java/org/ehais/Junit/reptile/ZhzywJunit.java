@@ -20,12 +20,19 @@ public class ZhzywJunit {
 	public static String appkey = "Ehais";
 	public static String secret = "EhaisSecret";
 	public static String store_id = "71";
+	public static String cat_name = "中医减肥";
 	
 //	中药基础
 	@Test
 	public void test_zyjc(){
-		String url = website+"/zycs/zyjc/index_117.html";
-		this.zyjc(url);
+//		this.zyjc(website+"/zybj/zyjf/cs/");
+//		this.zyjc(website+"/zybj/zyjf/zy/");
+//		this.zyjc(website+"/zybj/zyjf/bg/");
+//		this.zyjc(website+"/zybj/zyjf/tn/");
+//		this.zyjc(website+"/zybj/zyjf/gs/");
+//		this.zyjc(website+"/zybj/zyjf/ys/");
+		this.zyjc(website+"/zybj/zyjf/yd/");
+		this.zyjc(website+"/zybj/zyjf/qg/");
 	}
 	public void zyjc(String url){
 		System.out.println("======================================"+url);
@@ -37,15 +44,14 @@ public class ZhzywJunit {
 			for (Element e : a) {
 				System.out.println(e.html()+"--"+e.attr("href"));
 				
-//				this.zyjc_detail(website+e.attr("href"));//进入明细请求
+				this.zyjc_detail(website+e.attr("href"));//进入明细请求
 				
-//				TheadZhzyw t = new TheadZhzyw(website+e.attr("href"));
-//				t.run();
 				
-				new Thread(new TheadZhzyw(website+e.attr("href"))).start();
+//				new Thread(new TheadZhzyw(website+e.attr("href"))).start();
 			}
 			
 			//下一页
+			if(doc.getElementsByClass("pagecontent") == null) return;
 			Element pagecontent = doc.getElementsByClass("pagecontent").first();
 			Elements na = pagecontent.getElementsByTag("a");
 			for (Element e : na) {
@@ -103,7 +109,7 @@ public class ZhzywJunit {
 //			System.out.println(sb.toString());
 			
 			//保存
-			article_save("中药基础", H1.html(), daodu.html(), sb.toString(), url);
+			article_save(cat_name, H1.html(), daodu.html(), sb.toString(), url);
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

@@ -154,7 +154,7 @@ function articleItem(d,catId){
 	
 	$("#clist>div>ul>li").unbind();
 	$("#clist>div>ul>li").click(function(){
-		if($(this).attr("link") != null && $(this).attr("link") != "")window.location.href = "w_article_detail!"+$(this).attr("link");
+		if($(this).attr("link") != null && $(this).attr("link") != "")window.location.href = "w_article_goods!"+$(this).attr("link");
 	});
 	
 	

@@ -65,7 +65,7 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 	private HaiStoreStatisticsMapper haiStoreStatisticsMapper;
 		
 	@Override
-	public WeiXinWCPay WeiXinPayApi(HttpServletRequest request, String sid,
+	public WeiXinWCPay WeiXinPayApi(HttpServletRequest request, String cid,
 			String openid,
 			String orderSn,
 			Integer amount,
@@ -74,9 +74,15 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 			Long table_id,
 			String classify) throws Exception {
 		// TODO Auto-generated method stub
-		Integer store_id = SignUtil.getUriStoreId(sid);
+		Integer store_id = SignUtil.getUriStoreId(cid);
 		WpPublicWithBLOBs wpPublic = eWPPublicService.getWpPublic(store_id);
-		Map<String,Object> map = SignUtil.getDiningId(sid,wpPublic.getToken());
+		Map<String,Object> map = null ;
+		if(classify.equals(EOrderClassifyEnum.dining)){
+			map = SignUtil.getDiningId(cid,wpPublic.getToken());
+		}else if(classify.equals(EOrderClassifyEnum.shop)){
+			map = SignUtil.getCid(cid, wpPublic.getToken());
+		}
+		
 		
 //		Date date = new Date();
 		WeiXinUnifiedOrder order = new WeiXinUnifiedOrder();
@@ -87,7 +93,7 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 		order.setOut_trade_no(orderSn);
 		order.setTotal_fee(amount);		
 		order.setSpbill_create_ip(IpUtil.getIpAddrV2(request));
-		order.setNotify_url(request.getScheme()+"://"+request.getServerName()+"/weixin/pay/notify_url!"+sid+"&"+classify);
+		order.setNotify_url(request.getScheme()+"://"+request.getServerName()+"/weixin/pay/notify_url!"+cid+"&"+classify);
 		order.setTrade_type("JSAPI");
 		order.setOpenid(openid);
 		
@@ -170,15 +176,20 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 
 	@Override
 	public ReturnObject<WeiXinNotifyPay> WeiXinNotifyPay(HttpServletRequest request,
-			WeiXinNotifyPay notifyPay,String sid,
+			WeiXinNotifyPay notifyPay,String cid,
 			String classify) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<WeiXinNotifyPay> rm = new ReturnObject<WeiXinNotifyPay>();
 		rm.setCode(0);
 		//进行签名验证
-		Integer store_id = SignUtil.getUriStoreId(sid);
+		Integer store_id = SignUtil.getUriStoreId(cid);
 		WpPublicWithBLOBs wpPublic = eWPPublicService.getWpPublic(store_id);
-		Map<String,Object> map = SignUtil.getDiningId(sid,wpPublic.getToken());
+		Map<String,Object> map = null ;
+		if(classify.equals(EOrderClassifyEnum.dining)){
+			map = SignUtil.getDiningId(cid,wpPublic.getToken());
+		}else if(classify.equals(EOrderClassifyEnum.shop)){
+			map = SignUtil.getCid(cid, wpPublic.getToken());
+		}
 		
 		String sign = SignUtil.getSign(Bean2Utils.toSignMap(notifyPay), wpPublic.getMchSecret());
 		if(!sign.equals(notifyPay.getSign())){

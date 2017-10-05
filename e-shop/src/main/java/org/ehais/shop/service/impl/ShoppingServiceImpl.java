@@ -557,7 +557,7 @@ public class ShoppingServiceImpl extends CommonServiceImpl implements ShoppingSe
 	
 	@Override
 	public ReturnObject<OrderDoneParam> WeixinOrderDone(HttpServletRequest request,
-			OrderDoneParam order_done,String sid) throws Exception {
+			OrderDoneParam order_done,String cid) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<OrderDoneParam> rm = new ReturnObject<OrderDoneParam>();
 		rm.setCode(0);
@@ -709,7 +709,7 @@ public class ShoppingServiceImpl extends CommonServiceImpl implements ShoppingSe
 		orderInfo.setOrderSource(EOrderSourceEnum.weixin);
 		if(sb.length() > 0)orderInfo.setGoodsDesc(sb.toString().trim());
 		orderInfo.setClassify(EOrderClassifyEnum.shop);
-		orderInfo.setSid(sid);
+		orderInfo.setSid(cid);
 		
 		int code = haiOrderInfoMapper.insert(orderInfo);
 		Long order_id = orderInfo.getOrderId();
@@ -749,7 +749,7 @@ public class ShoppingServiceImpl extends CommonServiceImpl implements ShoppingSe
 		haiCartMapper.deleteByExample(cartExample);
 		
 		//跳转支付信息返回
-		WeiXinWCPay cpay = weiXinPayService.WeiXinPayApi(request, sid, users.getOpenid(), orderSn, totalPrice, "易海司微信支付订单", "hai_order", order_id, EOrderClassifyEnum.shop);
+		WeiXinWCPay cpay = weiXinPayService.WeiXinPayApi(request, cid, users.getOpenid(), orderSn, totalPrice, "易海司微信支付订单", "hai_order", order_id, EOrderClassifyEnum.shop);
 		
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("WeiXinWCPay", cpay);

@@ -62,10 +62,13 @@
 		<script type="text/javascript" src="../js/common.js" ></script>
 		<script type="text/javascript" src="../js/elay/elay.js" ></script>
 		<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js" ></script>
+		<script type="text/javascript" src="/js/wxsdk.js" ></script>
 		<script src="../js/ehais/w_cart.js"></script>
 		<script type="text/javascript">
 		var cid = "${cid}";
-		
+		$(function(){
+			wx_config(${signature});
+		});
 		</script>
 	</body>
 </html>

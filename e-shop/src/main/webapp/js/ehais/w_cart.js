@@ -43,7 +43,7 @@ $(function(){
 	
 	$(".singleCheck").click(function(){
 		$(this).toggleClass("active");
-		if($(".list > .item > .fa-check-circle.active").length == $(".list > .item").length){
+		if($("ul > li > .fa-check-circle.active").length == $("ul > li").length){
 			$(".allCheck").addClass("active");
 		}else{
 			$(".allCheck").removeClass("active");
@@ -52,9 +52,9 @@ $(function(){
 	});
 	$(".allCheck").click(function(){
 		if($(this).hasClass("active")){
-			$(".list > .item > .fa-check-circle").removeClass("active");
+			$("ul > li > .fa-check-circle").removeClass("active");
 		}else{
-			$(".list > .item > .fa-check-circle").addClass("active");
+			$("ul > li > .fa-check-circle").addClass("active");
 		}
 		$(this).toggleClass("active");
 		cartListItem();
@@ -93,14 +93,14 @@ function cart_edit_submit(recid,goodsid,quantity){
 
 function cart_delete_submit(){
 	var recIds = new Array();
-	$(".list > .item").each(function(index,ele){
+	$("ul > li").each(function(index,ele){
 		if($(ele).children(".singleCheck").hasClass("active")){
 			recIds.push($(ele).attr("recid"));
 		}
 	});
 	if(recIds.length == 0){
 		elay.open({
-		    content: '请选择购物车要结算的商品',
+		    content: '请选择购物车要清空的商品',
 		    btn: '知道了'
 		});
 		return ;
@@ -121,13 +121,13 @@ function cart_delete_submit(){
 	    				return ;
 	    			}
 	    			
-	    			$(".list > .item").each(function(index,ele){
+	    			$("ul > li").each(function(index,ele){
     					if($(ele).children(".singleCheck").hasClass("active")){
     						$(ele).remove();
     					}
     				});
 	    			
-	    			if($(".list > .item").length > 0){
+	    			if($("ul > li").length > 0){
 	    				cartListItem();
 	    			}else{
 	    				$(".empty").addClass("active");
@@ -146,7 +146,7 @@ function cart_delete_submit(){
 
 function cartListItem(){
 	var totle = 0;
-	$(".list > .item").each(function(index,ele){
+	$("ul > li").each(function(index,ele){
 		if($(ele).children(".singleCheck").hasClass("active")){
 			totle += (parseInt($(ele).attr("price")) * parseInt($(ele).attr("quantity")));
 		}
@@ -154,18 +154,4 @@ function cartListItem(){
 	$("#total").html("￥"+(totle / 100 ).toFixed(2));//
 }
 
-function onBridgeReady() {
-    WeixinJSBridge.call('hideOptionMenu');
-}
-
-if (typeof WeixinJSBridge == "undefined") {
-    if (document.addEventListener) {
-        document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
-    } else if (document.attachEvent) {
-        document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
-        document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
-    }
-} else {
-    onBridgeReady();
-}
 

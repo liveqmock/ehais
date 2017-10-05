@@ -180,7 +180,7 @@ public class EhaisWebController extends EhaisCommonController {
 		modelMap.addAttribute("cid", cid);
 		
 		HaiAdExample adExample = new HaiAdExample();
-		adExample.createCriteria().andStoreIdEqualTo(store_id).andIsVoidEqualTo(1);
+		adExample.createCriteria().andStoreIdEqualTo(default_store_id).andIsVoidEqualTo(1);
 		List<HaiAd> adList = haiAdMapper.selectByExample(adExample);
 		
 		HaiCategoryExample categoryExample = new HaiCategoryExample();
@@ -208,19 +208,21 @@ public class EhaisWebController extends EhaisCommonController {
 		String newCid = SignUtil.setCid(store_id,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), user_id , wp.getToken());
 		String link = request.getScheme() + "://" + request.getServerName() + "/w_shop!"+newCid;
 		
-		WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, Integer.valueOf(map.get("store_id").toString()), wp.getAppid(), wp.getSecret(), null);
-		signature.setTitle(store.getStoreName());
-		signature.setLink(link);
-		signature.setDesc(store.getDescription());
-		signature.setImgUrl(store.getStoreLogo());
-		List<String> jsApiList = new ArrayList<String>();
-		jsApiList.add("onMenuShareTimeline");
-		jsApiList.add("onMenuShareAppMessage");
-		jsApiList.add("onMenuShareQQ");
-		jsApiList.add("onMenuShareWeibo");
-		jsApiList.add("onMenuShareQZone");
-		signature.setJsApiList(jsApiList);
-		modelMap.addAttribute("signature", JSONObject.fromObject(signature).toString());
+		this.shareWeiXin(modelMap, request, response, wp, store_id, store.getStoreName(), link, store.getDescription(), store.getStoreLogo());
+		
+//		WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, Integer.valueOf(map.get("store_id").toString()), wp.getAppid(), wp.getSecret(), null);
+//		signature.setTitle(store.getStoreName());
+//		signature.setLink(link);
+//		signature.setDesc(store.getDescription());
+//		signature.setImgUrl(store.getStoreLogo());
+//		List<String> jsApiList = new ArrayList<String>();
+//		jsApiList.add("onMenuShareTimeline");
+//		jsApiList.add("onMenuShareAppMessage");
+//		jsApiList.add("onMenuShareQQ");
+//		jsApiList.add("onMenuShareWeibo");
+//		jsApiList.add("onMenuShareQZone");
+//		signature.setJsApiList(jsApiList);
+//		modelMap.addAttribute("signature", JSONObject.fromObject(signature).toString());
 		
 		return "/ehais/w_shop";
 	}
@@ -237,8 +239,8 @@ public class EhaisWebController extends EhaisCommonController {
 	 * @throws Exception 
 	 * @throws NumberFormatException 
 	 */
-	private String article_goods(ModelMap modelMap,	HttpServletRequest request,HttpServletResponse response,WpPublicWithBLOBs wp,String sid,Map<String,Object> map,String path) throws NumberFormatException, Exception{
-		String link = request.getScheme() + "://" + request.getServerName() + "/w_article_goods!"+sid;
+	private String article_goods(ModelMap modelMap,	HttpServletRequest request,HttpServletResponse response,WpPublicWithBLOBs wp,String sid,Long user_id,Map<String,Object> map,String path) throws NumberFormatException, Exception{
+		
 		//读取文章信息
 		EHaiArticle article = eHaiArticleMapper.selectByPrimaryKey(Integer.valueOf(map.get("articleId").toString()));
 		//读取商品信息
@@ -248,18 +250,16 @@ public class EhaisWebController extends EhaisCommonController {
 		Long goodsId = 0L;
 		if(articleGoodsList != null && articleGoodsList.size() > 0){
 			goodsId = articleGoodsList.get(0).getGoodsId();
-			if(goodsId.longValue() !=Long.valueOf(map.get("goodsId").toString()).longValue()){
-				return "redirect:"+website; //错误的链接，跳转商城
-			}
 			
 			//读取微信的分享信息与链接整理
 			if(goodsId.longValue() > 0){
 				HaiGoods goods = haiGoodsMapper.selectByPrimaryKey(goodsId);
 				modelMap.addAttribute("goods", goods);
 			}
-			
+			sid = SignUtil.setSid(Integer.valueOf(map.get("store_id").toString()), Integer.valueOf(map.get("agencyId").toString()), Long.valueOf(map.get("userId").toString()), user_id, Integer.valueOf(map.get("articleId").toString()), goodsId, wp.getToken());
 		}
 		
+		String link = request.getScheme() + "://" + request.getServerName() + "/w_article_goods!"+sid;
 		
 		modelMap.addAttribute("sid", sid);
 		modelMap.addAttribute("article", article);
@@ -269,19 +269,29 @@ public class EhaisWebController extends EhaisCommonController {
 		modelMap.addAttribute("agencyId", map.get("agencyId"));
 		modelMap.addAttribute("articleId", map.get("articleId"));
 		
-		WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, Integer.valueOf(map.get("store_id").toString()), wp.getAppid(), wp.getSecret(), null);
-		signature.setTitle(article.getTitle());
-		signature.setLink(link);
-		signature.setDesc(article.getDescription());
-		signature.setImgUrl(article.getArticleImages());
-		List<String> jsApiList = new ArrayList<String>();
-		jsApiList.add("onMenuShareTimeline");
-		jsApiList.add("onMenuShareAppMessage");
-		jsApiList.add("onMenuShareQQ");
-		jsApiList.add("onMenuShareWeibo");
-		jsApiList.add("onMenuShareQZone");
-		signature.setJsApiList(jsApiList);
-		modelMap.addAttribute("signature", JSONObject.fromObject(signature).toString());
+		String cid = SignUtil.setCid(Integer.valueOf(map.get("store_id").toString()), Integer.valueOf(map.get("agencyId").toString()), Long.valueOf(map.get("userId").toString()), user_id, wp.getToken());
+		modelMap.addAttribute("articleIndex", "w_article!"+cid);
+		modelMap.addAttribute("shopIndex", "w_shop!"+cid);
+		modelMap.addAttribute("storeUnion", "ehaisUnion!"+cid);
+		
+		
+		this.shareWeiXin(modelMap, request, response, wp, Integer.valueOf(map.get("store_id").toString()), article.getTitle(), link, article.getDescription(), article.getArticleImages());
+//		WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, Integer.valueOf(map.get("store_id").toString()), wp.getAppid(), wp.getSecret(), null);
+//		signature.setTitle(article.getTitle());
+//		signature.setLink(link);
+//		signature.setDesc(StringUtils.isBlank(article.getDescription())?weixin_share_description:article.getDescription());
+//		signature.setImgUrl(StringUtils.isBlank(article.getArticleImages())?defaultimg:article.getArticleImages());
+//		List<String> jsApiList = new ArrayList<String>();
+//		jsApiList.add("onMenuShareTimeline");
+//		jsApiList.add("onMenuShareAppMessage");
+//		jsApiList.add("onMenuShareQQ");
+//		jsApiList.add("onMenuShareWeibo");
+//		jsApiList.add("onMenuShareQZone");
+//		signature.setJsApiList(jsApiList);
+//		modelMap.addAttribute("signature", JSONObject.fromObject(signature).toString());
+		
+		
+		
 		modelMap.addAttribute("w_goods_detail","w_goods_detail!"+sid);
 		modelMap.addAttribute("buynow","buynow!"+sid);
 		return path;
@@ -310,25 +320,26 @@ public class EhaisWebController extends EhaisCommonController {
 		List<HaiGoodsGallery> galleryList = haiGoodsGalleryMapper.selectByExample(galleryExample);
 		modelMap.addAttribute("galleryList", galleryList);
 		
-		WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, Integer.valueOf(map.get("store_id").toString()), wp.getAppid(), wp.getSecret(), null);
-		signature.setTitle(goods.getGoodsName());
-		signature.setLink(link);
-		signature.setDesc(goods.getActDesc());
-		signature.setImgUrl(goods.getGoodsThumb());
-		List<String> jsApiList = new ArrayList<String>();
-		jsApiList.add("onMenuShareTimeline");
-		jsApiList.add("onMenuShareAppMessage");
-		jsApiList.add("onMenuShareQQ");
-		jsApiList.add("onMenuShareWeibo");
-		jsApiList.add("onMenuShareQZone");
-		signature.setJsApiList(jsApiList);
-		modelMap.addAttribute("signature", JSONObject.fromObject(signature).toString());
+		this.shareWeiXin(modelMap, request, response, wp, Integer.valueOf(map.get("store_id").toString()), goods.getGoodsName(), link, goods.getActDesc(), goods.getGoodsThumb());
+//		WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, Integer.valueOf(map.get("store_id").toString()), wp.getAppid(), wp.getSecret(), null);
+//		signature.setTitle(goods.getGoodsName());
+//		signature.setLink(link);
+//		signature.setDesc(goods.getActDesc());
+//		signature.setImgUrl(goods.getGoodsThumb());
+//		List<String> jsApiList = new ArrayList<String>();
+//		jsApiList.add("onMenuShareTimeline");
+//		jsApiList.add("onMenuShareAppMessage");
+//		jsApiList.add("onMenuShareQQ");
+//		jsApiList.add("onMenuShareWeibo");
+//		jsApiList.add("onMenuShareQZone");
+//		signature.setJsApiList(jsApiList);
+//		modelMap.addAttribute("signature", JSONObject.fromObject(signature).toString());
 		modelMap.addAttribute("w_goods_detail","w_goods_detail!"+sid);
 		modelMap.addAttribute("buynow","buynow!"+sid);
 		return path;
 	}
 	
-	//http://127.0.0.1/w_article!1ce27200-02bd7b01-1ed30c02-2a6a0103-3760edeb1acce
+	//http://916f20de.ngrok.io/w_article!1ce27200-02bd7b01-1ed30c02-2a6a0103-3760edeb1acce
 	@RequestMapping("/w_article!{cid}")
 	public String w_article(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -428,19 +439,9 @@ public class EhaisWebController extends EhaisCommonController {
 		aExample.createCriteria().andStoreIdEqualTo(store_id).andIsHotEqualTo(true).andModuleEqualTo(EArticleModuleEnum.ARTICLE);
 		aExample.setOrderByClause("article_date desc,article_id desc");
 		List<EHaiArticleSimple> articleList = eHaiArticleMapper.mySelectByExample(aExample);
-//		List<Integer> articleIds = new ArrayList<Integer>();
 		for (EHaiArticleSimple eHaiArticle : articleList) {
-//			articleIds.add(eHaiArticle.getArticleId());
-			eHaiArticle.setLink(SignUtil.setAid(store_id, Integer.valueOf(map.get("agencyId").toString()), Long.valueOf(map.get("userId").toString()), user_id, eHaiArticle.getArticleId(), wp.getToken()));
-			
+			eHaiArticle.setLink(SignUtil.setSid(store_id, Integer.valueOf(map.get("agencyId").toString()), Long.valueOf(map.get("userId").toString()), user_id, eHaiArticle.getArticleId(),0L, wp.getToken()));
 		}
-//		if(articleIds.size() > 0){
-//			HaiArticleGoodsExample agExample = new HaiArticleGoodsExample();
-//			agExample.createCriteria().andStoreIdEqualTo(store_id).andArticleIdIn(articleIds);
-//			haiArticleGoodsMapper
-//		}
-		
-		
 		
 		mapData.put("hotArticleList", articleList);
 		
@@ -452,19 +453,21 @@ public class EhaisWebController extends EhaisCommonController {
 //		String newSid = SignUtil.setCid(store_id,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), user_id , wp.getToken());
 		String link = request.getScheme() + "://" + request.getServerName() + "/w_article!"+cid;
 		
-		WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, Integer.valueOf(map.get("store_id").toString()), wp.getAppid(), wp.getSecret(), null);
-		signature.setTitle(store.getStoreName());
-		signature.setLink(link);
-		signature.setDesc(store.getDescription());
-		signature.setImgUrl(store.getStoreLogo());
-		List<String> jsApiList = new ArrayList<String>();
-		jsApiList.add("onMenuShareTimeline");
-		jsApiList.add("onMenuShareAppMessage");
-		jsApiList.add("onMenuShareQQ");
-		jsApiList.add("onMenuShareWeibo");
-		jsApiList.add("onMenuShareQZone");
-		signature.setJsApiList(jsApiList);
-		modelMap.addAttribute("signature", JSONObject.fromObject(signature).toString());
+		
+		this.shareWeiXin(modelMap, request, response, wp, store_id, store.getStoreName(), link, store.getDescription(), store.getStoreLogo());
+//		WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, Integer.valueOf(map.get("store_id").toString()), wp.getAppid(), wp.getSecret(), null);
+//		signature.setTitle(store.getStoreName());
+//		signature.setLink(link);
+//		signature.setDesc(store.getDescription());
+//		signature.setImgUrl(store.getStoreLogo());
+//		List<String> jsApiList = new ArrayList<String>();
+//		jsApiList.add("onMenuShareTimeline");
+//		jsApiList.add("onMenuShareAppMessage");
+//		jsApiList.add("onMenuShareQQ");
+//		jsApiList.add("onMenuShareWeibo");
+//		jsApiList.add("onMenuShareQZone");
+//		signature.setJsApiList(jsApiList);
+//		modelMap.addAttribute("signature", JSONObject.fromObject(signature).toString());
 		
 		return "/ehais/w_article";
 	}
@@ -500,7 +503,7 @@ public class EhaisWebController extends EhaisCommonController {
 			example.setLimitEnd(condition.getRows());
 			List<EHaiArticleSimple> list = eHaiArticleMapper.mySelectByExample(example);
 			for (EHaiArticleSimple eHaiArticle : list) {
-				eHaiArticle.setLink(SignUtil.setAid(store_id, Integer.valueOf(map.get("agencyId").toString()), Long.valueOf(map.get("userId").toString()), user_id, eHaiArticle.getArticleId(), wp.getToken()));
+				eHaiArticle.setLink(SignUtil.setSid(store_id, Integer.valueOf(map.get("agencyId").toString()), Long.valueOf(map.get("userId").toString()), user_id, eHaiArticle.getArticleId(),0L, wp.getToken()));
 				
 			}
 			rm.setTotal(eHaiArticleMapper.countByExample(example));
@@ -514,7 +517,7 @@ public class EhaisWebController extends EhaisCommonController {
 		}
 		return null;
 	}
-	
+	/*
 	@RequestMapping("/w_article_detail!{aid}")
 	public String w_article_detail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -549,7 +552,7 @@ public class EhaisWebController extends EhaisCommonController {
 					//文章的阅读记录添加
 					this.articleRecord(store_id, user_id, map);
 					
-					return this.article_detail(modelMap, request, response,wp, aid,user_id,map,"/ehais/w_article_goods");//整理此软文与商品所有内容
+					return this.article_goods(modelMap, request, response,wp, aid,user_id,map,"/ehais/w_article_goods");//整理此软文与商品所有内容
 				}else if(Long.valueOf(map.get("userId").toString()).longValue() != user_id.longValue()){
 					System.out.println("user_id != map.userId condition is worng");
 					request.getSession().removeAttribute(EConstants.SESSION_USER_ID);
@@ -561,7 +564,7 @@ public class EhaisWebController extends EhaisCommonController {
 				}
 			}else{
 				this.shop_encode(request);
-				return this.article_detail(modelMap, request, response,wp, aid,user_id,map,"/ehais/w_article_goods");//整理此软文与商品所有内容
+				return this.article_goods(modelMap, request, response,wp, aid,user_id,map,"/ehais/w_article_goods");//整理此软文与商品所有内容
 			}
 			
 			
@@ -570,7 +573,7 @@ public class EhaisWebController extends EhaisCommonController {
 		}
 		return "/ehais/w_article_goods";
 	}
-	
+	*/
 	/**
 	 * 文章详情信息
 	 * @param modelMap
@@ -585,60 +588,60 @@ public class EhaisWebController extends EhaisCommonController {
 	 * @throws NumberFormatException
 	 * @throws Exception
 	 */
-	private String article_detail(ModelMap modelMap,	
-			HttpServletRequest request,
-			HttpServletResponse response,
-			WpPublicWithBLOBs wp,
-			String aid,
-			Long user_id,
-			Map<String,Object> map,
-			String path) throws NumberFormatException, Exception{
-		//读取文章信息
-		EHaiArticle article = eHaiArticleMapper.selectByPrimaryKey(Integer.valueOf(map.get("articleId").toString()));
-		//读取商品信息
-		HaiArticleGoodsExample articleGoodsExp = new HaiArticleGoodsExample();
-		articleGoodsExp.createCriteria().andArticleIdEqualTo(Integer.valueOf(map.get("articleId").toString()));
-		List<HaiArticleGoods> articleGoodsList = haiArticleGoodsMapper.selectByExample(articleGoodsExp);
-		Long goodsId = 0L;
-		if(articleGoodsList != null && articleGoodsList.size() > 0){
-			goodsId = articleGoodsList.get(0).getGoodsId();
-						
-			//读取微信的分享信息与链接整理
-			if(goodsId.longValue() > 0){
-				HaiGoods goods = haiGoodsMapper.selectByPrimaryKey(goodsId);
-				modelMap.addAttribute("goods", goods);
-			}
-			
-		}
-		//为了统一使用文章+商品编码，这里需要转一次Sid
-		aid = SignUtil.setSid(Integer.valueOf(map.get("store_id").toString()), Integer.valueOf(map.get("agencyId").toString()), Long.valueOf(map.get("userId").toString()), user_id, Integer.valueOf(map.get("articleId").toString()), goodsId, wp.getToken());
-		String link = request.getScheme() + "://" + request.getServerName() + "/w_article_detail!"+aid;
-		
-		modelMap.addAttribute("sid", aid);//将aid变成sid
-		modelMap.addAttribute("article", article);
-		
-		modelMap.addAttribute("defaultimg", defaultimg);
-		modelMap.addAttribute("parentId", map.get("parentId"));
-		modelMap.addAttribute("agencyId", map.get("agencyId"));
-		modelMap.addAttribute("articleId", map.get("articleId"));
-		
-		WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, Integer.valueOf(map.get("store_id").toString()), wp.getAppid(), wp.getSecret(), null);
-		signature.setTitle(article.getTitle());
-		signature.setLink(link);
-		signature.setDesc(article.getDescription());
-		signature.setImgUrl(article.getArticleImages());
-		List<String> jsApiList = new ArrayList<String>();
-		jsApiList.add("onMenuShareTimeline");
-		jsApiList.add("onMenuShareAppMessage");
-		jsApiList.add("onMenuShareQQ");
-		jsApiList.add("onMenuShareWeibo");
-		jsApiList.add("onMenuShareQZone");
-		signature.setJsApiList(jsApiList);
-		modelMap.addAttribute("signature", JSONObject.fromObject(signature).toString());
-		modelMap.addAttribute("w_goods_detail","w_goods_detail!"+aid);
-		modelMap.addAttribute("buynow","buynow!"+aid);
-		return path;
-	}
+//	private String article_detail(ModelMap modelMap,	
+//			HttpServletRequest request,
+//			HttpServletResponse response,
+//			WpPublicWithBLOBs wp,
+//			String aid,
+//			Long user_id,
+//			Map<String,Object> map,
+//			String path) throws NumberFormatException, Exception{
+//		//读取文章信息
+//		EHaiArticle article = eHaiArticleMapper.selectByPrimaryKey(Integer.valueOf(map.get("articleId").toString()));
+//		//读取商品信息
+//		HaiArticleGoodsExample articleGoodsExp = new HaiArticleGoodsExample();
+//		articleGoodsExp.createCriteria().andArticleIdEqualTo(Integer.valueOf(map.get("articleId").toString()));
+//		List<HaiArticleGoods> articleGoodsList = haiArticleGoodsMapper.selectByExample(articleGoodsExp);
+//		Long goodsId = 0L;
+//		if(articleGoodsList != null && articleGoodsList.size() > 0){
+//			goodsId = articleGoodsList.get(0).getGoodsId();
+//						
+//			//读取微信的分享信息与链接整理
+//			if(goodsId.longValue() > 0){
+//				HaiGoods goods = haiGoodsMapper.selectByPrimaryKey(goodsId);
+//				modelMap.addAttribute("goods", goods);
+//			}
+//			
+//		}
+//		//为了统一使用文章+商品编码，这里需要转一次Sid
+//		aid = SignUtil.setSid(Integer.valueOf(map.get("store_id").toString()), Integer.valueOf(map.get("agencyId").toString()), Long.valueOf(map.get("userId").toString()), user_id, Integer.valueOf(map.get("articleId").toString()), goodsId, wp.getToken());
+//		String link = request.getScheme() + "://" + request.getServerName() + "/w_article_detail!"+aid;
+//		
+//		modelMap.addAttribute("sid", aid);//将aid变成sid
+//		modelMap.addAttribute("article", article);
+//		
+//		modelMap.addAttribute("defaultimg", defaultimg);
+//		modelMap.addAttribute("parentId", map.get("parentId"));
+//		modelMap.addAttribute("agencyId", map.get("agencyId"));
+//		modelMap.addAttribute("articleId", map.get("articleId"));
+//		
+//		WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, Integer.valueOf(map.get("store_id").toString()), wp.getAppid(), wp.getSecret(), null);
+//		signature.setTitle(article.getTitle());
+//		signature.setLink(link);
+//		signature.setDesc(article.getDescription());
+//		signature.setImgUrl(article.getArticleImages());
+//		List<String> jsApiList = new ArrayList<String>();
+//		jsApiList.add("onMenuShareTimeline");
+//		jsApiList.add("onMenuShareAppMessage");
+//		jsApiList.add("onMenuShareQQ");
+//		jsApiList.add("onMenuShareWeibo");
+//		jsApiList.add("onMenuShareQZone");
+//		signature.setJsApiList(jsApiList);
+//		modelMap.addAttribute("signature", JSONObject.fromObject(signature).toString());
+//		modelMap.addAttribute("w_goods_detail","w_goods_detail!"+aid);
+//		modelMap.addAttribute("buynow","buynow!"+aid);
+//		return path;
+//	}
 		
 	/**
 	 * http://wx123.9351p.com/w_article_goods!1380e1-7c17608f579081_6ed557049551-2096bf3269
@@ -682,7 +685,7 @@ public class EhaisWebController extends EhaisCommonController {
 					//文章的阅读记录添加
 					this.articleRecord(store_id, user_id, map);
 					
-					return this.article_goods(modelMap, request, response,wp, sid,map,"/ehais/w_article_goods");//整理此软文与商品所有内容
+					return this.article_goods(modelMap, request, response,wp, sid,user_id,map,"/ehais/w_article_goods");//整理此软文与商品所有内容
 				}else if(Long.valueOf(map.get("userId").toString()).longValue() != user_id.longValue()){
 					System.out.println("user_id != map.userId condition is worng");
 					request.getSession().removeAttribute(EConstants.SESSION_USER_ID);
@@ -694,7 +697,7 @@ public class EhaisWebController extends EhaisCommonController {
 				}
 			}else{
 				this.shop_encode(request);
-				return this.article_goods(modelMap, request, response,wp, sid,map,"/ehais/w_article_goods");//整理此软文与商品所有内容
+				return this.article_goods(modelMap, request, response,wp, sid,user_id,map,"/ehais/w_article_goods");//整理此软文与商品所有内容
 			}
 			
 			
@@ -811,6 +814,7 @@ public class EhaisWebController extends EhaisCommonController {
 		request.getSession().setAttribute(EConstants.SESSION_STORE_ID, store_id);
 		
 		try{
+			EHaiStore store = eStoreService.getEStore(store_id);
 			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
 			Map<String,Object> map = SignUtil.getCid(cid,wp.getToken());
 			if(map == null){
@@ -828,9 +832,26 @@ public class EhaisWebController extends EhaisCommonController {
 			modelMap.addAttribute("cartList", cartList);
 			modelMap.addAttribute("cid", cid);
 			
-			String newSid = SignUtil.setSid(store_id,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), user_id,0,0L, wp.getToken());
-			String link = request.getScheme() + "://" + request.getServerName() + "/w_shop!"+newSid;
+			String newCid = SignUtil.setCid(store_id,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), user_id, wp.getToken());
+			String link = request.getScheme() + "://" + request.getServerName() + "/w_shop!"+newCid;
 			modelMap.addAttribute("link", link);
+			
+			this.shareWeiXin(modelMap, request, response, wp, store_id, store.getStoreName(), link, store.getDescription(), store.getStoreLogo());
+//			WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, Integer.valueOf(map.get("store_id").toString()), wp.getAppid(), wp.getSecret(), null);
+//			signature.setTitle(store.getStoreName());
+//			signature.setLink(link);
+//			signature.setDesc(store.getDescription());
+//			signature.setImgUrl(store.getStoreLogo());
+//			List<String> jsApiList = new ArrayList<String>();
+//			jsApiList.add("onMenuShareTimeline");
+//			jsApiList.add("onMenuShareAppMessage");
+//			jsApiList.add("onMenuShareQQ");
+//			jsApiList.add("onMenuShareWeibo");
+//			jsApiList.add("onMenuShareQZone");
+//			signature.setJsApiList(jsApiList);
+//			modelMap.addAttribute("signature", JSONObject.fromObject(signature).toString());
+			
+			
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -838,13 +859,34 @@ public class EhaisWebController extends EhaisCommonController {
 		return "/ehais/w_cart";
 	}
 	
-	@RequestMapping("/w_check_order!{sid}")
+	@RequestMapping("/w_check_order!{cid}")
 	public String w_check_order(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
-			@PathVariable(value = "sid") String sid) {
+			@PathVariable(value = "cid") String cid) {
 		
+		Integer store_id = SignUtil.getUriStoreId(cid);
+		if(store_id == 0 || store_id == null){
+			System.out.println(cid+" store_id is worng");
+			return "redirect:"+website; //错误的链接，跳转商城
+		}
+		request.getSession().setAttribute(EConstants.SESSION_STORE_ID, store_id);
+		Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 		try{
-			modelMap.addAttribute("sid", sid);
+			EHaiStore store = eStoreService.getEStore(store_id);
+			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
+			Map<String,Object> map = SignUtil.getCid(cid,wp.getToken());
+			if(map == null){
+				System.out.println(cid+" cid is worng");
+			    return "redirect:"+website; //错误的链接，跳转商城
+			}
+			
+			String newCid = SignUtil.setCid(store_id,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), user_id, wp.getToken());
+			String link = request.getScheme() + "://" + request.getServerName() + "/w_shop!"+newCid;
+			modelMap.addAttribute("link", link);
+			
+			this.shareWeiXin(modelMap, request, response, wp, store_id, store.getStoreName(), link, store.getDescription(), store.getStoreLogo());
+			
+			modelMap.addAttribute("cid", cid);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -855,15 +897,7 @@ public class EhaisWebController extends EhaisCommonController {
 	@RequestMapping("/w_address_list")
 	public String w_address_list(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response	) {
-		
-		
 		try{
-//			HaiUserAddressExample example = new HaiUserAddressExample();
-//			example.createCriteria().andUserIdEqualTo((Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID));
-//			example.setOrderByClause("is_default desc,address_id desc");
-//			List<HaiUserAddress> userAddressList = haiUserAddressMapper.selectByExample(example);
-//			
-//			modelMap.addAttribute("userAddressList", userAddressList);
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -875,8 +909,6 @@ public class EhaisWebController extends EhaisCommonController {
 	@RequestMapping("/w_address_add")
 	public String w_address_add(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response	) {
-		
-		
 		try{
 			modelMap.addAttribute("model", new HaiUserAddress());
 		}catch(Exception e){

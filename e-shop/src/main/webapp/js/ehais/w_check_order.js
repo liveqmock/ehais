@@ -28,7 +28,7 @@ $(function(){
 	});
 	
 	$(".goindex").click(function(){
-		window.location.href = "/w_shop!"+sid;
+		window.location.href = "/w_shop!"+cid;
 	});
 });
 
@@ -47,7 +47,7 @@ function orderSubmit(){
 	
 	$.ajax({
 		url : "/ws/wxdone",type:"post",dataType:"json",
-		data : {sid:sid,pay_id:1,ship_id:1,address_id:addressId,message:message,recIds:recIds},
+		data : {cid:cid,pay_id:1,ship_id:1,address_id:addressId,message:message,recIds:recIds},
 		success : function(result){
 			if(result.code != 1){
 				elay.open({content:result.msg,btn:"知道了"});

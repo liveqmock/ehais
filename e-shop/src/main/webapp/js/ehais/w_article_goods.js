@@ -1,7 +1,7 @@
 $(function(){
 	if(sessionStorage.getItem("header")!=null)$(".ww").addClass("header");
-	$("#shareTip").click(function(){$(".share_wrapper").addClass("active");});
-	$(".share_wrapper .pic").click(function(){$(".share_wrapper").removeClass("active");});
+	$(".share").click(function(){$(".sw").addClass("active");});
+	$(".sw .pic").click(function(){$(".sw").removeClass("active");});
 	$("#buynow").click(function(){buynow();});//立即购买
 	$(".write").click(function(){
 		window.location.href = "w_write_message!"+sid;

@@ -28,7 +28,7 @@ public interface WeiXinPayService {
 	 * @throws Exception
 	 */
 	public WeiXinWCPay WeiXinPayApi(HttpServletRequest request,
-			String sid,
+			String cid,
 			String openid,
 			String orderSn,
 			Integer amount,
@@ -47,7 +47,7 @@ public interface WeiXinPayService {
 	 */
 	public ReturnObject<WeiXinNotifyPay> WeiXinNotifyPay(HttpServletRequest request,
 			WeiXinNotifyPay notifyPay,
-			String sid,
+			String cid,
 			String classify) throws Exception;
 	
 }

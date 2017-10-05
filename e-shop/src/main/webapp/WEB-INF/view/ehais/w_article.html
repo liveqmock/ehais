@@ -56,11 +56,18 @@
 			</footer>
 			
 		</div>
-		
+		<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js" ></script>
+		<script type="text/javascript" src="../js/wxsdk.js" ></script>
 		<script type="text/javascript">
 		var json = ${json};
 		var cid = "${cid}";
+		$(function(){
+			wx_config(${signature});
+		});
+		
 		</script>
+		
+		
 		<script type="text/javascript" src="js/ehais/article.js" ></script>
 	</body>
 </html>

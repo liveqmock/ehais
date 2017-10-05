@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -14,12 +15,14 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.ehais.epublic.mapper.EHaiArticleMapper;
 import org.ehais.epublic.mapper.EHaiUsersMapper;
 import org.ehais.epublic.model.EHaiArticle;
 import org.ehais.epublic.model.EHaiArticleExample;
+import org.ehais.epublic.model.EHaiStore;
 import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.epublic.model.EHaiUsersExample;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
@@ -36,15 +39,19 @@ import org.ehais.util.ResourceUtil;
 import org.ehais.util.SignUtil;
 import org.ehais.weixin.model.AccessToken;
 import org.ehais.weixin.model.OpenidInfo;
+import org.ehais.weixin.model.WeiXinSignature;
 import org.ehais.weixin.model.WeiXinUserInfo;
 import org.ehais.weixin.utils.WeiXinUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.ModelMap;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+
+import net.sf.json.JSONObject;
 
 public class EhaisCommonController extends CommonController{
 	//三级分销的主页面，可以将代理，与三个分销关系的ID组成商城主页，从而确定到三层关系与分销员的唯一商城地址
@@ -64,6 +71,7 @@ public class EhaisCommonController extends CommonController{
 	protected String weixin_token = ResourceUtil.getProValue("weixin_token");
 	protected String weixin_mch_id = ResourceUtil.getProValue("weixin_mch_id");
 	protected String weixin_mch_secret = ResourceUtil.getProValue("weixin_mch_secret");
+	protected String weixin_share_description = ResourceUtil.getProValue("weixin.share.description");
 	
 	
 	
@@ -444,5 +452,44 @@ public class EhaisCommonController extends CommonController{
 	}
 	
 	*/
+	
+	/**
+	 * 微信分享公共方法
+	 * @param modelMap
+	 * @param request
+	 * @param response
+	 * @param wp
+	 * @param store_id
+	 * @param title
+	 * @param link
+	 * @param desc
+	 * @param imgurl
+	 * @throws Exception
+	 */
+	protected void shareWeiXin(ModelMap modelMap,
+			HttpServletRequest request,
+			HttpServletResponse response,
+			WpPublicWithBLOBs wp ,
+			Integer store_id,
+			String title,
+			String link,
+			String desc,
+			String imgurl)throws Exception{
+		WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, store_id, wp.getAppid(), wp.getSecret(), null);
+		signature.setTitle(title);
+		signature.setLink(link);
+		signature.setDesc(StringUtils.isBlank(desc)?weixin_share_description:desc);
+		signature.setImgUrl(StringUtils.isBlank(imgurl)?defaultimg:imgurl);
+		List<String> jsApiList = new ArrayList<String>();
+		jsApiList.add("onMenuShareTimeline");
+		jsApiList.add("onMenuShareAppMessage");
+		jsApiList.add("onMenuShareQQ");
+		jsApiList.add("onMenuShareWeibo");
+		jsApiList.add("onMenuShareQZone");
+		signature.setJsApiList(jsApiList);
+		modelMap.addAttribute("signature", JSONObject.fromObject(signature).toString());
+		
+	}
+	
 
 }

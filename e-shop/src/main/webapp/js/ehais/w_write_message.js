@@ -19,7 +19,7 @@ $(function(){
 					btn : "知道了",
 					yes : function(index){
 						if(result.code == 1){
-							window.history.go(-1);
+							window.history.back();
 						}
 					}
 				});

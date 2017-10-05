@@ -25,9 +25,14 @@
 				<span>${article.author!''}</span>
 				<span>易海司公众号</span>
 			</div>
+			<div class="share">如果你觉得文章有价值，请分享到朋友圈</div>
+			
+			<#if (article.articleImages?? && article.articleImages!="" )>
 			<div class="media">
 				<img src="${article.articleImages!''}" />
 			</div>
+			</#if>
+			
 			<div class="article">${article.content!''}</div>
 			
 			
@@ -42,7 +47,7 @@
 				</div>
 				
 				<div class="qr">
-					长按二维码购买
+					<a href="w_goods_detail!${sid}">长按二维码购买</a>
 					<img id="gqr" />
 				</div>
 				
@@ -62,8 +67,9 @@
 				<img src="../images/qrcode.gif" />
 			</div>
 			
-			<div class="statistics"><#if article.articleSource??>源自：${article.articleSource!'原创'}</#if><i class="iconfont icon-article">  ${article.readCount!0}</i><i class="iconfont icon-zan">  ${article.praiseCount!0}</i></div>
+			<div class="statistics"><#if article.articleSource??>文章源自：${article.articleSource!'原创'}</#if><i class="iconfont icon-article">  ${article.readCount!0}</i><i class="iconfont icon-zan">  ${article.praiseCount!0}</i></div>
 			
+			<div class="at"><a href="${articleIndex}">资讯</a><a href="${shopIndex}">购物</a><a href="${storeUnion}">开店</a><a class="share">分销</a></div>
 			
 		</div>
 		
@@ -76,7 +82,7 @@
 			</ul>
 		</div>
 		
-		<div class="share_wrapper">
+		<div class="sw">
 			<div class="bg"></div>
 			<div class="pic"></div>
 		</div>
@@ -97,15 +103,8 @@
 	var sid = "${sid}";
 	$(function(){
 		wx_config(${signature});
-		
+		$("#gqr").attr("src","gqr!"+sid);
 	});
-	
-	</script>
-	
-	<script type="text/javascript">
-		$(function(){
-			$("#gqr").attr("src","gqr!"+sid);
-		});
 	</script>
 		
 </html>
