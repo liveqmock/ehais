@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.ehais.controller.CommonController;
 import org.ehais.epublic.mapper.EHaiUsersMapper;
 import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.epublic.model.EHaiUsersExample;
@@ -21,6 +22,8 @@ import org.ehais.weixin.model.AccessToken;
 import org.ehais.weixin.model.WeiXinUserInfo;
 import org.ehais.weixin.model.WeiXinUserInfoBatch;
 import org.ehais.weixin.utils.WeiXinUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -34,6 +37,8 @@ import net.sf.json.JSONObject;
  */
 @Component
 public class MyTaskAnnotation {
+	
+	protected static Logger log = LoggerFactory.getLogger(MyTaskAnnotation.class); 
 
 	@Autowired
 	private EHaiUsersMapper eHaiUsersMapper;
@@ -52,7 +57,7 @@ public class MyTaskAnnotation {
 	// */
 	// @Scheduled(cron = "0 0 1 * * *")
 	// public void show(){
-	// System.out.println("Annotation：is show run");
+	// log.info("Annotation：is show run");
 	// }
 	//
 	// /**
@@ -60,29 +65,29 @@ public class MyTaskAnnotation {
 	// */
 	// @Scheduled(fixedRate = 1000*2)
 	// public void print(){
-	// System.out.println("Annotation：print run");
+	// log.info("Annotation：print run");
 	// }
 	//
 	// @Scheduled(cron="0 0/2 * * * ? ")
 	public void updateUserNickFace() {
 		Date date = new Date();
-		System.out.println(DateUtil.formatDate(date, DateUtil.FORMATSTR_1)
+		log.info(DateUtil.formatDate(date, DateUtil.FORMATSTR_1)
 				+ "========================================updateUserNickFace");
 
 		EHaiUsersExample example = new EHaiUsersExample();
 		example.createCriteria().andOpenidIsNotNull().andNicknameIsNull().andStoreIdIsNotNull();
 		List<EHaiUsers> listUsers = eHaiUsersMapper.selectByExample(example);
-		System.out.println("listUsers.size()" + listUsers.size());
+		log.info("listUsers.size()" + listUsers.size());
 		for (EHaiUsers eHaiUsers : listUsers) {
 			try {
-				System.out.println(eHaiUsers.getOpenid());
+				log.info(eHaiUsers.getOpenid());
 				WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(eHaiUsers.getStoreId());
 				AccessToken access_token = WeiXinUtil.getAccessToken(eHaiUsers.getStoreId(), wp.getAppid(),
 						wp.getSecret());
 				WeiXinUserInfo userInfo = WeiXinUtil.getUserInfo(access_token.getAccess_token(), eHaiUsers.getOpenid());
-				System.out.println("userInfo.getNickname()" + userInfo.getNickname());
-				System.out.println("userInfo.getHeadimgurl()" + userInfo.getHeadimgurl());
-				System.out.println("userInfo.getSubscribe()" + userInfo.getSubscribe());
+				log.info("userInfo.getNickname()" + userInfo.getNickname());
+				log.info("userInfo.getHeadimgurl()" + userInfo.getHeadimgurl());
+				log.info("userInfo.getSubscribe()" + userInfo.getSubscribe());
 				eHaiUsers.setNickname(EmojiFilterUtils.filterEmoji(userInfo.getNickname()));
 				eHaiUsers.setFaceImage(userInfo.getHeadimgurl());
 				eHaiUsers.setSubscribe(userInfo.getSubscribe());
@@ -99,7 +104,7 @@ public class MyTaskAnnotation {
 	@Scheduled(cron = "0 0/7 *  * * ? ")
 	public void batchUserInfo() {
 		Date date = new Date();
-		System.out.println(DateUtil.formatDate(date, DateUtil.FORMATSTR_1)
+		log.info(DateUtil.formatDate(date, DateUtil.FORMATSTR_1)
 				+ "========================================batchUserInfo");
 		List<Integer> store_ids = eHaiUsersMapper.wxDistinctStoreId();
 		for (Integer integer : store_ids) {
@@ -117,7 +122,7 @@ public class MyTaskAnnotation {
 			m.put("user_list", user_list);
 			
 			JSONObject json = JSONObject.fromObject(m);
-			System.out.println(json.toString());
+			log.info(json.toString());
 			
 			try{
 				WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(integer);
@@ -147,7 +152,7 @@ public class MyTaskAnnotation {
 	@Scheduled(cron = "0 0/5 *  * * ? ")
 	public void vtuShareRemind() {
 		Date date = new Date();
-		System.out.println(DateUtil.formatDate(date, DateUtil.FORMATSTR_1) + "========vtuShareRemind");
+		log.info(DateUtil.formatDate(date, DateUtil.FORMATSTR_1) + "========vtuShareRemind");
 
 		try {
 			vtuService.vtuMessage(webapp_domain, webapp_vtu, DateUtil.formatDate(date, "HH:mm"));

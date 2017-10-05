@@ -25,13 +25,31 @@ $.ajaxSetup({
 });
 
 function is_weixin(){  
-    var ua = navigator.userAgent.toLowerCase();  
-    if(ua.match(/MicroMessenger/i)=="micromessenger") {  
+    var u = navigator.userAgent.toLowerCase();  
+    if(u.match(/MicroMessenger/i)=="micromessenger") {  
         return true;  
     } else {  
         return false;  
     }  
 } 
+
+function is_iphone(){  
+    var u = navigator.userAgent.toLowerCase();  
+    if(u.match(/iPhone/i)=="iphone") {  
+        return true;  
+    } else {  
+        return false;  
+    }
+}
+
+function is_android(){  
+    var u = navigator.userAgent.toLowerCase();  
+    if(u.match(/Android/i)=="android") {  
+        return true;  
+    } else {  
+        return false;  
+    }
+}
 
 
 String.prototype.replaceAll = function(reallyDo, replaceWith, ignoreCase) {  
@@ -43,5 +61,5 @@ String.prototype.replaceAll = function(reallyDo, replaceWith, ignoreCase) {
 }
 
 $(function(){
-	$("header .icon-xiangzuojiantou").click(function(){history.back();});
+	$("header .icon-xiangzuojiantou,header .icon-fanhui").click(function(){history.back();});
 });

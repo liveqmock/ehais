@@ -87,7 +87,7 @@
 <#list rm.map.goodsAgencyPrice as map> 
 
 <div class="form-group">
-<label class="col-sm-2 control-label">${map["agencyName"]} 取货价</label>
+<label class="col-sm-2 control-label">${map["agencyName"]} 提成金额</label>
 <div class="col-sm-2">
 	<@currencyPicker id="agencyPrice_${map['agencyId']}" value="${(map['price']!0) / 100}" />
 </div>

@@ -1,5 +1,5 @@
 $(function(){
-	if(sessionStorage.getItem("header")!=null)$(".ww").addClass("header");
+	if(sessionStorage.getItem("header")!=null && !is_iphone())$(".ww").addClass("header");
 	$(".share").click(function(){$(".sw").addClass("active");});
 	$(".sw .pic").click(function(){$(".sw").removeClass("active");});
 	$("#buynow").click(function(){buynow();});//立即购买

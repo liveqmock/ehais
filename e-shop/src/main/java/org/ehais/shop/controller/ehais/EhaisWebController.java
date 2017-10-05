@@ -339,7 +339,7 @@ public class EhaisWebController extends EhaisCommonController {
 		return path;
 	}
 	
-	//http://33fd7197.ngrok.io/w_article!1ce27200-02bd7b01-1ed30c02-2a6a0103-3760edeb1acce
+	//http://b23e253b.ngrok.io/w_article!1ce27200-02bd7b01-1ed30c02-2a6a0103-3760edeb1acce
 	@RequestMapping("/w_article!{cid}")
 	public String w_article(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
