@@ -339,7 +339,7 @@ public class EhaisWebController extends EhaisCommonController {
 		return path;
 	}
 	
-	//http://916f20de.ngrok.io/w_article!1ce27200-02bd7b01-1ed30c02-2a6a0103-3760edeb1acce
+	//http://33fd7197.ngrok.io/w_article!1ce27200-02bd7b01-1ed30c02-2a6a0103-3760edeb1acce
 	@RequestMapping("/w_article!{cid}")
 	public String w_article(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -425,7 +425,10 @@ public class EhaisWebController extends EhaisCommonController {
 		
 		//读取广告
 		HaiAdExample adExample = new HaiAdExample();
-		adExample.createCriteria().andStoreIdEqualTo(store_id).andIsVoidEqualTo(1);
+		adExample.createCriteria()
+		.andStoreIdEqualTo(default_store_id)
+		.andIsMobileEqualTo(1)
+		.andIsVoidEqualTo(1);
 		List<HaiAdSimple> adList = haiAdMapper.mySelectByExample(adExample);
 		mapData.put("adList", adList);
 		//读取分类

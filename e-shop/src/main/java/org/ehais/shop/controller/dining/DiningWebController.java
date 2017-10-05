@@ -95,7 +95,7 @@ public class DiningWebController extends EhaisCommonController{
 	
 	
 	//http://127.0.0.1/diningStore!934a1580-0c1e0501-156ed21242-2b36621253-314dd0C104-49175b56
-	//http://e477c865.ngrok.io/diningStore!934a1580-0c1e0501-156ed21242-2b36621253-314dd0C104-49175b56
+	//http://33fd7197.ngrok.io/diningStore!934a1580-0c1e0501-156ed21242-2b36621253-314dd0C104-49175b56
 	@RequestMapping("/diningStore!{sid}")
 	public String diningStore(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -196,23 +196,9 @@ public class DiningWebController extends EhaisCommonController{
 		modelMap.addAttribute("defaultimg", defaultimg);
 
 		String link = request.getScheme() + "://" + request.getServerName() + "/diningStore!"+sid;
-		WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, 
-				store_id, 
-				wp.getAppid(), 
-				wp.getSecret(), null);
-		signature.setTitle(store.getStoreName()+"微信点餐应用");
-		signature.setLink(link);
-		signature.setDesc(store.getDescription());
-		signature.setImgUrl(store.getStoreLogo());
-		List<String> jsApiList = new ArrayList<String>();
-		jsApiList.add("onMenuShareTimeline");
-		jsApiList.add("onMenuShareAppMessage");
-		jsApiList.add("onMenuShareQQ");
-		jsApiList.add("onMenuShareWeibo");
-		jsApiList.add("onMenuShareQZone");
-		signature.setJsApiList(jsApiList);
-		modelMap.addAttribute("signature", JSONObject.fromObject(signature).toString());
 		
+		this.shareWeiXin(modelMap, request, response, wp, store_id, store.getStoreName()+"易点餐应用", link, store.getDescription(), store.getStoreLogo());
+
 	}
 	
 	

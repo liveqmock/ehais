@@ -96,7 +96,7 @@ public class AdminUserServiceImpl extends CommonServiceImpl implements AdminUser
 		
 		HttpSession session = request.getSession(true);
 		String verCode = (String)session.getAttribute("verCode");
-		if(verCode == null || !verCode.equals(verificationcode)){
+		if(verCode == null || !verCode.toLowerCase().equals(verificationcode.toLowerCase())){
 			rm.setMsg("验证码错误");
 			return rm;
 		}

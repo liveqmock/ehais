@@ -137,24 +137,19 @@ public class EhaisUnionController extends EhaisCommonController{
 	private String ehaisUnionData(ModelMap modelMap,
 			HttpServletRequest request,Long user_id,String cid,Map<String,Object> map) throws Exception{
 		EHaiUsers user = eHaiUsersMapper.selectByPrimaryKey(user_id);
-		
+		WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(Integer.valueOf(map.get("store_id").toString()));
 		String link = request.getScheme() + "://" + request.getServerName() + "/ehaisUnion!"+cid;
-		WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, Integer.valueOf(map.get("store_id").toString()), weixin_appid, weixin_appsecret, null);
-		signature.setTitle("易微销事业加盟");
-		signature.setLink(link);
-		signature.setDesc("帮助商家“互联网+”的移动O2O服务分销平台");
-		signature.setImgUrl(defaultimg);
-		List<String> jsApiList = new ArrayList<String>();
-		jsApiList.add("onMenuShareTimeline");
-		jsApiList.add("onMenuShareAppMessage");
-		jsApiList.add("onMenuShareQQ");
-		jsApiList.add("onMenuShareWeibo");
-		jsApiList.add("onMenuShareQZone");
-		signature.setJsApiList(jsApiList);
-		modelMap.addAttribute("signature", JSONObject.fromObject(signature).toString());
+		
+		this.shareWeiXin(modelMap, request, null, wp, Integer.valueOf(map.get("store_id").toString()), "易微销事业加盟", link, "", "");
+		
+		
 		if(user == null || user.getUserType() != EUserTypeEnum.shop || user.getStoreId() == null || user.getStoreId().intValue() == 0){
 			return "/ehais/ehaisUnion";
 		}else{
+			
+			EHaiStore store = eStoreService.getEStore(Integer.valueOf(map.get("store_id").toString()));
+			modelMap.addAttribute("store",store);
+			
 			HaiStoreStatistics storeStatistics = haiStoreStatisticsMapper.selectByPrimaryKey(Integer.valueOf(map.get("store_id").toString()));
 			if(storeStatistics == null){
 				storeStatistics = new HaiStoreStatistics();

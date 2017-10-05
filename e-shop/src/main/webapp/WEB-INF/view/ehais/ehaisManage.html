@@ -18,13 +18,13 @@
 			<div class="header">
 				<div class="fl w50">
 					<div ><i class="fa fa-weixin"></i>微信支付</div>
-					<div>金额：<i id="wa">${storeStatistics.weixinAmount / 100}元</i></div>
-					<div>数量：<i id="wq">${storeStatistics.weixinQuantity}</i></div>
+					<div><i id="wa"></i>${storeStatistics.weixinAmount / 100}元</div>
+					<div><i id="wq"></i>${storeStatistics.weixinQuantity}</div>
 				</div>
 				<div class="fl w50">
 					<div ><i class="fa fa-cc-visa"></i>现金支付</div>
-					<div>金额：<i id="ca">${storeStatistics.cashAmount / 100}元</i></div>
-					<div>数量：<i id="cq">${storeStatistics.cashQuantity}</i></div>
+					<div><i id="ca"></i>${storeStatistics.cashAmount / 100}元</div>
+					<div><i id="cq"></i>${storeStatistics.cashQuantity}</div>
 				</div>
 			</div>
 			<div id="c">
@@ -34,8 +34,13 @@
 			</div>	
 		</div>
 		<footer>
-			PC端后台操作：http://mg.ehais.com/admin.html
+			<div>电脑端后台操作：http://mg.ehais.com/admin.html</div>
+			<div>登录名：</div>
 		</footer>
 		<script type="text/javascript" src="js/ehais/ehaisManage.js" ></script>
+		<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js" ></script>
+		<script type="text/javascript" src="/js/wxsdk.js" ></script>
+		
+		
 	</body>
 </html>

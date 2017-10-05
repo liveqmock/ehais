@@ -105,7 +105,6 @@ footer {
   box-sizing: border-box;
   font-size: 0.12rem;
   z-index: 101;
-  line-height: 0.49rem;
-  padding: 0 0.15rem;
+  padding: 0.05rem 0.15rem 0;
   border-top: 0.01rem solid #F3F3F3;
 }
