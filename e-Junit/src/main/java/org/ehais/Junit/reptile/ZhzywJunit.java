@@ -13,14 +13,13 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.Test;
 
-public class ZhzywJunit {
+public class ZhzywJunit extends ArticleCommonReptile{
 
 	private static String website = "http://www.zhzyw.org";
-	private static String web_url = "http://mg.ehais.com";
-	public static String appkey = "Ehais";
-	public static String secret = "EhaisSecret";
+	
 	public static String store_id = "71";
 	public static String cat_name = "中医减肥";
+	public static String articleSource = "中华中药网";
 	
 //	中药基础
 	@Test
@@ -109,7 +108,7 @@ public class ZhzywJunit {
 //			System.out.println(sb.toString());
 			
 			//保存
-			article_save(cat_name, H1.html(), daodu.html(), sb.toString(), url);
+			article_save(store_id, cat_name, H1.html(), daodu.html(), sb.toString(),articleSource, url);
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -142,63 +141,35 @@ public class ZhzywJunit {
 	}
 	
 	
-	public static void article_save(String cat_name,String title,String description,String content,String link){
-		Map<String, String> paramsMap = new HashMap<String, String>();
-		paramsMap.put("appkey", appkey);
-    	paramsMap.put("version", "v1.0");
-    	paramsMap.put("timestamp", String.valueOf(System.currentTimeMillis()));
-    	
-    	paramsMap.put("title", title);
-    	paramsMap.put("store_id", store_id);
-    	paramsMap.put("storeId", store_id);
-    	paramsMap.put("link", link);
-    	paramsMap.put("description", description);
-    	paramsMap.put("content", content);
-    	paramsMap.put("cat_name", cat_name);
-    	paramsMap.put("articleSource", "中华中药网");
-    	
-    	
-		try {
-			String sign = SignUtil.getSignWS(paramsMap,secret).toLowerCase();
-			paramsMap.put("sign", sign);
-
-	    	String req = EHttpClientUtil.httpPost(web_url+"/api/article_save", paramsMap);
-			System.out.println(req);
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	
-    	
-	}
 	
 	
-	@Test
-	public void test_article_save() throws UnsupportedEncodingException{
-		Map<String, String> paramsMap = new HashMap<String, String>();
-		paramsMap.put("appkey", appkey);
-    	paramsMap.put("version", "v1.0");
-    	paramsMap.put("timestamp", String.valueOf(System.currentTimeMillis()));
-    	
-    	paramsMap.put("title", "TTTv");
-    	paramsMap.put("store_id", store_id);
-    	paramsMap.put("storeId", store_id);
-    	paramsMap.put("link", "test");
-    	paramsMap.put("description", "test");
-    	paramsMap.put("content", "test");
-    	paramsMap.put("cat_name", "中药基础");
-    	paramsMap.put("articleSource", "中华中药网");
-//    	paramsMap.put("author", "中药网");
-//    	paramsMap.put("authorEmail", "中药网@126.com");
-//    	paramsMap.put("keywords", "中药");
-//    	paramsMap.put("fileUrl", "中药");
-    	
-    	String sign = SignUtil.getSignWS(paramsMap,secret).toLowerCase();
-    	paramsMap.put("sign", sign);
-
-    	String req = EHttpClientUtil.httpPost(web_url+"/api/article_save", paramsMap);
-		System.out.println(req);
-	}
+//	
+//	@Test
+//	public void test_article_save() throws UnsupportedEncodingException{
+//		Map<String, String> paramsMap = new HashMap<String, String>();
+//		paramsMap.put("appkey", appkey);
+//    	paramsMap.put("version", "v1.0");
+//    	paramsMap.put("timestamp", String.valueOf(System.currentTimeMillis()));
+//    	
+//    	paramsMap.put("title", "TTTv");
+//    	paramsMap.put("store_id", store_id);
+//    	paramsMap.put("storeId", store_id);
+//    	paramsMap.put("link", "test");
+//    	paramsMap.put("description", "test");
+//    	paramsMap.put("content", "test");
+//    	paramsMap.put("cat_name", "中药基础");
+//    	paramsMap.put("articleSource", "中华中药网");
+////    	paramsMap.put("author", "中药网");
+////    	paramsMap.put("authorEmail", "中药网@126.com");
+////    	paramsMap.put("keywords", "中药");
+////    	paramsMap.put("fileUrl", "中药");
+//    	
+//    	String sign = SignUtil.getSignWS(paramsMap,secret).toLowerCase();
+//    	paramsMap.put("sign", sign);
+//
+//    	String req = EHttpClientUtil.httpPost(web_url+"/api/article_save", paramsMap);
+//		System.out.println(req);
+//	}
 	
 	class TheadZhzyw implements Runnable{
 		
