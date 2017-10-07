@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.ehais.controller.CommonController;
+import org.ehais.shop.mapper.HaiOrderInfoMapper;
 import org.ehais.shop.service.OrderInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
@@ -15,6 +16,8 @@ public class OrderInfoIController extends CommonController{
 
 	@Autowired
 	protected OrderInfoService orderinfoService;
+	@Autowired
+	protected HaiOrderInfoMapper haiOrderInfoMapper;
 	
 	
 }

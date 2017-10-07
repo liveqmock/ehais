@@ -4,12 +4,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.ehais.common.EConstants;
+import org.ehais.enums.EOrderStatusEnum;
 import org.ehais.shop.controller.api.include.OrderInfoIController;
+import org.ehais.shop.model.HaiOrderInfo;
+import org.ehais.shop.model.HaiOrderInfoExample;
 import org.ehais.tools.EConditionObject;
+import org.ehais.tools.ReturnObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -66,6 +71,35 @@ public class OrderInfoWSController extends OrderInfoIController{
 		Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 		try {
 			return this.writeJson(orderinfoService.orderinfo_disvalid(request, user_id, orderId));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			log.error("error :", e);
+		}
+		return null;
+	}
+	
+	
+	
+	@ResponseBody
+	@RequestMapping(value="/new_order_tip",method=RequestMethod.POST)
+	public String new_order_tip(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "paytime", required = true) Integer paytime){
+		ReturnObject<HaiOrderInfo> rm = new ReturnObject<HaiOrderInfo>();
+		rm.setCode(1);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		try {
+			HaiOrderInfoExample exam = new HaiOrderInfoExample();
+			exam.createCriteria()
+			.andStoreIdEqualTo(store_id)
+			.andPayTimeGreaterThan(paytime)
+			.andOrderStatusEqualTo(EOrderStatusEnum.success);
+			long c = haiOrderInfoMapper.countByExample(exam);
+			rm.setTotal(c);
+			rm.setCode(1);
+			rm.setMsg("success");
+			return this.writeJson(rm);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

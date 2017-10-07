@@ -126,7 +126,7 @@ public class OrderInfoApiController extends OrderInfoIController{
 				
 				HaiOrderInfo o = list.get(list.size() - 1);
 				p.setPrintTime(o.getPayTime());
-//				haiDiningPrintTimeMapper.updateByPrimaryKey(p);
+				haiDiningPrintTimeMapper.updateByPrimaryKey(p);
 			}
 			rm.setCode(1);
 			rm.setRows(list);
