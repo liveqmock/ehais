@@ -42,9 +42,7 @@
 <body>
 <div class="header">
 	<div class="nav">
-		<i id="back" class="icon fa fa-arrow-left">&nbsp;</i>
 		<div class="nav0">商户管理</div>
-		<div class="nav1">信息编辑</div>
 	</div>
 </div>
 <div style="width: 100%;height: 40px;"></div>
@@ -103,29 +101,20 @@
 </div>
 </div>
 
-
-<div class="form-group">
-<label class="col-sm-2 control-label">是否生效</label>
-<div class="col-sm-8">
-	<@checkboxPicker id="state" value="${(rm.model.state?string('yes', 'no'))!'no'}" />
-</div>
-</div>
-
-
 <div class="form-group">
 	<div class="col-sm-3"></div>
 	<div class="col-sm-6"><button id="saveSubmit" type="button" class="btn btn-primary">提交信息</button></div>
 </div>
        
 
-
+<input type="checkbox"  id="state" name="state" value="1" placeholder="" checked="checked" class="dn" >
 
 
 </form>
 </div>    
 
 
-<script type="text/javascript" src="/js/partner/store/detail.js" ></script>             
+<script type="text/javascript" src="/js/ehais/store/detail.js" ></script>             
 
 
 </body>

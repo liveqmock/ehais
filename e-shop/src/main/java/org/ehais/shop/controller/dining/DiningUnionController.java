@@ -95,7 +95,11 @@ public class DiningUnionController extends EhaisCommonController{
 				if((user_id == null || user_id == 0 ) && StringUtils.isEmpty(code)){
 					return this.redirect_wx_authorize(request , weixin_appid , "/diningUnion!"+pid);
 				}else if(StringUtils.isNotEmpty(code)){
-					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map,weixin_appid,weixin_appsecret,weixin_token,false);
+					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map);
+					if(user.getSubscribe() == null || user.getSubscribe() != 1){
+						//跳转关注页面
+						
+					}
 					String newPid = SignUtil.setPartnerId(default_store_id,Integer.valueOf(map.get("partnerId").toString()),Long.valueOf(map.get("userId").toString()), user.getUserId(), weixin_token);
 					String link = request.getScheme() + "://" + request.getServerName() + "/diningUnion!"+newPid;
 					return "redirect:"+link;
@@ -210,6 +214,8 @@ public class DiningUnionController extends EhaisCommonController{
 			store.setTel(mobile);
 			store.setAddTime(addTime);
 			store.setPartnerId(Integer.valueOf(map.get("partnerId").toString()));
+			store.setPublicId(default_public_id);
+			store.setState(true);
 			eHaiStoreMapper.insert(store);
 			
 			user.setStoreId(store.getStoreId());
@@ -227,15 +233,15 @@ public class DiningUnionController extends EhaisCommonController{
 			admin.setPartnerId(Integer.valueOf(map.get("partnerId").toString()));
 			eHaiAdminUserMapper.insert(admin);
 			
-			WpPublicWithBLOBs wp = new WpPublicWithBLOBs();
-			wp.setPublicName(store_name);
-			wp.setToken(weixin_token);
-			wp.setAppid(weixin_appid);
-			wp.setSecret(weixin_appsecret);
-			wp.setMchId(weixin_mch_id);
-			wp.setMchSecret(weixin_mch_secret);
-			wp.setStoreId(store.getStoreId());
-			wpPublicMapper.insert(wp);
+//			WpPublicWithBLOBs wp = new WpPublicWithBLOBs();
+//			wp.setPublicName(store_name);
+//			wp.setToken(weixin_token);
+//			wp.setAppid(weixin_appid);
+//			wp.setSecret(weixin_appsecret);
+//			wp.setMchId(weixin_mch_id);
+//			wp.setMchSecret(weixin_mch_secret);
+//			wp.setStoreId(store.getStoreId());
+//			wpPublicMapper.insert(wp);
 			
 			
 			rm.setModel(admin);

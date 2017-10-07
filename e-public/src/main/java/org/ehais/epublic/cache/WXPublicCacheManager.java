@@ -30,23 +30,23 @@ public class WXPublicCacheManager {
 	
 	
 
-	public void putWXPublic(Integer storeId, WpPublicWithBLOBs publicToken) {
+	public void putWXPublic(Integer publicId, WpPublicWithBLOBs publicToken) {
 		// TODO 自动生成方法存根
-		wxPublicCache.put(storeId, publicToken);
+		wxPublicCache.put(publicId, publicToken);
 	}
 
-	public void removePublic(Integer storeId) {
+	public void removePublic(Integer publicId) {
 		// TODO 自动生成方法存根
-		wxPublicCache.remove(storeId);
+		wxPublicCache.remove(publicId);
 	}
 
-	public WpPublicWithBLOBs getWXPublic(Integer storeId) {
+	public WpPublicWithBLOBs getWXPublic(Integer publicId) {
 		// TODO 自动生成方法存根
 		try {
-			return (WpPublicWithBLOBs) wxPublicCache.get(storeId);
+			return (WpPublicWithBLOBs) wxPublicCache.get(publicId);
 		} catch (Exception e) {
 			// TODO 自动生成 catch 块
-			System.out.println("wxPublicCache>>storeId[" + storeId + "]>>"
+			System.out.println("wxPublicCache>>publicId[" + publicId + "]>>"
 					+ e.getMessage());
 			return null;
 		}

@@ -1,6 +1,9 @@
 package org.ehais.shop.controller.api;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -8,8 +11,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.ehais.epublic.cache.EAdminTokenCacheManager;
 import org.ehais.shop.controller.api.include.OrderInfoIController;
 import org.ehais.shop.mapper.HaiDiningPrintTimeMapper;
+import org.ehais.shop.mapper.HaiOrderGoodsMapper;
 import org.ehais.shop.mapper.HaiOrderInfoMapper;
 import org.ehais.shop.model.HaiDiningPrintTime;
+import org.ehais.shop.model.HaiOrderGoods;
+import org.ehais.shop.model.HaiOrderGoodsExample;
 import org.ehais.shop.model.HaiOrderInfo;
 import org.ehais.shop.model.HaiOrderInfoExample;
 import org.ehais.shop.model.HaiOrderInfoWithBLOBs;
@@ -30,6 +36,8 @@ public class OrderInfoApiController extends OrderInfoIController{
 
 	@Autowired
 	private HaiOrderInfoMapper haiOrderInfoMapper;
+	@Autowired
+	private HaiOrderGoodsMapper haiOrderGoodsMapper;
 	@Autowired
 	private HaiDiningPrintTimeMapper haiDiningPrintTimeMapper;
 	
@@ -103,10 +111,22 @@ public class OrderInfoApiController extends OrderInfoIController{
 			c.andStoreIdEqualTo(store_id).andPayTimeGreaterThan(p.getPrintTime());
 			example.setOrderByClause("pay_time asc");
 			List<HaiOrderInfoWithBLOBs> list = haiOrderInfoMapper.selectByExampleWithBLOBs(example);
+			
 			if(list != null && list.size() > 0){
+				List<Long> orderIds = new ArrayList<Long>();
+				for (HaiOrderInfoWithBLOBs haiOrderInfoWithBLOBs : list) {
+					orderIds.add(haiOrderInfoWithBLOBs.getOrderId());
+				}
+				HaiOrderGoodsExample gExp = new HaiOrderGoodsExample();
+				gExp.createCriteria().andOrderIdIn(orderIds);
+				List<HaiOrderGoods> listGoods = haiOrderGoodsMapper.selectByExampleWithBLOBs(gExp);
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("listGoods", listGoods);
+				rm.setMap(map);
+				
 				HaiOrderInfo o = list.get(list.size() - 1);
 				p.setPrintTime(o.getPayTime());
-				haiDiningPrintTimeMapper.updateByPrimaryKey(p);
+//				haiDiningPrintTimeMapper.updateByPrimaryKey(p);
 			}
 			rm.setCode(1);
 			rm.setRows(list);

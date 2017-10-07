@@ -1,12 +1,15 @@
 @import url("common.css");
-* {
+.wm {
+  padding: 0.45rem 0 0;
+  font-size: 0.14rem;
   box-sizing: border-box;
   float: left;
   width: 100%;
 }
-.wm {
-  padding: 0.45rem 0 0;
-  font-size: 0.14rem;
+.wm * {
+  box-sizing: border-box;
+  float: left;
+  width: 100%;
 }
 .wm header {
   height: 0.45rem;

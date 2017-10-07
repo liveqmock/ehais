@@ -12,6 +12,8 @@ public interface HaiStoreService extends CommonService{
 	public ReturnObject<EHaiStore> store_list_json(HttpServletRequest request,EConditionObject condition,Integer keySubId,String storeName) throws Exception;
 	public ReturnObject<EHaiStore> store_insert(HttpServletRequest request) throws Exception;
 	public ReturnObject<EHaiStore> store_insert_submit(HttpServletRequest request,EHaiStore model) throws Exception;
+	public ReturnObject<EHaiStore> store_partner_update(HttpServletRequest request,Integer storeId) throws Exception;
+	public ReturnObject<EHaiStore> store_partner_update_submit(HttpServletRequest request,EHaiStore model) throws Exception;
 	public ReturnObject<EHaiStore> store_update(HttpServletRequest request,Integer storeId) throws Exception;
 	public ReturnObject<EHaiStore> store_update_submit(HttpServletRequest request,EHaiStore model) throws Exception;
 	public ReturnObject<EHaiStore> store_info(HttpServletRequest request,Integer storeId) throws Exception;

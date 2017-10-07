@@ -64,6 +64,7 @@ public class EhaisCommonController extends CommonController{
 	protected EStoreService eStoreService;
 	
 	protected Integer default_store_id = Integer.valueOf(ResourceUtil.getProValue("default_store_id"));
+	protected Integer default_public_id = Integer.valueOf(ResourceUtil.getProValue("default_public_id"));
 	protected String website = ResourceUtil.getProValue("website");
 	protected String defaultimg = ResourceUtil.getProValue("defaultimg");
 	protected String weixin_appid = ResourceUtil.getProValue("weixin_appid");
@@ -73,7 +74,10 @@ public class EhaisCommonController extends CommonController{
 	protected String weixin_mch_secret = ResourceUtil.getProValue("weixin_mch_secret");
 	protected String weixin_share_description = ResourceUtil.getProValue("weixin.share.description");
 	
-	
+	protected static String accessKey = ResourceUtil.getProValue("qiniu.accesskey");
+	protected static String secretKey = ResourceUtil.getProValue("qiniu.secretkey");
+	protected static String bucket = ResourceUtil.getProValue("qiniu.bucket");
+	protected static String domain = ResourceUtil.getProValue("qiniu.domain");
 	
 	/**
 	 * 1.判断session的userid,openid随便一个不存在，即走微信网络请求链接
@@ -96,10 +100,13 @@ public class EhaisCommonController extends CommonController{
 		if(list == null || list.size() == 0){//用户不存在，入库
 			user = new EHaiUsers();
 			user.setOpenid(open.getOpenid());
-			user.setParentId(map.get("userId") != null ? Long.valueOf(map.get("userId").toString()) : 0);
-			user.setAgencyId(map.get("agencyId") != null ? Integer.valueOf(map.get("agencyId").toString()) : 0);
-			user.setStoreId(map.get("store_id") != null ? Integer.valueOf(map.get("store_id").toString()) : 0);
-			user.setPartnerId(map.get("partnerId")!=null ? Integer.valueOf(map.get("partnerId").toString()) : 0 );
+			if(map!=null){
+				user.setParentId(map.get("userId") != null ? Long.valueOf(map.get("userId").toString()) : 0);
+				user.setAgencyId(map.get("agencyId") != null ? Integer.valueOf(map.get("agencyId").toString()) : 0);
+				user.setStoreId(map.get("store_id") != null ? Integer.valueOf(map.get("store_id").toString()) : 0);
+				user.setPartnerId(map.get("partnerId")!=null ? Integer.valueOf(map.get("partnerId").toString()) : 0 );
+				
+			}
 			
 			user.setEmail("");
 			user.setUserName(open.getOpenid());
@@ -130,16 +137,32 @@ public class EhaisCommonController extends CommonController{
 		
 		return user;
 	}
-	protected EHaiUsers saveUserByOpenIdInfo(HttpServletRequest request,String code,Map<String ,Object> map,String appid,String secret ,String token,boolean subscribe) throws Exception{
-		OpenidInfo open = WeiXinUtil.getOpenid(code,appid,secret);
+	/**
+	 * 适用于商家加盟的注册
+	 * @param request
+	 * @param code
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	protected EHaiUsers saveUserByOpenIdInfo(HttpServletRequest request,String code,Map<String ,Object> map) throws Exception{
+		OpenidInfo open = WeiXinUtil.getOpenid(code,weixin_appid,weixin_appsecret);
 		if(open == null) return null;
 		WeiXinUserInfo wxUser = null;
-		if(subscribe){
-			AccessToken accesstoken = WeiXinUtil.getAccessToken(default_store_id, weixin_appid, weixin_appsecret);
-			wxUser = WeiXinUtil.getUserInfo(accesstoken.getAccess_token(), open.getOpenid());
-		}
+		AccessToken accesstoken = WeiXinUtil.getAccessToken(default_store_id, weixin_appid, weixin_appsecret);
+		wxUser = WeiXinUtil.getUserInfo(accesstoken.getAccess_token(), open.getOpenid());
 		return this.saveUserOpen(request, open , wxUser , map);
 	}
+	
+	/**
+	 * 用适于文章，商品等普通页面的用户获取
+	 * @param request
+	 * @param code
+	 * @param map
+	 * @param subscribe
+	 * @return
+	 * @throws Exception
+	 */
 	protected EHaiUsers saveUserByOpenIdInfo(HttpServletRequest request,String code,Map<String ,Object> map,boolean subscribe) throws Exception{
 		//获取openid
 		WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(Integer.valueOf(map.get("store_id").toString()));
@@ -153,6 +176,27 @@ public class EhaisCommonController extends CommonController{
 		//根据openid获取用户是否存在
 		return this.saveUserOpen(request, open , wxUser , map);
 	}
+	
+	/**
+	 * 适用于个人中心或公众号进入的用户
+	 * @param request
+	 * @param code
+	 * @param store_id
+	 * @return
+	 * @throws Exception
+	 */
+	protected EHaiUsers saveUserByOpenIdInfo(HttpServletRequest request,String code,Integer store_id) throws Exception{
+		//获取openid
+		WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
+		OpenidInfo open = WeiXinUtil.getOpenid(code,wp.getAppid(),wp.getSecret());
+		if(open == null) return null;
+		WeiXinUserInfo wxUser = null;
+		AccessToken token = WeiXinUtil.getAccessToken(store_id, wp.getAppid(), wp.getSecret());
+		wxUser = WeiXinUtil.getUserInfo(token.getAccess_token(), open.getOpenid());
+		//根据openid获取用户是否存在
+		return this.saveUserOpen(request, open , wxUser , null);
+	}
+	
 	
 	//跳转微信认证
 	protected String redirect_wx_authorize(HttpServletRequest request ,String appid , String path ) throws Exception {

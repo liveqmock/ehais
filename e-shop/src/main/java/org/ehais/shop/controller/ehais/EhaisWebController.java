@@ -180,7 +180,10 @@ public class EhaisWebController extends EhaisCommonController {
 		modelMap.addAttribute("cid", cid);
 		
 		HaiAdExample adExample = new HaiAdExample();
-		adExample.createCriteria().andStoreIdEqualTo(default_store_id).andIsVoidEqualTo(1);
+		adExample.createCriteria()
+		.andStoreIdEqualTo(default_store_id)
+		.andIsMobileEqualTo(1)
+		.andIsVoidEqualTo(1);
 		List<HaiAd> adList = haiAdMapper.selectByExample(adExample);
 		
 		HaiCategoryExample categoryExample = new HaiCategoryExample();

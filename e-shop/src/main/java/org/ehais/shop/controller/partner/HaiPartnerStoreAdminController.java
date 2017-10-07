@@ -7,15 +7,17 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.ehais.annotation.EPermissionController;
 import org.ehais.annotation.EPermissionMethod;
-import org.ehais.controller.CommonController;
+import org.ehais.common.EConstants;
 import org.ehais.epublic.model.EHaiStore;
 import org.ehais.epublic.validator.EInsertValidator;
 import org.ehais.epublic.validator.EUniqueValidator;
 import org.ehais.epublic.validator.EUpdateValidator;
 import org.ehais.protocol.PermissionProtocol;
+import org.ehais.shop.controller.ehais.EhaisCommonController;
 import org.ehais.shop.service.HaiStoreService;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
+import org.ehais.util.QiniuUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,17 +33,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 
-@EPermissionController(intro="商户管理功能",value="haiStoreController")
+@EPermissionController(intro="商户管理功能",value="HaiPartnerStoreAdminController")
 @Controller
 @RequestMapping("/ehais")
-public class  HaiStoreAdminController extends CommonController {
+public class  HaiPartnerStoreAdminController extends EhaisCommonController {
 
-	private static Logger log = LoggerFactory.getLogger(HaiStoreAdminController.class);
+	private static Logger log = LoggerFactory.getLogger(HaiPartnerStoreAdminController.class);
 
 	@Autowired
 	private HaiStoreService haiStoreService;
-	
-	
+
 	@EPermissionMethod(intro="打开商户管理页面",value="haiStoreView",type=PermissionProtocol.URL)
 	@RequestMapping("/manage/haiStoreView")
 	public String haiStoreView(ModelMap modelMap,
@@ -87,6 +88,8 @@ public class  HaiStoreAdminController extends CommonController {
 		try{
 			ReturnObject<EHaiStore> rm = haiStoreService.store_insert(request);
 			modelMap.addAttribute("rm", rm);
+			modelMap.addAttribute("uptoken", QiniuUtil.getUpToken(accessKey,secretKey,bucket));
+			modelMap.addAttribute("domain", domain);
 			return "/"+this.getPartnerTheme(request)+"/store/detail";
 			
 		}catch(Exception e){
@@ -128,9 +131,11 @@ public class  HaiStoreAdminController extends CommonController {
 			@RequestParam(value = "storeId", required = true) Integer storeId
 			) {
 		try{
-			ReturnObject<EHaiStore> rm = haiStoreService.store_update(request,storeId);
+			ReturnObject<EHaiStore> rm = haiStoreService.store_partner_update(request,storeId);
 			modelMap.addAttribute("rm", rm);
-			return "/admin/store/detail";
+			modelMap.addAttribute("uptoken", QiniuUtil.getUpToken(accessKey,secretKey,bucket));
+			modelMap.addAttribute("domain", domain);
+			return "/partner/store/detail";
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("store", e);
@@ -149,7 +154,7 @@ public class  HaiStoreAdminController extends CommonController {
 			) {
 			if(result.hasErrors())return this.writeBindingResult(result);
 		try{
-			return this.writeJson(haiStoreService.store_update_submit(request,store));
+			return this.writeJson(haiStoreService.store_partner_update_submit(request,store));
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("store", e);
@@ -173,7 +178,10 @@ public class  HaiStoreAdminController extends CommonController {
 			return this.errorJSON(e);
 		}
 	}
-		
+	
+	
+	
+	
 }
 
 

@@ -106,7 +106,7 @@ public class HaiStoreServiceImpl  extends CommonServiceImpl implements HaiStoreS
 		return rm;
 	}
 
-	public ReturnObject<EHaiStore> store_update(HttpServletRequest request,Integer storeId)
+	public ReturnObject<EHaiStore> store_partner_update(HttpServletRequest request,Integer storeId)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiStore> rm = new ReturnObject<EHaiStore>();
@@ -130,7 +130,7 @@ public class HaiStoreServiceImpl  extends CommonServiceImpl implements HaiStoreS
 		return rm;
 	}
 	
-	public ReturnObject<EHaiStore> store_update_submit(HttpServletRequest request,EHaiStore model)
+	public ReturnObject<EHaiStore> store_partner_update_submit(HttpServletRequest request,EHaiStore model)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiStore> rm = new ReturnObject<EHaiStore>();
@@ -149,48 +149,92 @@ public class HaiStoreServiceImpl  extends CommonServiceImpl implements HaiStoreS
 
 		EHaiStore bean = haiStoreMapper.selectByPrimaryKey(model.getStoreId());
 
-bean.setStoreName(model.getStoreName());
-bean.setOwnerName(model.getOwnerName());
-bean.setOwnerCard(model.getOwnerCard());
-bean.setRegionId(model.getRegionId());
-bean.setRegionName(model.getRegionName());
-bean.setAddress(model.getAddress());
-bean.setZipcode(model.getZipcode());
-bean.setTel(model.getTel());
-bean.setSgrade(model.getSgrade());
-bean.setApplyRemark(model.getApplyRemark());
-bean.setCreditValue(model.getCreditValue());
-bean.setPraiseRate(model.getPraiseRate());
-bean.setDomain(model.getDomain());
-bean.setState(model.getState());
-bean.setCloseReason(model.getCloseReason());
-bean.setAddTime(model.getAddTime());
-bean.setEndTime(model.getEndTime());
-bean.setCertification(model.getCertification());
-bean.setSortOrder(model.getSortOrder());
-bean.setRecommended(model.getRecommended());
-bean.setTheme(model.getTheme());
-bean.setStoreBanner(model.getStoreBanner());
-bean.setStoreLogo(model.getStoreLogo());
-bean.setDescription(model.getDescription());
-bean.setImage1(model.getImage1());
-bean.setImage2(model.getImage2());
-bean.setImage3(model.getImage3());
-bean.setImQq(model.getImQq());
-bean.setImWw(model.getImWw());
-bean.setImMsn(model.getImMsn());
-bean.setEnableGroupbuy(model.getEnableGroupbuy());
-bean.setEnableRadar(model.getEnableRadar());
-bean.setPartnerId(model.getPartnerId());
-bean.setContacts(model.getContacts());
-bean.setMobile(model.getMobile());
-
-
+		this.StoreModelToBean(bean, model);
 
 		int code = haiStoreMapper.updateByExampleSelective(bean, example);
 		rm.setCode(code);
 		rm.setMsg("编辑成功");
 		return rm;
+	}
+	
+	
+	public ReturnObject<EHaiStore> store_update(HttpServletRequest request,Integer storeId)
+			throws Exception {
+		// TODO Auto-generated method stub
+		ReturnObject<EHaiStore> rm = new ReturnObject<EHaiStore>();
+		rm.setCode(0);
+		
+		EHaiStore model = haiStoreMapper.selectByPrimaryKey(storeId);
+		if(model == null){
+			rm.setMsg("记录不存在");
+			return rm;
+		}
+
+		rm.setAction("edit");
+		rm.setCode(1);
+		rm.setModel(model);
+		return rm;
+	}
+	
+	public ReturnObject<EHaiStore> store_update_submit(HttpServletRequest request,EHaiStore model)
+			throws Exception {
+		// TODO Auto-generated method stub
+		ReturnObject<EHaiStore> rm = new ReturnObject<EHaiStore>();
+		rm.setCode(0);
+
+		EHaiStore bean = haiStoreMapper.selectByPrimaryKey(model.getStoreId());
+		if(bean == null){
+			rm.setMsg("记录不存在");
+			return rm;
+		}
+		
+		this.StoreModelToBean(bean, model);
+
+
+
+		int code = haiStoreMapper.updateByPrimaryKeyWithBLOBs(bean);
+		rm.setCode(code);
+		rm.setMsg("编辑成功");
+		return rm;
+	}
+	
+	//model to bean
+	private void StoreModelToBean(EHaiStore bean,EHaiStore model){
+		bean.setStoreName(model.getStoreName());
+		bean.setOwnerName(model.getOwnerName());
+		bean.setOwnerCard(model.getOwnerCard());
+		bean.setRegionId(model.getRegionId());
+		bean.setRegionName(model.getRegionName());
+		bean.setAddress(model.getAddress());
+		bean.setZipcode(model.getZipcode());
+		bean.setTel(model.getTel());
+		bean.setSgrade(model.getSgrade());
+		bean.setApplyRemark(model.getApplyRemark());
+		bean.setCreditValue(model.getCreditValue());
+		bean.setPraiseRate(model.getPraiseRate());
+		bean.setDomain(model.getDomain());
+		bean.setState(model.getState());
+		bean.setCloseReason(model.getCloseReason());
+		bean.setAddTime(model.getAddTime());
+		bean.setEndTime(model.getEndTime());
+		bean.setCertification(model.getCertification());
+		bean.setSortOrder(model.getSortOrder());
+		bean.setRecommended(model.getRecommended());
+		bean.setTheme(model.getTheme());
+		bean.setStoreBanner(model.getStoreBanner());
+		bean.setStoreLogo(model.getStoreLogo());
+		bean.setDescription(model.getDescription());
+		bean.setImage1(model.getImage1());
+		bean.setImage2(model.getImage2());
+		bean.setImage3(model.getImage3());
+		bean.setImQq(model.getImQq());
+		bean.setImWw(model.getImWw());
+		bean.setImMsn(model.getImMsn());
+		bean.setEnableGroupbuy(model.getEnableGroupbuy());
+		bean.setEnableRadar(model.getEnableRadar());
+		bean.setPartnerId(model.getPartnerId());
+		bean.setContacts(model.getContacts());
+		bean.setMobile(model.getMobile());
 	}
 
 	public ReturnObject<EHaiStore> store_info(HttpServletRequest request,Integer storeId)

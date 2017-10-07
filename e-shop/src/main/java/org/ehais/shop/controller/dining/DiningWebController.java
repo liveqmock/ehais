@@ -175,7 +175,16 @@ public class DiningWebController extends EhaisCommonController{
 			String sid) throws Exception{
 		
 		HaiAdExample adExample = new HaiAdExample();
-		adExample.createCriteria().andStoreIdEqualTo(store_id).andIsVoidEqualTo(1);
+		HaiAdExample.Criteria c = adExample.createCriteria();
+		c.andIsMobileEqualTo(1)
+		.andIsVoidEqualTo(1);
+		//如果存在代理有广告，就使用代理的广告
+		if(store.getPartnerId() != null && store.getPartnerId() > 0){
+			c.andPartnerIdEqualTo(store.getPartnerId());
+		}else{
+			c.andStoreIdEqualTo(default_store_id);
+		}
+		
 		List<HaiAd> adList = haiAdMapper.selectByExample(adExample);
 		
 		//读取菜谱列表信息

@@ -7,6 +7,8 @@ import org.ehais.enums.EAdminClassifyEnum;
 import org.ehais.epublic.cache.EAdminTokenCacheManager;
 import org.ehais.epublic.mapper.EHaiAdminUserMapper;
 import org.ehais.epublic.model.EHaiAdminUser;
+import org.ehais.epublic.model.EHaiStore;
+import org.ehais.epublic.service.EStoreService;
 import org.ehais.shop.controller.api.include.AdminUserIController;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.ECommon;
@@ -24,6 +26,8 @@ public class AdminUserApiContorller extends AdminUserIController{
 
 	@Autowired
 	private EHaiAdminUserMapper eHaiAdminUserMapper;
+	@Autowired
+	protected EStoreService eStoreService;
 	
 	@ResponseBody
 	@RequestMapping("/dining_manage_login")
@@ -31,7 +35,7 @@ public class AdminUserApiContorller extends AdminUserIController{
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "username", required = true) String username,
 			@RequestParam(value = "password", required = true) String password){
-		ReturnObject<EHaiAdminUser> rm = new ReturnObject<EHaiAdminUser>();
+		ReturnObject<EHaiStore> rm = new ReturnObject<EHaiStore>();
 		rm.setCode(0);
 		try{
 			password = EncryptUtils.md5(password);
@@ -46,7 +50,8 @@ public class AdminUserApiContorller extends AdminUserIController{
 			}
 			String token = ECommon.nonceStr(16);
 			EAdminTokenCacheManager.getInstance().putAdminToken(adminuser.getStoreId(), token);
-			rm.setModel(adminuser);
+			EHaiStore store = eStoreService.getEStore(adminuser.getStoreId());
+			rm.setModel(store);
 			rm.setCode(1);
 			rm.setToken(token);
 			

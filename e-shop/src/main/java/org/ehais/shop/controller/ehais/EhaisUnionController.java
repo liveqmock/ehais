@@ -108,10 +108,11 @@ public class EhaisUnionController extends EhaisCommonController{
 				if((user_id == null || user_id == 0 ) && StringUtils.isEmpty(code)){
 					return this.redirect_wx_authorize(request , weixin_appid , "/ehaisUnion!"+cid);
 				}else if(StringUtils.isNotEmpty(code)){
-					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map,weixin_appid,weixin_appsecret,weixin_token,true);
-//					if(user.getSubscribe() == null || user.getSubscribe() == 0){
-//						return "redirect:"+;
-//					}
+					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map);
+					if(user.getSubscribe() == null || user.getSubscribe() != 1){
+						//跳转关注页面
+						
+					}
 					String newPid = SignUtil.setCid(default_store_id,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), user.getUserId(), weixin_token);
 					String link = request.getScheme() + "://" + request.getServerName() + "/ehaisUnion!"+newPid;
 					return "redirect:"+link;
@@ -220,6 +221,8 @@ public class EhaisUnionController extends EhaisCommonController{
 			store.setZipcode("");
 			store.setTel(mobile);
 			store.setAddTime(addTime);
+			store.setPublicId(default_public_id);
+			store.setState(true);
 			if(map.get("partnerId")!=null)store.setPartnerId(Integer.valueOf(map.get("partnerId").toString()));
 			eHaiStoreMapper.insert(store);
 			
@@ -238,15 +241,15 @@ public class EhaisUnionController extends EhaisCommonController{
 			if(map.get("partnerId")!=null)admin.setPartnerId(Integer.valueOf(map.get("partnerId").toString()));
 			eHaiAdminUserMapper.insert(admin);
 			
-			WpPublicWithBLOBs wp = new WpPublicWithBLOBs();
-			wp.setPublicName(store_name);
-			wp.setToken(weixin_token);
-			wp.setAppid(weixin_appid);
-			wp.setSecret(weixin_appsecret);
-			wp.setMchId(weixin_mch_id);
-			wp.setMchSecret(weixin_mch_secret);
-			wp.setStoreId(store.getStoreId());
-			wpPublicMapper.insert(wp);
+//			WpPublicWithBLOBs wp = new WpPublicWithBLOBs();
+//			wp.setPublicName(store_name);
+//			wp.setToken(weixin_token);
+//			wp.setAppid(weixin_appid);
+//			wp.setSecret(weixin_appsecret);
+//			wp.setMchId(weixin_mch_id);
+//			wp.setMchSecret(weixin_mch_secret);
+//			wp.setStoreId(store.getStoreId());
+//			wpPublicMapper.insert(wp);
 			
 			
 			rm.setModel(admin);

@@ -55,17 +55,25 @@ $(function(){
 },{
     field: 'mobile',
     title: '手机号'
+},{
+    field: 'state',
+    title: '状态',formatter : function(value,row,index){
+    	if(value == 1){
+    		return "生效";
+    	}else{
+    		return "冻结";
+    	}
+    }
 },
 
-//        {
-//            field: 'storeId',
-//            title: '操作',
-//            formatter : function(value,row,index){
-//            	var a = "<a href ='haiStoreEditDetail?storeId="+value+"'>编辑</a>";
-//            	var b = "&nbsp;|&nbsp;<a href ='javascript:;' onclick='haiStoreDelete("+value+");' >删除</a>";
-//            	return a+b;
-//            }
-//        }
+        {
+            field: 'storeId',
+            title: '操作',
+            formatter : function(value,row,index){
+            	var a = "<a href ='haiStoreEditDetail?storeId="+value+"'>编辑</a>";
+            	return a;
+            }
+        }
         
         ],responseHandler : function (res){
         	
