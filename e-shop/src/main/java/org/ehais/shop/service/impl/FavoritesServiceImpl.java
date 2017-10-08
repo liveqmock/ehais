@@ -7,6 +7,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.ehais.common.EConstants;
+import org.ehais.epublic.model.WpPublicWithBLOBs;
+import org.ehais.epublic.service.EStoreService;
+import org.ehais.epublic.service.EWPPublicService;
 import org.ehais.model.BootStrapModel;
 import org.ehais.service.impl.CommonServiceImpl;
 import org.ehais.shop.mapper.HaiFavoritesMapper;
@@ -15,7 +18,10 @@ import org.ehais.shop.model.HaiFavorites;
 import org.ehais.shop.model.HaiFavoritesExample;
 import org.ehais.shop.model.HaiGoods;
 import org.ehais.shop.service.FavoritesService;
+import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
+import org.ehais.util.ResourceUtil;
+import org.ehais.util.SignUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +30,11 @@ import org.springframework.stereotype.Service;
 
 @Service("favoritesService")
 public class FavoritesServiceImpl  extends CommonServiceImpl implements FavoritesService{
-	
+	protected Integer default_store_id = Integer.valueOf(ResourceUtil.getProValue("default_store_id"));
+	@Autowired
+	protected EWPPublicService eWPPublicService;
+	@Autowired
+	protected EStoreService eStoreService;
 	@Autowired
 	private HaiFavoritesMapper haiFavoritesMapper;
 	@Autowired
@@ -215,17 +225,16 @@ public class FavoritesServiceImpl  extends CommonServiceImpl implements Favorite
 	}
 
 	@Override
-	public ReturnObject<HaiGoods> goods_list_json(HttpServletRequest request, Long user_id, Integer page,
-			Integer len,String session_shop_encode) throws Exception {
+	public ReturnObject<HaiGoods> goods_list_json(HttpServletRequest request, Long user_id, EConditionObject condition,String session_shop_encode) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiGoods> rm = new ReturnObject<HaiGoods>();
 		if(user_id == null) user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
-		Integer start = ((page != null)? ((page - 1 ) * len ) : 0 );
 		
-		
-		
-		List<HaiGoods> list = haiGoodsMapper.hai_goods_list_by_favorites(user_id, start, len);
-		
+		WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(default_store_id);
+		List<HaiGoods> list = haiGoodsMapper.hai_goods_list_by_favorites(user_id, condition.getStart(), condition.getRows());
+		for (HaiGoods haiGoods : list) {
+			haiGoods.setGoodsUrl("w_goods_detail!"+SignUtil.setSid(default_store_id, 0, 0L, user_id, 0 , haiGoods.getGoodsId(), wp.getToken()));
+		}
 		rm.setRows(list);
 		rm.setCode(1);
 		

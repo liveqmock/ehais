@@ -1425,8 +1425,8 @@
     
     from hai_favorites f
     left join hai_goods g on g.goods_id = f.goods_id
-    where f.user_id = #{user_id}
-    order by f.create_date desc
+    where f.user_id = #{user_id} and g.goods_id is not null
+    order by f.add_time desc
     limit #{limitStart,jdbcType=INTEGER},#{limitEnd,jdbcType=INTEGER}
   </select>
   

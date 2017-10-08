@@ -7,9 +7,11 @@ import org.ehais.shop.controller.api.include.FavoritesIController;
 import org.ehais.shop.model.HaiCart;
 import org.ehais.shop.model.HaiFavorites;
 import org.ehais.shop.model.HaiGoods;
+import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -42,12 +44,11 @@ public class FavoritesApiController extends FavoritesIController {
 	@RequestMapping("/favorites_list")
 	public String favorites_list(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
-			@RequestParam(value = "page", required = true) Integer page,
-			@RequestParam(value = "len", required = true) Integer len,
+			@ModelAttribute EConditionObject condition,
 			@RequestParam(value = "user_id", required = true) Long user_id,
 			@RequestParam(value = "s_encode", required = true) String s_encode) {
 		try{
-			ReturnObject<HaiGoods> rm = favoritesService.goods_list_json(request , user_id , page,len,s_encode);
+			ReturnObject<HaiGoods> rm = favoritesService.goods_list_json(request , user_id , condition,s_encode);
 			return this.writeJson(rm);
 		}catch(Exception e){
 			e.printStackTrace();

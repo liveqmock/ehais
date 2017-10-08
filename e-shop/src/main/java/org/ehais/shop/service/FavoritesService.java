@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.ehais.service.CommonService;
 import org.ehais.shop.model.HaiFavorites;
 import org.ehais.shop.model.HaiGoods;
+import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
 
 
@@ -22,7 +23,7 @@ public interface FavoritesService extends CommonService{
 	
 	public ReturnObject<HaiFavorites> favorites_add(HttpServletRequest request,Long goods_id, Long user_id,String session_shop_encode)throws Exception;
 	
-	public ReturnObject<HaiGoods> goods_list_json(HttpServletRequest request,Long user_id,Integer page,Integer len,String session_shop_encode) throws Exception;
+	public ReturnObject<HaiGoods> goods_list_json(HttpServletRequest request,Long user_id,EConditionObject condition,String session_shop_encode) throws Exception;
 	
 }
 

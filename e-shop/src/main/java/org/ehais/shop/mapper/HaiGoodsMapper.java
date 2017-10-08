@@ -12,7 +12,7 @@ public interface HaiGoodsMapper {
 	
 	
 	@ResultMap(value = "BaseResultMap")
-	List<HaiGoods> hai_goods_list_by_favorites(@Param("user_id") Long user_id, @Param("start") Integer start, @Param("len") Integer len);
+	List<HaiGoods> hai_goods_list_by_favorites(@Param("user_id") Long user_id, @Param("limitStart") Integer limitStart, @Param("limitEnd") Integer limitEnd);
 
 
     @ResultMap(value = "appResultMap")

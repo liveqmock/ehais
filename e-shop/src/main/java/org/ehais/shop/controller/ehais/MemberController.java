@@ -105,7 +105,6 @@ public class MemberController extends EhaisCommonController{
 			HttpServletRequest request,
 			HttpServletResponse response ){
 		
-		
 		return "/ehais/member/favorites";
 	}
 	
@@ -116,7 +115,7 @@ public class MemberController extends EhaisCommonController{
 			HttpServletResponse response ){
 		
 		
-		return "/ehais/member/address";
+		return "/ehais/w_address_list";
 	}
 	
 	

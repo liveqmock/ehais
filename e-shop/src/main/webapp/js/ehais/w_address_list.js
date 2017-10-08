@@ -69,8 +69,10 @@ function useraddress_lists(){
 			});
 			
 			$(".info").click(function(){
-				sessionStorage.setItem("chooseAddressId",$(this).parent().attr("addressid"));
-				window.history.go(-1);
+				if(window.location.pathname == "/w_address_list"){
+					sessionStorage.setItem("chooseAddressId",$(this).parent().attr("addressid"));
+					window.history.go(-1);
+				}
 			});
 			
 			
