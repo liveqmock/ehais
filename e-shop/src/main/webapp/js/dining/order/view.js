@@ -5,7 +5,18 @@ var orderSn = "";
 
 $(function(){
 
-    $("#btnSearch").click(function(){orderSn = $.trim($("#orderSn").val());bsTable.bootstrapTable('refresh', { query : {keySubId : keySubId , orderSn : orderSn , page : 1} });});
+    $("#btnSearch").click(function(){
+    	orderSn = $.trim($("#orderSn").val());
+	    bsTable.bootstrapTable('refresh', { 
+	    	query : {
+	    		keySubId : keySubId , 
+	    		orderSn : orderSn , 
+	    		page : 1,
+	    		startDate:$("#startDate").val(),
+	    		endDate:$("#endDate").val(),
+	    	} 
+	    });
+    });
     
     bsTable = $('#bsTable').bootstrapTable({
     	contentType: "application/x-www-form-urlencoded",

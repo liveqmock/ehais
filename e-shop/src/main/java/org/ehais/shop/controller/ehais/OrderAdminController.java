@@ -2,11 +2,13 @@ package org.ehais.shop.controller.ehais;
 
 
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.ehais.annotation.EPermissionController;
 import org.ehais.annotation.EPermissionMethod;
 import org.ehais.common.EConstants;
@@ -23,6 +25,7 @@ import org.ehais.shop.model.HaiOrderInfoWithBLOBs;
 import org.ehais.shop.service.OrderInfoService;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
+import org.ehais.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +60,12 @@ public class  OrderAdminController extends CommonController {
 		try{
 			ReturnObject<HaiOrderInfo> rm = orderInfoService.orderinfo_list(request);
 			modelMap.addAttribute("rm", rm);
+			Date date = new Date();
+			String startDate =  DateUtil.formatDate(DateUtils.addDays(date, -30), DateUtil.FORMATSTR_3);
+			String endDate =  DateUtil.formatDate(date, DateUtil.FORMATSTR_3);
+			modelMap.addAttribute("startDate", startDate);
+			modelMap.addAttribute("endDate", endDate);
+			
 			return "/"+this.getStoreTheme(request)+"/order/view";
 		}catch(Exception e){
 			e.printStackTrace();
@@ -75,10 +84,12 @@ public class  OrderAdminController extends CommonController {
 			@ModelAttribute EConditionObject condition,
 			@RequestParam(value = "orderStatus", required = false) Integer orderStatus,
 			@RequestParam(value = "classify", required = true) String classify,
-			@RequestParam(value = "orderSn", required = false) String orderSn
+			@RequestParam(value = "orderSn", required = false) String orderSn,
+			@RequestParam(value = "startDate", required = false) String startDate,
+			@RequestParam(value = "endDate", required = false) String endDate
 			) {
 		try{
-			ReturnObject<HaiOrderInfoWithBLOBs> rm = orderInfoService.order_list_json(request, condition,orderStatus,orderSn,classify);
+			ReturnObject<HaiOrderInfoWithBLOBs> rm = orderInfoService.order_list_json(request, condition,orderStatus,orderSn,classify, startDate, endDate);
 			return this.writeJson(rm);
 		}catch(Exception e){
 			e.printStackTrace();

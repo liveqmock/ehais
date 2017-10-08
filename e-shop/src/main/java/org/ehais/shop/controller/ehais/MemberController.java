@@ -33,10 +33,11 @@ public class MemberController extends EhaisCommonController{
 				EHaiUsers user = this.saveUserByOpenIdInfo(request, code, store_id);
 				if(user.getSubscribe() == null || user.getSubscribe() != 1){
 					//跳转关注页面
-					
+					return "/ehais/attention";
 				}
 			}
 			
+			return "/ehais/member/member";
 		}else{
 			//网页登录
 		}
@@ -44,6 +45,8 @@ public class MemberController extends EhaisCommonController{
 		return "/ehais/member/member";
 	}
 	
+	
+	//http://436280aa.ngrok.io/w_member
 	@RequestMapping("/w_member")
 	public String w_member(ModelMap modelMap,
 			HttpServletRequest request,

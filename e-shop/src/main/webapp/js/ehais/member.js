@@ -1,4 +1,6 @@
 $(function(){
+	if(sessionStorage.getItem("header")!=null && !is_iphone())$(".wm").addClass("header");
+	
 	member();
 	
 	$(".t b:first").click(function(){

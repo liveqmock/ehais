@@ -34,6 +34,7 @@ import org.ehais.shop.model.HaiShippingExample;
 import org.ehais.shop.service.OrderInfoService;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
+import org.ehais.util.DateUtil;
 import org.ehais.util.SignUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -381,11 +382,12 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 	
 	
 	@Override
-	public ReturnObject<HaiOrderInfoWithBLOBs> order_list_json(HttpServletRequest request,EConditionObject condition,Integer orderStatus,String orderSn,String classify) throws Exception {
+	public ReturnObject<HaiOrderInfoWithBLOBs> order_list_json(HttpServletRequest request,EConditionObject condition,Integer orderStatus,String orderSn,String classify,String startDate,String endDate) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiOrderInfoWithBLOBs> rm = new ReturnObject<HaiOrderInfoWithBLOBs>();
 		rm.setCode(0);
 		if(condition.getStore_id() == null)condition.setStore_id((Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID));
+		
 		
 		
 		HaiOrderInfoExample example = new HaiOrderInfoExample();
@@ -393,6 +395,14 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
 		c.andOrderStatusEqualTo(orderStatus);
 		c.andClassifyEqualTo(classify);
+		if(StringUtils.isNotBlank(startDate)){
+			c.andPayTimeGreaterThanOrEqualTo(Long.valueOf(DateUtil.formatDate(startDate, DateUtil.FORMATSTR_3).getTime() / 1000).intValue());
+			System.out.println(Long.valueOf(DateUtil.formatDate(startDate, DateUtil.FORMATSTR_3).getTime() / 1000).intValue());
+		}
+		if(StringUtils.isNotBlank(endDate)){
+			c.andPayTimeLessThanOrEqualTo(Long.valueOf(DateUtil.addDate(DateUtil.formatDate(endDate, DateUtil.FORMATSTR_3), 1).getTime() / 1000).intValue());
+			System.out.println(Long.valueOf(DateUtil.addDate(DateUtil.formatDate(endDate, DateUtil.FORMATSTR_3), 1).getTime() / 1000).intValue());
+		}
 		example.setLimitStart(condition.getStart());
 		example.setLimitEnd(condition.getRows());
 		example.setOrderByClause("pay_time desc");

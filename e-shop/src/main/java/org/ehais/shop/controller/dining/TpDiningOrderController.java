@@ -2,10 +2,13 @@ package org.ehais.shop.controller.dining;
 
 
 
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.ehais.annotation.EPermissionController;
 import org.ehais.annotation.EPermissionMethod;
 import org.ehais.controller.CommonController;
@@ -14,6 +17,7 @@ import org.ehais.shop.model.tp.TpDiningOrder;
 import org.ehais.shop.service.TpDiningOrderService;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
+import org.ehais.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +49,14 @@ public class  TpDiningOrderController extends CommonController {
 		try{
 			ReturnObject<TpDiningOrder> rm = tpDiningOrderService.diningorder_list(request);
 			modelMap.addAttribute("rm", rm);
+			
+			Date date = new Date();
+			String startDate =  DateUtil.formatDate(DateUtils.addDays(date, -30), DateUtil.FORMATSTR_3);
+			String endDate =  DateUtil.formatDate(date, DateUtil.FORMATSTR_3);
+			modelMap.addAttribute("startDate", startDate);
+			modelMap.addAttribute("endDate", endDate);
+			
+			
 			return "/dining/order/view";
 		}catch(Exception e){
 			e.printStackTrace();

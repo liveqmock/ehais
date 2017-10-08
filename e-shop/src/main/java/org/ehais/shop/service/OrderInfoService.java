@@ -35,7 +35,7 @@ public interface OrderInfoService extends CommonService{
 	public void setDefaultOrder(HaiOrderInfoWithBLOBs orderInfo,Date date,Integer store_id) ;
 	
 	
-	public ReturnObject<HaiOrderInfoWithBLOBs> order_list_json(HttpServletRequest request,EConditionObject condition,Integer orderStatus,String orderSn,String classify) throws Exception;
+	public ReturnObject<HaiOrderInfoWithBLOBs> order_list_json(HttpServletRequest request,EConditionObject condition,Integer orderStatus,String orderSn,String classify,String startDate,String endDate) throws Exception;
 	
 }
 

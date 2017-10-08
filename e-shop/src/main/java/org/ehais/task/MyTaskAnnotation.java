@@ -101,7 +101,8 @@ public class MyTaskAnnotation {
 
 	}
 
-	@Scheduled(cron = "0 0/7 *  * * ? ")
+	//每一小时获取一次用户信息
+	@Scheduled(cron = "0 0 */1  * * ? ")
 	public void batchUserInfo() {
 		Date date = new Date();
 		log.info(DateUtil.formatDate(date, DateUtil.FORMATSTR_1)
@@ -162,5 +163,43 @@ public class MyTaskAnnotation {
 		}
 
 	}
-
+	
+	
+//	@Scheduled(cron = "0 0/1 *  * * ? ")
+//	public void task1() {
+//		Date date = new Date();
+//		System.out.println(DateUtil.formatDate(date, DateUtil.FORMATSTR_1)
+//				+ "========================================Task1");
+//	}
+//	
+//	@Scheduled(cron = "0 */2 *  * * ? ")
+//	public void task2() {
+//		Date date = new Date();
+//		System.out.println(DateUtil.formatDate(date, DateUtil.FORMATSTR_1)
+//				+ "========================================Task2");
+//	}
+//	
+//	@Scheduled(cron = "0 */3 *  * * ? ")
+//	public void task3() {
+//		Date date = new Date();
+//		System.out.println(DateUtil.formatDate(date, DateUtil.FORMATSTR_1)
+//				+ "========================================Task3");
+//	}
+//	
+//	@Scheduled(cron = "0 0/3 *  * * ? ")
+//	public void task33() {
+//		Date date = new Date();
+//		System.out.println(DateUtil.formatDate(date, DateUtil.FORMATSTR_1)
+//				+ "========================================Task30");
+//	}
+//
+//	@Scheduled(cron = "0 */4 *  * * ? ")
+//	public void task4() {
+//		Date date = new Date();
+//		System.out.println(DateUtil.formatDate(date, DateUtil.FORMATSTR_1)
+//				+ "========================================Task4");
+//	}
+	
+	
+	
 }

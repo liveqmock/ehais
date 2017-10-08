@@ -16,13 +16,18 @@
 		<script type="text/javascript" src="/js/bootstrap/table/bootstrap-table.min.js" ></script>
 		<script type="text/javascript" src="/js/bootstrap/table/locale/bootstrap-table-zh-CN.min.js" ></script>
 		
+		<link rel="stylesheet" href="/js/bootstrap/datetimepicker/css/daterangepicker-bs3.css" />
+		<script type="text/javascript" src="/js/bootstrap/datetimepicker/js/moment.js" ></script>
+		<script type="text/javascript" src="/js/bootstrap/datetimepicker/js/daterangepicker.js" ></script>
+	
 		<link rel="stylesheet" href="/js/layer/skin/default/layer.css" />
 		<script type="text/javascript" src="/js/layer/layer.js" ></script>
 		
 		<script type="text/javascript" src="/js/adminCommon.js" ></script>
-		
+		<#include "/FreemarkerMacro.html"/>
 	</head>
 	<body>
+	
 		<div class="header">
 			<div class="nav">
 				<i class="icon fa fa-home">&nbsp;</i>
@@ -36,6 +41,7 @@
 						<div class="panel-heading">搜索条件</div>
 						<div class="panel-body single">					    
 							<div><label>订单号：</label><input id="orderSn" class="control"/></div>
+							<div><@bsGroupDatePicker id="statistics_date" startId="startDate" endId="endDate" startDate="${startDate}" endDate="${endDate}" /></div>
 							<div><button id="btnSearch" class="fa fa-search btn btn-default control">搜索</button></div>
 						</div>
 					</div>

@@ -1,0 +1,10 @@
+@import url("common.css");
+body {
+  background: #77CAF4;
+}
+.ww {
+  font-size: 0.14rem;
+}
+.ww img {
+  width: 100%;
+}
