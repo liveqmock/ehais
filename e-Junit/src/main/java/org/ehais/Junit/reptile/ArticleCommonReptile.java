@@ -12,7 +12,16 @@ public class ArticleCommonReptile {
 	public static String appkey = "Ehais";
 	public static String secret = "EhaisSecret";
 	
-	public static void article_save(String store_id,String cat_name,String title,String description,String content,String articleSource,String link){
+	public static void article_save(String store_id,
+			String cat_name,
+			String title,
+			String articleThumb,
+			String articleImages,
+			String description,
+			String content,
+			String articleSource,
+			String link
+			){
 		Map<String, String> paramsMap = new HashMap<String, String>();
 		paramsMap.put("appkey", appkey);
     	paramsMap.put("version", "v1.0");
@@ -26,6 +35,8 @@ public class ArticleCommonReptile {
     	paramsMap.put("content", content);
     	paramsMap.put("cat_name", cat_name);
     	paramsMap.put("articleSource", articleSource);
+    	paramsMap.put("articleThumb", articleThumb);
+    	paramsMap.put("articleImages", articleImages);
     	
     	
 		try {

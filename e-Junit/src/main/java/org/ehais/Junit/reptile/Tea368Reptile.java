@@ -80,7 +80,7 @@ public class Tea368Reptile extends ArticleCommonReptile {
 			
 			System.out.println(read_tpc.html());
 			
-			article_save(store_id, cat_name, main_title.text(), "", read_tpc.html(),"雅茗居", url);
+			article_save(store_id, cat_name, main_title.text(),"","", "", read_tpc.html(),articleSource, url);
 			
 		}catch(Exception e){
 			e.printStackTrace();

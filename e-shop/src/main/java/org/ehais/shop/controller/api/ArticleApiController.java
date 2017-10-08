@@ -89,6 +89,9 @@ public class ArticleApiController extends ArticleIController{
 								
 //				haiArticleMapper.insert(article);
 				haiArticleMapper.insertSelective(article);
+			}else{
+				article.setArticleId(articleList.get(0).getArticleId());
+				haiArticleMapper.updateByPrimaryKeySelective(article);
 			}
 			ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
 			rm.setModel(article);

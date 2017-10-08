@@ -108,7 +108,7 @@ public class ZhzywJunit extends ArticleCommonReptile{
 //			System.out.println(sb.toString());
 			
 			//保存
-			article_save(store_id, cat_name, H1.html(), daodu.html(), sb.toString(),articleSource, url);
+			article_save(store_id, cat_name, H1.html(),"","", daodu.html(), sb.toString(),articleSource, url);
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
