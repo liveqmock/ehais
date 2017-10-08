@@ -11,11 +11,22 @@ function addCartMenu(that){
 	var badge = $(".badge_"+$(that).parent().parent().parent().attr("value")).html();
 	if(badge==null || badge == "" )badge = 0;
 	badge ++;
-	$(".badge_"+$(that).parent().parent().parent().attr("value")).html(badge).addClass("active");
+	$(".badge_"+$(that).parent().parent().parent().attr("value")).html(badge).addClass("active").parent().addClass("active");
 	badge = null;
 	//统计数量与金额，购物列表
 	cartTotalAmount();
 	
+}
+
+function minusCartMenu(that){
+	var badge = $(".badge_"+$(that).parent().parent().parent().attr("value")).html();
+	if(badge==null || badge == "" )badge = 0;
+	badge --;
+	$(".badge_"+$(that).parent().parent().parent().attr("value")).html(badge);
+	if(parseInt(badge) == 0)$(that).removeClass("active").parent().removeClass("active");
+	badge = null;
+	//统计数量与金额，购物列表
+	cartTotalAmount();
 }
 
 
@@ -24,8 +35,8 @@ function cartTotalAmount(){
 	var quantity = 0;
 	var total = 0;
 	$(".badge.active").each(function(){
-		if(parseInt($(this).parent().attr("cid")) > 0){
-			var amount = parseFloat($(this).parent().attr("price")) * parseInt($(this).html()); 
+		if(parseInt($(this).parent().parent().parent().attr("cid")) > 0){
+			var amount = parseFloat($(this).parent().parent().parent().attr("price")) * parseInt($(this).html()); 
 			total += amount;
 			quantity += parseInt($(this).html());
 			amount = null;	
@@ -65,7 +76,7 @@ function minusSquare(that){
 		$(that).parent().children(".p").html("￥"+(q*p/100).toFixed(2));	
 		$(".badge_"+id).html(q);
 	}else{
-		$(".badge_"+id).html(0).removeClass("active");
+		$(".badge_"+id).html(0).removeClass("active").parent().removeClass("active");
 		$(that).parent().remove();
 	}
 	cartTotalAmount();
@@ -79,13 +90,13 @@ function checkOutCart(){
 	$("#wcod dd").remove();
 	
 	$(".badge.active").each(function(){
-		if(parseInt($(this).parent().attr("cid")) > 0){
-			var amount = parseFloat($(this).parent().attr("price")) * parseInt($(this).html()); 
+		if(parseInt($(this).parent().parent().parent().attr("cid")) > 0){
+			var amount = parseFloat($(this).parent().parent().parent().attr("price")) * parseInt($(this).html()); 
 			total += amount;
 			quantity += parseInt($(this).html());
 			$("#wcod").append("<dd>"+
-					"<div>"+$(this).parent().children(".img").html()+"</div>"+
-					"<div class='t'>"+$(this).parent().children(".i").children(".t").html()+"</div>"+
+					"<div>"+$(this).parent().parent().parent().children(".img").html()+"</div>"+
+					"<div class='t'>"+$(this).parent().parent().parent().children(".i").children(".t").html()+"</div>"+
 					"<div class='p'>￥"+(amount / 100).toFixed(2)+"</div>"+
 					"<div class='g'>份</div>"+
 					"<div class='g'>x "+$(this).html()+"</div>"+
@@ -123,12 +134,12 @@ $(function(){
 	$("#menu_list").height($(".menu").height());
 	$("#myOrderList").height($(".menu").height());
 
-	console.log($(".menu").height() +"+"+ $(window).height() +"+"+ $(".swiper-container").height() +"+"+ $(".tab").height() +"+"+ $("footer").height());
-	console.log("window height:"+$(window).outerHeight(true));
-	console.log("body height:"+$(document.body).outerHeight(true));
+//	console.log($(".menu").height() +"+"+ $(window).height() +"+"+ $(".swiper-container").height() +"+"+ $(".tab").height() +"+"+ $("footer").height());
+//	console.log("window height:"+$(window).outerHeight(true));
+//	console.log("body height:"+$(document.body).outerHeight(true));
 	
 	wPos = $(document.body).outerHeight(true) - $(window).outerHeight(true);
-	console.log("wPos:"+wPos);
+//	console.log("wPos:"+wPos);
 	jroll_menu_cate = new JRoll("#menu_cate", {scrollBarY:false});
 	jroll_menu_list = new JRoll("#menu_list", {scrollBarY:false});
 	jroll_myOrderList = new JRoll("#myOrderList", {scrollBarY:false});
@@ -186,6 +197,7 @@ $(function(){
 	
 	
 	$("#scroller_menu_goods_list .addCart").click(function(){addCartMenu(this);});
+	$("#scroller_menu_goods_list .minusCart").click(function(){minusCartMenu(this);});
 	
 	
 	//购物车点击事件
@@ -200,13 +212,13 @@ $(function(){
 			$(".cart_layer dl dd").remove();
 			
 			$(".badge.active").each(function(index){
-				if(parseInt($(this).parent().attr("cid")) > 0){
-					$(".cart_layer dl").append("<dd id='"+$(this).parent().attr("value")+"' p='"+$(this).parent().attr("price")+"'>"+
-							"<div>"+ $(this).parent().children(".i").children(".t").html().substr(0,10)+"</div>"+
+				if(parseInt($(this).parent().parent().parent().attr("cid")) > 0){
+					$(".cart_layer dl").append("<dd id='"+$(this).parent().parent().parent().attr("value")+"' p='"+$(this).parent().parent().parent().attr("price")+"'>"+
+							"<div>"+ $(this).parent().parent().parent().children(".i").children(".t").html().substr(0,10)+"</div>"+
 							"<i class='iconfont icon-jia-xianxingfangkuang'></i>"+
 							"<div class='q'>"+$(this).html()+"</div>"+
 							"<i class='iconfont icon-jian-xianxingfangkuang'></i>"+
-							"<div class='p'>￥"+((parseFloat($(this).parent().attr("price")) * parseInt($(this).html()) * parseInt($(this).html())) / 100).toFixed(2) +"</div>"+
+							"<div class='p'>￥"+((parseFloat($(this).parent().parent().parent().attr("price")) * parseInt($(this).html()) * parseInt($(this).html())) / 100).toFixed(2) +"</div>"+
 						"</dd>");
 				}
 			});
@@ -322,10 +334,10 @@ function diningSubmitOrder(tPay){
 	var cartArray = new Object();
 	
 	$(".badge.active").each(function(){
-		if(parseInt($(this).parent().attr("cid")) > 0){
-			cartArray[""+$(this).parent().attr("value")+""] = {
-					"goods_id":$(this).parent().attr("value"),
-					"price" : $(this).parent().attr("price"),
+		if(parseInt($(this).parent().parent().parent().attr("cid")) > 0){
+			cartArray[""+$(this).parent().parent().parent().attr("value")+""] = {
+					"goods_id":$(this).parent().parent().parent().attr("value"),
+					"price" : $(this).parent().parent().parent().attr("price"),
 					"badge" : $(this).html(),
 				}
 		}
@@ -385,7 +397,7 @@ function clearCart(){
 	//清空购物车数组
     $("#cart_dl dd").remove();
 	$(".cart_layer").removeClass("active");
-	$(".badge").removeClass("active").html(0);
+	$(".badge").removeClass("active").html(0).parent().removeClass("active");
 	$("#quantity").html(0);
 	$("#total").html("￥0.00");
 	$("footer").removeClass("active");

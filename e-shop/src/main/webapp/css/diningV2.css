@@ -61,7 +61,7 @@ footer *,
 }
 .w > div.menu .right ul li {
   position: relative;
-  padding: 0.1rem;
+  padding: 0.1rem 0 0.1rem 0.1rem;
   border-bottom: 0.01rem solid #DCDCDC;
   width: 100%;
 }
@@ -108,33 +108,40 @@ footer *,
 }
 .w > div.menu .right ul li .i .p {
   color: #FE341C;
+  padding-right: 0;
+}
+.w > div.menu .right ul li .i .p b,
+.w > div.menu .right ul li .i .p i,
+.w > div.menu .right ul li .i .p span {
+  width: auto;
 }
 .w > div.menu .right ul li .i .p b {
-  width: auto;
   font-size: 0.1rem;
   padding-top: 0.05rem;
 }
 .w > div.menu .right ul li .i .p i {
   color: #7ECEF3;
-  float: right;
-  width: auto;
+  font-size: 0.26rem;
+  padding-right: 0.15rem;
 }
-.w > div.menu .right ul li .badge {
-  z-index: 100;
-  position: absolute;
-  top: 0.01rem;
-  left: 21%;
-  background: #89D2F3;
-  width: 0.22rem;
-  height: 0.22rem;
-  border-radius: 50%;
-  color: #fff;
-  text-align: center;
-  line-height: 0.22rem;
-  font-size: 0.12rem;
+.w > div.menu .right ul li .i .p span {
+  color: #5A5A5A;
+  line-height: 0.28rem;
   display: none;
 }
-.w > div.menu .right ul li .badge.active {
+.w > div.menu .right ul li .i .p i,
+.w > div.menu .right ul li .i .p span {
+  float: right;
+  padding-left: 0.1rem;
+}
+.w > div.menu .right ul li .i .p i:last-child {
+  display: none;
+}
+.w > div.menu .right ul li .i .p.active i {
+  display: block;
+  padding-right: 0;
+}
+.w > div.menu .right ul li .i .p.active span {
   display: block;
 }
 .w > div.menu .right ul li .icon-remai {

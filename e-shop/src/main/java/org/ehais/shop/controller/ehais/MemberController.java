@@ -46,7 +46,8 @@ public class MemberController extends EhaisCommonController{
 	}
 	
 	
-	//http://436280aa.ngrok.io/w_member
+	//http://127.0.0.1/w_member
+	//http://ac4a53dd.ngrok.io/w_member
 	@RequestMapping("/w_member")
 	public String w_member(ModelMap modelMap,
 			HttpServletRequest request,
@@ -96,6 +97,26 @@ public class MemberController extends EhaisCommonController{
 		
 		
 		return "/ehais/member/member_fans";
+	}
+	
+	
+	@RequestMapping("/w_favorites")
+	public String favorites(ModelMap modelMap,
+			HttpServletRequest request,
+			HttpServletResponse response ){
+		
+		
+		return "/ehais/member/favorites";
+	}
+	
+	
+	@RequestMapping("/w_address")
+	public String address(ModelMap modelMap,
+			HttpServletRequest request,
+			HttpServletResponse response ){
+		
+		
+		return "/ehais/member/address";
 	}
 	
 	
