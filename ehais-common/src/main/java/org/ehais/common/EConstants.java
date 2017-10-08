@@ -30,6 +30,8 @@ public class EConstants {
 	public static final String SESSION_ADMIN_ID = "session_admin_id";
 	/** session-key 管理员登录账号  **/
 	public static final String SESSION_ADMIN_NAME = "session_admin_name";
+	/** 管理员类型 **/
+	public static final String SESSION_ADMIN_CLASSIFY = "session_admin_classify";
 	//微信wx_public编号
 	public static final String SESSION_WX_ID = "session_wx_id";
 	//微信openid编号

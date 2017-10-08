@@ -10,7 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
+import org.ehais.enums.EAdminClassifyEnum;
+import org.ehais.epublic.mapper.EHaiAdminUserMapper;
 import org.ehais.epublic.mapper.EHaiStoreMapper;
+import org.ehais.epublic.model.EHaiAdminUserExample;
+import org.ehais.epublic.model.EHaiAdminUserWithBLOBs;
 import org.ehais.epublic.model.EHaiStore;
 import org.ehais.epublic.model.EHaiStoreExample;
 import org.ehais.model.BootStrapModel;
@@ -18,6 +22,8 @@ import org.ehais.service.impl.CommonServiceImpl;
 import org.ehais.shop.service.HaiStoreService;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
+import org.ehais.util.EncryptUtils;
+import org.ehais.util.ResourceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +35,10 @@ public class HaiStoreServiceImpl  extends CommonServiceImpl implements HaiStoreS
 	
 	@Autowired
 	private EHaiStoreMapper haiStoreMapper;
-
+	@Autowired
+	private EHaiAdminUserMapper eHaiAdminUserMapper;
+	protected Integer default_public_id = Integer.valueOf(ResourceUtil.getProValue("default_public_id"));
+	protected String default_admin_password = ResourceUtil.getProValue("default_admin_password");
 	
 	public ReturnObject<EHaiStore> store_list(HttpServletRequest request) throws Exception{
 		
@@ -88,19 +97,43 @@ public class HaiStoreServiceImpl  extends CommonServiceImpl implements HaiStoreS
 		Integer partner_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_PARTNER_ID);
 		model.setPartnerId(partner_id);
 		
-
+		
+		//效验用户名
+		EHaiAdminUserExample adminExp = new EHaiAdminUserExample();
+		adminExp.createCriteria().andUserNameEqualTo(model.getStoreName());
+		long aUser = eHaiAdminUserMapper.countByExample(adminExp);
+		if(aUser > 0){rm.setMsg("此用户名已存在");return rm;}
+		
+		//效验商家名称
 		EHaiStoreExample example = new EHaiStoreExample();
 		EHaiStoreExample.Criteria c = example.createCriteria();
 		c.andStoreNameEqualTo(model.getStoreName());
-		c.andPartnerIdEqualTo(partner_id);
+//		c.andPartnerIdEqualTo(partner_id);
 		long count = haiStoreMapper.countByExample(example);
 		if(count > 0){
 			rm.setMsg("存在相同的记录");
 			return rm;
 		}
-
-
+		Integer addTime = Long.valueOf(System.currentTimeMillis() / 1000).intValue();
+		model.setTheme(EAdminClassifyEnum.dining);
+		model.setPartnerId(partner_id);
+		model.setPublicId(default_public_id);
+		model.setState(true);
+		
 		int code = haiStoreMapper.insertSelective(model);
+		
+		EHaiAdminUserWithBLOBs admin = new EHaiAdminUserWithBLOBs();
+		admin.setUserName(model.getStoreName());
+		admin.setPassword(EncryptUtils.md5(default_admin_password));
+		admin.setStoreId(model.getStoreId());
+		admin.setEmail("");
+		admin.setClassify(EAdminClassifyEnum.dining);
+		admin.setAddTime(addTime);
+		admin.setLastLogin(addTime);
+		admin.setPartnerId(partner_id);
+		eHaiAdminUserMapper.insert(admin);
+		
+		
 		rm.setCode(code);
 		rm.setMsg("添加成功");
 		return rm;

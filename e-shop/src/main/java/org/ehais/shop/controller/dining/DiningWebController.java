@@ -206,7 +206,7 @@ public class DiningWebController extends EhaisCommonController{
 
 		String link = request.getScheme() + "://" + request.getServerName() + "/diningStore!"+sid;
 		
-		this.shareWeiXin(modelMap, request, response, wp, store_id, store.getStoreName()+"易点餐应用", link, store.getDescription(), store.getStoreLogo());
+		this.shareWeiXin(modelMap, request, response, wp, store_id, store.getStoreName()+"--尚价", link, store.getDescription(), store.getStoreLogo());
 
 	}
 	

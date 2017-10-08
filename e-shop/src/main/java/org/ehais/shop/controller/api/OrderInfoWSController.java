@@ -1,5 +1,7 @@
 package org.ehais.shop.controller.api;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -95,6 +97,11 @@ public class OrderInfoWSController extends OrderInfoIController{
 			.andStoreIdEqualTo(store_id)
 			.andPayTimeGreaterThan(paytime)
 			.andOrderStatusEqualTo(EOrderStatusEnum.success);
+			exam.setLimitStart(0);
+			exam.setLimitEnd(1);
+			exam.setOrderByClause("pay_time desc");
+			List<HaiOrderInfo> list = haiOrderInfoMapper.selectByExample(exam);
+			rm.setRows(list);
 			long c = haiOrderInfoMapper.countByExample(exam);
 			rm.setTotal(c);
 			rm.setCode(1);

@@ -109,7 +109,7 @@ public class DiningUnionController extends EhaisCommonController{
 					
 					String link = request.getScheme() + "://" + request.getServerName() + "/diningUnion!"+pid;
 					WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, Integer.valueOf(map.get("store_id").toString()), weixin_appid, weixin_appsecret, null);
-					signature.setTitle("微信点餐应用");
+					signature.setTitle("尚价微信点餐应用");
 					signature.setLink(link);
 					signature.setDesc("帮助餐厅“互联网+”转型的移动O2O服务平台");
 					signature.setImgUrl(defaultimg);

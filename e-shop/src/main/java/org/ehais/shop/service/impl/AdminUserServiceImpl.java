@@ -117,6 +117,7 @@ public class AdminUserServiceImpl extends CommonServiceImpl implements AdminUser
 		EHaiAdminUser adminuser = listAdmin.get(0);
 		session.setAttribute(EConstants.SESSION_ADMIN_ID, adminuser.getAdminId());
 		session.setAttribute(EConstants.SESSION_ADMIN_NAME, adminuser.getUserName());
+		session.setAttribute(EConstants.SESSION_ADMIN_CLASSIFY, adminuser.getClassify());
 		
 		if(adminuser.getClassify() != null && adminuser.getClassify().equals(EAdminClassifyEnum.partner)){
 			//合作伙伴
