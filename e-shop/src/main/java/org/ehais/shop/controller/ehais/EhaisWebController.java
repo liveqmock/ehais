@@ -34,6 +34,7 @@ import org.ehais.shop.mapper.HaiArticleGoodsMapper;
 import org.ehais.shop.mapper.HaiArticleRecordMapper;
 import org.ehais.shop.mapper.HaiCartMapper;
 import org.ehais.shop.mapper.HaiCategoryMapper;
+import org.ehais.shop.mapper.HaiFavoritesMapper;
 import org.ehais.shop.mapper.HaiForumMapper;
 import org.ehais.shop.mapper.HaiGoodsGalleryMapper;
 import org.ehais.shop.mapper.HaiGoodsMapper;
@@ -49,6 +50,8 @@ import org.ehais.shop.model.HaiCart;
 import org.ehais.shop.model.HaiCartExample;
 import org.ehais.shop.model.HaiCategory;
 import org.ehais.shop.model.HaiCategoryExample;
+import org.ehais.shop.model.HaiFavorites;
+import org.ehais.shop.model.HaiFavoritesExample;
 import org.ehais.shop.model.HaiGoods;
 import org.ehais.shop.model.HaiGoodsExample;
 import org.ehais.shop.model.HaiGoodsGallery;
@@ -101,6 +104,8 @@ public class EhaisWebController extends EhaisCommonController {
 	private HaiForumMapper haiForumMapper;
 	@Autowired
 	private HaiGoodsGalleryMapper haiGoodsGalleryMapper;
+	@Autowired
+	private HaiFavoritesMapper haiFavoritesMapper;
 	
 	@Autowired
 	private HaiAdMapper haiAdMapper;
@@ -323,20 +328,14 @@ public class EhaisWebController extends EhaisCommonController {
 		List<HaiGoodsGallery> galleryList = haiGoodsGalleryMapper.selectByExample(galleryExample);
 		modelMap.addAttribute("galleryList", galleryList);
 		
+		if(user_id != null && user_id > 0){
+			HaiFavoritesExample fexp = new HaiFavoritesExample();
+			fexp.createCriteria().andUserIdEqualTo(user_id).andGoodsIdEqualTo(goodsId);
+			List<HaiFavorites> favoritesList = haiFavoritesMapper.selectByExample(fexp);
+			modelMap.addAttribute("favoritesList", favoritesList);
+		}
+		
 		this.shareWeiXin(modelMap, request, response, wp, Integer.valueOf(map.get("store_id").toString()), goods.getGoodsName(), link, goods.getActDesc(), goods.getGoodsThumb());
-//		WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, Integer.valueOf(map.get("store_id").toString()), wp.getAppid(), wp.getSecret(), null);
-//		signature.setTitle(goods.getGoodsName());
-//		signature.setLink(link);
-//		signature.setDesc(goods.getActDesc());
-//		signature.setImgUrl(goods.getGoodsThumb());
-//		List<String> jsApiList = new ArrayList<String>();
-//		jsApiList.add("onMenuShareTimeline");
-//		jsApiList.add("onMenuShareAppMessage");
-//		jsApiList.add("onMenuShareQQ");
-//		jsApiList.add("onMenuShareWeibo");
-//		jsApiList.add("onMenuShareQZone");
-//		signature.setJsApiList(jsApiList);
-//		modelMap.addAttribute("signature", JSONObject.fromObject(signature).toString());
 		modelMap.addAttribute("w_goods_detail","w_goods_detail!"+sid);
 		modelMap.addAttribute("buynow","buynow!"+sid);
 		return path;
