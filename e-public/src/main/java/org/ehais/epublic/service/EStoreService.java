@@ -6,4 +6,7 @@ public interface EStoreService {
 
 	public EHaiStore getEStore(Integer store_id) throws Exception;
 	
+	public void setEStore(Integer store_id,EHaiStore store) throws Exception;
+	
+	
 }

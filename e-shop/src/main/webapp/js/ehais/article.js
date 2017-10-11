@@ -101,7 +101,12 @@ $(function(){
 	
 //	sessionStorage.setItem("orderData",JSON.stringify(orderData));
 //	articleItem(orderData[cat_id],cat_id);
-	
+	$(".icon-gouwuche").click(function(){
+		window.location.href="w_shop!"+cid;
+	});
+	$(".icon-huiyuan").click(function(){
+		window.location.href="w_member";
+	});
 });
 
 function jrollCat(catId){

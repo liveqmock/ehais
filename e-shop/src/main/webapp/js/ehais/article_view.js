@@ -28,8 +28,8 @@ $(function(){
         sortOrder: 'asc',//排序方式
         clickToSelect: true,//是否启用点击选中行
         pageNumber: 1,
-	    pageSize: 30,
-	    pageList: [10, 20,30],
+	    pageSize: 50,
+	    pageList: [10, 20,30,40,50],
 	    queryParamsType:'',
 	    queryParams: function (params) {
 	        return {
@@ -63,7 +63,16 @@ $(function(){
 			    formatter : function(value,rows,index){
 			    	return value == null ? "" : value.formatDate("yyyy-MM-dd");
 			    }
-			},
+			}, {
+	            field: 'isHot',
+	            title: '热销',
+	            formatter : function(value,rows,index){
+	            	var c = "" ;
+	            	if(value) c = "active";
+	            	
+	            	return "<i href='javascript:;' class='"+c+" iconfont icon-remai' onClick='setHot(this,"+rows.articleId+");'></i>";
+	            }
+	        },
 		{
             field: 'articleId',
             title: '操作',
@@ -92,6 +101,22 @@ $(function(){
     
     
 });
+
+function setHot(that,id){
+	var isHot = 1;
+	if($(that).hasClass("active")){
+		isHot = 0;
+	}
+	
+	$.ajax({
+		url : "/ws/set_hot_article",data:{articleId:id,hot:isHot},
+		success : function(d){
+			if(d.code == 1){
+				$(that).toggleClass("active");
+			}
+		}
+	});
+}
 
 function getTree() {
 	$.ajax({

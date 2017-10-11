@@ -1,6 +1,6 @@
 @import url("common.css");
 .w_shop {
-  font-size: 0.16rem;
+  font-size: 0.15rem;
 }
 .w_shop * {
   float: left;
@@ -71,9 +71,15 @@
   width: 100%;
 }
 .w_shop ul.u li .i .t {
-  padding: 0.1rem;
   font-weight: bold;
   width: 100%;
+  margin: 0.1rem 0;
+  text-overflow: -o-ellipsis-lastline;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 .w_shop ul.u li .i .d {
   padding: 0 0.1rem;

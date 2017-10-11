@@ -11,23 +11,53 @@
   box-sizing: border-box;
   width: 100%;
 }
-.wa #cate {
-  height: 0.38rem;
-  border-bottom: #C9C9C9 0.01rem solid;
+.wa .wh {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
+  height: 0.38rem;
+  border-bottom: #C9C9C9 0.01rem solid;
   background: #fff;
+  z-index: 190;
+}
+.wa .wh i.f,
+.wa .wh i.l {
+  position: absolute;
+  height: 0.38rem;
+  top: 0;
+  font-size: 0.2rem;
+  line-height: 0.35rem;
+  width: auto;
+  z-index: 201;
+}
+.wa .wh i.f {
+  left: 0;
+  padding-left: 0.1rem;
+}
+.wa .wh i.l {
+  right: 0;
+  padding-right: 0.1rem;
+}
+.wa .wh #cate {
+  width: auto;
+  height: 0.38rem;
+  position: absolute;
+  top: 0;
+  left: 0.38rem;
+  right: 0.38rem;
   z-index: 200;
 }
-.wa #cate ul li {
+.wa .wh #cate ul {
+  height: 0.38rem;
+}
+.wa .wh #cate ul li {
   width: auto;
   padding: 0 0.1rem;
   height: 0.38rem;
   line-height: 0.38rem;
 }
-.wa #cate ul li.active {
+.wa .wh #cate ul li.active {
   background: #ca1818;
   color: #fff;
 }

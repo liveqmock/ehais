@@ -49,8 +49,8 @@ public class CategoryServiceImpl  extends EShopCommonServiceImpl implements Cate
 		HaiCategoryExample example = new HaiCategoryExample();
 		HaiCategoryExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
-		example.setStart(start);
-		example.setLen(len);
+		example.setLimitStart(start);
+		example.setLimitEnd(len);
 		List<HaiCategory> list = haiCategoryMapper.hai_category_list_by_example(example);
 		Integer total = haiCategoryMapper.countByExample(example);
 		rm.setCode(1);
@@ -71,8 +71,8 @@ public class CategoryServiceImpl  extends EShopCommonServiceImpl implements Cate
 		HaiCategoryExample example = new HaiCategoryExample();
 		HaiCategoryExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
-		example.setStart(condition.getStart());
-		example.setLen(condition.getRows());
+		example.setLimitStart(condition.getStart());
+		example.setLimitEnd(condition.getRows());
 		List<HaiCategory> list = haiCategoryMapper.selectByExample(example);
 		long total = haiCategoryMapper.countByExample(example);
 		rm.setCode(1);

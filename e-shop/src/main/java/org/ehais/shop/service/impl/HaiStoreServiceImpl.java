@@ -17,6 +17,7 @@ import org.ehais.epublic.model.EHaiAdminUserExample;
 import org.ehais.epublic.model.EHaiAdminUserWithBLOBs;
 import org.ehais.epublic.model.EHaiStore;
 import org.ehais.epublic.model.EHaiStoreExample;
+import org.ehais.epublic.service.EStoreService;
 import org.ehais.model.BootStrapModel;
 import org.ehais.service.impl.CommonServiceImpl;
 import org.ehais.shop.service.HaiStoreService;
@@ -33,6 +34,8 @@ import org.springframework.stereotype.Service;
 @Service("haiStoreService")
 public class HaiStoreServiceImpl  extends CommonServiceImpl implements HaiStoreService{
 	
+	@Autowired
+	protected EStoreService eStoreService;
 	@Autowired
 	private EHaiStoreMapper haiStoreMapper;
 	@Autowired
@@ -185,6 +188,9 @@ public class HaiStoreServiceImpl  extends CommonServiceImpl implements HaiStoreS
 		this.StoreModelToBean(bean, model);
 
 		int code = haiStoreMapper.updateByExampleSelective(bean, example);
+		
+		eStoreService.setEStore(bean.getStoreId(),bean);
+		
 		rm.setCode(code);
 		rm.setMsg("编辑成功");
 		return rm;
@@ -226,6 +232,10 @@ public class HaiStoreServiceImpl  extends CommonServiceImpl implements HaiStoreS
 
 
 		int code = haiStoreMapper.updateByPrimaryKeyWithBLOBs(bean);
+		
+		
+		eStoreService.setEStore(bean.getStoreId(),bean);
+		
 		rm.setCode(code);
 		rm.setMsg("编辑成功");
 		return rm;

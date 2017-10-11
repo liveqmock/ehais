@@ -12,6 +12,9 @@ $(function(){
 	$(".icon-gouwuche").click(function(){
 		window.location.href="w_cart!"+cid;
 	});
+	$(".icon-huiyuan").click(function(){
+		window.location.href="w_member";
+	});
 	wx_config(signature);
 });
 

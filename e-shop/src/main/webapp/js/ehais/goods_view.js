@@ -28,7 +28,7 @@ $(function(){
         sortOrder: 'asc',//排序方式
         clickToSelect: true,//是否启用点击选中行
         pageNumber: 1,
-	    pageSize: 10,
+	    pageSize: 50,
 	    pageList: [10,20,30,40,50],
 	    queryParamsType:'',
 	    queryParams: function (params) {
@@ -73,7 +73,10 @@ $(function(){
 	            field: 'isHot',
 	            title: '热销',
 	            formatter : function(value,rows,index){
-	            	return value == true?"热销":"普通";
+	            	var c = "" ;
+	            	if(value) c = "active";
+	            	
+	            	return "<i href='javascript:;' class='"+c+" iconfont icon-remai' onClick='setHot(this,"+rows.goodsId+");'></i>";
 	            }
 	        },{
 			    field: 'isPromote',
@@ -87,9 +90,9 @@ $(function(){
             field: 'goodsId',
             title: '操作',
             formatter : function(value,row,index){
-            	var c = "<a href='javascript:;' onclick='qrformPost("+value+");'>分享</a>";
-            	var a = "&nbsp;|&nbsp;<a href ='ehaisGoodsEditDetail?goodsId="+value+"'>编辑</a>";
-            	var b = "&nbsp;|&nbsp;<a href ='javascript:;' onclick='ehaisGoodsDelete("+value+");' >删除</a>";
+            	var c = "<a href='javascript:;' onclick='qrformPost("+value+");' class='iconfont icon-erweima'></a>";
+            	var a = "&nbsp;|&nbsp;<a href ='ehaisGoodsEditDetail?goodsId="+value+"' class='iconfont icon-edit'></a>";
+            	var b = "&nbsp;|&nbsp;<a href ='javascript:;' onclick='ehaisGoodsDelete("+value+");' class='iconfont icon-lajixiang'></a>";
             	return c+a+b;
             }
         }
@@ -112,6 +115,24 @@ $(function(){
     
     
 });
+
+function setHot(that,id){
+	var isHot = 1;
+	if($(that).hasClass("active")){
+		isHot = 0;
+	}
+	
+	$.ajax({
+		url : "/ws/set_hot_goods",data:{goodsId:id,hot:isHot},
+		success : function(d){
+			if(d.code == 1){
+				$(that).toggleClass("active");
+			}
+		}
+	});
+}
+
+
 
 function getTree() {
 	$.ajax({

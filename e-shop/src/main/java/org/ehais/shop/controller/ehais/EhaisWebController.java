@@ -1,11 +1,7 @@
 package org.ehais.shop.controller.ehais;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -61,10 +57,7 @@ import org.ehais.shop.model.HaiUserAddressExample;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.MatrixToImageWriter;
-import org.ehais.util.ResourceUtil;
 import org.ehais.util.SignUtil;
-import org.ehais.weixin.model.WeiXinSignature;
-import org.ehais.weixin.utils.WeiXinUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -113,7 +106,7 @@ public class EhaisWebController extends EhaisCommonController {
 	private HaiCategoryMapper haiCategoryMapper;
 
 	
-	//http://127.0.0.1/w_shop!1ce27200-02bd7b01-1ed30c02-2a6a0103-3760edeb1acce
+	//http://127.0.0.1/w_shop!afa5890-062c0c01-12b7b002-2c960b1253-37ca2179f7b3b
 	@RequestMapping("/w_shop!{cid}")
 	public String shop(ModelMap modelMap,
 			HttpServletRequest request,
@@ -201,9 +194,10 @@ public class EhaisWebController extends EhaisCommonController {
 		HaiGoodsExample goodsExample = new HaiGoodsExample();
 		goodsExample.createCriteria()
 		.andStoreIdEqualTo(store_id)
+		.andIsHotEqualTo(true)
 		.andIsOnSaleEqualTo(true);
-		goodsExample.setLimitStart(0);
-		goodsExample.setLimitEnd(20);
+//		goodsExample.setLimitStart(0);
+//		goodsExample.setLimitEnd(20);
 		goodsExample.setOrderByClause("sort_order asc");
 		List<HaiGoods> goodsList = haiGoodsMapper.selectByExample(goodsExample);
 		for (HaiGoods haiGoods : goodsList) {
@@ -217,20 +211,6 @@ public class EhaisWebController extends EhaisCommonController {
 		String link = request.getScheme() + "://" + request.getServerName() + "/w_shop!"+newCid;
 		
 		this.shareWeiXin(modelMap, request, response, wp, store_id, store.getStoreName(), link, store.getDescription(), store.getStoreLogo());
-		
-//		WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, Integer.valueOf(map.get("store_id").toString()), wp.getAppid(), wp.getSecret(), null);
-//		signature.setTitle(store.getStoreName());
-//		signature.setLink(link);
-//		signature.setDesc(store.getDescription());
-//		signature.setImgUrl(store.getStoreLogo());
-//		List<String> jsApiList = new ArrayList<String>();
-//		jsApiList.add("onMenuShareTimeline");
-//		jsApiList.add("onMenuShareAppMessage");
-//		jsApiList.add("onMenuShareQQ");
-//		jsApiList.add("onMenuShareWeibo");
-//		jsApiList.add("onMenuShareQZone");
-//		signature.setJsApiList(jsApiList);
-//		modelMap.addAttribute("signature", JSONObject.fromObject(signature).toString());
 		
 		return "/ehais/w_shop";
 	}
@@ -332,7 +312,7 @@ public class EhaisWebController extends EhaisCommonController {
 			HaiFavoritesExample fexp = new HaiFavoritesExample();
 			fexp.createCriteria().andUserIdEqualTo(user_id).andGoodsIdEqualTo(goodsId);
 			List<HaiFavorites> favoritesList = haiFavoritesMapper.selectByExample(fexp);
-			modelMap.addAttribute("favoritesList", favoritesList);
+			if(favoritesList!=null && favoritesList.size()>0)modelMap.addAttribute("favorites", 1);
 		}
 		
 		this.shareWeiXin(modelMap, request, response, wp, Integer.valueOf(map.get("store_id").toString()), goods.getGoodsName(), link, goods.getActDesc(), goods.getGoodsThumb());
@@ -341,7 +321,7 @@ public class EhaisWebController extends EhaisCommonController {
 		return path;
 	}
 	
-	//http://b23e253b.ngrok.io/w_article!1ce27200-02bd7b01-1ed30c02-2a6a0103-3760edeb1acce
+	//http://127.0.0.1/w_article!1ce27200-02bd7b01-1ed30c02-2a6a0103-3760edeb1acce
 	@RequestMapping("/w_article!{cid}")
 	public String w_article(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -1030,8 +1010,8 @@ public class EhaisWebController extends EhaisCommonController {
 	
 	
 	public static void main(String[] args) throws Exception {
-		String sid = SignUtil.setSid(2, 0, 0L, 125L, 0, 0L, "ehais_wxdev");
-		String cid = SignUtil.setCid(2, 0, 0L, 125L, "ehais_wxdev");
+		String sid = SignUtil.setSid(9, 0, 0L, 125L, 0, 0L, "ehais_wxdev");
+		String cid = SignUtil.setCid(9, 0, 0L, 125L, "ehais_wxdev");
 		System.out.println(sid);
 		System.out.println(cid);
 	}

@@ -100,23 +100,23 @@ public class IBabyZoneReptile extends ArticleCommonReptile{
 	
 	
 	
-//	class TheadReptile implements Runnable{
-//		
-//		private String link;
-//		private String pic;
-//		
-//		public TheadReptile(String link,String pic){
-//			this.link = link;
-//			this.pic = pic;
-//		}
-//
-//		@Override
-//		public void run() {
-//			// TODO Auto-generated method stub
-//			WineWorldReptile.view(link,pic);
-//		}
-//		
-//	}
+	class TheadReptile implements Runnable{
+		
+		private String link;
+		private String pic;
+		
+		public TheadReptile(String link,String pic){
+			this.link = link;
+			this.pic = pic;
+		}
+
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			WineWorldReptile.view(link,pic);
+		}
+		
+	}
 	
 }
 

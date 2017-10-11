@@ -12,11 +12,14 @@
 		<link rel="stylesheet" href="../js/swiper/swiper-3.4.2.min.css" />
 		<script type="text/javascript" src="../js/swiper/swiper-3.4.2.jquery.min.js" ></script>
 		<script type="text/javascript" src="../js/common.js" ></script>
+		<script type="text/javascript" src="../js/jquery.lazyload.min.js" ></script>
 		<script type="text/javascript" src="../js/elay/elay.js" ></script>
 		
 		<link rel="stylesheet" href="../css/common.css" />
 		<link rel="stylesheet" href="../js/elay/elay.css" />
 		<link rel="stylesheet" href="../css/w_goods.css" />
+		
+
 	</head>
 	<body>
 		<div class="wgw">
@@ -56,7 +59,7 @@
 			
 			<div class="foot-bottom"></div>
 			<footer>
-				<div id="favorites"><i class="iconfont icon-jushoucang"></i>收藏</div>
+				<div id="favorites" ><i class="iconfont favorites  <#if (favorites?? && favorites == 1)>active icon-jinlingyingcaiwangtubiao29<#else>icon-jinlingyingcaiwangtubiao49</#if> "></i>收藏</div>
 				<div id="cart" class="cart"><i class="iconfont icon-gouwuche"></i><i id="quantity" ></i>购物车</div>
 				<div id="addCart" class="addCart">加入购物车</div>
 				<div id="buynow" class="buynow">立即购买</div>

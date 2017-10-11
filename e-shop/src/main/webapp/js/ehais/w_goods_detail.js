@@ -32,6 +32,8 @@ $(function(){
 	
 	wx_config(signature);
 	
+	$("img.lazyload").lazyload({effect: "fadeIn"});
+	
 });
 
 
@@ -48,6 +50,7 @@ function favorites(){
 			if(result.code != 1){				
 				return ;
 			}
+			$("#favorites i").removeClass("icon-jinlingyingcaiwangtubiao49").addClass("icon-jinlingyingcaiwangtubiao29").addClass("active");
 		},error : function(err,xhr){
 			
 		}
@@ -105,7 +108,7 @@ function buynow(){
 			}
 			//更新购物车数量
 			sessionStorage.setItem("recIds",result.model.recId);
-			window.location.href = "w_check_order!"+sid;
+			window.location.href = "w_check_order!"+cid;
 		},error : function(err,xhr){
 			
 		}

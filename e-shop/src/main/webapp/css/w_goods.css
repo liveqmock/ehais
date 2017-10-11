@@ -6,7 +6,7 @@
   width: 100%;
   float: left;
   margin: 0 auto;
-  rposition: relative;
+  position: relative;
   margin-bottom: 0.49rem;
   font-size: 0.16rem;
   padding-top: 0.45rem;
@@ -99,12 +99,12 @@
   display: block;
   height: 0.16rem;
 }
-.wgw footer > div.cart {
+.wgw footer .cart {
   width: 15%;
   position: relative;
   text-align: left;
 }
-.wgw footer > div.cart i:last-child {
+.wgw footer .cart i:last-child {
   width: 0.2rem;
   height: 0.2rem;
   border: 0.01rem solid #ca1818;
@@ -120,16 +120,23 @@
   top: -0.05rem;
   left: 0.2rem;
 }
-.wgw footer > div.cart i:last-child.active {
+.wgw footer .cart i:last-child.active {
   display: inline-block;
 }
-.wgw footer > div.addCart {
+.wgw footer .favorites {
+  font-size: 0.25rem;
+  line-height: 0.4rem;
+}
+.wgw footer .favorites.active {
+  color: #ffb03f;
+}
+.wgw footer .addCart {
   background: #ffb03f;
   color: #fff;
   width: 35%;
   font-size: 0.18rem;
 }
-.wgw footer > div.buynow {
+.wgw footer .buynow {
   background: #f23030;
   color: #fff;
   width: 35%;

@@ -25,4 +25,10 @@ public class EStoreServiceImpl implements EStoreService{
 		return store;
 	}
 
+	@Override
+	public void setEStore(Integer store_id, EHaiStore store) throws Exception {
+		// TODO Auto-generated method stub
+		if(store!=null)EStoreCacheManager.getInstance().putEStore(store_id, store);
+	}
+
 }

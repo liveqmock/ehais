@@ -7,7 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.ehais.common.EConstants;
 import org.ehais.enums.EArticleModuleEnum;
+import org.ehais.epublic.mapper.ECommonMapper;
 import org.ehais.epublic.mapper.EHaiArticleCatMapper;
 import org.ehais.epublic.mapper.EHaiArticleMapper;
 import org.ehais.epublic.model.EHaiArticle;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -34,6 +37,7 @@ public class ArticleApiController extends ArticleIController{
 	private EHaiArticleCatMapper haiArticleCatMapper;
 	@Autowired
 	private EHaiArticleMapper haiArticleMapper;
+	
 	
 	@ResponseBody
 	@RequestMapping("/article_save")
@@ -105,6 +109,10 @@ public class ArticleApiController extends ArticleIController{
 		}
 		return null;
 	}
+	
+	
+	
+	
 	
 
 }
