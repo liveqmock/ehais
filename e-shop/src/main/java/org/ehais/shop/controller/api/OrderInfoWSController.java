@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.ehais.common.EConstants;
 import org.ehais.enums.EOrderStatusEnum;
+import org.ehais.enums.EPayStatusEnum;
+import org.ehais.enums.EShippingStatusEnum;
 import org.ehais.shop.controller.api.include.OrderInfoIController;
 import org.ehais.shop.model.HaiOrderInfo;
 import org.ehais.shop.model.HaiOrderInfoExample;
@@ -38,7 +40,7 @@ public class OrderInfoWSController extends OrderInfoIController{
 			){
 		Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 		try {
-			return this.writeJson(orderinfoService.orderinfo_list(request, user_id, order_status,pay_status,shipping_status,condition,order_sn));
+			return this.writeJson(orderinfoService.orderinfo_list(request, user_id, order_status,pay_status,shipping_status,null,condition,order_sn));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -114,6 +116,26 @@ public class OrderInfoWSController extends OrderInfoIController{
 		}
 		return null;
 	}
+	
+	
+	
+	@ResponseBody
+	@RequestMapping("/comment_wait_list")
+	public String comment_wait_list(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@ModelAttribute EConditionObject condition
+			){
+		Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
+		try {
+			return this.writeJson(orderinfoService.orderinfo_list(request, user_id, EOrderStatusEnum.finish,EPayStatusEnum.success,EShippingStatusEnum.receiving,false,condition,null));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			log.error("error :", e);
+		}
+		return null;
+	}
+	
 	
 	
 }

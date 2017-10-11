@@ -86,7 +86,7 @@ function orderinfo_list(){
 			shipping_status:shipping_status,
 			page:pageData[status],
 			order_sn:$("#order_sn").val(),
-			rows:3
+			rows:10
 			},
 		success : function(result){
 			loaded = "";
@@ -170,17 +170,6 @@ function driverOrderInfo(result){
 	}
 }
 
-//window.addEventListener("hashchange", function(){
-//	 var hashStr = location.hash.replace("#","");
-//	 console.log("hashchange:"+hashStr);
-//	 alert("hashchange:"+hashStr);
-//}, true);
-//
-//window.addEventListener("popstate", function() {
-//    var currentState = history.state;
-//    console.log("currentState:"+JSON.stringify(currentState));
-//    alert(("currentState:"+JSON.stringify(currentState)));
-//});
 
 
 

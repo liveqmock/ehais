@@ -1,6 +1,6 @@
 @import url("common.css");
 .wm {
-  padding: 1.4rem 0 0;
+  padding: 0.9rem 0 0;
   font-size: 0.14rem;
   box-sizing: border-box;
   float: left;
@@ -45,6 +45,7 @@
   right: 0;
 }
 .wm > dl dt {
+  display: none;
   padding: 0.1rem 0.15rem;
   position: relative;
 }
@@ -130,4 +131,7 @@
 }
 .wm .e.active {
   display: block;
+}
+.wm.s {
+  padding-top: 0.45rem;
 }

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<title>写评论</title>
+		<script type="text/javascript" src="js/jquery-2.1.4.min.js" ></script>
+		
+		<script type="text/javascript" src="js/common.js" ></script>
+		
+		<link rel="stylesheet" href="/js/elay/elay.css" />
+		<script type="text/javascript" src="/js/elay/elay.js" ></script>
+		
+		<link rel="stylesheet" href="css/comment_write.css" />
+		
+	</head>
+	<body>
+		<div class="cw">
+			<header>
+				<i class="iconfont icon-xiangzuojiantou"></i>
+				评价
+				<i></i>
+			</header>
+			<ul>
+				<#if (orderGoods?? && orderGoods?size>0 )>
+				<#list orderGoods as goods>
+				<li>
+					<img src="${goods.goodsThumb}" />
+					${goods.goodsName}
+					<div>x ${goods.goodsNumber}</div>
+				</li>
+				</#list>
+				</#if>
+				
+			</ul>
+			<div class="textarea">
+				<textarea id="content" placeholder="请输入你的留言"></textarea>
+				<button class="btn" id="write">提交</button>
+			</div>
+			
+		</div>
+		<script type="text/javascript">
+		var orderId = "${orderId}";
+		</script>
+		
+		<script type="text/javascript" src="js/ehais/comment_write.js" ></script>
+		
+	</body>
+</html>

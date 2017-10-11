@@ -13,9 +13,11 @@ import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.epublic.service.EWPPublicService;
 import org.ehais.shop.mapper.HaiForumMapper;
 import org.ehais.shop.mapper.HaiForumUserMapper;
+import org.ehais.shop.mapper.HaiOrderInfoMapper;
 import org.ehais.shop.model.HaiForum;
 import org.ehais.shop.model.HaiForumExample;
 import org.ehais.shop.model.HaiForumUser;
+import org.ehais.shop.model.HaiOrderInfoWithBLOBs;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.SignUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,8 @@ public class ForumWSController extends CommonController{
 	protected EWPPublicService eWPPublicService;
 	@Autowired
 	private HaiForumUserMapper haiForumUserMapper;
+	@Autowired
+	private HaiOrderInfoMapper haiOrderInfoMapper;
 	
 	@ResponseBody
 	@RequestMapping(value="/ws/writeArticleForum",method=RequestMethod.POST)
@@ -161,5 +165,65 @@ public class ForumWSController extends CommonController{
 	}
 	
 	
+	
+	@ResponseBody
+	@RequestMapping(value="/ws/writeOrderForum",method=RequestMethod.POST)
+	public String writeOrderForum(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "orderId", required = true) Long orderId,
+			@RequestParam(value = "content", required = true) String content
+			){
+		
+		ReturnObject<HaiForumUser> rm = new ReturnObject<HaiForumUser>();
+		rm.setCode(0);
+		Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
+		if(user_id == null || user_id == 0){
+			rm.setMsg("未登录");
+			return this.writeJsonObject(rm);
+		}
+		
+		HaiForumExample exp = new HaiForumExample();
+		HaiForumExample.Criteria c = exp.createCriteria();
+		c.andUserIdEqualTo(user_id)
+		.andTableIdEqualTo(orderId)
+		.andTableNameEqualTo("hai_order_info");
+		
+		Long count = haiForumMapper.countByExample(exp);
+		if(count > 5){
+			rm.setMsg("超过评论次数");
+			return this.writeJson(rm);
+		}
+		
+		c.andContentEqualTo(content.trim());
+		count = haiForumMapper.countByExample(exp);
+		if(count > 0){
+			rm.setMsg("评论已提交，无需要重复提交");
+			return this.writeJson(rm);
+		}
+		
+		HaiOrderInfoWithBLOBs order = haiOrderInfoMapper.selectByPrimaryKey(orderId);
+		if(order == null){
+			rm.setMsg("无此订单");
+			return this.writeJson(rm);
+		}
+		
+		HaiForum forum = new HaiForum();
+//		forum.setStoreId(Integer.valueOf(map.get("store_id").toString()));
+		forum.setContent(content.trim());
+		forum.setCreateDate(new Date());
+		forum.setParentForumId(0l);
+		forum.setTableId(orderId);
+		forum.setTableName("hai_order_info");
+		forum.setUserId(user_id);
+		haiForumMapper.insert(forum);
+		
+		order.setHasForum(true);
+		haiOrderInfoMapper.updateByPrimaryKeySelective(order);
+		
+		rm.setCode(1);
+		rm.setMsg("留言提交成功");
+		return this.writeJson(rm);
+		
+	}
 	
 }

@@ -56,7 +56,7 @@ public class OrderInfoApiController extends OrderInfoIController{
 			){
 		
 		try {
-			return this.writeJson(orderinfoService.orderinfo_list(request, user_id, order_status,pay_status,shipping_status,condition,order_sn));
+			return this.writeJson(orderinfoService.orderinfo_list(request, user_id, order_status,pay_status,shipping_status,null,condition,order_sn));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
