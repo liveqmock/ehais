@@ -58,44 +58,44 @@ public class WeixinController extends WxCommonController{
 	 * @param echostr
 	 * @return
 	 */
-	@ResponseBody
-	@RequestMapping("/wx{wxid}")
-	public String wx(ModelMap modelMap,
-			HttpServletRequest request,HttpServletResponse response,
-			@PathVariable("wxid") Integer wxid,
-			@RequestParam(value = "signature", required = false) String signature,
-			@RequestParam(value = "timestamp", required = false) String timestamp,
-			@RequestParam(value = "nonce", required = false) String nonce,
-			@RequestParam(value = "echostr", required = false) String echostr) {
-
-		try {
-			if(signature != null && !signature.equals("")){
-				log.info("wxid:"+wxid+" | signature: " + signature + " | timestamp: " + timestamp + " | nonce : " + nonce + " | echostr : " + echostr);
-				if(WeiXinUtil.checkSignature(timestamp, nonce, signature)){
-					if(echostr != null && !echostr.equals(""))return echostr;
-					
-					String inputLine = null;
-					String notityXml = "";
-					while ((inputLine = request.getReader().readLine()) != null) {
-						notityXml += inputLine;
-					}
-					log.info("notityXml:"+notityXml);
-					if(notityXml!=null && !notityXml.equals("")){
-						WeiXinNotityXml notity = WeiXinUtil.toNotityXml(notityXml);
-						
-						String reqXml = weiXinService.WeiXinNotityEvent(request ,wxid , notity);
-						
-						return reqXml;
-					}
-				}
-			}
-			
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return "success";
-	}
-	
+//	@ResponseBody
+//	@RequestMapping("/wx{wxid}")
+//	public String wx(ModelMap modelMap,
+//			HttpServletRequest request,HttpServletResponse response,
+//			@PathVariable("wxid") Integer wxid,
+//			@RequestParam(value = "signature", required = false) String signature,
+//			@RequestParam(value = "timestamp", required = false) String timestamp,
+//			@RequestParam(value = "nonce", required = false) String nonce,
+//			@RequestParam(value = "echostr", required = false) String echostr) {
+//
+//		try {
+//			if(signature != null && !signature.equals("")){
+//				log.info("wxid:"+wxid+" | signature: " + signature + " | timestamp: " + timestamp + " | nonce : " + nonce + " | echostr : " + echostr);
+//				if(WeiXinUtil.checkSignature(timestamp, nonce, signature)){
+//					if(echostr != null && !echostr.equals(""))return echostr;
+//					
+//					String inputLine = null;
+//					String notityXml = "";
+//					while ((inputLine = request.getReader().readLine()) != null) {
+//						notityXml += inputLine;
+//					}
+//					log.info("notityXml:"+notityXml);
+//					if(notityXml!=null && !notityXml.equals("")){
+//						WeiXinNotityXml notity = WeiXinUtil.toNotityXml(notityXml);
+//						
+//						String reqXml = weiXinService.WeiXinNotityEvent(request ,wxid , notity);
+//						
+//						return reqXml;
+//					}
+//				}
+//			}
+//			
+//		}catch(Exception e){
+//			e.printStackTrace();
+//		}
+//		return "success";
+//	}
+//	
 	/**
 	 * 微信支付回调地址
 	 * @param modelMap
@@ -167,20 +167,20 @@ public class WeixinController extends WxCommonController{
 	 * @param id
 	 * @return
 	 */
-	@RequestMapping("/index")
-	public String wx_index(ModelMap modelMap,
-			HttpServletRequest request,HttpServletResponse response,
-			@RequestParam(value = "id", required = true) Integer id){
-		try {
-			ReturnObject<Object> ro = weiXinService.wxIndex(id);
-			modelMap.addAttribute("menu_list", ro.getMap().get("menu_list"));
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return "weixin/index";
-	}
+//	@RequestMapping("/index")
+//	public String wx_index(ModelMap modelMap,
+//			HttpServletRequest request,HttpServletResponse response,
+//			@RequestParam(value = "id", required = true) Integer id){
+//		try {
+//			ReturnObject<Object> ro = weiXinService.wxIndex(id);
+//			modelMap.addAttribute("menu_list", ro.getMap().get("menu_list"));
+//			
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		return "weixin/index";
+//	}
 	
 	
 	/**
@@ -191,20 +191,20 @@ public class WeixinController extends WxCommonController{
 	 * @param id
 	 * @return
 	 */
-	@RequestMapping("/index-{id}")
-	public String wx_index_id(ModelMap modelMap,
-			HttpServletRequest request,HttpServletResponse response,
-			@PathVariable Integer id){
-		try {
-			ReturnObject<Object> ro = weiXinService.wxIndex(id);
-			modelMap.addAttribute("menu_list", ro.getMap().get("menu_list"));
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return "weixin/index";
-	}
+//	@RequestMapping("/index-{id}")
+//	public String wx_index_id(ModelMap modelMap,
+//			HttpServletRequest request,HttpServletResponse response,
+//			@PathVariable Integer id){
+//		try {
+//			ReturnObject<Object> ro = weiXinService.wxIndex(id);
+//			modelMap.addAttribute("menu_list", ro.getMap().get("menu_list"));
+//			
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		return "weixin/index";
+//	}
 	
 	
 	

@@ -2,8 +2,12 @@ package org.ehais.epublic.service;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.ehais.epublic.model.weixin.WxUnifiedorder;
+import org.ehais.epublic.model.weixin.WxUnifiedorderResult;
 import org.ehais.tools.ReturnObject;
 import org.ehais.weixin.model.WeiXinNotifyPay;
+import org.ehais.weixin.model.WeiXinUnifiedOrder;
+import org.ehais.weixin.model.WeiXinUnifiedOrderResult;
 import org.ehais.weixin.model.WeiXinWCPay;
 
 /**
@@ -49,5 +53,11 @@ public interface WeiXinPayService {
 			WeiXinNotifyPay notifyPay,
 			String cid,
 			String classify) throws Exception;
+	
+	
+	public WxUnifiedorder toWxUnifiedOrder(WeiXinUnifiedOrder model);
+	
+	public WxUnifiedorderResult toWxUnifiedorderResult(WeiXinUnifiedOrderResult model);
+	
 	
 }

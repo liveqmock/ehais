@@ -26,84 +26,84 @@ public class OrderPayWeiXinController extends CommonController{
 	private OrderPayWeiXinService orderPayWeiXinService;
 	
 	
-	@ResponseBody
-	@RequestMapping("/order_pay_submit")
-	public String order_pay_submit(ModelMap modelMap,
-			HttpServletRequest request,HttpServletResponse response,
-			@ModelAttribute OrderPayModel orderPayModel){
-		
-		orderPayModel.setTrade_type("JSAPI");
-		
-		try {
-			ReturnObject<WeiXinWCPay> rm = orderPayWeiXinService.order_pay_submit(request, orderPayModel);
-			return this.writeJson(rm);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return ""; 
-	}
+//	@ResponseBody
+//	@RequestMapping("/order_pay_submit")
+//	public String order_pay_submit(ModelMap modelMap,
+//			HttpServletRequest request,HttpServletResponse response,
+//			@ModelAttribute OrderPayModel orderPayModel){
+//		
+//		orderPayModel.setTrade_type("JSAPI");
+//		
+//		try {
+//			ReturnObject<WeiXinWCPay> rm = orderPayWeiXinService.order_pay_submit(request, orderPayModel);
+//			return this.writeJson(rm);
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		return ""; 
+//	}
 	
 	
-	@ResponseBody
-	@RequestMapping("/weixin/pay/notify_order_pay")
-	public String notify_order_pay(ModelMap modelMap,
-			HttpServletRequest request,HttpServletResponse response
-			) {
-		
-		String inputLine;
-		String notityXml = "";
-		
-		try {
-			while ((inputLine = request.getReader().readLine()) != null) {
-				notityXml += inputLine;
-			}
-			log.info("notityPayBackXml:"+notityXml);
-			request.getReader().close();
-			
-			
-			if(notityXml==null || notityXml.equals("")){
-				WeiXinNotifyPay notifyPay = new WeiXinNotifyPay();
-				notifyPay.setReturn_code("FAIL");
-				notifyPay.setReturn_msg("接收数据为空");				
-				String xml = WeiXinUtil.fromNotifyPayXml(notifyPay);
-				
-				System.out.println("notifyPay:"+xml);
-				
-				return xml;
-			}
-			
-			
-	        
-			WeiXinNotifyPay notifyPay = WeiXinUtil.toNotifyPayXml(notityXml);
-			
-			if(notifyPay != null){
-				//自己的逻辑处理
-				ReturnObject<WeiXinNotifyPay> rm = orderPayWeiXinService.notify_order_pay(request, notifyPay);
-				WeiXinNotifyPay wnp = new WeiXinNotifyPay();
-				if(rm.getCode()!=0){
-					wnp.setReturn_code("FAIL");
-					wnp.setReturn_msg(rm.getMsg());
-				}else{
-					wnp.setReturn_code("SUCCESS");
-					wnp.setReturn_msg("");
-				}
-				
-				
-				
-				String xml = WeiXinUtil.fromNotifyPayXml(wnp);
-				
-				System.out.println("notifyPay:"+xml);
-				
-				return xml;
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return "/index";
-	}
+//	@ResponseBody
+//	@RequestMapping("/weixin/pay/notify_order_pay")
+//	public String notify_order_pay(ModelMap modelMap,
+//			HttpServletRequest request,HttpServletResponse response
+//			) {
+//		
+//		String inputLine;
+//		String notityXml = "";
+//		
+//		try {
+//			while ((inputLine = request.getReader().readLine()) != null) {
+//				notityXml += inputLine;
+//			}
+//			log.info("notityPayBackXml:"+notityXml);
+//			request.getReader().close();
+//			
+//			
+//			if(notityXml==null || notityXml.equals("")){
+//				WeiXinNotifyPay notifyPay = new WeiXinNotifyPay();
+//				notifyPay.setReturn_code("FAIL");
+//				notifyPay.setReturn_msg("接收数据为空");				
+//				String xml = WeiXinUtil.fromNotifyPayXml(notifyPay);
+//				
+//				System.out.println("notifyPay:"+xml);
+//				
+//				return xml;
+//			}
+//			
+//			
+//	        
+//			WeiXinNotifyPay notifyPay = WeiXinUtil.toNotifyPayXml(notityXml);
+//			
+//			if(notifyPay != null){
+//				//自己的逻辑处理
+//				ReturnObject<WeiXinNotifyPay> rm = orderPayWeiXinService.notify_order_pay(request, notifyPay);
+//				WeiXinNotifyPay wnp = new WeiXinNotifyPay();
+//				if(rm.getCode()!=0){
+//					wnp.setReturn_code("FAIL");
+//					wnp.setReturn_msg(rm.getMsg());
+//				}else{
+//					wnp.setReturn_code("SUCCESS");
+//					wnp.setReturn_msg("");
+//				}
+//				
+//				
+//				
+//				String xml = WeiXinUtil.fromNotifyPayXml(wnp);
+//				
+//				System.out.println("notifyPay:"+xml);
+//				
+//				return xml;
+//			}
+//			
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return "/index";
+//	}
 	
 	
 }

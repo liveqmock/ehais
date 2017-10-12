@@ -127,7 +127,7 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 	}
 	
 	
-	private WxUnifiedorder toWxUnifiedOrder(WeiXinUnifiedOrder model) {
+	public WxUnifiedorder toWxUnifiedOrder(WeiXinUnifiedOrder model) {
 		WxUnifiedorder order = new WxUnifiedorder();
 		order.setAppid(model.getAppid());
 		order.setMchId(model.getMch_id());
@@ -154,7 +154,7 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 	}
 	
 	
-	private WxUnifiedorderResult toWxUnifiedorderResult(WeiXinUnifiedOrderResult model) {
+	public WxUnifiedorderResult toWxUnifiedorderResult(WeiXinUnifiedOrderResult model) {
 		WxUnifiedorderResult order = new WxUnifiedorderResult();
 //		this.wxOrderResultId = wxOrderResultId;
 		order.setReturnCode(model.getReturn_code());
