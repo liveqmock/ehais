@@ -54,8 +54,8 @@ public class DonationServiceImpl  extends CommonServiceImpl implements DonationS
 		example.setLimitStart(start);
 		example.setLimitEnd(len);
 		example.setOrderByClause("sort asc");
-		List<HaiDonation> list = haiDonationMapper.hai_donation_list_by_example(example);
-		Integer total = haiDonationMapper.countByExample(example);
+		List<HaiDonation> list = haiDonationMapper.selectByExample(example);
+		long total = haiDonationMapper.countByExample(example);
 		rm.setCode(1);
 		rm.setRows(list);
 		rm.setTotal(total);
@@ -93,7 +93,7 @@ public class DonationServiceImpl  extends CommonServiceImpl implements DonationS
 		HaiDonationExample.Criteria c = example.createCriteria();
 		c.andDonationNameEqualTo(model.getDonationName());
 		c.andStoreIdEqualTo(store_id);
-		int count = haiDonationMapper.countByExample(example);
+		long count = haiDonationMapper.countByExample(example);
 		if(count > 0){
 			rm.setMsg("存在相同的记录");
 			return rm;
@@ -139,7 +139,7 @@ public class DonationServiceImpl  extends CommonServiceImpl implements DonationS
 		c.andDonationIdEqualTo(model.getDonationId());
 		c.andStoreIdEqualTo(store_id);
 
-		int count = haiDonationMapper.countByExample(example);
+		long count = haiDonationMapper.countByExample(example);
 		if(count == 0){
 			rm.setMsg("记录不存在");
 			return rm;
