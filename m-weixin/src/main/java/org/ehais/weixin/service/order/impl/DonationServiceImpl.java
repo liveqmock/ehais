@@ -49,9 +49,10 @@ public class DonationServiceImpl  extends CommonServiceImpl implements DonationS
 		
 		HaiDonationExample example = new HaiDonationExample();
 		HaiDonationExample.Criteria c = example.createCriteria();
-		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
-		example.setStart(start);
-		example.setLen(len);
+//		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+		c.andStoreIdEqualTo(store_id);
+		example.setLimitStart(start);
+		example.setLimitEnd(len);
 		example.setOrderByClause("sort asc");
 		List<HaiDonation> list = haiDonationMapper.hai_donation_list_by_example(example);
 		Integer total = haiDonationMapper.countByExample(example);
@@ -131,7 +132,10 @@ public class DonationServiceImpl  extends CommonServiceImpl implements DonationS
 		HaiDonationExample example = new HaiDonationExample();
 		HaiDonationExample.Criteria c = example.createCriteria();
 		
-		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+//		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+		c.andStoreIdEqualTo(store_id);
+		
+		
 		c.andDonationIdEqualTo(model.getDonationId());
 		c.andStoreIdEqualTo(store_id);
 
@@ -168,7 +172,7 @@ public class DonationServiceImpl  extends CommonServiceImpl implements DonationS
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiDonationExample example = new HaiDonationExample();
 		HaiDonationExample.Criteria c = example.createCriteria();
-		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+		c.andStoreIdEqualTo(store_id);
 		c.andDonationIdEqualTo(donationId);
 		int code = haiDonationMapper.deleteByExample(example);
 		rm.setCode(code);

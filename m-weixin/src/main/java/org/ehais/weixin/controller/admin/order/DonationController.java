@@ -65,7 +65,7 @@ public class  DonationController extends CommonController {
 	public String donation_insert(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response
 			) {
-		try{
+		try{ 
 			ReturnObject<HaiDonation> rm = donationService.donation_insert(request);
 			rm.setAction("donation_insert_submit");
 			modelMap.addAttribute("rm", rm);
