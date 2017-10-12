@@ -44,7 +44,7 @@ public class AdminUserServiceImpl extends CommonServiceImpl implements AdminUser
 	private HaiPartnerMapper haiPartnerMapper;
 	
 	
-	public ReturnObject<EHaiAdminUser> admin_login(String username, String password) throws Exception {
+	public ReturnObject<EHaiAdminUser> admin_login(HttpServletRequest request,String username, String password) throws Exception {
 		// TODO Auto-generated method stub
 		
 		ReturnObject<EHaiAdminUser> rm = new ReturnObject<EHaiAdminUser>();

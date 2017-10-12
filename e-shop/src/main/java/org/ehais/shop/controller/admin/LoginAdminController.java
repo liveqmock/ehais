@@ -49,9 +49,11 @@ public class LoginAdminController extends CommonController {
 	@RequestMapping(value = "/adminloginsubmit", method = RequestMethod.POST)
 	public String admin_login_submit(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response,
 			@RequestParam(value = "username", required = true) String username,
-			@RequestParam(value = "password", required = true) String password) {
+			@RequestParam(value = "password", required = true) String password,
+			@RequestParam(value = "password", required = true) String verificationcode
+			) {
 		try {
-			ReturnObject<EHaiAdminUser> rm = eHaiAdminUserService.login_admin(request, username, password);
+			ReturnObject<EHaiAdminUser> rm = eHaiAdminUserService.login_admin(request, username, password,verificationcode);
 
 			// 根据获取的用户名和密码封装成Token
 			UsernamePasswordToken token = new UsernamePasswordToken(username, password);

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.ehais.common.EConstants;
 import org.ehais.model.BootStrapModel;
@@ -153,7 +154,7 @@ public class EHaiAdminUserServiceImpl  extends CommonServiceImpl implements EHai
 	}
 
 	public ReturnObject<EHaiAdminUser> login_admin(HttpServletRequest request,
-			String username, String password) throws Exception {
+			String username, String password, String verificationcode) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiAdminUser> rm = new ReturnObject<EHaiAdminUser>();
 		rm.setCode(0);
@@ -165,6 +166,14 @@ public class EHaiAdminUserServiceImpl  extends CommonServiceImpl implements EHai
 			rm.setMsg("密码不能为空");
 			return rm;
 		}
+		
+		HttpSession session = request.getSession(true);
+		String verCode = (String)session.getAttribute("verCode");
+		if(verCode == null || !verCode.toLowerCase().equals(verificationcode.toLowerCase())){
+			rm.setMsg("验证码错误");
+			return rm;
+		}
+		
 		
 		password = EncryptUtils.md5(password);
 		

@@ -9,7 +9,7 @@ import org.ehais.tools.ReturnObject;
 
 public interface AdminUserService extends CommonService {
 
-	public ReturnObject<EHaiAdminUser> admin_login(String username,String password) throws Exception;
+	public ReturnObject<EHaiAdminUser> admin_login(HttpServletRequest request,String username,String password) throws Exception;
 	
 	public ReturnObject<EHaiAdminUser> hai_login_submit(HttpServletRequest request,String username,String password,String verificationcode) throws Exception;
 	

@@ -19,7 +19,7 @@ public interface EHaiAdminUserService extends CommonService{
 	public ReturnObject<EHaiAdminUserWithBLOBs> EHaiAdminUser_find(HttpServletRequest request,Integer key) throws Exception;
 	public ReturnObject<EHaiAdminUser> EHaiAdminUser_delete(HttpServletRequest request,Integer key) throws Exception;
 	
-	public ReturnObject<EHaiAdminUser> login_admin(HttpServletRequest request,String username,String password) throws Exception;
+	public ReturnObject<EHaiAdminUser> login_admin(HttpServletRequest request,String username,String password, String verificationcode) throws Exception;
 	
 
 	public ReturnObject<EHaiAdminUser> logout_admin(HttpServletRequest request) throws Exception;

@@ -37,7 +37,8 @@ public class  ELoginAdminController extends CommonController {
 			HttpServletRequest request,HttpServletResponse response) {
 		try{
 			ReturnObject<EHaiAdminUser> rm = new ReturnObject<EHaiAdminUser>();
-			rm.setAction("admin_login_submit");
+//			rm.setAction("admin_login_submit");
+			rm.setAction("admin_login_submit_ajax");
 			modelMap.addAttribute("rm", rm);
 			
 		}catch(Exception e){
@@ -51,16 +52,37 @@ public class  ELoginAdminController extends CommonController {
 	public String admin_login_submit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "username", required = true) String username,
-			@RequestParam(value = "password", required = true) String password
+			@RequestParam(value = "password", required = true) String password,
+			@RequestParam(value = "verificationcode", required = true) String verificationcode
 			) {
 		try{
-			ReturnObject<EHaiAdminUser> rm = eHaiAdminUserService.login_admin(request, username, password);
+			ReturnObject<EHaiAdminUser> rm = eHaiAdminUserService.login_admin(request, username, password,verificationcode);
 			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "/admin/index");
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 		return "redirect:/admin/index";
 	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value="/admin_login_submit_ajax",method=RequestMethod.POST)
+	public String admin_login_submit_ajax(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "username", required = true) String username,
+			@RequestParam(value = "password", required = true) String password,
+			@RequestParam(value = "verificationcode", required = true) String verificationcode
+			) {
+		try{
+			ReturnObject<EHaiAdminUser> rm = eHaiAdminUserService.login_admin(request, username, password,verificationcode);
+			return this.writeJson(rm);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return "null";
+	}
+	
+	
 	
 	
 	

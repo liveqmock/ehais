@@ -25,7 +25,7 @@ public class AdminUserIController extends CommonController{
 			@RequestParam(value = "username", required = true) String username,
 			@RequestParam(value = "password", required = true) String password){
 		try{
-			ReturnObject<EHaiAdminUser> rm = adminUserService.admin_login(username, password);
+			ReturnObject<EHaiAdminUser> rm = adminUserService.admin_login(request,username, password);
 			return this.writeJson(rm);
 		}catch(Exception e){
 			e.printStackTrace();
