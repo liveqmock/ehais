@@ -11,6 +11,7 @@ import org.ehais.epublic.mapper.EHaiUsersMapper;
 import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.service.impl.CommonServiceImpl;
 import org.ehais.shop.mapper.HaiOrderInfoMapper;
+import org.ehais.shop.mapper.HaiUserSignRecordMapper;
 import org.ehais.shop.model.OrderStatus;
 import org.ehais.shop.service.MemberService;
 import org.ehais.tools.ReturnObject;
@@ -24,6 +25,8 @@ public class MemberServiceImpl extends CommonServiceImpl implements MemberServic
 	private EHaiUsersMapper eHaiUsersMapper;
 	@Autowired
 	private HaiOrderInfoMapper haiOrderInfoMapper;
+	@Autowired
+	private HaiUserSignRecordMapper haiUserSignRecordMapper;
 	
 	@Override
 	public ReturnObject<EHaiUsers> member(
@@ -45,6 +48,24 @@ public class MemberServiceImpl extends CommonServiceImpl implements MemberServic
 		
 		rm.setMap(map);
 		rm.setCode(1);
+		return rm;
+	}
+
+	@Override
+	public ReturnObject<EHaiUsers> sign(HttpServletRequest request, Long user_id, String token) {
+		// TODO Auto-generated method stub
+		ReturnObject<EHaiUsers> rm = new ReturnObject<EHaiUsers>();
+		rm.setCode(0);
+		if(user_id==null || user_id == 0)user_id = (Long) request.getSession().getAttribute(EConstants.SESSION_USER_ID);
+		try{
+			int sc = haiUserSignRecordMapper.isTodaySign(user_id);
+			if(sc > 0 ){
+				rm.setMsg("今天已签到了");
+				return rm;
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		return rm;
 	}
 	

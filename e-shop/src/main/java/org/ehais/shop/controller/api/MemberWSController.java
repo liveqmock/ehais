@@ -82,4 +82,18 @@ public class MemberWSController extends MemberIController{
 	}
 	
 	
+	@ResponseBody
+	@RequestMapping("/sign")
+	public String sign(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response) {
+		try{
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("users", e);
+		}
+		return null;
+	}
+	
+	
 }

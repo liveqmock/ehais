@@ -34,7 +34,7 @@ public class WxNotityPay {
 		this.transactionId = model.getTransaction_id();
 		this.outTradeNo = model.getOut_trade_no();
 		this.attach = model.getAttach();
-		this.timeEnd = model.getTime_end();
+		this.timeEnd = model.getTime_end().floatValue();
 	}
 
 	/**
