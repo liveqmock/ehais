@@ -97,7 +97,7 @@ public class PublicServiceImpl extends CommonServiceImpl implements PublicServic
 		WpPublicExample.Criteria c = example.createCriteria();
 		c.andUidEqualTo(model.getUid());
 		c.andIdEqualTo(model.getId());
-		if(model.getToken() == null || model.getToken().equals(""))model.setToken(model.getPublicId());
+		if(model.getToken() == null || model.getToken().equals(""))model.setToken(model.getToken());
 		int code = wpPublicMapper.updateByExampleSelective(model, example);
 		ro.setModel(model);
 		ro.setCode(code);
@@ -145,7 +145,7 @@ public class PublicServiceImpl extends CommonServiceImpl implements PublicServic
 		bootStrapList.add(new BootStrapModel("hidden", "id", "", model.getId(), "请输入", "", "", null, 0));
 		bootStrapList.add(new BootStrapModel("hidden", "uid", "", model.getUid(), "请输入", "", "", null, 0));
 		bootStrapList.add(new BootStrapModel("text", "publicName", "公众号名", model.getPublicName(), "请输入公众号名", "", "", null, 0));
-		bootStrapList.add(new BootStrapModel("text", "publicId", "原始ID", model.getPublicId(), "请输入原始ID", "", "", null, 0));
+//		bootStrapList.add(new BootStrapModel("text", "publicId", "原始ID", model.getPublicId(), "请输入原始ID", "", "", null, 0));
 		bootStrapList.add(new BootStrapModel("text", "wechat", "微信号", model.getWechat(), "请输入微信号", "", "", null, 0));
 		bootStrapList.add(new BootStrapModel("text", "appid", "应用APPID", model.getAppid(), "请输入应用APPID", "", "", null, 0));
 		bootStrapList.add(new BootStrapModel("text", "secret", "应用密钥", model.getSecret(), "请输入应用密钥", "", "", null, 0));
