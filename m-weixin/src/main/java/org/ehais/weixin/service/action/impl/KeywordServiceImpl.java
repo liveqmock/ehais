@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.ehais.common.EConstants;
+import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.model.BootStrapModel;
 import org.ehais.service.impl.CommonServiceImpl;
 import org.ehais.tools.ReturnObject;
@@ -47,7 +48,8 @@ public class KeywordServiceImpl  extends WeiXinCommonServiceImpl implements Keyw
 		
 		WpKeywordExample example = new WpKeywordExample();
 		WpKeywordExample.Criteria c = example.createCriteria();
-		c.andTokenEqualTo(this.getWpPublic(store_id).getToken());
+		WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
+		c.andTokenEqualTo(wp.getToken());
 		example.setStart(start);
 		example.setLen(len);
 		List<WpKeyword> list = wpKeywordMapper.wp_keyword_list_by_example(example);
@@ -83,9 +85,10 @@ public class KeywordServiceImpl  extends WeiXinCommonServiceImpl implements Keyw
 			return rm;
 		}
 
-
+		
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
-		model.setToken(this.getWpPublic(store_id).getToken());
+		WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
+		model.setToken(wp.getToken());
 		model.setAddon("");
 		model.setAimId(0);
 		model.setCtime(Long.valueOf(System.currentTimeMillis()).intValue());
@@ -98,7 +101,7 @@ public class KeywordServiceImpl  extends WeiXinCommonServiceImpl implements Keyw
 		WpKeywordExample example = new WpKeywordExample();
 		WpKeywordExample.Criteria c = example.createCriteria();
 		c.andKeywordEqualTo(model.getKeyword());
-		c.andTokenEqualTo(this.getWpPublic(store_id).getToken());
+		c.andTokenEqualTo(wp.getToken());
 		int count = wpKeywordMapper.countByExample(example);
 		if(count > 0){
 			rm.setMsg("存在相同的记录");
@@ -132,9 +135,9 @@ public class KeywordServiceImpl  extends WeiXinCommonServiceImpl implements Keyw
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 		WpKeywordExample example = new WpKeywordExample();
 		WpKeywordExample.Criteria c = example.createCriteria();
-		
+		WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
 		c.andIdEqualTo(model.getId());
-		c.andTokenEqualTo(this.getWpPublic(store_id).getToken());
+		c.andTokenEqualTo(wp.getToken());
 
 		int count = wpKeywordMapper.countByExample(example);
 		if(count == 0){
@@ -169,7 +172,8 @@ public class KeywordServiceImpl  extends WeiXinCommonServiceImpl implements Keyw
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 		WpKeywordExample example = new WpKeywordExample();
 		WpKeywordExample.Criteria c = example.createCriteria();
-		c.andTokenEqualTo(this.getWpPublic(store_id).getToken());
+		WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
+		c.andTokenEqualTo(wp.getToken());
 		c.andIdEqualTo(id);
 		int code = wpKeywordMapper.deleteByExample(example);
 		rm.setCode(code);

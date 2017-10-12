@@ -54,10 +54,10 @@ public class ArticleWXController extends WxCommonController{
 			@RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "len", required = false) Integer len){
 		try{
-			Integer user_id = weiXinService.wxStoreId(wxid);
-			ReturnObject<HaiArticle> ro = articleService.article_list(request,user_id ,cid, page, len);
-			JSONObject json = JSONObject.fromObject(ro);
-			return json.toString();
+//			Integer user_id = eWPPublicService.wxStoreId(wxid);
+//			ReturnObject<HaiArticle> ro = articleService.article_list(request,user_id ,cid, page, len);
+//			JSONObject json = JSONObject.fromObject(ro);
+//			return json.toString();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -116,7 +116,7 @@ public class ArticleWXController extends WxCommonController{
 			@RequestParam(value = "wxid", required = true) Integer wxid,
 			@RequestParam(value = "code", required = true) String code){
 		try {
-			WpPublic wpPublic = this.getWpPublic(wxid);
+			WpPublic wpPublic = eWPPublicService.getWpPublic(wxid);
 			modelMap.addAttribute("article", articleService.article_code(request,wpPublic.getUid().intValue(),code));			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

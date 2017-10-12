@@ -7,7 +7,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.epublic.cache.WXPublicCacheManager;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.tools.ReturnObject;
 import org.ehais.weixin.mapper.EOrderMapper;
@@ -61,11 +60,12 @@ public class WeiXinServiceImpl extends WeiXinCommonServiceImpl implements WeiXin
 		Map<String, Object> map = new HashMap<String, Object>();
 		String token = null;
 		//根据id找到缓存中的token
-		WpPublicWithBLOBs wpPublic = WXPublicCacheManager.getInstance().getWXPublic(wxid);
-		if(wpPublic == null){
-			wpPublic = wpPublicMapper.selectByPrimaryKey(wxid);
-			WXPublicCacheManager.getInstance().putWXPublic(wxid, wpPublic);
-		}
+		WpPublicWithBLOBs wpPublic = eWPPublicService.getWpPublic(wxid);//临时使用tyler
+//		WpPublicWithBLOBs wpPublic = WXPublicCacheManager.getInstance().getWXPublic(wxid);
+//		if(wpPublic == null){
+//			wpPublic = wpPublicMapper.selectByPrimaryKey(wxid);
+//			WXPublicCacheManager.getInstance().putWXPublic(wxid, wpPublic);
+//		}
 		token = wpPublic.getToken();
 		//根据token获取菜单
 		WpCustomMenuExample example = new WpCustomMenuExample();
@@ -121,7 +121,7 @@ public class WeiXinServiceImpl extends WeiXinCommonServiceImpl implements WeiXin
 	 */
 	public String WeiXinNotityEvent(HttpServletRequest request, Integer wxid, WeiXinNotityXml notity) throws Exception {
 		// TODO Auto-generated method stub
-		WpPublicWithBLOBs wpPublic = this.getWpPublic(wxid);
+		WpPublicWithBLOBs wpPublic = eWPPublicService.getWpPublic(wxid);//临时使用tyler
 		
 		if(notity.getMsgType().equals("event") && notity.getEvent().equals("subscribe")){//关注事件
 			if(notity.getEventKey() == null || notity.getEventKey().equals("")){	

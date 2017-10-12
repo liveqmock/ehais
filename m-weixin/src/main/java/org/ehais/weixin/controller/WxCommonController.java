@@ -2,6 +2,7 @@ package org.ehais.weixin.controller;
 
 import org.ehais.controller.CommonController;
 import org.ehais.epublic.model.WpPublic;
+import org.ehais.epublic.service.EWPPublicService;
 import org.ehais.weixin.model.OpenidInfo;
 import org.ehais.weixin.service.wx.WeiXinService;
 import org.ehais.weixin.utils.WeiXinUtil;
@@ -11,11 +12,13 @@ public class WxCommonController extends CommonController{
 
 	@Autowired
 	protected WeiXinService weiXinService;
+	@Autowired
+	protected EWPPublicService eWPPublicService;
 	
 	protected String getOpenId(Integer wxid,String code,String openid) throws Exception{
 		String openid_ = null;
 		if(code != null && !code.equals("")){
-			WpPublic wpPublic = this.getWpPublic(wxid);
+			WpPublic wpPublic = eWPPublicService.getWpPublic(wxid);//this.getWpPublic(wxid);
 			if(wpPublic!=null && wpPublic.getAppid() != null && wpPublic.getSecret() != null){
 				OpenidInfo open = WeiXinUtil.getOpenid(code,wpPublic.getAppid(),wpPublic.getSecret());
 				if(open != null && open.getOpenid() != null){
@@ -32,7 +35,7 @@ public class WxCommonController extends CommonController{
 		return openid_;
 	}
 	
-	protected WpPublic getWpPublic(Integer wxid)throws Exception{
-		return weiXinService.getWpPublic(wxid);
-	}
+//	protected WpPublic getWpPublic(Integer wxid)throws Exception{
+//		return weiXinService.getWpPublic(wxid);
+//	}
 }

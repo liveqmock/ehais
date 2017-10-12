@@ -6,4 +6,6 @@ public interface EWPPublicService {
 
 	public WpPublicWithBLOBs getWpPublic(Integer store_id) throws Exception;
 	
+	public void setWpPublic(Integer store_id,WpPublicWithBLOBs wpPublic) throws Exception;
+	
 }

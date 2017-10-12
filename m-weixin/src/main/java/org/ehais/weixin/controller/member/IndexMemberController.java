@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.ehais.common.EConstants;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
+import org.ehais.epublic.service.EWPPublicService;
 import org.ehais.model.eMenu.eMenuItem;
 import org.ehais.model.eMenu.eMenuXml;
 import org.ehais.model.eMenu.eParent;
@@ -38,6 +39,9 @@ public class IndexMemberController extends ManagerController{
 	@Autowired
 	private WeiXinService weixinService;
 	
+	@Autowired
+	protected EWPPublicService eWPPublicService;
+	
 	@RequestMapping("/index")
 	public String index(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response) {
@@ -52,7 +56,7 @@ public class IndexMemberController extends ManagerController{
 			ReturnObject<WpPublicWithBLOBs> rm = publicService.public_by_user(userId);
 			WpPublicWithBLOBs wpPublic = rm.getModel();
 			request.getSession().setAttribute(EConstants.SESSION_WX_ID,wpPublic.getId());
-			weixinService.setWpPublic(wpPublic.getId(), wpPublic);
+			eWPPublicService.setWpPublic(wpPublic.getId(), wpPublic);
 			
 			String menu_path = this.config_file(request,"menu_"+username+".xml");
 			String menu_content = FSO.BufferedReader(menu_path);			

@@ -170,7 +170,7 @@ public class AdServiceImpl  extends WeiXinCommonServiceImpl implements AdService
 		String path = request.getRealPath("/Uploads/images")+"/1460010841261.jpg";
 		System.out.println(path);
 		
-		WpPublicWithBLOBs wp = this.getWpPublic(store_id);
+		WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);//this.getWpPublic(store_id);
 		AccessToken token = WeiXinUtil.getAccessToken(store_id, wp.getAppid(), wp.getSecret());
 		
 		String upload_media = WXConstants.upload_media

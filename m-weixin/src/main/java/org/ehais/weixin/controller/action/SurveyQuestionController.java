@@ -59,7 +59,7 @@ public class SurveyQuestionController extends WxCommonController {
 			@RequestParam(value = "len", required = true) Integer len) {
 		try{
 			Integer wx_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
-			ReturnObject<WpSurveyQuestion> rm = surveyQuestionService.survey_question_list_json(weiXinService.getWpPublic(wx_id).getToken(),survey_id, page, len);
+			ReturnObject<WpSurveyQuestion> rm = surveyQuestionService.survey_question_list_json(eWPPublicService.getWpPublic(wx_id).getToken(),survey_id, page, len);
 			return this.writeJson(rm);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -93,7 +93,7 @@ public class SurveyQuestionController extends WxCommonController {
 			) {
 		try{
 			Integer wx_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
-			survey_question.setToken(weiXinService.getWpPublic(wx_id).getToken());
+			survey_question.setToken(eWPPublicService.getWpPublic(wx_id).getToken());
 			ReturnObject<WpSurveyQuestionWithBLOBs> rm = surveyQuestionService.survey_question_insert_submit(survey_question);
 			return this.writeJson(rm);
 		}catch(Exception e){
@@ -126,7 +126,7 @@ public class SurveyQuestionController extends WxCommonController {
 			) {
 		try{
 			Integer wx_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
-			survey_question.setToken(weiXinService.getWpPublic(wx_id).getToken());
+			survey_question.setToken(eWPPublicService.getWpPublic(wx_id).getToken());
 //			survey_question.setStoreId(user_id);
 			ReturnObject<WpSurveyQuestionWithBLOBs> rm = surveyQuestionService.survey_question_update_submit(survey_question);
 			return this.writeJson(rm);
@@ -201,7 +201,7 @@ public class SurveyQuestionController extends WxCommonController {
 			@RequestParam(value = "wxid", required = true) Integer wxid
 			) {
 		try{
-			ReturnObject<WpSurveyQuestionWithBLOBs> rm = surveyQuestionService.survey_question_blob_list_json(weiXinService.getWpPublic(wxid).getToken(),surveyId, null, null);
+			ReturnObject<WpSurveyQuestionWithBLOBs> rm = surveyQuestionService.survey_question_blob_list_json(eWPPublicService.getWpPublic(wxid).getToken(),surveyId, null, null);
 			return this.writeJson(rm);
 		}catch(Exception e){
 			e.printStackTrace();

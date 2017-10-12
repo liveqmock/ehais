@@ -33,7 +33,7 @@ public class WXDevController extends WxCommonController{
 			url = URLEncoder.encode(url, "utf-8");
 			//整理请求获取openid的微信链接
 			//String wxurl = WeiXinUtil.authorize_snsapi(EConstants.weixin_appid, "snsapi_base", url);
-			String wxurl = WeiXinUtil.authorize_snsapi(weiXinService.getWpPublic(wxid).getAppid(), "snsapi_base", url);
+			String wxurl = WeiXinUtil.authorize_snsapi(eWPPublicService.getWpPublic(wxid).getAppid(), "snsapi_base", url);
 			//滚去请求，即response.sendR***(wxurl);
 			return "redirect:"+wxurl;
 		}catch(Exception e){
@@ -53,7 +53,7 @@ public class WXDevController extends WxCommonController{
 		try{
 			//根据code获取openid信息，一样的请求方式
 //			OpenidInfo open = WeiXinUtil.getOpenid(code, EConstants.weixin_appid, EConstants.weixin_appsecret);
-			OpenidInfo open = WeiXinUtil.getOpenid(code, weiXinService.getWpPublic(wxid).getAppid(), weiXinService.getWpPublic(wxid).getSecret());
+			OpenidInfo open = WeiXinUtil.getOpenid(code, eWPPublicService.getWpPublic(wxid).getAppid(), eWPPublicService.getWpPublic(wxid).getSecret());
 			String openid = open.getOpenid();
 			//整合要给别人的参数，get的组合方式，这里写法不一样而已
 			modelMap.addAttribute("openid", openid);

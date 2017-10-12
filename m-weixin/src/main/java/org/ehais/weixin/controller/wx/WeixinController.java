@@ -237,7 +237,7 @@ public class WeixinController extends WxCommonController{
 				log.info("url:"+url);
 				response.sendRedirect( url );
 			}else{//正式使用
-				WpPublic wpPublic = this.getWpPublic(wxid);
+				WpPublic wpPublic = eWPPublicService.getWpPublic(wxid);
 				//整理要回调给自己的地址
 				String url = request.getScheme()+"://"+request.getServerName()+"/weixin/openid/"+wxid+"/"+controller+"."+postfix;
 				log.info("url:"+url);
@@ -281,7 +281,7 @@ public class WeixinController extends WxCommonController{
 				response.sendRedirect( controllurl );
 			}else{
 				
-				WpPublic wpPublic = this.getWpPublic(wxid);
+				WpPublic wpPublic = eWPPublicService.getWpPublic(wxid);
 				//根据code获取openid信息，一样的请求方式
 				OpenidInfo open = WeiXinUtil.getOpenid(code, wpPublic.getAppid(), wpPublic.getSecret());
 				String openid = open.getOpenid();	
@@ -372,7 +372,7 @@ public class WeixinController extends WxCommonController{
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "wxid", required = true) Integer wxid,
 			@RequestParam(value = "url", required = true) String url) throws Exception {
-		WpPublic wpPublic = this.getWpPublic(wxid);
+		WpPublic wpPublic = eWPPublicService.getWpPublic(wxid);
 		ReturnObject<WeiXinSignature> rm = new ReturnObject<WeiXinSignature>();		
 		rm.setModel(WeiXinUtil.SignatureJSSDK(request,wxid,wpPublic.getAppid(), wpPublic.getSecret(), url));
 		rm.setCode(1);

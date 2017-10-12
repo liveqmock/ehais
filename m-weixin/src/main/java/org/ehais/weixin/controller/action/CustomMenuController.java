@@ -39,7 +39,7 @@ public class CustomMenuController extends WxCommonController{
 			HttpServletRequest request,HttpServletResponse response){
 		
 		try {
-			WpPublic p = weiXinService.getWpPublic((Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID));
+			WpPublic p = eWPPublicService.getWpPublic((Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID));
 			customMenuService.CreateMenu(p);
 			return this.ReturnJump(modelMap, 1, "同步成功", "custom_menu_list");
 		} catch (Exception e) {
@@ -73,7 +73,7 @@ public class CustomMenuController extends WxCommonController{
 			@RequestParam(value = "len", required = true) Integer len) {
 		try{
 			Integer wx_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
-			ReturnObject<TreeModel> rm = customMenuService.custom_menu_list_json(weiXinService.getWpPublic(wx_id).getToken(), page, len);
+			ReturnObject<TreeModel> rm = customMenuService.custom_menu_list_json(eWPPublicService.getWpPublic(wx_id).getToken(), page, len);
 			return this.writeJson(rm);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -89,7 +89,7 @@ public class CustomMenuController extends WxCommonController{
 			) {
 		try{
 			Integer wx_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
-			ReturnObject<WpCustomMenu> rm = customMenuService.custom_menu_insert(weiXinService.getWpPublic(wx_id).getToken());
+			ReturnObject<WpCustomMenu> rm = customMenuService.custom_menu_insert(eWPPublicService.getWpPublic(wx_id).getToken());
 			rm.setAction("custom_menu_insert_submit");
 			modelMap.addAttribute("rm", rm);
 			modelMap.addAttribute("action", "custom_menu_insert_submit");
@@ -106,7 +106,7 @@ public class CustomMenuController extends WxCommonController{
 			) {
 		try{
 			Integer wx_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
-			custom_menu.setToken(weiXinService.getWpPublic(wx_id).getToken());
+			custom_menu.setToken(eWPPublicService.getWpPublic(wx_id).getToken());
 			ReturnObject<WpCustomMenu> rm = customMenuService.custom_menu_insert_submit(custom_menu);
 			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "custom_menu_insert");
 		}catch(Exception e){
@@ -122,7 +122,7 @@ public class CustomMenuController extends WxCommonController{
 			) {
 		try{
 			Integer wx_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
-			ReturnObject<WpCustomMenu> rm = customMenuService.custom_menu_update(weiXinService.getWpPublic(wx_id).getToken(), id);
+			ReturnObject<WpCustomMenu> rm = customMenuService.custom_menu_update(eWPPublicService.getWpPublic(wx_id).getToken(), id);
 			rm.setAction("custom_menu_update_submit");
 			modelMap.addAttribute("rm", rm);
 		}catch(Exception e){
@@ -138,7 +138,7 @@ public class CustomMenuController extends WxCommonController{
 			) {
 		try{
 			Integer wx_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
-			custom_menu.setToken(weiXinService.getWpPublic(wx_id).getToken());
+			custom_menu.setToken(eWPPublicService.getWpPublic(wx_id).getToken());
 			ReturnObject<WpCustomMenu> rm = customMenuService.custom_menu_update_submit(custom_menu);
 			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "custom_menu_list");
 		}catch(Exception e){
@@ -156,7 +156,7 @@ public class CustomMenuController extends WxCommonController{
 			) {
 		try{
 			Integer wx_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
-			ReturnObject<WpCustomMenu> rm = customMenuService.custom_menu_delete(weiXinService.getWpPublic(wx_id).getToken(), id);
+			ReturnObject<WpCustomMenu> rm = customMenuService.custom_menu_delete(eWPPublicService.getWpPublic(wx_id).getToken(), id);
 			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "custom_menu_list");
 		}catch(Exception e){
 			e.printStackTrace();

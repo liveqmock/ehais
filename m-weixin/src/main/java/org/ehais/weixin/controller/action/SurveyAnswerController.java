@@ -154,7 +154,7 @@ public class SurveyAnswerController extends WxCommonController {
 			) {
 		try{
 			ReturnObject<WpSurveyAnswer> rm = surveyAnswerService.survey_answer_insert_submit(
-					weiXinService.getWpPublic(wxid).getToken(),
+					eWPPublicService.getWpPublic(wxid).getToken(),
 					openid,
 					surveyId,
 					extend

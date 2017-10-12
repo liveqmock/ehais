@@ -16,6 +16,7 @@ import org.ehais.epublic.model.HaiOrderPayRecordExample;
 import org.ehais.epublic.model.HaiOrderPayRecordWithBLOBs;
 import org.ehais.epublic.model.OrderPayModel;
 import org.ehais.epublic.model.WpPublic;
+import org.ehais.epublic.service.EWPPublicService;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.DateUtil;
 import org.ehais.util.ECommon;
@@ -53,6 +54,8 @@ public class OrderPayWeiXinServiceImpl implements OrderPayWeiXinService {
 	private WxUnifiedorderResultMapper wxUnifiedorderResultMapper;
 	@Autowired
 	private WxNotityPayMapper wxNotityPayMapper;
+	@Autowired
+	protected EWPPublicService eWPPublicService;
 	
 	@Override
 	public ReturnObject<WeiXinWCPay> order_pay_submit(HttpServletRequest request, OrderPayModel orderPayModel)
@@ -87,7 +90,8 @@ public class OrderPayWeiXinServiceImpl implements OrderPayWeiXinService {
 			rm.setMsg("登录错误11006");return rm;
 		}
 		
-		WpPublic wpPublic = weiXinService.getWpPublic(orderPayModel.getWxid());
+//		WpPublic wpPublic = weiXinService.getWpPublic(orderPayModel.getWxid());
+		WpPublic wpPublic = eWPPublicService.getWpPublic(orderPayModel.getWxid());//临时使用tyler
 		if( wpPublic == null){
 			rm.setMsg("微信信息设置错误1004");return rm;
 		}

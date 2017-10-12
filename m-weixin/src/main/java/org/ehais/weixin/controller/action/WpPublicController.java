@@ -34,7 +34,7 @@ public class WpPublicController extends WxCommonController{
 			HttpServletRequest request,HttpServletResponse response){
 		try{
 			Integer wx_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
-			WpPublicWithBLOBs wpPublic = weiXinService.getWpPublic(wx_id);
+			WpPublicWithBLOBs wpPublic = eWPPublicService.getWpPublic(wx_id);
 			String addonConfig = wpPublic.getAddonConfig();
 			System.out.println(addonConfig);
 			
@@ -64,7 +64,7 @@ public class WpPublicController extends WxCommonController{
 			){
 		try{
 			Integer wx_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
-			WpPublicWithBLOBs wpPublic = weiXinService.getWpPublic(wx_id);
+			WpPublicWithBLOBs wpPublic = eWPPublicService.getWpPublic(wx_id);
 			String addonConfig = wpPublic.getAddonConfig();
 			System.out.println(addonConfig);
 			Gson gson = new Gson();
@@ -81,7 +81,8 @@ public class WpPublicController extends WxCommonController{
 			System.out.println(addonConfig);
 			wpPublic.setAddonConfig(addonConfig);
 			ReturnObject<WpPublicWithBLOBs> rm = publicService.public_update_submit(wpPublic);
-			weiXinService.setWpPublic(wx_id, wpPublic);
+			eWPPublicService.setWpPublic(wx_id, wpPublic);
+			
 			return this.writeJson(rm);
 			
 		}catch(Exception e){
@@ -121,7 +122,7 @@ public class WpPublicController extends WxCommonController{
 			Integer wx_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 			wpPublic.setId(wx_id);
 			ReturnObject<WpPublicWithBLOBs> rm = publicService.public_update_submit(wpPublic);
-			weiXinService.setWpPublic(wx_id, wpPublic);
+			eWPPublicService.setWpPublic(wx_id, wpPublic);
 			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "public_update");
 		}catch(Exception e){
 			e.printStackTrace();

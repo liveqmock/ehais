@@ -51,10 +51,12 @@ public class AuthGroupServiceImpl  extends WeiXinCommonServiceImpl implements Au
 		Integer wxid = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 		Integer start = (page - 1 ) * len;
 		
+		WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(wxid);//临时性使用tyler
+		
 		WpAuthGroupExample example = new WpAuthGroupExample();
 		WpAuthGroupExample.Criteria c = example.createCriteria();
 //		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
-		c.andTokenEqualTo(this.getWpPublic(wxid).getToken());
+		c.andTokenEqualTo(wp.getToken());
 		example.setStart(start);
 		example.setLen(len);
 		List<WpAuthGroup> list = wpAuthGroupMapper.wp_auth_group_list_by_example(example);
@@ -83,7 +85,8 @@ public class AuthGroupServiceImpl  extends WeiXinCommonServiceImpl implements Au
 		// TODO Auto-generated method stub
 		ReturnObject<WpAuthGroupWithBLOBs> rm = new ReturnObject<WpAuthGroupWithBLOBs>();
 		Integer wxid = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
-		model.setToken(this.getWpPublic(wxid).getToken());
+		WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(wxid);//临时性使用tyler
+		model.setToken(wp.getToken());
 		model.setStatus(Integer.valueOf(1).byteValue());
 		model.setType(Integer.valueOf(1).byteValue());
 		model.setIsDefault(false);
@@ -113,7 +116,8 @@ public class AuthGroupServiceImpl  extends WeiXinCommonServiceImpl implements Au
 		Integer wxid = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 		WpAuthGroupExample example = new WpAuthGroupExample();
 		WpAuthGroupExample.Criteria c = example.createCriteria();
-		c.andTokenEqualTo(this.getWpPublic(wxid).getToken());
+		WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(wxid);//临时性使用tyler
+		c.andTokenEqualTo(wp.getToken());
 		c.andIdEqualTo(model.getId());
 		int code = wpAuthGroupMapper.updateByExampleSelective(model, example);
 		rm.setCode(code);
@@ -142,7 +146,8 @@ public class AuthGroupServiceImpl  extends WeiXinCommonServiceImpl implements Au
 		Integer wxid = (Integer)request.getSession().getAttribute(EConstants.SESSION_WX_ID);
 		WpAuthGroupExample example = new WpAuthGroupExample();
 		WpAuthGroupExample.Criteria c = example.createCriteria();
-		c.andTokenEqualTo(this.getWpPublic(wxid).getToken());
+		WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(wxid);//临时性使用tyler
+		c.andTokenEqualTo(wp.getToken());
 		c.andIdEqualTo(id);
 		int code = wpAuthGroupMapper.deleteByExample(example);
 		rm.setCode(code);
@@ -189,7 +194,8 @@ public class AuthGroupServiceImpl  extends WeiXinCommonServiceImpl implements Au
 		mapGroup.put("group", mapName);
 		JSONObject json = JSONObject.fromObject(mapGroup);
 
-		WpPublicWithBLOBs wp = this.getWpPublic(wxid);
+//		WpPublicWithBLOBs wp = this.getWpPublic(wxid);
+		WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(wxid);//临时性使用tyler
 		AccessToken token = WeiXinUtil.getAccessToken(wxid, wp.getAppid(), wp.getSecret());
 		
 		if(model.getWechatGroupId() == null || model.getWechatGroupId().intValue() == 0 || model.getWechatGroupId().intValue() == -1){
