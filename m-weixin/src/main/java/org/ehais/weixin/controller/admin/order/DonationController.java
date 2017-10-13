@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.ehais.tools.ReturnObject;
+import org.ehais.util.FSO;
 import org.ehais.weixin.model.HaiDonation;
 import org.ehais.weixin.service.order.DonationService;
 import org.slf4j.Logger;
@@ -76,6 +77,20 @@ public class  DonationController extends CommonController {
 		return "/admin/donation/info";
 	}
 	
+	private void create_json(HttpServletRequest request){
+		try {
+			Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+			String fileContent = this.writeJson(donationService.donation_list_json(request, store_id, 0, 100));
+			FSO fso = new FSO();
+			String path = request.getRealPath("")+"/donation.json";
+			if(!fso.TextFileExists(path))fso.CreateTextFile(path);
+			fso.WriteTextFileZh(path, fileContent);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	@RequestMapping(value="/donation_insert_submit",method=RequestMethod.POST)
 	public String donation_insert_submit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -83,6 +98,7 @@ public class  DonationController extends CommonController {
 			) {
 		try{
 			ReturnObject<HaiDonation> rm = donationService.donation_insert_submit(request,donation);
+			this.create_json(request);
 			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "donation_insert");
 		}catch(Exception e){
 			e.printStackTrace();
@@ -114,6 +130,7 @@ public class  DonationController extends CommonController {
 			) {
 		try{
 			ReturnObject<HaiDonation> rm = donationService.donation_update_submit(request,donation);
+			this.create_json(request);
 			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "donation_list");
 		}catch(Exception e){
 			e.printStackTrace();

@@ -75,6 +75,8 @@ public class DonationServiceImpl  extends CommonServiceImpl implements DonationS
 		return rm;
 	}
 	
+	
+	
 	public ReturnObject<HaiDonation> donation_insert_submit(HttpServletRequest request,HaiDonation model)
 			throws Exception {
 		// TODO Auto-generated method stub
