@@ -22,8 +22,13 @@ $(function(){
 		if($(this).attr("h") != null)window.location.href=$(this).attr("h");
 	});
 	
+	$("#sign").click(function(){
+		sign();
+	});
+	
 });
-
+var isTodaySign = 0;
+var signCount= 0;
 function member(){
 	$.ajax({
 		url : "/ws/member",
@@ -47,8 +52,30 @@ function member(){
 			}
 			$("#amount").html("帐户余额:￥"+(model.userMoney / 100).toFixed(2) );
 			$("#integral").html("积分:"+model.payPoints );
+			$("#signCount").html("签到天数:"+result.map.signCount );
+			
+			isTodaySign = result.map.isTodaySign;
+			signCount = result.map.signCount;
 			
 		}
 	});
+}
+
+
+function sign(){
+	if(isTodaySign > 0){
+		elay.toast({content:"今天已签到了"});
+		return ;
+	}
+	$.ajax({
+		url : "/ws/sign",success:function(d){
+			if(d.code == 1){
+				isTodaySign = 1;
+				signCount ++;
+				$("#signCount").html("签到天数:"+signCount );
+				elay.toast({content:d.msg});
+			}
+		}
+	})
 }
 

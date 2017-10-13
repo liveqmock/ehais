@@ -5,7 +5,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.shop.controller.api.include.MemberIController;
+import org.ehais.shop.mapper.HaiUserSignRecordMapper;
 import org.ehais.tools.ReturnObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/ws")
 public class MemberWSController extends MemberIController{
 
-	
 	@ResponseBody
 	@RequestMapping("/login")
 	public String login(ModelMap modelMap,
@@ -87,7 +88,8 @@ public class MemberWSController extends MemberIController{
 	public String sign(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response) {
 		try{
-			
+			ReturnObject<EHaiUsers> rm = memberService.sign(request, null, null);
+			return this.writeJson(rm);
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("users", e);
