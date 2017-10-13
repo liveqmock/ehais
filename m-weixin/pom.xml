@@ -22,7 +22,7 @@
         <component.package>org.ehais.weixin.service,org.ehais.epublic.service</component.package>
 		<mapper.package>org.ehais.weixin.mapper,org.ehais.shop.mapper,org.ehais.epublic.mapper</mapper.package>
 		<model.package>org.ehais.weixin.model,org.ehais.shop.model,org.ehais.epublic.model</model.package>
-		<controller.package>org.ehais.epublic.controller,org.ehais.weixin.controller</controller.package>
+		<controller.package>org.ehais.epublic.controller,org.ehais.controller.epublic,org.ehais.weixin.controller</controller.package>
         
         
         
@@ -42,7 +42,7 @@
 		<dependency>
 			<groupId>org.freemarker</groupId>
 			<artifactId>freemarker</artifactId>
-			<version>2.3.20</version>
+			<version>2.3.23</version>
 		</dependency>
 
 
@@ -359,4 +359,5 @@
 
   
   
+  	<packaging>war</packaging>
 </project>

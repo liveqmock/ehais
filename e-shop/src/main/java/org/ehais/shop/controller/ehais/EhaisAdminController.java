@@ -1,6 +1,5 @@
 package org.ehais.shop.controller.ehais;
 
-import java.io.IOException;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,12 +12,11 @@ import org.ehais.controller.CommonController;
 import org.ehais.enums.EAdminClassifyEnum;
 import org.ehais.epublic.model.EHaiAdminUser;
 import org.ehais.epublic.model.WpPublic;
+import org.ehais.epublic.service.EHaiAdminUserService;
 import org.ehais.epublic.service.EWPPublicService;
-import org.ehais.shop.service.AdminUserService;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.DateUtil;
 import org.ehais.util.SignUtil;
-import org.ehais.util.VerifyCodeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -31,7 +29,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class EhaisAdminController extends CommonController{
 
 	@Autowired
-	private AdminUserService adminUserService;
+	private EHaiAdminUserService adminUserService;
+//	private AdminUserService adminUserService;
 	@Autowired
 	protected EWPPublicService eWPPublicService;
 	

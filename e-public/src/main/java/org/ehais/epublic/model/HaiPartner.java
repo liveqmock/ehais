@@ -1,4 +1,4 @@
-package org.ehais.shop.model;
+package org.ehais.epublic.model;
 
 import java.io.Serializable;
 

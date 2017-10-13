@@ -74,7 +74,8 @@ public class  ELoginAdminController extends CommonController {
 			@RequestParam(value = "verificationcode", required = true) String verificationcode
 			) {
 		try{
-			ReturnObject<EHaiAdminUser> rm = eHaiAdminUserService.login_admin(request, username, password,verificationcode);
+//			ReturnObject<EHaiAdminUser> rm = eHaiAdminUserService.login_admin(request, username, password,verificationcode);
+			ReturnObject<EHaiAdminUser> rm = eHaiAdminUserService.hai_login_submit(request, username, password,verificationcode);
 			return this.writeJson(rm);
 		}catch(Exception e) {
 			e.printStackTrace();

@@ -1,6 +1,5 @@
-<ul id="tt" class="tree_menu">
+<ul id="menu-list-group" class="list-group">
     <li>
-        <span>菜单</span>
         <ul>
             <#list menux.menu as parent>
             
@@ -38,9 +37,14 @@
 					    </#if>
 					    
 					    <#if (subrole = "true")>
-            			<li>
-	                        <span><a href="javascript:;" onclick="addTab('${MenuItem.title?default('')}','${MenuItem.url}')">${MenuItem.title?default('')}</a></span>
-	                    </li>
+            			
+	                    <li class="list-group-item active">
+							<a data-addtab="${MenuItem.id?default('')}" data-url="${MenuItem.url}">
+								<i class="${MenuItem.iconClassName?default('')}"></i>
+								${MenuItem.title?default('')}
+							</a>							
+						</li>
+						
 	                    </#if>
 	                    
             		</#list>
@@ -63,24 +67,6 @@
 </ul>
 
 <script type="text/javascript">
-$(function(){
-	//var tt = $('#tt').tree({"state":"closed"});
-	$('.tree_menu').tree();
 
-});
-
-function addTab(title, url){
-	if ($('#web_main').tabs('exists', title)){
-		$('#web_main').tabs('select', title);
-	} else {
-		var mHeight = $('#web_main').children(".tabs-panels").height();
-		var content = '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:'+mHeight+'px;"></iframe>';
-		$('#web_main').tabs('add',{
-			title:title,
-			content:content,
-			closable:true
-		});
-	}
-}
 
 </script>

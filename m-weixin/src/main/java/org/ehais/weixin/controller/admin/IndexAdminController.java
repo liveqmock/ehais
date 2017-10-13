@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.thoughtworks.xstream.XStream;
 
 
-@Controller
-@RequestMapping("/adminwx")
+//@Controller
+//@RequestMapping("/adminwx")
 public class IndexAdminController extends CommonController{
 
 

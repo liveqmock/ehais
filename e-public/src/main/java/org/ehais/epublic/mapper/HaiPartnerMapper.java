@@ -1,11 +1,11 @@
-package org.ehais.shop.mapper;
+package org.ehais.epublic.mapper;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
-import org.ehais.shop.model.HaiPartner;
-import org.ehais.shop.model.HaiPartnerExample;
+import org.ehais.epublic.model.HaiPartner;
+import org.ehais.epublic.model.HaiPartnerExample;
 
 public interface HaiPartnerMapper {
     /**

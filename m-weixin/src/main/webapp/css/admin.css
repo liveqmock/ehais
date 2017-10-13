@@ -1,0 +1,129 @@
+@import url("common.css");
+html,
+body {
+  font-size: 14px;
+}
+.header {
+  border-bottom: 4px solid #eee;
+  width: 100%;
+  float: left;
+  padding-bottom: 10px;
+  margin: 10px 0;
+}
+.header .nav > i,
+.header .nav > div {
+  float: left;
+  height: 36px;
+  margin: 0 5px 0 15px;
+}
+.header .nav .icon {
+  color: #ccc;
+  font-size: 35px;
+}
+.header .nav .nav0 {
+  font-size: 24px;
+}
+.header .nav .nav1 {
+  font-size: 18px;
+  line-height: 40px;
+  color: #aaa;
+}
+.body {
+  width: 100%;
+  float: left;
+}
+.body .container_box .col_side {
+  width: 208px;
+  float: left;
+  margin-left: 20px;
+}
+.body .container_box .col_side h4 {
+  width: 100%;
+}
+.body .container_box .col_side h4 i.fr {
+  margin: 2px 5px 0;
+  cursor: pointer;
+}
+.body .container_box .col_main {
+  padding: 0 20px 0 268px;
+  box-sizing: border-box;
+}
+.body .container_box .col_main h4 {
+  width: 100%;
+}
+.body .container_box .col_main h4 button.fa-plus {
+  margin-left: 20px;
+  font-size: 14px;
+}
+.body .container_box .col_main .panel-body > div {
+  float: left;
+  margin: 5px 10px;
+}
+.body .container_box .col_main .panel-body.single {
+  height: 70px;
+}
+.body .container_box .col_main .fa-search {
+  margin-left: 20px;
+}
+.body .container_box .col_main .main_table {
+  width: 100%;
+  float: left;
+  margin-bottom: 20px;
+}
+.body .container_box .col_main.body {
+  padding: 0 20px 0 20px;
+  box-sizing: border-box;
+}
+
+.file-preview {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    padding: 5px;
+    width: 100%;
+}
+.file-drop-zone, .krajee-default .file-preview-audio audio, .krajee-default .file-preview-image, .krajee-default .file-preview-other {
+    vertical-align: middle;
+}
+.file-drop-zone {
+    border: 1px dashed #aaa;
+    border-radius: 4px;
+    height: 100%;
+    margin: 12px 15px 12px 12px;
+    padding: 5px;
+    text-align: center;
+}
+.file-drop-zone .file-preview-thumbnails {
+    cursor: default;
+}
+.krajee-default.file-preview-frame {
+    border: 1px solid #ddd;
+    box-shadow: 1px 1px 5px 0 #a2958a;
+    display: table;
+    float: left;
+    margin: 8px;
+    padding: 6px;
+    position: relative;
+    text-align: center;
+}
+.krajee-default .file-actions, .krajee-default .file-other-error {
+    text-align: left;
+}
+.krajee-default .file-actions {
+    margin-top: 15px;
+}
+.krajee-default .file-footer-buttons {
+    float: right;
+}
+.file-caption-name {
+    display: inline-block;
+    height: 20px;
+    overflow: hidden;
+    word-break: break-all;
+}
+.btn-file {
+    overflow: hidden;
+    position: relative;
+}
+.statistics{width:100%;height: 500px;overflow-y: scroll;}
+.active.icon-remai{color:red;}

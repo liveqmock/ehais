@@ -6,16 +6,22 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
-import org.ehais.model.BootStrapModel;
-import org.ehais.service.impl.CommonServiceImpl;
+import org.ehais.enums.EAdminClassifyEnum;
 import org.ehais.epublic.mapper.EHaiAdminUserMapper;
+import org.ehais.epublic.mapper.EHaiStoreMapper;
+import org.ehais.epublic.mapper.HaiPartnerMapper;
 import org.ehais.epublic.mapper.ThinkRoleMapper;
 import org.ehais.epublic.model.EHaiAdminUser;
 import org.ehais.epublic.model.EHaiAdminUserExample;
 import org.ehais.epublic.model.EHaiAdminUserWithBLOBs;
+import org.ehais.epublic.model.EHaiStore;
+import org.ehais.epublic.model.HaiPartner;
 import org.ehais.epublic.model.ThinkRole;
 import org.ehais.epublic.service.EHaiAdminUserService;
+import org.ehais.model.BootStrapModel;
+import org.ehais.service.impl.CommonServiceImpl;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.EncryptUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +37,10 @@ public class EHaiAdminUserServiceImpl  extends CommonServiceImpl implements EHai
 	private EHaiAdminUserMapper eHaiAdminUserMapper;
 	@Autowired
 	private ThinkRoleMapper thinkRoleMapper;
+	@Autowired
+	private EHaiStoreMapper haiStoreMapper;
+	@Autowired
+	private HaiPartnerMapper haiPartnerMapper;
 	
 	public ReturnObject<EHaiAdminUser> EHaiAdminUser_list(HttpServletRequest request) throws Exception{
 		
@@ -221,6 +231,98 @@ public class EHaiAdminUserServiceImpl  extends CommonServiceImpl implements EHai
 		
 		rm.setCode(1);
 		rm.setMsg("退出成功");
+		
+		return rm;
+	}
+	
+	
+	
+	//商家的统一
+	@Override
+	public ReturnObject<EHaiAdminUser> hai_login_submit(HttpServletRequest request,String username, String password, String verificationcode)
+			throws Exception {
+		// TODO Auto-generated method stub
+		ReturnObject<EHaiAdminUser> rm = new ReturnObject<EHaiAdminUser>();
+		rm.setCode(0);
+		
+		if(StringUtils.isEmpty(username)){
+			rm.setMsg("用户名不能为空");
+			return rm;
+		}
+		if(StringUtils.isEmpty(password)){
+			rm.setMsg("密码不能为空");
+			return rm;
+		}
+		if(StringUtils.isEmpty(verificationcode)){
+			rm.setMsg("验证码不能为空");
+			return rm;
+		}
+		
+		HttpSession session = request.getSession(true);
+		String verCode = (String)session.getAttribute("verCode");
+		if(verCode == null || !verCode.toLowerCase().equals(verificationcode.toLowerCase())){
+			rm.setMsg("验证码错误");
+			return rm;
+		}
+		
+		password = EncryptUtils.md5(password);
+		EHaiAdminUserExample example = new EHaiAdminUserExample();
+		EHaiAdminUserExample.Criteria c = example.createCriteria();
+		c.andUserNameEqualTo(username);
+		c.andPasswordEqualTo(password);
+		System.out.println(username+"=="+password);
+		
+		List<EHaiAdminUser> listAdmin = eHaiAdminUserMapper.selectByExample(example);
+		
+		if(listAdmin == null || listAdmin.size() == 0){
+			rm.setMsg("用户名或密码不正确");
+			return rm;
+		}
+		EHaiAdminUser adminuser = listAdmin.get(0);
+		session.setAttribute(EConstants.SESSION_ADMIN_ID, adminuser.getAdminId());
+		session.setAttribute(EConstants.SESSION_ADMIN_NAME, adminuser.getUserName());
+		session.setAttribute(EConstants.SESSION_ADMIN_CLASSIFY, adminuser.getClassify());
+		
+		ThinkRole role = thinkRoleMapper.think_role_admin(adminuser.getAdminId().intValue());
+		if(role != null && role.getRoleCode() != null && !role.getRoleCode().equals("")){
+			request.getSession().setAttribute(EConstants.SESSION_ROLE_TYPE, role.getRoleCode());
+		}else if(adminuser.getProjectFolder() != null && !adminuser.getProjectFolder().equals("")){
+			request.getSession().setAttribute(EConstants.SESSION_ROLE_TYPE, adminuser.getProjectFolder());
+		}
+		
+		if(adminuser.getClassify() != null && adminuser.getClassify().equals(EAdminClassifyEnum.partner)){
+			//合作伙伴
+			HaiPartner partner = haiPartnerMapper.selectByPrimaryKey(adminuser.getPartnerId());
+			if(partner == null){
+				rm.setMsg("非本后台的用户");
+				return rm;
+			}
+			session.setAttribute(EConstants.SESSION_PARTNER_ID, partner.getPartnerId());
+			session.setAttribute(EConstants.SESSION_PARTNER_NAME, partner.getPartnerName());
+			session.setAttribute(EConstants.SESSION_PARTNER_THEME, partner.getTheme());
+			//强行做法
+			session.setAttribute(EConstants.SESSION_STORE_THEME, partner.getTheme());
+			
+		}else{
+			if(adminuser.getStoreId() == null || adminuser.getStoreId() == 0){
+				rm.setMsg("非本后台的用户");
+				return rm;
+			}
+			//读取相应的商家
+			EHaiStore store = haiStoreMapper.selectByPrimaryKey(adminuser.getStoreId());
+			if(store == null){
+				rm.setMsg("非本系统后台的用户");
+				return rm;
+			}
+			
+			session.setAttribute(EConstants.SESSION_STORE_ID, store.getStoreId());
+			session.setAttribute(EConstants.SESSION_STORE_NAME, store.getStoreName());
+			session.setAttribute(EConstants.SESSION_STORE_THEME, store.getTheme());
+			
+		}
+				
+		rm.setCode(1);
+		rm.setMsg("登录成功");
 		
 		return rm;
 	}
