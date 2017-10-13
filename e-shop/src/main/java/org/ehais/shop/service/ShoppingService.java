@@ -2,8 +2,8 @@ package org.ehais.shop.service;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.ehais.epublic.model.HaiOrderInfo;
 import org.ehais.service.CommonService;
-import org.ehais.shop.model.HaiOrderInfo;
 import org.ehais.shop.model.OrderDoneParam;
 import org.ehais.tools.ReturnObject;
 

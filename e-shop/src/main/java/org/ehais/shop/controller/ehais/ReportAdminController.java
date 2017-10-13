@@ -8,9 +8,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
-import org.ehais.shop.mapper.HaiOrderInfoMapper;
-import org.ehais.shop.model.HaiOrderInfo;
-import org.ehais.shop.model.OrderDiningStatistics;
+import org.ehais.epublic.mapper.HaiOrderInfoMapper;
+import org.ehais.epublic.model.HaiOrderInfo;
+import org.ehais.epublic.model.OrderDiningStatistics;
 import org.ehais.shop.service.OrderInfoService;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.DateUtil;

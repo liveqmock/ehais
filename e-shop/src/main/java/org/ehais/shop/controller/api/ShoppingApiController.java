@@ -3,8 +3,8 @@ package org.ehais.shop.controller.api;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.ehais.epublic.model.HaiOrderInfo;
 import org.ehais.shop.controller.api.include.ShoppingIController;
-import org.ehais.shop.model.HaiOrderInfo;
 import org.ehais.tools.ReturnObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

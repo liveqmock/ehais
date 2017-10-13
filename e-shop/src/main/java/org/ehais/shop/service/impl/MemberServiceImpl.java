@@ -8,9 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.ehais.common.EConstants;
 import org.ehais.epublic.mapper.EHaiUsersMapper;
+import org.ehais.epublic.mapper.HaiOrderInfoMapper;
 import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.service.impl.CommonServiceImpl;
-import org.ehais.shop.mapper.HaiOrderInfoMapper;
 import org.ehais.shop.mapper.HaiUserSignRecordMapper;
 import org.ehais.shop.model.HaiUserSignRecord;
 import org.ehais.shop.model.HaiUserSignRecordExample;

@@ -9,15 +9,15 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
+import org.ehais.epublic.mapper.HaiOrderInfoMapper;
+import org.ehais.epublic.model.HaiOrderInfoWithBLOBs;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.epublic.service.EWPPublicService;
 import org.ehais.shop.mapper.HaiForumMapper;
 import org.ehais.shop.mapper.HaiForumUserMapper;
-import org.ehais.shop.mapper.HaiOrderInfoMapper;
 import org.ehais.shop.model.HaiForum;
 import org.ehais.shop.model.HaiForumExample;
 import org.ehais.shop.model.HaiForumUser;
-import org.ehais.shop.model.HaiOrderInfoWithBLOBs;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.SignUtil;
 import org.springframework.beans.factory.annotation.Autowired;

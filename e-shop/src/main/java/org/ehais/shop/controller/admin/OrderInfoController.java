@@ -5,8 +5,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
-import org.ehais.shop.model.HaiOrderInfo;
-import org.ehais.shop.model.HaiOrderInfoWithBLOBs;
+import org.ehais.epublic.model.HaiOrderInfo;
+import org.ehais.epublic.model.HaiOrderInfoWithBLOBs;
 import org.ehais.shop.service.OrderInfoService;
 import org.ehais.tools.ReturnObject;
 import org.slf4j.Logger;

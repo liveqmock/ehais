@@ -7,11 +7,10 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.ibatis.annotations.Param;
 import org.ehais.enums.EOrderClassifyEnum;
 import org.ehais.enums.EOrderStatusEnum;
 import org.ehais.enums.EPayStatusEnum;
-import org.ehais.epublic.mapper.EHaiOrderInfoMapper;
+import org.ehais.epublic.mapper.HaiOrderInfoMapper;
 import org.ehais.epublic.mapper.HaiStoreStatisticsMapper;
 import org.ehais.epublic.mapper.weixin.WxNotifyPayMapper;
 import org.ehais.epublic.mapper.weixin.WxUnifiedorderMapper;
@@ -57,8 +56,10 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 	private WxUnifiedorderResultMapper wxUnifiedorderResultMapper;
 	@Autowired
 	private EWPPublicService eWPPublicService; 
+//	@Autowired
+//	private EHaiOrderInfoMapper eHaiOrderInfoMapper;
 	@Autowired
-	private EHaiOrderInfoMapper eHaiOrderInfoMapper;
+	private HaiOrderInfoMapper haiOrderInfoMapper;
 	@Autowired
 	private EStoreService eStoreService;
 	@Autowired
@@ -198,7 +199,7 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 		wxNotifyPayMapper.insert(this.toWxNotityPay(notifyPay));
 		if(notifyPay.getReturn_code().equals("SUCCESS") && notifyPay.getReturn_code().equals("SUCCESS")){
 			//查看订单是否正确
-			List<EHaiOrderInfo> listOrder = eHaiOrderInfoMapper.listOrderInfoSn(store_id, notifyPay.getOut_trade_no());
+			List<EHaiOrderInfo> listOrder = haiOrderInfoMapper.listOrderInfoSn(store_id, notifyPay.getOut_trade_no());
 			if(listOrder == null || listOrder.size() == 0){
 				rm.setMsg("不存在此订单");return rm;
 			}
@@ -207,13 +208,16 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 				rm.setMsg("订单状态异常");return rm;
 			}
 			
-			eHaiOrderInfoMapper.updateOrderPayStatus(
+			int daySerialCount = haiOrderInfoMapper.daySerialNumber(store_id);
+			
+			
+			haiOrderInfoMapper.updateOrderPayStatus(
 					store_id, 
 					notifyPay.getOut_trade_no(), 
 					EOrderStatusEnum.success,
 					EPayStatusEnum.success,
 					Long.valueOf(System.currentTimeMillis() / 1000).intValue(),
-					0,"微信支付");
+					0,"微信支付",daySerialCount+1);
 			
 			wxUnifiedorderMapper.UpdatePayStatue(store_id, notifyPay.getOut_trade_no(), EOrderStatusEnum.success);
 			

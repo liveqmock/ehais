@@ -7,13 +7,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
+import org.ehais.epublic.mapper.HaiOrderInfoMapper;
 import org.ehais.epublic.model.EHaiUsers;
+import org.ehais.epublic.model.HaiOrderInfo;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.shop.mapper.HaiOrderGoodsMapper;
-import org.ehais.shop.mapper.HaiOrderInfoMapper;
 import org.ehais.shop.model.HaiOrderGoods;
 import org.ehais.shop.model.HaiOrderGoodsExample;
-import org.ehais.shop.model.HaiOrderInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;

@@ -17,13 +17,15 @@ import org.ehais.enums.EOrderSourceEnum;
 import org.ehais.enums.EOrderStatusEnum;
 import org.ehais.enums.EPayEnum;
 import org.ehais.enums.EPayStatusEnum;
-import org.ehais.enums.EShippingStatusEnum;
 import org.ehais.enums.EUserTypeEnum;
 import org.ehais.epublic.mapper.EHaiUsersMapper;
+import org.ehais.epublic.mapper.HaiOrderInfoMapper;
 import org.ehais.epublic.mapper.HaiStoreStatisticsMapper;
 import org.ehais.epublic.model.EHaiStore;
 import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.epublic.model.EHaiUsersExample;
+import org.ehais.epublic.model.HaiOrderInfoExample;
+import org.ehais.epublic.model.HaiOrderInfoWithBLOBs;
 import org.ehais.epublic.model.HaiStoreStatistics;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.epublic.service.EStoreService;
@@ -33,7 +35,6 @@ import org.ehais.shop.mapper.HaiAdMapper;
 import org.ehais.shop.mapper.HaiCategoryMapper;
 import org.ehais.shop.mapper.HaiGoodsMapper;
 import org.ehais.shop.mapper.HaiOrderGoodsMapper;
-import org.ehais.shop.mapper.HaiOrderInfoMapper;
 import org.ehais.shop.model.HaiAd;
 import org.ehais.shop.model.HaiAdExample;
 import org.ehais.shop.model.HaiCategory;
@@ -41,17 +42,12 @@ import org.ehais.shop.model.HaiCategoryExample;
 import org.ehais.shop.model.HaiGoods;
 import org.ehais.shop.model.HaiGoodsExample;
 import org.ehais.shop.model.HaiOrderGoods;
-import org.ehais.shop.model.HaiOrderInfo;
-import org.ehais.shop.model.HaiOrderInfoExample;
-import org.ehais.shop.model.HaiOrderInfoWithBLOBs;
 import org.ehais.shop.service.OrderInfoService;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.DateUtil;
 import org.ehais.util.ECommon;
-import org.ehais.util.ResourceUtil;
 import org.ehais.util.SignUtil;
-import org.ehais.weixin.model.WeiXinSignature;
 import org.ehais.weixin.model.WeiXinTemplateMessage;
 import org.ehais.weixin.model.WeiXinWCPay;
 import org.ehais.weixin.utils.WeiXinUtil;
@@ -356,6 +352,11 @@ public class DiningWebController extends EhaisCommonController{
 				orderInfo.setPayTime(Long.valueOf(System.currentTimeMillis() / 1000).intValue());
 				orderInfo.setPayStatus(EPayStatusEnum.cash);
 				orderInfo.setPayName("现金支付");
+				
+				//流水号+1
+				int daySerialCount = haiOrderInfoMapper.daySerialNumber(store_id);
+				orderInfo.setDaySerialNumber(daySerialCount+1);
+				
 			}else if(tPay.equals(EPayEnum.weixin)){
 				orderInfo.setPayName("微信支付");
 			}
