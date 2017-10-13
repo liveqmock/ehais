@@ -34,7 +34,7 @@ public class DiningJUnit {
 		paramsMap.put("timestamp", String.valueOf(System.currentTimeMillis()));
 		paramsMap.put("appkey", "Ehais");
 		paramsMap.put("store_id", "58");
-		paramsMap.put("token", "4jl7v4f3x06q37on");
+		paramsMap.put("token", "89s5ik8bltru08jt");
 		String sign = SignUtil.getSignWS(paramsMap, "EhaisSecret");
 		paramsMap.put("sign", sign);
 		String req = EHttpClientUtil.httpPost("http://127.0.0.1/api/dining_order_list", paramsMap);

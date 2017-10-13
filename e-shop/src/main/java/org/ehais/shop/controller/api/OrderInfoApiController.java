@@ -13,6 +13,7 @@ import org.ehais.epublic.mapper.HaiOrderInfoMapper;
 import org.ehais.epublic.model.HaiOrderInfo;
 import org.ehais.epublic.model.HaiOrderInfoExample;
 import org.ehais.epublic.model.HaiOrderInfoWithBLOBs;
+import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.shop.controller.api.include.OrderInfoIController;
 import org.ehais.shop.mapper.HaiDiningPrintTimeMapper;
 import org.ehais.shop.mapper.HaiOrderGoodsMapper;
@@ -21,6 +22,7 @@ import org.ehais.shop.model.HaiOrderGoods;
 import org.ehais.shop.model.HaiOrderGoodsExample;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
+import org.ehais.util.SignUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -98,7 +100,12 @@ public class OrderInfoApiController extends OrderInfoIController{
 			rm.setMsg("token wrong");
 			return this.writeJson(rm);
 		}
+		
 		try{
+//			EHaiStore store = eStoreService.getEStore(store_id);
+			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
+			
+			
 			HaiDiningPrintTime p = haiDiningPrintTimeMapper.selectByPrimaryKey(store_id);
 			if(p == null){
 				p = new HaiDiningPrintTime();
@@ -116,6 +123,9 @@ public class OrderInfoApiController extends OrderInfoIController{
 				List<Long> orderIds = new ArrayList<Long>();
 				for (HaiOrderInfoWithBLOBs haiOrderInfoWithBLOBs : list) {
 					orderIds.add(haiOrderInfoWithBLOBs.getOrderId());
+					
+					Map<String,Object> mapSign = SignUtil.getDiningId(haiOrderInfoWithBLOBs.getSid(), wp.getToken());
+					haiOrderInfoWithBLOBs.setZipcode(mapSign.get("tableNo").toString());
 				}
 				HaiOrderGoodsExample gExp = new HaiOrderGoodsExample();
 				gExp.createCriteria().andOrderIdIn(orderIds);
@@ -126,7 +136,7 @@ public class OrderInfoApiController extends OrderInfoIController{
 				
 				HaiOrderInfo o = list.get(list.size() - 1);
 				p.setPrintTime(o.getPayTime());
-				haiDiningPrintTimeMapper.updateByPrimaryKey(p);
+//				haiDiningPrintTimeMapper.updateByPrimaryKey(p);
 			}
 			rm.setCode(1);
 			rm.setRows(list);
