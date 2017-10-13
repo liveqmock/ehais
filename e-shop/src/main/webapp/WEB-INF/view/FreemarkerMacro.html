@@ -110,16 +110,80 @@ $(function(){
 </#macro>
 
 
-<!-- 复选项控件：<@selectCategoryPicker id="" text="" value=0 list={}/> -->
-<#macro selectCategoryPicker id value text list>
+<!-- 复选项控件：< @ selectPicker id="" key="" text="" list={} value=0?string('') defaultValue="" defaultText="" /> -->
+<#macro selectPicker id="" key="" text="" list={} value="" defaultValue="" defaultText="">
 	<select class="form-control" id="${id}" name="${id}" >
-		<option value="0">--请选择分类--</option>		
-		<#if list??&&list?size gt 0>
-		<#list list as cate>
-		<option value="${cate[id]!0}" <#if cate[id]?string('') == value >selected="selected"</#if> >${cate[text]!''}</option>
-		</#list>
+		<option value="${defaultValue!'0'}">${defaultText!'--请选择分类--'}</option>		
+		<#if (list?? && list?size > 0) >
+		<#if list?is_hash_ex>
+			<#local keys=list?keys/>
+			<#list keys as key>
+				<option value="${key}" <#if  (key?string('') == (value!'0')) >selected="selected"</#if> >${list[key]}</option>
+			</#list>
+		<#else>
+			<#list list as item>
+				<option value="${item[key]!0}" <#if  (item[key]?string('') == (value!'0')) >selected="selected"</#if> >${item[text]!''}</option>
+			</#list>
+			</#if>
 		</#if>
-	</select>	
+	</select>
+</#macro>
+
+
+<!-- bootstrap风格数字类型的单选控件：< @ BSRadioIntPicker id="" key="" text="" list={} value=0?string('') /> -->
+<#macro BSRadioIntPicker id="" key="" text="" list={} value="" >
+	<ul class="radioPicker" id="radioPicker_${id}">
+		<#if (list?? && list?size > 0) >
+		<#if list?is_hash_ex>
+			<#local keys=list?keys/>
+			<#list keys as key>
+				<li value="${key}" class="<#if (key?string('') == value?string('')) >active</#if>" >${list[key]}</li>
+			</#list>
+		<#else>
+			<#list list as item>
+				<li value="${item[key]!0}" class="<#if (item[key]?string('') == (value!'0')) >active</#if>" >${item[text]!''}</li>
+			</#list>
+			</#if>
+		</#if>
+	</ul>
+	<input type="hidden" id="${id}" name="${id}" value="${value!''}">
+	<script type="text/javascript">
+	$(function(){
+		$("#radioPicker_${id} li").click(function(){
+			$("#radioPicker_${id} li").removeClass("active");
+			$(this).addClass("active");
+			$("#${id}").val($(this).attr("value"));
+		});
+	});
+	</script>
+</#macro>
+
+<!-- bootstrap风格字符串的单选控件：< @ BSRadioChatPicker id="" key="" text="" list={} value="" /> -->
+<#macro BSRadioChatPicker id="" key="" text="" list={} value="" >
+	<ul class="radioPicker" id="radioPicker_${id}">
+		<#if (list?? && list?size > 0) >
+		<#if list?is_hash_ex>
+			<#local keys=list?keys/>
+			<#list keys as key>
+				<li value="${key}" class="<#if (key == value) >active</#if>" >${list[key]}</li>
+			</#list>
+		<#else>
+			<#list list as item>
+				<li value="${item[key]!0}" class="<#if (item[key]?string('') == (value!'0')) >active</#if>" >${item[text]!''}</li>
+			</#list>
+			</#if>
+		</#if>
+	</ul>
+	<input type="hidden" id="${id}" name="${id}" value="${value!''}">
+	<script type="text/javascript">
+	$(function(){
+		$("#radioPicker_${id} li").click(function(){
+			$("#radioPicker_${id} li").removeClass("active");
+			$(this).addClass("active");
+			$("#${id}").val($(this).attr("value"));
+		});
+	});
+	</script>
 </#macro>
 
 

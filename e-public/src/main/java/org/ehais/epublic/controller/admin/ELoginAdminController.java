@@ -39,6 +39,9 @@ public class  ELoginAdminController extends CommonController {
 			ReturnObject<EHaiAdminUser> rm = new ReturnObject<EHaiAdminUser>();
 //			rm.setAction("admin_login_submit");
 			rm.setAction("admin_login_submit_ajax");
+			
+			modelMap.addAttribute("redirect", "admin/index");
+			
 			modelMap.addAttribute("rm", rm);
 			
 		}catch(Exception e){
