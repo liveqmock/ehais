@@ -123,7 +123,6 @@ public class OrderInfoApiController extends OrderInfoIController{
 				List<Long> orderIds = new ArrayList<Long>();
 				for (HaiOrderInfoWithBLOBs haiOrderInfoWithBLOBs : list) {
 					orderIds.add(haiOrderInfoWithBLOBs.getOrderId());
-					
 					Map<String,Object> mapSign = SignUtil.getDiningId(haiOrderInfoWithBLOBs.getSid(), wp.getToken());
 					haiOrderInfoWithBLOBs.setZipcode(mapSign.get("tableNo").toString());
 				}
@@ -136,7 +135,8 @@ public class OrderInfoApiController extends OrderInfoIController{
 				
 				HaiOrderInfo o = list.get(list.size() - 1);
 				p.setPrintTime(o.getPayTime());
-//				haiDiningPrintTimeMapper.updateByPrimaryKey(p);
+				haiDiningPrintTimeMapper.updateByPrimaryKey(p);
+				
 			}
 			rm.setCode(1);
 			rm.setRows(list);
