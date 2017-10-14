@@ -2,9 +2,7 @@ package org.ehais.shop.service.impl;
 
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,7 +12,7 @@ import org.ehais.epublic.mapper.WpPublicMapper;
 import org.ehais.epublic.model.WpPublic;
 import org.ehais.epublic.model.WpPublicExample;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
-import org.ehais.model.BootStrapModel;
+import org.ehais.epublic.service.EWPPublicService;
 import org.ehais.service.impl.CommonServiceImpl;
 import org.ehais.shop.service.WpPublicService;
 import org.ehais.tools.EConditionObject;
@@ -30,9 +28,9 @@ public class WpPublicServiceImpl  extends CommonServiceImpl implements WpPublicS
 	
 	@Autowired
 	private WpPublicMapper wpPublicMapper;
-
 	@Autowired
-	private WpTempSublateMapper wpTempSublateMapper;
+	protected EWPPublicService eWPPublicService;
+	
 	
 	public ReturnObject<WpPublic> public_list(HttpServletRequest request) throws Exception{
 		
@@ -53,19 +51,19 @@ public class WpPublicServiceImpl  extends CommonServiceImpl implements WpPublicS
 		
 		WpPublicExample example = new WpPublicExample();
 		WpPublicExample.Criteria c = example.createCriteria();
-		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+//		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
 		example.setLimitStart(condition.getStart());
 		example.setLimitEnd(condition.getRows());
 		example.setOrderByClause("update_date desc");
-		if(keySubId > 0 ) c.andKeySubIdEqualTo(keySubId);
+//		if(keySubId > 0 ) c.andKeySubIdEqualTo(keySubId);
 		if(StringUtils.isNotEmpty(publicName))c.andPublicNameLike("%"+publicName+"%");
 		List<WpPublic> list = wpPublicMapper.selectByExample(example);
 		long total = wpPublicMapper.countByExample(example);
 
 
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("tempSublateList",this.tempSublateList(request));
-		rm.setMap(map);
+//		Map<String, Object> map = new HashMap<String, Object>();
+//		map.put("tempSublateList",this.tempSublateList(request));
+//		rm.setMap(map);
 
 
 		rm.setCode(1);
@@ -85,9 +83,9 @@ public class WpPublicServiceImpl  extends CommonServiceImpl implements WpPublicS
 		WpPublicWithBLOBs model = new WpPublicWithBLOBs();
 
 
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("tempSublateList",this.tempSublateList(request));
-		rm.setMap(map);
+//		Map<String, Object> map = new HashMap<String, Object>();
+//		map.put("tempSublateList",this.tempSublateList(request));
+//		rm.setMap(map);
 
 
 		rm.setModel(model);
@@ -103,16 +101,16 @@ public class WpPublicServiceImpl  extends CommonServiceImpl implements WpPublicS
 		rm.setCode(0);
 
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
-		model.setStoreId(store_id);
+//		model.setStoreId(store_id);
 		
 		Date date = new Date();
-		model.setCreateDate(date);
-		model.setUpdateDate(date);
+//		model.setCreateDate(date);
+//		model.setUpdateDate(date);
 
 		WpPublicExample example = new WpPublicExample();
 		WpPublicExample.Criteria c = example.createCriteria();
 		c.andPublicNameEqualTo(model.getPublicName());
-		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+//		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
 		long count = wpPublicMapper.countByExample(example);
 		if(count > 0){
 			rm.setMsg("存在相同的记录");
@@ -135,7 +133,7 @@ public class WpPublicServiceImpl  extends CommonServiceImpl implements WpPublicS
 		WpPublicExample example = new WpPublicExample();
 		WpPublicExample.Criteria c = example.createCriteria();
 		c.andIdEqualTo(id);
-		c.andStoreIdEqualTo(store_id);
+//		c.andStoreIdEqualTo(store_id);
 		List<WpPublicWithBLOBs> list = wpPublicMapper.selectByExampleWithBLOBs(example);
 		if(list == null || list.size() == 0){
 			rm.setMsg("记录不存在");
@@ -144,9 +142,9 @@ public class WpPublicServiceImpl  extends CommonServiceImpl implements WpPublicS
 		WpPublicWithBLOBs model = list.get(0);
 
 
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("tempSublateList",this.tempSublateList(request));
-		rm.setMap(map);
+//		Map<String, Object> map = new HashMap<String, Object>();
+//		map.put("tempSublateList",this.tempSublateList(request));
+//		rm.setMap(map);
 
 		rm.setAction("edit");
 		rm.setCode(1);
@@ -163,9 +161,9 @@ public class WpPublicServiceImpl  extends CommonServiceImpl implements WpPublicS
 		WpPublicExample example = new WpPublicExample();
 		WpPublicExample.Criteria c = example.createCriteria();
 		
-		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
-		c.andIdEqualTo(model.getId());
-		c.andStoreIdEqualTo(store_id);
+//		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+//		c.andIdEqualTo(model.getId());
+//		c.andStoreIdEqualTo(store_id);
 
 		long count = wpPublicMapper.countByExample(example);
 		if(count == 0){
@@ -175,11 +173,11 @@ public class WpPublicServiceImpl  extends CommonServiceImpl implements WpPublicS
 
 		WpPublicWithBLOBs bean = wpPublicMapper.selectByPrimaryKey(model.getId());
 
-		bean.setId(model.getId());
+//		bean.setId(model.getId());
 bean.setUid(model.getUid());
 bean.setPublicName(model.getPublicName());
 bean.setPublicNo(model.getPublicNo());
-bean.setPublicId(model.getPublicId());
+//bean.setPublicId(model.getPublicId());
 bean.setWechat(model.getWechat());
 bean.setInterfaceUrl(model.getInterfaceUrl());
 bean.setHeadfaceUrl(model.getHeadfaceUrl());
@@ -201,11 +199,11 @@ bean.setPaySecret(model.getPaySecret());
 bean.setMchId(model.getMchId());
 bean.setSubMchId(model.getSubMchId());
 bean.setMchSecret(model.getMchSecret());
-bean.setStoreId(model.getStoreId());
+//bean.setStoreId(model.getStoreId());
 
 
 		Date date = new Date();
-		model.setUpdateDate(date);
+//		model.setUpdateDate(date);
 
 		int code = wpPublicMapper.updateByExampleSelective(bean, example);
 		rm.setCode(code);
@@ -222,7 +220,7 @@ bean.setStoreId(model.getStoreId());
 		WpPublicExample example = new WpPublicExample();
 		WpPublicExample.Criteria c = example.createCriteria();
 		c.andIdEqualTo(id);
-		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+//		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
 		List<WpPublicWithBLOBs> list = wpPublicMapper.selectByExampleWithBLOBs(example);
 		if(list == null || list.size() == 0){
 			rm.setMsg("记录不存在");
@@ -230,9 +228,9 @@ bean.setStoreId(model.getStoreId());
 		}
 		WpPublicWithBLOBs model = list.get(0);
 
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("tempSublateList",this.tempSublateList(request));
-		rm.setMap(map);
+//		Map<String, Object> map = new HashMap<String, Object>();
+//		map.put("tempSublateList",this.tempSublateList(request));
+//		rm.setMap(map);
 
 		rm.setCode(1);
 		rm.setModel(model);
@@ -250,7 +248,7 @@ bean.setStoreId(model.getStoreId());
 		WpPublicExample example = new WpPublicExample();
 		WpPublicExample.Criteria c = example.createCriteria();
 		c.andIdEqualTo(id);
-		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+//		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
 		List<WpPublicWithBLOBs> list = wpPublicMapper.selectByExampleWithBLOBs(example);
 		if(list == null || list.size() == 0){
 			rm.setMsg("记录不存在");
@@ -258,9 +256,9 @@ bean.setStoreId(model.getStoreId());
 		}
 		WpPublicWithBLOBs model = list.get(0);
 		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("tempSublateList",this.tempSublateList(request));
-		rm.setMap(map);
+//		Map<String, Object> map = new HashMap<String, Object>();
+//		map.put("tempSublateList",this.tempSublateList(request));
+//		rm.setMap(map);
 
 		rm.setCode(1);
 		rm.setModel(model);
@@ -275,7 +273,7 @@ bean.setStoreId(model.getStoreId());
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		WpPublicExample example = new WpPublicExample();
 		WpPublicExample.Criteria c = example.createCriteria();
-		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+//		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
 		c.andIdEqualTo(id);
 
 		long count = wpPublicMapper.countByExample(example);
@@ -290,10 +288,80 @@ bean.setStoreId(model.getStoreId());
 		rm.setMsg("删除成功");
 		return rm;
 	}
+
+	@Override
+	public ReturnObject<WpPublicWithBLOBs> public_detail(HttpServletRequest request) throws Exception {
+		// TODO Auto-generated method stub
+		ReturnObject<WpPublicWithBLOBs> rm = new ReturnObject<WpPublicWithBLOBs>();
+		try {
+			Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+			WpPublicWithBLOBs model = eWPPublicService.getWpPublic(store_id);
+			if(model == null)model = new WpPublicWithBLOBs();
+			rm.setModel(model);
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return rm;
+	}
+
+	@Override
+	public ReturnObject<WpPublicWithBLOBs> public_detail_submit(HttpServletRequest request, WpPublicWithBLOBs model)
+			throws Exception {
+		// TODO Auto-generated method stub
+		ReturnObject<WpPublicWithBLOBs> rm = new ReturnObject<WpPublicWithBLOBs>();
+		rm.setCode(0);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		
+		WpPublicWithBLOBs bean = eWPPublicService.getWpPublic(store_id);
+		if(bean == null) {
+			bean = new WpPublicWithBLOBs();
+			BeanByModel(bean,model);
+			wpPublicMapper.insertSelective(bean);
+		}else {
+			BeanByModel(bean,model);
+			bean.setId(model.getId());
+			wpPublicMapper.updateByPrimaryKeySelective(bean);
+		}
+		
+		eWPPublicService.setWpPublic(store_id, bean);
+
+		rm.setCode(1);
+		rm.setMsg("保存成功");
+		return rm;
+	}
 	
 
 
 
+	private void BeanByModel(WpPublicWithBLOBs bean,WpPublicWithBLOBs model) {
+		bean.setUid(model.getUid());
+		bean.setPublicName(model.getPublicName());
+		bean.setPublicNo(model.getPublicNo());
+		//bean.setPublicId(model.getPublicId());
+		bean.setWechat(model.getWechat());
+		bean.setInterfaceUrl(model.getInterfaceUrl());
+		bean.setHeadfaceUrl(model.getHeadfaceUrl());
+		bean.setArea(model.getArea());
+		bean.setAddonConfig(model.getAddonConfig());
+		bean.setAddonStatus(model.getAddonStatus());
+		bean.setToken(model.getToken());
+		bean.setIsUse(model.getIsUse());
+		bean.setType(model.getType());
+		bean.setAppid(model.getAppid());
+		bean.setSecret(model.getSecret());
+		bean.setGroupId(model.getGroupId());
+		bean.setEncodingaeskey(model.getEncodingaeskey());
+		bean.setTipsUrl(model.getTipsUrl());
+		bean.setDomain(model.getDomain());
+		bean.setIsBind(model.getIsBind());
+		bean.setPayAppid(model.getPayAppid());
+		bean.setPaySecret(model.getPaySecret());
+		bean.setMchId(model.getMchId());
+		bean.setSubMchId(model.getSubMchId());
+		bean.setMchSecret(model.getMchSecret());
+	}
 
 
 
