@@ -98,6 +98,8 @@ $(function(){
     });
     
     
+    $("#wpCustomMenuSend").click(function(){wpCustomMenuSend();});//同步微信菜单
+    
 });
 
 
@@ -120,5 +122,12 @@ function wpCustomMenuDelete(id){
 	});
 }
 
-
+function wpCustomMenuSend(){
+	$.ajax({
+		url:"wpCustomMenuSend",type:"post",dataType:"json",
+		success:function(result){
+			layer.msg(result.msg);
+		}
+	});
+}
 

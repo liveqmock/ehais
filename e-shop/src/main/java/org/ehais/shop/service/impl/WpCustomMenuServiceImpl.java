@@ -1,6 +1,7 @@
 package org.ehais.shop.service.impl;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -19,8 +20,13 @@ import org.ehais.shop.model.weixin.WpCustomMenuExample;
 import org.ehais.shop.service.WpCustomMenuService;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
+import org.ehais.weixin.model.AccessToken;
+import org.ehais.weixin.model.WeiXinMenu;
+import org.ehais.weixin.utils.WeiXinUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import net.sf.json.JSONObject;
 
 //model里面对应的日期添加的 @DateTimeFormat( pattern = "yyyy-MM-dd" )
 
@@ -327,6 +333,65 @@ public class WpCustomMenuServiceImpl  extends CommonServiceImpl implements WpCus
 		rm.setMsg("删除成功");
 		return rm;
 	}
+
+	@Override
+	public ReturnObject<WpCustomMenu> CreateMenu(HttpServletRequest request) throws Exception {
+		// TODO Auto-generated method stub
+		ReturnObject<WpCustomMenu> rm = new ReturnObject<WpCustomMenu>();
+		try{
+			Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+			WpPublicWithBLOBs wpPublic = eWPPublicService.getWpPublic(store_id);
+			
+			WpCustomMenuExample example = new WpCustomMenuExample();
+			WpCustomMenuExample.Criteria criteria = example.createCriteria();
+			criteria.andPublicIdEqualTo(wpPublic.getId());
+			example.setOrderByClause("sort asc");
+			List<WpCustomMenu> list = wpCustomMenuMapper.selectByExample(example);
+			List<Object> listMenu = new ArrayList<Object>();
+			for (WpCustomMenu wpCustomMenu : list) {
+				if(wpCustomMenu.getPid().intValue() == 0){				
+					if(wpCustomMenu.getType().equals("none")){
+
+						Map<String, Object> subMenu = new HashMap<String, Object>();
+						List<Object> subListMenu = new ArrayList<Object>();
+						subMenu.put("name", wpCustomMenu.getTitle());
+						for (WpCustomMenu wp : list) {
+							if(wp.getPid().intValue() == wpCustomMenu.getId().intValue()){
+								subListMenu.add(new WeiXinMenu(wp.getType(), wp.getTitle(), wp.getKeyword(), wp.getUrl(),null));
+							}
+						}
+						subMenu.put("sub_button", subListMenu);					
+						listMenu.add(subMenu);
+					}else{
+						listMenu.add(new WeiXinMenu(wpCustomMenu.getType(), wpCustomMenu.getTitle(), wpCustomMenu.getKeyword(), wpCustomMenu.getUrl(),null));
+					}
+				}
+			}
+			
+			Map<String, Object> buttonMenu = new HashMap<String, Object>();
+			buttonMenu.put("button", listMenu);
+			JSONObject obj = JSONObject.fromObject(buttonMenu);
+			System.out.println(obj.toString());
+			
+			AccessToken token = WeiXinUtil.getAccessToken(wpPublic.getId(),wpPublic.getAppid(),wpPublic.getSecret());
+			
+			String result = WeiXinUtil.menu_create(wpPublic.getId(), token.getAccess_token(), obj.toString());
+			System.out.println(result);
+			
+			rm.setCode(1);
+			rm.setMsg("同步成功");
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return rm;
+	}
+	
+	
+	
+	
+
+	
+	
 	
 	
 }

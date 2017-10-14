@@ -18,5 +18,6 @@ public interface WpCustomMenuService extends CommonService{
 	public ReturnObject<WpCustomMenu> custommenu_find(HttpServletRequest request,Integer id) throws Exception;
 	public ReturnObject<WpCustomMenu> custommenu_delete(HttpServletRequest request,Integer id) throws Exception;
 	
+	public ReturnObject<WpCustomMenu> CreateMenu(HttpServletRequest request) throws Exception;
 }
 

@@ -184,6 +184,22 @@ public class  WpCustomMenuAdminController extends CommonController {
 	}
 	
 
+	@ResponseBody
+	@EPermissionMethod(name="同步",intro="同步微信菜单管理",value="wpCustomMenuDelete",type=PermissionProtocol.BUTTON)
+	@RequestMapping(value="/wpCustomMenuSend",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
+	public String wpCustomMenuSend(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response
+			) {
+		try{
+			return this.writeJson(wpCustomMenuService.CreateMenu(request));
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("custommenu", e);
+			return this.errorJSON(e);
+		}
+	}
+	
+	
 	
 }
 
