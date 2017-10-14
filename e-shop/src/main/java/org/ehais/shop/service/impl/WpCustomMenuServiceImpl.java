@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.epublic.service.EStoreService;
@@ -20,6 +21,7 @@ import org.ehais.shop.model.weixin.WpCustomMenuExample;
 import org.ehais.shop.service.WpCustomMenuService;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
+import org.ehais.util.ChineseCharToEn;
 import org.ehais.weixin.model.AccessToken;
 import org.ehais.weixin.model.WeiXinMenu;
 import org.ehais.weixin.utils.WeiXinUtil;
@@ -144,7 +146,11 @@ public class WpCustomMenuServiceImpl  extends CommonServiceImpl implements WpCus
 			}
 		}
 
-
+		
+		if(StringUtils.isBlank(model.getKeyword())){
+			model.setKeyword(ChineseCharToEn.getAllFirstLetter(model.getTitle()));
+		}
+		
 		int code = wpCustomMenuMapper.insertSelective(model);
 		rm.setCode(code);
 		rm.setMsg("添加成功");
@@ -246,7 +252,12 @@ public class WpCustomMenuServiceImpl  extends CommonServiceImpl implements WpCus
 		bean.setRuleId(model.getRuleId());
 		bean.setMaterial(model.getMaterial());
 		bean.setUrl(model.getUrl());
-		bean.setKeyword(model.getKeyword());
+		if(StringUtils.isBlank(model.getKeyword())){
+			bean.setKeyword(ChineseCharToEn.getAllFirstLetter(model.getTitle()));
+		}else{
+			bean.setKeyword(model.getKeyword());
+		}
+		
 		bean.setAppid(model.getAppid());
 		bean.setPagepath(model.getPagepath());
 		bean.setAppurl(model.getAppurl());

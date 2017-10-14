@@ -61,6 +61,9 @@ $(function(){
 },{
     field: 'url',
     title: '链接'
+},{
+    field: 'keyword',
+    title: '关键词'
 },
 
         {
