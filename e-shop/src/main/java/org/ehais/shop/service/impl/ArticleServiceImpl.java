@@ -5,19 +5,20 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
-import org.ehais.enums.EArticleModuleEnum;
+import org.ehais.enums.EWXMediaTypeEnum;
 import org.ehais.epublic.mapper.EHaiArticleCatMapper;
 import org.ehais.epublic.mapper.EHaiArticleMapper;
 import org.ehais.epublic.model.EHaiArticle;
 import org.ehais.epublic.model.EHaiArticleCat;
 import org.ehais.epublic.model.EHaiArticleCatExample;
 import org.ehais.epublic.model.EHaiArticleExample;
-import org.ehais.epublic.model.EHaiArticleSimple;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.epublic.service.EWPPublicService;
 import org.ehais.service.impl.CommonServiceImpl;
@@ -25,20 +26,28 @@ import org.ehais.shop.mapper.HaiArticleGoodsMapper;
 import org.ehais.shop.mapper.HaiForumUserMapper;
 import org.ehais.shop.mapper.HaiGoodsMapper;
 import org.ehais.shop.mapper.WArticleGoodsMapper;
+import org.ehais.shop.mapper.weixin.WxMediaMapper;
 import org.ehais.shop.model.HaiArticleGoods;
 import org.ehais.shop.model.HaiArticleGoodsExample;
 import org.ehais.shop.model.HaiForumUser;
 import org.ehais.shop.model.HaiGoods;
 import org.ehais.shop.model.HaiGoodsExample;
 import org.ehais.shop.model.WArticleGoods;
+import org.ehais.shop.model.weixin.WxMedia;
 import org.ehais.shop.service.ArticleService;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
+import org.ehais.util.EHttpClientUtil;
+import org.ehais.util.FSO;
 import org.ehais.util.SignUtil;
+import org.ehais.weixin.model.AccessToken;
+import org.ehais.weixin.model.WeiXinMPNews;
+import org.ehais.weixin.utils.WeiXinUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 @Service("articleService")
 public class ArticleServiceImpl  extends CommonServiceImpl implements ArticleService{
@@ -57,6 +66,8 @@ public class ArticleServiceImpl  extends CommonServiceImpl implements ArticleSer
 	protected EWPPublicService eWPPublicService;
 	@Autowired
 	private HaiForumUserMapper haiForumUserMapper;
+	@Autowired
+	private WxMediaMapper wxMediaMapper;
 	
 
 	public ReturnObject<EHaiArticle> article_list_cid(HttpServletRequest request,String moduleEnum,Integer store_id, Integer cat_id,EConditionObject condition) throws Exception {
@@ -185,7 +196,8 @@ public ReturnObject<EHaiArticle> article_list(HttpServletRequest request,String 
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		EHaiArticleCatExample acExample = new EHaiArticleCatExample();
 		EHaiArticleCatExample.Criteria c = acExample.createCriteria();
-		c.andStoreIdEqualTo(store_id);
+		acExample.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+//		c.andStoreIdEqualTo(store_id);
 		c.andModuleEqualTo(moduleEnum);
 		List<EHaiArticleCat> acList = eHaiArticleCatMapper.selectByExample(acExample);
 		return acList;
@@ -252,9 +264,12 @@ public ReturnObject<EHaiArticle> article_list(HttpServletRequest request,String 
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		EHaiArticleExample example = new EHaiArticleExample();
 		EHaiArticleExample.Criteria c = example.createCriteria();
+		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
 		c.andArticleIdEqualTo(articleId);
-		c.andStoreIdEqualTo(store_id);
+//		c.andStoreIdEqualTo(store_id);
 		c.andModuleEqualTo(moduleEnum);
+		
+		
 		List<EHaiArticle> list = eHaiArticleMapper.selectByExampleWithBLOBs(example);
 		if(list == null || list.size() == 0){
 			rm.setMsg("记录不存在");
@@ -318,7 +333,7 @@ public ReturnObject<EHaiArticle> article_list(HttpServletRequest request,String 
 		
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
 		c.andArticleIdEqualTo(model.getArticleId());
-		c.andStoreIdEqualTo(store_id);
+//		c.andStoreIdEqualTo(store_id);
 		c.andModuleEqualTo(moduleEnum);
 		long count = eHaiArticleMapper.countByExample(example);
 		if(count == 0){
@@ -527,6 +542,177 @@ bean.setArticleSource(model.getArticleSource());//网络来源
 		
 		
 		return null;
+	}
+
+
+	/**
+	 * 微信群发消息功能
+	 */
+	@Override
+	public ReturnObject<EHaiArticle> ehaisArticleSendGroupWeixin(HttpServletRequest request, String moduleEnum,
+			Integer articleId) throws Exception {
+		// TODO Auto-generated method stub
+		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
+		rm.setCode(0);
+		//读取当前文章信息
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		String tmpFilename = null;
+		try{
+			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
+			EHaiArticleExample aExp = new EHaiArticleExample();
+			EHaiArticleExample.Criteria c = aExp.createCriteria();
+			aExp.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+			c.andModuleEqualTo(moduleEnum).andArticleIdEqualTo(articleId);
+			List<EHaiArticle> list = eHaiArticleMapper.selectByExampleWithBLOBs(aExp);
+			if(list == null || list.size() == 0){
+				rm.setMsg("不存在文章编号");
+				return rm;
+			}
+			EHaiArticle article = list.get(0);
+			AccessToken accessToken = WeiXinUtil.getAccessToken(wp.getId(), wp.getAppid(), wp.getSecret());
+			
+			WxMedia mediaDetail = wxMediaMapper.getWxMediaDetail("hai_article", article.getArticleId().toString());
+			if(mediaDetail == null){
+				//***************************读取文章的media_id
+				WeiXinMPNews wxNews = null;
+				
+				
+				String content = article.getContent();
+				//使用正则获取文章里面的图片
+				Pattern p = Pattern.compile("<img.*src\\s*=\\s*(.*?)[^>]*?>", Pattern.CASE_INSENSITIVE);
+			    Matcher m = p.matcher(content);
+			    String quote = null;
+			    String src = null;
+			    Matcher matcher = null;
+			    while (m.find()) {
+			        quote = m.group();
+			        matcher = Pattern.compile("src\\s*=\\s*\"?(.*?)(\"|>|\\s+)").matcher(quote);  
+		            while (matcher.find()) { 
+		            	src = matcher.group().substring(5, matcher.group().length() - 1);
+		            	tmpFilename = request.getRealPath("/")+"eUploads/"+System.currentTimeMillis()+".jpg";
+						EHttpClientUtil.downloadFile(src, tmpFilename);
+						
+		            	String reqUrl = WeiXinUtil.uploadImg(accessToken.getAccess_token(), tmpFilename);
+		            	
+		            	JSONObject json = JSONObject.fromObject(reqUrl);
+		            	if(json.has("errcode")){
+							rm.setMsg("媒体上传失败");
+							return rm;
+						}
+		            	if(json.has("url")){
+		            		content.replaceAll(src, json.getString("url"));
+		            	}
+		            	FSO.deletefile(tmpFilename);
+		            	
+		            }
+		            
+			    }
+				
+				
+				if(StringUtils.isBlank(article.getArticleImages())){
+					//如果无图片，直接调用文本消息
+					wxNews = new WeiXinMPNews(
+				    		article.getTitle(), 
+				    		"",//media_id 
+				    		article.getAuthor(),
+							"",//来源网址
+							content,
+							(StringUtils.isNotBlank(article.getDescription()) ? (article.getDescription().length() > 64 ? article.getDescription().substring(0, 64) : article.getDescription() ):""), 
+							"0") ;
+				}else{
+					//如果存在图片，判断是否存在med_id是否存在，如果 不存在，先获取meth
+					WxMedia mediaPic = wxMediaMapper.getWxMediaPath(article.getArticleImages());
+					if(mediaPic == null){
+						///////////////////////////////读取图片的media_id start
+						tmpFilename = request.getRealPath("/")+"eUploads/"+System.currentTimeMillis()+".jpg";
+						EHttpClientUtil.downloadFile(article.getArticleImages(), tmpFilename);
+						
+						Map<String, String> fileMap = new HashMap<>(); 
+						fileMap.put("media", tmpFilename);
+						String reqData = WeiXinUtil.uploadMedia(accessToken.getAccess_token(), EWXMediaTypeEnum.IMAGE, null, fileMap);
+						JSONObject json = JSONObject.fromObject(reqData);
+						
+						if(json.has("errcode")){
+							rm.setMsg("媒体上传失败");
+							return rm;
+						}
+						
+						if(json.has("media_id")){
+							String media_id = json.getString("media_id"); 
+							mediaPic = new WxMedia();
+							mediaPic.setMediaPath(article.getArticleImages());
+							mediaPic.setMediaId(media_id);
+							
+							wxMediaMapper.insert(mediaPic);
+						}
+						
+						
+						FSO.deletefile(tmpFilename);
+						///////////////////////////////读取图片的media_id end
+					}
+					
+					wxNews = new WeiXinMPNews(
+				    		article.getTitle(), 
+				    		mediaPic.getMediaId(), 
+				    		article.getAuthor(),
+							"",//来源网址
+							content,
+							(StringUtils.isNotBlank(article.getDescription()) ? (article.getDescription().length() > 64 ? article.getDescription().substring(0, 64) : article.getDescription() ):""), 
+							"1") ;
+					
+				}
+				
+				
+				
+				//群发消息
+			    List<WeiXinMPNews> newsList = new ArrayList<WeiXinMPNews>();
+			    
+			    newsList.add(wxNews);
+			    
+				String upnewData = WeiXinUtil.uploadnews(accessToken.getAccess_token(), newsList);
+				System.out.println(upnewData);
+//				{"type":"news","media_id":"zqfJ2JqisIhA9gJVgI0mWMcvr5gxRxAXUe237wxhFbcZ9PhIxXH46WR-wuMFFhsR","created_at":1507987488}
+				JSONObject json = JSONObject.fromObject(upnewData);
+				if(json.has("errcode")){
+					rm.setMsg("群发消息失败");
+					return rm;
+				}
+				
+				if(json.has("media_id")){
+					String media_id = json.getString("media_id"); 
+					mediaDetail = new WxMedia();
+					mediaDetail.setMediaPath("");
+					mediaDetail.setTableName("hai_article");
+					mediaDetail.setTableId(article.getArticleId().toString());
+					mediaDetail.setMediaId(media_id);
+					
+					wxMediaMapper.insert(mediaDetail);
+				}
+				
+				//***************************读取文章的media_id end
+			}
+			
+			
+			//根据media_id 发送消息
+			String sendallData = WeiXinUtil.mass_sendall(accessToken.getAccess_token(), true, null, EWXMediaTypeEnum.MPNEWS, mediaDetail.getMediaId(), "");
+			System.out.println(sendallData);
+//			{"msgtype":"mpnews","mpnews":{"media_id":"RXDSlQjXHofFNHv-5kFBuTC0VZtGy52ENviiJw1tZGh_RjfqsR-R3ey2oPe8lczh"},"filter":{"is_to_all":true}}
+//			{"errcode":48008,"errmsg":"no permission for this msgtype hint: [LTnDna04222111]"}
+			JSONObject json = JSONObject.fromObject(sendallData);
+			if(json.has("errcode")){
+				rm.setMsg("群发消息失败【"+json.getString("errmsg")+"】");
+				return rm;
+			}
+			rm.setCode(1);
+			rm.setMsg("群发消息成功");
+			
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		
+		return rm;
 	}
 	
 	

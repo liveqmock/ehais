@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.security.KeyStore;
@@ -26,8 +25,9 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLContexts;
+import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -490,17 +490,18 @@ public class EHttpClientUtil {
 			Map<String , String > headerMap) throws ClientProtocolException,
 			IOException {
 		
-		MultipartEntity reqEntity = new MultipartEntity(); 
+//		MultipartEntity reqEntity = new MultipartEntity(); 
+		MultipartEntityBuilder meBuilder = MultipartEntityBuilder.create();
 		
 		if (paramsMap != null && paramsMap.size() > 0) {
 			for (String key : paramsMap.keySet()) {
-				reqEntity.addPart(key, new StringBody(paramsMap.get(key)));
+				meBuilder.addPart(key, new StringBody(paramsMap.get(key) , ContentType.TEXT_PLAIN));
 			}
 		}
 		
 		if (fileMap != null && fileMap.size() > 0) {
 			for (String key : fileMap.keySet()) {
-				reqEntity.addPart(key, new FileBody(new File(fileMap.get(key))));
+				meBuilder.addPart(key, new FileBody(new File(fileMap.get(key))));
 			}
 		}
 		
@@ -518,9 +519,14 @@ public class EHttpClientUtil {
 				} 
 			}
 			// 设置请求
-			if (reqEntity != null)
-				httppost.setEntity(reqEntity);
+//			if (reqEntity != null)
+//				httppost.setEntity(reqEntity);
 
+			
+			HttpEntity reqEntity = meBuilder.build();
+			httppost.setEntity(reqEntity);
+			
+			
 			// 执行
 			HttpResponse response = httpclient.execute(httppost);
 			if (HttpStatus.SC_OK == response.getStatusLine().getStatusCode()) {

@@ -77,6 +77,14 @@ public class WXConstants {
 	//消息模板发送
 	public static String template_send = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=ACCESS_TOKEN";
 	
+	//新增临时素材
+	public static String temp_media_upload = "https://api.weixin.qq.com/cgi-bin/media/upload?access_token=ACCESS_TOKEN&type=TYPE";
+	
+	//获取临时素材
+	public static String get_temp_media = "https://api.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID";
+	
+	
+	
 }
 
 

@@ -10,7 +10,7 @@ body {
   padding-bottom: 10px;
   margin: 10px 0;
 }
-.header .nav > i,
+.header .nav > i,.header .nav > a,
 .header .nav > div {
   float: left;
   height: 36px;

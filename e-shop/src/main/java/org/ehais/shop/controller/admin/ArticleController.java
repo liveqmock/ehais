@@ -134,7 +134,7 @@ public class ArticleController extends CommonController{
 	
 	
 	@EPermissionMethod(name="编辑",intro="编辑软文",value="ehaisArticleEditDetail",type=PermissionProtocol.BUTTON)
-	@RequestMapping(value="/manage/ehaisArticleEditDetail",method=RequestMethod.GET)
+	@RequestMapping(value="/ehaisArticleEditDetail",method=RequestMethod.GET)
 	public String ehaisArticleEditDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "articleId", required = true) Integer articleId
@@ -155,11 +155,11 @@ public class ArticleController extends CommonController{
 	
 	@ResponseBody
 	@EPermissionMethod(intro="编辑提交软文",value="ehaisArticleEditSubmit",type=PermissionProtocol.DATA)
-	@RequestMapping(value="/manage/ehaisArticleEditSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
+	@RequestMapping(value="/ehaisArticleEditSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String ehaisArticleEditSubmit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "articleId", required = true) Integer articleId,
-			@RequestParam(value = "goodsId", required = true) Long goodsId,
+			@RequestParam(value = "goodsId", required = false) Long goodsId,
 			@Valid @ModelAttribute("article") EHaiArticle article,
 			BindingResult result
 			) {
@@ -176,7 +176,7 @@ public class ArticleController extends CommonController{
 	
 	@ResponseBody
 	@EPermissionMethod(name="删除",intro="删除软文",value="ehaisArticleDelete",type=PermissionProtocol.BUTTON)
-	@RequestMapping(value="/manage/ehaisArticleDelete",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
+	@RequestMapping(value="/ehaisArticleDelete",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String ehaisArticleDelete(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "articleId", required = true) Integer articleId,
@@ -196,7 +196,7 @@ public class ArticleController extends CommonController{
 	
 	@ResponseBody
 	@EPermissionMethod(intro="返回软文数据",value="ehaisArticleCatListJson",type=PermissionProtocol.JSON)
-	@RequestMapping(value="/manage/ehaisArticleCatListJson",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
+	@RequestMapping(value="/ehaisArticleCatListJson",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String ehaisArticleCatListJson(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@ModelAttribute EConditionObject condition,
@@ -215,7 +215,7 @@ public class ArticleController extends CommonController{
 	
 	@ResponseBody
 	@EPermissionMethod(intro="新增提交软文",value="ehaisArticleCatAddSubmit",type=PermissionProtocol.DATA)
-	@RequestMapping(value="/manage/ehaisArticleCatAddSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
+	@RequestMapping(value="/ehaisArticleCatAddSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String ehaisArticleCatAddSubmit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@Valid @ModelAttribute("articlecat") EHaiArticleCat articlecat,
@@ -238,7 +238,7 @@ public class ArticleController extends CommonController{
 	
 	@ResponseBody
 	@EPermissionMethod(intro="编辑提交软文",value="ehaisArticleCatEditSubmit",type=PermissionProtocol.DATA)
-	@RequestMapping(value="/manage/ehaisArticleCatEditSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
+	@RequestMapping(value="/ehaisArticleCatEditSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String ehaisArticleCatEditSubmit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "catId", required = true) Integer catId,
@@ -258,7 +258,7 @@ public class ArticleController extends CommonController{
 	
 	@ResponseBody
 	@EPermissionMethod(name="删除",intro="删除软文",value="ehaisArticleCatDelete",type=PermissionProtocol.BUTTON)
-	@RequestMapping(value="/manage/ehaisArticleCatDelete",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
+	@RequestMapping(value="/ehaisArticleCatDelete",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String ehaisArticleCatDelete(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "catId", required = true) Integer catId,
@@ -272,6 +272,26 @@ public class ArticleController extends CommonController{
 			return this.errorJSON(e);
 		}
 	}
+	
+	
+	
+	
+	@ResponseBody
+	@EPermissionMethod(name="群发",intro="微信群发",value="ehaisArticleSendGroupWeixin",type=PermissionProtocol.BUTTON)
+	@RequestMapping(value="/ehaisArticleSendGroupWeixin",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
+	public String ehaisArticleSendGroupWeixin(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "articleId", required = true) Integer articleId
+			) {
+		try{
+			return this.writeJson(ehaisArticleService.ehaisArticleSendGroupWeixin(request, EArticleModuleEnum.ARTICLE, articleId));
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("articlecat", e);
+			return this.errorJSON(e);
+		}
+	}
+	
 	
 	
 	

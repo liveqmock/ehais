@@ -426,6 +426,27 @@ public class WeiXinUtil {
 	
 
 	/**
+	 * 上传图文消息内的图片获取URL
+	 * @param token
+	 * @param filePath
+	 * @return
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 */
+	public static String uploadImg(String token,
+			String filePath ) throws ClientProtocolException, IOException{
+		String url = WXConstants.upload_img
+				.replaceAll("ACCESS_TOKEN", token);
+		Map<String,String> fileMap = new HashMap<String,String>();
+		fileMap.put("media", filePath);
+		String reqData = EHttpClientUtil.postHttpClientFile(url, null, fileMap, null);
+		System.out.println("uploadImg:"+reqData);
+		return reqData;
+		
+	}
+	
+	
+	/**
 	 * 上传媒体
 	 * @param token
 	 * @param type 媒体文件类型，分别有图片（image）、语音（voice）、视频（video）和缩略图（thumb）
