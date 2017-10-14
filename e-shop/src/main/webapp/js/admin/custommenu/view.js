@@ -1,6 +1,7 @@
 var keySubId = 0;
 var bsTable ;
 var title = "";
+var weixin_menu_type = {"none":"一级菜单","click":"点击推送事件","view":"页面链接","scancode_push":"扫码推事件","scancode_waitmsg":"扫码推事件","pic_sysphoto":"拍照发图","pic_photo_or_album":"拍照/相册","pic_weixin":"弹出相册","location_select":"地理位置","media_id":"下发消息","view_limited":"跳转图文"};
 
 
 $(function(){
@@ -47,7 +48,13 @@ $(function(){
     }
 },{
     field: 'type',
-    title: '类型'
+    title: '类型',formatter : function(value,rows,index){
+    	if(value.length > 0){
+    		return weixin_menu_type[value];
+    	}else{
+    		return "";
+    	}
+    }
 },{
     field: 'sort',
     title: '排序'

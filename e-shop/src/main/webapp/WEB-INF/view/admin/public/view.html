@@ -31,13 +31,33 @@
 		</div>
 		<div class="body">
 			<div class="container_box">
-				
+				<div class="col_side dn">
+					<h4>
+						<i class="fa fa-cubes"></i>
+						微信菜单管理分类
+						<i id="deleteCate" class="fr fa fa-trash-o"></i>
+						<i id="editCate" class="fr fa fa-edit"></i>
+						<i id="addCate" class="fr fa fa-plus"></i>
+						
+					</h4>
+					<div class="category">
+						<div id="tree"></div>
+					</div>
+				</div>
 				<div class="col_main body">
 					<h4>
 						<i class="fa fa-list"></i>
 						微信菜单管理信息列表
-						<a href="wpCustomMenuAddDetail" class="fa fa-plus btn btn-primary" >添加</a>
+						<a href="wpPublicAddDetail" class="fa fa-plus btn btn-primary" >添加</a>
 					</h4>			
+					<div class="panel panel-default">
+						<div class="panel-heading">搜索条件</div>
+						<div class="panel-body single">					    
+							<div><label>标题：</label><input id="publicName" class="control"/></div>
+							<div><button id="btnSearch" class="fa fa-search btn btn-default control">搜索</button></div>
+						</div>
+					</div>
+					
 					
 					<div class="main_table">
 						<table id="bsTable" data-show-columns="false"></table>
@@ -46,9 +66,6 @@
 				</div>
 			</div>
 		</div>
-		<script type="text/javascript">
-		var weixin_menu_type = ${weixin_menu_type};
-		</script>
-		<script type="text/javascript" src="/js/admin/custommenu/view.js" ></script>
+		<script type="text/javascript" src="/js/public/view.js" ></script>
 	</body>
 </html>

@@ -16,6 +16,7 @@ import org.ehais.epublic.service.EHaiAdminUserService;
 import org.ehais.epublic.service.EWPPublicService;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.DateUtil;
+import org.ehais.util.IpUtil;
 import org.ehais.util.SignUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,7 +41,7 @@ public class EhaisAdminController extends CommonController{
 	@RequestMapping("/adminlogin")
 	public String login(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) {	
-		
+		log.info("登录IP:"+IpUtil.getIpAddr(request));
 		try{
 			modelMap.addAttribute("submit", "admin_login_submit");
 			modelMap.addAttribute("redirect", "manage/main");

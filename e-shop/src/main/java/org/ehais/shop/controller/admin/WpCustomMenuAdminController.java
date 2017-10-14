@@ -16,6 +16,7 @@ import org.ehais.shop.model.weixin.WpCustomMenu;
 import org.ehais.shop.service.WpCustomMenuService;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
+import org.ehais.util.ResourceUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 
 
 @EPermissionController(intro="微信菜单管理功能",value="wpCustomMenuController")
@@ -41,6 +45,7 @@ public class  WpCustomMenuAdminController extends CommonController {
 	@Autowired
 	private WpCustomMenuService wpCustomMenuService;
 	
+	private String weixin_menu_type = ResourceUtil.getProValue("weixin_menu_type");
 	
 	@EPermissionMethod(intro="打开微信菜单管理页面",value="wpCustomMenuView",type=PermissionProtocol.URL)
 	@RequestMapping("/wpCustomMenuView")
@@ -49,6 +54,7 @@ public class  WpCustomMenuAdminController extends CommonController {
 		try{
 			ReturnObject<WpCustomMenu> rm = wpCustomMenuService.custommenu_list(request);
 			modelMap.addAttribute("rm", rm);
+			modelMap.addAttribute("weixin_menu_type", weixin_menu_type);
 			return "/"+this.getStoreTheme(request)+"/custommenu/view";
 		}catch(Exception e){
 			e.printStackTrace();
@@ -87,6 +93,8 @@ public class  WpCustomMenuAdminController extends CommonController {
 		try{
 			ReturnObject<WpCustomMenu> rm = wpCustomMenuService.custommenu_insert(request);
 			modelMap.addAttribute("rm", rm);
+			modelMap.addAttribute("weixin_menu_type", JSONObject.fromObject(weixin_menu_type));
+			
 			return "/"+this.getStoreTheme(request)+"/custommenu/detail";
 			
 		}catch(Exception e){
@@ -130,6 +138,7 @@ public class  WpCustomMenuAdminController extends CommonController {
 		try{
 			ReturnObject<WpCustomMenu> rm = wpCustomMenuService.custommenu_update(request,id);
 			modelMap.addAttribute("rm", rm);
+			modelMap.addAttribute("weixin_menu_type", JSONObject.fromObject(weixin_menu_type));
 			return "/"+this.getStoreTheme(request)+"/custommenu/detail";
 		}catch(Exception e){
 			e.printStackTrace();

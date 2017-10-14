@@ -23,9 +23,20 @@
     
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender"> 
   	<file>${catalina.base}/logs/e-shop/project_info.log</file>  
-    	<encoder>  
+<!--     <encoder  class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">   
+      <pattern>%d{yyyy/MM/dd-HH:mm:ss.SSS} %level [%thread] %class:%line>>%msg%n</pattern>   
+    </encoder >  -->
+    
+    <encoder>  
             <pattern>%d{yyyy/MM/dd-HH:mm:ss.SSS} %level [%thread] %class:%line>>%msg%n</pattern>  
         </encoder>  
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">  
+            <level>INFO</level>  
+        </filter>  
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">  
+            <fileNamePattern>${catalina.base}/logs/e-shop/project_sensitive.%d{yyyy-MM-dd}.log</fileNamePattern>  
+        </rollingPolicy> 
+          
   </appender>   
   
   	<appender name="ACCESS" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -46,6 +57,9 @@
 	</root> 
 	
 	
+<!-- 
+	部置服务器时，不想打印info，可以用这两个
+			
 	<root level="DEBUG">
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="FILE" />
@@ -55,7 +69,9 @@
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="FILE" />
 	</root>
-	<!-- 正式布署，不能注释 -->
+	 -->
+
+<!-- 正式布署，不能注释 -->
 <logger name="java.sql" level="WARN" />
 <logger name="com.mchange" level="WARN" />
 <logger name="org.apache" level="WARN" />
