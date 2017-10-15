@@ -129,3 +129,4 @@ body {
 .active.icon-remai{color:red;}
 .radioPicker li{float: left; padding: 5px 10px; border: 1px solid #dcdcdc;margin: 5px 10px;cursor:pointer;}
 .radioPicker li.active{background: #ca1818; color: #fff;}
+a.glyphicon{padding: 2px 5px;}
