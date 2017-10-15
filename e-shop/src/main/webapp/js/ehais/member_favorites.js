@@ -52,6 +52,10 @@ function favorites_list(){
 			loaded = "";
 			if(page == 1){
 				$("#roll ul li").remove();
+				if(result.rows == null || result.rows.length == 0){
+					$(".e").addClass("active");
+					$("#roll").hide();
+				}
 			}
 			
 			$.each(result.rows,function(k,v){

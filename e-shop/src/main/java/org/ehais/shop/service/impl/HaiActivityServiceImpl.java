@@ -246,9 +246,9 @@ bean.setUserId(model.getUserId());
 		}
 		HaiActivity model = list.get(0);
 
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("articlecatList",this.articlecatList(request,module));
-		rm.setMap(map);
+//		Map<String, Object> map = new HashMap<String, Object>();
+//		map.put("articlecatList",this.articlecatList(request,module));
+//		rm.setMap(map);
 
 		rm.setCode(1);
 		rm.setModel(model);

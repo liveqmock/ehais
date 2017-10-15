@@ -190,7 +190,7 @@ $(function(){
 
 <!-- 图片控件：
 <#include "/qiniu.html"/>
-< @ bsQiniuImagesPicker id="a" value="b" domain="${domain}" uptoken="${uptoken}"/> 
+< @ bsQiniuImagesPicker id="a" value="b" domain="$ {domain}" uptoken="$ {uptoken}"/> 
 -->
 <#macro bsQiniuImagesPicker id value domain uptoken>
 <!-- ////// -->
@@ -322,7 +322,7 @@ function trash_${id}_pic(imgId){
 
 <!-- 多图片相册控件：
 <#include "/qiniu.html"/>
-< @ bsQiniuGalleryPicker id="a" gallery={} domain="${domain}" uptoken="${uptoken}"/> -->
+< @ bsQiniuGalleryPicker id="a" gallery={} domain="$ {domain}" uptoken="$ {uptoken}"/> -->
 <#macro bsQiniuGalleryPicker id gallery domain uptoken>
 <!-- ////// -->
 <div id="eq_qiniuPicker_${id}" class="file-input file-input-ajax-new">

@@ -20,7 +20,7 @@ public class DebugSessionController extends CommonController {
 			HttpServletRequest request,HttpServletResponse response ) {
 		if(this.isLocalHost(request)){
 			request.getSession().setAttribute(EConstants.SESSION_STORE_ID, 9);
-			request.getSession().setAttribute(EConstants.SESSION_USER_ID, 125L);
+			request.getSession().setAttribute(EConstants.SESSION_USER_ID, 217L);
 		}
 		
 		return "我们是做互联网的微商";
@@ -32,7 +32,7 @@ public class DebugSessionController extends CommonController {
 		
 		if(this.isLocalHost(request)){
 			request.getSession().setAttribute(EConstants.SESSION_STORE_ID, 9);
-			request.getSession().setAttribute(EConstants.SESSION_USER_ID, 124L);
+			request.getSession().setAttribute(EConstants.SESSION_USER_ID, 217L);
 		}
 		
 		return "redirect:/vtu_sign!5ab1650-0f864c01-1aa90b02-26ccab03-3a166089fc253";

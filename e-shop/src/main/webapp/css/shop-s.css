@@ -3,11 +3,13 @@
   font-size: 0.16rem;
   float: left;
   box-sizing: border-box;
+  width: 100%;
   padding-top: 0.45rem;
 }
 .w_shop * {
   float: left;
   box-sizing: border-box;
+  width: 100%;
 }
 .w_shop header {
   position: fixed;
@@ -27,12 +29,13 @@
   left: 0;
   padding: 0 0.15rem;
   font-size: 0.22rem;
+  width: auto;
 }
 .w_shop header i:first-child {
-  float: left;
+  left: 0rem;
 }
 .w_shop header i:last-child {
-  float: right;
+  right: 0rem;
 }
 .w_shop .swiper-container {
   width: 100%;
@@ -101,8 +104,18 @@
   font-size: 0.12rem;
   text-align: center;
   color: #ccc;
-  width: 100%;
   border-top: 0.05rem solid #dcdcdc;
   margin-top: 0.15rem;
   padding: 0.15rem 0;
+}
+.w_shop .e {
+  padding: 1rem 0 1.8rem;
+  display: none;
+  text-align: center;
+}
+.w_shop .e i {
+  font-size: 0.8rem;
+}
+.w_shop .e.active {
+  display: block;
 }

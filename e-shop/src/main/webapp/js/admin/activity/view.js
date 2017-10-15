@@ -126,10 +126,9 @@ $(function(){
             formatter : function(value,row,index){
             	var a = "<a href ='haiActivityEditDetail?activityId="+value+"&module="+module+"' class='glyphicon glyphicon-pencil'></a>";
             	var b = "<a href ='javascript:;' onclick='haiActivityDelete("+value+");' class='glyphicon glyphicon-trash' ></a>";
-            	var c = "<a href ='javascript:;' onclick='haiActivityDelete("+value+");' class='glyphicon glyphicon-qrcode' alt='二维码'></a>";
-            	var d = "<a href ='javascript:;' onclick='haiActivityDelete("+value+");' class='glyphicon glyphicon-bullhorn' alt='报名'></a>";
-            	var e = "<a href ='javascript:;' onclick='haiActivityDelete("+value+");' class='glyphicon glyphicon-flag' alt='签到'></a>";
-            	return c+d+e+a+b;
+            	var c = "<a href ='haiActivityQRcode?activityId="+value+"&module="+module+"' class='glyphicon glyphicon-qrcode' alt='二维码'></a>";
+            	var d = "<a href ='haiActivityReport?activityId="+value+"&module="+module+"' class='glyphicon glyphicon-list-alt' alt='报表'></a>";
+            	return c+d+a+b;
             },sortable:true
         }
         
