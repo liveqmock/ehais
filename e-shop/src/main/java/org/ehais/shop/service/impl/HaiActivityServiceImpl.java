@@ -1,6 +1,7 @@
 package org.ehais.shop.service.impl;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -10,14 +11,20 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
+import org.ehais.enums.EActivityParticipationModuleEnum;
 import org.ehais.epublic.mapper.EHaiArticleCatMapper;
+import org.ehais.epublic.mapper.EHaiUsersMapper;
 import org.ehais.epublic.model.EHaiArticleCat;
 import org.ehais.epublic.model.EHaiArticleCatExample;
-import org.ehais.model.BootStrapModel;
+import org.ehais.epublic.model.EHaiUsers;
+import org.ehais.epublic.model.EHaiUsersExample;
 import org.ehais.service.impl.CommonServiceImpl;
 import org.ehais.shop.mapper.HaiActivityMapper;
+import org.ehais.shop.mapper.HaiActivityParticipationMapper;
 import org.ehais.shop.model.HaiActivity;
 import org.ehais.shop.model.HaiActivityExample;
+import org.ehais.shop.model.HaiActivityParticipation;
+import org.ehais.shop.model.HaiActivityParticipationExample;
 import org.ehais.shop.service.HaiActivityService;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
@@ -35,6 +42,12 @@ public class HaiActivityServiceImpl  extends CommonServiceImpl implements HaiAct
 
 	@Autowired
 	private EHaiArticleCatMapper haiArticleCatMapper;
+	
+	@Autowired
+	private HaiActivityParticipationMapper haiActivityParticipationMapper;
+	
+	@Autowired
+	private EHaiUsersMapper eHaiUsersMapper;
 	
 	public ReturnObject<HaiActivity> activity_list(HttpServletRequest request,String module) throws Exception{
 		
@@ -572,6 +585,51 @@ bean.setIsValid(model.getIsValid());
 		int code = haiArticleCatMapper.deleteByExample(example);
 		rm.setCode(code);
 		rm.setMsg("删除成功");
+		return rm;
+	}
+
+	@Override
+	public ReturnObject<HaiActivityParticipation> activity_sign_list_json(HttpServletRequest request, String module,
+			EConditionObject condition, Integer activityId) throws Exception {
+		// TODO Auto-generated method stub
+		ReturnObject<HaiActivityParticipation> rm = new ReturnObject<HaiActivityParticipation>();
+		rm.setCode(0);
+		if(condition.getStore_id() == null)condition.setStore_id((Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID));
+		Map<String,Object> map = new HashMap<String,Object>();
+		
+		try{
+			
+			//获取列表的值
+			HaiActivityParticipationExample exp = new HaiActivityParticipationExample();
+			exp.createCriteria()
+			.andActivityIdEqualTo(activityId)
+			.andModuleEqualTo(EActivityParticipationModuleEnum.SIGN);
+			exp.setLimitStart(condition.getStart());
+			exp.setLimitEnd(condition.getRows());
+			exp.setOrderByClause("participation_id desc");
+			
+			List<HaiActivityParticipation> listAP = haiActivityParticipationMapper.selectByExample(exp);
+			rm.setRows(listAP);
+			
+			List<Long> userIds = new ArrayList<Long>();
+			for (HaiActivityParticipation ap : listAP) {
+				userIds.add(ap.getUserId());
+			}
+			if(userIds.size() > 0){
+				EHaiUsersExample userExp = new EHaiUsersExample();
+				userExp.createCriteria().andUserIdIn(userIds);
+				List<EHaiUsers> userList = eHaiUsersMapper.selectByExample(userExp);
+				map.put("userList", userList);
+			}
+			
+			
+			rm.setMap(map);
+			
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
 		return rm;
 	}
 

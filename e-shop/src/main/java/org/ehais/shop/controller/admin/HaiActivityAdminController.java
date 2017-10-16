@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
@@ -28,6 +29,8 @@ import org.ehais.epublic.validator.EUniqueValidator;
 import org.ehais.epublic.validator.EUpdateValidator;
 import org.ehais.protocol.PermissionProtocol;
 import org.ehais.shop.model.HaiActivity;
+import org.ehais.shop.model.HaiActivityExample;
+import org.ehais.shop.model.HaiActivityParticipation;
 import org.ehais.shop.service.HaiActivityService;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
@@ -485,6 +488,56 @@ public class  HaiActivityAdminController extends CommonController {
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("activity", e);
+		}
+	}
+	
+	
+	
+	@EPermissionMethod(name="编辑",intro="签到统计",value="haiActivitySignStatistics",type=PermissionProtocol.BUTTON)
+	@RequestMapping(value="/haiActivitySignStatistics",method=RequestMethod.GET)
+	public String haiActivitySignStatistics(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "activityId", required = true) Integer activityId,
+			@RequestParam(value = "module", required = true) String module
+			) {
+		modelMap.addAttribute("module", module);
+		modelMap.addAttribute("activityId", activityId);
+		try{
+			Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
+			if(wp == null){
+//				return "redirect:wpPublicDetail";
+				return this.ReturnJump(modelMap, 1, "请先设置微信公众号信息", "wpPublicDetail");
+			}
+			
+			ReturnObject<HaiActivity> rm = haiActivityService.activity_info(request,module,activityId);
+			modelMap.addAttribute("rm", rm);
+			
+			return "/"+this.getStoreTheme(request)+"/activity/sign_statistics";
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("activity", e);
+			return this.errorJump(modelMap, e.getMessage());
+		}
+		
+	}
+	
+	
+	@ResponseBody
+	@EPermissionMethod(intro="返回活动会议管理数据",value="haiActivityListJson",type=PermissionProtocol.JSON)
+	@RequestMapping(value="/haiActivitySignStatisticsJson",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
+	public String haiActivitySignStatisticsJson(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@ModelAttribute EConditionObject condition,
+			@RequestParam(value = "activityId", required = true) Integer activityId,
+			@RequestParam(value = "module", required = true) String module) {
+		try{
+			ReturnObject<HaiActivityParticipation> rm = haiActivityService.activity_sign_list_json(request,module, condition,activityId);
+			return this.writeJson(rm);
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("activity", e);
+			return this.errorJSON(e);
 		}
 	}
 	

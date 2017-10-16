@@ -1,0 +1,13 @@
+@import url("common.css");
+.was {
+  font-size: 0.3rem;
+  text-align: center;
+  padding-top: 0.9rem;
+}
+.was i {
+  width: 100%;
+  display: block;
+  font-size: 1rem;
+  color: #CA1818;
+  padding-bottom: 0.5rem;
+}

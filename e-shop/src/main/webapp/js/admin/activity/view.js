@@ -127,8 +127,9 @@ $(function(){
             	var a = "<a href ='haiActivityEditDetail?activityId="+value+"&module="+module+"' class='glyphicon glyphicon-pencil'></a>";
             	var b = "<a href ='javascript:;' onclick='haiActivityDelete("+value+");' class='glyphicon glyphicon-trash' ></a>";
             	var c = "<a href ='haiActivityQRcode?activityId="+value+"&module="+module+"' class='glyphicon glyphicon-qrcode' alt='二维码'></a>";
-            	var d = "<a href ='haiActivityReport?activityId="+value+"&module="+module+"' class='glyphicon glyphicon-list-alt' alt='报表'></a>";
-            	return c+d+a+b;
+            	var d = "<a href ='haiActivitySignStatistics?activityId="+value+"&module="+module+"' class='glyphicon glyphicon-flag' alt='签到统计'></a>";
+            	var e = "";//"<a href ='haiActivityApplyStatistics?activityId="+value+"&module="+module+"' class='glyphicon glyphicon-bullhorn' alt='报名统计'></a>";
+            	return c+d+e+a+b;
             },sortable:true
         }
         

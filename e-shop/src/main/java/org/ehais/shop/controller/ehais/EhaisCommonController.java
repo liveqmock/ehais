@@ -208,6 +208,22 @@ public class EhaisCommonController extends CommonController{
 		return "redirect:"+WeiXinUtil.authorize_snsapi(appid, "snsapi_base", REDIRECT_URI);
 	}
 	
+	/**
+	 * 
+	 * @param request
+	 * @param appid
+	 * @param path
+	 * @param scope  snsapi_base  snsapi_userinfo 
+	 * @return
+	 * @throws Exception
+	 */
+	protected String redirect_wx_authorize(HttpServletRequest request ,String appid , String path ,String scope) throws Exception {
+		String REDIRECT_URI = request.getScheme()+"://"+request.getServerName() + path;
+		REDIRECT_URI = java.net.URLEncoder.encode(REDIRECT_URI, "utf-8");
+		return "redirect:"+WeiXinUtil.authorize_snsapi(appid, scope, REDIRECT_URI);
+	}
+	
+	
 	
 	protected void article_qrcode(HttpServletRequest request,
 			HttpServletResponse response,

@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.ehais.epublic.model.EHaiArticleCat;
 import org.ehais.service.CommonService;
 import org.ehais.shop.model.HaiActivity;
+import org.ehais.shop.model.HaiActivityParticipation;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
 
@@ -35,6 +36,8 @@ public interface HaiActivityService extends CommonService{
 	
 
 
+	public ReturnObject<HaiActivityParticipation> activity_sign_list_json(HttpServletRequest request,String module,EConditionObject condition,Integer activityId) throws Exception;
+	
 	
 
 }
