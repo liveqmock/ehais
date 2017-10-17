@@ -127,6 +127,7 @@ public class WeiXinUtil {
 	 * @throws Exception
 	 */
 	public static AccessToken getAccessToken(int wxid,String weixin_appid,String weixin_appsecret) throws Exception {
+		log.info("getAccessToken==wxid:"+wxid+";weixin_appid:"+weixin_appid+";weixin_appsecret:"+weixin_appsecret);
 		AccessToken accessToken = (AccessToken)AccessTokenCacheManager.getInstance().getAccessToken(wxid);
 		if(accessToken!=null){
 			log.info("oscache--accesstoken---time:"+System.currentTimeMillis()+"---"+accessToken.getExpire_time());
@@ -145,6 +146,14 @@ public class WeiXinUtil {
 		JSONObject jsonObject = JSONObject.fromObject(request);
 		log.info("返回AccessToken的信息:"+jsonObject.toString());
 		if (null != jsonObject) {
+			if(jsonObject.has("errcode")){//如果报错，强制重新获取一次
+				log.info("retry access token");
+				requestUrl = WXConstants.access_token_url
+						.replace("APPID", weixin_appid)
+						.replace("APPSECRET", weixin_appsecret);
+				request = EHttpClientUtil.methodGet(requestUrl);
+				jsonObject = JSONObject.fromObject(request);				
+			}
 			accessToken = new AccessToken();
 			accessToken.setId(wxid);
 			accessToken.setAccess_token(jsonObject.getString("access_token"));
@@ -168,6 +177,13 @@ public class WeiXinUtil {
 		JSONObject jsonObject = JSONObject.fromObject(request);
 		log.info("强制返回AccessToken的信息:"+jsonObject.toString());
 		if (null != jsonObject) {
+			if(jsonObject.has("errcode")){//如果报错，强制重新获取一次
+				requestUrl = WXConstants.access_token_url
+						.replace("APPID", weixin_appid)
+						.replace("APPSECRET", weixin_appsecret);
+				request = EHttpClientUtil.methodGet(requestUrl);
+				jsonObject = JSONObject.fromObject(request);				
+			}
 			accessToken = new AccessToken();
 			accessToken.setId(wxid);
 			accessToken.setAccess_token(jsonObject.getString("access_token"));
@@ -187,8 +203,8 @@ public class WeiXinUtil {
 	 * @param appsecret 密钥
 	 * @return
 	 */
-	public static JsApiTicket getJsApiTicket(int id,String access_token) throws Exception {
-
+	public static JsApiTicket getJsApiTicket(int id,String access_token,String weixin_appid,String weixin_appsecret) throws Exception {
+		log.info("getJsApiTicket==id:"+id+";access_token:"+access_token+";weixin_appid:"+weixin_appid+";weixin_appsecret:"+weixin_appsecret);
 		JsApiTicket jsapiticket = (JsApiTicket)JsApiTicketCacheManager.getInstance().getJsApiTicket(id);
 		if(jsapiticket!=null){
 			log.info("oscache--jsapiticket---time:"+System.currentTimeMillis()+"---"+jsapiticket.getExpire_time());
@@ -208,6 +224,13 @@ public class WeiXinUtil {
 		System.out.println("request JsApiTicket:"+request);
 		// 如果请求成功
 		if (null != jsonObject) {
+			if(jsonObject.has("errcode")){//如果报错，强制重新获取一次
+				log.info("retry api ticket");
+				AccessToken accessToken = getAccessToken(id, weixin_appid, weixin_appsecret, true);
+				requestUrl = WXConstants.get_jsapi_url.replace("ACCESS_TOKEN", accessToken.getAccess_token());
+				request = EHttpClientUtil.methodGet(requestUrl);
+				jsonObject = JSONObject.fromObject(request);
+			}
 			jsapiticket = new JsApiTicket();
 			jsapiticket.setId(id);
 			jsapiticket.setTicket(jsonObject.getString("ticket"));
@@ -228,7 +251,7 @@ public class WeiXinUtil {
 		WeiXinSignature signature = new WeiXinSignature();
 		
 		AccessToken token = getAccessToken(wxid, weixin_appid, weixin_appsecret);
-		JsApiTicket jsapiticket = getJsApiTicket(wxid, token.getAccess_token());
+		JsApiTicket jsapiticket = getJsApiTicket(wxid, token.getAccess_token(),weixin_appid,weixin_appsecret);
 				
 		signature.setAppId(weixin_appid);
 		signature.setTimestamp(String.valueOf(System.currentTimeMillis()/1000));

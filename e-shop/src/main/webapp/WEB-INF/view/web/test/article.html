@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+
+</style>
+</head>
+<body>
+<h3>${cat.catName}</h3>
+<ul>
+<#list list as a>
+<li>
+
+<a href="article_detail_${a.articleId}" target="_blank">${a.title!''}</a>
+<i>${a.articleThumb!''}</i>
+</li>
+</#list>
+</ul>
+</body>
+</html>

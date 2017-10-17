@@ -8,8 +8,8 @@ import org.ehais.util.EHttpClientUtil;
 import org.ehais.util.SignUtil;
 
 public class ArticleCommonReptile {
-	private static String web_url = "http://mg.ehais.com";
-//	private static String web_url = "http://127.0.0.1";
+//	private static String web_url = "http://mg.ehais.com";
+	private static String web_url = "http://127.0.0.1";
 	public static String appkey = "Ehais";
 	public static String secret = "EhaisSecret";
 	

@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.ehais.controller.CommonController;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
+import org.ehais.epublic.service.EStoreService;
 import org.ehais.epublic.service.EWPPublicService;
 import org.ehais.weixin.model.AccessToken;
 import org.ehais.weixin.model.JsApiTicket;
@@ -22,6 +23,9 @@ public class WeiXinSDKApiController extends CommonController{
 	
 	@Autowired
 	protected EWPPublicService eWPPublicService;
+	@Autowired
+	protected EStoreService eStoreService;
+	
 	
 	/**
 	 * 微信认证登录跳转
@@ -160,7 +164,10 @@ public class WeiXinSDKApiController extends CommonController{
 			@RequestParam(value = "access_token", required = true) String access_token
 			){
 		try{
-			JsApiTicket jsApiTicket = WeiXinUtil.getJsApiTicket(store_id, access_token);
+			
+			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
+			
+			JsApiTicket jsApiTicket = WeiXinUtil.getJsApiTicket(store_id, access_token,wp.getAppid(),wp.getSecret());
 			return this.writeJsonObject(jsApiTicket);
 		}catch(Exception e){
 			e.printStackTrace();
