@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.ehais.controller.CommonController;
 import org.ehais.epublic.mapper.EHaiArticleCatMapper;
 import org.ehais.epublic.mapper.EHaiArticleMapper;
@@ -86,6 +87,9 @@ public class TestWebController extends CommonController{
 		
 		try{
 			EHaiArticle model = eHaiArticleMapper.selectByPrimaryKey(articleId);
+			if(StringUtils.isNotBlank(model.getArticleThumb())){
+				model.setArticleThumb(model.getArticleThumb().replace("http://lib.gzarts.edu.cn/images/newBookCover/", request.getScheme()+"://"+request.getServerName()+"/eUploads/"));
+			}
 			modelMap.addAttribute("model", model);
 			
 			EHaiArticleCat cat = eHaiArticleCatMapper.selectByPrimaryKey(model.getCatId());

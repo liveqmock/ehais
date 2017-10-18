@@ -129,8 +129,10 @@ public class WeiXinUtil {
 	public static AccessToken getAccessToken(int wxid,String weixin_appid,String weixin_appsecret) throws Exception {
 		log.info("getAccessToken==wxid:"+wxid+";weixin_appid:"+weixin_appid+";weixin_appsecret:"+weixin_appsecret);
 		AccessToken accessToken = (AccessToken)AccessTokenCacheManager.getInstance().getAccessToken(wxid);
+//		accessToken.setExpire_time(System.currentTimeMillis());
+//		AccessTokenCacheManager.getInstance().putAccessToken(accessToken);
 		if(accessToken!=null){
-			log.info("oscache--accesstoken---time:"+System.currentTimeMillis()+"---"+accessToken.getExpire_time());
+			log.info("111==oscache--accesstoken---time:"+System.currentTimeMillis()+"---"+accessToken.getExpire_time()+"======"+(accessToken.getExpire_time() - System.currentTimeMillis()));
 			if(System.currentTimeMillis() < accessToken.getExpire_time()){
 				log.info("oscache缓存accesstoken:"+accessToken.getAccess_token());
 				return accessToken;
@@ -206,8 +208,10 @@ public class WeiXinUtil {
 	public static JsApiTicket getJsApiTicket(int id,String access_token,String weixin_appid,String weixin_appsecret) throws Exception {
 		log.info("getJsApiTicket==id:"+id+";access_token:"+access_token+";weixin_appid:"+weixin_appid+";weixin_appsecret:"+weixin_appsecret);
 		JsApiTicket jsapiticket = (JsApiTicket)JsApiTicketCacheManager.getInstance().getJsApiTicket(id);
+//		jsapiticket.setExpire_time(System.currentTimeMillis());
+//		JsApiTicketCacheManager.getInstance().putJsApiTicket(jsapiticket);
 		if(jsapiticket!=null){
-			log.info("oscache--jsapiticket---time:"+System.currentTimeMillis()+"---"+jsapiticket.getExpire_time());
+			log.info("111111111 oscache--jsapiticket---time:"+System.currentTimeMillis()+"---"+jsapiticket.getExpire_time()+"=========="+(jsapiticket.getExpire_time() - System.currentTimeMillis() ));
 			if(System.currentTimeMillis() < jsapiticket.getExpire_time()){
 				log.info("oscache缓存jsapiticket:"+jsapiticket.getTicket());
 				return jsapiticket;
@@ -224,7 +228,7 @@ public class WeiXinUtil {
 		System.out.println("request JsApiTicket:"+request);
 		// 如果请求成功
 		if (null != jsonObject) {
-			if(jsonObject.has("errcode")){//如果报错，强制重新获取一次
+			if(jsonObject.has("errcode") && jsonObject.getInt("errcode") > 0){//如果报错，强制重新获取一次
 				log.info("retry api ticket");
 				AccessToken accessToken = getAccessToken(id, weixin_appid, weixin_appsecret, true);
 				requestUrl = WXConstants.get_jsapi_url.replace("ACCESS_TOKEN", accessToken.getAccess_token());

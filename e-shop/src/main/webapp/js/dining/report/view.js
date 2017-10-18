@@ -84,10 +84,14 @@ $(function(){
 			    }
 			},{
 			    field: 'weixinAmount',
-			    title: '微信收益'
+			    title: '微信收益',formatter : function(value,rows,index){
+			    	return (value / 100).toFixed(2);
+			    }
 			},{
 			    field: 'cashAmount',
-			    title: '现金收益'
+			    title: '现金收益',formatter : function(value,rows,index){
+			    	return (value / 100).toFixed(2);
+			    }
 			}
         
         ],responseHandler : function (res){
