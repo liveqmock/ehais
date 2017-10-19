@@ -193,7 +193,10 @@ public class DiningWebController extends EhaisCommonController{
 		
 		//读取菜品列表信息
 		HaiGoodsExample gExp = new HaiGoodsExample();
-		gExp.createCriteria().andStoreIdEqualTo(store_id).andIsDeleteEqualTo(false).andIsOnSaleEqualTo(true);
+		gExp.createCriteria()
+		.andStoreIdEqualTo(store_id)
+		.andIsDeleteEqualTo(false)
+		.andIsOnSaleEqualTo(true);
 		gExp.setOrderByClause("sort_order asc");
 		List<HaiGoods> listGoods = haiGoodsMapper.selectByExample(gExp);
 		modelMap.addAttribute("listGoods", listGoods);

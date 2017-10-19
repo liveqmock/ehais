@@ -46,9 +46,8 @@ public class GzartsReptile extends ArticleCommonReptile{
 	
 	@Test
 	public void test_list(){
-//		String url = "http://lib.gzarts.edu.cn/web/guest/dzfw?p_p_id=dzfw_show&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&p_p_col_id=column-1&p_p_col_pos=1&p_p_col_count=3&_dzfw_show_struts_action=%2Fext%2Fgnhd_show%2Fxstg&_dzfw_show_method=list&_dzfw_show_id=1";
-		String url = "http://lib.gzarts.edu.cn/web/guest";
-		cat_name = "首页通知滚动";
+		String url = "http://lib.gzarts.edu.cn/web/guest/xwgg?p_p_id=xwgg_show&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&p_p_col_id=column-1&p_p_col_pos=1&p_p_col_count=3&_xwgg_show_struts_action=%2Fext%2Fxwgg_show%2Fview&_xwgg_show_typeid=2";
+		cat_name = "馆内动态";
 		this.list(url);
 		
 	}
@@ -59,8 +58,8 @@ public class GzartsReptile extends ArticleCommonReptile{
 			String content = EHtmlUnit.getPage(url);
 //			System.out.println(content);
 			Document doc = Jsoup.parse(content,"utf-8");
-//			Elements dbcol = doc.getElementsByClass("test_list");
-			Elements dbcol = doc.getElementsByTag("marquee");
+			Elements dbcol = doc.getElementsByClass("test_list");
+//			Elements dbcol = doc.getElementsByTag("marquee");
 			Elements as = dbcol.first().getElementsByTag("a");
 			
 			for (Element e : as) {
@@ -147,8 +146,45 @@ public class GzartsReptile extends ArticleCommonReptile{
 			Document doc = Jsoup.parse(content,"utf-8");
 			
 			Elements test_box = doc.getElementsByClass("test_box");
+			String description = test_box.html();
 			
-			article_save(store_id, cat_name, title,"","", "", test_box.html(),articleSource, "");
+			Elements input_img = test_box.first().getElementsByTag("input");
+			for (Element e : input_img) {
+				if(e.attr("type").equals("image")){
+					String src = e.attr("src");
+					if(src.indexOf("http")<0){
+						src = website + src;
+					}
+					
+					String filename = src.substring(src.lastIndexOf("/")+1, src.length());
+		        	System.out.println(filename);
+		        	EHttpClientUtil.downloadFile(src, "e:/gzarts/2/"+filename);
+		        	src = e.attr("src");
+		        	description = description.replaceAll(src, "/upload/gzarts/"+filename);
+					
+				}
+			}
+			
+			
+			
+			Elements img = test_box.first().getElementsByTag("img");
+			for (Element e : img) {
+				String src = e.attr("src");
+				if(src.indexOf("http")<0){
+					src = website + src;
+				}
+				
+				String filename = src.substring(src.lastIndexOf("/")+1, src.length());
+	        	System.out.println(filename);
+	        	EHttpClientUtil.downloadFile(src, "e:/gzarts/2/"+filename);
+//	        	src = e.attr("src");
+//	        	description = description.replaceAll(src, "/upload/gzarts/"+filename);
+				
+			}
+			
+			
+			
+			article_save(store_id, cat_name, title,"","", "", description ,articleSource, "");
 			
 			
 		}catch(Exception e){
@@ -159,7 +195,7 @@ public class GzartsReptile extends ArticleCommonReptile{
 	
 	@Test
 	public void test_img_list(){
-		String url = "http://lib.gzarts.edu.cn/web/guest/dzfw;jsessionid=50787AD038A392B764BE5A18EE33CABD?p_p_id=dzfw_show&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&p_p_col_id=column-1&p_p_col_pos=1&p_p_col_count=3&_dzfw_show_struts_action=%2Fext%2Fgnhd_show%2Fxstg&_dzfw_show_page=2";
+		String url = "http://lib.gzarts.edu.cn/web/guest/dzfw?p_p_id=dzfw_show&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&p_p_col_id=column-1&p_p_col_pos=1&p_p_col_count=3&_dzfw_show_struts_action=%2Fext%2Fgnhd_show%2Fxstg&_dzfw_show_method=list&_dzfw_show_id=1";
 		cat_name = "新书报道";
 		this.img_list(url);
 		
@@ -220,10 +256,44 @@ public class GzartsReptile extends ArticleCommonReptile{
 			System.out.println(website+src);
 			
 			
-			Elements test_box = doc.getElementsByClass("bookList");
-			System.out.println(test_box);
+			Elements input_img = bottBk.first().getElementsByTag("input");
+			for (Element e : input_img) {
+				if(e.attr("type").equals("image")){
+					String srcx = e.attr("src");
+					if(srcx.indexOf("http")<0){
+						srcx = website + srcx;
+					}
+					
+					String filename = srcx.substring(srcx.lastIndexOf("/")+1, srcx.length());
+		        	System.out.println(filename);
+		        	EHttpClientUtil.downloadFile(srcx, "E:/gzarts/images/newBookCover/"+filename);
+		        	srcx = e.attr("src");
+					
+				}
+			}
 			
-			article_save(store_id, cat_name, title,src,"", "", test_box.html(),articleSource, "");
+			
+			
+			Elements imgx = bottBk.first().getElementsByTag("img");
+			for (Element e : imgx) {
+				String srcx = e.attr("src");
+				if(srcx.indexOf("http")<0){
+					srcx = website + srcx;
+				}
+				
+				String filename = srcx.substring(srcx.lastIndexOf("/")+1, srcx.length());
+	        	System.out.println(filename);
+	        	EHttpClientUtil.downloadFile(srcx, "E:/gzarts/images/newBookCover/"+filename);
+//	        	src = e.attr("src");
+//	        	description = description.replaceAll(src, "/upload/gzarts/"+filename);
+				
+			}
+			
+			
+//			Elements test_box = doc.getElementsByClass("bookList");
+//			System.out.println(test_box);
+			
+			article_save(store_id, cat_name, title,src,"", "", bottBk.html(),articleSource, "");
 			
 			
 		}catch(Exception e){

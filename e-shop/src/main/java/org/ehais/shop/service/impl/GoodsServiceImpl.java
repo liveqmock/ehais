@@ -481,18 +481,18 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		bean.setGoodsThumb(model.getGoodsThumb());
 		bean.setGoodsImg(model.getGoodsImg());
 		bean.setOriginalImg(model.getOriginalImg());
-		bean.setIsReal(model.getIsReal());
-		bean.setIsOnSale(model.getIsOnSale());
-		bean.setIsAloneSale(model.getIsAloneSale());
-		bean.setIsShipping(model.getIsShipping());
+		bean.setIsReal(model.getIsReal()==null?Byte.valueOf("0"):Byte.valueOf("1"));
+		bean.setIsOnSale(model.getIsOnSale()==null?false:true);
+		bean.setIsAloneSale(model.getIsAloneSale()==null?false:true);
+		bean.setIsShipping(model.getIsShipping()==null?false:true);
 		bean.setIntegral(model.getIntegral());
 		bean.setSortOrder(model.getSortOrder());
-		bean.setIsDelete(model.getIsDelete());
-		bean.setIsBest(model.getIsBest());
-		bean.setIsNew(model.getIsNew());
-		bean.setIsHot(model.getIsHot());
-		bean.setIsPromote(model.getIsPromote());
-		bean.setIsSpecial(model.getIsSpecial());
+		bean.setIsDelete(model.getIsDelete()==null?false:true);
+		bean.setIsBest(model.getIsBest()==null?false:true);
+		bean.setIsNew(model.getIsNew()==null?false:true);
+		bean.setIsHot(model.getIsHot()==null?false:true);
+		bean.setIsPromote(model.getIsPromote()==null?false:true);
+		bean.setIsSpecial(model.getIsSpecial()==null?false:true);
 		bean.setBonusTypeId(model.getBonusTypeId());
 		bean.setGoodsType(model.getGoodsType());
 		bean.setGiveIntegral(model.getGiveIntegral());
@@ -502,16 +502,16 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		bean.setUpdateDate(model.getUpdateDate());
 		
 		
-		if(model.getIsAloneSale() == null)model.setIsAloneSale(false);
-		if(model.getIsBest() == null)model.setIsBest(false);
-		if(model.getIsDelete() == null)model.setIsDelete(false);
-		if(model.getIsHot() == null)model.setIsHot(false);
-		if(model.getIsNew() == null)model.setIsNew(false);
-		if(model.getIsOnSale() == null)model.setIsOnSale(false);
-		if(model.getIsPromote() == null)model.setIsPromote(false);
-		if(model.getIsShipping() == null)model.setIsShipping(false);
-		if(model.getIsSpecial() == null)model.setIsSpecial(false);
-		if(model.getIsReal() == null)model.setIsReal(Byte.valueOf("0"));
+//		if(model.getIsAloneSale() == null)model.setIsAloneSale(false);
+//		if(model.getIsBest() == null)model.setIsBest(false);
+//		if(model.getIsDelete() == null)model.setIsDelete(false);
+//		if(model.getIsHot() == null)model.setIsHot(false);
+//		if(model.getIsNew() == null)model.setIsNew(false);
+//		if(model.getIsOnSale() == null)model.setIsOnSale(false);
+//		if(model.getIsPromote() == null)model.setIsPromote(false);
+//		if(model.getIsShipping() == null)model.setIsShipping(false);
+//		if(model.getIsSpecial() == null)model.setIsSpecial(false);
+//		if(model.getIsReal() == null)model.setIsReal(Byte.valueOf("0"));
 		
 		String costPriceFloat = request.getParameter("costPriceFloat");
 		String shopPriceFloat = request.getParameter("shopPriceFloat");

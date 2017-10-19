@@ -35,7 +35,7 @@ function submitUnion(){
 		$("#mobile").focus(); 
 		return ;
 	}
-	if(!(/^1[3|4|5|8][0-9]\d{4,8}$/.test($.trim($("#mobile").val())))){ 
+	if(!(/^1[3|4|5|7|8][0-9]\d{4,8}$/.test($.trim($("#mobile").val())))){ 
         elay.toast({content: '手机号不正确',skin: 'msg',time: 3 });
         $("#mobile").focus(); 
         return false; 
