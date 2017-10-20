@@ -358,6 +358,7 @@ function diningSubmitOrder(tPay){
 			if(result.code != 1)return ;
 			$("#localCheckOut").removeClass("active");
 			clearCart();//下单成功，清空购物车
+			$("#postscript").val("");
 			if(tPay == "weixin"){
 				
 				WeiXinWCPay = result.map.WeiXinWCPay;
