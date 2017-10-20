@@ -554,5 +554,37 @@ public class EhaisCommonController extends CommonController{
 		
 	}
 	
+	/**
+	 * 返回前端的模板
+	 * @param store_id
+	 * @param defaultTheme
+	 * @return
+	 */
+	protected String webThemes(Integer store_id,String defaultTheme){
+		try{
+			EHaiStore store = eStoreService.getEStore(store_id);
+			if(store == null)return defaultTheme;
+			return StringUtils.isBlank(store.getWebTheme())?defaultTheme:store.getWebTheme();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return defaultTheme;
+		
+	}
+	
+	protected String webThemes(EHaiStore store,String defaultTheme){
+		try{
+			if(store == null)return defaultTheme;
+			return StringUtils.isBlank(store.getWebTheme())?defaultTheme:store.getWebTheme();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return defaultTheme;
+		
+	}
+	
+	
 
 }

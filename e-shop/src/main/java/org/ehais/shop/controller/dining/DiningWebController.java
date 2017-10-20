@@ -142,7 +142,7 @@ public class DiningWebController extends EhaisCommonController{
 				this.dining(modelMap, request, response,wp,store,store_id, sid);
 			}
 			
-			return "/"+store.getTheme()+"/diningStore";
+			return "/"+this.webThemes(store, store.getTheme())+"/diningStore";
 			
 		}catch(Exception e){
 			e.printStackTrace();
