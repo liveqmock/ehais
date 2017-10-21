@@ -73,6 +73,7 @@ public class CategoryServiceImpl  extends EShopCommonServiceImpl implements Cate
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
 		example.setLimitStart(condition.getStart());
 		example.setLimitEnd(condition.getRows());
+		example.setOrderByClause("sort_order asc");
 		List<HaiCategory> list = haiCategoryMapper.selectByExample(example);
 		long total = haiCategoryMapper.countByExample(example);
 		rm.setCode(1);
@@ -125,11 +126,11 @@ public class CategoryServiceImpl  extends EShopCommonServiceImpl implements Cate
 		HaiCategoryWithBLOBs model = haiCategoryMapper.selectByPrimaryKey(catId);
 //		rm.setBootStrapList(this.formatBootStrapList(request,model));
 		
-		Map<String,Object> option = new HashMap<String,Object>();
-		option.put("brand", brandList(request));
-		option.put("category", categoryTreeList(request));
+//		Map<String,Object> option = new HashMap<String,Object>();
+//		option.put("brand", brandList(request));
+//		option.put("category", categoryTreeList(request));
 		
-		rm.setBootStrapList(this.BootStrapXml(request, "category.xml", model, "hai_category", option));
+//		rm.setBootStrapList(this.BootStrapXml(request, "category.xml", model, "hai_category", option));
 		
 		rm.setCode(1);
 		rm.setModel(model);

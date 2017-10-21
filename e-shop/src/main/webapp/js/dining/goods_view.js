@@ -1,9 +1,12 @@
 var cat_id = 0;
 var bsTable ;
 var keyword = "";
-
+var categoryModal ; 
 
 $(function(){
+	
+	categoryModal = $("#categoryModal").modal({ keyboard: false , show : false });
+	
 	getTree();
 	
 	
@@ -158,26 +161,42 @@ function ehaisGoodsDelete(goodsId){
 }
 
 function addCate(){
-	layer.prompt({title: '请输入分类名称', formType: 0}, function(text, index){
-	    console.log(text);
-		if(text == null || text == ""){
-			layer.msg("请输入分类名称");return ;
-		}
-		$.ajax({
-			url : "ehaisCategoryAddSubmit",
-			data  : {catName : text},
-			success : function(result){
-				if(result.code != 1){
-					layer.msg(result.msg);
-					return ;
-				}
-				layer.close(index);
-				layer.msg(result.msg);
-				getTree();
-			}
-		});
-	});
+	
+	$("#categoryFormModal")[0].reset();
+	
+	categoryModal.modal("show");
+	
+	$("#categoryFormSubmit").unbind();
+	$("#categoryFormSubmit").click(function(){addCateSubmit();});
+	
 }
+
+function addCateSubmit(){
+	
+	if($("#catName").val().length == 0){
+		layer.msg("请输入分类名称");return ;
+	}
+
+	
+	$.ajax({
+		url : "ehaisCategoryAddSubmit",
+		data  : $("#categoryFormModal").serialize(),
+		success : function(result){
+			if(result.code != 1){
+				layer.msg(result.msg);
+				return ;
+			}
+			
+			layer.msg(result.msg);
+			getTree();
+			categoryModal.modal("hide");
+		}
+	});
+	
+	
+}
+
+
 function editCate(){
 	var node = $('#tree').treeview('getSelected');	
 	if(node == null || node.length == 0 || node[0].nodeId == 0){
@@ -185,27 +204,57 @@ function editCate(){
 		return ;
 	}
 	var catId = node[0].id;
-	layer.prompt({title: '请输入分类名称', formType: 0 ,value : node[0].text}, function(text, index){
-	    
-		if(text == null || text == ""){
-			layer.msg("请输入分类名称");return ;
-		}
-		$.ajax({
-			url : "ehaisCategoryEditSubmit",
-			data  : {catName : text,catId : catId},
-			success : function(result){
-				if(result.code != 1){
-					layer.msg(result.msg);
-					return ;
-				}
-				layer.close(index);
+	
+	$.ajax({
+		url : "ehaisCategoryEditDetail",
+		data  : {catId : catId},
+		success : function(result){
+			if(result.code != 1){
 				layer.msg(result.msg);
-				getTree();
+				return ;
 			}
-		});
+			
+			$("#categoryFormModal")[0].reset();
+			
+			categoryModal.modal("show");
+			$.each(result.model,function(k,v){
+				$("#"+k).val(v);
+			})
+			
+			$("#categoryFormSubmit").unbind();
+			$("#categoryFormSubmit").click(function(){editCateSubmit();});
+			
+			
+		}
 	});
 	
+	
 }
+
+function editCateSubmit(){
+	
+	if($("#catName").val().length == 0){
+		layer.msg("请输入分类名称");return ;
+	}
+	
+	
+	$.ajax({
+		url : "ehaisCategoryEditSubmit",
+		data  : $("#categoryFormModal").serialize(),
+		success : function(result){
+			if(result.code != 1){
+				layer.msg(result.msg);
+				return ;
+			}
+			layer.msg(result.msg);
+			getTree();
+			categoryModal.modal("hide");
+		}
+	});
+}
+
+
+
 function deleteCate(){
 	var node = $('#tree').treeview('getSelected');	
 	if(node == null || node.length == 0 || node[0].nodeId == 0){

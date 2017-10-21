@@ -248,6 +248,26 @@ public class  GoodsAdminController extends EhaisCommonController {
 	
 	
 	@ResponseBody
+	@EPermissionMethod(name="编辑",intro="编辑FunctionName",value="ehaisCategoryEditDetail",type=PermissionProtocol.BUTTON)
+	@RequestMapping(value="/manage/ehaisCategoryEditDetail",method=RequestMethod.POST)
+	public String ehaisCategoryEditDetail(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "catId", required = true) Integer catId
+			) {
+		try{
+			ReturnObject<HaiCategoryWithBLOBs> rm = ehaisCategoryService.category_update(request, catId);
+			return this.writeJson(rm);
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("tempSublate", e);
+			return this.errorJSON(e);
+		}
+		
+	}
+	
+	
+	
+	@ResponseBody
 	@EPermissionMethod(intro="编辑提交红酒信息",value="ehaisCategoryEditSubmit",type=PermissionProtocol.DATA)
 	@RequestMapping(value="/manage/ehaisCategoryEditSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String ehaisCategoryEditSubmit(ModelMap modelMap,

@@ -3,6 +3,7 @@ package org.ehais.shop.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 
 public class HaiActivity implements Serializable {
@@ -26,6 +27,7 @@ public class HaiActivity implements Serializable {
      *
      * @mbg.generated Sat Oct 14 23:31:29 CST 2017
      */
+    @NotBlank(message = "活动名称不能为空")
     private String activityName;
 
     /**
