@@ -49,6 +49,7 @@ footer *,
   line-height: 0.49rem;
   text-align: center;
   border-bottom: 0.01rem solid #F2F2F2;
+  overflow: hidden;
 }
 .w > div.menu .left ul li.active {
   background: #fff;
@@ -550,4 +551,15 @@ footer.active > div.sCart > i:nth-child(2) {
 .wco.active,
 .result.active {
   display: block;
+}
+.debug {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 20px;
+  background: #ddd;
+  z-index: 300;
+  font-size: 14px;
+  float: left;
 }

@@ -3,7 +3,8 @@ var jroll_menu_list;
 var jroll_myOrder;
 var cartArray = null;//购物车数据
 var path = window.location.search;//页面跟的参数地址
-
+var offsets = [];
+var targets = [];
 
 
 //添加菜品入购物车
@@ -23,7 +24,9 @@ function minusCartMenu(that){
 	if(badge==null || badge == "" )badge = 0;
 	badge --;
 	$(".badge_"+$(that).parent().parent().parent().attr("value")).html(badge);
-	if(parseInt(badge) == 0)$(that).removeClass("active").parent().removeClass("active");
+	if(parseInt(badge) == 0){
+		$(".badge_"+$(that).parent().parent().parent().attr("value")).parent().removeClass("active").children(".minusCart").removeClass("active");
+	}
 	badge = null;
 	//统计数量与金额，购物列表
 	cartTotalAmount();
@@ -128,17 +131,24 @@ $(function(){
 	});  
 	
 	$(".swiper-container").width($(window).width());
-	$(".swiper-container").height($(window).width() * 15 / 32);
+	if($(".swiper-wrapper li").length > 0){
+		$(".swiper-container").height($(window).width() * 15 / 32);
+	}else{
+		$(".swiper-container").height(0);
+	}
+	
 	$(".menu").height($(window).height() - ($(".swiper-container").height() / 2) - $(".tab").height() - $("footer").height() );
 	$("#menu_cate").height($(".menu").height());
 	$("#menu_list").height($(".menu").height());
 	$("#myOrderList").height($(".menu").height());
+	
 
 //	console.log($(".menu").height() +"+"+ $(window).height() +"+"+ $(".swiper-container").height() +"+"+ $(".tab").height() +"+"+ $("footer").height());
 //	console.log("window height:"+$(window).outerHeight(true));
 //	console.log("body height:"+$(document.body).outerHeight(true));
 	
 	wPos = $(document.body).outerHeight(true) - $(window).outerHeight(true);
+	
 //	console.log("wPos:"+wPos);
 	jroll_menu_cate = new JRoll("#menu_cate", {scrollBarY:false});
 	jroll_menu_list = new JRoll("#menu_list", {scrollBarY:false});
@@ -179,16 +189,20 @@ $(function(){
 		}
 	});
 	
+	getScrollTop();
+	
 	var num = $("img").length;
 	$("img").load(function() {
 		num--;
 		if (num > 0) {
 			return;
 		}
+		
 		jroll_menu_list.refresh(); 
 		getScrollTop();
+		
 	}).error(function(){
-		$(this).attr("src","http://ovug9f17p.bkt.clouddn.com/dining121.jpg");
+		$(this).attr("src","http://q.ehais.com/dining121.jpg");
 		jroll_menu_list.refresh();
 		getScrollTop();
 	});
@@ -311,8 +325,7 @@ $(function(){
 	$("#resultBtn").click(function(){$(".result").removeClass("active");});
 	
 });
-var offsets = [];
-var targets = [];
+
 function getScrollTop(){
 	offsets = [];
 	targets = [];
@@ -322,6 +335,8 @@ function getScrollTop(){
 		targets.push($(this).attr("cid"));
 		h = parseFloat(h) + parseFloat($(this)[0].scrollHeight);
 	});
+	
+	
 }
 
 

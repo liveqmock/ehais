@@ -1,13 +1,14 @@
 package org.ehais.epublic.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class OrderDiningStatistics implements Serializable{
 
 	private static final long serialVersionUID = 3315482082118917141L;
 	private Integer weixinAmount;
 	private Integer cashAmount;
-	private Integer payTime;
+	private Date payTime;
 	public Integer getWeixinAmount() {
 		return weixinAmount;
 	}
@@ -20,10 +21,10 @@ public class OrderDiningStatistics implements Serializable{
 	public void setCashAmount(Integer cashAmount) {
 		this.cashAmount = cashAmount;
 	}
-	public Integer getPayTime() {
+	public Date getPayTime() {
 		return payTime;
 	}
-	public void setPayTime(Integer payTime) {
+	public void setPayTime(Date payTime) {
 		this.payTime = payTime;
 	}
 	

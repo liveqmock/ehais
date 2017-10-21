@@ -33,12 +33,6 @@
 					<#list adList as ad>
 					<li class="swiper-slide"><img src="${ad.adPic!''}" /></li>
 					</#list>
-					<#else>
-					<li class="swiper-slide"><img src="http://ovug9f17p.bkt.clouddn.com/dining1.png" /></li>
-					<li class="swiper-slide"><img src="http://ovug9f17p.bkt.clouddn.com/dining2.png" /></li>
-					<li class="swiper-slide"><img src="http://ovug9f17p.bkt.clouddn.com/dining3.png" /></li>
-					<li class="swiper-slide"><img src="http://ovug9f17p.bkt.clouddn.com/dining4.png" /></li>
-					<li class="swiper-slide"><img src="http://ovug9f17p.bkt.clouddn.com/dining5.png" /></li>
 					</#if>
 				</ul>
 				<!-- 如果需要分页器 -->
@@ -155,7 +149,7 @@
 			wx_config(${signature});
 		});		
 		</script>
-		<script type="text/javascript" src="js/diningStore.js?1" ></script>
+		<script type="text/javascript" src="js/diningStore.js" ></script>
 		
 	</body>
 </html>

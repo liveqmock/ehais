@@ -75,11 +75,10 @@ $(function(){
 			    field: 'payTime',
 			    title: '日期',
 			    formatter : function(value,rows,index){
-			    	if(parseInt(value) > 0){
-			    		var date =  new Date(value * 100000);
-			    		return date.format("yyyy-MM-dd");
+			    	if(value.length > 0){
+			    		return value.substr(0,10);
 			    	}else{
-			    		return "";
+			    		return value;
 			    	}
 			    }
 			},{
@@ -196,8 +195,7 @@ function OrderDiningStatistics(){
 			$.each(rows,function(k,v){
 				weixinAmount.push((v.weixinAmount / 100).toFixed(2));
 				cashAmount.push((v.cashAmount / 100).toFixed(2));
-				var date = new Date(v.payTime * 100000);
-				dateList.push( date.format("yyyy-MM-dd") );
+				dateList.push( v.payTime.substr(0,10) );
 			});
 			option.series[0].data = weixinAmount;
 			option.series[1].data = cashAmount;

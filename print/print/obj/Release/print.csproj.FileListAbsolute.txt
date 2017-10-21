@@ -1,0 +1,17 @@
+E:\Ellen\易海司\点菜易\project\print\print\bin\Release\print.exe.config
+E:\Ellen\易海司\点菜易\project\print\print\bin\Release\print.exe
+E:\Ellen\易海司\点菜易\project\print\print\bin\Release\print.pdb
+E:\Ellen\易海司\点菜易\project\print\print\obj\Release\print.WeiXinPrintExe.resources
+E:\Ellen\易海司\点菜易\project\print\print\obj\Release\print.Properties.Resources.resources
+E:\Ellen\易海司\点菜易\project\print\print\obj\Release\print.csproj.GenerateResource.Cache
+E:\Ellen\易海司\点菜易\project\print\print\obj\Release\print.exe
+E:\Ellen\易海司\点菜易\project\print\print\obj\Release\print.pdb
+E:\Ellen\易海司\点菜易\project\print\print\obj\Release\print.csprojResolveAssemblyReference.cache
+D:\workspace_jee\ehais\print\print\bin\Release\print.exe.config
+D:\workspace_jee\ehais\print\print\obj\Release\print.exe
+D:\workspace_jee\ehais\print\print\obj\Release\print.pdb
+D:\workspace_jee\ehais\print\print\bin\Release\print.exe
+D:\workspace_jee\ehais\print\print\bin\Release\print.pdb
+D:\workspace_jee\ehais\print\print\obj\Release\print.WeiXinPrintExe.resources
+D:\workspace_jee\ehais\print\print\obj\Release\print.Properties.Resources.resources
+D:\workspace_jee\ehais\print\print\obj\Release\print.csproj.GenerateResource.Cache

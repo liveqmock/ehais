@@ -4,8 +4,10 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import org.ehais.util.DateUtil;
 import org.ehais.util.EncryptUtils;
 import org.junit.Test;
 
@@ -103,5 +105,27 @@ public class App {
 		System.out.println(String.format("%.2f", f));
 		System.out.println(String.format("%.2f", d));
 		System.out.println(String.format("%.2f", fee.doubleValue() / 100));
+	}
+	
+	@Test
+	public void timestamp(){
+		String date = "2017-10-20 00:00:00";
+		Date d = DateUtil.formatDate(date, DateUtil.FORMATSTR_2);
+		System.out.println(d.getTime());
+		
+		date = "2017-10-20 23:59:59";
+		d = DateUtil.formatDate(date, DateUtil.FORMATSTR_2);
+		System.out.println(d.getTime());
+		
+		
+		date = "2017-10-19 00:00:00";
+		d = DateUtil.formatDate(date, DateUtil.FORMATSTR_2);
+		System.out.println(d.getTime());
+		
+		date = "2017-10-18 00:00:00";
+		d = DateUtil.formatDate(date, DateUtil.FORMATSTR_2);
+		System.out.println(d.getTime());
+		
+		
 	}
 }

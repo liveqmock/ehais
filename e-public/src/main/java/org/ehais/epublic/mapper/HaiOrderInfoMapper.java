@@ -76,13 +76,20 @@ public interface HaiOrderInfoMapper {
 			" where user_id = #{user_id}")
 	public Map<String,Integer> order_statistics(@Param("user_id") Long user_id);
 	
+//	@Select("select "+
+//			" sum(case when pay_name='微信支付' then order_amount end) as weixin_amount, "+
+//			" sum(case when pay_name='现金支付' then order_amount end) as cash_amount, "+
+//			" truncate((pay_time / 100),0) as pay_time "+
+//			" from hai_order_info where store_id = #{store_id} and order_status = 1 " + 
+//			" and pay_time >= #{start_time} and pay_time < #{end_time} " + 
+//			" GROUP BY truncate((pay_time / 100),0)")
 	@Select("select "+
 			" sum(case when pay_name='微信支付' then order_amount end) as weixin_amount, "+
 			" sum(case when pay_name='现金支付' then order_amount end) as cash_amount, "+
-			" truncate((pay_time / 100),0) as pay_time "+
+			" DATE_FORMAT(FROM_UNIXTIME(pay_time),'%Y-%m-%d') as pay_time "+
 			" from hai_order_info where store_id = #{store_id} and order_status = 1 " + 
 			" and pay_time >= #{start_time} and pay_time < #{end_time} " + 
-			" GROUP BY truncate((pay_time / 100),0)")	
+			" GROUP BY DATE_FORMAT(FROM_UNIXTIME(pay_time),'%Y-%m-%d')")
 	@Results(value = {
 			@Result(property="weixinAmount", column="weixin_amount"),
 			@Result(property="cashAmount", column="cash_amount"),
