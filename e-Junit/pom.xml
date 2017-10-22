@@ -29,17 +29,27 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</dependency>
 
-       <dependency>
+
+	<dependency>
+		<groupId>org.ehais</groupId>
+		<artifactId>e-public</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</dependency>
+	
+<!-- 
+    <dependency>
 		<groupId>org.ehais.weixin</groupId>
 		<artifactId>e-weixin</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</dependency>
+	
+	
 	<dependency>
 		<groupId>org.ehais</groupId>
  			<artifactId>m-weixin</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</dependency>
-	
+	 -->
 
     
 <!-- 	<dependency>
