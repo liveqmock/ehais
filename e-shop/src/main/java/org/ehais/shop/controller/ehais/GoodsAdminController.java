@@ -10,6 +10,7 @@ import org.ehais.annotation.EPermissionController;
 import org.ehais.annotation.EPermissionMethod;
 import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
+import org.ehais.enums.EStoreDistributionTypeEnum;
 import org.ehais.epublic.validator.EInsertValidator;
 import org.ehais.epublic.validator.EUniqueValidator;
 import org.ehais.epublic.validator.EUpdateValidator;
@@ -111,6 +112,7 @@ public class  GoodsAdminController extends EhaisCommonController {
 			modelMap.addAttribute("rm", rm);
 			modelMap.addAttribute("uptoken", QiniuUtil.getUpToken(accessKey,secretKey,bucket));
 			modelMap.addAttribute("domain", domain);
+			
 			return "/"+this.getStoreTheme(request)+"/goods/detail";
 			
 		}catch(Exception e){
@@ -158,6 +160,7 @@ public class  GoodsAdminController extends EhaisCommonController {
 			modelMap.addAttribute("rm", rm);
 			modelMap.addAttribute("uptoken", QiniuUtil.getUpToken(accessKey,secretKey,bucket));
 			modelMap.addAttribute("domain", domain);
+			
 			return "/"+this.getStoreTheme(request)+"/goods/detail";
 		}catch(Exception e){
 			e.printStackTrace();

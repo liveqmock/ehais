@@ -104,6 +104,18 @@ $(function(){
 	</div>
 </#macro>
 
+<!-- 默认数字控件：< @ quantityDefaultsPicker id="a" value="b" rule="defaults"/> -->
+<#macro quantityDefaultsPicker id value rule="defaults" >
+	<div class="input-group spinner" data-trigger="spinner">
+		<input type="text" class="form-control text-center" id="${id}" name="${id}" value="${value!''}" data-rule="${rule}">
+		<div class="input-group-addon">
+			<a href="javascript:;" class="spin-up" data-spin="up"><i class="fa fa-caret-up"></i></a>
+			<a href="javascript:;" class="spin-down" data-spin="down"><i class="fa fa-caret-down"></i></a>
+		</div>
+	</div>
+</#macro>
+
+
 <!-- 复选项控件：< @ checkboxPicker id="XX" value="$ {(rm.model.boolean?string('yes', 'no'))!'no'}" /> -->
 <#macro checkboxPicker id value >
 	<input type="checkbox"  id="${id}" name="${id}" value="1" placeholder="" <#if value == 'yes'> checked="checked" </#if> >
@@ -118,7 +130,7 @@ $(function(){
 		<#if list?is_hash_ex>
 			<#local keys=list?keys/>
 			<#list keys as key>
-				<option value="${key}" <#if  (key?string('') == (value!'0')) >selected="selected"</#if> >${list[key]}</option>
+				<option value="${key}" <#if  (key == (value!'0')) >selected="selected"</#if> >${list[key]}</option>
 			</#list>
 		<#else>
 			<#list list as item>
@@ -137,7 +149,7 @@ $(function(){
 		<#if list?is_hash_ex>
 			<#local keys=list?keys/>
 			<#list keys as key>
-				<li value="${key}" class="<#if (key?string('') == value?string('')) >active</#if>" >${list[key]}</li>
+				<li value="${key}" class="<#if (key == value?string('')) >active</#if>" >${list[key]}</li>
 			</#list>
 		<#else>
 			<#list list as item>

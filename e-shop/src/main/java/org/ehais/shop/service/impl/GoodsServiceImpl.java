@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
+import org.ehais.enums.EStoreDistributionTypeEnum;
 import org.ehais.model.BootStrapModel;
 import org.ehais.model.ExtendsField.ExtendsFieldsTabs;
 import org.ehais.shop.mapper.HaiAgencyMapper;
@@ -21,6 +22,7 @@ import org.ehais.shop.mapper.HaiFavoritesMapper;
 import org.ehais.shop.mapper.HaiGoodsAgencyMapper;
 import org.ehais.shop.mapper.HaiGoodsGalleryMapper;
 import org.ehais.shop.mapper.HaiGoodsMapper;
+import org.ehais.shop.mapper.HaiStoreSettingMapper;
 import org.ehais.shop.model.HaiAgency;
 import org.ehais.shop.model.HaiAgencyExample;
 import org.ehais.shop.model.HaiCartExample;
@@ -34,6 +36,7 @@ import org.ehais.shop.model.HaiGoodsExample;
 import org.ehais.shop.model.HaiGoodsGallery;
 import org.ehais.shop.model.HaiGoodsGalleryExample;
 import org.ehais.shop.model.HaiGoodsWithBLOBs;
+import org.ehais.shop.model.HaiStoreSetting;
 import org.ehais.shop.service.GoodsService;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
@@ -60,6 +63,23 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 	private HaiAgencyMapper haiAgencyMapper;
 	@Autowired
 	private HaiGoodsAgencyMapper haiGoodsAgencyMapper;
+	@Autowired
+	private HaiStoreSettingMapper haiStoreSettingMapper;
+	
+	
+	/**
+	 * 获取商户的设置
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	private HaiStoreSetting getStoreSetting(HttpServletRequest request) throws Exception{
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		
+		HaiStoreSetting storeSetting = haiStoreSettingMapper.selectByPrimaryKey(store_id);
+		
+		return storeSetting;
+	}
 	
 	
 	public ReturnObject<HaiGoods> goods_list(HttpServletRequest request) throws Exception{
@@ -237,6 +257,10 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		
 		List<HaiGoodsGallery> gallery = new ArrayList<HaiGoodsGallery>();
 		map.put("gallery", gallery);
+		
+		map.put("distributionTypeMap", EStoreDistributionTypeEnum.map);//分销类型
+		map.put("storeSetting", getStoreSetting(request));//商户设置
+		
 		rm.setMap(map);
 		rm.setModel(model);
 		rm.setCode(1);
@@ -363,6 +387,8 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		map.put("catList", this.catList(request));
 		map.put("gallery", goodsGallery);
 		map.put("goodsAgencyPrice", this.goodsAgencyPrice(this.agencyList(request), this.goodsAgencyList(request,goodsId)));
+		map.put("distributionTypeMap", EStoreDistributionTypeEnum.map);//分销类型
+		map.put("storeSetting", getStoreSetting(request));//商户设置
 		
 		rm.setMap(map);
 		

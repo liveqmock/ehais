@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="/js/jquery-2.1.4.min.js" ></script>
+		
+		<link rel="stylesheet" href="/js/bootstrap/css/bootstrap.min.css" />
+		<script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js" ></script>
+		<link rel="stylesheet" href="/css/admin.css" />
+		
+		<link rel="stylesheet" href="/js/bootstrap/treeview/bootstrap-treeview.min.css" />
+		<script type="text/javascript" src="/js/bootstrap/treeview/bootstrap-treeview.min.js" ></script>
+		
+		<link rel="stylesheet" href="/js/bootstrap/table/bootstrap-table.min.css" />
+		<script type="text/javascript" src="/js/bootstrap/table/bootstrap-table.min.js" ></script>
+		<script type="text/javascript" src="/js/bootstrap/table/locale/bootstrap-table-zh-CN.min.js" ></script>
+		
+		<link rel="stylesheet" href="/js/bootstrap/spinner/bootstrap-spinner.css" />
+		<script type="text/javascript" src="/js/bootstrap/spinner/jquery.spinner.js" ></script>
+
+		<link rel="stylesheet" href="/js/bootstrap/datetimepicker/css/bootstrap-datetimepicker.min.css" />
+		<script type="text/javascript" src="/js/bootstrap/datetimepicker/js/bootstrap-datetimepicker.min.js" ></script>
+		<script type="text/javascript" src="/js/bootstrap/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" ></script>
+
+
+		<link rel="stylesheet" href="/js/layer/skin/default/layer.css" />
+		<script type="text/javascript" src="/js/layer/layer.js" ></script>
+		
+		<script type="text/javascript" src="/js/adminCommon.js" ></script>
+		<#include "/FreemarkerMacro.html"/>
+		
+	</head>
+	<body>
+		<div class="header">
+			<div class="nav">
+				<i class="icon fa fa-home">&nbsp;</i>
+				<div class="nav0">分销设置信息管理</div>
+			</div>
+		</div>
+		<div class="body">
+			<div class="container_box">
+				
+				<div class="col_side dn">
+					<h4>
+						<i class="fa fa-cubes"></i>
+						分销设置分类
+						<i id="deleteCate" class="fr fa fa-trash-o"></i>
+						<i id="editCate" class="fr fa fa-edit"></i>
+						<i id="addCate" class="fr fa fa-plus"></i>
+						
+					</h4>
+					<div class="category">
+						<div id="tree"></div>
+					</div>
+				</div>
+				
+				
+				<div class="col_main body">
+					<h4>
+						<i class="fa fa-list"></i>
+						分销设置信息列表
+						<a href="haiStoreSettingAddDetail" class="fa fa-plus btn btn-primary" >添加</a>
+					</h4>			
+					<div class="panel panel-default">
+						<div class="panel-heading">搜索条件</div>
+						<div class="panel-body single">					    
+							<div><label>标题：</label><input id="storeName" class="control"/></div>
+							<div><button id="btnSearch" class="fa fa-search btn btn-default control">搜索</button></div>
+						</div>
+					</div>
+					
+					
+					<div class="main_table">
+						<table id="bsTable" data-show-columns="false"></table>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+
+<div class="modal fade" id="haiTempSublateModal" tabindex="-1" role="dialog" aria-labelledby="haiTempSublateLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="haiTempSublateLabel">分销设置分类管理</h4>
+            </div>
+            <div class="modal-body">
+            	<form id="haiTempSublateFormModal" name="haiTempSublateFormModal" class="form-horizontal" method="post">
+
+
+
+            	</form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="haiTempSublateFormSubmit">提交</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+		
+		<script type="text/javascript" src="/js/admin/storesetting/view.js" ></script>
+	</body>
+</html>
