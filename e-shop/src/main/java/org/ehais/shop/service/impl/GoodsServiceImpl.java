@@ -20,6 +20,7 @@ import org.ehais.shop.mapper.HaiCartMapper;
 import org.ehais.shop.mapper.HaiCategoryMapper;
 import org.ehais.shop.mapper.HaiFavoritesMapper;
 import org.ehais.shop.mapper.HaiGoodsAgencyMapper;
+import org.ehais.shop.mapper.HaiGoodsDistributionMapper;
 import org.ehais.shop.mapper.HaiGoodsGalleryMapper;
 import org.ehais.shop.mapper.HaiGoodsMapper;
 import org.ehais.shop.mapper.HaiStoreSettingMapper;
@@ -32,6 +33,8 @@ import org.ehais.shop.model.HaiFavoritesExample;
 import org.ehais.shop.model.HaiGoods;
 import org.ehais.shop.model.HaiGoodsAgency;
 import org.ehais.shop.model.HaiGoodsAgencyExample;
+import org.ehais.shop.model.HaiGoodsDistribution;
+import org.ehais.shop.model.HaiGoodsDistributionExample;
 import org.ehais.shop.model.HaiGoodsExample;
 import org.ehais.shop.model.HaiGoodsGallery;
 import org.ehais.shop.model.HaiGoodsGalleryExample;
@@ -65,6 +68,8 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 	private HaiGoodsAgencyMapper haiGoodsAgencyMapper;
 	@Autowired
 	private HaiStoreSettingMapper haiStoreSettingMapper;
+	@Autowired
+	private HaiGoodsDistributionMapper haiGoodsDistributionMapper;
 	
 	
 	/**
@@ -79,6 +84,34 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		HaiStoreSetting storeSetting = haiStoreSettingMapper.selectByPrimaryKey(store_id);
 		
 		return storeSetting;
+	}
+	
+	private HaiGoodsDistribution getGoodsDistribution(HttpServletRequest request,Long goodsId,HaiStoreSetting setting) throws Exception{
+		HaiGoodsDistribution goodsDistribution = null;
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		if(goodsId == null || goodsId == 0){			
+			goodsDistribution = this.initGoodsDistribution(setting);
+		}else{
+			goodsDistribution = haiGoodsDistributionMapper.selectByPrimaryKey(goodsId);
+			if(goodsDistribution == null)goodsDistribution = this.initGoodsDistribution(setting);
+		}
+		
+		return goodsDistribution;
+	}
+	
+	//当新增商品或查不到商品的信息时，初始化一下商品对应的分销值，非插入数据库
+	private HaiGoodsDistribution initGoodsDistribution(HaiStoreSetting setting){
+		HaiGoodsDistribution gd = new HaiGoodsDistribution();
+		gd.setJoinDistribution(true);
+		gd.setDefaultDistribution(true);
+		gd.setDistributionType(setting.getDistributionType());
+		gd.setDistributionPercentage(setting.getDistributionPercentage());
+		gd.setDistributionMoney(0);
+		gd.setFirstValue(setting.getFirstPercentage());
+		gd.setSecondValue(setting.getSecondPercentage());
+		gd.setThirdValue(setting.getThirdPercentage());
+		gd.setToIntegral(0);
+		return gd;
 	}
 	
 	
@@ -214,7 +247,7 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 	}
 	
 	/**
-	 * 保存代理价格
+	 * 保存代理取货价格
 	 * @param request
 	 * @param goodsId
 	 */
@@ -244,6 +277,24 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 			}
 		}
 	}
+	
+	/**
+	 * 保存商品分销价
+	 * @param request
+	 * @param goodsId
+	 */
+	private void saveGoodsDistribution(HttpServletRequest request,Long goodsId,HaiGoodsDistribution goodsDistribution){
+		HaiGoodsDistributionExample example = new HaiGoodsDistributionExample();
+		example.createCriteria().andGoodsIdEqualTo(goodsId);
+		Long c  = haiGoodsDistributionMapper.countByExample(example);
+		if(c == 0){
+			goodsDistribution.setGoodsId(goodsId);
+			haiGoodsDistributionMapper.insert(goodsDistribution);
+		}else{
+			goodsDistribution.setGoodsId(goodsId);
+			haiGoodsDistributionMapper.updateByPrimaryKey(goodsDistribution);
+		}
+	}
 
 	public ReturnObject<HaiGoodsWithBLOBs> goods_insert(HttpServletRequest request)
 			throws Exception {
@@ -258,8 +309,12 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		List<HaiGoodsGallery> gallery = new ArrayList<HaiGoodsGallery>();
 		map.put("gallery", gallery);
 		
-		map.put("distributionTypeMap", EStoreDistributionTypeEnum.map);//分销类型
-		map.put("storeSetting", getStoreSetting(request));//商户设置
+		Map<String,String> mapDT = EStoreDistributionTypeEnum.map;
+		mapDT.remove("0");
+		map.put("distributionTypeMap", mapDT);//分销类型
+		HaiStoreSetting storeSetting = this.getStoreSetting(request);
+		map.put("storeSetting", storeSetting);//商户设置
+		map.put("goodsDistribution", this.getGoodsDistribution(request, null, storeSetting));//商品分销设置
 		
 		rm.setMap(map);
 		rm.setModel(model);
@@ -332,7 +387,7 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		return rm;
 	}
 	
-	public ReturnObject<HaiGoodsWithBLOBs> ehais_goods_insert_submit(HttpServletRequest request,HaiGoodsWithBLOBs model,String[] gallery)
+	public ReturnObject<HaiGoodsWithBLOBs> ehais_goods_insert_submit(HttpServletRequest request,HaiGoodsWithBLOBs model,String[] gallery,HaiGoodsDistribution goodsDistribution)
 			throws Exception {
 		ReturnObject<HaiGoodsWithBLOBs> rm = new ReturnObject<HaiGoodsWithBLOBs>();
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
@@ -364,6 +419,7 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 			}
 		}
 		
+		this.saveGoodsDistribution(request, model.getGoodsId(), goodsDistribution);
 		
 		rm.setCode(1);
 		rm.setMsg("添加成功");
@@ -387,8 +443,14 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		map.put("catList", this.catList(request));
 		map.put("gallery", goodsGallery);
 		map.put("goodsAgencyPrice", this.goodsAgencyPrice(this.agencyList(request), this.goodsAgencyList(request,goodsId)));
-		map.put("distributionTypeMap", EStoreDistributionTypeEnum.map);//分销类型
-		map.put("storeSetting", getStoreSetting(request));//商户设置
+		
+		Map<String,String> mapDT = EStoreDistributionTypeEnum.map;
+		mapDT.remove("0");
+		map.put("distributionTypeMap", mapDT);//分销类型
+		
+		HaiStoreSetting storeSetting = this.getStoreSetting(request);
+		map.put("storeSetting", storeSetting);//商户设置
+		map.put("goodsDistribution", this.getGoodsDistribution(request, goodsId, storeSetting));//商品分销设置
 		
 		rm.setMap(map);
 		
@@ -467,7 +529,7 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 	}
 	
 	
-	public ReturnObject<HaiGoodsWithBLOBs> ehais_goods_update_submit(HttpServletRequest request,HaiGoodsWithBLOBs model,String[] gallery)
+	public ReturnObject<HaiGoodsWithBLOBs> ehais_goods_update_submit(HttpServletRequest request,HaiGoodsWithBLOBs model,String[] gallery,HaiGoodsDistribution goodsDistribution)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiGoodsWithBLOBs> rm = new ReturnObject<HaiGoodsWithBLOBs>();
@@ -593,6 +655,8 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 				}
 			}
 		}
+		
+		this.saveGoodsDistribution(request, model.getGoodsId(), goodsDistribution);
 		
 		
 		rm.setCode(code);

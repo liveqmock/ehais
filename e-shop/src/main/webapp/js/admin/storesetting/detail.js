@@ -56,7 +56,7 @@ function haiStoreSettingEditSubmit(){
 				layer.msg(result.msg);
 				return ;
 			}else{
-				$('#myForm')[0].reset();
+				
 				layer.alert(result.msg, {
 					skin: 'layui-layer-molv' //样式类名
 					,closeBtn: 0

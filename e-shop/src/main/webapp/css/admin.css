@@ -16,6 +16,9 @@ body {
   height: 36px;
   margin: 0 5px 0 15px;
 }
+.header .nav > i{
+	cursor: pointer;
+}
 .header .nav .icon {
   color: #ccc;
   font-size: 35px;

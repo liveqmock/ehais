@@ -117,12 +117,84 @@
 </div>
 </div>
 
-<div class="form-group">
+<div class="form-group dn">
 <label class="col-sm-2 control-label">促销</label>
 <div class="col-sm-1">
 	<@checkboxPicker id="isPromote" value="${(rm.model.isPromote!false)?string('yes', 'no')}" />
 </div>
 </div>
+
+<#if (rm.map.goodsDistribution.distributionType?string("0")!="0")>
+<div class="form-group">
+<label class="col-sm-2 control-label">参与分销</label>
+<div class="col-sm-4">
+<@BSRadioIntPicker id="joinDistribution" key="" text="" list={"1":"参与","0":"不参与"} value="${(rm.map.goodsDistribution.joinDistribution!true)?string('1', '0')}" />
+</div>
+</div>
+
+
+<div class="form-group distribution" id="defaultDistribution_form">
+<label class="col-sm-2 control-label">分销类别</label>
+<div class="col-sm-4">
+	<@BSRadioIntPicker id="defaultDistribution" key="" text="" list={"1":"默认","0":"自定义"} value="${(rm.map.goodsDistribution.defaultDistribution!true)?string('1', '0')}" />
+</div>
+</div>
+
+
+<div class="form-group distribution" id="distributionType_form">
+<label class="col-sm-2 control-label">分销类型</label>
+<div class="col-sm-3">
+	<@selectPicker id="distributionType" key="" text="" list=rm.map.distributionTypeMap value=((rm.map.goodsDistribution.distributionType?string('0'))!'') defaultValue="" defaultText="请选择分销设置类别" />
+</div>
+</div>
+
+<div class="form-group distribution" id="distributionPercentage_form">
+<label class="col-sm-2 control-label">默认佣金比例(%)</label>
+<div class="col-sm-2">
+	<@quantityDefaultsPicker id="distributionPercentage" value="${rm.map.goodsDistribution.distributionPercentage!'0'}" />
+</div>
+<div class="col-sm-8">当佣金金额发生变改后，以下面的佣金金额为准</div>
+</div>
+
+
+<div class="form-group distribution" id="distributionMoney_form">
+<label class="col-sm-2 control-label">分销佣金(元)</label>
+<div class="col-sm-2">
+	<@quantityDefaultsPicker id="distributionMoney" value="${rm.map.goodsDistribution.distributionMoney!'0'}" />
+</div>
+<div class="col-sm-8">分销金额以此值为准</div>
+</div>
+
+
+
+<div class="form-group distribution" id="firstValue_form">
+<label class="col-sm-2 control-label">一级分销提成(<span class="unit">%</span>)</label>
+<div class="col-sm-2">
+	<@quantityDefaultsPicker id="firstValue" value="${rm.map.goodsDistribution.firstValue!'0'}" />
+</div>
+</div>
+
+<div class="form-group distribution" id="secondValue_form">
+<label class="col-sm-2 control-label">二级分销提成(<span class="unit">%</span>)</label>
+<div class="col-sm-2">
+	<@quantityDefaultsPicker id="secondValue" value="${rm.map.goodsDistribution.secondValue!'0'}" />
+</div>
+</div>
+
+<div class="form-group distribution" id="thirdValue_form">
+<label class="col-sm-2 control-label">三级分销提成(<span class="unit">%</span>)</label>
+<div class="col-sm-2">
+	<@quantityDefaultsPicker id="thirdValue" value="${rm.map.goodsDistribution.thirdValue!'0'}" />
+</div>
+</div>
+
+<div class="form-group distribution" id="toIntegral_form">
+<label class="col-sm-2 control-label">积分(元)</label>
+<div class="col-sm-2">
+	<@quantityDefaultsPicker id="toIntegral" value="${rm.map.goodsDistribution.toIntegral!'0'}" />
+</div>
+</div>
+</#if>
 
 
 <div class="form-group">
@@ -162,6 +234,16 @@
 </form>
 </div>    
 
+<script type="text/javascript">
+var defaultDistribution = "${(rm.map.goodsDistribution.defaultDistribution!true)?string('1', '0')}";
+var distributionType = "${rm.map.goodsDistribution.distributionType!'0'}";
+var distributionPercentage = "${rm.map.goodsDistribution.distributionPercentage!'0'}";
+var distributionMoney = "${rm.map.goodsDistribution.distributionMoney!'0'}";
+var firstValue = "${rm.map.goodsDistribution.firstValue!'0'}";
+var secondValue = "${rm.map.goodsDistribution.secondValue!'0'}";
+var thirdValue = "${rm.map.goodsDistribution.thirdValue!'0'}";
+var toIntegral = "${rm.map.goodsDistribution.toIntegral!'0'}";
+</script>
 
 <script type="text/javascript" src="/js/ehais/goods_detail.js" ></script>             
 

@@ -142,14 +142,14 @@ $(function(){
 </#macro>
 
 
-<!-- bootstrap风格数字类型的单选控件：< @ BSRadioIntPicker id="" key="" text="" list={} value=0?string('') /> -->
+<!-- bootstrap风格数字类型的单选控件：< @ BSRadioIntPicker id="" key="" text="" list={} value="0?string('')" /> -->
 <#macro BSRadioIntPicker id="" key="" text="" list={} value="" >
 	<ul class="radioPicker" id="radioPicker_${id}">
 		<#if (list?? && list?size > 0) >
 		<#if list?is_hash_ex>
 			<#local keys=list?keys/>
 			<#list keys as key>
-				<li value="${key}" class="<#if (key == value?string('')) >active</#if>" >${list[key]}</li>
+				<li value="${key}" class="<#if (key == (value!'0')) >active</#if>" >${list[key]}</li>
 			</#list>
 		<#else>
 			<#list list as item>

@@ -9,8 +9,6 @@ import javax.validation.Valid;
 import org.ehais.annotation.EPermissionController;
 import org.ehais.annotation.EPermissionMethod;
 import org.ehais.common.EConstants;
-import org.ehais.controller.CommonController;
-import org.ehais.enums.EStoreDistributionTypeEnum;
 import org.ehais.epublic.validator.EInsertValidator;
 import org.ehais.epublic.validator.EUniqueValidator;
 import org.ehais.epublic.validator.EUpdateValidator;
@@ -19,6 +17,7 @@ import org.ehais.shop.mapper.HaiGoodsMapper;
 import org.ehais.shop.model.HaiCategory;
 import org.ehais.shop.model.HaiCategoryWithBLOBs;
 import org.ehais.shop.model.HaiGoods;
+import org.ehais.shop.model.HaiGoodsDistribution;
 import org.ehais.shop.model.HaiGoodsWithBLOBs;
 import org.ehais.shop.service.CategoryService;
 import org.ehais.shop.service.GoodsGalleryService;
@@ -42,7 +41,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 
-@EPermissionController(intro="红酒信息功能",value="ehaisGoodsController")
+@EPermissionController(intro="商品信息功能",value="ehaisGoodsController")
 @Controller
 @RequestMapping("/ehais")
 public class  GoodsAdminController extends EhaisCommonController {
@@ -65,7 +64,7 @@ public class  GoodsAdminController extends EhaisCommonController {
 	private static String domain = ResourceUtil.getProValue("qiniu.domain");
 	
 	
-	@EPermissionMethod(intro="打开红酒信息页面",value="ehaisGoodsView",type=PermissionProtocol.URL)
+	@EPermissionMethod(intro="打开商品信息页面",value="ehaisGoodsView",type=PermissionProtocol.URL)
 	@RequestMapping("/manage/ehaisGoodsView")
 	public String ehaisGoodsView(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) {	
@@ -83,7 +82,7 @@ public class  GoodsAdminController extends EhaisCommonController {
 	
 
 	@ResponseBody
-	@EPermissionMethod(intro="返回红酒信息数据",value="ehaisGoodsListJson",type=PermissionProtocol.JSON)
+	@EPermissionMethod(intro="返回商品信息数据",value="ehaisGoodsListJson",type=PermissionProtocol.JSON)
 	@RequestMapping(value="/manage/ehaisGoodsListJson",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String ehaisGoodsListJson(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -102,7 +101,7 @@ public class  GoodsAdminController extends EhaisCommonController {
 	
 	
 	
-	@EPermissionMethod(name="新增",intro="新增红酒信息",value="ehaisGoodsAddDetail",type=PermissionProtocol.BUTTON)
+	@EPermissionMethod(name="新增",intro="新增商品信息",value="ehaisGoodsAddDetail",type=PermissionProtocol.BUTTON)
 	@RequestMapping(value="/manage/ehaisGoodsAddDetail",method=RequestMethod.GET)
 	public String ehaisGoodsAddDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response
@@ -125,10 +124,11 @@ public class  GoodsAdminController extends EhaisCommonController {
 	
 	
 	@ResponseBody
-	@EPermissionMethod(intro="新增提交红酒信息",value="ehaisGoodsAddSubmit",type=PermissionProtocol.DATA)
+	@EPermissionMethod(intro="新增提交商品信息",value="ehaisGoodsAddSubmit",type=PermissionProtocol.DATA)
 	@RequestMapping(value="/manage/ehaisGoodsAddSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String ehaisGoodsAddSubmit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
+			@ModelAttribute("goodsDistribution") HaiGoodsDistribution goodsDistribution,
 			@Validated({EInsertValidator.class,EUniqueValidator.class}) @ModelAttribute("goods") HaiGoodsWithBLOBs goods,
 			BindingResult result,
 			@RequestParam(value = "imgOriginal", required = false) String[] imgOriginal
@@ -137,7 +137,7 @@ public class  GoodsAdminController extends EhaisCommonController {
 		try{
 			
 			
-			ReturnObject<HaiGoodsWithBLOBs> rm = ehaisGoodsService.ehais_goods_insert_submit(request, goods,imgOriginal);
+			ReturnObject<HaiGoodsWithBLOBs> rm = ehaisGoodsService.ehais_goods_insert_submit(request, goods,imgOriginal,goodsDistribution);
 			return this.writeJson(rm);
 			
 		}catch(Exception e){
@@ -149,7 +149,7 @@ public class  GoodsAdminController extends EhaisCommonController {
 	
 
 	
-	@EPermissionMethod(name="编辑",intro="编辑红酒信息",value="ehaisGoodsEditDetail",type=PermissionProtocol.BUTTON)
+	@EPermissionMethod(name="编辑",intro="编辑商品信息",value="ehaisGoodsEditDetail",type=PermissionProtocol.BUTTON)
 	@RequestMapping(value="/manage/ehaisGoodsEditDetail",method=RequestMethod.GET)
 	public String ehaisGoodsEditDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -171,17 +171,18 @@ public class  GoodsAdminController extends EhaisCommonController {
 	}
 	
 	@ResponseBody
-	@EPermissionMethod(intro="编辑提交红酒信息",value="ehaisGoodsEditSubmit",type=PermissionProtocol.DATA)
+	@EPermissionMethod(intro="编辑提交商品信息",value="ehaisGoodsEditSubmit",type=PermissionProtocol.DATA)
 	@RequestMapping(value="/manage/ehaisGoodsEditSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String ehaisGoodsEditSubmit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
+			@ModelAttribute("goodsDistribution") HaiGoodsDistribution goodsDistribution,
 			@Validated({EUpdateValidator.class}) @ModelAttribute("goods") HaiGoodsWithBLOBs goods,
 			BindingResult result,
 			@RequestParam(value = "imgOriginal", required = false) String[] imgOriginal
 			) {
 			if(result.hasErrors())return this.writeBindingResult(result);
 		try{
-			return this.writeJson(ehaisGoodsService.ehais_goods_update_submit(request,goods,imgOriginal));
+			return this.writeJson(ehaisGoodsService.ehais_goods_update_submit(request,goods,imgOriginal,goodsDistribution));
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("goods", e);
@@ -191,7 +192,7 @@ public class  GoodsAdminController extends EhaisCommonController {
 	
 	
 	@ResponseBody
-	@EPermissionMethod(name="删除",intro="删除红酒信息",value="ehaisGoodsDelete",type=PermissionProtocol.BUTTON)
+	@EPermissionMethod(name="删除",intro="删除商品信息",value="ehaisGoodsDelete",type=PermissionProtocol.BUTTON)
 	@RequestMapping(value="/manage/ehaisGoodsDelete",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String ehaisGoodsDelete(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -211,7 +212,7 @@ public class  GoodsAdminController extends EhaisCommonController {
 	
 
 	@ResponseBody
-	@EPermissionMethod(intro="返回红酒信息数据",value="ehaisCategoryListJson",type=PermissionProtocol.JSON)
+	@EPermissionMethod(intro="返回商品信息数据",value="ehaisCategoryListJson",type=PermissionProtocol.JSON)
 	@RequestMapping(value="/manage/ehaisCategoryListJson",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String ehaisCategoryListJson(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -229,7 +230,7 @@ public class  GoodsAdminController extends EhaisCommonController {
 	
 	
 	@ResponseBody
-	@EPermissionMethod(intro="新增提交红酒信息",value="ehaisCategoryAddSubmit",type=PermissionProtocol.DATA)
+	@EPermissionMethod(intro="新增提交商品信息",value="ehaisCategoryAddSubmit",type=PermissionProtocol.DATA)
 	@RequestMapping(value="/manage/ehaisCategoryAddSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String ehaisCategoryAddSubmit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -271,7 +272,7 @@ public class  GoodsAdminController extends EhaisCommonController {
 	
 	
 	@ResponseBody
-	@EPermissionMethod(intro="编辑提交红酒信息",value="ehaisCategoryEditSubmit",type=PermissionProtocol.DATA)
+	@EPermissionMethod(intro="编辑提交商品信息",value="ehaisCategoryEditSubmit",type=PermissionProtocol.DATA)
 	@RequestMapping(value="/manage/ehaisCategoryEditSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String ehaisCategoryEditSubmit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -292,7 +293,7 @@ public class  GoodsAdminController extends EhaisCommonController {
 	
 
 	@ResponseBody
-	@EPermissionMethod(name="删除",intro="删除红酒信息",value="ehaisCategoryDelete",type=PermissionProtocol.BUTTON)
+	@EPermissionMethod(name="删除",intro="删除商品信息",value="ehaisCategoryDelete",type=PermissionProtocol.BUTTON)
 	@RequestMapping(value="/manage/ehaisCategoryDelete",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String ehaisCategoryDelete(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
