@@ -18,3 +18,8 @@ D:\workspace_jee\ehais\print\print\obj\Debug\print.csproj.GenerateResource.Cache
 D:\workspace_jee\ehais\print\print\bin\Debug\print.exe
 D:\workspace_jee\ehais\print\print\bin\Debug\print.pdb
 D:\workspace_jee\ehais\print\print\bin\Debug\Newtonsoft.Json.dll
+D:\workspace_jee\ehais\print\print\obj\Debug\print.TrustInfo.xml
+D:\workspace_jee\ehais\print\print\bin\Debug\print.exe.manifest
+D:\workspace_jee\ehais\print\print\bin\Debug\print.application
+D:\workspace_jee\ehais\print\print\obj\Debug\print.exe.manifest
+D:\workspace_jee\ehais\print\print\obj\Debug\print.application
