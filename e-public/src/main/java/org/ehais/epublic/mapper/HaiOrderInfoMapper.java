@@ -9,7 +9,6 @@ import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
-import org.ehais.epublic.model.EHaiOrderInfo;
 import org.ehais.epublic.model.HaiOrderInfo;
 import org.ehais.epublic.model.HaiOrderInfoExample;
 import org.ehais.epublic.model.HaiOrderInfoWithBLOBs;
@@ -26,9 +25,9 @@ public interface HaiOrderInfoMapper {
 	 * @param pay_status
 	 * @return
 	 */
-	@ResultMap(value = "BaseResultMap")
+	@ResultMap(value = "ResultMapWithBLOBs")
 	@Select("select * from hai_order_info where store_id = #{store_id} and order_sn = #{order_sn}")
-	public List<EHaiOrderInfo> listOrderInfoSn(
+	public List<HaiOrderInfoWithBLOBs> listOrderInfoSn(
 			@Param("store_id") Integer store_id,
 			@Param("order_sn") String order_sn
 			) ;

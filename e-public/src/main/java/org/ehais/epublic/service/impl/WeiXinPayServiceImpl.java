@@ -15,8 +15,9 @@ import org.ehais.epublic.mapper.HaiStoreStatisticsMapper;
 import org.ehais.epublic.mapper.weixin.WxNotifyPayMapper;
 import org.ehais.epublic.mapper.weixin.WxUnifiedorderMapper;
 import org.ehais.epublic.mapper.weixin.WxUnifiedorderResultMapper;
-import org.ehais.epublic.model.EHaiOrderInfo;
 import org.ehais.epublic.model.EHaiStore;
+import org.ehais.epublic.model.HaiOrderInfo;
+import org.ehais.epublic.model.HaiOrderInfoWithBLOBs;
 import org.ehais.epublic.model.HaiStoreStatistics;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.epublic.model.weixin.WxNotifyPay;
@@ -57,7 +58,7 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 	@Autowired
 	private EWPPublicService eWPPublicService; 
 //	@Autowired
-//	private EHaiOrderInfoMapper eHaiOrderInfoMapper;
+//	private HaiOrderInfoMapper eHaiOrderInfoMapper;
 	@Autowired
 	private HaiOrderInfoMapper haiOrderInfoMapper;
 	@Autowired
@@ -199,11 +200,11 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 		wxNotifyPayMapper.insert(this.toWxNotityPay(notifyPay));
 		if(notifyPay.getReturn_code().equals("SUCCESS") && notifyPay.getReturn_code().equals("SUCCESS")){
 			//查看订单是否正确
-			List<EHaiOrderInfo> listOrder = haiOrderInfoMapper.listOrderInfoSn(store_id, notifyPay.getOut_trade_no());
+			List<HaiOrderInfoWithBLOBs> listOrder = haiOrderInfoMapper.listOrderInfoSn(store_id, notifyPay.getOut_trade_no());
 			if(listOrder == null || listOrder.size() == 0){
 				rm.setMsg("不存在此订单");return rm;
 			}
-			EHaiOrderInfo orderInfo = listOrder.get(0);
+			HaiOrderInfoWithBLOBs orderInfo = listOrder.get(0);
 			if(orderInfo.getPayStatus() != EOrderStatusEnum.init){
 				rm.setMsg("订单状态异常");return rm;
 			}
@@ -305,7 +306,7 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 	 */
 	private void shopUserTemplateMessage(HttpServletRequest request,
 			WeiXinNotifyPay notifyPay,
-			EHaiOrderInfo orderInfo,
+			HaiOrderInfoWithBLOBs orderInfo,
 			WpPublicWithBLOBs wpPublic,
 			Integer store_id) throws Exception{
 		WeiXinTemplateMessage template = new WeiXinTemplateMessage();
@@ -365,7 +366,7 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 			WpPublicWithBLOBs wp,
 			EHaiStore store,
 			WeiXinNotifyPay notifyPay,
-			EHaiOrderInfo orderInfo,
+			HaiOrderInfoWithBLOBs orderInfo,
 			Date date,
 			Map<String,Object> map) throws Exception{
 		
@@ -417,7 +418,7 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 			WpPublicWithBLOBs wp,
 			EHaiStore store,
 			WeiXinNotifyPay notifyPay,
-			EHaiOrderInfo orderInfo,
+			HaiOrderInfoWithBLOBs orderInfo,
 			Date date,
 			Map<String,Object> map) throws Exception{
 		
