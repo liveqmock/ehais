@@ -231,7 +231,7 @@ namespace print
 
                     fltYPos += fltRowHeight;
                     g.DrawString(item["goodsNumber"].ToString(), printFont, System.Drawing.Brushes.Black, fltScreenWidth / 2, fltYPos);
-                    g.DrawString(Convert.ToDouble(Convert.ToDouble(item["goodsPrice"].ToString()) / 100).ToString("0.00"), printFont, System.Drawing.Brushes.Black, fltScreenWidth / 2 + fltScreenWidth / 2 / 3, fltYPos);
+                    g.DrawString(Convert.ToDouble(Convert.ToDouble(item["goodsPrice"].ToString()) / 100).ToString("0.00"), printFont, System.Drawing.Brushes.Black, fltScreenWidth / 2 + fltScreenWidth / 2 / 3 - fltScreenWidth / 12, fltYPos);
                     g.DrawString(Convert.ToDouble(Convert.ToDouble(Convert.ToDouble(item["goodsNumber"].ToString()) * Convert.ToDouble(item["goodsPrice"].ToString()) ) / 100 ).ToString("0.00"), printFont, System.Drawing.Brushes.Black, fltScreenWidth / 2 + fltScreenWidth / 2 / 3 * 2, fltYPos);
 
                     quantity += Convert.ToInt32(item["goodsNumber"].ToString());
@@ -409,8 +409,9 @@ namespace print
                 {
                     fltYPos += fltRowHeight;
                     rec = new RectangleF(fltXPos, fltYPos, fltScreenWidth / 2 - fltXPos, fltRowHeight);
-                    g.DrawString(item["goodsName"].ToString(), printFont, Brushes.Black, rec, stringFormat);
-                    //g.DrawString(item["goodsName"].ToString(), printFont, System.Drawing.Brushes.Black, fltXPos, fltYPos);
+                    //g.DrawString(item["goodsName"].ToString(), printFont, Brushes.Black, rec, stringFormat);
+                    g.DrawString(item["goodsName"].ToString(), printFont, System.Drawing.Brushes.Black, fltXPos, fltYPos);
+                    fltYPos += fltRowHeight;
                     g.DrawString(item["goodsNumber"].ToString(), printFont, System.Drawing.Brushes.Black, fltScreenWidth / 5 * 4, fltYPos);
 
                 }

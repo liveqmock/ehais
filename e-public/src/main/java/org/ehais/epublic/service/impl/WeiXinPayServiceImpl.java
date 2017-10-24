@@ -85,6 +85,7 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 			map = SignUtil.getCid(cid, wpPublic.getToken());
 		}
 		
+		System.out.println("用户支付IP："+IpUtil.getIpAddrV2(request));
 		
 //		Date date = new Date();
 		WeiXinUnifiedOrder order = new WeiXinUnifiedOrder();
@@ -94,7 +95,8 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 		order.setBody(body);
 		order.setOut_trade_no(orderSn);
 		order.setTotal_fee(amount);		
-		order.setSpbill_create_ip(IpUtil.getIpAddrV2(request));
+//		order.setSpbill_create_ip(IpUtil.getIpAddrV2(request));
+		order.setSpbill_create_ip("120.27.35.142");
 		order.setNotify_url(request.getScheme()+"://"+request.getServerName()+"/weixin/pay/notify_url!"+cid+"&"+classify);
 		order.setTrade_type("JSAPI");
 		order.setOpenid(openid);
