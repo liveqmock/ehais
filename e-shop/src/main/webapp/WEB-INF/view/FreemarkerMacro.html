@@ -122,6 +122,12 @@ $(function(){
 </#macro>
 
 
+<!-- 复选项控件：< @ checkboxIntegerPicker id="XX" value="$ {(rm.model.boolean?string(''))!'1'}" /> -->
+<#macro checkboxIntegerPicker id value >
+	<input type="checkbox"  id="${id}" name="${id}" value="1" placeholder="" <#if value == '1'> checked="checked" </#if> >
+</#macro>
+
+
 <!-- 下拉菜单控件：< @ selectPicker id="" key="" text="" list={} value=((null?string(''))!'') defaultValue="" defaultText="" /> -->
 <#macro selectPicker id="" key="" text="" list={} value="" defaultValue="" defaultText="">
 	<select class="form-control" id="${id}" name="${id}" >

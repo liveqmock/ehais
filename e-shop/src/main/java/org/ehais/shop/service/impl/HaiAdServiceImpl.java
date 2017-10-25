@@ -220,7 +220,7 @@ bean.setSort(model.getSort());
 bean.setIsMobile(model.getIsMobile());
 bean.setAgencyId(model.getAgencyId());
 bean.setPartnerId(model.getPartnerId());
-bean.setIsVoid(model.getIsVoid());
+bean.setIsVoid(model.getIsVoid()==null?0:1);
 
 
 		int code = haiAdMapper.updateByExampleSelective(bean, example);

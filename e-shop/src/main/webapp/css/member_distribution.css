@@ -1,0 +1,84 @@
+@import url("common.css");
+.wd {
+  padding: 0.49rem 0 0;
+  font-size: 0.14rem;
+  box-sizing: border-box;
+  float: left;
+  width: 100%;
+}
+.wd * {
+  box-sizing: border-box;
+  float: left;
+  width: 100%;
+}
+.wd header {
+  height: 0.45rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  border-bottom: 0.01rem solid #DCDCDC;
+  z-index: 20;
+  text-align: center;
+  font-size: 0.18rem;
+  line-height: 0.45rem;
+  background: #fff;
+}
+.wd header i {
+  position: absolute;
+  z-index: 106;
+  padding: 0 0.15rem;
+  width: auto;
+}
+.wd header i:first-child {
+  left: 0rem;
+}
+.wd header i:last-child {
+  right: 0rem;
+}
+.wd > div > ul > li {
+  padding: 0.1rem 0.15rem;
+  border-bottom: 0.05rem solid #F3F3F3;
+}
+.wd > div > ul > li > div * {
+  width: auto;
+}
+.wd > div > ul > li .h {
+  border-bottom: 0.01rem solid #F0F0F0;
+  padding-bottom: 0.1rem;
+}
+.wd > div > ul > li .h b {
+  float: right;
+}
+.wd > div > ul > li > img {
+  width: 20%;
+  margin-right: 0.15rem;
+}
+.wd > div > ul > li > div {
+  width: 80%;
+  margin-right: -0.15rem;
+  margin-top: 0.1rem;
+  font-size: 0.12rem;
+  color: #999;
+}
+.wd > div > ul > li > div > img {
+  width: 10%;
+  float: right;
+}
+.wd > div > ul > li > div > div {
+  float: right;
+  font-size: 0.14rem;
+  color: #c00000;
+  padding: 0.15rem 0.15rem 0 0.15rem;
+}
+.wd .e {
+  padding-top: 0.3rem;
+  display: none;
+  text-align: center;
+}
+.wd .e i {
+  font-size: 0.8rem;
+}
+.wd .e.active {
+  display: block;
+}

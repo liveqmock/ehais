@@ -14,6 +14,7 @@ import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.shop.controller.api.include.UserIController;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
+import org.ehais.util.ResourceUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/ws")
 public class UserWSController extends UserIController {
 
+	private String defaultimg = ResourceUtil.getProValue("defaultimg");
 	
 	@ResponseBody
 	@RequestMapping("/user_info")
@@ -82,6 +84,7 @@ public class UserWSController extends UserIController {
 			@RequestParam(value = "nickname", required = true) String nickname) {
 		try{
 			ReturnObject<EHaiUsers> rm = eUsersService.fans_list(request, null, condition,nickname);
+			rm.setAction(defaultimg);
 			return this.writeJson(rm);
 		}catch(Exception e){
 			e.printStackTrace();

@@ -92,3 +92,6 @@
 .wm .e.active {
   display: block;
 }
+.wm.t {
+  padding: 0.49rem 0 0;
+}

@@ -7,13 +7,19 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
+import org.ehais.enums.EArticleModuleEnum;
+import org.ehais.epublic.mapper.EHaiArticleMapper;
 import org.ehais.epublic.mapper.HaiOrderInfoMapper;
+import org.ehais.epublic.model.EHaiArticle;
+import org.ehais.epublic.model.EHaiArticleExample;
 import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.epublic.model.HaiOrderInfo;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.shop.mapper.HaiOrderGoodsMapper;
 import org.ehais.shop.model.HaiOrderGoods;
 import org.ehais.shop.model.HaiOrderGoodsExample;
+import org.ehais.tools.ReturnObject;
+import org.ehais.util.ResourceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -33,8 +39,9 @@ public class MemberController extends EhaisCommonController{
 	private HaiOrderInfoMapper haiOrderInfoMapper;
 	@Autowired
 	private HaiOrderGoodsMapper haiOrderGoodsMapper;
+	@Autowired
+	private EHaiArticleMapper haiArticleMapper;
 	
-
 	//获取用户信息的公共方法
 	private String w_member_common(ModelMap modelMap,
 			HttpServletRequest request,
@@ -116,6 +123,26 @@ public class MemberController extends EhaisCommonController{
 	}
 	
 	
+	@RequestMapping("/w_member_team")
+	public String member_team(ModelMap modelMap,
+			HttpServletRequest request,
+			HttpServletResponse response ){
+		
+		
+		return "/ehais/member/member_team";
+	}
+	
+	
+	@RequestMapping("/w_member_distribution")
+	public String member_distribution(ModelMap modelMap,
+			HttpServletRequest request,
+			HttpServletResponse response ){
+		
+		
+		return "/ehais/member/member_distribution";
+	}
+	
+	
 	@RequestMapping("/w_favorites")
 	public String favorites(ModelMap modelMap,
 			HttpServletRequest request,
@@ -169,5 +196,46 @@ public class MemberController extends EhaisCommonController{
 		return "/ehais/member/comment_write";
 	}
 	
+	
+	
+	@RequestMapping("/w_member_integral")
+	public String member_integral(ModelMap modelMap,
+			HttpServletRequest request,
+			HttpServletResponse response ){
+		
+		
+		return "/ehais/member/member_integral";
+	}
+	
+	@RequestMapping("/w_member_distribution_intro")
+	public String distribution_intro(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response){
+		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
+		rm.setCode(0);
+		EHaiArticle model = null;
+		try{
+			EHaiArticleExample exp = new EHaiArticleExample();
+			exp.createCriteria().andStoreIdEqualTo(Integer.valueOf(default_store_id))
+			.andModuleEqualTo(EArticleModuleEnum.DISTRIBUTIONINTRO);
+			List<EHaiArticle> list = haiArticleMapper.selectByExampleWithBLOBs(exp);
+			if(list!=null && list.size() > 0){
+				model = list.get(0);
+			}else{
+				model = new EHaiArticle();
+				model.setTitle("暂无内容");
+				model.setContent("暂无内容");
+			}
+			rm.setCode(1);
+			rm.setModel(model);
+			modelMap.addAttribute("rm", rm);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return "/ehais/article_detail";
+		
+		
+	}
 	
 }

@@ -168,6 +168,20 @@ function driverOrderInfo(result){
 		});
 		jroll.refresh();
 	}
+	
+	var num = $("img").length;
+	$("img").load(function() {
+		num--;
+		if (num > 0) {
+			return;
+		}
+		jroll.refresh(); 
+	}).error(function(){
+		$(this).attr("src","http://ovug9f17p.bkt.clouddn.com/dining121.jpg");
+		jroll.refresh();
+	});
+	num = null;
+	
 }
 
 

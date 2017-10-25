@@ -260,7 +260,7 @@ public class CategoryServiceImpl  extends EShopCommonServiceImpl implements Cate
 		HaiCategoryExample.Criteria c = example.createCriteria();
 		c.andStoreIdEqualTo((Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID));
 		c.andIsShowEqualTo(true);
-		List<HaiCategory> list = haiCategoryMapper.hai_category_list_by_example(example);
+		List<HaiCategory> list = haiCategoryMapper.selectByExample(example);
 		
 		return list;
 	}

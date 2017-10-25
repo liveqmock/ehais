@@ -1,0 +1,57 @@
+@import url("common.css");
+.wd {
+  padding: 0.49rem 0 0;
+  font-size: 0.14rem;
+  box-sizing: border-box;
+  float: left;
+  width: 100%;
+}
+.wd * {
+  box-sizing: border-box;
+  float: left;
+  width: 100%;
+}
+.wd header {
+  height: 0.45rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  border-bottom: 0.01rem solid #DCDCDC;
+  z-index: 20;
+  text-align: center;
+  font-size: 0.18rem;
+  line-height: 0.45rem;
+  background: #fff;
+}
+.wd header i {
+  position: absolute;
+  z-index: 106;
+  padding: 0 0.15rem;
+  width: auto;
+}
+.wd header i:first-child {
+  left: 0rem;
+}
+.wd header i:last-child {
+  right: 0rem;
+}
+.wd #content {
+  padding: 0.15rem;
+  text-indent: 0.28rem;
+  line-height: 0.28rem;
+  font-size: 0.16rem;
+}
+.wd #content img,
+.wd #content table {
+  max-width: 100%;
+}
+.wd footer {
+  font-size: 0.12rem;
+  text-align: center;
+  color: #ccc;
+  width: 100%;
+  border-top: 0.05rem solid #dcdcdc;
+  margin-top: 0.15rem;
+  padding: 0.15rem 0;
+}

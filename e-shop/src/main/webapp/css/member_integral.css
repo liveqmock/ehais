@@ -1,0 +1,86 @@
+@import url("common.css");
+.ite {
+  padding: 0.45rem 0 0;
+  font-size: 0.14rem;
+  box-sizing: border-box;
+  float: left;
+  width: 100%;
+}
+.ite * {
+  box-sizing: border-box;
+  float: left;
+  width: 100%;
+}
+.ite header {
+  height: 0.45rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  border-bottom: 0.01rem solid #DCDCDC;
+  z-index: 20;
+  text-align: center;
+  font-size: 0.18rem;
+  line-height: 0.45rem;
+  background: #fff;
+}
+.ite header i {
+  position: absolute;
+  z-index: 106;
+  padding: 0 0.15rem;
+  width: auto;
+}
+.ite header i:first-child {
+  left: 0rem;
+}
+.ite header i:last-child {
+  right: 0rem;
+}
+.ite #jroll ul {
+  padding: 0 0.15rem;
+}
+.ite #jroll ul li {
+  padding: 0.15rem 0 ;
+}
+.ite #jroll ul li > div:first-child {
+  float: left;
+  width: 80%;
+}
+.ite #jroll ul li > div:first-child > div:first-child {
+  font-size: 0.15rem;
+  padding-bottom: 0.05rem;
+}
+.ite #jroll ul li > div:first-child > div:last-child {
+  font-size: 0.13rem;
+  color: #CDCDCE;
+}
+.ite #jroll ul li > div:last-child {
+  float: right;
+  width: 20%;
+  text-align: right;
+  padding-top: 0.15rem;
+  font-size: 0.18rem;
+  color: #CA1818;
+}
+.ite #jroll ul li > div.p {
+  color: #909090;
+}
+.ite .e {
+  padding: 1rem 0 1.8rem;
+  display: none;
+  text-align: center;
+}
+.ite .e i {
+  font-size: 0.8rem;
+}
+.ite .e.active {
+  display: block;
+}
+.ite footer {
+  font-size: 0.12rem;
+  text-align: center;
+  color: #ccc;
+  border-top: 0.05rem solid #dcdcdc;
+  margin-top: 0.15rem;
+  padding: 0.15rem 0;
+}

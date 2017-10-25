@@ -13,4 +13,5 @@ public class EArticleModuleEnum {
 	public final static String BESTAPD  = "bestadp";  //杰出广告人
 	public final static String APTITUDE = "aptitude"; //认定资讯
 	public final static String BRANDSTORY = "brand_story"; //品牌故事
+	public final static String DISTRIBUTIONINTRO = "distribution_intro"; //分销介绍
 }

@@ -21,9 +21,9 @@ $(function(){
 	jroll.on("scrollEnd", function() {
 		if(loaded == "pull"){
 			page = 1;
-			fans_list();
+			team_list();
 		}else if(loaded == "up"){
-			fans_list();
+			team_list();
 		}
 	});
 	
@@ -41,16 +41,16 @@ $(function(){
 	});
 	num = null;
 	
-	fans_list();
+	team_list();
 	
-	$("#sou").click(function(){$("#uu li").remove(); page = 1;fans_list();});
+	$("#sou").click(function(){$("#uu li").remove(); page = 1;team_list();});
 	
 });
 
-function fans_list(){
+function team_list(){
 	loaded = "ing";
 	$.ajax({
-		url : "/ws/fans_list",data : {page : page,rows : 10,nickname:$("#nickname").val()},
+		url : "/ws/team_list",data : {page : page,rows : 10,nickname:$("#nickname").val()},
 		success : function(result){
 			loaded = "";
 			if(page == 1){
@@ -70,19 +70,21 @@ function fans_list(){
 						"</li>");
 				});
 				jroll.refresh();
+				
+				var num = $("img").length;
+				$("img").load(function() {
+					num--;
+					if (num > 0) {
+						return;
+					}
+					jroll.refresh(); 
+				}).error(function(){
+					$(this).attr("src","http://ovug9f17p.bkt.clouddn.com/dining121.jpg");
+					jroll.refresh();
+				});
+				num = null;
+				
 			}
-			var num = $("img").length;
-			$("img").load(function() {
-				num--;
-				if (num > 0) {
-					return;
-				}
-				jroll.refresh(); 
-			}).error(function(){
-				$(this).attr("src","http://ovug9f17p.bkt.clouddn.com/dining121.jpg");
-				jroll.refresh();
-			});
-			num = null;
 		}
 	})
 }
