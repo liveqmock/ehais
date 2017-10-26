@@ -266,8 +266,8 @@ namespace print
             g.DrawString(Convert.ToDouble(Convert.ToDouble(total) / 100).ToString("#0.00"), printFont, System.Drawing.Brushes.Black, fltScreenWidth / 2 + fltScreenWidth / 2 / 3 * 2, fltYPos);
 
             fltYPos += fltRowHeight;
-            g.DrawString("支付方式：", printFont, System.Drawing.Brushes.Black, fltXPos, fltYPos);
-            g.DrawString(joOrder["payName"].ToString(), printFont, System.Drawing.Brushes.Black, fltScreenWidth / 2, fltYPos);
+            g.DrawString("支付方式："+ joOrder["payName"].ToString(), printFont, System.Drawing.Brushes.Black, fltXPos, fltYPos);
+            //g.DrawString(joOrder["payName"].ToString(), printFont, System.Drawing.Brushes.Black, fltScreenWidth / 2, fltYPos);
 
             //fltYPos += fltRowHeight;
             //g.DrawString("地址："+joOrder["address"].ToString(), printFont, System.Drawing.Brushes.Black, fltXPos, fltYPos);
@@ -418,7 +418,8 @@ namespace print
 
             }
 
-
+            fltYPos += fltRowHeight;
+            g.DrawString("支付方式：" + joOrder["payName"].ToString(), printFont, System.Drawing.Brushes.Black, fltXPos, fltYPos);
 
             fltYPos += fltRowHeight;
             if (joOrder["postscript"].ToString().Length > 0 && joOrder["postscript"].ToString().Length <= 16)
@@ -451,6 +452,19 @@ namespace print
             String password_val = this.password.Text;
             String timestamp = this.GetTimeStamp();
 
+            if(username_val.Length == 0)
+            {
+                this.lblMsg.Text = "请输入用户名";
+                return;
+            }
+            if (password_val.Length == 0)
+            {
+                this.lblMsg.Text = "请输入密码";
+                return;
+            }
+
+            this.lblMsg.Text = "";
+
             MD5 md5 = new MD5CryptoServiceProvider();
             
             Dictionary<string, string> dic = new Dictionary<string, string>();
@@ -469,6 +483,12 @@ namespace print
             responseUser = this.Post(website+"/api/dining_manage_login", dic);
 
             Console.WriteLine(responseUser);
+
+            if(responseUser == null || responseUser.Equals(""))
+            {
+                this.lblMsg.Text = "登录失败!";
+                return;
+            }
 
             joStore = (JObject)JsonConvert.DeserializeObject(responseUser);
 
@@ -500,15 +520,30 @@ namespace print
         {
             this.loginPanel.Visible = true;
             this.userPanel.Visible = false;
-            myTimer.Enabled = false; //定时器开始用
+            myTimer.Enabled = false; //定时器结束
         }
 
         void myTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             Console.WriteLine("定时器获取最新订单数据:"+ DateTime.Now.ToString());
             String response = this.dining_order_list(store_id, token);
+
+            if (response == null || response.ToString().Equals("") )
+            {
+                system_logout();
+                return;
+            }
+
             //Console.WriteLine(response);
             JObject jo = (JObject)JsonConvert.DeserializeObject(response);
+
+            if (Convert.ToInt32(jo["code"].ToString()) != 1)
+            {
+                this.system_logout();
+
+                return;
+            }
+
             JArray jArray = (JArray)JsonConvert.DeserializeObject(jo["rows"].ToString());
             if (jArray.Count > 0) {
                 Warning();
@@ -565,6 +600,33 @@ namespace print
             
         }
 
+        /**
+        系统退出登录
+        */
+        public void system_logout()
+        {
+            //退出登录
+            if (loginPanel.InvokeRequired)
+            {
+                Action<Boolean> actionDelegate = delegate (Boolean b) { this.loginPanel.Visible = b; };
+                this.loginPanel.Invoke(actionDelegate, true);
+            }
+            else
+            {
+                this.loginPanel.Visible = true;
+            }
+            if (userPanel.InvokeRequired)
+            {
+                Action<Boolean> actionDelegate = delegate (Boolean b) { this.userPanel.Visible = b; };
+                this.userPanel.Invoke(actionDelegate, false);
+            }
+            else
+            {
+                this.userPanel.Visible = false;
+            }
+            myTimer.Enabled = false; //定时器结束
+        }
+
 
 
         public string GetTimeStamp()
@@ -598,6 +660,10 @@ namespace print
             }
             byte[] data = Encoding.UTF8.GetBytes(builder.ToString());
             req.ContentLength = data.Length;
+            if(req.GetRequestStream() == null)
+            {
+                return "";
+            }
             using (Stream reqStream = req.GetRequestStream())
             {
                 reqStream.Write(data, 0, data.Length);
