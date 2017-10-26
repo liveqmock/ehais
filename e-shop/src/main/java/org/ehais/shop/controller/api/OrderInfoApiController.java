@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.ehais.epublic.cache.EAdminTokenCacheManager;
 import org.ehais.epublic.mapper.HaiOrderInfoMapper;
 import org.ehais.epublic.model.HaiOrderInfo;
@@ -96,7 +97,7 @@ public class OrderInfoApiController extends OrderInfoIController{
 		ReturnObject<HaiOrderInfoWithBLOBs> rm = new ReturnObject<HaiOrderInfoWithBLOBs>();
 		rm.setCode(0);
 		String t = EAdminTokenCacheManager.getInstance().getAdminToken(store_id);
-		if(!t.equals(token)){
+		if(StringUtils.isBlank(t) || !t.equals(token)){
 			rm.setMsg("token wrong");
 			return this.writeJson(rm);
 		}

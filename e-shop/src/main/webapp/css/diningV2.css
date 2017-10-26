@@ -302,7 +302,8 @@ footer.active > div.sCart > i:nth-child(2) {
 }
 .cart_layer,
 .wco,
-.result {
+.result,
+#gd {
   font-size: 0.14rem;
   display: none;
   position: fixed;
@@ -549,7 +550,8 @@ footer.active > div.sCart > i:nth-child(2) {
 }
 .cart_layer.active,
 .wco.active,
-.result.active {
+.result.active,
+#gd.active {
   display: block;
 }
 .debug {
@@ -562,4 +564,53 @@ footer.active > div.sCart > i:nth-child(2) {
   z-index: 300;
   font-size: 14px;
   float: left;
+}
+#gd {
+  z-index: 107;
+  width: 100%;
+  float: left;
+  color: #333;
+  background: #fff;
+}
+#gd .bg {
+  background: #fff;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 107;
+}
+#gd .g_d {
+  width: 100%;
+  height: 100%;
+  float: left;
+  z-index: 108;
+  display: none;
+  overflow-y: scroll;
+}
+#gd .g_d > div,
+#gd .g_d .swiper-container {
+  z-index: 109;
+  width: 100%;
+  float: left;
+}
+#gd .g_d > div img,
+#gd .g_d .swiper-container img {
+  max-width: 100%;
+}
+#gd .g_d .i,
+#gd .g_d .d {
+  padding: 0.15rem 0.15rem 0;
+  box-sizing: border-box;
+}
+#gd .g_d .i {
+  font-size: 0.16rem;
+  font-weight: bold;
+}
+#gd .g_d .d {
+  text-indent: 0.28rem;
+}
+#gd .g_d.active {
+  display: block;
 }

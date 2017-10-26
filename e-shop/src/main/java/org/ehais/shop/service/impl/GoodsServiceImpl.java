@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
+import org.ehais.enums.EAdminClassifyEnum;
 import org.ehais.enums.EStoreDistributionTypeEnum;
 import org.ehais.model.BootStrapModel;
 import org.ehais.model.ExtendsField.ExtendsFieldsTabs;
@@ -309,12 +310,15 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		List<HaiGoodsGallery> gallery = new ArrayList<HaiGoodsGallery>();
 		map.put("gallery", gallery);
 		
-		Map<String,String> mapDT = EStoreDistributionTypeEnum.map;
-		mapDT.remove("0");
-		map.put("distributionTypeMap", mapDT);//分销类型
-		HaiStoreSetting storeSetting = this.getStoreSetting(request);
-		map.put("storeSetting", storeSetting);//商户设置
-		map.put("goodsDistribution", this.getGoodsDistribution(request, null, storeSetting));//商品分销设置
+		String adminClassify = (String)request.getSession().getAttribute(EConstants.SESSION_ADMIN_CLASSIFY);
+		if(StringUtils.isNotBlank(adminClassify) && adminClassify.equals(EAdminClassifyEnum.shop)){
+			Map<String,String> mapDT = EStoreDistributionTypeEnum.map;
+			mapDT.remove("0");
+			map.put("distributionTypeMap", mapDT);//分销类型
+			HaiStoreSetting storeSetting = this.getStoreSetting(request);
+			map.put("storeSetting", storeSetting);//商户设置
+			map.put("goodsDistribution", this.getGoodsDistribution(request, null, storeSetting));//商品分销设置
+		}
 		
 		rm.setMap(map);
 		rm.setModel(model);
@@ -419,7 +423,12 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 			}
 		}
 		
-		this.saveGoodsDistribution(request, model.getGoodsId(), goodsDistribution);
+		
+		String adminClassify = (String)request.getSession().getAttribute(EConstants.SESSION_ADMIN_CLASSIFY);
+		if(StringUtils.isNotBlank(adminClassify) && adminClassify.equals(EAdminClassifyEnum.shop)){
+			this.saveGoodsDistribution(request, model.getGoodsId(), goodsDistribution);
+		}
+		
 		
 		rm.setCode(1);
 		rm.setMsg("添加成功");
@@ -444,13 +453,17 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		map.put("gallery", goodsGallery);
 		map.put("goodsAgencyPrice", this.goodsAgencyPrice(this.agencyList(request), this.goodsAgencyList(request,goodsId)));
 		
-		Map<String,String> mapDT = EStoreDistributionTypeEnum.map;
-		mapDT.remove("0");
-		map.put("distributionTypeMap", mapDT);//分销类型
-		
-		HaiStoreSetting storeSetting = this.getStoreSetting(request);
-		map.put("storeSetting", storeSetting);//商户设置
-		map.put("goodsDistribution", this.getGoodsDistribution(request, goodsId, storeSetting));//商品分销设置
+		String adminClassify = (String)request.getSession().getAttribute(EConstants.SESSION_ADMIN_CLASSIFY);
+		if(StringUtils.isNotBlank(adminClassify) && adminClassify.equals(EAdminClassifyEnum.shop)){
+			Map<String,String> mapDT = EStoreDistributionTypeEnum.map;
+			mapDT.remove("0");
+			map.put("distributionTypeMap", mapDT);//分销类型
+			
+			HaiStoreSetting storeSetting = this.getStoreSetting(request);
+			map.put("storeSetting", storeSetting);//商户设置
+			map.put("goodsDistribution", this.getGoodsDistribution(request, goodsId, storeSetting));//商品分销设置
+			
+		}
 		
 		rm.setMap(map);
 		

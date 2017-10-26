@@ -33,6 +33,7 @@ import org.ehais.epublic.service.WeiXinPayService;
 import org.ehais.shop.controller.ehais.EhaisCommonController;
 import org.ehais.shop.mapper.HaiAdMapper;
 import org.ehais.shop.mapper.HaiCategoryMapper;
+import org.ehais.shop.mapper.HaiGoodsGalleryMapper;
 import org.ehais.shop.mapper.HaiGoodsMapper;
 import org.ehais.shop.mapper.HaiOrderGoodsMapper;
 import org.ehais.shop.model.HaiAd;
@@ -41,6 +42,9 @@ import org.ehais.shop.model.HaiCategory;
 import org.ehais.shop.model.HaiCategoryExample;
 import org.ehais.shop.model.HaiGoods;
 import org.ehais.shop.model.HaiGoodsExample;
+import org.ehais.shop.model.HaiGoodsGallery;
+import org.ehais.shop.model.HaiGoodsGalleryExample;
+import org.ehais.shop.model.HaiGoodsWithBLOBs;
 import org.ehais.shop.model.HaiOrderGoods;
 import org.ehais.shop.service.OrderInfoService;
 import org.ehais.tools.EConditionObject;
@@ -72,6 +76,8 @@ public class DiningWebController extends EhaisCommonController{
 	private HaiCategoryMapper haiCategoryMapper;
 	@Autowired
 	private HaiGoodsMapper haiGoodsMapper;
+	@Autowired
+	private HaiGoodsGalleryMapper haiGoodsGalleryMapper;
 	@Autowired
 	private HaiOrderInfoMapper haiOrderInfoMapper;
 	@Autowired
@@ -201,6 +207,10 @@ public class DiningWebController extends EhaisCommonController{
 		.andIsOnSaleEqualTo(true);
 		gExp.setOrderByClause("sort_order asc");
 		List<HaiGoods> listGoods = haiGoodsMapper.selectByExample(gExp);
+		for (HaiGoods haiGoods : listGoods) {
+			String goodsUrl = SignUtil.setGid(store_id, 0, 0L, 0L, haiGoods.getGoodsId(), wp.getToken());
+			haiGoods.setGoodsUrl(goodsUrl);
+		}
 		modelMap.addAttribute("listGoods", listGoods);
 		
 		modelMap.addAttribute("defaultimg", defaultimg);
@@ -690,6 +700,61 @@ public class DiningWebController extends EhaisCommonController{
 		}
 		
 		return "/dining/dining_order_detail";
+	}
+	
+	
+	/**
+	 * 点击菜品图片展示菜品详情信息
+	 * @param modelMap
+	 * @param request
+	 * @param response
+	 * @param gid
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/dining_goods!{gid}")
+	public String diningGoods(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@PathVariable(value = "gid") String gid	){
+		ReturnObject<HaiGoods> rm = new ReturnObject<HaiGoods>();
+		rm.setCode(0);
+		Integer store_id = SignUtil.getUriStoreId(gid);
+		if(store_id == 0){
+			return "redirect:"+website; //错误的链接，跳转商城
+		}
+		
+		try{
+			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
+			EHaiStore store = eStoreService.getEStore(store_id);
+			modelMap.addAttribute("store", store);
+			if(store == null){
+				return "redirect:"+website; //错误的链接，跳转商城
+			}
+			Map<String,Object> map = SignUtil.getGid(gid, wp.getToken())  ;//DiningId(sid,wp.getToken());
+			if(map == null){
+			    return "redirect:"+website; //错误的链接，跳转商城
+			}
+			
+			Long goodsId = Long.valueOf(map.get("goodsId").toString());
+			HaiGoodsWithBLOBs model = haiGoodsMapper.selectByPrimaryKey(goodsId);
+			rm.setModel(model);
+			
+			map.clear();
+			
+			//读取图片库
+			HaiGoodsGalleryExample galleryExample = new HaiGoodsGalleryExample();
+			galleryExample.createCriteria().andGoodsIdEqualTo(goodsId).andStoreIdEqualTo(store_id).andTableNameEqualTo("hai_goods");
+			List<HaiGoodsGallery> gallery = haiGoodsGalleryMapper.selectByExample(galleryExample);
+			map.put("gallery", gallery);
+			
+			rm.setMap(map);
+			
+			rm.setCode(1);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return this.writeJson(rm) ;
 	}
 	
 	

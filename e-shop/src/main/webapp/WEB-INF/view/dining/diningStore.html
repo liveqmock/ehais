@@ -22,7 +22,7 @@
 		<script type="text/javascript" src="js/weixinJSBridge.js" ></script>
 		
 		
-		<link rel="stylesheet" href="css/diningV2.css?1" />
+		<link rel="stylesheet" href="css/diningV2.css?2" />
 		
 	</head>
 	<body>
@@ -143,13 +143,15 @@
 			<button id="resultBtn">确定</button>
 		</div>
 		
+		<div id="gd"></div>
+		
 		<script type="text/javascript">
 		var sid = "${sid}";
 		$(function(){
 			wx_config(${signature});
 		});		
 		</script>
-		<script type="text/javascript" src="js/diningStore.js" ></script>
+		<script type="text/javascript" src="js/diningStore.js?d=1" ></script>
 		
 	</body>
 </html>

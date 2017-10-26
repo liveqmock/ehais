@@ -101,8 +101,8 @@ public class MyTaskAnnotation {
 
 	}
 
-	//每一小时获取一次用户信息
-	@Scheduled(cron = "0 0 */1  * * ? ")
+	//每一小时获取一次用户信息，取消获取用户信息
+//	@Scheduled(cron = "0 0 */1  * * ? ")
 	public void batchUserInfo() {
 		Date date = new Date();
 		log.info(DateUtil.formatDate(date, DateUtil.FORMATSTR_1)

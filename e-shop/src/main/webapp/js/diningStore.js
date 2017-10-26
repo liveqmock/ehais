@@ -324,7 +324,81 @@ $(function(){
 	
 	$("#resultBtn").click(function(){$(".result").removeClass("active");});
 	
+	//点击图片放大
+	$("#scroller_menu_goods_list >li >div.img img").click(function(){
+		if($("#"+$(this).attr("h")).length>0){
+			$("#gd,#"+$(this).attr("h")).addClass("active");
+			history.pushState({page:"detail"}, "goods_detail", "dining_goods");
+		}else{
+			var that = this;
+			$.ajax({
+				url : "dining_goods!"+$(this).attr("h"),
+				success:function(result){
+					
+					var gli = "";
+					if(result.map!=null && result.map.gallery!=null && result.map.gallery.length > 0){
+						$.each(result.map.gallery,function(k,v){
+							gli+="<li class='swiper-slide'><img src='"+v.imgOriginal+"' /></li>";
+						});
+					}
+					
+					$("#gd").append("<div id='"+$(that).attr("h")+"' class='g_d active'>"+
+
+									"<div class='scroll swiper-container'>"+
+									"<ul class='swiper-wrapper'>"+
+									"<li class='swiper-slide'><img src='"+result.model.originalImg+"' /></li>"+
+									gli+
+									"</ul>"+
+									"<div class='swiper-pagination'></div>"+
+									"</div>"+
+									(
+											result.model.goodsDesc.length > 0 ?(
+									"<div class='i'><i class='iconfont icon-xiangqing'></i> 菜品介绍</div>"+
+									"<div class='d'>"+result.model.goodsDesc+"</div>"):""
+									)
+									+
+									(
+											result.model.goodsBrief.length > 0 ? (
+									"<div class='i'><i class='iconfont icon-xiangqing'></i> 菜品故事</div>"+
+									"<div class='d'>"+result.model.goodsBrief+"</div>") : ""
+									)+
+									"</div>");
+					
+					$("#gd,#"+$(that).attr("h")).addClass("active");
+					if(gli.length > 0){
+						 new Swiper ('#'+$(that).attr("h")+' .swiper-container', {
+							    direction: 'horizontal',
+							    loop: true,
+							    autoplay: 5000,
+							    pagination: '.swiper-pagination',
+							});
+					}
+					gli = null;
+					history.pushState({page:"detail"}, "goods_detail", "dining_goods");
+				}
+			});
+		}
+	});
 });
+
+
+window.onpopState = function(){
+    var json = window.history.state;//获取当前所在的state
+    console.log(JSON.stringify(json));
+    $("#gd , #gd .g_d").removeClass("active");
+}
+
+
+window.addEventListener('popstate', function(e){
+	if (history.state){
+		var state = e.state;
+	    //do something(state.url, state.title);
+	}
+	$("#gd , #gd .g_d").removeClass("active");
+		console.log(JSON.stringify(history));
+	}, false);
+
+
 
 function getScrollTop(){
 	offsets = [];

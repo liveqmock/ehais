@@ -95,10 +95,34 @@
 <div class="col-sm-4">
 	
 	<@bsQiniuImagesPicker id="originalImg" value="${rm.model.originalImg!''}" domain="${domain}" uptoken="${uptoken}" />
-	
+	请上传480*480的图片
 </div>
 </div>
 
+<div class="form-group">
+<label class="col-sm-2 control-label">相册图片</label>
+<div class="col-sm-8">
+	<@bsQiniuGalleryPicker id="imgOriginal" gallery=rm.map.gallery domain="${domain}" uptoken="${uptoken}"/>
+	请上传480*480的图片，最多5张
+</div>
+</div>
+
+
+<div class="form-group">
+<label class="col-sm-2 control-label">菜品介绍</label>
+<div class="col-sm-4">
+	<@ueditorPicker id="goodsDesc" value="${rm.model.goodsDesc!''}" />
+	用于介绍食材
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">菜品故事</label>
+<div class="col-sm-4">
+	<@ueditorPicker id="goodsBrief" value="${rm.model.goodsBrief!''}" />
+	可用营销介绍
+</div>
+</div>
 
 
 <div class="form-group">
