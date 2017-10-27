@@ -22,7 +22,8 @@ public class DiningJUnit {
 		paramsMap.put("password", "123456ok");
 		String sign = SignUtil.getSignWS(paramsMap, "EhaisSecret");
 		paramsMap.put("sign", sign);
-		String req = EHttpClientUtil.httpPost("http://127.0.0.1/api/dining_manage_login", paramsMap);
+//		String req = EHttpClientUtil.httpPost("http://127.0.0.1/api/dining_manage_login", paramsMap);
+		String req = EHttpClientUtil.httpPost("http://mg.ehais.com/api/dining_manage_login", paramsMap);
 		System.out.println(req);
 	}
 	
