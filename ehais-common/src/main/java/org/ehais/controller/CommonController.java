@@ -70,6 +70,28 @@ public class CommonController {
 	}
 	
 	/**
+	 * 获取普通管理的样式
+	 * @param request
+	 * @return
+	 */
+	protected String getAdminProjectFolder(HttpServletRequest request){
+		String project_folder = (String) request.getSession().getAttribute(EConstants.SESSION_ADMIN_PROJECT_FOLDER);
+		if(StringUtils.isEmpty(project_folder))project_folder = "admin";
+		return project_folder;
+	}
+	
+	/**
+	 * 获取普通管理的样式+配置文件的设置样式，比如登录需要设置
+	 * @param request
+	 * @return
+	 */
+	protected String getAdminProjectFolder(HttpServletRequest request,String default_project_folder){
+		String project_folder = (String) request.getSession().getAttribute(EConstants.SESSION_ADMIN_PROJECT_FOLDER);
+		if(StringUtils.isEmpty(project_folder))project_folder = default_project_folder;
+		return project_folder;
+	}
+	
+	/**
 	 * 获取商家的主题模板
 	 * @param request
 	 * @return

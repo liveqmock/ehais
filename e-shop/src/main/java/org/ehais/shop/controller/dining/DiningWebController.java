@@ -97,7 +97,7 @@ public class DiningWebController extends EhaisCommonController{
 	
 	
 	//http://127.0.0.1/diningStore!934a1580-0c1e0501-156ed21242-2b36621253-314dd0C104-49175b56
-	//http://a982bfbf.ngrok.io/diningStore!934a1580-0c1e0501-156ed21242-2b36621253-314dd0C104-49175b56
+	//http://3d8d1c94.ngrok.io/diningStore!934a1580-0c1e0501-156ed21242-2b36621253-314dd0C104-49175b56
 	@RequestMapping("/diningStore!{sid}")
 	public String diningStore(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,

@@ -12,6 +12,7 @@ import org.ehais.epublic.model.EHaiAdminUser;
 import org.ehais.epublic.model.EHaiAdminUserWithBLOBs;
 import org.ehais.epublic.service.EHaiAdminUserService;
 import org.ehais.tools.ReturnObject;
+import org.ehais.util.ResourceUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,8 @@ public class LoginAdminController extends CommonController {
 
 	private static Logger log = LoggerFactory.getLogger(LoginAdminController.class);
 
+	protected String project_folder = ResourceUtil.getProValue("setting.project_folder");
+	
 	@Autowired
 	private EHaiAdminUserService eHaiAdminUserService;
 
@@ -37,13 +40,13 @@ public class LoginAdminController extends CommonController {
 	public String admin_login(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response) {
 		try {
 			ReturnObject<EHaiAdminUser> rm = new ReturnObject<EHaiAdminUser>();
-			rm.setAction("admin_login_submit");
+			rm.setAction("admin_login_submit_ajax");
 			modelMap.addAttribute("rm", rm);
-
+			modelMap.addAttribute("redirect", "admin/index");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "/admin/main/login";
+		return "/"+this.getAdminProjectFolder(request, project_folder)+"/main/login";
 	}
 
 	@RequestMapping(value = "/adminloginsubmit", method = RequestMethod.POST)
@@ -75,12 +78,12 @@ public class LoginAdminController extends CommonController {
 	public String admin_logout(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response) {
 		try {
 			ReturnObject<EHaiAdminUser> rm = eHaiAdminUserService.logout_admin(request);
-			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "/admin_login");
+			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "/adminlogin");
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "redirect:/admin_login";
+		return "redirect:/adminlogin";
 	}
 
 }

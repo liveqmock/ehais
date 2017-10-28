@@ -87,7 +87,7 @@ public class  HaiActivityAdminController extends CommonController {
 			ReturnObject<HaiActivity> rm = haiActivityService.activity_list(request,module);
 			modelMap.addAttribute("rm", rm);
 			modelMap.addAttribute("module", module);
-			return "/"+this.getStoreTheme(request)+"/activity/view";
+			return "/"+this.getAdminProjectFolder(request)+"/activity/view";
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("activity", e);
@@ -130,7 +130,7 @@ public class  HaiActivityAdminController extends CommonController {
 			modelMap.addAttribute("module", module);
 			modelMap.addAttribute("uptoken", QiniuUtil.getUpToken(accessKey,secretKey,bucket));
 			modelMap.addAttribute("domain", domain);
-			return "/"+this.getStoreTheme(request)+"/activity/detail";
+			return "/"+this.getAdminProjectFolder(request)+"/activity/detail";
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -178,7 +178,7 @@ public class  HaiActivityAdminController extends CommonController {
 			modelMap.addAttribute("module", module);
 			modelMap.addAttribute("uptoken", QiniuUtil.getUpToken(accessKey,secretKey,bucket));
 			modelMap.addAttribute("domain", domain);
-			return "/"+this.getStoreTheme(request)+"/activity/detail";
+			return "/"+this.getAdminProjectFolder(request)+"/activity/detail";
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("activity", e);
@@ -241,7 +241,7 @@ public class  HaiActivityAdminController extends CommonController {
 		try{
 			ReturnObject<EHaiArticleCat> rm = haiActivityService.articlecat_list(request,module);
 			modelMap.addAttribute("rm", rm);
-			return "/"+this.getStoreTheme(request)+"/activity/articlecat_view";
+			return "/"+this.getAdminProjectFolder(request)+"/activity/articlecat_view";
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("articlecat", e);
@@ -281,7 +281,7 @@ public class  HaiActivityAdminController extends CommonController {
 			ReturnObject<EHaiArticleCat> rm = haiActivityService.articlecat_insert(request,module);
 			modelMap.addAttribute("rm", rm);
 			modelMap.addAttribute("module", module);
-			return "/"+this.getStoreTheme(request)+"/activity/articlecat_detail";
+			return "/"+this.getAdminProjectFolder(request)+"/activity/articlecat_detail";
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -327,7 +327,7 @@ public class  HaiActivityAdminController extends CommonController {
 			ReturnObject<EHaiArticleCat> rm = haiActivityService.articlecat_update(request,module,catId);
 			modelMap.addAttribute("rm", rm);
 			modelMap.addAttribute("module", module);
-			return "/"+this.getStoreTheme(request)+"/activity/articlecat_detail";
+			return "/"+this.getAdminProjectFolder(request)+"/activity/articlecat_detail";
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("articlecat", e);
@@ -399,7 +399,7 @@ public class  HaiActivityAdminController extends CommonController {
 			modelMap.addAttribute("apply_link", apply_link);
 			modelMap.addAttribute("sign_link", sign_link);
 			
-			return "/"+this.getStoreTheme(request)+"/activity/qrcode";
+			return "/"+this.getAdminProjectFolder(request)+"/activity/qrcode";
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("activity", e);
@@ -513,7 +513,7 @@ public class  HaiActivityAdminController extends CommonController {
 			ReturnObject<HaiActivity> rm = haiActivityService.activity_info(request,module,activityId);
 			modelMap.addAttribute("rm", rm);
 			
-			return "/"+this.getStoreTheme(request)+"/activity/sign_statistics";
+			return "/"+this.getAdminProjectFolder(request)+"/activity/sign_statistics";
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("activity", e);

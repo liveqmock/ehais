@@ -32,6 +32,8 @@ public class EConstants {
 	public static final String SESSION_ADMIN_NAME = "session_admin_name";
 	/** 管理员类型 **/
 	public static final String SESSION_ADMIN_CLASSIFY = "session_admin_classify";
+	/** 管理项目文件夹，即主题 **/
+	public static final String SESSION_ADMIN_PROJECT_FOLDER = "session_admin_project_folder";
 	//微信wx_public编号
 	public static final String SESSION_WX_ID = "session_wx_id";
 	//微信openid编号

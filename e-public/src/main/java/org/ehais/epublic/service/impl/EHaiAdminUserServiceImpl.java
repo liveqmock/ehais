@@ -199,6 +199,7 @@ public class EHaiAdminUserServiceImpl  extends CommonServiceImpl implements EHai
 		//以后再扩展同一个商家有多个管理员
 		request.getSession().setAttribute(EConstants.SESSION_STORE_ID, Integer.valueOf(adminuser.getAdminId().intValue()));
 		request.getSession().setAttribute(EConstants.SESSION_ADMIN_NAME, username);
+		request.getSession().setAttribute(EConstants.SESSION_ADMIN_PROJECT_FOLDER, adminuser.getProjectFolder());
 		//防止应用混合登录
 		request.getSession().removeAttribute(EConstants.SESSION_USER_ID);
 		
@@ -282,6 +283,7 @@ public class EHaiAdminUserServiceImpl  extends CommonServiceImpl implements EHai
 		session.setAttribute(EConstants.SESSION_ADMIN_ID, adminuser.getAdminId());
 		session.setAttribute(EConstants.SESSION_ADMIN_NAME, adminuser.getUserName());
 		session.setAttribute(EConstants.SESSION_ADMIN_CLASSIFY, adminuser.getClassify());
+		session.setAttribute(EConstants.SESSION_ADMIN_PROJECT_FOLDER, adminuser.getProjectFolder());
 		
 		ThinkRole role = thinkRoleMapper.think_role_admin(adminuser.getAdminId().intValue());
 		if(role != null && role.getRoleCode() != null && !role.getRoleCode().equals("")){
