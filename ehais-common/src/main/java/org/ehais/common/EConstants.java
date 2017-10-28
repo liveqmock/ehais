@@ -40,6 +40,8 @@ public class EConstants {
 	public static final String SESSION_OPEN_ID = "session_open_id";
 	//用户登录类型
 	public static final String SESSION_ROLE_TYPE = "session_role_type";
+	//角色编号列表
+	public static final String SESSION_ROLE_ID_ARRAY = "session_role_id_array";
 	//学校类型
 	public static final String SESSION_SCHOOL_ID = "session_school_id";
 	//供应商编号

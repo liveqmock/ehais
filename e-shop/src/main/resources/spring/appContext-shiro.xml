@@ -20,6 +20,7 @@
 		http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
 		">
 
+<aop:config proxy-target-class="true"></aop:config>
 
 <!-- 自定义的Realm -->  
 <bean id="myRealm" class="org.ehais.realm.MyRealm"></bean>  
@@ -30,7 +31,11 @@
 <!-- 这里主要是设置自定义的单Realm应用,若有多个Realm,可使用'realms'属性代替 -->   
 <!-- 安全管理器 -->  
 <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">  
-<property name="realm" ref="myRealm"></property>  
+	<property name="realm" ref="myRealm"></property> 
+
+<!-- 使用下面配置的缓存管理器 -->  
+        <!-- <property name="cacheManager" ref="cacheManager"/> -->   
+        
 </bean>  
   
  <!-- Shiro主过滤器本身功能十分强大,其强大之处就在于它支持任何基于URL路径表达式的、自定义的过滤器的执行 -->    
@@ -40,13 +45,13 @@
 <!-- shiro的安全接口，必须配置的属性 -->  
 <property name="securityManager" ref="securityManager"></property>  
 <!-- 登录时的链接 -->  
-<property name="loginUrl" value="/member/login"></property>  
+<property name="loginUrl" value="/adminlogin"></property>  
   
 <!-- 登录成功后跳转到的链接 -->  
 <!-- <property name="successUrl" value="/member/main"></property> -->  
   
  <!-- 用户访问未对其授权的资源时,所显示的连接 -->    
-<property name="unauthorizedUrl" value="/member/login"></property>  
+<property name="unauthorizedUrl" value="/adminlogin"></property>  
 <!-- /error.jsp -->  
   <!-- Shiro连接约束配置,即过滤链的定义 -->    
         <!-- 此处可配合我的这篇文章来理解各个过滤连的作用http://blog.csdn.net/jadyer/article/details/12172839 -->    
@@ -56,21 +61,28 @@
   
 <property name="filterChainDefinitions">  
 <value>  
-/member/login=anon  
-/member/getVerifyCodeImage=anon  
-/member/tologin=anon  
-<!-- 访问 /member/queryMyUserInfo路径需要进行身份认证，并且只有当用户的角色为"member"且权限为"member:delete"时才可以访问该路径  
- /member/queryMyUserInfo=authc,roles[member],perms[member:delete]   
--->  
-/member/queryMyUserInfo=authc  
-/admin/**=authc,perms[admin:manage]   
+<!-- 对静态资源设置匿名访问 -->
+                /adminlogin = anon
+                /adminLoginSubmitAjax = anon
+                <!-- /** = authc 所有url都必须认证通过才可以访问 -->
+                /admin/* = authc 
 </value>  
   
 </property>   
 </bean>  
-  
+
+<bean id="cacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager" />   
+<!-- <bean id="shiroEhcacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+	<property name="cacheManagerConfigFile">
+		<value>classpath:resources/ehcache-shiro.xml</value>
+	</property>
+</bean> -->
 <!-- 保证实现了shiro内部Lifecycle函数的bean的执行  （生命周期）-->  
 <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"></bean> 
 
+<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+    <property name="securityManager" ref="securityManager"/>
+</bean>
+    
 </beans>
 

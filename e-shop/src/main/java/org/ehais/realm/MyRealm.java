@@ -17,9 +17,11 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MyRealm extends AuthorizingRealm {
-
+	private static final Logger logger = LoggerFactory.getLogger(MyRealm.class);
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -34,6 +36,7 @@ public class MyRealm extends AuthorizingRealm {
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 		// TODO Auto-generated method stub
+		logger.info("======用户授权认证======");
 		// 获取当前登录的用户名
 		String username = (String) super.getAvailablePrincipal(principals);
 		List<String> roleList = new ArrayList<String>();
@@ -44,21 +47,60 @@ public class MyRealm extends AuthorizingRealm {
 		info.addRoles(roleList);
 		info.addStringPermissions(permList);
 		return info;
+		
+		
+//		String userName = principals.getPrimaryPrincipal().toString();
+//        SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
+//        simpleAuthorizationInfo.setRoles(userService.queryRolesByName(userName));
+//        return simpleAuthorizationInfo;
+        
+        
+		
+		//获取登录时输入的用户名  
+//        String loginName=(String) principalCollection.fromRealm(getName()).iterator().next();  
+//        //到数据库查是否有此对象  
+//        User user=userService.findByName(loginName);  
+//        if(user!=null){  
+//            //权限信息对象info,用来存放查出的用户的所有的角色（role）及权限（permission）  
+//            SimpleAuthorizationInfo info=new SimpleAuthorizationInfo();  
+//            //用户的角色集合  
+//            info.setRoles(user.getRolesName());  
+//            //用户的角色对应的所有权限，如果只使用角色定义访问权限，下面的四行可以不要  
+//            List<Role> roleList=user.getRoleList();  
+//            for (Role role : roleList) {  
+//                info.addStringPermissions(role.getPermissionsName());  
+//            }  
+//            return info;  
+//        }  
+//        return null;  
+        
 	}
 
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authToken) throws AuthenticationException {
 		// TODO Auto-generated method stub
-
+		logger.info("======用户登陆认证======");
 		UsernamePasswordToken token = (UsernamePasswordToken) authToken;
 		System.out.println(
 				"验证当前Subject时获取到token为" + ReflectionToStringBuilder.toString(token, ToStringStyle.MULTI_LINE_STYLE));
 
-		AuthenticationInfo info = new SimpleAuthenticationInfo("user", "password", getName());
+		System.out.println("getName():"+getName()+";token:"+token.getUsername());
+		
+		AuthenticationInfo info = new SimpleAuthenticationInfo(token.getUsername(), token.getPassword(), getName());
+		return info;
 		// 将当前用户设置到Session中去以便获取当前用户信息
 //		this.setSession("currentUser", user);
 
-		return null;
+		
+//		String userName = authenticationToken.getPrincipal().toString();
+//        User user = userService.queryUserByName(userName);
+//        if (user!=null) {
+//            AuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(user.getUserName(), user.getPassword(), "peng");
+//            return authenticationInfo;
+//        }
+//        return null;
+        
+//		return null;
 	}
 
 	/**
