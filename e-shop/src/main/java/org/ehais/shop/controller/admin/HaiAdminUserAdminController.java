@@ -105,12 +105,13 @@ public class  HaiAdminUserAdminController extends CommonController {
 	public String haiAdminUserAddSubmit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@Validated({EInsertValidator.class,EUniqueValidator.class})  @ModelAttribute("adminuser") EHaiAdminUserWithBLOBs adminuser,
-			BindingResult result
+			BindingResult result,
+			@RequestParam(value = "roleId", required = true) String roleId
 			) {
 			if(result.hasErrors())return this.writeBindingResult(result);
 		try{
 			
-			ReturnObject<EHaiAdminUserWithBLOBs> rm = haiAdminUserService.adminuser_insert_submit(request, adminuser);
+			ReturnObject<EHaiAdminUserWithBLOBs> rm = haiAdminUserService.adminuser_insert_submit(request, adminuser,roleId);
 			return this.writeJson(rm);
 			
 		}catch(Exception e){
@@ -146,11 +147,12 @@ public class  HaiAdminUserAdminController extends CommonController {
 	public String haiAdminUserEditSubmit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@Validated({EUpdateValidator.class}) @ModelAttribute("adminuser") EHaiAdminUserWithBLOBs adminuser,
-			BindingResult result
+			BindingResult result,
+			@RequestParam(value = "roleId", required = true) String roleId
 			) {
 			if(result.hasErrors())return this.writeBindingResult(result);
 		try{
-			return this.writeJson(haiAdminUserService.adminuser_update_submit(request,adminuser));
+			return this.writeJson(haiAdminUserService.adminuser_update_submit(request,adminuser,roleId));
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("adminuser", e);

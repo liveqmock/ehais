@@ -128,6 +128,69 @@ $(function(){
 </#macro>
 
 
+<!-- bootstrap风格字符串的复选项控件：< @ BSCheckboxChatPicker id="" key="" text="" list={} value={} /> -->
+<#macro BSCheckboxChatPicker id="" key="" text="" list={} value="" >
+	<ul class="checkboxPicker" id="checkboxPicker_${id}">
+		<#if (list?? && list?size > 0) >
+		<#if list?is_hash_ex>
+			<#local keys=list?keys/>
+			<#list keys as key>
+				
+				<#assign active="">
+				 <#if (value?? && value?size > 0) >
+				 	<#list value as val>
+					 	<#if (key == val!'0') >
+					 		<#assign active="active">
+					 	</#if>
+				 	</#list>
+				 </#if>
+				 
+				<li value="${key}" class="${active}" >${list[key]}</li>
+			</#list>
+		<#else>
+			<#list list as item>
+				 <#assign active="">
+				 <#if (value?? && value?size > 0) >
+				 	<#list value as val>
+					 	<#if (item[key]?string('') == (val!'0')) >
+					 		<#assign active="active">
+					 	</#if>
+				 	</#list>
+				 </#if>
+				<li value="${item[key]!0}" class="${active}" >${item[text]!''}</li>
+			</#list>
+			</#if>
+		</#if>
+	</ul>
+	<#assign kvalue="">
+	<#if (value?? && value?size > 0) >
+		<#list value as val>
+			<#assign kvalue="${kvalue},${val}">
+		</#list>
+	</#if>
+	<#if (kvalue?length > 0)>
+		<#assign kvalue="${kvalue?substring(1,kvalue?length)}">
+	</#if>
+	
+	<input type="hidden" id="${id}" name="${id}" value="${kvalue}">
+	<script type="text/javascript">
+	$(function(){
+		$("#checkboxPicker_${id} li").click(function(){
+			$(this).toggleClass("active");
+			$("#${id}").val("");
+			var idval = "";
+			$("#checkboxPicker_${id} li.active").each(function(){
+				idval+=$(this).val()+",";
+			});
+			if(idval.length>0){
+				$("#${id}").val(idval.substr(0,idval.length-1));
+			}
+		});
+	});
+	</script>
+</#macro>
+
+
 <!-- 下拉菜单控件：< @ selectPicker id="" key="" text="" list={} value=((null?string(''))!'') defaultValue="" defaultText="" /> -->
 <#macro selectPicker id="" key="" text="" list={} value="" defaultValue="" defaultText="">
 	<select class="form-control" id="${id}" name="${id}" >

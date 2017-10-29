@@ -1,6 +1,8 @@
 package org.ehais.shop.service.impl;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -12,16 +14,21 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
 import org.ehais.epublic.mapper.EHaiAdminUserMapper;
+import org.ehais.epublic.mapper.ThinkRoleAdminMapper;
 import org.ehais.epublic.mapper.ThinkRoleMapper;
 import org.ehais.epublic.model.EHaiAdminUser;
 import org.ehais.epublic.model.EHaiAdminUserExample;
 import org.ehais.epublic.model.EHaiAdminUserWithBLOBs;
 import org.ehais.epublic.model.ThinkRole;
+import org.ehais.epublic.model.ThinkRoleAdminExample;
+import org.ehais.epublic.model.ThinkRoleAdminKey;
+import org.ehais.epublic.model.ThinkRoleExample;
 import org.ehais.model.BootStrapModel;
 import org.ehais.service.impl.CommonServiceImpl;
 import org.ehais.shop.service.HaiAdminUserService;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
+import org.ehais.util.EncryptUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -47,6 +54,8 @@ public class HaiAdminUserServiceImpl  extends CommonServiceImpl implements HaiAd
 	private EHaiAdminUserMapper haiAdminUserMapper;
 	@Autowired
 	private ThinkRoleMapper thinkRoleMapper;
+	@Autowired
+	private ThinkRoleAdminMapper thinkRoleAdminMapper;
 
 
 	public ReturnObject<EHaiAdminUser> adminuser_list(HttpServletRequest request) throws Exception{
@@ -74,16 +83,22 @@ public class HaiAdminUserServiceImpl  extends CommonServiceImpl implements HaiAd
 		
 		if(StringUtils.isNotEmpty(userName))c.andUserNameLike("%"+userName+"%");
 		List<EHaiAdminUser> list = haiAdminUserMapper.selectByExample(example);
+		List<Long> adminIds = new ArrayList<Long>();
 		for (EHaiAdminUser eHaiAdminUser : list) {
 			eHaiAdminUser.setPassword(null);
+			adminIds.add(eHaiAdminUser.getAdminId());
 		}
+		
 		long total = haiAdminUserMapper.countByExample(example);
 
-
-
 		Map<String, Object> map = new HashMap<String, Object>();
+		if(adminIds.size()>0){
+			ThinkRoleAdminExample rae = new ThinkRoleAdminExample();
+			rae.createCriteria().andAdminIdIn(adminIds);
+			List<ThinkRoleAdminKey> raList = thinkRoleAdminMapper.selectByExample(rae);
+			map.put("role_admin", raList);
+		}
 		rm.setMap(map);
-
 
 		rm.setCode(1);
 		rm.setRows(list);
@@ -103,6 +118,8 @@ public class HaiAdminUserServiceImpl  extends CommonServiceImpl implements HaiAd
 
 
 		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("role_list", this.role_list(request));
+		map.put("role", new ArrayList<String>());
 		rm.setMap(map);
 
 
@@ -112,7 +129,7 @@ public class HaiAdminUserServiceImpl  extends CommonServiceImpl implements HaiAd
 		return rm;
 	}
 	
-	public ReturnObject<EHaiAdminUserWithBLOBs> adminuser_insert_submit(HttpServletRequest request,EHaiAdminUserWithBLOBs model)
+	public ReturnObject<EHaiAdminUserWithBLOBs> adminuser_insert_submit(HttpServletRequest request,EHaiAdminUserWithBLOBs model,String roleId)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiAdminUserWithBLOBs> rm = new ReturnObject<EHaiAdminUserWithBLOBs>();
@@ -132,8 +149,11 @@ public class HaiAdminUserServiceImpl  extends CommonServiceImpl implements HaiAd
 			return rm;
 		}
 
+		model.setPassword(EncryptUtils.md5("123456"));
 
 		int code = haiAdminUserMapper.insertSelective(model);
+		
+		this.saveRoleAdmin(request, model.getAdminId(), roleId);
 		rm.setCode(code);
 		rm.setMsg("添加成功");
 		return rm;
@@ -157,6 +177,8 @@ public class HaiAdminUserServiceImpl  extends CommonServiceImpl implements HaiAd
 
 
 		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("role_list", this.role_list(request));
+		map.put("role", this.role_admin(request, adminId));
 		rm.setMap(map);
 
 		rm.setAction("edit");
@@ -165,7 +187,7 @@ public class HaiAdminUserServiceImpl  extends CommonServiceImpl implements HaiAd
 		return rm;
 	}
 	
-	public ReturnObject<EHaiAdminUserWithBLOBs> adminuser_update_submit(HttpServletRequest request,EHaiAdminUserWithBLOBs model)
+	public ReturnObject<EHaiAdminUserWithBLOBs> adminuser_update_submit(HttpServletRequest request,EHaiAdminUserWithBLOBs model,String roleId)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiAdminUserWithBLOBs> rm = new ReturnObject<EHaiAdminUserWithBLOBs>();
@@ -187,7 +209,7 @@ public class HaiAdminUserServiceImpl  extends CommonServiceImpl implements HaiAd
 
 bean.setUserName(model.getUserName());
 bean.setEmail(model.getEmail());
-bean.setPassword(model.getPassword());
+//bean.setPassword(model.getPassword());
 bean.setEcSalt(model.getEcSalt());
 bean.setAddTime(model.getAddTime());
 bean.setLastLogin(model.getLastLogin());
@@ -207,6 +229,9 @@ bean.setPartnerId(model.getPartnerId());
 		Date date = new Date();
 
 		int code = haiAdminUserMapper.updateByExampleSelective(bean, example);
+		
+		this.saveRoleAdmin(request, model.getAdminId(), roleId);
+		
 		rm.setCode(code);
 		rm.setMsg("编辑成功");
 		return rm;
@@ -229,6 +254,7 @@ bean.setPartnerId(model.getPartnerId());
 		EHaiAdminUserWithBLOBs model = list.get(0);
 
 		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("role_list", this.role_list(request));
 		rm.setMap(map);
 
 		rm.setCode(1);
@@ -301,15 +327,44 @@ bean.setPartnerId(model.getPartnerId());
 
 	private Map<String,String> role_list(HttpServletRequest request){
 		Map<String,String> map = new TreeMap<String,String>();
-		
-		List<ThinkRole> troleList = thinkRoleMapper.selectByExample(null);
+		ThinkRoleExample re = new ThinkRoleExample();
+		re.setOrderByClause("role_id asc");
+		List<ThinkRole> troleList = thinkRoleMapper.selectByExample(re);
 		for (ThinkRole thinkRole : troleList) {
 			map.put(thinkRole.getRoleId().toString(), thinkRole.getName());
 		}
 		return map;
 	}
+	
+	private List<String> role_admin(HttpServletRequest request,Long adminId){
+		List<String> role = new ArrayList<String>();
+		ThinkRoleAdminExample rae = new ThinkRoleAdminExample();
+		rae.createCriteria().andAdminIdEqualTo(adminId);
+		List<ThinkRoleAdminKey> roleList = thinkRoleAdminMapper.selectByExample(rae);
+		
+		for (ThinkRoleAdminKey thinkRoleAdminKey : roleList) {
+			role.add(thinkRoleAdminKey.getRoleId().toString());
+		}
+		
+		return role;
+	}
 
-
+	
+	private void saveRoleAdmin(HttpServletRequest request,Long adminId,String roleId){
+		ThinkRoleAdminExample rae = new ThinkRoleAdminExample();
+		rae.createCriteria().andAdminIdEqualTo(adminId);
+		thinkRoleAdminMapper.deleteByExample(rae);
+		if(StringUtils.isNoneBlank(roleId)){
+//			List<String> result = Arrays.asList(StringUtils.split(roleId,","));
+			String[] roleids = StringUtils.split(roleId,",");
+			for (String string : roleids) {
+				ThinkRoleAdminKey ra = new ThinkRoleAdminKey();
+				ra.setAdminId(adminId);
+				ra.setRoleId(Integer.valueOf(string));
+				thinkRoleAdminMapper.insert(ra);
+			}
+		}
+	}
 
 
 

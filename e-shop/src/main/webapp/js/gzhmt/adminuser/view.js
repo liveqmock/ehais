@@ -54,61 +54,12 @@ $(function(){
         columns: [
 
 {
-    field: 'adminId',
-    title: 'admin_id'
-},{
     field: 'userName',
-    title: 'user_name'
+    title: '用户名'
 },{
     field: 'email',
-    title: 'email'
-},{
-    field: 'password',
-    title: 'password'
-},{
-    field: 'ecSalt',
-    title: 'ec_salt'
-},{
-    field: 'addTime',
-    title: 'add_time'
-},{
-    field: 'lastLogin',
-    title: 'last_login'
-},{
-    field: 'lastIp',
-    title: 'last_ip'
-},{
-    field: 'actionList',
-    title: 'action_list'
-},{
-    field: 'navList',
-    title: 'nav_list'
-},{
-    field: 'langType',
-    title: 'lang_type'
-},{
-    field: 'agencyId',
-    title: 'agency_id'
-},{
-    field: 'businessId',
-    title: 'business_id'
-},{
-    field: 'todolist',
-    title: 'todolist'
-},{
-    field: 'storeId',
-    title: 'store_id'
-},{
-    field: 'projectFolder',
-    title: '使用文件夹'
-},{
-    field: 'classify',
-    title: 'classify'
-},{
-    field: 'partnerId',
-    title: 'partner_id'
+    title: '邮箱'
 },
-
         {
             field: 'adminId',
             title: '操作',

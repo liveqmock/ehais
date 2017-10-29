@@ -13,9 +13,9 @@ function haiAdminUserAddSubmit(){
 	if($("#email").val() == undefined || $("#email").val().length == 0){
 		layer.msg("请输入邮箱");return ;
 	}
-	if($("#password").val() == undefined || $("#password").val().length == 0){
-		layer.msg("请输入密码");return ;
-	}
+//	if($("#password").val() == undefined || $("#password").val().length == 0){
+//		layer.msg("请输入密码");return ;
+//	}
 
 	
 	
@@ -51,9 +51,9 @@ function haiAdminUserEditSubmit(){
 	if($("#email").val() == undefined || $("#email").val().length == 0){
 		layer.msg("请输入邮箱");return ;
 	}
-	if($("#password").val() == undefined || $("#password").val().length == 0){
-		layer.msg("请输入密码");return ;
-	}
+//	if($("#password").val() == undefined || $("#password").val().length == 0){
+//		layer.msg("请输入密码");return ;
+//	}
 
 	
 	
