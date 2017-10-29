@@ -1,13 +1,18 @@
 package org.ehais.shop.processor;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.ServletContext;
 
+import org.apache.commons.lang3.StringUtils;
+import org.ehais.cache.ERolePermissionCacheManager;
 import org.ehais.cache.EStoreAppKeySecretCacheManager;
 import org.ehais.epublic.mapper.EHaiStoreAppkeySecretMapper;
+import org.ehais.epublic.mapper.ThinkRoleMapper;
 import org.ehais.epublic.model.EHaiStoreAppkeySecret;
 import org.ehais.epublic.model.EHaiStoreAppkeySecretExample;
+import org.ehais.epublic.model.ThinkRole;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +24,8 @@ public class InitDataListener implements InitializingBean, ServletContextAware{
 
 	@Autowired
 	private EHaiStoreAppkeySecretMapper eHaiStoreAppkeySecretMapper;
+	@Autowired
+	private ThinkRoleMapper thinkRoleMapper;
 	
 	
 	public void setServletContext(ServletContext servletContext) {
@@ -40,6 +47,17 @@ public class InitDataListener implements InitializingBean, ServletContextAware{
 			cache.putStoreKey(eHaiStoreAppkeySecret.getAppkey(), eHaiStoreAppkeySecret.getSecret());
 		}
 		
+		//初始化系统权限
+		ERolePermissionCacheManager.getInstance();
+		
+		List<ThinkRole> roleList = thinkRoleMapper.selectByExampleWithBLOBs(null);
+		for (ThinkRole thinkRole : roleList) {
+			List<String> permission = null;
+			if(StringUtils.isNoneBlank(thinkRole.getPermission())){
+				permission= Arrays.asList(StringUtils.split(thinkRole.getPermission(),","));
+			}
+			ERolePermissionCacheManager.putRolePermission(thinkRole.getRoleId(), permission);
+		}
 		
 	}
 

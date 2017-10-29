@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
+import org.ehais.cache.ERolePermissionCacheManager;
 import org.ehais.common.EConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -32,12 +33,16 @@ public class PermissionFreemarkerDirective implements TemplateDirectiveModel{
 		System.out.println("权限地址："+url.toString());
 		
 		String role = (String) request.getSession().getAttribute(EConstants.SESSION_ROLE_ID_ARRAY);
-		System.out.println("role ..."+role);
+//		System.out.println("role ..."+role);
 		List<String> result = Arrays.asList(StringUtils.split(role,","));  
 		for (String string : result) {
 			System.out.println("role : "+ string);
+			if(ERolePermissionCacheManager.checkRolePermission(Integer.valueOf(string), url.toString())){
+				body.render(out);
+				return;
+			}
 		}
-		body.render(out);
+		
 	}
 
 	

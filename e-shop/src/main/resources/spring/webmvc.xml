@@ -36,15 +36,11 @@
 	</bean>
 
 
-	<mvc:resources location="/js/" mapping="/js/**"
-		cache-period="86400" />
-	<mvc:resources location="/images/" mapping="/images/**"
-		cache-period="86400" />
-	<mvc:resources location="/css/" mapping="/css/**"
-		cache-period="86400" />
-	<mvc:resources location="/uploads/" mapping="/uploads/**"
-		cache-period="86400" />
-		
+	<mvc:resources location="/js/" mapping="/js/**" cache-period="86400" />
+	<mvc:resources location="/images/" mapping="/images/**" cache-period="86400" />
+	<mvc:resources location="/css/" mapping="/css/**" cache-period="86400" />
+	<mvc:resources location="/uploads/" mapping="/uploads/**" cache-period="86400" />
+	
 	<mvc:resources mapping="/webjars/**" location="classpath:/META-INF/resources/webjars/"/>
  	<mvc:resources mapping="/ehais/**" location="classpath:/META-INF/resources/ehais/"/>
  
@@ -145,12 +141,15 @@
 	</bean>
 	
 	<bean id="loginAdminInterceptor" class="org.ehais.interceptor.AdminInterceptor">
-		<property name="loginUrl" value="/admin_login"/>
+		<property name="loginUrl" value="/adminlogin"/>
+		<property name="notpermissionUrl" value="/notpermission"/>
 		<property name="ignoreUrls">
 			<list>
-				<value>/admin_login</value>
-				<value>/adminLogin</value>
-				<value>/admin_logout</value>
+				<value>/adminlogin</value>
+				<value>/adminLoginSubmitAjax</value>
+				<value>/adminlogout</value>
+				<value>/admin/index</value>
+				<value>/admin/main</value>
 			</list>
 		</property>
 	</bean>

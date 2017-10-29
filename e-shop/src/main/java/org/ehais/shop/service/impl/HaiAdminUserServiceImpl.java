@@ -74,6 +74,9 @@ public class HaiAdminUserServiceImpl  extends CommonServiceImpl implements HaiAd
 		
 		if(StringUtils.isNotEmpty(userName))c.andUserNameLike("%"+userName+"%");
 		List<EHaiAdminUser> list = haiAdminUserMapper.selectByExample(example);
+		for (EHaiAdminUser eHaiAdminUser : list) {
+			eHaiAdminUser.setPassword(null);
+		}
 		long total = haiAdminUserMapper.countByExample(example);
 
 

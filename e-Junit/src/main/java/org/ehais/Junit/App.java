@@ -4,9 +4,11 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.ehais.util.DateUtil;
 import org.ehais.util.EncryptUtils;
 import org.junit.Test;
@@ -128,4 +130,31 @@ public class App {
 		
 		
 	}
+	
+	@Test
+	public void listtostring(){
+		List<String> list = new ArrayList<String>();
+		list.add("AA");
+//		list.add("BB");
+//		list.add("CC");
+//		list.add("DD");
+//		list.add("EE");
+//		list.add("FF");
+		
+		String str = StringUtils.join(list.toArray(), ","); 
+		System.out.println(str);
+		
+		List<String> result = Arrays.asList(StringUtils.split(str,",")); 
+		for (String string : result) {
+			System.out.println(string);
+		}
+		
+		JSONArray arr = JSONArray.fromObject(list);
+		System.out.println(arr.toString());
+		
+		JSONArray arr2 = JSONArray.fromObject(arr.toString());
+		System.out.println(arr2.toString());
+	}
+	
+	
 }
