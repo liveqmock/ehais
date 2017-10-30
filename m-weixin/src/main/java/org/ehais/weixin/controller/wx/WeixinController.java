@@ -228,6 +228,7 @@ public class WeixinController extends WxCommonController{
 			@PathVariable("controller") String controller,
 			@PathVariable("postfix") String postfix
 			){
+		System.out.println("========"+request.getScheme()+"://"+request.getServerName()+"/"+request.getRequestURI()+";"+request.getServletPath());
 		try{
 			if(request.getServerName().equals("localhost") || request.getServerName().equals("127.0.0.1")){
 				//测试使用
@@ -243,7 +244,7 @@ public class WeixinController extends WxCommonController{
 				log.info("url:"+url);
 				url = URLEncoder.encode(url, "utf-8");
 				//整理请求获取openid的微信链接
-				String wxurl = WeiXinUtil.authorize_snsapi(wpPublic.getAppid(), "snsapi_base", url);
+				String wxurl = WeiXinUtil.authorize_snsapi(wpPublic.getAppid(), "snsapi_userinfo", url);
 				log.info("wxurl:"+wxurl);
 				//滚去请求，即response.sendR***(wxurl);
 				response.sendRedirect( wxurl );

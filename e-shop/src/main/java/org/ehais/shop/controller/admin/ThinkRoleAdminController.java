@@ -1,17 +1,32 @@
 package org.ehais.shop.controller.admin;
 
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.ehais.annotation.EPermissionController;
 import org.ehais.annotation.EPermissionMethod;
+import org.ehais.annotation.EPermissionModuleGroup;
 import org.ehais.controller.CommonController;
 import org.ehais.epublic.model.ThinkRole;
 import org.ehais.epublic.validator.EInsertValidator;
 import org.ehais.epublic.validator.EUniqueValidator;
 import org.ehais.epublic.validator.EUpdateValidator;
+import org.ehais.model.EPermissionControllerModel;
+import org.ehais.model.EPermissionMethodModel;
+import org.ehais.model.EPermissionModuleGroupModel;
 import org.ehais.protocol.PermissionProtocol;
 import org.ehais.shop.service.ThinkRoleService;
 import org.ehais.tools.EConditionObject;
@@ -28,10 +43,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;  
 
+@EPermissionModuleGroup(name="系统模组")
 
-
-@EPermissionController(intro="角色功能",value="thinkRoleController")
+@EPermissionController(name="角色功能",value="thinkRoleController")
 @Controller
 @RequestMapping("/admin")
 public class  ThinkRoleAdminController extends CommonController {
@@ -41,8 +61,245 @@ public class  ThinkRoleAdminController extends CommonController {
 	@Autowired
 	private ThinkRoleService thinkRoleService;
 	
+	@Autowired
+    private RequestMappingHandlerMapping handlerMapping;
 	
-	@EPermissionMethod(intro="打开角色页面",value="thinkRoleView",type=PermissionProtocol.URL)
+	//获取所有类文件
+	private Set<String> controllerClassNameList(RequestMappingHandlerMapping handlerMapping){
+		Set<String> set = new HashSet<String>();
+		Map<RequestMappingInfo, HandlerMethod> map = handlerMapping.getHandlerMethods();
+		for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : map.entrySet()) {  
+      	  
+//            System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());  
+          
+            HandlerMethod handlerMethod = entry.getValue(); 
+            String controllerName = handlerMethod.getBeanType().getName();
+            set.add(controllerName);
+        }
+		return set;
+	}
+	
+	//获取模组与controller
+	private Map<String,Set<String>> moduleList(Set<String> set) throws ClassNotFoundException{
+		Map<String,Set<String>> map = new HashMap<String,Set<String>>();
+		for (String string : set) {
+			
+			Class clazz = Class.forName(string);
+			if(clazz.isAnnotationPresent(EPermissionModuleGroup.class)){
+				
+				EPermissionModuleGroup ann = (EPermissionModuleGroup) clazz.getAnnotation(EPermissionModuleGroup.class);
+//				mapModule.put(string, ann.name());
+				
+//				Set<String> s = map.get(ann.name());
+//				if(s == null){
+//					map
+//				}
+			}
+			/*
+			Annotation[] anto = clazz.getAnnotations();
+			for (Annotation annotation : anto) {
+				System.out.println("annotation.toString():"+annotation.toString());
+			}
+			
+			Method[] methods = clazz.getMethods();
+			for(Method method : methods) {
+				System.out.println("method.getName():"+method.getName());
+				if(method.isAnnotationPresent(EPermissionModuleGroup.class)) {
+					
+				}
+			}
+			*/
+			
+		}
+		
+		
+		
+		
+		
+		return map;
+	}
+	
+	//获取注解模组名称
+	private String permissionModuleGroupName(String className) throws ClassNotFoundException{
+		Class clazz = Class.forName(className);
+		if(clazz.isAnnotationPresent(EPermissionModuleGroup.class)){
+			EPermissionModuleGroup ann = (EPermissionModuleGroup) clazz.getAnnotation(EPermissionModuleGroup.class);
+			return ann.name();
+		}
+		return null;
+	}
+	
+	//获取注解控制controller名称
+	private EPermissionControllerModel permissionControllerName(String className) throws ClassNotFoundException{
+		Class clazz = Class.forName(className);
+		if(clazz.isAnnotationPresent(EPermissionController.class)){
+			EPermissionController ann = (EPermissionController) clazz.getAnnotation(EPermissionController.class);
+			EPermissionControllerModel cm = new EPermissionControllerModel();
+			cm.setName(ann.name());
+			cm.setValue(ann.value());
+			return cm;
+		}
+		return null;
+	}
+	//获取注解Method名称
+//	private EPermissionMethodModel permissionMethodName(RequestMappingInfo info){
+//		Method[] methods = info.getClass().getMethods();
+//		
+//	}
+	//从模组列表匹配返回模组对象
+	private EPermissionModuleGroupModel getPermissionModuleGroup(List<EPermissionModuleGroupModel> listModule,String moduleName){
+		for (EPermissionModuleGroupModel ePermissionModuleGroupModel : listModule) {
+			if(ePermissionModuleGroupModel.getName().equals(moduleName))return ePermissionModuleGroupModel;
+		}
+		return null;
+	}
+	
+	//从controller列表匹配返回controller对象
+	private EPermissionControllerModel getPermissionController(List<EPermissionControllerModel> listMethod,String className){
+		for (EPermissionControllerModel ePermissionControllerModel : listMethod) {
+			if(ePermissionControllerModel.getClassName().equals(className))return ePermissionControllerModel;
+		}
+		return null;
+	}
+	
+	@EPermissionMethod(intro="权限管理",value="thinkRoleSetting",type=PermissionProtocol.URL)
+	@RequestMapping("/thinkRoleSetting")
+	public String thinkRoleSetting(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response ) {	
+		try{
+//			Set<String> controllerList = this.controllerClassNameList(handlerMapping);
+//			for (String str : controllerList) {  
+//			      System.out.println("=========="+str);  
+//			} 
+//			this.moduleList(controllerList);
+//			Map<String, Object> mapController = controllerClassNameHandlerMapping.getHandlerMap();
+//			for (Map.Entry<String, Object> entry : mapController.entrySet()) {  
+//				System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());  
+//			}
+//			WebApplicationContext wc = getWebApplicationContext(request.getSession().getServletContext());  
+//	        RequestMappingHandlerMapping rmhp = wc.getBean(RequestMappingHandlerMapping.class);  
+	        Map<RequestMappingInfo, HandlerMethod> map = handlerMapping.getHandlerMethods();
+	        
+	        /*
+	        for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : map.entrySet()) {  
+	        	  
+//	            System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());  
+	          
+	            HandlerMethod handlerMethod = entry.getValue(); 
+	            String controllerName = handlerMethod.getBeanType().getName();
+	            System.out.println(controllerName);
+	        }  
+	        */
+	        
+	        List<EPermissionModuleGroupModel> mapPermission = new ArrayList<EPermissionModuleGroupModel>();
+	        
+	        
+	        for (Iterator<RequestMappingInfo> iterator = map.keySet().iterator(); iterator.hasNext();) {    
+	            RequestMappingInfo info = iterator.next(); //key 
+	            
+	            HandlerMethod handlerMethod = map.get(info); //value
+	            String controllerName = handlerMethod.getBeanType().getName();//读取当前是哪个controller
+	            String moduleGroupName = this.permissionModuleGroupName(controllerName);//读取当前controller的模组注解名称
+	            if(StringUtils.isBlank(moduleGroupName))continue;//没有注解模组，就算了
+	            EPermissionModuleGroupModel pmgm = this.getPermissionModuleGroup(mapPermission,moduleGroupName);//根据模组名称，获取名称与所有的controller列表
+	            List<EPermissionControllerModel> listController = null;
+	            if(pmgm == null) {//第一次进入，先初始化列表包名称
+	            	pmgm = new EPermissionModuleGroupModel();
+	            	listController = new ArrayList<EPermissionControllerModel>();
+	            	pmgm.setName(moduleGroupName);
+	            	pmgm.setListController(listController);
+	            	mapPermission.add(pmgm);
+	            }else{
+	            	listController = pmgm.getListController();//当前模组名称下面，所有的controller
+	            }
+
+	            //读取controller的注解
+	            EPermissionControllerModel pcm = this.permissionControllerName(controllerName);//
+	            if(pcm == null)continue;//如果当前controller没有注解，也不进行下去
+	            
+	            EPermissionControllerModel pcm2 = this.getPermissionController(pmgm.getListController(), controllerName);
+	            if(pcm2 == null){//如果列表还未有controller，就先加进来
+	            	listController.add(pcm);	            	
+	            }
+	            /*
+	            System.out.println("控制层："+controllerName);
+	            Map<String,Map<String,Map<String,String>>> mController = mapController.get(controllerName);
+	            if(mController == null){
+	            	System.out.println("创建控制场");
+	            	mController = new TreeMap<String,Map<String,String>>();
+	            	mController.put("name", this.permissionControllerName(controllerName));
+	            	mController.put("method", new TreeMap<String,Map<String,Map<String,String>>>());	            	
+	            	mapController.put(controllerName, mController);
+	            }
+	            System.out.println(mapController.toString());
+	            Map<String,Map<String,String>> mMethod = (Map<String,Map<String,String>>)mController.get("method");
+	            */
+//	            System.out.print("1:"+info.getConsumesCondition());  
+//	            System.out.print("2:"+info.getCustomCondition());  
+//	            System.out.print("3:"+info.getHeadersCondition());  
+//	            System.out.print("4:"+info.getMethodsCondition());  
+//	            System.out.print("5:"+info.getParamsCondition());  
+//	            System.out.print("6:"+info.getPatternsCondition());  
+//	            System.out.print("7:"+info.getProducesCondition());  
+//	            System.out.print("8:"+info.getClass().getName());  
+	            
+	            
+	            
+//	            System.out.print("==================");  
+	              
+	           
+	            
+//	            System.out.print("8:"+controllerName+"/////");  
+//	            System.out.print(handlerMethod.getMethod().getName() + "--");  
+//	            System.out.print(handlerMethod.getMethodAnnotation(RequestMapping.class).name() + "--");  
+//	            System.out.print(method.getMethodAnnotation(RequestMapping.class).params()[0]);  
+	            
+	            /*
+	            Method[] methods = info.getClass().getMethods();
+	            for(Method method : methods) {
+	            	if(method.isAnnotationPresent(RequestMapping.class)) {
+	            		RequestMapping mapping = method.getAnnotation(RequestMapping.class);
+	            		 String[] urls = mapping.value();
+	                     String name = null;
+	                     String value = null;
+	                     String relation = null;
+	                     if(method.isAnnotationPresent(EPermissionMethod.class)) {
+	                    	 EPermissionMethod pm = method.getAnnotation(EPermissionMethod.class);
+	                    	 value = pm.value();
+	                    	 name = pm.name();
+	                    	 relation = pm.relation();
+	                    	 if(StringUtils.isNotBlank(name)){
+	                    		 Map<String,String> mapMethod = mMethod.get(value);
+	                    		 if(mapMethod == null){
+	                    			 mapMethod = new HashMap<String,String>();
+	                    			 mapMethod.put("name", name);
+	                    			 mapMethod.put("relation", relation);
+	                    			 mMethod.put(value, mapMethod);
+	                    		 }
+	                    	 }
+	                    	 
+	                         System.out.print("::::::"+name+"::"+value);
+	                     }
+	            	}
+	            }
+	            */
+	            System.out.println();  
+	        } 
+	        
+	        System.out.println(mapPermission.toString());
+	        
+			return "/admin/role/permission";
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("role", e);
+			return this.errorJump(modelMap, e.getMessage());
+		}
+		
+	}
+	
+	
+	
+	@EPermissionMethod(intro="打开角色页面",value="thinkRoleView",relation="thinkRoleListJson" ,type=PermissionProtocol.URL)
 	@RequestMapping("/thinkRoleView")
 	public String thinkRoleView(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) {	
@@ -79,7 +336,7 @@ public class  ThinkRoleAdminController extends CommonController {
 	
 	
 	
-	@EPermissionMethod(name="新增",intro="新增角色",value="thinkRoleAddDetail",type=PermissionProtocol.BUTTON)
+	@EPermissionMethod(name="新增",intro="新增角色",value="thinkRoleAddDetail",relation="thinkRoleAddSubmit",type=PermissionProtocol.BUTTON)
 	@RequestMapping(value="/thinkRoleAddDetail",method=RequestMethod.GET)
 	public String thinkRoleAddDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response
@@ -121,7 +378,7 @@ public class  ThinkRoleAdminController extends CommonController {
 	
 
 	
-	@EPermissionMethod(name="编辑",intro="编辑角色",value="thinkRoleEditDetail",type=PermissionProtocol.BUTTON)
+	@EPermissionMethod(name="编辑",intro="编辑角色",value="thinkRoleEditDetail",relation="thinkRoleEditSubmit",type=PermissionProtocol.BUTTON)
 	@RequestMapping(value="/thinkRoleEditDetail",method=RequestMethod.GET)
 	public String thinkRoleEditDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -175,7 +432,14 @@ public class  ThinkRoleAdminController extends CommonController {
 	}
 	
 	
-
+	
+	
+	
+	
+	public WebApplicationContext getWebApplicationContext(ServletContext sc) {  
+        return WebApplicationContextUtils.getRequiredWebApplicationContext(sc);  
+    } 
+	
 
 }
 

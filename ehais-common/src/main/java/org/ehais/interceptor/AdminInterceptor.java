@@ -23,7 +23,7 @@ public class AdminInterceptor extends HandlerInterceptorAdapter{
 			HttpServletResponse response, Object handler) throws Exception {
 		//获取当前请求URL
 		String url = request.getRequestURI().toString();
-		System.out.println(url);
+//		System.out.println(url);
 		
 		String account = (String) request.getSession().getAttribute(EConstants.SESSION_ADMIN_NAME);
 		
@@ -47,6 +47,7 @@ public class AdminInterceptor extends HandlerInterceptorAdapter{
 				
 		//权限判断
 		String role = (String) request.getSession().getAttribute(EConstants.SESSION_ROLE_ID_ARRAY);
+//		System.out.println("role==== : "+ role);
 		List<String> result = Arrays.asList(StringUtils.split(role,","));  
 		for (String string : result) {
 //			System.out.println("role : "+ string);

@@ -97,7 +97,7 @@
 		<property name="jdbcUrl" value="${jdbc_url}" />
 	</bean>
 
-	<bean class="org.ehais.shop.processor.InitDataListener"></bean>
+	<bean class="org.ehais.epublic.processor.InitDataListener"></bean>
 
 
 
