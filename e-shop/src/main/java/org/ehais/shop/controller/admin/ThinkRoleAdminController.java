@@ -9,7 +9,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +32,7 @@ import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -46,8 +46,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;  
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+
+import net.sf.json.JSONArray;  
 
 @EPermissionModuleGroup(name="系统模组")
 
@@ -135,6 +138,7 @@ public class  ThinkRoleAdminController extends CommonController {
 		if(clazz.isAnnotationPresent(EPermissionController.class)){
 			EPermissionController ann = (EPermissionController) clazz.getAnnotation(EPermissionController.class);
 			EPermissionControllerModel cm = new EPermissionControllerModel();
+			cm.setClassName(className);
 			cm.setName(ann.name());
 			cm.setValue(ann.value());
 			return cm;
@@ -142,10 +146,24 @@ public class  ThinkRoleAdminController extends CommonController {
 		return null;
 	}
 	//获取注解Method名称
-//	private EPermissionMethodModel permissionMethodName(RequestMappingInfo info){
-//		Method[] methods = info.getClass().getMethods();
-//		
-//	}
+	private List<EPermissionMethodModel> permissionMethodName(String className) throws ClassNotFoundException{
+		List<EPermissionMethodModel> list = new ArrayList<EPermissionMethodModel>();
+		Class clazz = Class.forName(className);
+		Method[] methods = clazz.getDeclaredMethods(); 
+		for(Method method : methods) {
+			if(method.isAnnotationPresent(EPermissionMethod.class)) {
+//				System.out.println("获取方法的名称。。。------------EPermissionMethod----------------"+method.getName());
+				EPermissionMethod pm = method.getAnnotation(EPermissionMethod.class);
+				EPermissionMethodModel model = new EPermissionMethodModel();
+				model.setName(pm.name());
+				model.setValue(pm.value());
+				model.setRelation(pm.relation());
+				if(StringUtils.isNotBlank(pm.name()))list.add(model);
+			}
+		}
+		
+		return list;
+	}
 	//从模组列表匹配返回模组对象
 	private EPermissionModuleGroupModel getPermissionModuleGroup(List<EPermissionModuleGroupModel> listModule,String moduleName){
 		for (EPermissionModuleGroupModel ePermissionModuleGroupModel : listModule) {
@@ -162,15 +180,47 @@ public class  ThinkRoleAdminController extends CommonController {
 		return null;
 	}
 	
-	@EPermissionMethod(intro="权限管理",value="thinkRoleSetting",type=PermissionProtocol.URL)
+	@EPermissionMethod(name="权限管理",intro="权限管理",value="thinkRoleSetting",type=PermissionProtocol.URL)
 	@RequestMapping("/thinkRoleSetting")
 	public String thinkRoleSetting(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) {	
 		try{
-//			Set<String> controllerList = this.controllerClassNameList(handlerMapping);
-//			for (String str : controllerList) {  
-//			      System.out.println("=========="+str);  
-//			} 
+			
+			List<EPermissionModuleGroupModel> listPermission = new ArrayList<EPermissionModuleGroupModel>();
+	        
+	        
+			Set<String> controllerList = this.controllerClassNameList(handlerMapping);
+			for (String controllerName : controllerList) {    
+				String moduleGroupName = this.permissionModuleGroupName(controllerName);//读取当前controller的模组注解名称
+				if(StringUtils.isBlank(moduleGroupName))continue;//没有注解模组，就算了
+				EPermissionModuleGroupModel pmgm = this.getPermissionModuleGroup(listPermission,moduleGroupName);//根据模组名称，获取名称与所有的controller列表
+				List<EPermissionControllerModel> listController = null;
+				if(pmgm == null) {//第一次进入，先初始化列表包名称
+					pmgm = new EPermissionModuleGroupModel();
+					listController = new ArrayList<EPermissionControllerModel>();
+					pmgm.setName(moduleGroupName);
+					pmgm.setListController(listController);
+					listPermission.add(pmgm);
+				}else{
+					listController = pmgm.getListController();//当前模组名称下面，所有的controller
+				}
+				
+				//读取controller的注解
+				EPermissionControllerModel pcm = this.permissionControllerName(controllerName);//
+				if(pcm == null)continue;//如果当前controller没有注解，也不进行下去
+				
+//				EPermissionControllerModel pcm2 = this.getPermissionController(pmgm.getListController(), controllerName);
+//				if(pcm2 == null){//如果列表还未有controller，就先加进来
+//					listController.add(pcm);	            	
+//				}
+				
+//				System.out.println("========调用方法的注解.....");
+				List<EPermissionMethodModel> listMethod = this.permissionMethodName(controllerName);
+				pcm.setListMethod(listMethod);
+		        
+				listController.add(pcm);
+		            
+			} 
 //			this.moduleList(controllerList);
 //			Map<String, Object> mapController = controllerClassNameHandlerMapping.getHandlerMap();
 //			for (Map.Entry<String, Object> entry : mapController.entrySet()) {  
@@ -178,7 +228,7 @@ public class  ThinkRoleAdminController extends CommonController {
 //			}
 //			WebApplicationContext wc = getWebApplicationContext(request.getSession().getServletContext());  
 //	        RequestMappingHandlerMapping rmhp = wc.getBean(RequestMappingHandlerMapping.class);  
-	        Map<RequestMappingInfo, HandlerMethod> map = handlerMapping.getHandlerMethods();
+//	        Map<RequestMappingInfo, HandlerMethod> map = handlerMapping.getHandlerMethods();
 	        
 	        /*
 	        for (Map.Entry<RequestMappingInfo, HandlerMethod> entry : map.entrySet()) {  
@@ -191,36 +241,19 @@ public class  ThinkRoleAdminController extends CommonController {
 	        }  
 	        */
 	        
-	        List<EPermissionModuleGroupModel> mapPermission = new ArrayList<EPermissionModuleGroupModel>();
 	        
 	        
-	        for (Iterator<RequestMappingInfo> iterator = map.keySet().iterator(); iterator.hasNext();) {    
-	            RequestMappingInfo info = iterator.next(); //key 
+//	        for (Iterator<RequestMappingInfo> iterator = map.keySet().iterator(); iterator.hasNext();) {    
+//	            RequestMappingInfo info = iterator.next(); //key 
+//	            
+//	            HandlerMethod handlerMethod = map.get(info); //value
+//	            String controllerName = handlerMethod.getBeanType().getName();//读取当前是哪个controller
+//	            
+//	            
 	            
-	            HandlerMethod handlerMethod = map.get(info); //value
-	            String controllerName = handlerMethod.getBeanType().getName();//读取当前是哪个controller
-	            String moduleGroupName = this.permissionModuleGroupName(controllerName);//读取当前controller的模组注解名称
-	            if(StringUtils.isBlank(moduleGroupName))continue;//没有注解模组，就算了
-	            EPermissionModuleGroupModel pmgm = this.getPermissionModuleGroup(mapPermission,moduleGroupName);//根据模组名称，获取名称与所有的controller列表
-	            List<EPermissionControllerModel> listController = null;
-	            if(pmgm == null) {//第一次进入，先初始化列表包名称
-	            	pmgm = new EPermissionModuleGroupModel();
-	            	listController = new ArrayList<EPermissionControllerModel>();
-	            	pmgm.setName(moduleGroupName);
-	            	pmgm.setListController(listController);
-	            	mapPermission.add(pmgm);
-	            }else{
-	            	listController = pmgm.getListController();//当前模组名称下面，所有的controller
-	            }
-
-	            //读取controller的注解
-	            EPermissionControllerModel pcm = this.permissionControllerName(controllerName);//
-	            if(pcm == null)continue;//如果当前controller没有注解，也不进行下去
 	            
-	            EPermissionControllerModel pcm2 = this.getPermissionController(pmgm.getListController(), controllerName);
-	            if(pcm2 == null){//如果列表还未有controller，就先加进来
-	            	listController.add(pcm);	            	
-	            }
+	            
+	            
 	            /*
 	            System.out.println("控制层："+controllerName);
 	            Map<String,Map<String,Map<String,String>>> mController = mapController.get(controllerName);
@@ -283,10 +316,10 @@ public class  ThinkRoleAdminController extends CommonController {
 	            	}
 	            }
 	            */
-	            System.out.println();  
-	        } 
+//	        } 
 	        
-	        System.out.println(mapPermission.toString());
+	        System.out.println(JSONArray.fromObject(listPermission).toString());
+	        modelMap.addAttribute("listPermission", listPermission);
 	        
 			return "/admin/role/permission";
 		}catch(Exception e){

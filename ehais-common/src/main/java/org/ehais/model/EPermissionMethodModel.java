@@ -7,6 +7,7 @@ public class EPermissionMethodModel {
 	private String type;
 	private String intro;
 	private String relation;
+	private String url;
 	public EPermissionMethodModel() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -48,6 +49,12 @@ public class EPermissionMethodModel {
 	}
 	public void setRelation(String relation) {
 		this.relation = relation;
+	}
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
 	}
 	
     

@@ -3,8 +3,100 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+		<script type="text/javascript" src="/js/jquery-2.1.4.min.js" ></script>
+		
+		<link rel="stylesheet" href="/js/bootstrap/css/bootstrap.min.css" />
+		<script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js" ></script>
+		<link rel="stylesheet" href="/css/admin.css" />
+		
+		<link rel="stylesheet" href="/js/bootstrap/treeview/bootstrap-treeview.min.css" />
+		<script type="text/javascript" src="/js/bootstrap/treeview/bootstrap-treeview.min.js" ></script>
+		
+		<link rel="stylesheet" href="/js/bootstrap/table/bootstrap-table.min.css" />
+		<script type="text/javascript" src="/js/bootstrap/table/bootstrap-table.min.js" ></script>
+		<script type="text/javascript" src="/js/bootstrap/table/locale/bootstrap-table-zh-CN.min.js" ></script>
+		
+		<link rel="stylesheet" href="/js/bootstrap/spinner/bootstrap-spinner.css" />
+		<script type="text/javascript" src="/js/bootstrap/spinner/jquery.spinner.js" ></script>
+
+		<link rel="stylesheet" href="/js/bootstrap/datetimepicker/css/bootstrap-datetimepicker.min.css" />
+		<script type="text/javascript" src="/js/bootstrap/datetimepicker/js/bootstrap-datetimepicker.min.js" ></script>
+		<script type="text/javascript" src="/js/bootstrap/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" ></script>
+
+
+		<link rel="stylesheet" href="/js/layer/skin/default/layer.css" />
+		<script type="text/javascript" src="/js/layer/layer.js" ></script>
+		
+		<script type="text/javascript" src="/js/adminCommon.js" ></script>
+		<#include "/FreemarkerMacro.html"/>
+		
+		<style type="text/css">
+		
+		.module,.controller{width: 100%;}
+		.module *,.module,.controller,.methodName,.moduleName,.controllerName,.controllerList,.methodList{float: left;
+			box-sizing:border-box;
+			-moz-box-sizing:border-box; 
+			-webkit-box-sizing:border-box;			
+		}
+		.moduleName,.controllerName{width: 120px;padding: 15px 0;}
+		.controllerList{width: 880px;}
+		.methodList{width: 760px;}
+		.methodName{padding: 5px 15px;margin: 10px 5px;border: 1px solid #ddd;position: relative;}
+		.methodName .glyphicon{display: none;position: absolute;bottom: 0;right: 0}
+		.methodName.active{border: 1px solid #c00000;}
+		.methodName.active .glyphicon{display: block;color: #c00000}
+		</style>
 </head>
 <body>
+	<div class="header">
+		<div class="nav">
+			<i class="icon fa fa-home">&nbsp;</i>
+			<div class="nav0">角色信息管理</div>
+		</div>
+	</div>
+	
+	<div class="body">
+			<div class="container_box">
+				<div class="col_main body">
+					<h4>
+						<i class="fa fa-list"></i>
+						权限列表
+					</h4>			
+					<div class="main_table">
+						<#if (listPermission?? && listPermission?size > 0)>
+						<#list listPermission as module>
+						<div class="module">
+							<div class="moduleName">${module.name!''}</div>
+							<div class="controllerList">
+								<#if (module.listController?? && module.listController?size > 0)>
+								<#list module.listController as controller>
+								<div class="controller">
+									<div class="controllerName">${controller.name!''}</div>
+									<div class="methodList">
+										<#if (controller.listMethod?? && controller.listMethod?size > 0)>
+										<#list controller.listMethod as method>
+											<div class="methodName active" value="${method.value!''}" relation="${method.relation!''}">
+											${method.name!''}
+											<i class="glyphicon glyphicon-ok"></i>
+											</div>
+										</#list>
+										</#if>
+									</div>
+								</div>
+								</#list>
+								</#if>
+							</div>
+						</div>
+						</#list>
+						</#if>						
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+
+
 
 </body>
 </html>

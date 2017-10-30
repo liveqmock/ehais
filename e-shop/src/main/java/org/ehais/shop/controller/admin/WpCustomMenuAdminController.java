@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.ehais.annotation.EPermissionController;
 import org.ehais.annotation.EPermissionMethod;
+import org.ehais.annotation.EPermissionModuleGroup;
 import org.ehais.controller.CommonController;
 import org.ehais.epublic.validator.EInsertValidator;
 import org.ehais.epublic.validator.EUniqueValidator;
@@ -33,7 +34,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-
+@EPermissionModuleGroup(name="微信模组")
 
 @EPermissionController(intro="微信菜单管理功能",value="wpCustomMenuController")
 @Controller
@@ -47,7 +48,7 @@ public class  WpCustomMenuAdminController extends CommonController {
 	
 	private String weixin_menu_type = ResourceUtil.getProValue("weixin_menu_type");
 	
-	@EPermissionMethod(intro="打开微信菜单管理页面",value="wpCustomMenuView",type=PermissionProtocol.URL)
+	@EPermissionMethod(name="查询",intro="打开微信菜单管理页面",value="wpCustomMenuView",relation="wpCustomMenuListJson",type=PermissionProtocol.URL)
 	@RequestMapping("/wpCustomMenuView")
 	public String wpCustomMenuView(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) {	
@@ -85,7 +86,7 @@ public class  WpCustomMenuAdminController extends CommonController {
 	
 	
 	
-	@EPermissionMethod(name="新增",intro="新增微信菜单管理",value="wpCustomMenuAddDetail",type=PermissionProtocol.BUTTON)
+	@EPermissionMethod(name="新增",intro="新增微信菜单管理",value="wpCustomMenuAddDetail",relation="wpCustomMenuAddSubmit",type=PermissionProtocol.BUTTON)
 	@RequestMapping(value="/wpCustomMenuAddDetail",method=RequestMethod.GET)
 	public String wpCustomMenuAddDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response
@@ -129,7 +130,7 @@ public class  WpCustomMenuAdminController extends CommonController {
 	
 
 	
-	@EPermissionMethod(name="编辑",intro="编辑微信菜单管理",value="wpCustomMenuEditDetail",type=PermissionProtocol.BUTTON)
+	@EPermissionMethod(name="编辑",intro="编辑微信菜单管理",value="wpCustomMenuEditDetail",relation="wpCustomMenuEditSubmit",type=PermissionProtocol.BUTTON)
 	@RequestMapping(value="/wpCustomMenuEditDetail",method=RequestMethod.GET)
 	public String wpCustomMenuEditDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,

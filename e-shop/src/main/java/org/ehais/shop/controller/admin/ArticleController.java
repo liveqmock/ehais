@@ -4,7 +4,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.ehais.annotation.EPermissionController;
 import org.ehais.annotation.EPermissionMethod;
+import org.ehais.annotation.EPermissionModuleGroup;
 import org.ehais.controller.CommonController;
 import org.ehais.enums.EArticleModuleEnum;
 import org.ehais.epublic.mapper.EHaiArticleMapper;
@@ -29,7 +31,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+@EPermissionModuleGroup(name="应用模组")
 
+@EPermissionController(name="资讯管理",intro="资讯管理功能",value="articleController")
 @Controller
 @RequestMapping("/admin")
 public class ArticleController extends CommonController{
@@ -51,7 +55,7 @@ public class ArticleController extends CommonController{
 	private static String domain = ResourceUtil.getProValue("qiniu.domain");
 	
 	
-	@EPermissionMethod(intro="打开软文页面",value="ehaisArticleView",type=PermissionProtocol.URL)
+	@EPermissionMethod(name="查询",intro="打开软文页面",value="ehaisArticleView",relation="ehaisArticleListJson",type=PermissionProtocol.URL)
 	@RequestMapping("/ehaisArticleView")
 	public String ehaisArticleView(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) {	
@@ -88,7 +92,7 @@ public class ArticleController extends CommonController{
 	
 	
 	
-	@EPermissionMethod(name="新增",intro="新增软文",value="ehaisArticleAddDetail",type=PermissionProtocol.BUTTON)
+	@EPermissionMethod(name="新增",intro="新增软文",value="ehaisArticleAddDetail",relation="ehaisArticleAddSubmit",type=PermissionProtocol.BUTTON)
 	@RequestMapping(value="/ehaisArticleAddDetail",method=RequestMethod.GET)
 	public String ehaisArticleAddDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response
@@ -133,7 +137,7 @@ public class ArticleController extends CommonController{
 	}
 	
 	
-	@EPermissionMethod(name="编辑",intro="编辑软文",value="ehaisArticleEditDetail",type=PermissionProtocol.BUTTON)
+	@EPermissionMethod(name="编辑",intro="编辑软文",value="ehaisArticleEditDetail",relation="ehaisArticleEditSubmit",type=PermissionProtocol.BUTTON)
 	@RequestMapping(value="/ehaisArticleEditDetail",method=RequestMethod.GET)
 	public String ehaisArticleEditDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -195,7 +199,7 @@ public class ArticleController extends CommonController{
 	
 	
 	@ResponseBody
-	@EPermissionMethod(intro="返回软文数据",value="ehaisArticleCatListJson",type=PermissionProtocol.JSON)
+	@EPermissionMethod(name="查询分类",intro="返回软文数据",value="ehaisArticleCatListJson",type=PermissionProtocol.JSON)
 	@RequestMapping(value="/ehaisArticleCatListJson",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String ehaisArticleCatListJson(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -214,7 +218,7 @@ public class ArticleController extends CommonController{
 	
 	
 	@ResponseBody
-	@EPermissionMethod(intro="新增提交软文",value="ehaisArticleCatAddSubmit",type=PermissionProtocol.DATA)
+	@EPermissionMethod(name="新增分类",intro="新增提交软文",value="ehaisArticleCatAddSubmit",type=PermissionProtocol.DATA)
 	@RequestMapping(value="/ehaisArticleCatAddSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String ehaisArticleCatAddSubmit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -237,7 +241,7 @@ public class ArticleController extends CommonController{
 	
 	
 	@ResponseBody
-	@EPermissionMethod(intro="编辑提交软文",value="ehaisArticleCatEditSubmit",type=PermissionProtocol.DATA)
+	@EPermissionMethod(name="编辑分类",intro="编辑提交软文",value="ehaisArticleCatEditSubmit",type=PermissionProtocol.DATA)
 	@RequestMapping(value="/ehaisArticleCatEditSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String ehaisArticleCatEditSubmit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -257,7 +261,7 @@ public class ArticleController extends CommonController{
 	
 	
 	@ResponseBody
-	@EPermissionMethod(name="删除",intro="删除软文",value="ehaisArticleCatDelete",type=PermissionProtocol.BUTTON)
+	@EPermissionMethod(name="删除分类",intro="删除软文",value="ehaisArticleCatDelete",type=PermissionProtocol.BUTTON)
 	@RequestMapping(value="/ehaisArticleCatDelete",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String ehaisArticleCatDelete(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,

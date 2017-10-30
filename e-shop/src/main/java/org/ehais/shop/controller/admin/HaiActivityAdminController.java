@@ -19,6 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.ehais.annotation.EPermissionController;
 import org.ehais.annotation.EPermissionMethod;
+import org.ehais.annotation.EPermissionModuleGroup;
 import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.ehais.epublic.model.EHaiArticleCat;
@@ -59,9 +60,9 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
+@EPermissionModuleGroup(name="应用模组")
 
-@RequiresPermissions({"haiActivityController"})
-@EPermissionController(intro="活动会议管理功能",value="haiActivityController")
+@EPermissionController(name="会议管理",intro="会议管理功能",value="haiActivityController")
 @Controller
 @RequestMapping("/admin")
 public class  HaiActivityAdminController extends CommonController {
@@ -79,7 +80,7 @@ public class  HaiActivityAdminController extends CommonController {
 	@Autowired
 	protected EStoreService eStoreService;
 	
-	@EPermissionMethod(intro="打开活动会议管理页面",value="haiActivityView",type=PermissionProtocol.URL)
+	@EPermissionMethod(name="查询",intro="打开活动会议管理页面",value="haiActivityView",relation="haiActivityListJson",type=PermissionProtocol.URL)
 	@RequestMapping("/haiActivityView")
 	public String haiActivityView(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -119,7 +120,7 @@ public class  HaiActivityAdminController extends CommonController {
 	
 	
 	
-	@EPermissionMethod(name="新增",intro="新增活动会议管理",value="haiActivityAddDetail",type=PermissionProtocol.BUTTON)
+	@EPermissionMethod(name="新增",intro="新增活动会议管理",value="haiActivityAddDetail",relation="haiActivityAddSubmit",type=PermissionProtocol.BUTTON)
 	@RequestMapping(value="/haiActivityAddDetail",method=RequestMethod.GET)
 	public String haiActivityAddDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -166,7 +167,7 @@ public class  HaiActivityAdminController extends CommonController {
 	
 
 	
-	@EPermissionMethod(name="编辑",intro="编辑活动会议管理",value="haiActivityEditDetail",type=PermissionProtocol.BUTTON)
+	@EPermissionMethod(name="编辑",intro="编辑活动会议管理",value="haiActivityEditDetail",relation="haiActivityEditSubmit",type=PermissionProtocol.BUTTON)
 	@RequestMapping(value="/haiActivityEditDetail",method=RequestMethod.GET)
 	public String haiActivityEditDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -234,7 +235,7 @@ public class  HaiActivityAdminController extends CommonController {
 
 
 
-	@EPermissionMethod(intro="打开活动会议管理页面",value="haiActicityCatView",type=PermissionProtocol.URL)
+	@EPermissionMethod(name="查询分类",intro="打开活动会议管理页面",value="haiActicityCatView",relation="haiActicityCatListJson",type=PermissionProtocol.URL)
 	@RequestMapping("/haiActicityCatView")
 	public String haiActicityCatView(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -272,7 +273,7 @@ public class  HaiActivityAdminController extends CommonController {
 	
 	
 	
-	@EPermissionMethod(name="新增",intro="新增活动会议管理",value="haiActicityCatAddDetail",type=PermissionProtocol.BUTTON)
+	@EPermissionMethod(name="新增",intro="新增活动会议管理",value="haiActicityCatAddDetail",relation="haiActicityCatAddSubmit",type=PermissionProtocol.BUTTON)
 	@RequestMapping(value="/haiActicityCatAddDetail",method=RequestMethod.GET)
 	public String haiActicityCatAddDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -317,7 +318,7 @@ public class  HaiActivityAdminController extends CommonController {
 	
 
 	
-	@EPermissionMethod(name="编辑",intro="编辑活动会议管理",value="haiActicityCatEditDetail",type=PermissionProtocol.BUTTON)
+	@EPermissionMethod(name="编辑",intro="编辑活动会议管理",value="haiActicityCatEditDetail",relation="haiActicityCatEditSubmit",type=PermissionProtocol.BUTTON)
 	@RequestMapping(value="/haiActicityCatEditDetail",method=RequestMethod.GET)
 	public String haiActicityCatEditDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -376,7 +377,7 @@ public class  HaiActivityAdminController extends CommonController {
 	
 	
 	
-	@EPermissionMethod(name="编辑",intro="活动会议二维码",value="haiActivityQRcode",type=PermissionProtocol.BUTTON)
+	@EPermissionMethod(name="预览二维码",intro="活动会议二维码",value="haiActivityQRcode",type=PermissionProtocol.BUTTON)
 	@RequestMapping(value="/haiActivityQRcode",method=RequestMethod.GET)
 	public String haiActivityQRcode(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -410,7 +411,7 @@ public class  HaiActivityAdminController extends CommonController {
 	}
 	
 	
-	@EPermissionMethod(name="编辑",intro="活动会议二维码",value="haiActivityQRcode",type=PermissionProtocol.BUTTON)
+	@EPermissionMethod(name="下载二维码",intro="活动会议二维码",value="haiActivityQRcode",type=PermissionProtocol.BUTTON)
 	@RequestMapping(value="/haiActivityQRcodeDownLoad!{qrtype}",method=RequestMethod.GET)
 	public void haiActivityQRcodeDownLoad(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -494,7 +495,7 @@ public class  HaiActivityAdminController extends CommonController {
 	
 	
 	
-	@EPermissionMethod(name="编辑",intro="签到统计",value="haiActivitySignStatistics",type=PermissionProtocol.BUTTON)
+	@EPermissionMethod(name="统计",intro="签到统计",value="haiActivitySignStatistics",type=PermissionProtocol.BUTTON)
 	@RequestMapping(value="/haiActivitySignStatistics",method=RequestMethod.GET)
 	public String haiActivitySignStatistics(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,

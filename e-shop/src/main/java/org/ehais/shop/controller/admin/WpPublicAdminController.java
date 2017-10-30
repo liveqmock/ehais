@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.ehais.annotation.EPermissionController;
 import org.ehais.annotation.EPermissionMethod;
+import org.ehais.annotation.EPermissionModuleGroup;
 import org.ehais.controller.CommonController;
 import org.ehais.epublic.model.WpPublic;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
@@ -30,7 +31,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
+@EPermissionModuleGroup(name="微信模组")
 
 @EPermissionController(intro="微信公众号管理功能",value="wpPublicController")
 @Controller
@@ -43,7 +44,7 @@ public class  WpPublicAdminController extends CommonController {
 	private WpPublicService wpPublicService;
 	
 	
-	@EPermissionMethod(intro="打开微信公众号管理页面",value="wpPublicView",type=PermissionProtocol.URL)
+	@EPermissionMethod(name="查询",intro="打开微信公众号管理页面",value="wpPublicView",relation="wpPublicListJson",type=PermissionProtocol.URL)
 	@RequestMapping("/wpPublicView")
 	public String wpPublicView(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) {	
@@ -80,7 +81,7 @@ public class  WpPublicAdminController extends CommonController {
 	
 	
 	
-	@EPermissionMethod(name="新增",intro="新增微信公众号管理",value="wpPublicAddDetail",type=PermissionProtocol.BUTTON)
+	@EPermissionMethod(name="新增",intro="新增微信公众号管理",value="wpPublicAddDetail",relation="wpPublicAddSubmit",type=PermissionProtocol.BUTTON)
 	@RequestMapping(value="/wpPublicAddDetail",method=RequestMethod.GET)
 	public String wpPublicAddDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response
@@ -122,7 +123,7 @@ public class  WpPublicAdminController extends CommonController {
 	
 
 	
-	@EPermissionMethod(name="编辑",intro="编辑微信公众号管理",value="wpPublicEditDetail",type=PermissionProtocol.BUTTON)
+	@EPermissionMethod(name="编辑",intro="编辑微信公众号管理",value="wpPublicEditDetail",relation="wpPublicEditSubmit",type=PermissionProtocol.BUTTON)
 	@RequestMapping(value="/wpPublicEditDetail",method=RequestMethod.GET)
 	public String wpPublicEditDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -177,7 +178,7 @@ public class  WpPublicAdminController extends CommonController {
 	
 	
 
-	@EPermissionMethod(name="编辑",intro="编辑微信公众号管理",value="wpPublicEditDetail",type=PermissionProtocol.BUTTON)
+	@EPermissionMethod(name="编辑",intro="编辑微信公众号管理",value="wpPublicEditDetail",relation="wpPublicEditSubmit",type=PermissionProtocol.BUTTON)
 	@RequestMapping(value="/wpPublicDetail",method=RequestMethod.GET)
 	public String wpPublicDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response
