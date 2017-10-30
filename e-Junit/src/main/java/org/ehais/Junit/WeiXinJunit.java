@@ -130,7 +130,8 @@ public class WeiXinJunit {
 			
 //			String url = site + "/weixin/notify_pay";
 //			String url = "http://www.tpshop.org/api.php/Api/DiningApi/notifyUrl";
-			String url = "http://mg.ehais.com/weixin/pay/notify_url-56";
+//			String url = "http://mg.ehais.com/weixin/pay/notify_url-56";
+			String url = "http://127.0.0.1:8087/weixin/pay/notify_order_pay";
 			String req = EHttpClientUtil.httpClientRequest(url, xml);
 			System.out.println("请求返回："+req);
 		}catch(Exception e){
