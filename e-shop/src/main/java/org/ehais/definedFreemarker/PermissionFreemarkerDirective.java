@@ -30,13 +30,13 @@ public class PermissionFreemarkerDirective implements TemplateDirectiveModel{
 		// TODO Auto-generated method stub
 		Writer out = env.getOut();
 		Object url = params.get("url");
-		System.out.println("权限地址："+url.toString());
+//		System.out.println("权限地址："+url.toString());
 		
 		String role = (String) request.getSession().getAttribute(EConstants.SESSION_ROLE_ID_ARRAY);
 //		System.out.println("role ..."+role);
 		List<String> result = Arrays.asList(StringUtils.split(role,","));  
 		for (String string : result) {
-			System.out.println("role : "+ string);
+//			System.out.println("role : "+ string);
 			if(ERolePermissionCacheManager.checkRolePermission(Integer.valueOf(string), url.toString())){
 				body.render(out);
 				return;

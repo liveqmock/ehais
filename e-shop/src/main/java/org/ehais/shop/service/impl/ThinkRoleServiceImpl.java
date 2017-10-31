@@ -66,7 +66,7 @@ public class ThinkRoleServiceImpl  extends CommonServiceImpl implements ThinkRol
 		example.setOrderByClause("update_time desc");
 		
 		if(StringUtils.isNotEmpty(name))c.andNameLike("%"+name+"%");
-		List<ThinkRole> list = thinkRoleMapper.selectByExample(example);
+		List<ThinkRole> list = thinkRoleMapper.selectByExampleWithBLOBs(example);
 		long total = thinkRoleMapper.countByExample(example);
 
 
@@ -195,17 +195,11 @@ bean.setRemark(model.getRemark());
 		// TODO Auto-generated method stub
 		ReturnObject<ThinkRole> rm = new ReturnObject<ThinkRole>();
 		rm.setCode(0);
-		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
-		ThinkRoleExample example = new ThinkRoleExample();
-		ThinkRoleExample.Criteria c = example.createCriteria();
-		c.andRoleIdEqualTo(roleId);
-		List<ThinkRole> list = thinkRoleMapper.selectByExample(example);
-		if(list == null || list.size() == 0){
+		ThinkRole model = thinkRoleMapper.selectByPrimaryKey(roleId);
+		if(model == null){
 			rm.setMsg("记录不存在");
 			return rm;
 		}
-		ThinkRole model = list.get(0);
-
 		Map<String, Object> map = new HashMap<String, Object>();
 		rm.setMap(map);
 

@@ -78,7 +78,12 @@ $(function(){
             	var a = "<a href ='thinkRoleEditDetail?roleId="+value+"'  class='glyphicon glyphicon-pencil'></a>";
             	var b = "&nbsp;&nbsp;<a href ='javascript:;' onclick='thinkRoleDelete("+value+");' class='glyphicon glyphicon-trash'></a>";
             	var c = "&nbsp;&nbsp;<a href ='thinkRoleSetting?roleId="+value+"' class='glyphicon glyphicon-wrench'></a>";
-            	return a+b+c;
+            	if(row.permission.toUpperCase() == "ALL"){
+            		return a+b;
+            	}else{
+            		return a+b+c;
+            	}
+            	
             }
         }
         

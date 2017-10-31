@@ -3,31 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-		<script type="text/javascript" src="/js/jquery-2.1.4.min.js" ></script>
-		
-		<link rel="stylesheet" href="/js/bootstrap/css/bootstrap.min.css" />
-		<script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js" ></script>
-		<link rel="stylesheet" href="/css/admin.css" />
-		
-		<link rel="stylesheet" href="/js/bootstrap/treeview/bootstrap-treeview.min.css" />
-		<script type="text/javascript" src="/js/bootstrap/treeview/bootstrap-treeview.min.js" ></script>
-		
-		<link rel="stylesheet" href="/js/bootstrap/table/bootstrap-table.min.css" />
-		<script type="text/javascript" src="/js/bootstrap/table/bootstrap-table.min.js" ></script>
-		<script type="text/javascript" src="/js/bootstrap/table/locale/bootstrap-table-zh-CN.min.js" ></script>
-		
-		<link rel="stylesheet" href="/js/bootstrap/spinner/bootstrap-spinner.css" />
-		<script type="text/javascript" src="/js/bootstrap/spinner/jquery.spinner.js" ></script>
-
-		<link rel="stylesheet" href="/js/bootstrap/datetimepicker/css/bootstrap-datetimepicker.min.css" />
-		<script type="text/javascript" src="/js/bootstrap/datetimepicker/js/bootstrap-datetimepicker.min.js" ></script>
-		<script type="text/javascript" src="/js/bootstrap/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" ></script>
-
-
-		<link rel="stylesheet" href="/js/layer/skin/default/layer.css" />
-		<script type="text/javascript" src="/js/layer/layer.js" ></script>
-		
-		<script type="text/javascript" src="/js/adminCommon.js" ></script>
+		<#include "/include.html"/>
 		<#include "/FreemarkerMacro.html"/>
 		
 		<style type="text/css">
@@ -41,17 +17,20 @@
 		.moduleName,.controllerName{width: 120px;padding: 15px 0;}
 		.controllerList{width: 880px;}
 		.methodList{width: 760px;}
-		.methodName{padding: 5px 15px;margin: 10px 5px;border: 1px solid #ddd;position: relative;}
+		.methodName{padding: 5px 15px;margin: 10px 5px;border: 1px solid #ddd;position: relative;cursor: pointer;}
 		.methodName .glyphicon{display: none;position: absolute;bottom: 0;right: 0}
 		.methodName.active{border: 1px solid #c00000;}
 		.methodName.active .glyphicon{display: block;color: #c00000}
+		.btn-primary{margin:50px 0 80px 240px ;}
 		</style>
 </head>
 <body>
+	
 	<div class="header">
 		<div class="nav">
-			<i class="icon fa fa-home">&nbsp;</i>
-			<div class="nav0">角色信息管理</div>
+			<a href="javascript:;" id="back" class="icon fa fa-arrow-left ">&nbsp;</a>
+			<div class="nav0">权限</div>
+			<div class="nav1">${rm.model.name}角色</div>
 		</div>
 	</div>
 	
@@ -75,7 +54,7 @@
 									<div class="methodList">
 										<#if (controller.listMethod?? && controller.listMethod?size > 0)>
 										<#list controller.listMethod as method>
-											<div class="methodName active" value="${method.value!''}" relation="${method.relation!''}">
+											<div class="methodName" value="${method.value!''}" relation="${method.relation!''}">
 											${method.name!''}
 											<i class="glyphicon glyphicon-ok"></i>
 											</div>
@@ -88,15 +67,60 @@
 							</div>
 						</div>
 						</#list>
-						</#if>						
+						</#if>	
+						
+						<div class="module">
+							<button id="saveSubmit" type="button" class="btn btn-primary">提交信息</button>
+						</div>					
 					</div>
 
 				</div>
 			</div>
 		</div>
 
+<input type="hidden" id="permission" name="permission" value="${rm.model.permission!''}"/>
+<input type="hidden" id="roleId" name="roleId" value="${roleId!''}"/>
 
+<script type="text/javascript">
+$(function(){
+	if($("#permission").val().length > 0){
+		var per = $("#permission").val().split(",");
+		$.each(per,function(k,v){
+			$(".methodName").each(function(index,ele){
+				if(v == $(ele).attr("value"))$(ele).addClass("active");
+			});
+		});
+	}
+	$(".methodName").click(function(){
+		$(this).toggleClass("active");
+		allPermission();
+	});
+	$("#saveSubmit").click(function(){saveSubmit();});
+});
 
+function allPermission(){
+	$("#permission").val("");
+	var permission = "";
+	$(".methodName.active").each(function(index,ele){
+		permission+=$(this).attr("value")+",";
+		if($(this).attr("relation").length>0)permission+=$(this).attr("relation")+",";
+	});
+	if(permission.length>0)$("#permission").val(permission.substr(0,permission.length-1));
+}
+
+function saveSubmit(){
+	$.ajax({
+		url : "thinkRoleSettingSubmit",data : {roleId : $("#roleId").val() , permission : $("#permission").val() },
+		success : function(result){
+			layer.msg(result.msg);
+			if(result.code != 1){				
+				return ;
+			}
+			window.history.back();
+		}
+	});
+}
+</script>
 
 </body>
 </html>

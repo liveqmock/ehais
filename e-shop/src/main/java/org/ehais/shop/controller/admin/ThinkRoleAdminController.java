@@ -3,9 +3,10 @@ package org.ehais.shop.controller.admin;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -18,7 +19,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.ehais.annotation.EPermissionController;
 import org.ehais.annotation.EPermissionMethod;
 import org.ehais.annotation.EPermissionModuleGroup;
+import org.ehais.cache.ERolePermissionCacheManager;
 import org.ehais.controller.CommonController;
+import org.ehais.epublic.mapper.ThinkRoleMapper;
 import org.ehais.epublic.model.ThinkRole;
 import org.ehais.epublic.validator.EInsertValidator;
 import org.ehais.epublic.validator.EUniqueValidator;
@@ -32,7 +35,6 @@ import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -46,11 +48,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
-
-import net.sf.json.JSONArray;  
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;  
 
 @EPermissionModuleGroup(name="系统模组")
 
@@ -66,6 +65,10 @@ public class  ThinkRoleAdminController extends CommonController {
 	
 	@Autowired
     private RequestMappingHandlerMapping handlerMapping;
+	
+	@Autowired
+	private ThinkRoleMapper thinkRoleMapper;
+	
 	
 	//获取所有类文件
 	private Set<String> controllerClassNameList(RequestMappingHandlerMapping handlerMapping){
@@ -180,11 +183,48 @@ public class  ThinkRoleAdminController extends CommonController {
 		return null;
 	}
 	
-	@EPermissionMethod(name="权限管理",intro="权限管理",value="thinkRoleSetting",type=PermissionProtocol.URL)
+	
+	@ResponseBody
+	@EPermissionMethod(intro="编辑提交角色",value="thinkRoleSettingSubmit",type=PermissionProtocol.DATA)
+	@RequestMapping(value="/thinkRoleSettingSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
+	public String thinkRoleSettingSubmit(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "roleId", required = true) Integer roleId,
+			@RequestParam(value = "permission", required = true) String permission
+			) {
+		try{
+			
+			ThinkRole trole = thinkRoleMapper.selectByPrimaryKey(roleId);
+			trole.setPermission(permission);
+			trole.setUpdateTime(new Date());
+			thinkRoleMapper.updateByPrimaryKeyWithBLOBs(trole);
+			
+//			更新缓存的权限
+			List<String> listPermission = null;
+			if(StringUtils.isNoneBlank(permission)){
+				listPermission= Arrays.asList(StringUtils.split(permission,","));
+			}
+			ERolePermissionCacheManager.putRolePermission(roleId, listPermission);
+			
+			
+			return this.writeJsonObject(new HashMap<String,Object>(){{this.put("code", 1);this.put("msg", "保存成功");}});
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("role", e);
+			return this.errorJSON(e);
+		}
+	}
+	
+	
+	@EPermissionMethod(name="权限管理",intro="权限管理",value="thinkRoleSetting",relation="thinkRoleSettingSubmit",type=PermissionProtocol.URL)
 	@RequestMapping("/thinkRoleSetting")
 	public String thinkRoleSetting(ModelMap modelMap,
-			HttpServletRequest request,HttpServletResponse response ) {	
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "roleId", required = true) Integer roleId ) {	
 		try{
+			ReturnObject<ThinkRole> rm = thinkRoleService.role_info(request,roleId);
+			modelMap.addAttribute("rm", rm);
+			modelMap.addAttribute("roleId", roleId);
 			
 			List<EPermissionModuleGroupModel> listPermission = new ArrayList<EPermissionModuleGroupModel>();
 	        
@@ -318,7 +358,7 @@ public class  ThinkRoleAdminController extends CommonController {
 	            */
 //	        } 
 	        
-	        System.out.println(JSONArray.fromObject(listPermission).toString());
+//	        System.out.println(JSONArray.fromObject(listPermission).toString());
 	        modelMap.addAttribute("listPermission", listPermission);
 	        
 			return "/admin/role/permission";
