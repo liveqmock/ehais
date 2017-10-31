@@ -20,7 +20,7 @@ function haiAdminUserAddSubmit(){
 	
 	
 	$.ajax({
-		url : "haiAdminUserAddSubmit",
+		url : "haiAdminUserWeixinAddSubmit",
 		type:"post",dataType:"json",data:$("#myForm").serialize(),
 		success:function(result){
 			if(result.code != 1){

@@ -33,7 +33,7 @@ public class ERolePermissionCacheManager {
 		List<String> permission = map.get(roleId);
 		if(permission == null || permission.size() == 0)return false;
 		for (String string : permission) {
-			if(string.equals(url) || string.toUpperCase().equals("ALL"))return true;
+			if(url.indexOf(string) >= 0 || string.toUpperCase().equals("ALL"))return true;
 		}
 		return false;
 	}

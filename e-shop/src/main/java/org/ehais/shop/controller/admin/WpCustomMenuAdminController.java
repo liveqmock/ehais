@@ -36,7 +36,7 @@ import net.sf.json.JSONObject;
 
 @EPermissionModuleGroup(name="微信模组")
 
-@EPermissionController(intro="微信菜单管理功能",value="wpCustomMenuController")
+@EPermissionController(name="菜单管理",intro="微信菜单管理功能",value="wpCustomMenuController")
 @Controller
 @RequestMapping("/admin")
 public class  WpCustomMenuAdminController extends CommonController {
@@ -56,7 +56,7 @@ public class  WpCustomMenuAdminController extends CommonController {
 			ReturnObject<WpCustomMenu> rm = wpCustomMenuService.custommenu_list(request);
 			modelMap.addAttribute("rm", rm);
 			modelMap.addAttribute("weixin_menu_type", weixin_menu_type);
-			return "/"+this.getStoreTheme(request)+"/custommenu/view";
+			return "/"+this.getAdminProjectFolder(request)+"/custommenu/view";
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("custommenu", e);
@@ -96,7 +96,7 @@ public class  WpCustomMenuAdminController extends CommonController {
 			modelMap.addAttribute("rm", rm);
 			modelMap.addAttribute("weixin_menu_type", JSONObject.fromObject(weixin_menu_type));
 			
-			return "/"+this.getStoreTheme(request)+"/custommenu/detail";
+			return "/"+this.getAdminProjectFolder(request)+"/custommenu/detail";
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -140,7 +140,7 @@ public class  WpCustomMenuAdminController extends CommonController {
 			ReturnObject<WpCustomMenu> rm = wpCustomMenuService.custommenu_update(request,id);
 			modelMap.addAttribute("rm", rm);
 			modelMap.addAttribute("weixin_menu_type", JSONObject.fromObject(weixin_menu_type));
-			return "/"+this.getStoreTheme(request)+"/custommenu/detail";
+			return "/"+this.getAdminProjectFolder(request)+"/custommenu/detail";
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("custommenu", e);

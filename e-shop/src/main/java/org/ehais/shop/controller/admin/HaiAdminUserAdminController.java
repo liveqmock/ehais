@@ -43,7 +43,7 @@ public class  HaiAdminUserAdminController extends CommonController {
 	private HaiAdminUserService haiAdminUserService;
 	
 	
-	@EPermissionMethod(intro="打开管理员页面",value="haiAdminUserView",type=PermissionProtocol.URL)
+	@EPermissionMethod(name="查询",intro="打开管理员页面",value="haiAdminUserView",relation="haiAdminUserListJson",type=PermissionProtocol.URL)
 	@RequestMapping("/haiAdminUserView")
 	public String haiAdminUserView(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) {	
@@ -80,7 +80,7 @@ public class  HaiAdminUserAdminController extends CommonController {
 	
 	
 	
-	@EPermissionMethod(name="新增",intro="新增管理员",value="haiAdminUserAddDetail",type=PermissionProtocol.BUTTON)
+	@EPermissionMethod(name="新增",intro="新增管理员",value="haiAdminUserAddDetail",relation="haiAdminUserAddSubmit,haiAdminUserWeixinAddSubmit",type=PermissionProtocol.BUTTON)
 	@RequestMapping(value="/haiAdminUserAddDetail",method=RequestMethod.GET)
 	public String haiAdminUserAddDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response
@@ -112,6 +112,28 @@ public class  HaiAdminUserAdminController extends CommonController {
 		try{
 			
 			ReturnObject<EHaiAdminUserWithBLOBs> rm = haiAdminUserService.adminuser_insert_submit(request, adminuser,roleId);
+			return this.writeJson(rm);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("adminuser", e);
+			return this.errorJSON(e);
+		}
+	}
+	
+	@ResponseBody
+	@EPermissionMethod(intro="新增提交管理员",value="haiAdminUserWeixinAddSubmit",type=PermissionProtocol.DATA)
+	@RequestMapping(value="/haiAdminUserWeixinAddSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
+	public String haiAdminUserWeixinAddSubmit(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@Validated({EInsertValidator.class,EUniqueValidator.class})  @ModelAttribute("adminuser") EHaiAdminUserWithBLOBs adminuser,
+			BindingResult result,
+			@RequestParam(value = "roleId", required = true) String roleId
+			) {
+			if(result.hasErrors())return this.writeBindingResult(result);
+		try{
+			
+			ReturnObject<EHaiAdminUserWithBLOBs> rm = haiAdminUserService.adminuser_weixin_insert_submit(request, adminuser,roleId);
 			return this.writeJson(rm);
 			
 		}catch(Exception e){

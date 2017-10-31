@@ -36,8 +36,8 @@
 <body>
 <div class="header">
 	<div class="nav">
-		<a href="javascript:;" id="back" class="icon fa fa-arrow-left ">&nbsp;</a>
-		<div class="nav0">角色</div>
+		<i id="back" class="icon fa fa-arrow-left">&nbsp;</i>
+		<div class="nav0">微信菜单管理</div>
 		<div class="nav1">信息编辑</div>
 	</div>
 </div>
@@ -46,33 +46,50 @@
 <form id="myForm" name="myForm" class="form-horizontal" action="${rm.action?default('')}" method="post">
 
 
-<input type="hidden" class="form-control" id="roleId" name="roleId" value="${rm.model.roleId!''}" >
-<input type="hidden" class="form-control" id="parentId" name="parentId" value="1" placeholder="">
+<input type="hidden" class="form-control" id="id" name="id" value="${rm.model.id!''}" >
+<div class="form-group">
+<label class="col-sm-2 control-label">菜单分层</label>
+<div class="col-sm-3">
+	
+	<@selectPicker id="pid" key="id" text="title"  list=rm.map.plist  value=(rm.model.pid!0)?string('') defaultValue="0" defaultText="--顶层菜单--" />
+	
+</div>
+</div>
 
 <div class="form-group">
-<label class="col-sm-2 control-label">角色名称</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="name" name="name" value="${rm.model.name!''}" placeholder="">
+<label class="col-sm-2 control-label">菜单标题</label>
+<div class="col-sm-3">
+	<input type="text" class="form-control" id="title" name="title" value="${rm.model.title!''}" placeholder="">
 </div>
 </div>
-
 
 <div class="form-group">
-<label class="col-sm-2 control-label">可用状态</label>
-<div class="col-sm-5">
-	<@checkboxPicker id="status" value="${(rm.model.status?string('yes', 'no'))!'no'}" />
+<label class="col-sm-2 control-label">事件类型</label>
+<div class="col-sm-6">
+	<@BSRadioChatPicker id="type" key="" text="" list=weixin_menu_type value=rm.model.type!"" />
 </div>
 </div>
-
 
 <div class="form-group">
-<label class="col-sm-2 control-label">备注</label>
-<div class="col-sm-8">
-	<textarea class="form-control" id="remark" name="remark" placeholder="">${rm.model.remark!''}</textarea>
+<label class="col-sm-2 control-label">排序</label>
+<div class="col-sm-2">
+	<@quantityPicker id="sort" value="${rm.model.sort!''}" />
 </div>
 </div>
 
+<div class="form-group weixin_type weixin_type_view dn" id="div_url">
+<label class="col-sm-2 control-label">链接</label>
+<div class="col-sm-6">
+	<input type="text" class="form-control" id="url" name="url" value="${rm.model.url!''}" placeholder="">
+</div>
+</div>
 
+<div class="form-group weixin_type weixin_type_click dn" id="div_keyword">
+<label class="col-sm-2 control-label">关键词</label>
+<div class="col-sm-3">
+	<input type="text" class="form-control" id="keyword" name="keyword" value="${rm.model.keyword!''}" placeholder="">
+</div>
+</div>
 
 
 
@@ -91,7 +108,7 @@
 </div>    
 
 
-<script type="text/javascript" src="/js/gzhmt/role/detail.js" ></script>             
+<script type="text/javascript" src="/js/admin/custommenu/detail.js" ></script>             
 
 
 </body>

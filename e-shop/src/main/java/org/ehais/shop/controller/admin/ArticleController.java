@@ -62,7 +62,7 @@ public class ArticleController extends CommonController{
 		try{
 			ReturnObject<EHaiArticle> rm = ehaisArticleService.article_list(request,EArticleModuleEnum.ARTICLE);
 			modelMap.addAttribute("rm", rm);
-			return "/"+this.getStoreTheme(request)+"/article/view";
+			return "/"+this.getAdminProjectFolder(request)+"/article/view";
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("article", e);
@@ -102,7 +102,7 @@ public class ArticleController extends CommonController{
 			modelMap.addAttribute("rm", rm);
 			modelMap.addAttribute("uptoken", QiniuUtil.getUpToken(accessKey,secretKey,bucket));
 			modelMap.addAttribute("domain", domain);
-			return "/"+this.getStoreTheme(request)+"/article/detail";
+			return "/"+this.getAdminProjectFolder(request)+"/article/detail";
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -148,7 +148,7 @@ public class ArticleController extends CommonController{
 			modelMap.addAttribute("rm", rm);
 			modelMap.addAttribute("uptoken", QiniuUtil.getUpToken(accessKey,secretKey,bucket));
 			modelMap.addAttribute("domain", domain);
-			return "/"+this.getStoreTheme(request)+"/article/detail";
+			return "/"+this.getAdminProjectFolder(request)+"/article/detail";
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("article", e);

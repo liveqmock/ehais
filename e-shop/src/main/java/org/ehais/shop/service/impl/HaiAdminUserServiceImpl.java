@@ -13,16 +13,23 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
+import org.ehais.enums.EAdminClassifyEnum;
 import org.ehais.epublic.mapper.EHaiAdminUserMapper;
+import org.ehais.epublic.mapper.EHaiStoreMapper;
 import org.ehais.epublic.mapper.ThinkRoleAdminMapper;
 import org.ehais.epublic.mapper.ThinkRoleMapper;
+import org.ehais.epublic.mapper.WpPublicMapper;
 import org.ehais.epublic.model.EHaiAdminUser;
 import org.ehais.epublic.model.EHaiAdminUserExample;
 import org.ehais.epublic.model.EHaiAdminUserWithBLOBs;
+import org.ehais.epublic.model.EHaiStore;
+import org.ehais.epublic.model.EHaiStoreExample;
 import org.ehais.epublic.model.ThinkRole;
 import org.ehais.epublic.model.ThinkRoleAdminExample;
 import org.ehais.epublic.model.ThinkRoleAdminKey;
 import org.ehais.epublic.model.ThinkRoleExample;
+import org.ehais.epublic.model.WpPublic;
+import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.model.BootStrapModel;
 import org.ehais.service.impl.CommonServiceImpl;
 import org.ehais.shop.service.HaiAdminUserService;
@@ -56,7 +63,11 @@ public class HaiAdminUserServiceImpl  extends CommonServiceImpl implements HaiAd
 	private ThinkRoleMapper thinkRoleMapper;
 	@Autowired
 	private ThinkRoleAdminMapper thinkRoleAdminMapper;
-
+	@Autowired
+	private EHaiStoreMapper eHaiStoreMapper;
+	@Autowired
+	protected WpPublicMapper wpPublicMapper;
+	
 
 	public ReturnObject<EHaiAdminUser> adminuser_list(HttpServletRequest request) throws Exception{
 		
@@ -197,7 +208,7 @@ public class HaiAdminUserServiceImpl  extends CommonServiceImpl implements HaiAd
 		EHaiAdminUserExample.Criteria c = example.createCriteria();
 		
 		c.andAdminIdEqualTo(model.getAdminId());
-		c.andStoreIdEqualTo(store_id);
+//		c.andStoreIdEqualTo(store_id);
 
 		long count = haiAdminUserMapper.countByExample(example);
 		if(count == 0){
@@ -369,6 +380,60 @@ bean.setPartnerId(model.getPartnerId());
 
 
 
+	
+	public ReturnObject<EHaiAdminUserWithBLOBs> adminuser_weixin_insert_submit(HttpServletRequest request,EHaiAdminUserWithBLOBs model,String roleId)
+			throws Exception {
+		// TODO Auto-generated method stub
+		ReturnObject<EHaiAdminUserWithBLOBs> rm = new ReturnObject<EHaiAdminUserWithBLOBs>();
+		rm.setCode(0);
+
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		model.setStoreId(store_id);
+		
+		Date date = new Date();
+
+		EHaiAdminUserExample example = new EHaiAdminUserExample();
+		EHaiAdminUserExample.Criteria c = example.createCriteria();
+		c.andUserNameEqualTo(model.getUserName());
+		long count = haiAdminUserMapper.countByExample(example);
+		if(count > 0){
+			rm.setMsg("存在相同的帐号1001");
+			return rm;
+		}
+		
+		EHaiStoreExample storeExp = new EHaiStoreExample();
+		storeExp.createCriteria().andStoreNameEqualTo(model.getUserName());
+		long sUser = eHaiStoreMapper.countByExample(storeExp);
+		if(sUser > 0){rm.setMsg("存在相同的帐号1002");return rm;}
+		
+		//------------插入微信公众号配置public表
+		WpPublicWithBLOBs wp = new WpPublicWithBLOBs();
+		wp.setPublicName(model.getUserName());
+		wpPublicMapper.insertSelective(wp);
+		
+		Integer addTime = Long.valueOf(System.currentTimeMillis() / 1000).intValue();
+		EHaiStore store = new EHaiStore();
+		store.setStoreName(model.getUserName());
+		store.setTheme(EAdminClassifyEnum.company);
+		store.setAddTime(addTime);
+		store.setPublicId(wp.getId());
+		store.setState(true);
+		eHaiStoreMapper.insert(store);
+		
+		model.setPassword(EncryptUtils.md5("123456"));
+		model.setStoreId(store.getStoreId());
+
+		int code = haiAdminUserMapper.insertSelective(model);
+		
+		this.saveRoleAdmin(request, model.getAdminId(), roleId);
+		
+		
+		
+		
+		rm.setCode(code);
+		rm.setMsg("添加成功");
+		return rm;
+	}
 
 
 

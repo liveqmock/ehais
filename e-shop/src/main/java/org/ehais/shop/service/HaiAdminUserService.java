@@ -20,7 +20,8 @@ public interface HaiAdminUserService extends CommonService{
 	public ReturnObject<EHaiAdminUser> adminuser_delete(HttpServletRequest request,Long adminId) throws Exception;
 	
 
-
+	public ReturnObject<EHaiAdminUserWithBLOBs> adminuser_weixin_insert_submit(HttpServletRequest request,EHaiAdminUserWithBLOBs model,String roleId) throws Exception;
+	
 	
 
 }

@@ -36,8 +36,7 @@
 <body>
 <div class="header">
 	<div class="nav">
-		<a href="javascript:;" id="back" class="icon fa fa-arrow-left ">&nbsp;</a>
-		<div class="nav0">角色</div>
+		<div class="nav0">微信公众号管理</div>
 		<div class="nav1">信息编辑</div>
 	</div>
 </div>
@@ -46,41 +45,59 @@
 <form id="myForm" name="myForm" class="form-horizontal" action="${rm.action?default('')}" method="post">
 
 
-<input type="hidden" class="form-control" id="roleId" name="roleId" value="${rm.model.roleId!''}" >
-<input type="hidden" class="form-control" id="parentId" name="parentId" value="1" placeholder="">
+<input type="hidden" class="form-control" id="id" name="id" value="${rm.model.id!''}" >
+<input type="hidden" class="form-control" id="token" name="token" value="${rm.model.token!''}" >
+
 
 <div class="form-group">
-<label class="col-sm-2 control-label">角色名称</label>
+<label class="col-sm-2 control-label">公众号名称</label>
 <div class="col-sm-5">
-	<input type="text" class="form-control" id="name" name="name" value="${rm.model.name!''}" placeholder="">
+	<input type="text" class="form-control" id="publicName" name="publicName" value="${rm.model.publicName!''}" placeholder="">
+</div>
+</div>
+
+
+
+<div class="form-group">
+<label class="col-sm-2 control-label">AppId</label>
+<div class="col-sm-6">
+	<input class="form-control" id="appid" name="appid" placeholder="" value="${rm.model.appid!''}" />
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">密钥</label>
+<div class="col-sm-6">
+	<input class="form-control" id="secret" name="secret" placeholder="" value="${rm.model.secret!''}" />
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">Token</label>
+<div class="col-sm-4">
+	<input class="form-control" id="token" name="token" placeholder="" value="${rm.model.token!''}" />
 </div>
 </div>
 
 
 <div class="form-group">
-<label class="col-sm-2 control-label">可用状态</label>
-<div class="col-sm-5">
-	<@checkboxPicker id="status" value="${(rm.model.status?string('yes', 'no'))!'no'}" />
+<label class="col-sm-2 control-label">商户号</label>
+<div class="col-sm-3">
+	<input class="form-control" id="mchId" name="mchId" placeholder="" value="${rm.model.mchId!''}" />
 </div>
 </div>
-
 
 <div class="form-group">
-<label class="col-sm-2 control-label">备注</label>
-<div class="col-sm-8">
-	<textarea class="form-control" id="remark" name="remark" placeholder="">${rm.model.remark!''}</textarea>
+<label class="col-sm-2 control-label">商户密钥</label>
+<div class="col-sm-6">
+	<input class="form-control" id="mchSecret" name="mchSecret" placeholder="" value="${rm.model.mchSecret!''}" />
 </div>
 </div>
-
-
-
-
-
 
 
 <div class="form-group">
 	<div class="col-sm-3"></div>
-	<div class="col-sm-6"><button id="saveSubmit" type="button" class="btn btn-primary">提交信息</button></div>
+	<div class="col-sm-6"><button id="saveSubmit" type="button" class="btn btn-primary">保存</button></div>
 </div>
        
 
@@ -91,7 +108,7 @@
 </div>    
 
 
-<script type="text/javascript" src="/js/gzhmt/role/detail.js" ></script>             
+<script type="text/javascript" src="/js/admin/public/public_detail.js" ></script>             
 
 
 </body>

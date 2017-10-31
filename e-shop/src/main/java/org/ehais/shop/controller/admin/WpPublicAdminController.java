@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @EPermissionModuleGroup(name="微信模组")
 
-@EPermissionController(intro="微信公众号管理功能",value="wpPublicController")
+@EPermissionController(name="公众号配置",intro="微信公众号管理功能",value="wpPublicController")
 @Controller
 @RequestMapping("/admin")
 public class  WpPublicAdminController extends CommonController {
@@ -51,7 +51,7 @@ public class  WpPublicAdminController extends CommonController {
 		try{
 			ReturnObject<WpPublic> rm = wpPublicService.public_list(request);
 			modelMap.addAttribute("rm", rm);
-			return "/"+this.getStoreTheme(request)+"/public/view";
+			return "/"+this.getAdminProjectFolder(request)+"/public/view";
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("public", e);
@@ -89,7 +89,7 @@ public class  WpPublicAdminController extends CommonController {
 		try{
 			ReturnObject<WpPublicWithBLOBs> rm = wpPublicService.public_insert(request);
 			modelMap.addAttribute("rm", rm);
-			return "/"+this.getStoreTheme(request)+"/public/detail";
+			return "/"+this.getAdminProjectFolder(request)+"/public/detail";
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -132,7 +132,7 @@ public class  WpPublicAdminController extends CommonController {
 		try{
 			ReturnObject<WpPublicWithBLOBs> rm = wpPublicService.public_update(request,id);
 			modelMap.addAttribute("rm", rm);
-			return "/"+this.getStoreTheme(request)+"/public/detail";
+			return "/"+this.getAdminProjectFolder(request)+"/public/detail";
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("public", e);
@@ -178,7 +178,7 @@ public class  WpPublicAdminController extends CommonController {
 	
 	
 
-	@EPermissionMethod(name="编辑",intro="编辑微信公众号管理",value="wpPublicEditDetail",relation="wpPublicEditSubmit",type=PermissionProtocol.BUTTON)
+	@EPermissionMethod(name="编辑",intro="编辑微信公众号管理",value="wpPublicDetail",relation="wpPublicEditSubmit",type=PermissionProtocol.BUTTON)
 	@RequestMapping(value="/wpPublicDetail",method=RequestMethod.GET)
 	public String wpPublicDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response
@@ -186,7 +186,7 @@ public class  WpPublicAdminController extends CommonController {
 		try{
 			ReturnObject<WpPublicWithBLOBs> rm = wpPublicService.public_detail(request);
 			modelMap.addAttribute("rm", rm);
-			return "/"+this.getStoreTheme(request)+"/public/public_detail";
+			return "/"+this.getAdminProjectFolder(request)+"/public/public_detail";
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("public", e);
