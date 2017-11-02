@@ -91,8 +91,12 @@ public class OrderInfoWSController extends OrderInfoIController{
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "paytime", required = true) Integer paytime){
 		ReturnObject<HaiOrderInfo> rm = new ReturnObject<HaiOrderInfo>();
-		rm.setCode(1);
+		rm.setCode(0);
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		if(store_id == null || store_id == 0){
+			rm.setMsg("请登录");
+			return this.writeJson(rm);
+		}
 		try {
 			HaiOrderInfoExample exam = new HaiOrderInfoExample();
 			exam.createCriteria()

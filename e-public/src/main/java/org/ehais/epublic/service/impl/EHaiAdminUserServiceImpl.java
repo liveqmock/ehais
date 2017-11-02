@@ -311,7 +311,7 @@ public class EHaiAdminUserServiceImpl  extends CommonServiceImpl implements EHai
 //		}else if(adminuser.getProjectFolder() != null && !adminuser.getProjectFolder().equals("")){
 //			request.getSession().setAttribute(EConstants.SESSION_ROLE_TYPE, adminuser.getProjectFolder());
 //		}
-		
+		/*///////////////////权限判断
 		ThinkRoleAdminExample exp = new ThinkRoleAdminExample();
 		exp.createCriteria().andAdminIdEqualTo(adminuser.getAdminId());
 		List<ThinkRoleAdminKey> role = thinkRoleAdminMapper.selectByExample(exp);
@@ -328,7 +328,7 @@ public class EHaiAdminUserServiceImpl  extends CommonServiceImpl implements EHai
 		
 		String str = StringUtils.join(roleids.toArray(), ",");  
 		request.getSession().setAttribute(EConstants.SESSION_ROLE_ID_ARRAY, str);
-		
+		*/
 		
 		
 		if(adminuser.getClassify() != null && adminuser.getClassify().equals(EAdminClassifyEnum.partner)){

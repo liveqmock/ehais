@@ -342,17 +342,26 @@ bean.setIsValid(model.getIsValid());
         
         int startX = (width-(fontSize*pressText.length()))/2;
         //y开始的位置：图片高度-（图片高度-图片宽度）/2
-        int startY = height-(height-width)/2+10; 
+        int startY = 40; 
         g.setColor(Color.BLACK);
         g.setFont(new Font(null, fontStyle, fontSize));
         g.drawString(pressText, startX, startY);
         
         
-        fontSize = 12; //字体大小
+        fontSize = 16; //字体大小
         g.setFont(new Font(null, fontStyle, fontSize));
         pressText = "广州易海司信息科技有限公司";
         startX = (width-(fontSize*pressText.length()))/2;
-        g.drawString(pressText, startX, startY + 40);
+        startY = height-(height-width)/2+10;
+        g.drawString(pressText, startX, startY );
+        
+        fontSize = 12; //字体大小
+        g.setFont(new Font(null, fontStyle, fontSize));
+        pressText = "公众号：gzehais     微客服：haisoftware";
+        startX = (width-(fontSize*pressText.length())) + (fontSize*pressText.length()) / 6 ;
+        g.drawString(pressText, startX, startY + 30);
+        
+        
         g.dispose();
         
         if(download != null && download == 1){//下载

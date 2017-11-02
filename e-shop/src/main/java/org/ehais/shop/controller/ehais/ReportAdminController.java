@@ -6,11 +6,17 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
+import org.ehais.enums.EAdminClassifyEnum;
+import org.ehais.epublic.mapper.EHaiAdminUserMapper;
 import org.ehais.epublic.mapper.HaiOrderInfoMapper;
+import org.ehais.epublic.model.EHaiAdminUserWithBLOBs;
+import org.ehais.epublic.model.EHaiStore;
 import org.ehais.epublic.model.HaiOrderInfo;
 import org.ehais.epublic.model.OrderDiningStatistics;
+import org.ehais.epublic.service.EStoreService;
 import org.ehais.shop.service.OrderInfoService;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.DateUtil;
@@ -34,13 +40,28 @@ public class ReportAdminController extends CommonController {
 	private OrderInfoService orderInfoService;
 	@Autowired
 	private HaiOrderInfoMapper haiOrderInfoMapper;
+	@Autowired
+	private EStoreService eStoreService;
+	@Autowired
+	private EHaiAdminUserMapper eHaiAdminUserMapper;
 	
 	@RequestMapping("/manage/diningReport")
 	public String haiOrderView(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) {	
 		try{			
-			ReturnObject<HaiOrderInfo> rm = orderInfoService.orderinfo_list(request);
-			modelMap.addAttribute("rm", rm);
+//			ReturnObject<HaiOrderInfo> rm = orderInfoService.orderinfo_list(request);
+//			modelMap.addAttribute("rm", rm);
+			
+			//下面是代理查帐使用的情况
+			String adminClassify = (String)request.getSession().getAttribute(EConstants.SESSION_ADMIN_CLASSIFY);
+			if(StringUtils.isNotBlank(adminClassify) && adminClassify.equals(EAdminClassifyEnum.partner)){
+				Long adminId = (Long) request.getSession().getAttribute(EConstants.SESSION_ADMIN_ID);
+				EHaiAdminUserWithBLOBs adminUser = eHaiAdminUserMapper.selectByPrimaryKey(adminId);
+				List<EHaiStore> listStore = eStoreService.partnerStore(adminUser.getPartnerId());
+				modelMap.addAttribute("listStore", listStore);
+			}
+			
+			
 			return "/"+this.getStoreTheme(request)+"/report/view";
 		}catch(Exception e){
 			e.printStackTrace();
@@ -55,12 +76,13 @@ public class ReportAdminController extends CommonController {
 	public String haiOrderDiningStatistics(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "state_date", required = true) String state_date,
-			@RequestParam(value = "end_date", required = true) String end_date
+			@RequestParam(value = "end_date", required = true) String end_date,
+			@RequestParam(value = "store_id", required = false) Integer store_id
 			) {	
 		ReturnObject<OrderDiningStatistics> rm = new ReturnObject<OrderDiningStatistics>();
 		rm.setCode(0);
 		try{
-			Integer store_id = (Integer) request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+			if(store_id == null || store_id == 0)store_id = (Integer) request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 			Date startDate = DateUtil.formatDate(state_date, DateUtil.FORMATSTR_3);
 			Date endDate = DateUtil.formatDate(end_date, DateUtil.FORMATSTR_3);
 			endDate = DateUtil.addDate(endDate, 1);

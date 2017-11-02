@@ -36,6 +36,16 @@
 				<div class="panel panel-default">
 					
 					<div class="panel-body single">					    
+						<div class="">
+							<select id="sel_store_id" class="btn btn-default">
+								<option value="">--请选择查帐商家--</option>
+								<#if (listStore?? && listStore?size > 0)>
+								<#list listStore as store>
+									<option value="${store.storeId!0}">${store.storeName!''}</option>
+								</#list>
+								</#if>
+							</select>
+						</div>
 						<div class="date btn-group" role="group" aria-label="...">
 						  <button id="previousWeek" type="button" class="btn btn-default">上周</button>
 						  <button id="currentWeek" type="button" class="btn btn-default">本周</button>
@@ -62,7 +72,7 @@
 	</div>
 	
 	<script type="text/javascript" src="/js/dining/report/view.js" ></script>
-	<script type="text/javascript" src="/js/dining/report/dining_view.js" ></script>
+	<script type="text/javascript" src="/js/dining/report/partner_view.js" ></script>
 
 </body>
 </html>
