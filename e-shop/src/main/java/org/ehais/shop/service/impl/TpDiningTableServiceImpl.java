@@ -314,7 +314,7 @@ bean.setIsValid(model.getIsValid());
 //		String content = "http://w.ehais.com/api.php/Api/DiningApi/wxgo?dining="+session_supplierssn+"&tableno="+model.getTablename();
 		WpPublicWithBLOBs wpPublic = eWPPublicService.getWpPublic(store_id);
 		String content = request.getScheme()+"://"+request.getServerName()+"/diningStore!"+SignUtil.setDiningId(store_id, 0, 0L, 0L, model.getTablename(), wpPublic.getToken());
-		
+		System.out.println("dining table qrcode: "+ content);
 		MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
 		@SuppressWarnings("rawtypes")
         Map hints = new HashMap();

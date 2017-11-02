@@ -29,6 +29,8 @@ public class EHtmlUnit {
 		
     }
 	
+//	public 
+	
 	
 	public static String getPage(String url) throws Exception{  
         WebClient webClient = new WebClient();  

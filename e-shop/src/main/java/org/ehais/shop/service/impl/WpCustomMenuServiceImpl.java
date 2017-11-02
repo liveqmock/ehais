@@ -62,7 +62,7 @@ public class WpCustomMenuServiceImpl  extends CommonServiceImpl implements WpCus
 		
 		WpCustomMenuExample example = new WpCustomMenuExample();
 		WpCustomMenuExample.Criteria c = example.createCriteria();
-		c.andPublicIdEqualTo(wp.getId());
+		c.andPublicIdEqualTo(wp.getId()).andStoreIdEqualTo(condition.getStore_id());
 		example.setOrderByClause("sort asc");
 		List<WpCustomMenu> list = wpCustomMenuMapper.selectByExample(example);
 		long total = wpCustomMenuMapper.countByExample(example);
@@ -359,7 +359,9 @@ public class WpCustomMenuServiceImpl  extends CommonServiceImpl implements WpCus
 			
 			WpCustomMenuExample example = new WpCustomMenuExample();
 			WpCustomMenuExample.Criteria criteria = example.createCriteria();
-			criteria.andPublicIdEqualTo(wpPublic.getId());
+			criteria
+			.andPublicIdEqualTo(wpPublic.getId())
+			.andStoreIdEqualTo(store_id);
 			example.setOrderByClause("sort asc");
 			List<WpCustomMenu> list = wpCustomMenuMapper.selectByExample(example);
 			List<Object> listMenu = new ArrayList<Object>();

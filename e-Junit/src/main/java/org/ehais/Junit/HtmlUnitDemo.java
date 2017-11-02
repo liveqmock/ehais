@@ -19,6 +19,7 @@ import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
 import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
 import net.sf.json.JSONObject;
@@ -301,6 +302,36 @@ public class HtmlUnitDemo {
      
         System.out.println(rootPage.asXml());  
     } 
+	
+	
+	@Test
+	public void sinalogin() throws FailingHttpStatusCodeException, MalformedURLException, IOException{
+		WebClient client = new WebClient(BrowserVersion.CHROME);
+        client.getOptions().setJavaScriptEnabled(true);    //默认执行js，如果不执行js，则可能会登录失败，因为用户名密码框需要js来绘制。
+        client.getOptions().setCssEnabled(false);
+        client.setAjaxController(new NicelyResynchronizingAjaxController());
+        client.getOptions().setThrowExceptionOnScriptError(false);        
+
+        HtmlPage page = client.getPage("http://login.sina.com.cn/sso/login.php?client=ssologin.js(v1.3.16)");
+        //System.out.println(page.asText());
+        //登录
+        HtmlInput ln = page.getHtmlElementById("username");
+        HtmlInput pwd = page.getHtmlElementById("password");
+        HtmlInput btn = page.getFirstByXPath(".//*[@id='vForm']/div[3]/ul/li[6]/div[2]/input");
+
+        ln.setAttribute("value", "lgj628@126.com");
+        pwd.setAttribute("value", "Lgjun628ok");
+
+        HtmlPage page2 = btn.click();
+        //登录完成，现在可以爬取任意你想要的页面了。
+        System.out.println("\n\n\n");
+        System.out.println(page2.asText());
+
+        HtmlPage page3 = client.getPage("http://weibo.com/friends?leftnav=1&wvr=5&isfriends=1&step=2");
+        System.out.println(" : " + page3.asXml());
+        
+        client.closeAllWindows();
+	}
 
     
     
