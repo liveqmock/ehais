@@ -47,6 +47,10 @@ public class AdminInterceptor extends HandlerInterceptorAdapter{
 				
 		//权限判断
 		String role = (String) request.getSession().getAttribute(EConstants.SESSION_ROLE_ID_ARRAY);
+		if(StringUtils.isBlank(role)){
+			response.sendRedirect(notpermissionUrl);
+			return false;
+		}
 //		System.out.println("role==== : "+ role);
 		List<String> result = Arrays.asList(StringUtils.split(role,","));  
 		for (String string : result) {

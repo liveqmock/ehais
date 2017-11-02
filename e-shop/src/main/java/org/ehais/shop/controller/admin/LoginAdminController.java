@@ -57,7 +57,7 @@ public class LoginAdminController extends CommonController {
 			@RequestParam(value = "verificationcode", required = true) String verificationcode
 			) {
 		try {
-			ReturnObject<EHaiAdminUser> rm = eHaiAdminUserService.hai_login_submit(request, username, password,verificationcode);
+			ReturnObject<EHaiAdminUser> rm = eHaiAdminUserService.hai_login_submit(request, username, password,verificationcode,true);
 			
 			// 根据获取的用户名和密码封装成Token
 //			UsernamePasswordToken token = new UsernamePasswordToken(username, EncryptUtils.md5(password));

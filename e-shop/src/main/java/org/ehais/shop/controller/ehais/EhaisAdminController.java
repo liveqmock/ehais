@@ -61,7 +61,7 @@ public class EhaisAdminController extends CommonController{
 			@RequestParam(value = "verificationcode", required = true) String verificationcode
 			) {		
 		try{
-			ReturnObject<EHaiAdminUser> rm = adminUserService.hai_login_submit(request , username, password , verificationcode);
+			ReturnObject<EHaiAdminUser> rm = adminUserService.hai_login_submit(request , username, password , verificationcode ,false);
 			return this.writeJson(rm);
 		}catch(Exception e){
 			e.printStackTrace();

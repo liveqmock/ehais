@@ -87,7 +87,7 @@ public class WpCustomMenuServiceImpl  extends CommonServiceImpl implements WpCus
 		Map<String,Object> map = new HashMap<String,Object>();	
 		
 		WpCustomMenuExample mexp = new WpCustomMenuExample();
-		mexp.createCriteria().andPidEqualTo(0);
+		mexp.createCriteria().andPidEqualTo(0).andStoreIdEqualTo(store_id);
 		mexp.setOrderByClause("sort asc");
 		List<WpCustomMenu> list = wpCustomMenuMapper.selectByExample(mexp);
 		map.put("plist", list);
@@ -128,7 +128,7 @@ public class WpCustomMenuServiceImpl  extends CommonServiceImpl implements WpCus
 			example.clear();
 			example.createCriteria()
 			.andPublicIdEqualTo(wp.getId())
-			.andPidEqualTo(0);
+			.andPidEqualTo(0).andStoreIdEqualTo(store_id);
 			count = wpCustomMenuMapper.countByExample(example);
 			if(count >= 3){
 				rm.setMsg("一级菜单不能超过3个");
@@ -138,7 +138,7 @@ public class WpCustomMenuServiceImpl  extends CommonServiceImpl implements WpCus
 			example.clear();
 			example.createCriteria()
 			.andPublicIdEqualTo(wp.getId())
-			.andPidEqualTo(model.getPid());
+			.andPidEqualTo(model.getPid()).andStoreIdEqualTo(store_id);
 			count = wpCustomMenuMapper.countByExample(example);
 			if(count >= 5){
 				rm.setMsg("二级菜单不能超过5个");
@@ -151,6 +151,7 @@ public class WpCustomMenuServiceImpl  extends CommonServiceImpl implements WpCus
 			model.setKeyword(ChineseCharToEn.getAllFirstLetter(model.getTitle()));
 		}
 		
+		model.setStoreId(store_id);
 		int code = wpCustomMenuMapper.insertSelective(model);
 		rm.setCode(code);
 		rm.setMsg("添加成功");
@@ -169,6 +170,8 @@ public class WpCustomMenuServiceImpl  extends CommonServiceImpl implements WpCus
 		WpCustomMenuExample.Criteria c = example.createCriteria();
 		c.andIdEqualTo(id);
 		c.andPublicIdEqualTo(wp.getId());
+		c.andStoreIdEqualTo(store_id);
+		
 		List<WpCustomMenu> list = wpCustomMenuMapper.selectByExample(example);
 		if(list == null || list.size() == 0){
 			rm.setMsg("记录不存在");
@@ -180,7 +183,7 @@ public class WpCustomMenuServiceImpl  extends CommonServiceImpl implements WpCus
 		Map<String,Object> map = new HashMap<String,Object>();	
 		
 		WpCustomMenuExample mexp = new WpCustomMenuExample();
-		mexp.createCriteria().andPidEqualTo(0);
+		mexp.createCriteria().andPidEqualTo(0).andStoreIdEqualTo(store_id);
 		mexp.setOrderByClause("sort asc");
 		List<WpCustomMenu> plist = wpCustomMenuMapper.selectByExample(mexp);
 		map.put("plist", plist);
@@ -208,6 +211,7 @@ public class WpCustomMenuServiceImpl  extends CommonServiceImpl implements WpCus
 		
 		c.andIdEqualTo(model.getId());
 		c.andPublicIdEqualTo(wp.getId());
+		c.andStoreIdEqualTo(store_id);
 
 		long count = wpCustomMenuMapper.countByExample(example);
 		if(count == 0){
@@ -221,7 +225,7 @@ public class WpCustomMenuServiceImpl  extends CommonServiceImpl implements WpCus
 			example.clear();
 			example.createCriteria()
 			.andPublicIdEqualTo(wp.getId())
-			.andIdNotEqualTo(model.getId())
+			.andIdNotEqualTo(model.getId()).andStoreIdEqualTo(store_id)
 			.andPidEqualTo(0);
 			count = wpCustomMenuMapper.countByExample(example);
 			if(count >= 3){
@@ -232,7 +236,7 @@ public class WpCustomMenuServiceImpl  extends CommonServiceImpl implements WpCus
 			example.clear();
 			example.createCriteria()
 			.andPublicIdEqualTo(wp.getId())
-			.andIdNotEqualTo(model.getId())
+			.andIdNotEqualTo(model.getId()).andStoreIdEqualTo(store_id)
 			.andPidEqualTo(model.getPid());
 			count = wpCustomMenuMapper.countByExample(example);
 			if(count >= 5){

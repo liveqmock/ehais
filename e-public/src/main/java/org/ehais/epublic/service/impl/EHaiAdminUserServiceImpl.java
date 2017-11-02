@@ -260,7 +260,12 @@ public class EHaiAdminUserServiceImpl  extends CommonServiceImpl implements EHai
 	
 	//商家的统一
 	@Override
-	public ReturnObject<EHaiAdminUser> hai_login_submit(HttpServletRequest request,String username, String password, String verificationcode)
+	public ReturnObject<EHaiAdminUser> hai_login_submit(HttpServletRequest request,
+			String username, 
+			String password, 
+			String verificationcode,
+			Boolean isRole
+			)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiAdminUser> rm = new ReturnObject<EHaiAdminUser>();
@@ -311,24 +316,29 @@ public class EHaiAdminUserServiceImpl  extends CommonServiceImpl implements EHai
 //		}else if(adminuser.getProjectFolder() != null && !adminuser.getProjectFolder().equals("")){
 //			request.getSession().setAttribute(EConstants.SESSION_ROLE_TYPE, adminuser.getProjectFolder());
 //		}
-		/*///////////////////权限判断
-		ThinkRoleAdminExample exp = new ThinkRoleAdminExample();
-		exp.createCriteria().andAdminIdEqualTo(adminuser.getAdminId());
-		List<ThinkRoleAdminKey> role = thinkRoleAdminMapper.selectByExample(exp);
 		
-		if(role==null || role.size() == 0){
-			rm.setMsg("角色权限未分配，请联系管理员10045");
-			return rm;
+		
+		
+		if(isRole){////////////////////是否查行权限获取
+			ThinkRoleAdminExample exp = new ThinkRoleAdminExample();
+			exp.createCriteria().andAdminIdEqualTo(adminuser.getAdminId());
+			List<ThinkRoleAdminKey> role = thinkRoleAdminMapper.selectByExample(exp);
+			
+			if(role==null || role.size() == 0){
+				rm.setMsg("角色权限未分配，请联系管理员10045");
+				return rm;
+			}
+			
+			List<Integer> roleids = new ArrayList<Integer>();
+			for (ThinkRoleAdminKey thinkRoleAdmin : role) {
+				roleids.add(thinkRoleAdmin.getRoleId());
+			}
+			
+			String str = StringUtils.join(roleids.toArray(), ",");  
+			request.getSession().setAttribute(EConstants.SESSION_ROLE_ID_ARRAY, str);
+			
 		}
 		
-		List<Integer> roleids = new ArrayList<Integer>();
-		for (ThinkRoleAdminKey thinkRoleAdmin : role) {
-			roleids.add(thinkRoleAdmin.getRoleId());
-		}
-		
-		String str = StringUtils.join(roleids.toArray(), ",");  
-		request.getSession().setAttribute(EConstants.SESSION_ROLE_ID_ARRAY, str);
-		*/
 		
 		
 		if(adminuser.getClassify() != null && adminuser.getClassify().equals(EAdminClassifyEnum.partner)){

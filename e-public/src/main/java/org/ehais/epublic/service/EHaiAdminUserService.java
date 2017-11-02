@@ -24,7 +24,10 @@ public interface EHaiAdminUserService extends CommonService{
 
 	public ReturnObject<EHaiAdminUser> logout_admin(HttpServletRequest request) throws Exception;
 	
-	public ReturnObject<EHaiAdminUser> hai_login_submit(HttpServletRequest request,String username,String password,String verificationcode) throws Exception;
+	public ReturnObject<EHaiAdminUser> hai_login_submit(HttpServletRequest request,
+			String username,
+			String password,
+			String verificationcode,Boolean isRole) throws Exception;
 	
 }
 
