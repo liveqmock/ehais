@@ -224,11 +224,12 @@ bean.setKeywords(model.getKeywords());
 bean.setAddress(model.getAddress());
 bean.setOrganisers(model.getOrganisers());
 bean.setAccessory(model.getAccessory());
-bean.setIsValid(model.getIsValid());
+bean.setIsValid(model.getIsValid()==null?false:true);
+bean.setIsStay(model.getIsStay()==null?false:true);
+bean.setIsMeal(model.getIsMeal()==null?false:true);
 bean.setCity(model.getCity());
 bean.setCounty(model.getCounty());
 bean.setModule(model.getModule());
-bean.setStoreId(model.getStoreId());
 bean.setUserId(model.getUserId());
 
 

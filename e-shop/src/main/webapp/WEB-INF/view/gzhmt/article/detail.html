@@ -82,13 +82,7 @@
 </div>
 </div>
 
-<div class="form-group">
-<label class="col-sm-2 control-label">标签</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="keywords" name="keywords" value="${rm.model.keywords!''}" placeholder="">
-	如多个标签可用英文逗号区分,标签用于软文的推荐文章作为关联依据
-</div>
-</div>
+
 
 <div class="form-group">
 <label class="col-sm-2 control-label">发布日期</label>
@@ -114,14 +108,6 @@
 
 
 
-<div class="form-group">
-<label class="col-sm-2 control-label">热点</label>
-<div class="col-sm-3">
-	<@checkboxPicker id="isHot" value="${(rm.model.isHot?string('yes', 'no'))!'no'}" />
-</div>
-</div>
-
-
 
 <div class="form-group">
 <label class="col-sm-2 control-label">内容</label>
@@ -130,21 +116,7 @@
 </div>
 </div>
 
-<div class="form-group">
-<label class="col-sm-2 control-label">网络来源</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="articleSource" name="articleSource" value="${rm.model.articleSource!''}" placeholder="">
-	如非原创资讯，请注明转载来源
-</div>
-</div>
 
-<div class="form-group">
-<label class="col-sm-2 control-label">来源网址</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="link" name="link" value="${rm.model.link!''}" placeholder="">
-	如来源网络的资讯，请注册来源的网址
-</div>
-</div>
 
 
 

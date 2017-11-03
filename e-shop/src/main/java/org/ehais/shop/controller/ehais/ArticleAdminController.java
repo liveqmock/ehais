@@ -122,7 +122,7 @@ public class  ArticleAdminController extends EhaisCommonController {
 	@RequestMapping(value="/manage/ehaisArticleAddSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String ehaisArticleAddSubmit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
-			@RequestParam(value = "goodsId", required = true) Long goodsId,
+			@RequestParam(value = "goodsId", required = false) Long goodsId,
 			@Valid @ModelAttribute("article") EHaiArticle article,
 			BindingResult result
 			) {
@@ -167,7 +167,7 @@ public class  ArticleAdminController extends EhaisCommonController {
 	public String ehaisArticleEditSubmit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "articleId", required = true) Integer articleId,
-			@RequestParam(value = "goodsId", required = true) Long goodsId,
+			@RequestParam(value = "goodsId", required = false) Long goodsId,
 			@Valid @ModelAttribute("article") EHaiArticle article,
 			BindingResult result
 			) {
