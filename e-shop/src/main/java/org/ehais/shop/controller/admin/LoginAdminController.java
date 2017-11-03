@@ -5,14 +5,10 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.subject.Subject;
 import org.ehais.controller.CommonController;
 import org.ehais.epublic.model.EHaiAdminUser;
 import org.ehais.epublic.service.EHaiAdminUserService;
 import org.ehais.tools.ReturnObject;
-import org.ehais.util.EncryptUtils;
 import org.ehais.util.ResourceUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

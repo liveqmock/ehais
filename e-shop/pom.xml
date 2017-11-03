@@ -23,7 +23,7 @@
     
   <dependencies>
 		
-		
+<!-- 		
 		<dependency>  
 		    <groupId>org.apache.shiro</groupId>  
 		    <artifactId>shiro-core</artifactId>  
@@ -44,6 +44,7 @@
 	      <artifactId>shiro-ehcache</artifactId>
 	      <version>${shiro.version}</version>
 	    </dependency>
+ -->
 
 		<dependency>
 			<groupId>net.sf.mpxj</groupId>

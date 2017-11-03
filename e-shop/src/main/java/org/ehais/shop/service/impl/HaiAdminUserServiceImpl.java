@@ -435,6 +435,15 @@ bean.setPartnerId(model.getPartnerId());
 		return rm;
 	}
 
+	
+	
+	@Override
+	public ReturnObject<EHaiAdminUser> adminuser_modify_password(HttpServletRequest request, String old_password,
+			String new_password, String confirmed_password) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 
 

@@ -23,6 +23,8 @@ public interface HaiAdminUserService extends CommonService{
 	public ReturnObject<EHaiAdminUserWithBLOBs> adminuser_weixin_insert_submit(HttpServletRequest request,EHaiAdminUserWithBLOBs model,String roleId) throws Exception;
 	
 	
+	public ReturnObject<EHaiAdminUser> adminuser_modify_password(HttpServletRequest request,String old_password,String new_password,String confirmed_password) throws Exception;
+	
 
 }
 

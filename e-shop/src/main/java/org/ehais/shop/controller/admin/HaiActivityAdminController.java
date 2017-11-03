@@ -8,7 +8,6 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.OutputStream;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
@@ -16,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.ehais.annotation.EPermissionController;
 import org.ehais.annotation.EPermissionMethod;
 import org.ehais.annotation.EPermissionModuleGroup;
@@ -31,7 +29,6 @@ import org.ehais.epublic.validator.EUniqueValidator;
 import org.ehais.epublic.validator.EUpdateValidator;
 import org.ehais.protocol.PermissionProtocol;
 import org.ehais.shop.model.HaiActivity;
-import org.ehais.shop.model.HaiActivityExample;
 import org.ehais.shop.model.HaiActivityParticipation;
 import org.ehais.shop.service.HaiActivityService;
 import org.ehais.tools.EConditionObject;

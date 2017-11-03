@@ -13,11 +13,13 @@ import org.ehais.epublic.model.EHaiArticle;
 import org.ehais.epublic.model.EHaiArticleCat;
 import org.ehais.epublic.model.EHaiArticleCatExample;
 import org.ehais.epublic.model.EHaiArticleExample;
+import org.ehais.util.EHttpClientUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/test")
@@ -102,6 +104,18 @@ public class TestWebController extends CommonController{
 		
 		
 		return "/web/test/article_detail";
+	}
+	
+	@ResponseBody
+	@RequestMapping("/test_ws")
+	public String test_ws(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response
+			) throws Exception {
+		String req = "";
+		
+		req = EHttpClientUtil.methodGet("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx722e9a654b5d58cc&secret=63be13ed69ff195b599d4ccd53b8ca93");
+		
+		return req;
 	}
 	
 }
