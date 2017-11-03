@@ -19,6 +19,9 @@ import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
 import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.DomElement;
+import com.gargoylesoftware.htmlunit.html.DomNodeList;
+import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
@@ -312,17 +315,30 @@ public class HtmlUnitDemo {
         client.setAjaxController(new NicelyResynchronizingAjaxController());
         client.getOptions().setThrowExceptionOnScriptError(false);        
 
-        HtmlPage page = client.getPage("http://login.sina.com.cn/sso/login.php?client=ssologin.js(v1.3.16)");
+        HtmlPage page = client.getPage("http://www.epshw.com/Default.php");
         //System.out.println(page.asText());
+        HtmlForm form = page.getFormByName("lsform"); 
         //登录
-        HtmlInput ln = page.getHtmlElementById("username");
-        HtmlInput pwd = page.getHtmlElementById("password");
-        HtmlInput btn = page.getFirstByXPath(".//*[@id='vForm']/div[3]/ul/li[6]/div[2]/input");
+        HtmlInput ln = page.getHtmlElementById("ls_username");
+        HtmlInput pwd = page.getHtmlElementById("ls_password");
+        HtmlInput btnSubmit = null;//page.getFirstByXPath("");
 
-        ln.setAttribute("value", "lgj628@126.com");
-        pwd.setAttribute("value", "Lgjun628ok");
+        ln.setAttribute("value", "lgj628");
+        pwd.setAttribute("value", "628218");
+        
+        DomNodeList<DomElement> domElements=page.getElementsByTagName("input");
+        for(DomElement temp:domElements){
 
-        HtmlPage page2 = btn.click();
+        	if(temp.getAttribute("class").equals("comeing_lbt")){
+
+        		btnSubmit = (HtmlInput) temp;
+        		
+        	}
+
+        }
+        
+        
+        HtmlPage page2 = btnSubmit.click();
         //登录完成，现在可以爬取任意你想要的页面了。
         System.out.println("\n\n\n");
         System.out.println(page2.asText());

@@ -53,6 +53,8 @@ $(function(){
         ],responseHandler : function (res){
         	
         	var user = res.map.userList ;
+        	if(user == undefined || user == "undefined" || user == null || user.length == 0 )return res;
+        	
         	var userObj = {};
         	for(var i = 0 ; i < user.length ; i ++){
         		userObj[user[i].userId] = user[i];
