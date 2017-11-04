@@ -1,1 +1,4 @@
-/ehais-common/src/main/resources
+.classpath
+.project
+.gitignore
+target

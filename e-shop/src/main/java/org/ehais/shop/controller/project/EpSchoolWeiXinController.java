@@ -1,4 +1,4 @@
-package org.ehais.shop.controller.web;
+package org.ehais.shop.controller.project;
 
 import java.io.File;
 import java.io.FileInputStream;
