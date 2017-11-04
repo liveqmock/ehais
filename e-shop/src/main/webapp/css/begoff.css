@@ -1,0 +1,120 @@
+@import url("common.css");
+html {
+  height: 100%;
+}
+body {
+  min-height: 100%;
+  width: 100%;
+  float: left;
+}
+.wrapper {
+  font-size: 0.14rem;
+  width: 100%;
+  float: left;
+  background: url(../images/top.png) no-repeat center top;
+}
+.wrapper header > div {
+  text-align: center;
+  padding: 0.1rem 0;
+}
+.wrapper header > div:first-child {
+  font-size: 0.18rem;
+  font-weight: bold;
+  padding-top: 0.3rem;
+}
+.wrapper .form {
+  width: 100%;
+  float: left;
+}
+.wrapper .form .item {
+  width: 100%;
+  float: left;
+}
+.wrapper .form .item input[type="text"],
+.wrapper .form .item input[type="tel"],
+.wrapper .form .item input[type="password"],
+.wrapper .form .item button {
+  padding: 0.08rem;
+  box-sizing: border-box;
+  border: 0.01rem solid #e5e5e5;
+  width: 100%;
+  border-radius: 0.02rem;
+  background: #fff;
+  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
+  font-size: 0.14rem;
+  -webkit-appearance: none;
+}
+.wrapper .form .item > label,
+.wrapper .form .item > span,
+.wrapper .form .item > ul {
+  float: left;
+  display: inline-block;
+}
+.wrapper .form .item > label {
+  width: 30%;
+  color: #999;
+  text-align: right;
+  font-weight: bold;
+}
+.wrapper .form .item > span,
+.wrapper .form .item > i {
+  width: 70%;
+  padding-top: 0.02rem;
+  float: right;
+}
+.wrapper .form .item > i {
+  font-size: 0.1rem;
+  padding-top: 0.05rem;
+}
+.wrapper .form .item > ul {
+  width: 70%;
+}
+.wrapper .form .item > ul li {
+  float: left;
+  border: 0.01rem solid #C0C0C0;
+  padding: 0.05rem 0.1rem;
+  margin: 0 0.1rem 0 0;
+  margin-top: -0.05rem;
+}
+.wrapper .form .item > ul li.active {
+  color: #fff;
+  background: #c00000;
+}
+.wrapper .form .item > input[type='number'],
+.wrapper .form .item > input[type='text'] {
+  width: 50%;
+  float: right;
+  padding: 0.08rem;
+  margin-right: 20%;
+}
+.wrapper .form .item > textarea,
+.wrapper .form .item > button[type="button"] {
+  width: 80%;
+  margin: 0 10%;
+}
+.wrapper .form .item > textarea {
+  height: 0.55rem;
+  padding: 0.05rem;
+}
+.wrapper .form .item > button[type="button"] {
+  border-radius: 0.05rem;
+}
+.wrapper .form .item > label.f {
+  padding-top: 0.05rem;
+}
+::-webkit-input-placeholder {
+  /* WebKit browsers */
+  font-size: 0.14rem;
+}
+:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  font-size: 0.14rem;
+}
+::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  font-size: 0.14rem;
+}
+:-ms-input-placeholder {
+  /* Internet Explorer 10+ */
+  font-size: 0.14rem;
+}

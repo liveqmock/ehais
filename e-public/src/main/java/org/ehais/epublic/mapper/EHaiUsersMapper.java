@@ -27,6 +27,18 @@ public interface EHaiUsersMapper {
 	public List<EHaiUsers> inUserIdList(@Param("userIds") String userIds);
 	
 	
+	@ResultMap(value = "BaseResultMap")
+	public List<EHaiUsers> selectUsersLike(@Param("store_id") Integer store_id,
+			@Param("keyword") String keyword,
+			@Param("orderByClause") String orderByClause,
+			@Param("start") Integer start,
+			@Param("len") Integer len
+			);
+	
+	public int selectUsersLikeCount(@Param("store_id") Integer store_id,
+			@Param("keyword") String keyword);
+	
+	
 	@Select("select DISTINCT(store_id) from hai_users where ifnull(store_id,0) != 0 and openid is not NULL and (nickname is NULL or face_image is NULL)")
 	public List<Integer> wxDistinctStoreId();
 	

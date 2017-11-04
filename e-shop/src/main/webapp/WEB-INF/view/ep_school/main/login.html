@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>恩平广播电视大学微信请假管理后台</title>
+		<meta name="keywords" content="" />
+		<meta name="description" content="" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<script type="text/javascript" src="../js/jquery-2.1.4.min.js" ></script>
+		
+		<link rel="stylesheet" href="../js/bootstrap/css/bootstrap.min.css" />
+		<script type="text/javascript" src="../js/bootstrap/js/bootstrap.min.js" ></script>
+		<link rel="stylesheet" href="../css/admin.css" />
+		
+		<link rel="stylesheet" href="../css/ace.min.css" />
+		<link rel="stylesheet" href="../css/ace-rtl.min.css" />
+        <link rel="stylesheet" href="../css/ljhy.css" />
+        
+        <link rel="stylesheet" href="../js/layer/skin/default/layer.css" />
+		<script type="text/javascript" src="../js/layer/layer.js" ></script>
+		
+		
+        <style type="text/css">
+        	.form-control.w100{width: 100%;}
+        	.toolbar{color: #fff;}
+        	.toolbar div:first-child{padding-left: 20px;}
+        	.toolbar div:last-child{padding-right: 20px;}
+        	form span.block{position: relative;}
+        	.ljhy_login .login_area .input-icon i.fa{position: absolute;right: 15px;top: 10px;}
+        	.ljhy_login .login_area .input-icon img.vcode{position: absolute;right: 40px;top: 2px;}
+        </style>
+	</head>
+
+	<body class="login-layout ljhy_login">
+		<div class="main-container">
+			<div class="main-content">
+				<div class="row">
+					<div class="col-sm-10 col-sm-offset-1">
+						<div class="login-container">
+							<div class="center">
+								<h1 class="login_logo">
+									<span class="blue app_name">恩平广播电视大学</span>
+								</h1>
+							</div>
+
+							<div class="space-6"></div>
+
+							<div class="position-relative login_area">
+								<div id="login-box" class="login-box visible ">
+									<div class="widget-body">
+										<div class="widget-main">
+											<div class="space-6"></div>
+
+											<form  action="" method="post" class="form-inline login">
+												<fieldset>
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-left">
+															<input type="text" id="username" name="username" value="" class="form-control w100" placeholder="用户名" />
+															<i class="fa fa-user-o"></i>
+														</span>
+													</label>
+
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-left">
+															<input type="password" id="password" name="password" value="" class="form-control w100" placeholder="密码" />
+															<i class="fa fa-lock"></i>
+														</span>
+													</label>
+													
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-left">
+															<input type="text" id="verificationcode" name="verificationcode" class="form-control w100" placeholder="验证码" />
+															<img class="vcode" id="verificationimg" name="verificationimg" src="/auth/AuthImage"/>
+															<i class="fa fa-refresh"></i>
+														</span>
+													</label>
+													
+
+													<div class="space"></div>
+
+													<div class="clearfix">
+														
+														<button id="login_submit" type="button" class="width-100 pull-right btn btn-sm btn-primary">
+															<i class="icon-key"></i>
+															登录
+														</button>
+													</div>
+
+													<div class="space-4"></div>
+												</fieldset>
+											</form>
+
+										</div><!-- /widget-main -->
+
+										<div class="toolbar clearfix">
+											
+										</div>
+									</div><!-- /widget-body -->
+								</div><!-- /login-box -->
+								
+									</div><!-- /widget-body -->
+								</div><!-- /signup-box -->
+							</div><!-- /position-relative -->
+						</div>
+					</div><!-- /.col -->
+				</div><!-- /.row -->
+			</div>
+		</div><!-- /.main-container -->
+
+<div style="width:100%;text-align: center;margin-top: 30px;">广州易海司信息科技有限公司团队支持&nbsp;&nbsp;</div>
+
+<script type="text/javascript">
+$(function(){
+	$("#username").focus();
+	$("#login_submit").click(function(){login_submit();});
+	$(".fa-refresh").click(function(){changeImg();});
+	
+	$('#username').keydown(function(e){
+		if(e.keyCode==13){
+			$("#password").focus();
+		}
+	});
+	$('#password').keydown(function(e){
+		if(e.keyCode==13){
+			$("#verificationcode").focus();
+		}
+	});
+	   $('#verificationcode').keydown(function(e){
+			if(e.keyCode==13){
+			   $('#login_submit').click(); //处理事件
+			}
+		});
+	
+});
+function login_submit(){
+	$.ajax({
+		url : "${rm.action!''}",dataType:"json",type:"post",
+		data:{
+			username:$("#username").val(),
+			password:$("#password").val(),
+			verificationcode:$("#verificationcode").val()
+		},
+		success:function(result){
+			if(result.code != 1){
+				changeImg();//更换验证码
+				layer.alert(result.msg);
+				return;
+			}
+			window.location.href = "${redirect!''}";
+		},
+		error:function(result){
+			
+		},
+		
+	});
+}
+
+function changeImg(){
+    $("#verificationimg").attr("src","/auth/AuthImage?date=" + new Date())
+}
+
+</script>
+
+
+</body>
+
+</html>

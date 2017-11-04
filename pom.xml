@@ -6,20 +6,24 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <modules>
-    <module>ehais-web</module>
+    
     <module>ehais-common</module>
-    <module>M-Project</module>
     <module>m-weixin</module>
     <module>e-weixin</module>
     <module>e-Junit</module>
-    <module>tracking</module>
     <module>e-pom</module>
     <module>e-shop</module>
     <module>e-public</module>
+    
+    <!-- 
+    <module>ehais-web</module>
+    <module>M-Project</module>
+    <module>tracking</module>
     <module>HuangBao</module>
     <module>m-cms</module>
     <module>e-user-center</module>
     <module>minaUnit</module>
+     -->
   </modules>
   
   	<properties>

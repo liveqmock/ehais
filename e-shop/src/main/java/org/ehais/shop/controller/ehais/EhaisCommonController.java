@@ -150,7 +150,7 @@ public class EhaisCommonController extends CommonController{
 	 */
 	protected EHaiUsers saveUserByOpenIdInfo(HttpServletRequest request,String code,Map<String ,Object> map) throws Exception{
 		OpenidInfo open = WeiXinUtil.getOpenid(code,weixin_appid,weixin_appsecret);
-		if(open == null) return null;
+		if(open == null || open.getOpenid() == null) return null;
 		WeiXinUserInfo wxUser = null;
 		AccessToken accesstoken = WeiXinUtil.getAccessToken(default_store_id, weixin_appid, weixin_appsecret);
 		wxUser = WeiXinUtil.getUserInfo(accesstoken.getAccess_token(), open.getOpenid());
@@ -170,7 +170,7 @@ public class EhaisCommonController extends CommonController{
 		//获取openid
 		WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(Integer.valueOf(map.get("store_id").toString()));
 		OpenidInfo open = WeiXinUtil.getOpenid(code,wp.getAppid(),wp.getSecret());
-		if(open == null) return null;
+		if(open == null || open.getOpenid() == null) return null;
 		WeiXinUserInfo wxUser = null;
 		if(subscribe){
 			AccessToken token = WeiXinUtil.getAccessToken(default_store_id, weixin_appid, weixin_appsecret);
@@ -192,7 +192,7 @@ public class EhaisCommonController extends CommonController{
 		//获取openid
 		WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
 		OpenidInfo open = WeiXinUtil.getOpenid(code,wp.getAppid(),wp.getSecret());
-		if(open == null) return null;
+		if(open == null || open.getOpenid() == null) return null;
 		WeiXinUserInfo wxUser = null;
 		AccessToken token = WeiXinUtil.getAccessToken(store_id, wp.getAppid(), wp.getSecret());
 		wxUser = WeiXinUtil.getUserInfo(token.getAccess_token(), open.getOpenid());

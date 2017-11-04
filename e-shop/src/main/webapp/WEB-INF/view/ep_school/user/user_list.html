@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		
+		<#include "/include.html"/>
+		<#include "/FreemarkerMacro.html"/>
+		
+		<#include "/include/JqueryFileUpload_Include.html"/>
+	</head>
+	<body>
+		<div class="header">
+			<div class="nav">
+				<i class="icon fa fa-home">&nbsp;</i>
+				<div class="nav0">学生/教师信息管理</div>
+			</div>
+		</div>
+		<div class="body">
+			<div class="container_box">
+				
+				<div class="col_main body">
+					<h4>
+						<i class="fa fa-list"></i>
+						学生/教师信管理信息列表
+						<div class="btn-group" role="group" aria-label="...">
+						  <button id="import_users" type="button" class="btn btn-default">导入学生/教师/学生处信息</button>
+						  <button id="download_users" type="button" class="btn btn-default">下载模板</button>
+						</div>
+						
+						<input type="file" accept="file/*" id="upload_file_users" multiple="" data-updateid="" style="opacity : 0;width:0;height:0;">
+
+					</h4>			
+					<div class="panel panel-default">
+						<div class="panel-heading">搜索条件</div>
+						<div class="panel-body single">					    
+							<div><label>关键字：</label><input id="publicName" class="control"/></div>
+							<div><button id="btnSearch" class="fa fa-search btn btn-default control">搜索</button></div>
+						</div>
+					</div>
+					
+					
+					<div class="main_table">
+						<table id="bsTable" data-show-columns="false"></table>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" src="/js/ep_school/user_list.js" ></script>
+	</body>
+</html>

@@ -1242,4 +1242,46 @@
   </update>
   
   
+  <select id="selectUsersLike" resultMap="BaseResultMap" parameterType="map" >
+    select  
+    <include refid="Base_Column_List" />
+    from hai_users
+     where store_id = #{store_id}
+     <if test="keyword != null" >
+     	and (user_name like CONCAT('%',#{keyword},'%') 
+     	or email like CONCAT('%',#{keyword},'%')
+     	or nickname like CONCAT('%',#{keyword},'%')
+     	or realname like CONCAT('%',#{keyword},'%')
+     	or mobile_phone like CONCAT('%',#{keyword},'%')
+     	or home_phone like CONCAT('%',#{keyword},'%')
+     	or office_phone like CONCAT('%',#{keyword},'%')
+     	)
+     </if>
+     <if test="orderByClause != null" >
+      <![CDATA[ order by ${orderByClause}  ]]>
+    </if>
+    <if test="start != null and len != null and start >= 0 and len > 0" >
+      <![CDATA[ limit #{start,jdbcType=INTEGER},#{len,jdbcType=INTEGER}  ]]>
+    </if>
+  </select>
+  
+  
+  <select id="selectUsersLikeCount" resultType="java.lang.Integer" parameterType="map" >
+    select  
+    count(*)
+    from hai_users
+     where store_id = #{store_id}
+     <if test="keyword != null" >
+     	and (user_name like CONCAT('%',#{keyword},'%') 
+     	or email like CONCAT('%',#{keyword},'%')
+     	or nickname like CONCAT('%',#{keyword},'%')
+     	or realname like CONCAT('%',#{keyword},'%')
+     	or mobile_phone like CONCAT('%',#{keyword},'%')
+     	or home_phone like CONCAT('%',#{keyword},'%')
+     	or office_phone like CONCAT('%',#{keyword},'%')
+     	)
+     </if>
+  </select>
+  
+  
 </mapper>
