@@ -3,6 +3,7 @@ package org.ehais.shop.controller.web;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -11,9 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -21,6 +20,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.ehais.common.EConstants;
 import org.ehais.epublic.mapper.EHaiUsersMapper;
 import org.ehais.epublic.model.EHaiUsers;
+import org.ehais.epublic.model.EHaiUsersExample;
 import org.ehais.shop.controller.ehais.EhaisCommonController;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
@@ -37,6 +37,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import net.sf.json.JSONObject;
 
+
+/**临时项目，所以这里使用旧表，不创建新表，故用了奇怪的字段表示
+ * hai_users表
+ * user_name:学号
+ * nickname:卡号
+ * realname:姓名
+ * question:班级
+ * answer:上级工号
+ * alias:身份
+ * @author lgj628
+ *
+ */
 
 @Controller
 @RequestMapping("/")
@@ -152,6 +164,7 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 	}
 	
 	
+	@ResponseBody
 	@RequestMapping("/admin/ep_school_user_list_json")
 	public String user_list_json(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -161,9 +174,8 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 		ReturnObject<EHaiUsers> rm = new ReturnObject<EHaiUsers>();
 		rm.setCode(0);
 		try{
-			Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
-			List<EHaiUsers> list = eHaiUsersMapper.selectUsersLike(store_id, keyword, "user_id", condition.getStart(), condition.getRows());
-			Integer total = eHaiUsersMapper.selectUsersLikeCount(store_id, keyword);
+			List<EHaiUsers> list = eHaiUsersMapper.selectUsersLike(default_store_id, keyword, "user_id desc", condition.getStart(), condition.getRows());
+			Integer total = eHaiUsersMapper.selectUsersLikeCount(default_store_id, keyword);
 			rm.setCode(1);
 			rm.setRows(list);
 			rm.setTotal(total);
@@ -180,7 +192,7 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/admin/ep_school_excel.upd", method = RequestMethod.POST)
-	public String saveFile(ModelMap modelMap, HttpServletRequest request,
+	public String ep_school_excel(ModelMap modelMap, HttpServletRequest request,
 			HttpServletResponse response
 	) {
 
@@ -209,37 +221,113 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
             }else{
             	wb = new HSSFWorkbook(input); 
             }
+            DecimalFormat    df   = new DecimalFormat("0");   
             
             Sheet sheet = wb.getSheetAt(0);     //获得第一个表单
             Iterator<Row> rows = sheet.rowIterator(); //获得第一个表单的迭代器  
             while (rows.hasNext()) {  
                 Row row = rows.next();  //获得行数据  
-                System.out.println("Row #" + row.getRowNum());  //获得行号从0开始  
-                Iterator<Cell> cells = row.cellIterator();    //获得第一行的迭代器  
+                if(row.getRowNum() == 0)continue;//排除第一行
+//                System.out.println("Row #" + row.getRowNum());  //获得行号从0开始  
+//                Iterator<Cell> cells = row.cellIterator();    //获得第一行的迭代器  
+                EHaiUsers users = new EHaiUsers();
+                if(row.getCell(0)!=null){
+                	users.setUserName(df.format(row.getCell(0).getNumericCellValue()));//学号
+                    if(row.getCell(1)!=null){
+                    	users.setNickname(df.format(row.getCell(1).getNumericCellValue()));//卡号
+                    }else{
+                    	users.setNickname("");
+                    }
+                    
+                	if(row.getCell(2)!=null){
+                		users.setRealname(row.getCell(2).getStringCellValue());//姓名
+                	}else{
+                		users.setRealname("");
+                	}
+                	
+                	if(row.getCell(3)!=null){
+                		users.setQuestion(row.getCell(3).getStringCellValue());//班级
+                	}else{
+                		users.setQuestion("");
+                	}
+                    
+                	if(row.getCell(4)!=null){
+                		users.setAnswer(df.format(row.getCell(4).getNumericCellValue()));//上级工号
+                	}else{
+                		users.setAnswer("");
+                	}
+                    
+                	if(row.getCell(5)!=null){
+                		users.setAlias(row.getCell(5).getStringCellValue());//身份
+                	}else{
+                		users.setAlias("");
+                	}
+                    
+                    users.setStoreId(default_store_id);
+                    
+                    if(StringUtils.isNotBlank(users.getUserName())){
+                    	EHaiUsersExample exp = new EHaiUsersExample();
+                        exp.createCriteria()
+                        .andUserNameEqualTo(users.getUserName())
+                        .andStoreIdEqualTo(default_store_id);
+                        List<EHaiUsers> list = eHaiUsersMapper.selectByExample(exp);
+                        if(list == null || list.size() == 0){
+                        	eHaiUsersMapper.insert(users);
+                        }else{
+                        	EHaiUsers bean = list.get(0);
+                        	bean.setNickname(users.getNickname());
+                        	bean.setRealname(users.getRealname());
+                        	bean.setQuestion(users.getQuestion());
+                        	bean.setAnswer(users.getAnswer());
+                        	bean.setAlias(users.getAlias());
+                        	eHaiUsersMapper.updateByPrimaryKey(bean);
+                        }
+                    }
+                    
+                }
+                
+                
+                
+                
+                
+                /* user_name:学号
+                * nickname:卡号
+                * realname:姓名
+                * question:班级
+                * answer:上级工号
+                * alias:身份
+                */
+                
+                /*
                 while (cells.hasNext()) {  
                     Cell cell = cells.next();  
-                    System.out.println("Cell #" + cell.getColumnIndex());  
+                    System.out.print("|Cell #" + cell.getColumnIndex()+"|"+"");  
+                    
                     switch (cell.getCellType()) {   //根据cell中的类型来输出数据  
                     case HSSFCell.CELL_TYPE_NUMERIC:  
-                        System.out.println(cell.getNumericCellValue());  
+                        System.out.print(df.format(cell.getNumericCellValue()));  
                         break;  
                     case HSSFCell.CELL_TYPE_STRING:  
-                        System.out.println(cell.getStringCellValue());  
+                        System.out.print(cell.getStringCellValue());  
                         break;  
                     case HSSFCell.CELL_TYPE_BOOLEAN:  
-                        System.out.println(cell.getBooleanCellValue());  
+                        System.out.print(cell.getBooleanCellValue());  
                         break;  
                     case HSSFCell.CELL_TYPE_FORMULA:  
-                        System.out.println(cell.getCellFormula());  
+                        System.out.print(cell.getCellFormula());  
                         break;  
                     default:  
-                        System.out.println("unsuported sell type");  
+                        System.out.print("unsuported sell type");  
                     break;  
-                    }  
+                    } 
+                    System.out.println("");
                 }  
+                */
+                
             }  
             
-	        
+	        rm.setCode(1);
+	        rm.setMsg("导入成功");
 			return this.writeJson(rm);
 		} catch (Exception e) {
 			log.error("上传文件失败.", e);
@@ -247,6 +335,33 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 		}
 
 		return null;
+	}
+	
+	
+	
+	@ResponseBody
+	@RequestMapping("/admin/ep_school_user_delete")
+	public String ep_school_user_delete(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "userId", required = true) Long userId
+			) {
+		ReturnObject<EHaiUsers> rm = new ReturnObject<EHaiUsers>();
+		rm.setCode(0);
+		try{
+			EHaiUsersExample exp = new EHaiUsersExample();
+            exp.createCriteria()
+            .andUserIdEqualTo(userId)
+            .andStoreIdEqualTo(default_store_id);
+            eHaiUsersMapper.deleteByExample(exp);
+			rm.setCode(1);
+			rm.setMsg("删除成功");
+			return this.writeJson(rm);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return this.writeJsonObject(new HashMap<String,Object>(){{this.put("code", 0);this.put("msg", "fail");}});
 	}
 	
 	
