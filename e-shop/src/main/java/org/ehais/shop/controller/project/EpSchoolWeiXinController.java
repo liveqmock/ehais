@@ -20,15 +20,18 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.ehais.annotation.EPermissionMethod;
 import org.ehais.common.EConstants;
 import org.ehais.epublic.mapper.EHaiUsersMapper;
 import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.epublic.model.EHaiUsersExample;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
+import org.ehais.protocol.PermissionProtocol;
 import org.ehais.shop.controller.ehais.EhaisCommonController;
 import org.ehais.shop.mapper.project.HaiBegOffMapper;
 import org.ehais.shop.model.project.HaiBegOff;
 import org.ehais.shop.model.project.HaiBegOffExample;
+import org.ehais.shop.service.ProjectBegOffService;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.DateUtil;
@@ -81,7 +84,8 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 	private EHaiUsersMapper eHaiUsersMapper;
 	@Autowired
 	private HaiBegOffMapper haiBegOffMapper;
-	
+	@Autowired
+	private ProjectBegOffService projectBegOffService;
 	
 
 	@RequestMapping("/ep_school_bind")
@@ -209,10 +213,17 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 					.andUserIdEqualTo(users.getUserId())
 					.andTeacherUserIdIsNull()
 					.andStoreIdEqualTo(default_store_id);
+					exp.setOrderByClause("begoff_id desc");
 					
 					List<HaiBegOff> list = haiBegOffMapper.selectByExample(exp);
 					if(list!=null && list.size()>0){
-						modelMap.addAttribute("begOff", list.get(0));
+						HaiBegOff begOff = list.get(0);
+						Date createDate = begOff.getCreateDate();
+						if(System.currentTimeMillis() - createDate.getTime() < 3 * 60 * 60 * 1000){
+							modelMap.addAttribute("begOff", list.get(0));
+						}
+						
+						
 					}
 					
 					
@@ -505,14 +516,59 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 			haiBegOffMapper.updateByPrimaryKey(begoff);
 			
 			if(users.getAlias().equals("班主任") ){
-				if(begoff.getNumber() == 1){
+				
+				
+				if(approve == 1){//审批通过
+					
+					if(begoff.getNumber() == 1){					
+
+						//微信推送通知学生结果
+						Map<String,String> map = new HashMap<String,String>();
+						map.put("keyword1", student.getRealname());
+						map.put("keyword2", begoff.getNumber().toString());
+						map.put("keyword3", begoff.getReason());
+						map.put("keyword4", users.getRealname());
+						map.put("keyword5", "通过");
+						
+						//发送微信推送通知
+						WeiXinTemplateMessageUtils.sendTemplateMessage(default_store_id, weixin_appid, weixin_appsecret, 
+								"pSX75qkBnjI9eseADMZGSbxDXd-zn98H220LLV_-QyU", 
+								student.getOpenid(), 
+								""
+								, "请假审批通知", map, "");
+						
+						//通知开闸
+						this.approve_open_door(request, student.getNickname());
+					}else{
+						//大于2天通知部长审批
+						EHaiUsers depart = eHaiUsersMapper.userNameByStore(default_store_id, users.getAnswer());
+						if(depart != null){
+							//微信推送通知部长审批
+							
+							Map<String,String> map = new HashMap<String,String>();
+							map.put("keyword1", student.getRealname());
+							map.put("keyword2", DateUtil.formatDate(begoff.getCreateDate(), DateUtil.FORMATSTR_2));
+							
+							//发送微信推送通知
+							WeiXinTemplateMessageUtils.sendTemplateMessage(default_store_id, weixin_appid, weixin_appsecret, 
+									"z5twR49G4wwb7esa_wpNrmB9mDudOnEjQ65rnCRd1hE", 
+									depart.getOpenid(), 
+									request.getScheme()+"://"+request.getServerName()+"/ep_school_begapprove!"+begoff.getBegoffId()
+									, begoff.getReason(), map, "请假天数:"+begoff.getNumber());
+							
+							
+						}
+						
+					}
+					
+				}else{//审批不通过
 					//微信推送通知学生结果
 					Map<String,String> map = new HashMap<String,String>();
 					map.put("keyword1", student.getRealname());
 					map.put("keyword2", begoff.getNumber().toString());
 					map.put("keyword3", begoff.getReason());
 					map.put("keyword4", users.getRealname());
-					map.put("keyword5", approve == 1 ? "通过" : "不通过");
+					map.put("keyword5", "不通过");
 					
 					//发送微信推送通知
 					WeiXinTemplateMessageUtils.sendTemplateMessage(default_store_id, weixin_appid, weixin_appsecret, 
@@ -520,42 +576,64 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 							student.getOpenid(), 
 							""
 							, "请假审批通知", map, "");
-					
-					if(approve == 1){
-						//通知开闸
-						this.approve_open_door(request, student.getNickname());
-					}
-				}else{
-					//大于2天通知部长审批
-					EHaiUsers depart = eHaiUsersMapper.userNameByStore(default_store_id, users.getAnswer());
-					if(depart != null){
-						//微信推送通知部长审批
-						
-						Map<String,String> map = new HashMap<String,String>();
-						map.put("keyword1", student.getRealname());
-						map.put("keyword2", DateUtil.formatDate(begoff.getCreateDate(), DateUtil.FORMATSTR_2));
-						
-						//发送微信推送通知
-						WeiXinTemplateMessageUtils.sendTemplateMessage(default_store_id, weixin_appid, weixin_appsecret, 
-								"z5twR49G4wwb7esa_wpNrmB9mDudOnEjQ65rnCRd1hE", 
-								depart.getOpenid(), 
-								request.getScheme()+"://"+request.getServerName()+"/ep_school_begapprove!"+begoff.getBegoffId()
-								, begoff.getReason(), map, "请假天数:"+begoff.getNumber());
-						
-						
-					}
-					
 				}
 				
+				
+				
+				
 			}else if(users.getAlias().equals("部长")){
-				if(begoff.getNumber() == 2){
+				
+				if(approve == 1){//复审批通过
+					if(begoff.getNumber() == 2){
+						//微信推送通知学生结果
+						Map<String,String> map = new HashMap<String,String>();
+						map.put("keyword1", student.getRealname());
+						map.put("keyword2", begoff.getNumber().toString());
+						map.put("keyword3", begoff.getReason());
+						map.put("keyword4", users.getRealname());
+						map.put("keyword5", approve == 1 ? "通过" : "不通过");
+						
+						//发送微信推送通知
+						WeiXinTemplateMessageUtils.sendTemplateMessage(default_store_id, weixin_appid, weixin_appsecret, 
+								"pSX75qkBnjI9eseADMZGSbxDXd-zn98H220LLV_-QyU", 
+								student.getOpenid(), 
+								""
+								, "请假审批通知", map, "");
+						
+						if(approve == 1){
+							//通知开闸
+							this.approve_open_door(request, student.getNickname());
+						}
+					}else{
+						//大于3天通知部长审批
+						EHaiUsers leader = eHaiUsersMapper.userNameByStore(default_store_id, users.getAnswer());
+						if(leader != null){
+							//微信推送通知部长审批
+
+							Map<String,String> map = new HashMap<String,String>();
+							map.put("keyword1", student.getRealname());
+							map.put("keyword2", DateUtil.formatDate(begoff.getCreateDate(), DateUtil.FORMATSTR_2));
+							
+							//发送微信推送通知
+							WeiXinTemplateMessageUtils.sendTemplateMessage(default_store_id, weixin_appid, weixin_appsecret, 
+									"z5twR49G4wwb7esa_wpNrmB9mDudOnEjQ65rnCRd1hE", 
+									leader.getOpenid(), 
+									request.getScheme()+"://"+request.getServerName()+"/ep_school_begapprove!"+begoff.getBegoffId()
+									, begoff.getReason(), map, "请假天数:"+begoff.getNumber());
+							
+							
+							
+						}
+						
+					}
+				}else{//复审不通过
 					//微信推送通知学生结果
 					Map<String,String> map = new HashMap<String,String>();
 					map.put("keyword1", student.getRealname());
 					map.put("keyword2", begoff.getNumber().toString());
 					map.put("keyword3", begoff.getReason());
 					map.put("keyword4", users.getRealname());
-					map.put("keyword5", approve == 1 ? "通过" : "不通过");
+					map.put("keyword5", "不通过");
 					
 					//发送微信推送通知
 					WeiXinTemplateMessageUtils.sendTemplateMessage(default_store_id, weixin_appid, weixin_appsecret, 
@@ -563,34 +641,10 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 							student.getOpenid(), 
 							""
 							, "请假审批通知", map, "");
-					
-					if(approve == 1){
-						//通知开闸
-						this.approve_open_door(request, student.getNickname());
-					}
-				}else{
-					//大于3天通知部长审批
-					EHaiUsers leader = eHaiUsersMapper.userNameByStore(default_store_id, users.getAnswer());
-					if(leader != null){
-						//微信推送通知部长审批
-
-						Map<String,String> map = new HashMap<String,String>();
-						map.put("keyword1", student.getRealname());
-						map.put("keyword2", DateUtil.formatDate(begoff.getCreateDate(), DateUtil.FORMATSTR_2));
-						
-						//发送微信推送通知
-						WeiXinTemplateMessageUtils.sendTemplateMessage(default_store_id, weixin_appid, weixin_appsecret, 
-								"z5twR49G4wwb7esa_wpNrmB9mDudOnEjQ65rnCRd1hE", 
-								leader.getOpenid(), 
-								request.getScheme()+"://"+request.getServerName()+"/ep_school_begapprove!"+begoff.getBegoffId()
-								, begoff.getReason(), map, "请假天数:"+begoff.getNumber());
-						
-						
-						
-					}
-					
 				}
+				
 			}else if(users.getAlias().equals("学生处")){
+				
 				if(begoff.getNumber() >= 3){
 					//微信推送通知学生结果
 					Map<String,String> map = new HashMap<String,String>();
@@ -837,9 +891,49 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 	}
 	
 	
-	
+	/**
+	 * 对接开门的应用
+	 * @param request
+	 * @param cardNo
+	 */
 	private void approve_open_door(HttpServletRequest request,String cardNo){
+		log.info("======对接开门禁======================");
+	}
+	
+	
+	@EPermissionMethod(name="查询",intro="打开请假页面",value="projectBegOffView",relation="projectBegOffListJson",type=PermissionProtocol.URL)
+	@RequestMapping("/admin/projectBegOffView")
+	public String projectBegOffView(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response ) {	
+		try{
+			ReturnObject<HaiBegOff> rm = projectBegOffService.begoff_list(request);
+			modelMap.addAttribute("rm", rm);
+			return "/ep_school/begoff/view";
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("begoff", e);
+			return this.errorJump(modelMap, e.getMessage());
+		}
 		
+	}
+	
+
+	@ResponseBody
+	@EPermissionMethod(intro="返回请假数据",value="projectBegOffListJson",type=PermissionProtocol.JSON)
+	@RequestMapping(value="/admin/projectBegOffListJson",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
+	public String projectBegOffListJson(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@ModelAttribute EConditionObject condition,
+			@RequestParam(value = "keySubId", required = false) Integer keySubId,
+			@RequestParam(value = "begOffName", required = false) String begOffName) {
+		try{
+			ReturnObject<HaiBegOff> rm = projectBegOffService.begoff_list_json(request, condition,keySubId,begOffName);
+			return this.writeJson(rm);
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("begoff", e);
+			return this.errorJSON(e);
+		}
 	}
 	
 	
