@@ -20,7 +20,8 @@ public class DebugSessionController extends CommonController {
 			HttpServletRequest request,HttpServletResponse response ) {
 		if(this.isLocalHost(request)){
 			request.getSession().setAttribute(EConstants.SESSION_STORE_ID, 9);
-			request.getSession().setAttribute(EConstants.SESSION_USER_ID, 217L);
+			request.getSession().setAttribute(EConstants.SESSION_USER_ID, 384L);
+			request.getSession().setAttribute(EConstants.SESSION_OPEN_ID, "ocvLDvvaL10c2_CTwpDqlmLO3CNk");
 		}
 		
 		return "我们是做互联网的微商";

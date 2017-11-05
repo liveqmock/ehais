@@ -50,7 +50,7 @@ public class WeixinController extends CommonController{
 					if(notityXml!=null && !notityXml.equals("")){
 						WeiXinNotityXml notity = WeiXinUtil.toNotityXml(notityXml);
 //						
-						log.info("notity.getEncrypt():"+notity.getEncrypt());
+//						log.info("notity.getEncrypt():"+notity.getEncrypt());
 						
 //						WXBizMsgCrypt wmc = new WXBizMsgCrypt("ehais_wxdev","ohilBTsxcO7ydwH9y36C9KyRfQsxaAPRDKDIdqd8CjZ","wxb7e05d362dab27b1");
 //						String content = wmc.decrypt(notity.getEncrypt());

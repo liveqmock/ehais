@@ -22,7 +22,7 @@ public interface EHaiUsersMapper {
 	
 	public int checkUser(@Param("userName") String userName,@Param("email") String email);
 	
-	@Select("select * from hai_users where user_id in (#{userIds})")
+	@Select("select * from hai_users where user_id in (${userIds})")
 	@ResultMap(value = "BaseResultMap")
 	public List<EHaiUsers> inUserIdList(@Param("userIds") String userIds);
 	
@@ -50,6 +50,17 @@ public interface EHaiUsersMapper {
 	@Select("select * from hai_users where openid = #{openid} limit 0,1")
 	@ResultMap(value = "BaseResultMap")
 	public EHaiUsers userInfoOpenId(@Param("openid") String openid);
+	
+	
+	@Select("select * from hai_users where store_id = #{store_id} and openid = #{openid} limit 0,1")
+	@ResultMap(value = "BaseResultMap")
+	public EHaiUsers userInfoOpenIdStore(@Param("store_id") Integer store_id,@Param("openid") String openid);
+	
+	
+	@Select("select * from hai_users where store_id = #{store_id} and user_name = #{user_name} limit 0,1")
+	@ResultMap(value = "BaseResultMap")
+	public EHaiUsers userNameByStore(@Param("store_id") Integer store_id,@Param("user_name") String user_name);
+	
 	
 	
 	public void modifyPassword(@Param("userId") Long userId,@Param("password") String password) ;

@@ -4,9 +4,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,15 +24,26 @@ import org.ehais.common.EConstants;
 import org.ehais.epublic.mapper.EHaiUsersMapper;
 import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.epublic.model.EHaiUsersExample;
+import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.shop.controller.ehais.EhaisCommonController;
+import org.ehais.shop.mapper.project.HaiBegOffMapper;
+import org.ehais.shop.model.project.HaiBegOff;
+import org.ehais.shop.model.project.HaiBegOffExample;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
+import org.ehais.util.DateUtil;
 import org.ehais.util.ResourceUtil;
 import org.ehais.util.UploadUtils;
+import org.ehais.weixin.model.AccessToken;
+import org.ehais.weixin.model.OpenidInfo;
+import org.ehais.weixin.model.WeiXinUserInfo;
+import org.ehais.weixin.utils.WeiXinTemplateMessageUtils;
+import org.ehais.weixin.utils.WeiXinUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -65,6 +79,100 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 	
 	@Autowired
 	private EHaiUsersMapper eHaiUsersMapper;
+	@Autowired
+	private HaiBegOffMapper haiBegOffMapper;
+	
+	
+
+	@RequestMapping("/ep_school_bind")
+	public String bind(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "code", required = false) String code ) throws Exception {	
+		try{
+			if(this.isWeiXin(request)){
+				if(StringUtils.isBlank(code)){
+					return this.redirect_wx_authorize(request , weixin_appid , "/ep_school_bind" , "snsapi_base");
+				}else if(StringUtils.isNotBlank(code)){
+					
+					WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(default_store_id);
+					OpenidInfo open = WeiXinUtil.getOpenid(code,wp.getAppid(),wp.getSecret());
+					if(open == null || open.getOpenid() == null) return "/ep_school/web/subscribe";
+					
+					request.getSession().setAttribute(EConstants.SESSION_OPEN_ID, open.getOpenid());
+					
+					AccessToken token = WeiXinUtil.getAccessToken(default_store_id, wp.getAppid(), wp.getSecret());
+					WeiXinUserInfo wxUser = WeiXinUtil.getUserInfo(token.getAccess_token(), open.getOpenid());
+					
+					if(wxUser.getSubscribe() == null || wxUser.getSubscribe().intValue() != 1){
+						//进入关注页面
+						return "/ep_school/web/subscribe";
+					}
+					
+					
+					
+					EHaiUsers users = eHaiUsersMapper.userInfoOpenIdStore(default_store_id ,open.getOpenid());
+					if(users != null){//已绑定的学生，显示学生信息
+						modelMap.addAttribute("users", users);
+					}
+					
+					return "/ep_school/web/begbind";
+					
+				}
+			}else{
+//				if(this.isLocalHost(request)){
+//					String openid = (String)request.getSession().getAttribute(EConstants.SESSION_OPEN_ID);
+//					EHaiUsers users = eHaiUsersMapper.userInfoOpenIdStore(default_store_id ,openid);
+//					if(users != null){//已绑定的学生，显示学生信息
+//						modelMap.addAttribute("users", users);
+//					}
+//				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return "/ep_school/web/begbind";
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping("/ep_school_bind_submit")
+	public String bind_submit(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "user_name", required = true) String user_name,
+			@RequestParam(value = "realname", required = true) String realname
+			) throws Exception {	
+		ReturnObject<EHaiUsers> rm = new ReturnObject<EHaiUsers>();
+		rm.setCode(0);
+		String openid = (String)request.getSession().getAttribute(EConstants.SESSION_OPEN_ID);
+		if(StringUtils.isBlank(openid)){
+			rm.setMsg("102提示：网络延时，请稍后微信进入再试！");
+			return this.writeJson(rm);
+		}
+		try{
+			EHaiUsersExample exp = new EHaiUsersExample();
+			exp.createCriteria()
+			.andUserNameEqualTo(user_name.trim())
+			.andRealnameEqualTo(realname.trim())
+			.andStoreIdEqualTo(default_store_id);
+			List<EHaiUsers> list = eHaiUsersMapper.selectByExample(exp);
+			if(list == null || list.size() == 0){
+				rm.setMsg("不存在你的学生信息<br>请联系学校管理员录入您的信息后再绑定");
+				return this.writeJson(rm);
+			}
+			EHaiUsers user = list.get(0);
+			user.setOpenid(openid);
+			eHaiUsersMapper.updateByPrimaryKey(user);
+			rm.setCode(1);
+			rm.setMsg("帐号信息绑定成功");
+			return this.writeJson(rm);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return this.writeJsonObject(new HashMap<String,Object>(){{this.put("code", 0);this.put("msg", "101提示：网络延时请稍后再试");}});
+	}
+	
+	
 	
 	@RequestMapping("/ep_school_begoff")
 	public String begoff(ModelMap modelMap,
@@ -74,85 +182,449 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 		try{
 			if(this.isWeiXin(request)){
 				if(StringUtils.isBlank(code)){
-					return this.redirect_wx_authorize(request , weixin_appid , "/ep_school_begoff");
+					return this.redirect_wx_authorize(request , weixin_appid , "/ep_school_begoff" , "snsapi_base");
 				}else if(StringUtils.isNotBlank(code)){
-					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, default_store_id);
-					if(user == null || user.getSubscribe() == null || user.getSubscribe().intValue() == 0){
+					WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(default_store_id);
+					OpenidInfo open = WeiXinUtil.getOpenid(code,wp.getAppid(),wp.getSecret());
+					if(open == null || open.getOpenid() == null) return "/ep_school/web/subscribe";
+					
+					request.getSession().setAttribute(EConstants.SESSION_OPEN_ID, open.getOpenid());
+					
+					AccessToken token = WeiXinUtil.getAccessToken(default_store_id, wp.getAppid(), wp.getSecret());
+					WeiXinUserInfo wxUser = WeiXinUtil.getUserInfo(token.getAccess_token(), open.getOpenid());
+					
+					if(wxUser.getSubscribe() == null || wxUser.getSubscribe().intValue() != 1){
 						//进入关注页面
-						return "/epschoo/webl/subscribe";
-					}else{
-						return "/epschoo/webl/begoff";
+						return "/ep_school/web/subscribe";
 					}
+					
+					EHaiUsers users = eHaiUsersMapper.userInfoOpenIdStore(default_store_id ,open.getOpenid());
+					if(users == null){//未绑定的学生，去到绑定页面
+						return "/ep_school/web/begbind";
+					}
+					modelMap.addAttribute("users", users);
+					
+					HaiBegOffExample exp = new HaiBegOffExample();
+					exp.createCriteria()
+					.andUserIdEqualTo(users.getUserId())
+					.andTeacherUserIdIsNull()
+					.andStoreIdEqualTo(default_store_id);
+					
+					List<HaiBegOff> list = haiBegOffMapper.selectByExample(exp);
+					if(list!=null && list.size()>0){
+						modelMap.addAttribute("begOff", list.get(0));
+					}
+					
+					
+					return "/ep_school/web/begoff";
 				}
 			}else{
-				
+				if(this.isLocalHost(request)){
+					String openid = (String)request.getSession().getAttribute(EConstants.SESSION_OPEN_ID);
+					Long userId = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
+					
+					HaiBegOffExample exp = new HaiBegOffExample();
+					exp.createCriteria()
+					.andUserIdEqualTo(userId)
+					.andTeacherUserIdIsNull()
+					.andStoreIdEqualTo(default_store_id);
+					
+					List<HaiBegOff> list = haiBegOffMapper.selectByExample(exp);
+					if(list!=null && list.size()>0){
+						modelMap.addAttribute("begOff", list.get(0));
+					}
+					
+					EHaiUsers users = eHaiUsersMapper.userInfoOpenIdStore(default_store_id ,openid);
+					modelMap.addAttribute("users", users);
+					return "/ep_school/web/begoff";
+				}
 			}
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 		
 		
-		return "/epschoo/webl/begoff";
+		return "/ep_school/web/subscribe";
 	}
 	
 	
-	
-	@RequestMapping("/ep_school_bind")
-	public String bind(ModelMap modelMap,
+	@ResponseBody
+	@RequestMapping("/ep_school_begoff_submit")
+	public String begoff_submit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
-			@RequestParam(value = "code", required = false) String code ) throws Exception {	
+			@RequestParam(value = "number", required = true) Integer number,
+			@RequestParam(value = "reason", required = false) String reason) {	
+		
+		ReturnObject<HaiBegOff> rm = new ReturnObject<HaiBegOff>();
+		rm.setCode(0);
+		String openid = (String)request.getSession().getAttribute(EConstants.SESSION_OPEN_ID);
+		if(StringUtils.isBlank(openid)){
+			rm.setMsg("102提示：网络延时，请稍后再试！");
+			return this.writeJson(rm);
+		}
 		try{
-			if(this.isWeiXin(request)){
-				if(StringUtils.isBlank(code)){
-					return this.redirect_wx_authorize(request , weixin_appid , "/ep_school_begoff");
-				}else if(StringUtils.isNotBlank(code)){
-					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, default_store_id);
-					if(user.getSubscribe() == null || user.getSubscribe().intValue() == 0){
-						//进入关注页面
-						return "/epschoo/webl/subscribe";
-					}else{
-						return "/epschoo/webl/begoff";
-					}
-				}
-			}else{
-				
+			EHaiUsers users = eHaiUsersMapper.userInfoOpenIdStore(default_store_id ,openid);
+			if(users == null){
+				rm.setMsg("未绑定学生信息");
+				return this.writeJson(rm);
 			}
+			
+			if(StringUtils.isBlank(users.getAnswer())){
+				rm.setMsg("您无对应的班主任，请联系管理员完善信息");
+				return this.writeJson(rm);
+			}
+			
+			EHaiUsers teacher = eHaiUsersMapper.userNameByStore(default_store_id, users.getAnswer());
+			if(teacher == null){
+				rm.setMsg("班主任信息未录入");
+				return this.writeJson(rm);
+			}
+			
+			if(StringUtils.isBlank(teacher.getOpenid())){
+				rm.setMsg("班主任信息未绑定微信，请告知");
+				return this.writeJson(rm);
+			}
+			
+			
+			HaiBegOffExample exp = new HaiBegOffExample();
+			exp.createCriteria()
+			.andUserIdEqualTo(users.getUserId())
+			.andTeacherUserIdIsNull()
+			.andStoreIdEqualTo(default_store_id);
+			
+			List<HaiBegOff> list = haiBegOffMapper.selectByExample(exp);
+			if(list!=null && list.size()>0){
+				rm.setMsg("存在未审批的请假申请");
+				return this.writeJson(rm);
+			}
+			
+			HaiBegOff begoff = new HaiBegOff();
+			begoff.setUserId(users.getUserId());
+			begoff.setNumber(number);
+			begoff.setReason(reason);
+			begoff.setCreateDate(new Date());
+			begoff.setStoreId(default_store_id);
+			
+			haiBegOffMapper.insert(begoff);
+			
+			Map<String,String> map = new HashMap<String,String>();
+			map.put("keyword1", users.getRealname());
+			map.put("keyword2", DateUtil.formatDate(begoff.getCreateDate(), DateUtil.FORMATSTR_2));
+			
+			//发送微信推送通知
+			WeiXinTemplateMessageUtils.sendTemplateMessage(default_store_id, weixin_appid, weixin_appsecret, 
+					"z5twR49G4wwb7esa_wpNrmB9mDudOnEjQ65rnCRd1hE", 
+					teacher.getOpenid(), 
+					request.getScheme()+"://"+request.getServerName()+"/ep_school_begapprove!"+begoff.getBegoffId()
+					, reason, map, "请假天数:"+begoff.getNumber());
+			
+			rm.setCode(1);
+			rm.setMsg("请假申请已成功");
+			return this.writeJson(rm);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		return "/epschoo/webl/begbind";
+		
+		return this.writeJsonObject(new HashMap<String,Object>(){{this.put("code", 0);this.put("msg", "101提示：网络延时请稍后再试");}});
 	}
 	
 	
-	
-	@RequestMapping("/ep_school_begapprove")
+	@RequestMapping("/ep_school_begapprove!{begid}")
 	public String begapprove(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
-			@RequestParam(value = "begid", required = true) Integer begid,
+			@PathVariable(value = "begid") Integer begid,
 			@RequestParam(value = "code", required = false) String code ) throws Exception {	
 		try{
 			if(this.isWeiXin(request)){
 				if(StringUtils.isBlank(code)){
-					return this.redirect_wx_authorize(request , weixin_appid , "/ep_school_begoff");
+					return this.redirect_wx_authorize(request , weixin_appid , "/ep_school_begapprove!"+begid , "snsapi_base");
 				}else if(StringUtils.isNotBlank(code)){
-					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, default_store_id);
-					if(user.getSubscribe() == null || user.getSubscribe().intValue() == 0){
+					
+					
+					WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(default_store_id);
+					OpenidInfo open = WeiXinUtil.getOpenid(code,wp.getAppid(),wp.getSecret());
+					if(open == null || open.getOpenid() == null) return "/ep_school/web/subscribe";
+					
+					request.getSession().setAttribute(EConstants.SESSION_OPEN_ID, open.getOpenid());
+					
+					AccessToken token = WeiXinUtil.getAccessToken(default_store_id, wp.getAppid(), wp.getSecret());
+					WeiXinUserInfo wxUser = WeiXinUtil.getUserInfo(token.getAccess_token(), open.getOpenid());
+					
+					if(wxUser.getSubscribe() == null || wxUser.getSubscribe().intValue() != 1){
 						//进入关注页面
-						return "/epschoo/webl/subscribe";
-					}else{
-						return "/epschoo/webl/begoff";
+						return "/ep_school/web/subscribe";
 					}
+					
+
+					EHaiUsers users = eHaiUsersMapper.userInfoOpenIdStore(default_store_id ,open.getOpenid());
+					if(users == null){//未绑定的学生，去到绑定页面
+						return "/ep_school/web/begbind";
+					}
+					
+					HaiBegOffExample exp = new HaiBegOffExample();
+					exp.createCriteria()
+					.andBegoffIdEqualTo(begid)
+					.andStoreIdEqualTo(default_store_id);
+					
+					List<HaiBegOff> list = haiBegOffMapper.selectByExample(exp);
+					if(list != null && list.size() > 0){
+						HaiBegOff haiBegOff = list.get(0);
+						modelMap.addAttribute("haiBegOff", haiBegOff);
+						
+						EHaiUsers student = eHaiUsersMapper.get_hai_users_info(default_store_id, haiBegOff.getUserId());
+						modelMap.addAttribute("student", student);
+						
+						
+						Long teacherUserId = haiBegOff.getTeacherUserId();
+						Long departmentUserId = haiBegOff.getDepartmentUserId();
+						Long leaderUserId = haiBegOff.getLeaderUserId();
+						
+						List<Long> userIds = new ArrayList<Long>();
+						if(teacherUserId!=null && teacherUserId.longValue()>0)userIds.add(teacherUserId);
+						if(departmentUserId!=null && departmentUserId.longValue()>0)userIds.add(departmentUserId);
+						if(leaderUserId!=null && leaderUserId.longValue()>0)userIds.add(leaderUserId);
+						
+						if(userIds.size()>0){
+							
+							List<EHaiUsers> user_list =  eHaiUsersMapper.inUserIdList(StringUtils.join(userIds.toArray(), ","));
+							
+							for (EHaiUsers eHaiUsers : user_list) {
+								if(teacherUserId!=null && teacherUserId.longValue()>0 && teacherUserId.longValue() == eHaiUsers.getUserId().longValue()){
+									modelMap.addAttribute("teacher", eHaiUsers.getRealname()+eHaiUsers.getAlias()+"审核"+((haiBegOff.getTeacherApprove() != null && haiBegOff.getTeacherApprove() == 1)?"通过":"不通过"));
+								}
+								if(departmentUserId!=null && departmentUserId.longValue()>0 && departmentUserId.longValue() == eHaiUsers.getUserId().longValue()){
+									modelMap.addAttribute("department", eHaiUsers.getRealname()+eHaiUsers.getAlias()+"审核"+((haiBegOff.getDepartmentApprove() != null && haiBegOff.getDepartmentApprove() == 1)?"通过":"不通过"));
+								}
+								if(leaderUserId!=null && leaderUserId.longValue()>0 && leaderUserId.longValue() == eHaiUsers.getUserId().longValue()){
+									modelMap.addAttribute("leader", eHaiUsers.getRealname()+eHaiUsers.getAlias()+"审核"+((haiBegOff.getLeaderApprove() != null && haiBegOff.getLeaderApprove() == 1)?"通过":"不通过"));
+								}
+							}
+						}
+						
+						if(users.getAlias().equals("班主任") && haiBegOff.getTeacherUserId() == null){
+							modelMap.addAttribute("permit","permit");
+						}
+						
+						if(users.getAlias().equals("部长") && haiBegOff.getDepartmentUserId() == null){
+							modelMap.addAttribute("permit","permit");
+						}
+						
+						if(users.getAlias().equals("学生处") && haiBegOff.getLeaderUserId() == null){
+							modelMap.addAttribute("permit","permit");
+						}
+						
+					}
+					
+					return "/ep_school/web/begapprove";
+					
+					
 				}
 			}else{
+				
+//				String openid = (String)request.getSession().getAttribute(EConstants.SESSION_OPEN_ID);
+//				EHaiUsers users = eHaiUsersMapper.userInfoOpenIdStore(default_store_id ,openid);
+				
+				
 				
 			}
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		return "/epschoo/webl/begapprove";
+		return "/ep_school/web/begapprove";
 	}
 	
 	
+
+	/**
+	 * 
+	 * @param modelMap
+	 * @param request
+	 * @param response
+	 * @param begid
+	 * @param approve审批结果：1通过，2不通过
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/ep_school_begapprove_submit")
+	public String begapprove_submit(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "begid", required = true) Integer begid,
+			@RequestParam(value = "approve", required = true) Integer approve) {	
+		
+		ReturnObject<HaiBegOff> rm = new ReturnObject<HaiBegOff>();
+		rm.setCode(0);
+		String openid = (String)request.getSession().getAttribute(EConstants.SESSION_OPEN_ID);
+		if(StringUtils.isBlank(openid)){
+			rm.setMsg("102提示：网络延时，请稍后再试！");
+			return this.writeJson(rm);
+		}
+		
+		modelMap.addAttribute("begid", begid);
+		
+		try{
+			EHaiUsers users = eHaiUsersMapper.userInfoOpenIdStore(default_store_id ,openid);
+			if(users == null){
+				rm.setMsg("未绑定工号信息");
+				return this.writeJson(rm);
+			}
+			
+						
+			HaiBegOffExample exp = new HaiBegOffExample();
+			exp.createCriteria()
+			.andBegoffIdEqualTo(begid)
+			.andStoreIdEqualTo(default_store_id);
+			
+			List<HaiBegOff> list = haiBegOffMapper.selectByExample(exp);
+			if(list==null || list.size()==0){
+				rm.setMsg("不存在请假申请信息");
+				return this.writeJson(rm);
+			}
+			
+			HaiBegOff begoff = list.get(0);
+			
+			EHaiUsers student = eHaiUsersMapper.selectByPrimaryKey(begoff.getUserId());
+			if(student==null){
+				rm.setMsg("不存在请假申请的学生");
+				return this.writeJson(rm);
+			}
+			
+			if(users.getAlias().equals("班主任")){
+				begoff.setTeacherUserId(users.getUserId());
+				begoff.setTeacherApprove(approve);
+				begoff.setTeacherApproveTime(new Date());
+			}else if(users.getAlias().equals("部长")){
+				begoff.setDepartmentUserId(users.getUserId());
+				begoff.setDepartmentApproveTime(new Date());
+				begoff.setDepartmentApprove(approve);
+			}else if(users.getAlias().equals("学生处")){
+				begoff.setLeaderApprove(approve);
+				begoff.setLeaderApproveTime(new Date());
+				begoff.setLeaderUserId(users.getUserId());
+			}
+			
+			haiBegOffMapper.updateByPrimaryKey(begoff);
+			
+			if(users.getAlias().equals("班主任") ){
+				if(begoff.getNumber() == 1){
+					//微信推送通知学生结果
+					Map<String,String> map = new HashMap<String,String>();
+					map.put("keyword1", student.getRealname());
+					map.put("keyword2", begoff.getNumber().toString());
+					map.put("keyword3", begoff.getReason());
+					map.put("keyword4", users.getRealname());
+					map.put("keyword5", approve == 1 ? "通过" : "不通过");
+					
+					//发送微信推送通知
+					WeiXinTemplateMessageUtils.sendTemplateMessage(default_store_id, weixin_appid, weixin_appsecret, 
+							"pSX75qkBnjI9eseADMZGSbxDXd-zn98H220LLV_-QyU", 
+							student.getOpenid(), 
+							""
+							, "请假审批通知", map, "");
+					
+					if(approve == 1){
+						//通知开闸
+						this.approve_open_door(request, student.getNickname());
+					}
+				}else{
+					//大于2天通知部长审批
+					EHaiUsers depart = eHaiUsersMapper.userNameByStore(default_store_id, users.getAnswer());
+					if(depart != null){
+						//微信推送通知部长审批
+						
+						Map<String,String> map = new HashMap<String,String>();
+						map.put("keyword1", student.getRealname());
+						map.put("keyword2", DateUtil.formatDate(begoff.getCreateDate(), DateUtil.FORMATSTR_2));
+						
+						//发送微信推送通知
+						WeiXinTemplateMessageUtils.sendTemplateMessage(default_store_id, weixin_appid, weixin_appsecret, 
+								"z5twR49G4wwb7esa_wpNrmB9mDudOnEjQ65rnCRd1hE", 
+								depart.getOpenid(), 
+								request.getScheme()+"://"+request.getServerName()+"/ep_school_begapprove!"+begoff.getBegoffId()
+								, begoff.getReason(), map, "请假天数:"+begoff.getNumber());
+						
+						
+					}
+					
+				}
+				
+			}else if(users.getAlias().equals("部长")){
+				if(begoff.getNumber() == 2){
+					//微信推送通知学生结果
+					Map<String,String> map = new HashMap<String,String>();
+					map.put("keyword1", student.getRealname());
+					map.put("keyword2", begoff.getNumber().toString());
+					map.put("keyword3", begoff.getReason());
+					map.put("keyword4", users.getRealname());
+					map.put("keyword5", approve == 1 ? "通过" : "不通过");
+					
+					//发送微信推送通知
+					WeiXinTemplateMessageUtils.sendTemplateMessage(default_store_id, weixin_appid, weixin_appsecret, 
+							"pSX75qkBnjI9eseADMZGSbxDXd-zn98H220LLV_-QyU", 
+							student.getOpenid(), 
+							""
+							, "请假审批通知", map, "");
+					
+					if(approve == 1){
+						//通知开闸
+						this.approve_open_door(request, student.getNickname());
+					}
+				}else{
+					//大于3天通知部长审批
+					EHaiUsers leader = eHaiUsersMapper.userNameByStore(default_store_id, users.getAnswer());
+					if(leader != null){
+						//微信推送通知部长审批
+
+						Map<String,String> map = new HashMap<String,String>();
+						map.put("keyword1", student.getRealname());
+						map.put("keyword2", DateUtil.formatDate(begoff.getCreateDate(), DateUtil.FORMATSTR_2));
+						
+						//发送微信推送通知
+						WeiXinTemplateMessageUtils.sendTemplateMessage(default_store_id, weixin_appid, weixin_appsecret, 
+								"z5twR49G4wwb7esa_wpNrmB9mDudOnEjQ65rnCRd1hE", 
+								leader.getOpenid(), 
+								request.getScheme()+"://"+request.getServerName()+"/ep_school_begapprove!"+begoff.getBegoffId()
+								, begoff.getReason(), map, "请假天数:"+begoff.getNumber());
+						
+						
+						
+					}
+					
+				}
+			}else if(users.getAlias().equals("学生处")){
+				if(begoff.getNumber() >= 3){
+					//微信推送通知学生结果
+					Map<String,String> map = new HashMap<String,String>();
+					map.put("keyword1", student.getRealname());
+					map.put("keyword2", begoff.getNumber().toString());
+					map.put("keyword3", begoff.getReason());
+					map.put("keyword4", users.getRealname());
+					map.put("keyword5", approve == 1 ? "通过" : "不通过");
+					
+					//发送微信推送通知
+					WeiXinTemplateMessageUtils.sendTemplateMessage(default_store_id, weixin_appid, weixin_appsecret, 
+							"pSX75qkBnjI9eseADMZGSbxDXd-zn98H220LLV_-QyU", 
+							student.getOpenid(), 
+							""
+							, "请假审批通知", map, "");
+					
+					if(approve == 1){
+						//通知开闸
+						this.approve_open_door(request, student.getNickname());
+					}
+				}
+			}
+			
+			
+			
+			rm.setCode(1);
+			rm.setMsg("请假审批已成功");
+			return this.writeJson(rm);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return this.writeJsonObject(new HashMap<String,Object>(){{this.put("code", 0);this.put("msg", "101提示：网络延时请稍后再试");}});
+	}
 	
 	
 	@RequestMapping("/admin/ep_school_user_list")
@@ -232,33 +704,33 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 //                Iterator<Cell> cells = row.cellIterator();    //获得第一行的迭代器  
                 EHaiUsers users = new EHaiUsers();
                 if(row.getCell(0)!=null){
-                	users.setUserName(df.format(row.getCell(0).getNumericCellValue()));//学号
+                	users.setUserName(df.format(row.getCell(0).getNumericCellValue()).trim());//学号
                     if(row.getCell(1)!=null){
-                    	users.setNickname(df.format(row.getCell(1).getNumericCellValue()));//卡号
+                    	users.setNickname(df.format(row.getCell(1).getNumericCellValue()).trim());//卡号
                     }else{
                     	users.setNickname("");
                     }
                     
                 	if(row.getCell(2)!=null){
-                		users.setRealname(row.getCell(2).getStringCellValue());//姓名
+                		users.setRealname(row.getCell(2).getStringCellValue().trim());//姓名
                 	}else{
                 		users.setRealname("");
                 	}
                 	
                 	if(row.getCell(3)!=null){
-                		users.setQuestion(row.getCell(3).getStringCellValue());//班级
+                		users.setQuestion(row.getCell(3).getStringCellValue().trim());//班级
                 	}else{
                 		users.setQuestion("");
                 	}
                     
                 	if(row.getCell(4)!=null){
-                		users.setAnswer(df.format(row.getCell(4).getNumericCellValue()));//上级工号
+                		users.setAnswer(df.format(row.getCell(4).getNumericCellValue()).trim());//上级工号
                 	}else{
                 		users.setAnswer("");
                 	}
                     
                 	if(row.getCell(5)!=null){
-                		users.setAlias(row.getCell(5).getStringCellValue());//身份
+                		users.setAlias(row.getCell(5).getStringCellValue().trim());//身份
                 	}else{
                 		users.setAlias("");
                 	}
@@ -363,6 +835,13 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 		
 		return this.writeJsonObject(new HashMap<String,Object>(){{this.put("code", 0);this.put("msg", "fail");}});
 	}
+	
+	
+	
+	private void approve_open_door(HttpServletRequest request,String cardNo){
+		
+	}
+	
 	
 	
 	

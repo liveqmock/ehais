@@ -3,12 +3,13 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="x5-orientation" content="portrait">
 		<title>恩平广播电视大学请假申请</title>
 		<script type="text/javascript" src="js/jquery-2.1.4.min.js" ></script>
 		<script type="text/javascript" src="js/common.js" ></script>
 		
-		<link rel="stylesheet" href="js/layer/mobile/need/layer.css" />
-		<script type="text/javascript" src="js/layer/mobile/layer.js" ></script>
+		<link rel="stylesheet" href="js/elay/elay.css" />
+		<script type="text/javascript" src="js/elay/elay.js" ></script>
 		
 		<link rel="stylesheet" href="css/begoff.css" />
 	</head>
@@ -21,11 +22,11 @@
 			<div class="form">
 				<div class="item mtb10">
 					<label class="f">学生姓名：</label>
-					<input type="text" id="username" placeholder="请输入学生姓名" />
+					<input type="text" id="realname" placeholder="请输入学生姓名" />
 				</div>
 				<div class="item mtb10">
 					<label class="f">学号：</label>
-					<input type="text" id="username" placeholder="请输入学号" />
+					<input type="text" id="user_name" placeholder="请输入学号" />
 				</div>
 				
 				<div class="item mtb10">
@@ -33,5 +34,21 @@
 				</div>
 			</div>
 		</div>
+
+		<script type="text/javascript" src="/js/ep_school/bind.js"></script>
+		<#if users??>
+		<script type="text/javascript" >
+		$(function(){
+			$("#user_name").val("${users.userName}");
+			$("#realname").val("${users.realname}");
+			
+			$("#user_name").attr("readonly",true);
+			$("#realname").attr("readonly",true);
+			$("#submit").attr("disabled",true);
+			$("#submit").html("已绑定");
+			
+		});
+		</script>
+		</#if>
 	</body>
 </html>

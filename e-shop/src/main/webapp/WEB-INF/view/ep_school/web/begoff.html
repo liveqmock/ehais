@@ -7,8 +7,8 @@
 		<script type="text/javascript" src="js/jquery-2.1.4.min.js" ></script>
 		<script type="text/javascript" src="js/common.js" ></script>
 		
-		<link rel="stylesheet" href="js/layer/mobile/need/layer.css" />
-		<script type="text/javascript" src="js/layer/mobile/layer.js" ></script>
+		<link rel="stylesheet" href="js/elay/elay.css" />
+		<script type="text/javascript" src="js/elay/elay.js" ></script>
 		
 		<link rel="stylesheet" href="css/begoff.css" />
 	</head>
@@ -21,15 +21,15 @@
 			<div class="form">
 				<div class="item mtb10">
 					<label>学生姓名：</label>
-					<span>tyler</span>
+					<span>${users.realname}</span>
 				</div>
 				<div class="item mtb10">
 					<label>学生号：</label>
-					<span>123456788</span>
+					<span>${users.userName}</span>
 				</div>
 				<div class="item mtb10">
 					<label>班级：</label>
-					<span>初二（3）班</span>
+					<span>${users.question}</span>
 				</div>
 				<div class="item mtb10">
 					<label>请假天数：</label>
@@ -41,7 +41,7 @@
 				</div>
 				<div id="number_item" class="item mtb10 dn">
 					<label class="f">天数：</label>
-					<input type="number" id="number" placeholder="请输入请假天数" />
+					<input type="number" id="number" placeholder="请输入请假天数" value="1"/>
 					
 				</div>
 				<div class="item mtb10">
@@ -52,6 +52,51 @@
 				</div>
 			</div>
 		</div>
-		<script type="text/javascript" src="/js/ep_school/begoff.js"></script>
+		
+		
+		<#if begOff??>
+			<script type="text/javascript">
+			
+			var number = ${begOff.number};
+			$("#number").val(number);
+			$("#reason").val("${begOff.reason}");
+			if(parseInt(number)>=3){
+				number = 3;
+				$("#number_item").removeClass("dn")
+			}
+			$("#num li").removeClass("active");
+			$("#num li").each(function(){
+				if(parseInt($(this).attr("num"))==parseInt(number)){
+					$(this).addClass("active");
+				}
+			});
+			
+			$("#number").attr("readonly",true);
+			$("#reason").attr("disabled",true);
+			$("#submit").attr("disabled",true);
+			$("#submit").html("未审批的请假");
+			
+			function onBridgeReady() {
+			    WeixinJSBridge.call('hideOptionMenu');
+			}
+
+			if (typeof WeixinJSBridge == "undefined") {
+			    if (document.addEventListener) {
+			        document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+			    } else if (document.attachEvent) {
+			        document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+			        document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+			    }
+			} else {
+			    onBridgeReady();
+			}
+
+			
+			</script>
+		<#else>
+			<script type="text/javascript" src="/js/ep_school/begoff.js"></script>
+		</#if>
+		
+		
 	</body>
 </html>

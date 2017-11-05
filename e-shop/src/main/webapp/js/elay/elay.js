@@ -30,7 +30,7 @@
 				$(".e-lay-view").append("<div class=\"toast\">"+
 					"<div class=\"msg\">"+e.content+"</div>"+
 				"</div>");
-				$(".e-lay-view .toast").css({left:$(".e-lay-view .toast").width() / 2});
+				$(".e-lay-view .toast").css({left: ($(window).width() - $(".e-lay-view .toast").width()) / 2 - 10});
 				setTimeout(function(){
 					$(".e-lay-view .toast").remove();
 					layremove();

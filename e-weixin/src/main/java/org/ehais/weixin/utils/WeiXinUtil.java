@@ -126,9 +126,9 @@ public class WeiXinUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static AccessToken getAccessToken(int wxid,String weixin_appid,String weixin_appsecret) throws Exception {
-		log.info("getAccessToken==wxid:"+wxid+";weixin_appid:"+weixin_appid+";weixin_appsecret:"+weixin_appsecret);
-		AccessToken accessToken = (AccessToken)AccessTokenCacheManager.getInstance().getAccessToken(wxid);
+	public static AccessToken getAccessToken(int storeId,String weixin_appid,String weixin_appsecret) throws Exception {
+		log.info("getAccessToken==storeId:"+storeId+";weixin_appid:"+weixin_appid+";weixin_appsecret:"+weixin_appsecret);
+		AccessToken accessToken = (AccessToken)AccessTokenCacheManager.getInstance().getAccessToken(storeId);
 //		accessToken.setExpire_time(System.currentTimeMillis());
 //		AccessTokenCacheManager.getInstance().putAccessToken(accessToken);
 		if(accessToken!=null){
@@ -157,7 +157,7 @@ public class WeiXinUtil {
 				jsonObject = JSONObject.fromObject(request);				
 			}
 			accessToken = new AccessToken();
-			accessToken.setId(wxid);
+			accessToken.setId(storeId);
 			accessToken.setAccess_token(jsonObject.getString("access_token"));
 			accessToken.setExpiresIn(jsonObject.getInt("expires_in"));
 			accessToken.setExpire_time(System.currentTimeMillis() + jsonObject.getInt("expires_in") * 1000);//毫秒数
@@ -167,8 +167,8 @@ public class WeiXinUtil {
 		return accessToken;
 	}
 	
-	public static AccessToken getAccessToken(int wxid,String weixin_appid,String weixin_appsecret,boolean isconstraint) throws Exception{
-		AccessToken accessToken = (AccessToken)AccessTokenCacheManager.getInstance().getAccessToken(wxid);
+	public static AccessToken getAccessToken(int storeId,String weixin_appid,String weixin_appsecret,boolean isconstraint) throws Exception{
+		AccessToken accessToken = (AccessToken)AccessTokenCacheManager.getInstance().getAccessToken(storeId);
 		
 		String requestUrl = WXConstants.access_token_url
 				.replace("APPID", weixin_appid)
@@ -187,7 +187,7 @@ public class WeiXinUtil {
 				jsonObject = JSONObject.fromObject(request);				
 			}
 			accessToken = new AccessToken();
-			accessToken.setId(wxid);
+			accessToken.setId(storeId);
 			accessToken.setAccess_token(jsonObject.getString("access_token"));
 			accessToken.setExpiresIn(jsonObject.getInt("expires_in"));
 			accessToken.setExpire_time(System.currentTimeMillis() + jsonObject.getInt("expires_in") * 1000);//毫秒数
@@ -205,9 +205,9 @@ public class WeiXinUtil {
 	 * @param appsecret 密钥
 	 * @return
 	 */
-	public static JsApiTicket getJsApiTicket(int id,String access_token,String weixin_appid,String weixin_appsecret) throws Exception {
-		log.info("getJsApiTicket==id:"+id+";access_token:"+access_token+";weixin_appid:"+weixin_appid+";weixin_appsecret:"+weixin_appsecret);
-		JsApiTicket jsapiticket = (JsApiTicket)JsApiTicketCacheManager.getInstance().getJsApiTicket(id);
+	public static JsApiTicket getJsApiTicket(int storeId,String access_token,String weixin_appid,String weixin_appsecret) throws Exception {
+		log.info("getJsApiTicket==storeId:"+storeId+";access_token:"+access_token+";weixin_appid:"+weixin_appid+";weixin_appsecret:"+weixin_appsecret);
+		JsApiTicket jsapiticket = (JsApiTicket)JsApiTicketCacheManager.getInstance().getJsApiTicket(storeId);
 //		jsapiticket.setExpire_time(System.currentTimeMillis());
 //		JsApiTicketCacheManager.getInstance().putJsApiTicket(jsapiticket);
 		if(jsapiticket!=null){
@@ -230,13 +230,13 @@ public class WeiXinUtil {
 		if (null != jsonObject) {
 			if(jsonObject.has("errcode") && jsonObject.getInt("errcode") > 0){//如果报错，强制重新获取一次
 				log.info("retry api ticket");
-				AccessToken accessToken = getAccessToken(id, weixin_appid, weixin_appsecret, true);
+				AccessToken accessToken = getAccessToken(storeId, weixin_appid, weixin_appsecret, true);
 				requestUrl = WXConstants.get_jsapi_url.replace("ACCESS_TOKEN", accessToken.getAccess_token());
 				request = EHttpClientUtil.methodGet(requestUrl);
 				jsonObject = JSONObject.fromObject(request);
 			}
 			jsapiticket = new JsApiTicket();
-			jsapiticket.setId(id);
+			jsapiticket.setId(storeId);
 			jsapiticket.setTicket(jsonObject.getString("ticket"));
 			jsapiticket.setErrcode(jsonObject.getInt("errcode"));
 			jsapiticket.setErrmsg(jsonObject.getString("errmsg"));
@@ -251,11 +251,11 @@ public class WeiXinUtil {
 	}
 	
 	
-	public static WeiXinSignature SignatureJSSDK(HttpServletRequest request,int wxid,String weixin_appid,String weixin_appsecret,String url) throws Exception{
+	public static WeiXinSignature SignatureJSSDK(HttpServletRequest request,int storeId,String weixin_appid,String weixin_appsecret,String url) throws Exception{
 		WeiXinSignature signature = new WeiXinSignature();
 		
-		AccessToken token = getAccessToken(wxid, weixin_appid, weixin_appsecret);
-		JsApiTicket jsapiticket = getJsApiTicket(wxid, token.getAccess_token(),weixin_appid,weixin_appsecret);
+		AccessToken token = getAccessToken(storeId, weixin_appid, weixin_appsecret);
+		JsApiTicket jsapiticket = getJsApiTicket(storeId, token.getAccess_token(),weixin_appid,weixin_appsecret);
 				
 		signature.setAppId(weixin_appid);
 		signature.setTimestamp(String.valueOf(System.currentTimeMillis()/1000));

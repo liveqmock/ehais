@@ -15,9 +15,15 @@ public class WeiXinNotityXml {
 	private String Ticket;
 	private String Content;
 	private String Encrypt;
-	private Long MsgId;
+	private Long MsgID;
 	private WeiXinImage Image;
 	private Integer ArticleCount;
+	private String Status;
+	
+	private String Latitude;
+	private String Longitude;
+	private String Precision;
+	
 	private List<WeiXinArticlesItem> Articles;
 	
 	public String getToUserName() {
@@ -68,11 +74,11 @@ public class WeiXinNotityXml {
 	public void setContent(String content) {
 		Content = content;
 	}
-	public Long getMsgId() {
-		return MsgId;
+	public Long getMsgID() {
+		return MsgID;
 	}
-	public void setMsgId(Long msgId) {
-		MsgId = msgId;
+	public void setMsgID(Long msgID) {
+		MsgID = msgID;
 	}
 	public WeiXinImage getImage() {
 		return Image;
@@ -103,6 +109,30 @@ public class WeiXinNotityXml {
 	}
 	public void setEncrypt(String encrypt) {
 		Encrypt = encrypt;
+	}
+	public String getStatus() {
+		return Status;
+	}
+	public void setStatus(String status) {
+		Status = status;
+	}
+	public String getLatitude() {
+		return Latitude;
+	}
+	public void setLatitude(String latitude) {
+		Latitude = latitude;
+	}
+	public String getLongitude() {
+		return Longitude;
+	}
+	public void setLongitude(String longitude) {
+		Longitude = longitude;
+	}
+	public String getPrecision() {
+		return Precision;
+	}
+	public void setPrecision(String precision) {
+		Precision = precision;
 	}
 	
 	

@@ -100,7 +100,7 @@ body {
   border-radius: 0.05rem;
 }
 .wrapper .form .item > label.f {
-  padding-top: 0.05rem;
+  padding-top: 0.08rem;
 }
 ::-webkit-input-placeholder {
   /* WebKit browsers */
