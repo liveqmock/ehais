@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -25,16 +26,20 @@ import org.ehais.common.EConstants;
 import org.ehais.epublic.mapper.EHaiUsersMapper;
 import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.epublic.model.EHaiUsersExample;
+import org.ehais.epublic.model.OrderDiningStatistics;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.protocol.PermissionProtocol;
 import org.ehais.shop.controller.ehais.EhaisCommonController;
 import org.ehais.shop.mapper.project.HaiBegOffMapper;
 import org.ehais.shop.model.project.HaiBegOff;
 import org.ehais.shop.model.project.HaiBegOffExample;
+import org.ehais.shop.model.project.HaiBegOffStatistics;
+import org.ehais.shop.model.tp.TpDiningOrder;
 import org.ehais.shop.service.ProjectBegOffService;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.DateUtil;
+import org.ehais.util.ExcelUtils;
 import org.ehais.util.ResourceUtil;
 import org.ehais.util.UploadUtils;
 import org.ehais.weixin.model.AccessToken;
@@ -52,6 +57,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 
@@ -934,6 +940,82 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 			log.error("begoff", e);
 			return this.errorJSON(e);
 		}
+	}
+	
+	
+	
+	
+	@RequestMapping("/admin/statisticsBegOff")
+	public String statisticsBegOff(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response ) {	
+		try{
+			Date date = new Date();
+			String startDate =  DateUtil.formatDate(DateUtils.addDays(date, -30), DateUtil.FORMATSTR_3);
+			String endDate =  DateUtil.formatDate(date, DateUtil.FORMATSTR_3);
+			modelMap.addAttribute("startDate", startDate);
+			modelMap.addAttribute("endDate", endDate);
+			
+			
+			return "/ep_school/report/view";
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("statisticsBegOff", e);
+			return this.errorJump(modelMap, e.getMessage());
+		}
+		
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value="/admin/statisticsBegOffJSON",method=RequestMethod.POST)
+	public String statisticsBegOffJSON(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "start_date", required = true) String start_date,
+			@RequestParam(value = "end_date", required = true) String end_date
+			) {	
+		ReturnObject<HaiBegOffStatistics> rm = new ReturnObject<HaiBegOffStatistics>();
+		rm.setCode(0);
+		try{
+			List<HaiBegOffStatistics> list = haiBegOffMapper.statisticsBegOff(default_store_id, start_date, end_date);
+			
+			rm.setRows(list);
+			rm.setCode(1);
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("report", e);
+			return this.errorJump(modelMap, e.getMessage());
+		}
+		
+		return this.writeJson(rm);
+	}
+	
+	
+	
+
+	@RequestMapping(value="/admin/statisticsBegOffExport",method=RequestMethod.POST)
+	public void statisticsBegOffExport(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "startDate", required = true) String startDate,
+			@RequestParam(value = "endDate", required = true) String endDate
+			) {	
+		ReturnObject<HaiBegOffStatistics> rm = new ReturnObject<HaiBegOffStatistics>();
+		rm.setCode(0);
+		try{
+			List<HaiBegOffStatistics> list = haiBegOffMapper.statisticsBegOff(default_store_id, startDate, endDate);
+			JSONArray arr = JSONArray.fromObject(list);
+			Map<String,String> headMap = new HashMap<String,String>();
+			headMap.put("question", "班级");
+			headMap.put("count", "请假人数");
+			
+			ExcelUtils.downloadExcelFile("请假统计", headMap, arr, response);
+			
+			rm.setRows(list);
+			rm.setCode(1);
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("report", e);
+		}
+		
 	}
 	
 	

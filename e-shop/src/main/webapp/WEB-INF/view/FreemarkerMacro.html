@@ -28,8 +28,8 @@
 	   <span>${startDate} ~ ${endDate}</span> 
 	   <b class="caret"></b>
 	</div>
-	<input type="hidden" id="${startId}" value="${startDate}"/>
-	<input type="hidden" id="${endId}"  value="${endDate}"/>
+	<input type="hidden" id="${startId}" name="${startId}" value="${startDate}"/>
+	<input type="hidden" id="${endId}" name="${endId}"  value="${endDate}"/>
 	<script type="text/javascript">
 		$(function(){
 		    $('#${id}').daterangepicker(null, function(start, end, label) {
