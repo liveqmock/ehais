@@ -88,7 +88,7 @@ public class WeiXinJunit {
 			notity.setMsgType("event");
 			notity.setEvent("CLICK");
 			notity.setEventKey("资讯关键字");
-			notity.setMsgId(6251811558179586773l);
+			notity.setMsgID(6251811558179586773l);
 			WeiXinImage image = new WeiXinImage();
 			image.setMediaId("fffff");
 			notity.setImage(image);
@@ -110,7 +110,7 @@ public class WeiXinJunit {
 			WeiXinNotityXml notity2 = WeiXinUtil.toNotityXml(content);
 			System.out.println(notity2.getFromUserName()
 					+"="+
-			notity2.getTicket()+"="+notity2.getMsgId());
+			notity2.getTicket()+"="+notity2.getMsgID());
 			
 			String url = "http://localhost:8080/weixin/wx?id=1&signature=7e686a21a47405e0bf49191a0094fc2f47538e74&timestamp=1455606111&nonce=1118768670";//&echostr=7364046396266381279
 			String req = EHttpClientUtil.httpClientRequest(url, content);

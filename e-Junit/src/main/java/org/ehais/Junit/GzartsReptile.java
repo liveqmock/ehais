@@ -46,8 +46,8 @@ public class GzartsReptile extends ArticleCommonReptile{
 	
 	@Test
 	public void test_list(){
-		String url = "http://lib.gzarts.edu.cn/web/guest/xwgg?p_p_id=xwgg_show&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&p_p_col_id=column-1&p_p_col_pos=1&p_p_col_count=3&_xwgg_show_struts_action=%2Fext%2Fxwgg_show%2Fview&_xwgg_show_typeid=2";
-		cat_name = "馆内动态";
+		String url = "http://lib.gzarts.edu.cn/web/guest/xwgg?p_p_id=xwgg_show&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&p_p_col_id=column-1&p_p_col_pos=1&p_p_col_count=3&_xwgg_show_struts_action=%2Fext%2Fxwgg_show%2Fview&_xwgg_show_typeid=11";
+		cat_name = "美术长廊";
 		this.list(url);
 		
 	}
@@ -80,6 +80,7 @@ public class GzartsReptile extends ArticleCommonReptile{
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			FSO.WriteTextFile("E://gzarts/log.txt", e.getMessage());
 		}
 	}
 	
@@ -189,6 +190,7 @@ public class GzartsReptile extends ArticleCommonReptile{
 			
 		}catch(Exception e){
 			e.printStackTrace();
+			FSO.WriteTextFile("E://gzarts/log.txt", e.getMessage());
 		}
 	}
 	
