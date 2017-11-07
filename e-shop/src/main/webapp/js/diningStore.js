@@ -93,7 +93,7 @@ function checkOutCart(){
 	$("#wcod dd").remove();
 	
 	$(".badge.active").each(function(){
-		if(parseInt($(this).parent().parent().parent().attr("cid")) > 0){
+		if(parseInt($(this).parent().parent().parent().attr("cid")) > 0 && parseInt($(this).html()) > 0){
 			var amount = parseFloat($(this).parent().parent().parent().attr("price")) * parseInt($(this).html()); 
 			total += amount;
 			quantity += parseInt($(this).html());
@@ -423,7 +423,7 @@ function diningSubmitOrder(tPay){
 	var cartArray = new Object();
 	
 	$(".badge.active").each(function(){
-		if(parseInt($(this).parent().parent().parent().attr("cid")) > 0){
+		if(parseInt($(this).parent().parent().parent().attr("cid")) > 0 && parseInt($(this).html()) > 0 ){
 			cartArray[""+$(this).parent().parent().parent().attr("value")+""] = {
 					"goods_id":$(this).parent().parent().parent().attr("value"),
 					"price" : $(this).parent().parent().parent().attr("price"),
