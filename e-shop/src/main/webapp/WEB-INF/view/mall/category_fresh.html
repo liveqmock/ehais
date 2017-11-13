@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<title>生鲜电商</title>
+		<link rel="stylesheet" href="css/fresh.css" />
+		
+		<script type="text/javascript" src="js/jquery-2.1.4.min.js" ></script>
+		<script type="text/javascript" src="js/common.js" ></script>
+		
+	</head>
+	<body>
+		<div class="fresh">
+			<header>
+				<i class="iconfont icon-xiangzuojiantou"></i>
+				<div class="search">
+					<input type="text" id="txtSearch" placeholder="搜索商品关键字" />
+				</div>
+				<i class="iconfont icon-xiaoxi"></i>
+			</header>
+			<div class="main">
+				<div class="left" id="cate_parent">
+					<ul id="scroller_cate_parent"></ul>
+				</div>
+				<div class="right" id="cate_sub">
+					<ul id="scroller_cate_sub"></ul>
+				</div>
+			</div>
+			
+			<#include "eFooter.html"/>
+			
+		</div>
+		
+		<script type="text/javascript" src="js/fresh/category.js" ></script>
+		
+		<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js" ></script>
+		<script type="text/javascript" src="/js/wxsdk.js" ></script>
+		<script type="text/javascript">
+		var cid = "${cid}";
+		var signature = ${signature};
+		var categoryList = ${categoryList};
+		var defaultimg = "${defaultimg}";
+		</script>
+		
+		
+	</body>
+</html>

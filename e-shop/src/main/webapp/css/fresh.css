@@ -1,0 +1,527 @@
+@import url("common.css");
+.fresh {
+  float: left;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  font-size: 0.14rem;
+  position: relative;
+}
+.fresh * {
+  float: left;
+  box-sizing: border-box;
+  width: 100%;
+}
+.fresh input:focus,
+.fresh input:active {
+  outline: 0;
+}
+.fresh ::-webkit-input-placeholder {
+  /* WebKit browsers */
+  color: #f9f9f9;
+  font-size: 0.14rem;
+}
+.fresh :-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: #f9f9f9;
+  font-size: 0.14rem;
+}
+.fresh ::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: #f9f9f9;
+  font-size: 0.14rem;
+}
+.fresh :-ms-input-placeholder {
+  /* Internet Explorer 10+ */
+  color: #f9f9f9;
+  font-size: 0.14rem;
+}
+.fresh header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0.45rem;
+  background: #ca1816;
+  z-index: 20;
+}
+.fresh header i {
+  position: absolute;
+  z-index: 20;
+  padding: 0 0.15rem;
+  width: auto;
+  line-height: 0.45rem;
+  color: #fff;
+}
+.fresh header i:first-child {
+  left: 0rem;
+}
+.fresh header i:last-child {
+  right: 0rem;
+}
+.fresh header .search {
+  position: absolute;
+  left: 0.45rem;
+  right: 0.45rem;
+  width: auto;
+  padding-top: 0.05rem;
+}
+.fresh header .search input {
+  padding: 0.08rem;
+  background-color: transparent;
+  border: 0;
+  color: #fff;
+  font-size: 0.14rem;
+}
+.fresh .swiper-container {
+  width: 100%;
+}
+.fresh .swiper-container *:not(span) {
+  width: 100%;
+}
+.fresh .swiper-container .swiper-pagination-bullet {
+  float: none;
+}
+.fresh > .search,
+.fresh > .splate {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+}
+.fresh > .search {
+  z-index: 20;
+  padding: 0.05rem;
+}
+.fresh > .search .bg {
+  background-color: #000000;
+  width: 100%;
+  height: 0.45rem;
+  z-index: 11;
+  filter: alpha(opacity=50);
+  -moz-opacity: 0.5;
+  opacity: 0.5;
+}
+.fresh > .search i,
+.fresh > .search .p {
+  position: absolute;
+  top: 0.15rem;
+}
+.fresh > .search .p {
+  left: 0.45rem;
+  right: 0.45rem;
+  width: auto;
+  padding: 0.05rem;
+  z-index: 12;
+}
+.fresh > .search .p input {
+  border-radius: 0.05rem;
+  border: 0 solid #ccc;
+  background-color: transparent;
+  color: #fff;
+  font-size: 0.14rem;
+}
+.fresh > .search i {
+  width: 0.25rem;
+  height: 0.25rem;
+  font-size: 0.25rem;
+  color: #f3f3f3;
+}
+.fresh > .search i:nth-child(2) {
+  left: 0.1rem;
+}
+.fresh > .search i:nth-child(4) {
+  right: 0.1rem;
+}
+.fresh > .splate {
+  display: none;
+}
+.fresh > .splate.active {
+  display: block;
+  min-height: 2.5rem;
+  z-index: 10;
+  padding: 0.49rem 0.15rem 0;
+  background: #f9f9ff;
+  -moz-box-shadow: 2px 2px 5px #333333;
+  -webkit-box-shadow: 2px 2px 5px #333333;
+  box-shadow: 2px 2px 5px #333333;
+}
+.fresh > .splate.active dl {
+  padding-bottom: 0.15rem;
+}
+.fresh > .splate.active dl dt {
+  padding: 0.1rem 0;
+  font-size: 0.16rem;
+}
+.fresh > .splate.active dl dt i {
+  float: right;
+  width: auto;
+}
+.fresh > .splate.active dl dd {
+  width: auto;
+  padding: 0 0.05rem;
+}
+.fresh > .splate.active button {
+  border: 0;
+  padding: 0.08rem;
+  margin-bottom: 0.15rem;
+}
+.fresh > .splate.active button:nth-child(3) {
+  background: #ca1816;
+  color: #fff;
+}
+.fresh .nav,
+.fresh .recommend,
+.fresh .ad,
+.fresh .u {
+  background: #fff;
+  border-bottom: 0.1rem solid #f3f3f3;
+}
+.fresh .nav ul {
+  padding-right: 0.1rem;
+}
+.fresh .nav ul li {
+  position: relative;
+  text-align: center;
+  width: 25%;
+  padding: 0.1rem 0 0.1rem 0.1rem;
+}
+.fresh .nav ul li * {
+  float: none;
+}
+.fresh .nav ul li div {
+  margin: 0 auto;
+  margin-bottom: 0.05rem;
+  width: 70%;
+  padding-bottom: 70%;
+  background: #FF0000;
+  border-radius: 50%;
+}
+.fresh .nav ul li i {
+  font-size: 0.25rem;
+  top: 50%;
+  position: absolute;
+  z-index: 9;
+  left: 50%;
+  width: auto;
+  margin-top: -0.23rem;
+  margin-left: -0.08rem;
+  color: #fff;
+}
+.fresh .nav ul li:nth-child(2) div {
+  background: #FAD32C;
+}
+.fresh .nav ul li:nth-child(3) div {
+  background: #EC70C8;
+}
+.fresh .nav ul li:nth-child(4) div {
+  background: #35B4F7;
+}
+.fresh .recommend ul li {
+  float: left;
+  width: 50%;
+  text-align: center;
+}
+.fresh .recommend ul li div {
+  width: 50%;
+  padding: 0.05rem;
+}
+.fresh .recommend ul li div b,
+.fresh .recommend ul li div p {
+  padding: 0.05rem 0 0.03rem;
+}
+.fresh .recommend ul li div p {
+  text-align: left;
+  font-size: 0.12rem;
+}
+.fresh .recommend ul li img {
+  max-width: 35%;
+}
+.fresh .recommend ul li:first-child {
+  text-align: center;
+}
+.fresh .recommend ul li:first-child div {
+  width: 100%;
+}
+.fresh .recommend ul li:first-child div b {
+  font-size: 0.16rem;
+}
+.fresh .recommend ul li:first-child div p {
+  text-align: center;
+  font-size: 0.14rem;
+}
+.fresh .recommend ul li:first-child img {
+  max-width: 50%;
+  float: none;
+}
+.fresh .ad img {
+  max-width: 100%;
+}
+.fresh .s {
+  width: 100%;
+  padding: 0.1rem 0.1rem 0;
+  line-height: 0.22rem;
+}
+.fresh .s b {
+  font-size: 0.16rem;
+  width: auto;
+  margin-right: 0.05rem;
+}
+.fresh .u li {
+  padding: 0.1rem;
+  width: 50%;
+}
+.fresh .u li .img {
+  width: 100%;
+}
+.fresh .u li .img img {
+  max-width: 100%;
+}
+.fresh .u li .i {
+  width: 100%;
+}
+.fresh .u li .i .t {
+  font-weight: bold;
+  width: 100%;
+  margin: 0.1rem 0;
+  height: 0.38rem;
+  text-overflow: -o-ellipsis-lastline;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.fresh .u li .i .d {
+  width: 100%;
+}
+.fresh .u li .i .d div {
+  float: left;
+  width: auto;
+}
+.fresh .u li .i .d div:first-child {
+  font-size: 0.12rem;
+  padding-top: 0.01rem;
+}
+.fresh .u li .i .d div:nth-child(2) {
+  color: #CA1818;
+  padding-right: 0.05rem;
+}
+.fresh .u li .i .d div:nth-child(3) {
+  color: #B0B0B0;
+  text-decoration: line-through;
+  font-size: 0.1rem;
+  padding-top: 0.03rem;
+}
+.fresh .u li .i .d div:last-child {
+  float: right;
+  font-size: 0.25rem;
+  margin-top: -0.05rem;
+}
+.fresh .foot {
+  font-size: 0.12rem;
+  text-align: center;
+  color: #ccc;
+  width: 100%;
+  padding: 0.15rem 0;
+  background: #fff;
+  margin-bottom: 0.49rem;
+}
+.fresh footer {
+  position: fixed;
+  height: 0.49rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #fff;
+  border-top: 0.01rem solid #ccc;
+}
+.fresh footer ul li {
+  width: 20%;
+  text-align: center;
+  padding-top: 0.05rem;
+}
+.fresh footer ul li i {
+  padding-bottom: 0.05rem;
+  font-size: 0.16rem;
+}
+.fresh footer ul li.active {
+  color: #ca1816;
+  font-weight: bold;
+}
+.fresh .main {
+  padding-top: 0.45rem;
+}
+.fresh .main .left {
+  width: 25%;
+  overflow-y: scroll;
+}
+.fresh .main .left ul li {
+  height: 0.49rem;
+  line-height: 0.49rem;
+  text-align: center;
+  border-bottom: 0.01rem solid #F0F0F0;
+  overflow: hidden;
+  background: #f3f3f3;
+}
+.fresh .main .left ul li.active {
+  background: #fff;
+  color: #ca1816;
+  border-left: 0.05rem solid #ca1816;
+}
+.fresh .main .right {
+  width: 75%;
+  overflow-y: scroll;
+  background: #fff;
+}
+.fresh .main .right ul li {
+  width: 33%;
+  text-align: center;
+}
+.fresh .main .right ul li img {
+  max-width: 60%;
+  float: none;
+}
+.fresh .main .right ul li div {
+  height: 0.19rem;
+  overflow: hidden;
+}
+.fresh .category,
+.fresh .filtrate {
+  padding-top: 0.45rem;
+  position: relative;
+  display: none;
+  z-index: 10;
+}
+.fresh .category > div,
+.fresh .filtrate > div {
+  padding-right: 0.45rem;
+  background: #fff;
+}
+.fresh .category > div ul,
+.fresh .filtrate > div ul {
+  overflow: hidden;
+  height: 0.45rem;
+}
+.fresh .category > div ul li,
+.fresh .filtrate > div ul li {
+  width: auto;
+  padding: 0.1rem 0.05rem 0.05rem;
+}
+.fresh .category > i,
+.fresh .filtrate > i {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: auto;
+  padding: 0.52rem 0.05rem 0.15rem 0.12rem;
+  font-size: 0.22rem;
+  z-index: 19;
+  background: #fff;
+}
+.fresh .category.active {
+  display: block;
+}
+.fresh .category.active ul li {
+  border-bottom: 0.03rem solid #fff;
+}
+.fresh .category.active ul li.active {
+  border-bottom: 0.03rem solid #ca1816;
+}
+.fresh .filtrate.active {
+  display: block;
+}
+.fresh .filtrate.active ul li {
+  width: 25%;
+  text-align: center;
+}
+.fresh .filtrate.active ul li div {
+  width: 0.16rem;
+  float: right;
+  margin-top: -0.02rem;
+}
+.fresh .filtrate.active ul li div i {
+  font-size: 0.1rem;
+  color: #ccc;
+}
+.fresh .filtrate.active ul li div i.active {
+  color: #ca1816;
+}
+.fresh .filtrate.active ul li.active {
+  color: #ca1816;
+  font-weight: bold;
+}
+.fresh .list > div {
+  display: none;
+}
+.fresh .list > div.active {
+  display: block;
+}
+.fresh .list .r li {
+  padding: 0.1rem;
+  border-bottom: 0.01rem solid #DCDCDC;
+  width: 100%;
+}
+.fresh .list .r li .img {
+  width: 30%;
+}
+.fresh .list .r li .img img {
+  max-width: 100%;
+}
+.fresh .list .r li .i {
+  width: 70%;
+}
+.fresh .list .r li .i .t {
+  padding: 0 0.1rem 0.05rem;
+  font-weight: bold;
+  width: 100%;
+  text-overflow: -o-ellipsis-lastline;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.fresh .list .r li .i .l {
+  padding: 0 0.05rem 0.05rem 0.1rem;
+  color: #ccc;
+  overflow: hidden;
+  text-overflow: -o-ellipsis-lastline;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+.fresh .list .r li .i .d {
+  padding: 0 0.1rem;
+  width: 100%;
+}
+.fresh .list .r li .i .d div {
+  float: left;
+  width: auto;
+}
+.fresh .list .r li .i .d div:first-child {
+  font-size: 0.12rem;
+  padding-top: 0.01rem;
+}
+.fresh .list .r li .i .d div:nth-child(2) {
+  color: #CA1818;
+  padding-right: 0.05rem;
+  font-size: 0.16rem;
+}
+.fresh .list .r li .i .d div:nth-child(3) {
+  color: #B0B0B0;
+  text-decoration: line-through;
+  font-size: 0.1rem;
+  padding-top: 0.03rem;
+}
+.fresh .list .r li .i .d div:last-child {
+  float: right;
+  font-size: 0.28rem;
+  margin-top: -0.08rem;
+}
+.fresh .list .r li:last-child {
+  border-bottom: #0F0F0F;
+}

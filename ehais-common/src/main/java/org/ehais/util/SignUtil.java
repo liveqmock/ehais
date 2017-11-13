@@ -227,7 +227,7 @@ public class SignUtil {
 	
 	
 	/**
-	 * 适用于文章详情
+	 * 适用于文章详情hai_article与商品分类hai_category
 	 * @param store_id
 	 * @param agencyId
 	 * @param parentId

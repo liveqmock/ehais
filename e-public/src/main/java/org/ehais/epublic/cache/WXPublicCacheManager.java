@@ -20,7 +20,7 @@ public class WXPublicCacheManager {
 		if (instance == null) {
 			synchronized (lock) {
 				if (instance == null) {
-					System.out.println("创建WXTokenCacheManager缓存对象");
+					System.out.println("创建WXPublicCacheManager缓存对象");
 					instance = new WXPublicCacheManager();
 				}
 			}

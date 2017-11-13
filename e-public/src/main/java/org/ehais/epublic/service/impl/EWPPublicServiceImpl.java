@@ -29,7 +29,7 @@ public class EWPPublicServiceImpl implements EWPPublicService {
 			List<WpPublicWithBLOBs> list = wpPublicMapper.selectByExampleWithBLOBs(example);
 			if(list != null && list.size() > 0){
 				wpPublic = list.get(0);
-				WXPublicCacheManager.getInstance().putWXPublic(store_id, wpPublic);
+				WXPublicCacheManager.getInstance().putWXPublic(store.getPublicId(), wpPublic);
 			}
 			
 		}

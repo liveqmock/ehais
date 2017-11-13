@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<title>生鲜电商</title>
+		<link rel="stylesheet" href="css/fresh.css" />
+		
+		<script type="text/javascript" src="js/jquery-2.1.4.min.js" ></script>
+		
+		<link rel="stylesheet" href="js/swiper/swiper-3.4.2.min.css" />
+		<script type="text/javascript" src="js/swiper/swiper-3.4.2.jquery.min.js" ></script>
+		
+		
+		
+	</head>
+	<body>
+		<div class="fresh">
+			<#if (adList?? && adList?size > 0 )>
+			<div class="scroll swiper-container"><!-- 640*300-->
+				<ul class="swiper-wrapper">
+					
+					<#list adList as ad>
+					<#if ad.positionId == 100>
+					<li h="${ad.adLink!''}" class="swiper-slide"><img src="${ad.adPic!''}" /></li>
+					</#if>
+					</#list>					
+					
+				</ul>
+				<!-- 如果需要分页器 -->
+			    <div class="swiper-pagination"></div>
+			</div>
+			</#if>
+			<div class="search">
+				<div class="bg"></div>
+				<i class="iconfont icon-saoyisao"></i>
+				<div class="p">
+					<input id="txtSearch" placeholder="请输入搜索生鲜关键词" />
+				</div>
+				<i class="iconfont icon-xiaoxi"></i>
+			</div>
+			
+			<div class="splate ">
+				<dl>
+					<dt>
+						历史搜索
+						<i class="iconfont icon-qingkong"></i>
+					</dt>
+					<dd>生鲜</dd>
+					<dd>水果</dd>
+				</dl>
+				<dl>
+					<dt>
+						热门搜索
+					</dt>
+					<dd>生鲜</dd>
+					<dd>水果</dd>
+				</dl>
+				<button>确认搜索</button>
+				
+				<button>取消</button>
+				
+			</div>
+			
+			<div class="nav">
+				<ul>
+					<li>
+						<div></div>
+						<i class="iconfont icon-shengxian"></i>
+						生鲜生活
+					</li>
+					<li>
+						<div></div>
+						<i class="iconfont icon-youhui"></i>
+						优惠活动
+					</li>
+					<li>
+						<div></div>
+						<i class="iconfont icon-jiankang"></i>
+						健康指引
+					</li>
+					<li>
+						<div></div>
+						<i class="iconfont icon-dianpu"></i>
+						附近门店
+					</li>
+				</ul>
+			</div>
+			
+			<#if (navList?? && navList?size > 0 )>
+			<div class="recommend">
+				<ul>
+					<#list navList as nav>
+					<li h="${nav.url!''}">
+						<div>
+						<b>${nav.name!''}</b>
+						<p>${nav.intro!''}</p>
+						</div>
+						<img src="${nav.thumb!''}" />
+					</li>
+					</#list>					
+				</ul>
+			</div>
+			</#if>
+			
+			<#if (adList?? && adList?size > 0 )>
+			<div class="ad">
+				
+				<#list adList as ad>
+				<#if ad.positionId == 101>
+				<img h="${ad.adLink!''}" src="${ad.adPic!''}">
+				</#if>
+				</#list>
+			</div>
+			</#if>
+			
+			<div class="s">
+				 <b>推荐商品</b>/实时推荐最优商品   
+			</div>
+			
+			<#if (goodsList?? && goodsList?size > 0 )>
+			<ul class="u">
+				<#list goodsList as goods>
+				<li h="${goods.goodsUrl!''}">
+					<div class="img"><img src="${goods.originalImg}"></div>
+					<div class="i">
+						<div class="t">${goods.goodsName!''}</div>
+						<div class="d">
+							<div>￥</div>
+							<div>${goods.shopPrice / 100}</div>
+							<div>${goods.marketPrice / 100}</div>
+							<div class="iconfont icon-gouwuche1"></div>
+						</div>
+					</div>
+				</li>
+				</#list>
+			</ul>
+			</#if>	
+			
+			<#include "eFoot.html"/>
+			<#include "eFooter.html"/>
+			
+		</div>
+		
+		<script type="text/javascript" src="js/fresh/index.js" ></script>
+		<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js" ></script>
+		<script type="text/javascript" src="/js/wxsdk.js" ></script>
+		<script type="text/javascript">
+		var cid = "${cid}";
+		var signature = ${signature};
+		
+		</script>
+	</body>
+</html>

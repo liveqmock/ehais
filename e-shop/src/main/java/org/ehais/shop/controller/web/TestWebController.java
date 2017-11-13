@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -117,5 +118,18 @@ public class TestWebController extends CommonController{
 		
 		return req;
 	}
+	
+	
+	@ResponseBody
+	@RequestMapping("/chrome")
+	public String chrome(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "str", required = true) String str
+			) throws Exception {
+		String req = "chrom";
+		System.out.println("网络请求的参数 ："+str);
+		return req;
+	}
+	
 	
 }

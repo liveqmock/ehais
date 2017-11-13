@@ -45,9 +45,9 @@ public class NavServiceImpl  extends CommonServiceImpl implements NavService{
 		HaiNavExample example = new HaiNavExample();
 		HaiNavExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
-		example.setStart(start);
-		example.setLen(len);
-		List<HaiNav> list = haiNavMapper.hai_nav_list_by_example(example);
+		example.setLimitStart(start);
+		example.setLimitEnd(len);
+		List<HaiNav> list = haiNavMapper.selectByExample(example);
 		Integer total = haiNavMapper.countByExample(example);
 		rm.setCode(1);
 		rm.setRows(list);
@@ -185,7 +185,7 @@ public class NavServiceImpl  extends CommonServiceImpl implements NavService{
 		HaiNavExample.Criteria c = example.createCriteria();
 		c.andStoreIdEqualTo((Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID));
 		example.setOrderByClause("vieworder asc");
-		List<HaiNav> list = haiNavMapper.hai_nav_list_by_example(example);
+		List<HaiNav> list = haiNavMapper.selectByExample(example);
 		
 		return list;
 	}

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<title>生鲜电商</title>
+		<link rel="stylesheet" href="css/fresh.css" />
+		
+		<script type="text/javascript" src="js/jquery-2.1.4.min.js" ></script>
+		<script type="text/javascript" src="js/common.js" ></script>
+
+		<link rel="stylesheet" href="../js/elay/elay.css" />
+		<script type="text/javascript" src="../js/elay/elay.js" ></script>
+		
+		<script type="text/javascript" src="js/jroll/jroll.js" ></script>
+		
+		
+	</head>
+	<body>
+		<div class="fresh">
+			<header>
+				<i class="iconfont icon-xiangzuojiantou"></i>
+				<div class="search">
+					<input type="text" id="txtSearch" placeholder="搜索商品关键字" />
+				</div>
+				<i class="iconfont icon-xiaoxi"></i>
+			</header>
+			<div class="category active">
+				<div id="cate">
+					<ul></ul>
+				</div>
+				<i class="iconfont icon-shaixuan"></i>
+			</div>
+			<div class="filtrate ">
+				<div>
+				<ul id="filter">
+					<li class="active" f="">综合</li>
+					<li f="price">
+						价格
+						<div>
+							<i a="asc" class="iconfont icon-shingle"></i>
+							<i a="desc" class="iconfont icon-xiala"></i>
+						</div>
+					</li>
+					<li f="salecount">
+						销量
+						<div>
+							<i a="asc" class="iconfont icon-shingle"></i>
+							<i a="desc" class="iconfont icon-xiala"></i>
+						</div>
+					</li>
+					<li f="isnew">
+						新品
+						<div>
+							<i a="asc" class="iconfont icon-shingle"></i>
+							<i a="desc" class="iconfont icon-xiala"></i>
+						</div>
+					</li>
+				</ul>
+				</div>
+				<i class="iconfont icon-qiehuan"></i>
+			</div>
+			<div id="clist" class="list"></div>
+			
+			
+		</div>
+		
+		
+		<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js" ></script>
+		<script type="text/javascript" src="/js/wxsdk.js" ></script>
+		<script type="text/javascript">
+		var aid = "${aid}";
+		var catId = ${catId};
+		var signature = ${signature};
+		var defaultimg = "${defaultimg}";
+		var cateList = ${cateList};
+		</script>
+		<script type="text/javascript" src="js/fresh/goods_list.js" ></script>
+		
+	</body>
+</html>
