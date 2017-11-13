@@ -1472,4 +1472,36 @@
   </select>
   
   
+  <select id="selectFilterCateKeyword" parameterType="map" resultMap="BaseResultMap"  >
+  	select
+    <include refid="Base_Column_List" />
+    from hai_goods
+    where store_id = #{store_id} and cat_id in (${cat_id})
+    <if test="keyword != null and keyword != ''">
+     and (goods_name like CONCAT('%',#{keyword},'%') or goods_sn like CONCAT('%',#{keyword},'%') or act_desc like CONCAT('%',#{keyword},'%') or keywords like CONCAT('%',#{keyword},'%') or goods_desc like CONCAT('%',#{keyword},'%') )
+    </if>
+    <if test="is_new != null">
+      and is_new = 1 
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart >= 0 and limitEnd > 0">
+       limit ${limitStart} , ${limitEnd}
+    </if>
+  </select>
+  
+  
+  <select id="countFilterCateKeyword" parameterType="map" resultType="java.lang.Long">
+    select count(*) from hai_goods
+    where store_id = #{store_id} and cat_id in (${cat_id})
+    <if test="keyword != null and keyword != ''">
+     and (goods_name like CONCAT('%',#{keyword},'%') or goods_sn like CONCAT('%',#{keyword},'%') or act_desc like CONCAT('%',#{keyword},'%') or keywords like CONCAT('%',#{keyword},'%') or goods_desc like CONCAT('%',#{keyword},'%') )
+    </if>
+    <if test="is_new != null">
+      and is_new = 1 
+    </if>
+  </select>
+  
+  
 </mapper>

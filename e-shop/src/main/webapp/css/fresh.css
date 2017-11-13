@@ -74,6 +74,14 @@
   color: #fff;
   font-size: 0.14rem;
 }
+.fresh header .search i {
+  line-height: 0.38rem;
+  color: #999;
+  display: none;
+}
+.fresh header .search i.active {
+  display: block;
+}
 .fresh .swiper-container {
   width: 100%;
 }

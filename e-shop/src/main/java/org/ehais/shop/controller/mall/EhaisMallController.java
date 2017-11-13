@@ -422,6 +422,7 @@ public class EhaisMallController extends EhaisCommonController {
 	 * @param catId 第二或第三级的分类
 	 * @param sort 排序方式：price,quantity,is_new
 	 * @param adsc 升降级 asc desc
+	 * @param keyword 关键字
 	 * @return
 	 */
 	@ResponseBody
@@ -433,7 +434,8 @@ public class EhaisMallController extends EhaisCommonController {
 			@ModelAttribute EConditionObject condition,
 			@RequestParam(value = "catId", required = true) Integer catId,
 			@RequestParam(value = "sort", required = false) String sort,
-			@RequestParam(value = "adsc", required = false) String adsc){
+			@RequestParam(value = "adsc", required = false) String adsc,
+			@RequestParam(value = "keyword", required = false) String keyword){
 		ReturnObject<Map<String,Object>> rm = new ReturnObject<Map<String,Object>>();
 		rm.setCode(0);
 		Integer store_id = SignUtil.getUriStoreId(aid);
@@ -464,26 +466,36 @@ public class EhaisMallController extends EhaisCommonController {
 			HaiGoodsExample goodsExp = new HaiGoodsExample();
 			HaiGoodsExample.Criteria c = goodsExp.createCriteria();
 			c.andCatIdIn(catIds);
-			if(StringUtils.isBlank(sort)){
-				goodsExp.setOrderByClause("update_date "+adsc);
-			}else if(sort.equals("price")){
-				goodsExp.setOrderByClause("shop_price "+adsc);
-			}else if(sort.equals("salecount")){
-				goodsExp.setOrderByClause("sale_count "+adsc);
-			}else if(sort.equals("isnew")){
-				c.andIsNewEqualTo(true);
-				goodsExp.setOrderByClause("update_date "+adsc);
+			
+			
+			
+			String orderByClause = "update_date "+adsc;
+			Integer is_new = null;
+			if(sort!=null && sort.equals("price")){
+				orderByClause = "shop_price "+adsc;
+			}else if(sort!=null && sort.equals("salecount")){
+				orderByClause = "sale_count "+adsc;
+			}else if(sort!=null && sort.equals("isnew")){
+				is_new = 1;
 			}
 			
-			goodsExp.setLimitStart(condition.getStart());
-			goodsExp.setLimitEnd(condition.getRows());
 			
-			List<HaiGoods> listGoods = haiGoodsMapper.selectByExample(goodsExp);
+			List<HaiGoods> listGoods = haiGoodsMapper.selectFilterCateKeyword(store_id, 
+					StringUtils.join(catIds.toArray(), ","), 
+					is_new,
+					keyword, 
+					orderByClause, 
+					condition.getStart(), 
+					condition.getRows());
+			
 			List<Map<String,Object>> gMapList = new ArrayList<Map<String,Object>>();
 			for (HaiGoods haiGoods : listGoods) {
 				gMapList.add(this.dealGoods(wp, store_id, user_id, map, haiGoods));
 			}
-			Long total = haiGoodsMapper.countByExample(goodsExp);
+			Long total = haiGoodsMapper.countFilterCateKeyword(store_id, 
+					StringUtils.join(catIds.toArray(), ","), 
+					is_new,
+					keyword);
 			
 			rm.setTotal(total);
 			rm.setRows(gMapList);

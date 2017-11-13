@@ -11,6 +11,7 @@ var cat_id = catId;
 var loaded;
 var sort = null;
 var adsc = null;
+var keyword = null;
 
 $(function(){
 	wx_config(signature);
@@ -129,16 +130,21 @@ $(function(){
 		
 		sort = $(this).attr("f");
 		adsc = $(this).children("div").children("i.active").attr("a");
-		pageData[cat_id] = 1;
-		sessionStorage.setItem("pageData",JSON.stringify(pageData));
-		scroll_y[cat_id] = 0;
-		sessionStorage.setItem("scroll_y",JSON.stringify(scroll_y));
 		
-		goods_list_cat();
+		resetSearch();
 		
 	});
 
 });
+
+function resetSearch(){
+	pageData[cat_id] = 1;
+	sessionStorage.setItem("pageData",JSON.stringify(pageData));
+	scroll_y[cat_id] = 0;
+	sessionStorage.setItem("scroll_y",JSON.stringify(scroll_y));
+	
+	goods_list_cat();
+}
 
 
 function jrollCat(_cat_Id){
@@ -242,7 +248,7 @@ function goods_list_cat(){
 	
 	$.ajax({type:"post",
 		dataType:"json",
-		url : "goods_list_cat_id!"+aid,data:{catId:cat_id,sort:sort,adsc:adsc,page:pageData[cat_id],rows:10},
+		url : "goods_list_cat_id!"+aid,data:{catId:cat_id,sort:sort,adsc:adsc,keyword:keyword,page:pageData[cat_id],rows:10},
 		success : function(result){
 			loaded = "";
 			if(parseInt(pageData[cat_id]) == 1){

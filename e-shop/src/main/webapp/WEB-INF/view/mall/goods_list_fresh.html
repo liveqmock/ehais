@@ -21,7 +21,8 @@
 			<header>
 				<i class="iconfont icon-xiangzuojiantou"></i>
 				<div class="search">
-					<input type="text" id="txtSearch" placeholder="搜索商品关键字" />
+					<input type="text" id="keyword" placeholder="搜索商品关键字" />
+					<i id="splate_empty" class="iconfont icon-qingkong"></i>
 				</div>
 				<i class="iconfont icon-xiaoxi"></i>
 			</header>
@@ -60,8 +61,10 @@
 				</div>
 				<i class="iconfont icon-qiehuan"></i>
 			</div>
-			<div id="clist" class="list"></div>
 			
+			<#include "splate.html"/>
+			
+			<div id="clist" class="list"></div>
 			
 		</div>
 		

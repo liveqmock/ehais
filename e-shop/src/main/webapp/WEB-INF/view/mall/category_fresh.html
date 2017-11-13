@@ -9,16 +9,23 @@
 		<script type="text/javascript" src="js/jquery-2.1.4.min.js" ></script>
 		<script type="text/javascript" src="js/common.js" ></script>
 		
+		<link rel="stylesheet" href="js/elay/elay.css" />
+		<script type="text/javascript" src="js/elay/elay.js" ></script>
+		
+		
 	</head>
 	<body>
 		<div class="fresh">
 			<header>
 				<i class="iconfont icon-xiangzuojiantou"></i>
 				<div class="search">
-					<input type="text" id="txtSearch" placeholder="搜索商品关键字" />
+					<input type="text" id="keyword" placeholder="搜索商品关键字" />
 				</div>
 				<i class="iconfont icon-xiaoxi"></i>
 			</header>
+			
+			<#include "splate.html"/>
+			
 			<div class="main">
 				<div class="left" id="cate_parent">
 					<ul id="scroller_cate_parent"></ul>
