@@ -75,6 +75,8 @@ public class EhaisMallController extends EhaisCommonController {
 			Map<String,Object> map ) throws Exception{
 		modelMap.addAttribute("store", store);
 		modelMap.addAttribute("cid", cid);
+		modelMap.addAttribute("footer_home", "class='active'");
+		
 		
 		HaiAdExample adExample = new HaiAdExample();
 		adExample.createCriteria()
@@ -126,7 +128,7 @@ public class EhaisMallController extends EhaisCommonController {
 			HttpServletResponse response ,
 			@RequestParam(value = "code", required = false) String code
 			) {	
-		
+		modelMap.addAttribute("footer_home", "class='active'");
 		return "/mall/index_fresh";
 	}
 	
@@ -209,6 +211,7 @@ public class EhaisMallController extends EhaisCommonController {
 		modelMap.addAttribute("store", store);
 		modelMap.addAttribute("cid", cid);
 		modelMap.addAttribute("defaultimg", defaultimg);
+		modelMap.addAttribute("footer_category", "class='active'");
 		
 		HaiCategoryExample categoryExample = new HaiCategoryExample();
 		categoryExample.createCriteria()
