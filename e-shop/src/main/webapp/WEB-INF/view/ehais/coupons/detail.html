@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+
+		<#include "/include.html"/>
+		<#include "/FreemarkerMacro.html"/>
+
+<title>Insert title here</title>
+</head>
+<body>
+<div class="header">
+	<div class="nav">
+		<a href="javascript:;" id="back" class="icon fa fa-arrow-left ">&nbsp;</a>
+		<div class="nav0">优惠券</div>
+		<div class="nav1">信息编辑</div>
+	</div>
+</div>
+<div style="width: 100%;height: 40px;"></div>
+<div class="container-fluid">
+<form id="myForm" name="myForm" class="form-horizontal" action="${rm.action?default('')}" method="post">
+
+
+<input type="hidden" class="form-control" id="couponsId" name="couponsId" value="${rm.model.couponsId!''}" >
+<div class="form-group">
+<label class="col-sm-2 control-label">优惠名称</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="couponsName" name="couponsName" value="${rm.model.couponsName!''}" placeholder="">
+	如：春节优惠活动
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">类型</label>
+<div class="col-sm-8">
+	<@BSRadioChatPicker id="couponsType" key="" text="" list={"reduce":"减额优惠(元)","rebate":"打折优惠(%)"} value="${rm.model.couponsType!''}" />
+</div>
+</div>
+
+<div class="form-group quota_div dn">
+<label class="col-sm-2 control-label">额满</label>
+<div class="col-sm-2">
+	<@quantityDefaultsPicker id="quota" value="${rm.model.quota!''}" rule="defaults"/>
+	注 ：额满<span class="quota">多少</span>元使用
+</div>
+</div>
+
+<div class="form-group discounts_div dn">
+<label class="col-sm-2 control-label couponsType">优惠/折扣</label>
+<div class="col-sm-2">
+	<@quantityDefaultsPicker id="discounts" value="${rm.model.discounts!''}" rule="defaults"/>
+	注：额满<span class="quota">多少</span>元<span class="couponsType"></span><span class="discounts">多少</span>
+</div>
+</div>
+
+
+
+<div class="form-group">
+<label class="col-sm-2 control-label">使用范围</label>
+<div class="col-sm-8">
+	<@BSRadioChatPicker id="scope" key="" text="" list={"all":"全场"} value="all" />
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">开始日期</label>
+<div class="col-sm-3">
+	<@bsDatePicker id="startDate" value="${((rm.model.startDate?string('yyyy-MM-dd'))!'')}" />
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">截止日期</label>
+<div class="col-sm-3">
+	<@bsDatePicker id="endDate" value="${((rm.model.endDate?string('yyyy-MM-dd'))!'')}" />
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">状态</label>
+<div class="col-sm-5">
+	<@BSRadioChatPicker id="isValid" key="" text="" list={"0":"可编辑","1":"发布","-1":"停用"} value="${rm.model.isValid!''}" />
+</div>
+</div>
+
+
+
+<div class="form-group">
+	<div class="col-sm-3"></div>
+	<div class="col-sm-6"><button id="saveSubmit" type="button" class="btn btn-primary">提交信息</button></div>
+</div>
+       
+
+
+
+
+</form>
+</div>    
+
+
+<script type="text/javascript" src="/js/ehais/coupons/detail.js" ></script>             
+<script type="text/javascript">
+var couponsType = "${rm.model.couponsType!''}";
+$(function(){
+	
+	if(couponsType!=""){
+		$(".quota_div,.discounts_div").removeClass("dn");
+		
+		$(".couponsType").html($("#radioPicker_couponsType li.active").text().replace("优惠",""));
+	}
+	
+	$("#radioPicker_couponsType li").click(function(){
+		$(".couponsType").html($(this).text().replace("优惠",""));
+		$(".quota_div,.discounts_div").removeClass("dn");
+	});
+});
+</script>
+
+</body>
+</html>
