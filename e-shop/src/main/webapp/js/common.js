@@ -52,6 +52,10 @@ function is_android(){
 }
 
 
+function isBlank(v){
+	if(v == null || v == "null" || v == "" || v == undefined || v == "undefined" || v.length == 0)return true;
+}
+
 String.prototype.replaceAll = function(reallyDo, replaceWith, ignoreCase) {  
     if (!RegExp.prototype.isPrototypeOf(reallyDo)) {  
         return this.replace(new RegExp(reallyDo, (ignoreCase ? "gi": "g")), replaceWith);  

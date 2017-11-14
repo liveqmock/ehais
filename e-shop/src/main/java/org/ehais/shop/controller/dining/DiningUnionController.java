@@ -75,6 +75,7 @@ public class DiningUnionController extends EhaisCommonController{
 	
 	
 	//http://127.0.0.1/diningUnion!5674d100-033b4b301-1299581252-2e64baa931f09d6c22
+	//http://6aff5b26.ngrok.io/diningUnion!ad01c580-043e7c11-1d4db7232-2262461253-361155a5c9acd
 	@RequestMapping("/diningUnion!{pid}")
 	public String diningUnion(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -104,11 +105,11 @@ public class DiningUnionController extends EhaisCommonController{
 					return "redirect:"+link;
 				}else if(user_id > 0 && Long.valueOf(map.get("userId").toString()).longValue() == user_id.longValue()){//经过code获取用户信息跳回自己的链接中来
 					EHaiUsers user = eHaiUsersMapper.selectByPrimaryKey(user_id);
-					
-					
+//					EHaiStore store = eStoreService.getEStore(Integer.valueOf(map.get("store_id").toString()));
+					WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(Integer.valueOf(map.get("store_id").toString()));
 					String link = request.getScheme() + "://" + request.getServerName() + "/diningUnion!"+pid;
 					WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, Integer.valueOf(map.get("store_id").toString()), weixin_appid, weixin_appsecret, null);
-					signature.setTitle("尚价微信点餐应用");
+					signature.setTitle(wp.getPublicName()+"微信点餐应用");
 					signature.setLink(link);
 					signature.setDesc("帮助餐厅“互联网+”转型的移动O2O服务平台");
 					signature.setImgUrl(defaultimg);

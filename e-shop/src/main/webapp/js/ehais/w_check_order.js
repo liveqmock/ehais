@@ -143,7 +143,7 @@ function w_check_order_data(){
 							"<div class='quantity'>数量  x "+cart[i].goodsNumber+"</div>"+
 						"</div>"+
 					"</li>");
-				total+=parseInt(cart[i].goodsPrice);
+				total+=parseInt(cart[i].goodsPrice) * parseInt(cart[i].goodsNumber);
 			}
 			
 			$("#total").html("￥"+(total/100).toFixed(2));

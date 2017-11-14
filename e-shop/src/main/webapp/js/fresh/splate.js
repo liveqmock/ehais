@@ -48,7 +48,7 @@ $(function(){
 			}
 		});
 		if(f){
-			$("#history_keyword").prepend("<dd>"+keyword+"</dd>");
+			$("#history_keyword").append("<dd>"+keyword+"</dd>");
 			var rows = sessionStorage.getItem("search_history");
 			if(rows == null || rows == "[]"){
 				rows = [];
@@ -104,7 +104,7 @@ function clear_keyword_history(){
 
 function search_history(){
 	console.log(sessionStorage.getItem("search_history"));
-	if(sessionStorage.getItem("search_history") != null && sessionStorage.getItem("search_history") != "[]"){
+	if(!isBlank(sessionStorage.getItem("search_history")) && sessionStorage.getItem("search_history") != "[]"){
 		var rows = JSON.parse(sessionStorage.getItem("search_history"));
 		keywordHistory(rows);
 	}else{

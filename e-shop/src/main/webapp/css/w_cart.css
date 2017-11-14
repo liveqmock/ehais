@@ -69,8 +69,12 @@ body {
 .wcw ul li .t {
   margin: 0;
   padding: 0.08rem 0 0 0 ;
-  height: 0.64rem;
   box-sizing: border-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 .wcw ul li .intro {
   position: absolute;

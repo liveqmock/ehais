@@ -78,6 +78,7 @@ $(function(){
 		}
 	});
 	$("#indexLink").click(function(){window.location.href=$(this).attr("href");});
+	cartListItem();
 });
 
 function cart_edit_submit(recid,goodsid,quantity){

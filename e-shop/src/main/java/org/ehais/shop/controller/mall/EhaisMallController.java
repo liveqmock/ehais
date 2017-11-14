@@ -106,7 +106,7 @@ public class EhaisMallController extends EhaisCommonController {
 		goodsExample.setOrderByClause("sort_order asc");
 		List<HaiGoods> goodsList = haiGoodsMapper.selectByExample(goodsExample);
 		for (HaiGoods haiGoods : goodsList) {
-			haiGoods.setGoodsUrl("w_goods_detail!"+SignUtil.setSid(store_id, Integer.valueOf(map.get("agencyId").toString()), Long.valueOf(map.get("userId").toString()), user_id, 0 , haiGoods.getGoodsId(), wp.getToken()));
+			haiGoods.setGoodsUrl(SignUtil.setSid(store_id, Integer.valueOf(map.get("agencyId").toString()), Long.valueOf(map.get("userId").toString()), user_id, 0 , haiGoods.getGoodsId(), wp.getToken()));
 		}
 		modelMap.addAttribute("adList", adList);
 		modelMap.addAttribute("navList", navList);
@@ -114,7 +114,7 @@ public class EhaisMallController extends EhaisCommonController {
 		modelMap.addAttribute("goodsList", goodsList);
 		
 		String newCid = SignUtil.setCid(store_id,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), user_id , wp.getToken());
-		String link = request.getScheme() + "://" + request.getServerName() + "/w_shop!"+newCid;
+		String link = request.getScheme() + "://" + request.getServerName() + "/w_mall!"+newCid;
 		
 		this.shareWeiXin(modelMap, request, response, wp, store_id, store.getStoreName(), link, store.getDescription(), store.getStoreLogo());
 		
@@ -604,6 +604,16 @@ public class EhaisMallController extends EhaisCommonController {
 					modelMap.addAttribute("category_active", "");
 					modelMap.addAttribute("filtrate_active", "active");
 					modelMap.addAttribute("goods_list", "goods_search.js");
+					
+					
+					String newCid = SignUtil.setCid(store_id,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), user_id , wp.getToken());
+					String link = request.getScheme() + "://" + request.getServerName() + "/w_shop!"+newCid;
+					
+					this.shareWeiXin(modelMap, request, response, wp, store_id, store.getStoreName(), link, store.getDescription(), store.getStoreLogo());
+					
+					modelMap.addAttribute("aid", cid);
+					modelMap.addAttribute("defaultimg", defaultimg);
+					
 					return "/mall/goods_list_fresh";
 					
 				}else if(Long.valueOf(map.get("userId").toString()).longValue() != user_id.longValue()){

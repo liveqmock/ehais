@@ -97,7 +97,7 @@ public class DiningWebController extends EhaisCommonController{
 	
 	
 	//http://127.0.0.1/diningStore!934a1580-0c1e0501-156ed21242-2b36621253-314dd0C104-49175b56
-	//http://3d8d1c94.ngrok.io/diningStore!934a1580-0c1e0501-156ed21242-2b36621253-314dd0C104-49175b56
+	//http://6aff5b26.ngrok.io/diningStore!934a1580-0c1e0501-156ed21242-2b36621253-314dd0C104-49175b56
 	@RequestMapping("/diningStore!{sid}")
 	public String diningStore(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -217,7 +217,7 @@ public class DiningWebController extends EhaisCommonController{
 
 		String link = request.getScheme() + "://" + request.getServerName() + "/diningStore!"+sid;
 		
-		this.shareWeiXin(modelMap, request, response, wp, store_id, store.getStoreName()+"--尚价", link, store.getDescription(), store.getStoreLogo());
+		this.shareWeiXin(modelMap, request, response, wp, store_id, store.getStoreName()+"--"+wp.getPublicName(), link, store.getDescription(), store.getStoreLogo());
 
 	}
 	
@@ -762,6 +762,11 @@ public class DiningWebController extends EhaisCommonController{
 		try {
 			String newSid = SignUtil.setOid(58, 23L , "101201709151143535159125", 125L, "oiGBot1K1vYJA2DFv2B-0W2xL9O0", "ehais_wxdev");
 			System.out.println(newSid);
+			
+			String pid = SignUtil.setPartnerId(58, 1, 23L, 125L, "ehais_wxdev");
+			System.out.println(pid);
+			
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

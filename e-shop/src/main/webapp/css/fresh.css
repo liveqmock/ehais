@@ -13,6 +13,9 @@
   box-sizing: border-box;
   width: 100%;
 }
+.fresh button {
+  font-size: 0.14rem;
+}
 .fresh input:focus,
 .fresh input:active {
   outline: 0;
@@ -294,7 +297,6 @@
   font-weight: bold;
   width: 100%;
   margin: 0.1rem 0;
-  height: 0.38rem;
   text-overflow: -o-ellipsis-lastline;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -335,7 +337,7 @@
   width: 100%;
   padding: 0.15rem 0;
   background: #fff;
-  margin-bottom: 0.49rem;
+  padding-bottom: 0.69rem;
 }
 .fresh footer {
   position: fixed;
@@ -352,7 +354,7 @@
   padding-top: 0.05rem;
 }
 .fresh footer ul li i {
-  padding-bottom: 0.05rem;
+  padding-bottom: 0.03rem;
   font-size: 0.16rem;
 }
 .fresh footer ul li.active {
@@ -482,7 +484,8 @@
   width: 70%;
 }
 .fresh .list .r li .i .t {
-  padding: 0 0.1rem 0.05rem;
+  padding: 0 0.1rem;
+  margin-bottom: 0.02rem;
   font-weight: bold;
   width: 100%;
   text-overflow: -o-ellipsis-lastline;
@@ -493,7 +496,8 @@
   -webkit-box-orient: vertical;
 }
 .fresh .list .r li .i .l {
-  padding: 0 0.05rem 0.05rem 0.1rem;
+  padding: 0 0.05rem 0 0.1rem;
+  margin-bottom: 0.02rem;
   color: #ccc;
   overflow: hidden;
   text-overflow: -o-ellipsis-lastline;
