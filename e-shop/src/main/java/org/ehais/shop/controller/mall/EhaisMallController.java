@@ -329,6 +329,9 @@ public class EhaisMallController extends EhaisCommonController {
 		modelMap.addAttribute("store", store);
 		modelMap.addAttribute("aid", aid);
 		modelMap.addAttribute("defaultimg", defaultimg);
+		modelMap.addAttribute("category_active", "active");
+		modelMap.addAttribute("filtrate_active", "");
+		modelMap.addAttribute("goods_list", "goods_list.js");
 		
 		//获取当前二级分类的所有三级分类
 		Integer catId = Integer.valueOf(map.get("articleId").toString());
@@ -433,11 +436,12 @@ public class EhaisMallController extends EhaisCommonController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/goods_list_cat_id!{aid}")
+	@RequestMapping("/goods_list_cat_id!{aid}!{l_s}")
 	public String goods_list_cat_id(ModelMap modelMap,
 			HttpServletRequest request,
 			HttpServletResponse response ,
 			@PathVariable(value = "aid") String aid,
+			@PathVariable(value = "l_s") String l_s,
 			@ModelAttribute EConditionObject condition,
 			@RequestParam(value = "catId", required = false) Integer catId,
 			@RequestParam(value = "sort", required = false) String sort,
@@ -458,7 +462,11 @@ public class EhaisMallController extends EhaisCommonController {
 		try{
 			EHaiStore store = eStoreService.getEStore(store_id);
 			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
-			Map<String,Object> map = SignUtil.getAid(aid,wp.getToken());
+			
+			Map<String,Object> map = null ;
+			if(l_s.equals("list"))map = SignUtil.getAid(aid,wp.getToken());
+			else map = SignUtil.getCid(aid, wp.getToken());
+			
 			if(map == null){
 				rm.setMsg("错误链接：1002");
 				return this.writeJson(rm);
@@ -487,11 +495,7 @@ public class EhaisMallController extends EhaisCommonController {
 				cat_id_in = StringUtils.join(catIds.toArray(), ",");
 			}
 			
-			
-			
-			
-			
-			
+						
 			String orderByClause = "update_date "+adsc;
 			Integer is_new = null;
 			if(sort!=null && sort.equals("price")){
@@ -559,6 +563,76 @@ public class EhaisMallController extends EhaisCommonController {
 //		return this.writeJsonObject(new HashMap<String,Object>(){{this.put("code", 0);this.put("msg", "网络延时");}});
 		return this.writeJson(rm);
 	}
+	
+	
+	
+	@RequestMapping("/w_goods_search!{cid}")
+	public String w_goods_search(ModelMap modelMap,
+			HttpServletRequest request,
+			HttpServletResponse response ,
+			@PathVariable(value = "cid") String cid,
+			@RequestParam(value = "code", required = false) String code
+			) {	
+		
+		Integer store_id = SignUtil.getUriStoreId(cid);
+		if(store_id == 0 || store_id == null){
+			return "redirect:"+website; //错误的链接，跳转商城
+		}
+		request.getSession().setAttribute(EConstants.SESSION_STORE_ID, store_id);
+		try{
+			EHaiStore store = eStoreService.getEStore(store_id);
+			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
+			Map<String,Object> map = SignUtil.getCid(cid,wp.getToken());
+			if(map == null){
+			    return "redirect:"+website; //错误的链接，跳转商城
+			}
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
+			if(this.isWeiXin(request)){//微信端登录
+				if((user_id == null || user_id == 0 ) && StringUtils.isEmpty(code)){
+					return this.redirect_wx_authorize(request , wp.getAppid() , "/w_goods_search!"+cid);
+				}else if(StringUtils.isNotEmpty(code)){
+					System.out.println(code);
+					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map,false);
+					String newSid = SignUtil.setCid(store_id,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), user.getUserId(), wp.getToken());
+					String link = request.getScheme() + "://" + request.getServerName() + "/w_goods_search!"+newSid;
+					System.out.println("code:"+link);
+					return "redirect:"+link;
+				}else if(user_id > 0 && Long.valueOf(map.get("userId").toString()).longValue() == user_id.longValue()){//经过code获取用户信息跳回自己的链接中来
+					modelMap.addAttribute("category_active", "");
+					modelMap.addAttribute("filtrate_active", "active");
+					modelMap.addAttribute("goods_list", "goods_search.js");
+					return "/mall/goods_list_fresh";
+					
+				}else if(Long.valueOf(map.get("userId").toString()).longValue() != user_id.longValue()){
+					System.out.println("user_id != map.userId condition is worng");
+					request.getSession().removeAttribute(EConstants.SESSION_USER_ID);
+				    return this.redirect_wx_authorize(request,wp.getAppid(), "/w_goods_search!"+cid);
+				}else{
+					System.out.println(cid+" condition is worng");
+					return "redirect:"+website; //错误的链接，跳转商城
+				}
+			}else{
+				String newCid = SignUtil.setCid(store_id,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), user_id , wp.getToken());
+				String link = request.getScheme() + "://" + request.getServerName() + "/w_shop!"+newCid;
+				
+				this.shareWeiXin(modelMap, request, response, wp, store_id, store.getStoreName(), link, store.getDescription(), store.getStoreLogo());
+				
+				modelMap.addAttribute("category_active", "");
+				modelMap.addAttribute("filtrate_active", "active");
+				modelMap.addAttribute("goods_list", "goods_search.js");
+				modelMap.addAttribute("aid", cid);
+				modelMap.addAttribute("defaultimg", defaultimg);
+				
+				return "/mall/goods_list_fresh";
+				
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return "redirect:"+website;
+	}
+	
 	
 	
 	/**

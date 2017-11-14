@@ -16,7 +16,13 @@ $(function(){
 	$("#splate_cancel").click(function(){
 		$(".splate").removeClass("active");
 		keyword = null;
-		resetSearch();
+		
+		if(window.location.href.indexOf("w_goods_list") > 0 ){
+			resetSearch();
+		}else if(window.location.href.indexOf("w_goods_search") > 0){
+//			history.back();
+		}
+		
 	});
 	
 	$("#splate_clear").click(function(){
@@ -32,35 +38,42 @@ $(function(){
 			return ;
 		}
 		
+		keyword = $.trim($("#keyword").val());
+		
+		var f = true;
+		$("#history_keyword dd").each(function(i,ele){
+			if($.trim($(ele).text()) == keyword){
+				f = false;
+				return true;
+			}
+		});
+		if(f){
+			$("#history_keyword").prepend("<dd>"+keyword+"</dd>");
+			var rows = sessionStorage.getItem("search_history");
+			if(rows == null || rows == "[]"){
+				rows = [];
+			}else{
+				rows = JSON.parse(rows);
+			}
+			rows.push({"keyword":keyword,"classify":"user"});
+			sessionStorage.setItem("search_history",JSON.stringify(rows));
+		}
+		
 		//判断是否商品列表页
-		if(window.location.href.indexOf("w_goods_list") > 0){
+		if(window.location.href.indexOf("w_goods_list") > 0 || window.location.href.indexOf("w_goods_search") > 0){
 			//其它的文件
 			keyword = $.trim($("#keyword").val());
 			resetSearch();
 			$(".splate").removeClass("active");
 			
-			var f = true;
-			$("#history_keyword dd").each(function(i,ele){
-				if($.trim($(ele).text()) == keyword){
-					f = false;
-					return true;
-				}
-			});
-			if(f){
-				$("#history_keyword").prepend("<dd>"+keyword+"</dd>");
-				var rows = sessionStorage.getItem("search_history");
-				if(rows == null || rows == "[]"){
-					rows = new Array();
-				}else{
-					rows = JSON.parse(rows);
-				}
-				rows.push({"keyword":keyword,"classify":"user"});
-				sessionStorage.setItem("search_history",JSON.stringify(rows));
-			}
-		}else{
 			
+		}else{
+			sessionStorage.removeItem("cat_id");
+			sessionStorage.removeItem("goodsData");
+			sessionStorage.removeItem("pageData");
+			sessionStorage.removeItem("scroll_y");
 			sessionStorage.setItem("keyword",$("#keyword").val());
-			window.location.href = "w_goods_list!"+cid;
+			window.location.href = "w_goods_search!"+cid;
 			
 		}
 	});
@@ -117,10 +130,28 @@ function keywordHistory(rows){
 		}
 	});
 	$("#history_keyword dd,#hot_keyword dd").click(function(){
-		keyword = $.trim($(this).text());
-		$("#keyword").val(keyword);
-		resetSearch();
-		$(".splate").removeClass("active");
+		
+		//判断是否商品列表页
+		if(window.location.href.indexOf("w_goods_list") > 0 || window.location.href.indexOf("w_goods_search") > 0){
+			//其它的文件
+			keyword = $.trim($(this).text());
+			$("#keyword").val(keyword);
+			resetSearch();
+			$(".splate").removeClass("active");
+			
+		}else{
+			sessionStorage.removeItem("cat_id");
+			sessionStorage.removeItem("goodsData");
+			sessionStorage.removeItem("pageData");
+			sessionStorage.removeItem("scroll_y");
+			sessionStorage.setItem("keyword",$.trim($(this).text()));
+			window.location.href = "w_goods_search!"+cid;
+			
+		}
+		
+		
+		
+		
 	});
 }
 

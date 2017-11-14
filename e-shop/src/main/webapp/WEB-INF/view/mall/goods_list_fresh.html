@@ -26,13 +26,13 @@
 				</div>
 				<i class="iconfont icon-xiaoxi"></i>
 			</header>
-			<div class="category active">
+			<div class="category ${category_active!''}">
 				<div id="cate">
 					<ul></ul>
 				</div>
 				<i class="iconfont icon-shaixuan"></i>
 			</div>
-			<div class="filtrate ">
+			<div class="filtrate ${filtrate_active!''}">
 				<div>
 				<ul id="filter">
 					<li class="active" f="">综合</li>
@@ -72,13 +72,15 @@
 		<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js" ></script>
 		<script type="text/javascript" src="/js/wxsdk.js" ></script>
 		<script type="text/javascript">
-		var aid = "${aid}";
-		var catId = ${catId};
+		var aid = "${aid!''}";
+		var catId = ${catId!0};
 		var signature = ${signature};
 		var defaultimg = "${defaultimg}";
-		var cateList = ${cateList};
+		var cateList = ${cateList!'[]'};
 		</script>
-		<script type="text/javascript" src="js/fresh/goods_list.js" ></script>
+		<script type="text/javascript" src="js/fresh/${goods_list}" ></script>
+		<script type="text/javascript" src="js/fresh/goods_item.js" ></script>
+		<script type="text/javascript" src="js/fresh/filtrate.js" ></script>
 		
 	</body>
 </html>

@@ -1,3 +1,4 @@
+var keyword = null;
 
 $(function(){
 	$(".main").height($(window).height() - $("header").height() - $("footer").height() );
