@@ -1,6 +1,7 @@
 package org.ehais.shop.controller.mall;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
 import org.ehais.enums.ENavClassifyEnum;
+import org.ehais.enums.ESearchHistoryEnum;
 import org.ehais.epublic.model.EHaiStore;
 import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
@@ -19,6 +21,7 @@ import org.ehais.shop.mapper.HaiAdMapper;
 import org.ehais.shop.mapper.HaiCategoryMapper;
 import org.ehais.shop.mapper.HaiGoodsMapper;
 import org.ehais.shop.mapper.HaiNavMapper;
+import org.ehais.shop.mapper.HaiSearchHistoryMapper;
 import org.ehais.shop.model.HaiAd;
 import org.ehais.shop.model.HaiAdExample;
 import org.ehais.shop.model.HaiCategory;
@@ -27,6 +30,8 @@ import org.ehais.shop.model.HaiGoods;
 import org.ehais.shop.model.HaiGoodsExample;
 import org.ehais.shop.model.HaiNav;
 import org.ehais.shop.model.HaiNavExample;
+import org.ehais.shop.model.HaiSearchHistory;
+import org.ehais.shop.model.HaiSearchHistoryExample;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.SignUtil;
@@ -54,6 +59,8 @@ public class EhaisMallController extends EhaisCommonController {
 	private HaiCategoryMapper haiCategoryMapper;
 	@Autowired
 	private HaiNavMapper haiNavMapper;
+	@Autowired
+	private HaiSearchHistoryMapper haiSearchHistoryMapper;
 	
 	
 
@@ -432,7 +439,7 @@ public class EhaisMallController extends EhaisCommonController {
 			HttpServletResponse response ,
 			@PathVariable(value = "aid") String aid,
 			@ModelAttribute EConditionObject condition,
-			@RequestParam(value = "catId", required = true) Integer catId,
+			@RequestParam(value = "catId", required = false) Integer catId,
 			@RequestParam(value = "sort", required = false) String sort,
 			@RequestParam(value = "adsc", required = false) String adsc,
 			@RequestParam(value = "keyword", required = false) String keyword){
@@ -441,6 +448,11 @@ public class EhaisMallController extends EhaisCommonController {
 		Integer store_id = SignUtil.getUriStoreId(aid);
 		if(store_id == 0 || store_id == null){
 			rm.setMsg("错误链接：1001");
+			return this.writeJson(rm);
+		}
+		
+		if((catId == null || catId == 0) && StringUtils.isBlank(keyword) ){
+			rm.setMsg("搜索条件错误：1003");
 			return this.writeJson(rm);
 		}
 		try{
@@ -453,19 +465,30 @@ public class EhaisMallController extends EhaisCommonController {
 			}
 			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			
-			//根据当前ID获取下级分类
-			HaiCategoryExample cateExp = new HaiCategoryExample();
-			cateExp.createCriteria().andParentIdEqualTo(catId);
-			List<HaiCategory> cateList = haiCategoryMapper.selectByExample(cateExp);
-			List<Integer> catIds = new ArrayList<Integer>();
-			catIds.add(catId);
-			for (HaiCategory haiCategory : cateList) {
-				catIds.add(haiCategory.getCatId());
-			}
+			
 			if(StringUtils.isBlank(adsc))adsc = "desc";
 			HaiGoodsExample goodsExp = new HaiGoodsExample();
 			HaiGoodsExample.Criteria c = goodsExp.createCriteria();
-			c.andCatIdIn(catIds);
+			
+			String cat_id_in = null;
+			
+			if(catId != null && catId > 0){
+				//根据当前ID获取下级分类
+				HaiCategoryExample cateExp = new HaiCategoryExample();
+				cateExp.createCriteria().andParentIdEqualTo(catId);
+				List<HaiCategory> cateList = haiCategoryMapper.selectByExample(cateExp);
+				List<Integer> catIds = new ArrayList<Integer>();
+				catIds.add(catId);
+				for (HaiCategory haiCategory : cateList) {
+					catIds.add(haiCategory.getCatId());
+				}
+				c.andCatIdIn(catIds);
+				
+				cat_id_in = StringUtils.join(catIds.toArray(), ",");
+			}
+			
+			
+			
 			
 			
 			
@@ -481,7 +504,7 @@ public class EhaisMallController extends EhaisCommonController {
 			
 			
 			List<HaiGoods> listGoods = haiGoodsMapper.selectFilterCateKeyword(store_id, 
-					StringUtils.join(catIds.toArray(), ","), 
+					cat_id_in, 
 					is_new,
 					keyword, 
 					orderByClause, 
@@ -493,13 +516,41 @@ public class EhaisMallController extends EhaisCommonController {
 				gMapList.add(this.dealGoods(wp, store_id, user_id, map, haiGoods));
 			}
 			Long total = haiGoodsMapper.countFilterCateKeyword(store_id, 
-					StringUtils.join(catIds.toArray(), ","), 
+					cat_id_in, 
 					is_new,
 					keyword);
 			
 			rm.setTotal(total);
 			rm.setRows(gMapList);
 			rm.setMsg("success");
+			
+			
+			if(condition.getPage() != null && condition.getPage().intValue() == 1 && StringUtils.isNotBlank(keyword)){
+				//保存搜索记录
+				HaiSearchHistoryExample shexp = new HaiSearchHistoryExample();
+				shexp.createCriteria()
+				.andUserIdEqualTo(user_id)
+				.andClassifyEqualTo(ESearchHistoryEnum.USER)
+				.andKeywordEqualTo(keyword.trim());
+				List<HaiSearchHistory> listSearchHistory = haiSearchHistoryMapper.selectByExample(shexp);
+				Date date = new Date();
+				if(listSearchHistory == null || listSearchHistory.size()==0){
+					HaiSearchHistory sh = new HaiSearchHistory();
+					sh.setUserId(user_id);
+					sh.setStoreId(store_id);
+					sh.setKeyword(keyword);
+					sh.setIsValid(true);
+					sh.setClassify(ESearchHistoryEnum.USER);					
+					sh.setCreateDate(date);
+					sh.setLastDate(date);
+					haiSearchHistoryMapper.insert(sh);
+				}else{
+					HaiSearchHistory sh = listSearchHistory.get(0);
+					sh.setLastDate(date);
+					sh.setIsValid(true);
+					haiSearchHistoryMapper.updateByPrimaryKey(sh);
+				}
+			}
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -510,4 +561,77 @@ public class EhaisMallController extends EhaisCommonController {
 	}
 	
 	
+	/**
+	 * 热门搜索与历史搜索
+	 * @param modelMap
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/search_history")
+	public String search_history(ModelMap modelMap,
+			HttpServletRequest request,
+			HttpServletResponse response ){
+		ReturnObject<HaiSearchHistory> rm = new ReturnObject<HaiSearchHistory>();
+		rm.setCode(0);
+		
+		Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
+		List<HaiSearchHistory> list = new ArrayList<HaiSearchHistory>();
+		try{
+			HaiSearchHistoryExample shexpu = new HaiSearchHistoryExample();
+			shexpu.createCriteria()
+			.andUserIdEqualTo(user_id)
+			.andIsValidEqualTo(true)
+			.andClassifyEqualTo(ESearchHistoryEnum.USER);
+			shexpu.setOrderByClause("last_date desc");
+			shexpu.setLimitStart(0);
+			shexpu.setLimitEnd(10);
+			List<HaiSearchHistory> ulist = haiSearchHistoryMapper.selectByExample(shexpu);
+			for (HaiSearchHistory haiSearchHistory : ulist) {
+				list.add(haiSearchHistory);
+			}
+			
+			HaiSearchHistoryExample shexps = new HaiSearchHistoryExample();
+			shexps.createCriteria().andIsValidEqualTo(true).andClassifyEqualTo(ESearchHistoryEnum.STORE);
+			shexps.setOrderByClause("last_date desc");
+			shexps.setLimitStart(0);
+			shexps.setLimitEnd(10);
+			List<HaiSearchHistory> slist = haiSearchHistoryMapper.selectByExample(shexps);
+			for (HaiSearchHistory haiSearchHistory : slist) {
+				list.add(haiSearchHistory);
+			}
+			
+			rm.setRows(list);
+			
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return this.writeJson(rm);				
+	}
+	
+	@ResponseBody
+	@RequestMapping("/clear_keyword_history")
+	public String clear_keyword_history(ModelMap modelMap,
+			HttpServletRequest request,
+			HttpServletResponse response ){
+		ReturnObject<HaiSearchHistory> rm = new ReturnObject<HaiSearchHistory>();
+		rm.setCode(0);
+		
+		Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
+		try{
+			
+			haiSearchHistoryMapper.clear_keyword_history(user_id);
+			
+			rm.setCode(0);
+			rm.setMsg("清空成功");
+			return this.writeJson(rm);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return this.writeJson(rm);
+	}
 }

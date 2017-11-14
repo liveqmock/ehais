@@ -1476,11 +1476,14 @@
   	select
     <include refid="Base_Column_List" />
     from hai_goods
-    where store_id = #{store_id} and cat_id in (${cat_id})
+    where store_id = #{store_id} 
+    <if test="cat_id != null and cat_id != ''">
+    and cat_id in (${cat_id})
+    </if>
     <if test="keyword != null and keyword != ''">
      and (goods_name like CONCAT('%',#{keyword},'%') or goods_sn like CONCAT('%',#{keyword},'%') or act_desc like CONCAT('%',#{keyword},'%') or keywords like CONCAT('%',#{keyword},'%') or goods_desc like CONCAT('%',#{keyword},'%') )
     </if>
-    <if test="is_new != null">
+    <if test="is_new != null and is_new == 1">
       and is_new = 1 
     </if>
     <if test="orderByClause != null">
@@ -1494,11 +1497,14 @@
   
   <select id="countFilterCateKeyword" parameterType="map" resultType="java.lang.Long">
     select count(*) from hai_goods
-    where store_id = #{store_id} and cat_id in (${cat_id})
+    where store_id = #{store_id} 
+    <if test="cat_id != null and cat_id != ''">
+     and cat_id in (${cat_id})
+    </if>
     <if test="keyword != null and keyword != ''">
      and (goods_name like CONCAT('%',#{keyword},'%') or goods_sn like CONCAT('%',#{keyword},'%') or act_desc like CONCAT('%',#{keyword},'%') or keywords like CONCAT('%',#{keyword},'%') or goods_desc like CONCAT('%',#{keyword},'%') )
     </if>
-    <if test="is_new != null">
+    <if test="is_new != null and is_new == 1">
       and is_new = 1 
     </if>
   </select>
