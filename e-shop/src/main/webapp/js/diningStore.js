@@ -276,6 +276,13 @@ $(function(){
 	
 	//确认下单
 	$("#orderSubmit").click(function(){
+		if($(".icon-weixin").hasClass("active") && $(".icon-weixin").attr("disabled")){
+			elay.toast({content:"商家未开通微信在线支付"});return ;
+		}
+		if($(".icon-xianjin").hasClass("active") && $(".icon-xianjin").attr("disabled")){
+			elay.toast({content:"商家只支持微信在线支付"});return ;
+		}
+			
 		var layerIndex = elay.confirm({
 		    content: '订单'+$("#ot").html()+'确认用'+($(".icon-weixin").hasClass("active")?"微信支付":"现金支付")+'吗'
 		    ,btn: ['确认' , '取消']
@@ -312,10 +319,16 @@ $(function(){
 	
 	//支付方式选择
 	$(".icon-weixin").click(function(){
+		if($(this).attr("disabled")){
+			elay.toast({content:"商家未开通微信在线支付"});return ;
+		}
 		$(".icon-xianjin").removeClass("active");
 		$(this).addClass("active");
 	});
 	$(".icon-xianjin").click(function(){
+		if($(this).attr("disabled")){
+			elay.toast({content:"商家只支持微信在线支付"});return ;
+		}
 		$(".icon-weixin").removeClass("active");
 		$(this).addClass("active");
 	});
@@ -379,6 +392,29 @@ $(function(){
 			});
 		}
 	});
+
+	
+	
+	if(typeof(payModule) == "object" &&  Object.prototype.toString.call(payModule).toLowerCase() == "[object object]" && !payModule.length){
+    	if($.isArray(payModule["weixin"])){
+    		if(payModule["weixin"][0] == "invisible"){//不可见
+    			$(".icon-weixin").hide();
+    		}
+    		if(payModule["weixin"][1] == "disabled"){//不可使用
+    			$(".icon-weixin").attr("disabled",true);
+    		}
+    	}
+    	if($.isArray(payModule["cash"])){
+    		if(payModule["cash"][0] == "invisible"){//不可见
+    			$(".icon-xianjin").hide();
+    		}
+    		if(payModule["cash"][1] == "disabled"){//不可使用
+    			$(".icon-xianjin").attr("disabled",true);
+    		}
+    	}
+    }
+	
+	
 });
 
 

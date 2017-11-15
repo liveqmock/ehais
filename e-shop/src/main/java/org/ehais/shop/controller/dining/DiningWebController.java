@@ -176,6 +176,9 @@ public class DiningWebController extends EhaisCommonController{
 			Integer store_id,
 			String sid) throws Exception{
 		
+		//支付模式{"weixin":["",""],"cash":["",""]}
+		modelMap.addAttribute("payModule", store.getPayModule());
+		
 		HaiAdExample adExample = new HaiAdExample();
 		HaiAdExample.Criteria c = adExample.createCriteria();
 		c.andIsMobileEqualTo(1)

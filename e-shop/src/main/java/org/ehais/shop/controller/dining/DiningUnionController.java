@@ -16,6 +16,7 @@ import org.ehais.epublic.mapper.EHaiAdminUserMapper;
 import org.ehais.epublic.mapper.EHaiStoreMapper;
 import org.ehais.epublic.mapper.EHaiUsersMapper;
 import org.ehais.epublic.mapper.HaiOrderInfoMapper;
+import org.ehais.epublic.mapper.HaiPartnerMapper;
 import org.ehais.epublic.mapper.HaiStoreStatisticsMapper;
 import org.ehais.epublic.mapper.WpPublicMapper;
 import org.ehais.epublic.model.EHaiAdminUser;
@@ -27,6 +28,7 @@ import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.epublic.model.EHaiUsersExample;
 import org.ehais.epublic.model.HaiOrderInfoExample;
 import org.ehais.epublic.model.HaiOrderInfoWithBLOBs;
+import org.ehais.epublic.model.HaiPartner;
 import org.ehais.epublic.model.HaiStoreStatistics;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.epublic.service.EStoreService;
@@ -64,6 +66,8 @@ public class DiningUnionController extends EhaisCommonController{
 	private EHaiStoreMapper eHaiStoreMapper;
 	@Autowired
 	private HaiOrderInfoMapper haiOrderInfoMapper;
+	@Autowired
+	private HaiPartnerMapper haiPartnerMapper;
 	@Autowired
 	private EStoreService eStoreService;
 	@Autowired
@@ -202,6 +206,13 @@ public class DiningUnionController extends EhaisCommonController{
 			long sUser = eHaiStoreMapper.countByExample(storeExp);
 			if(sUser > 0){rm.setMsg("此商户名称已存在，如同名请联系管理员微信:haisoftware");return this.writeJson(rm);}
 			
+			//代理编号
+			Integer partnerId = Integer.valueOf(map.get("partnerId").toString());
+			HaiPartner partner = haiPartnerMapper.selectByPrimaryKey(partnerId);
+			if(partner == null){
+				rm.setMsg("代理帐号不存在");return this.writeJson(rm);
+			}
+			
 			Integer addTime = Long.valueOf(System.currentTimeMillis() / 1000).intValue();
 			EHaiStore store = new EHaiStore();
 			store.setStoreName(store_name);
@@ -213,9 +224,10 @@ public class DiningUnionController extends EhaisCommonController{
 			store.setZipcode("");
 			store.setTel(mobile);
 			store.setAddTime(addTime);
-			store.setPartnerId(Integer.valueOf(map.get("partnerId").toString()));
+			store.setPartnerId(partnerId);
 			store.setPublicId(default_public_id);
 			store.setState(true);
+			store.setPayModule(partner.getPayModule());//继承代理的默认支付模式
 			eHaiStoreMapper.insert(store);
 			
 			user.setStoreId(store.getStoreId());
