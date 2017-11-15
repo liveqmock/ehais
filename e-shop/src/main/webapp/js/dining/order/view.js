@@ -4,6 +4,11 @@ var orderSn = "";
 
 
 $(function(){
+	
+	$("#sel_store_id").change(function(){
+		store_id = $(this).val();
+		bsTable.pageNumber = 1;
+	});
 
     $("#btnSearch").click(function(){
     	orderSn = $.trim($("#orderSn").val());
@@ -43,7 +48,8 @@ $(function(){
                 sortOrder: params.order,//排位命令（desc，asc）
                 orderStatus : 1,
                 classify : "dining",
-                orderSn : orderSn
+                orderSn : orderSn,
+                store_id : store_id
 	        }
 	    },
         sidePagination: "server", //服务端处理分页

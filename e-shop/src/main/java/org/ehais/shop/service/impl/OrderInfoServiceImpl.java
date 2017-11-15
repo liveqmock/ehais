@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
+import org.ehais.enums.EAdminClassifyEnum;
 import org.ehais.enums.EIsVoidEnum;
 import org.ehais.enums.EOrderClassifyEnum;
 import org.ehais.enums.EPayStatusEnum;
@@ -59,15 +60,20 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 	public ReturnObject<HaiOrderInfo> orderinfo_list(HttpServletRequest request) throws Exception{
 		
 		ReturnObject<HaiOrderInfo> rm = new ReturnObject<HaiOrderInfo>();
-		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		Map<String,Object> map = new HashMap<String,Object>();
 		
-		HaiShippingExample shippingExample = new HaiShippingExample();
-		shippingExample.createCriteria().andStoreIdEqualTo(store_id);
-		shippingExample.setOrderByClause("shipping_order asc");
-		List<HaiShipping> listShipping = haiShippingMapper.selectByExample(shippingExample);
-		map.put("listShipping", listShipping);
+		String classify = (String)request.getSession().getAttribute(EConstants.SESSION_ADMIN_CLASSIFY);
+		
+		if(classify.equals(EAdminClassifyEnum.shop)){
+			Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+			HaiShippingExample shippingExample = new HaiShippingExample();
+			shippingExample.createCriteria().andStoreIdEqualTo(store_id);
+			shippingExample.setOrderByClause("shipping_order asc");
+			List<HaiShipping> listShipping = haiShippingMapper.selectByExample(shippingExample);
+			map.put("listShipping", listShipping);
+		}
+		
 		
 		rm.setMap(map);
 		
@@ -387,15 +393,20 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 		// TODO Auto-generated method stub
 		ReturnObject<HaiOrderInfoWithBLOBs> rm = new ReturnObject<HaiOrderInfoWithBLOBs>();
 		rm.setCode(0);
-		if(condition.getStore_id() == null)condition.setStore_id((Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID));
-		
-		
+		if(condition.getStore_id() == null && request.getSession().getAttribute(EConstants.SESSION_STORE_ID) == null ){
+			rm.setMsg("empty store");
+			return rm;
+		}
 		
 		HaiOrderInfoExample example = new HaiOrderInfoExample();
 		HaiOrderInfoExample.Criteria c = example.createCriteria();
-		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
 		c.andOrderStatusEqualTo(orderStatus);
 		c.andClassifyEqualTo(classify);
+		if(condition.getStore_id() != null && condition.getStore_id() > 0){
+			c.andStoreIdEqualTo(condition.getStore_id());
+		}else{
+			example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+		}
 		if(StringUtils.isNotBlank(startDate)){
 			c.andPayTimeGreaterThanOrEqualTo(Long.valueOf(DateUtil.formatDate(startDate, DateUtil.FORMATSTR_3).getTime() / 1000).intValue());
 			System.out.println(Long.valueOf(DateUtil.formatDate(startDate, DateUtil.FORMATSTR_3).getTime() / 1000).intValue());

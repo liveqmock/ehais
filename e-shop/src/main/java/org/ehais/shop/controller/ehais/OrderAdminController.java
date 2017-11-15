@@ -8,16 +8,22 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.ehais.annotation.EPermissionController;
 import org.ehais.annotation.EPermissionMethod;
 import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
+import org.ehais.enums.EAdminClassifyEnum;
 import org.ehais.enums.EShippingStatusEnum;
+import org.ehais.epublic.mapper.EHaiAdminUserMapper;
 import org.ehais.epublic.mapper.HaiOrderInfoMapper;
+import org.ehais.epublic.model.EHaiAdminUserWithBLOBs;
+import org.ehais.epublic.model.EHaiStore;
 import org.ehais.epublic.model.HaiOrderInfo;
 import org.ehais.epublic.model.HaiOrderInfoExample;
 import org.ehais.epublic.model.HaiOrderInfoWithBLOBs;
+import org.ehais.epublic.service.EStoreService;
 import org.ehais.protocol.PermissionProtocol;
 import org.ehais.shop.service.OrderInfoService;
 import org.ehais.tools.EConditionObject;
@@ -47,8 +53,13 @@ public class  OrderAdminController extends CommonController {
 	private OrderInfoService orderInfoService;
 	@Autowired
 	private HaiOrderInfoMapper haiOrderInfoMapper;
+	@Autowired
+	private EStoreService eStoreService;
+	@Autowired
+	private EHaiAdminUserMapper eHaiAdminUserMapper;
 	
-	@EPermissionMethod(intro="打开订单管理页面",value="haiOrderView",type=PermissionProtocol.URL)
+	
+	@EPermissionMethod(intro="打开订单管理页面",value="ehaisOrderView",relation="ehaisOrderListJson",type=PermissionProtocol.URL)
 	@RequestMapping("/manage/ehaisOrderView")
 	public String haiOrderView(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) {	
@@ -61,6 +72,16 @@ public class  OrderAdminController extends CommonController {
 			modelMap.addAttribute("startDate", startDate);
 			modelMap.addAttribute("endDate", endDate);
 			
+			
+			String adminClassify = (String)request.getSession().getAttribute(EConstants.SESSION_ADMIN_CLASSIFY);
+			if(StringUtils.isNotBlank(adminClassify) && adminClassify.equals(EAdminClassifyEnum.partner)){
+				Long adminId = (Long) request.getSession().getAttribute(EConstants.SESSION_ADMIN_ID);
+				EHaiAdminUserWithBLOBs adminUser = eHaiAdminUserMapper.selectByPrimaryKey(adminId);
+				List<EHaiStore> listStore = eStoreService.partnerStore(adminUser.getPartnerId());
+				modelMap.addAttribute("listStore", listStore);
+			}
+			
+			
 			return "/"+this.getStoreTheme(request)+"/order/view";
 		}catch(Exception e){
 			e.printStackTrace();
@@ -72,7 +93,7 @@ public class  OrderAdminController extends CommonController {
 	
 
 	@ResponseBody
-	@EPermissionMethod(intro="返回订单管理数据",value="haiOrderListJson",type=PermissionProtocol.JSON)
+	@EPermissionMethod(intro="返回订单管理数据",value="ehaisOrderListJson",type=PermissionProtocol.JSON)
 	@RequestMapping(value="/manage/ehaisOrderListJson",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String haiOrderListJson(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,

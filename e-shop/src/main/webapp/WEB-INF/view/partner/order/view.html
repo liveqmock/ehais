@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="/js/jquery-2.1.4.min.js" ></script>
+		
+		<link rel="stylesheet" href="/js/bootstrap/css/bootstrap.min.css" />
+		<script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js" ></script>
+		<link rel="stylesheet" href="/css/admin.css" />
+		
+		<link rel="stylesheet" href="/js/bootstrap/treeview/bootstrap-treeview.min.css" />
+		<script type="text/javascript" src="/js/bootstrap/treeview/bootstrap-treeview.min.js" ></script>
+		
+		<link rel="stylesheet" href="/js/bootstrap/table/bootstrap-table.min.css" />
+		<script type="text/javascript" src="/js/bootstrap/table/bootstrap-table.min.js" ></script>
+		<script type="text/javascript" src="/js/bootstrap/table/locale/bootstrap-table-zh-CN.min.js" ></script>
+		
+		<link rel="stylesheet" href="/js/bootstrap/datetimepicker/css/daterangepicker-bs3.css" />
+		<script type="text/javascript" src="/js/bootstrap/datetimepicker/js/moment.js" ></script>
+		<script type="text/javascript" src="/js/bootstrap/datetimepicker/js/daterangepicker.js" ></script>
+	
+		<link rel="stylesheet" href="/js/layer/skin/default/layer.css" />
+		<script type="text/javascript" src="/js/layer/layer.js" ></script>
+		
+		<script type="text/javascript" src="/js/adminCommon.js" ></script>
+		<#include "/FreemarkerMacro.html"/>
+	</head>
+	<body>
+	
+		<div class="header">
+			<div class="nav">
+				<i class="icon fa fa-home">&nbsp;</i>
+				<div class="nav0">订单管理信息管理</div>
+			</div>
+		</div>
+		<div class="body">
+			<div class="container_box">
+				<div class="col_main body">
+					<div class="panel panel-default">
+						<div class="panel-heading">搜索条件</div>
+						<div class="panel-body single">					    
+							<div>
+								<select id="sel_store_id" class="btn btn-default">
+									<option value="">--请选择查帐商家--</option>
+									<#if (listStore?? && listStore?size > 0)>
+									<#list listStore as store>
+										<option value="${store.storeId!0}">${store.storeName!''}</option>
+									</#list>
+									</#if>
+								</select>
+							</div>
+							<div><label>订单号：</label><input id="orderSn" class="control"/></div>
+							<div><@bsGroupDatePicker id="statistics_date" startId="startDate" endId="endDate" startDate="${startDate}" endDate="${endDate}" /></div>
+							<div><button id="btnSearch" class="fa fa-search btn btn-default control">搜索</button></div>
+						</div>
+					</div>
+					
+					
+					<div class="main_table">
+						<table id="bsTable" data-show-columns="false"></table>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+		var store_id = null;
+		</script>
+		<script type="text/javascript" src="/js/dining/order/view.js" ></script>
+	</body>
+</html>
