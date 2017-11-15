@@ -176,6 +176,9 @@ function loadCategoryGoodsStatistics(store_id){
 			
 			$("#sel_category_id").unbind();
 			$("#sel_category_id option:not(:first)").remove();
+			$("#sel_goods_id").unbind();
+			$("#sel_goods_id option:not(:first)").remove();
+			
 			$.each(listCategory,function(k,v){
 				$("#sel_category_id").append("<option value='"+v.catId+"'>"+v.catName+"</option>")
 			});
