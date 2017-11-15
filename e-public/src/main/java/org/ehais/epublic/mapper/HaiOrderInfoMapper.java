@@ -13,11 +13,31 @@ import org.ehais.epublic.model.HaiOrderInfo;
 import org.ehais.epublic.model.HaiOrderInfoExample;
 import org.ehais.epublic.model.HaiOrderInfoWithBLOBs;
 import org.ehais.epublic.model.OrderDiningStatistics;
+import org.ehais.epublic.model.OrderGoodsStatistics;
 import org.ehais.epublic.model.OrderStatus;
 
 public interface HaiOrderInfoMapper {
 	
 	
+	@Select("select order_id "+
+			" from hai_order_info where store_id = #{store_id} and order_status = 1 " + 
+			" and pay_time >= #{start_time} and pay_time < #{end_time} ")
+	List<Long> order_id_paytime_record(
+			@Param("store_id") Integer store_id,
+			@Param("start_time") Integer start_time,
+			@Param("end_time") Integer end_time
+			);
+	
+	
+	@Select("select goods_id,SUM(goods_number) as quantity " + 
+	" from hai_order_goods where order_id in (${order_ids})" + 
+	" GROUP BY goods_id ")
+	@Results(value = {
+			@Result(property="goodsId", column="goods_id"),
+			@Result(property="quantity", column="quantity")
+	})
+	List<OrderGoodsStatistics> order_goods_statistics(@Param("order_ids") String order_ids);
+	 
 	/**
 	 * 获取某订单信息
 	 * @param store_id

@@ -11,6 +11,12 @@ import org.ehais.shop.model.HaiGoodsWithBLOBs;
 public interface HaiGoodsMapper {
 	
 	
+	//适用于小商品数的查询
+	@Select("select goods_id,goods_name from hai_goods where store_id = #{store_id} ")
+	@ResultMap(value = "BaseResultMap")
+	List<HaiGoods> select_goods_name(@Param("store_id") Integer store_id);
+	
+	
 	@ResultMap(value = "BaseResultMap")
 	List<HaiGoods> hai_goods_list_by_favorites(@Param("user_id") Long user_id, @Param("limitStart") Integer limitStart, @Param("limitEnd") Integer limitEnd);
 	

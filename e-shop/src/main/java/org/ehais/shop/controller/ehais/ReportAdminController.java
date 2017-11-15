@@ -2,6 +2,7 @@ package org.ehais.shop.controller.ehais;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,9 +15,11 @@ import org.ehais.epublic.mapper.EHaiAdminUserMapper;
 import org.ehais.epublic.mapper.HaiOrderInfoMapper;
 import org.ehais.epublic.model.EHaiAdminUserWithBLOBs;
 import org.ehais.epublic.model.EHaiStore;
-import org.ehais.epublic.model.HaiOrderInfo;
 import org.ehais.epublic.model.OrderDiningStatistics;
+import org.ehais.epublic.model.OrderGoodsStatistics;
 import org.ehais.epublic.service.EStoreService;
+import org.ehais.shop.mapper.HaiGoodsMapper;
+import org.ehais.shop.model.HaiGoods;
 import org.ehais.shop.service.OrderInfoService;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.DateUtil;
@@ -44,6 +47,8 @@ public class ReportAdminController extends CommonController {
 	private EStoreService eStoreService;
 	@Autowired
 	private EHaiAdminUserMapper eHaiAdminUserMapper;
+	@Autowired
+	private HaiGoodsMapper haiGoodsMapper;
 	
 	@RequestMapping("/manage/diningReport")
 	public String haiOrderView(ModelMap modelMap,
@@ -99,5 +104,91 @@ public class ReportAdminController extends CommonController {
 		
 		return this.writeJson(rm);
 	}
+	
+	/**
+	 * 统计菜品销售走势，适用于所有菜品的统计
+	 * @param modelMap
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping("/manage/allOrderGoodsReport")
+	public String orderGoodsReport(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response ) {	
+		try{			
+//			ReturnObject<HaiOrderInfo> rm = orderInfoService.orderinfo_list(request);
+//			modelMap.addAttribute("rm", rm);
+			
+			//下面是代理查帐使用的情况
+			String adminClassify = (String)request.getSession().getAttribute(EConstants.SESSION_ADMIN_CLASSIFY);
+			if(StringUtils.isNotBlank(adminClassify) && adminClassify.equals(EAdminClassifyEnum.partner)){
+				Long adminId = (Long) request.getSession().getAttribute(EConstants.SESSION_ADMIN_ID);
+				EHaiAdminUserWithBLOBs adminUser = eHaiAdminUserMapper.selectByPrimaryKey(adminId);
+				List<EHaiStore> listStore = eStoreService.partnerStore(adminUser.getPartnerId());
+				modelMap.addAttribute("listStore", listStore);
+			}
+			
+			
+			return "/"+this.getStoreTheme(request)+"/report/all_order_goods_view";
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("report", e);
+			return this.errorJump(modelMap, e.getMessage());
+		}
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value="/manage/AllOrderGoodsStatistics",method=RequestMethod.POST)
+	public String AllOrderGoodsStatistics(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "state_date", required = true) String state_date,
+			@RequestParam(value = "end_date", required = true) String end_date,
+			@RequestParam(value = "store_id", required = false) Integer store_id
+			) {	
+		ReturnObject<HaiGoods> rm = new ReturnObject<HaiGoods>();
+		rm.setCode(0);
+		try{
+			if(store_id == null || store_id == 0)store_id = (Integer) request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+			Date startDate = DateUtil.formatDate(state_date, DateUtil.FORMATSTR_3);
+			Date endDate = DateUtil.formatDate(end_date, DateUtil.FORMATSTR_3);
+			endDate = DateUtil.addDate(endDate, 1);
+			Integer start_time = Long.valueOf(startDate.getTime() / 1000).intValue();
+			Integer end_time = Long.valueOf(endDate.getTime() / 1000).intValue();
+			
+			List<HaiGoods> all_goods = haiGoodsMapper.select_goods_name(store_id);
+			
+			List<Long> order_id_list = haiOrderInfoMapper.order_id_paytime_record(store_id, start_time, end_time);
+			if(order_id_list == null || order_id_list.size() == 0){
+				rm.setRows(all_goods);
+				rm.setCode(1);
+				return this.writeJson(rm);
+			}
+			
+			String orderIdJoin = StringUtils.join(order_id_list.toArray(), ",");
+			
+			List<OrderGoodsStatistics> goodsStatistics = haiOrderInfoMapper.order_goods_statistics(orderIdJoin);
+			
+			
+			for (HaiGoods g : all_goods) {
+				for (OrderGoodsStatistics go : goodsStatistics) {
+					if(g.getGoodsId().longValue() == go.getGoodsId().longValue()){
+						g.setSaleCount(go.getQuantity());
+						continue;
+					}
+				}
+			}
+			
+			rm.setRows(all_goods);
+			rm.setCode(1);
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("report", e);
+			return this.errorJump(modelMap, e.getMessage());
+		}
+		
+		return this.writeJson(rm);
+	}
+	
 	
 }
