@@ -13,12 +13,14 @@ import org.ehais.epublic.model.HaiOrderInfo;
 import org.ehais.epublic.model.HaiOrderInfoExample;
 import org.ehais.epublic.model.HaiOrderInfoWithBLOBs;
 import org.ehais.epublic.model.OrderDiningStatistics;
+import org.ehais.epublic.model.OrderGoodsDaySaleStatistics;
 import org.ehais.epublic.model.OrderGoodsStatistics;
 import org.ehais.epublic.model.OrderStatus;
 
 public interface HaiOrderInfoMapper {
 	
 	
+	//查找某时间段所有订单
 	@Select("select order_id "+
 			" from hai_order_info where store_id = #{store_id} and order_status = 1 " + 
 			" and pay_time >= #{start_time} and pay_time < #{end_time} ")
@@ -29,6 +31,7 @@ public interface HaiOrderInfoMapper {
 			);
 	
 	
+	//统计某时间段所有商品的售销量
 	@Select("select goods_id,SUM(goods_number) as quantity " + 
 	" from hai_order_goods where order_id in (${order_ids})" + 
 	" GROUP BY goods_id ")
@@ -37,7 +40,26 @@ public interface HaiOrderInfoMapper {
 			@Result(property="quantity", column="quantity")
 	})
 	List<OrderGoodsStatistics> order_goods_statistics(@Param("order_ids") String order_ids);
-	 
+	
+	
+	//统计某商品在某时间段的销售量
+	@Select("select SUM(g.goods_number) as quantity,DATE_FORMAT(FROM_UNIXTIME(o.pay_time),'%Y-%m-%d') as sale_date " + 
+			" from hai_order_info o left join hai_order_goods g on o.order_id = g.order_id " + 
+			" where o.order_status = 1 and g.goods_id = #{goods_id} and o.store_id = #{store_id} " +
+			" and o.pay_time >= #{start_time} and o.pay_time < #{end_time} "+
+			" group by DATE_FORMAT(FROM_UNIXTIME(o.pay_time),'%Y-%m-%d')")
+	@Results(value = {
+			@Result(property="saleDate", column="sale_date"),
+			@Result(property="quantity", column="quantity")
+	})
+	List<OrderGoodsDaySaleStatistics> order_goods_day_sale_statistics(
+			@Param("store_id") Integer store_id,
+			@Param("start_time") Integer start_time,
+			@Param("end_time") Integer end_time,
+			@Param("goods_id") Long goods_id);
+	
+	
+	
 	/**
 	 * 获取某订单信息
 	 * @param store_id

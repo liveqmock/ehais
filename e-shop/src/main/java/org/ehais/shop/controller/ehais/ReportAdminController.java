@@ -1,6 +1,8 @@
 package org.ehais.shop.controller.ehais;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,10 +18,15 @@ import org.ehais.epublic.mapper.HaiOrderInfoMapper;
 import org.ehais.epublic.model.EHaiAdminUserWithBLOBs;
 import org.ehais.epublic.model.EHaiStore;
 import org.ehais.epublic.model.OrderDiningStatistics;
+import org.ehais.epublic.model.OrderGoodsDaySaleStatistics;
 import org.ehais.epublic.model.OrderGoodsStatistics;
 import org.ehais.epublic.service.EStoreService;
+import org.ehais.shop.mapper.HaiCategoryMapper;
 import org.ehais.shop.mapper.HaiGoodsMapper;
+import org.ehais.shop.model.HaiCategory;
+import org.ehais.shop.model.HaiCategoryExample;
 import org.ehais.shop.model.HaiGoods;
+import org.ehais.shop.model.HaiGoodsExample;
 import org.ehais.shop.service.OrderInfoService;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.DateUtil;
@@ -49,6 +56,8 @@ public class ReportAdminController extends CommonController {
 	private EHaiAdminUserMapper eHaiAdminUserMapper;
 	@Autowired
 	private HaiGoodsMapper haiGoodsMapper;
+	@Autowired
+	private HaiCategoryMapper haiCategoryMapper;
 	
 	@RequestMapping("/manage/diningReport")
 	public String haiOrderView(ModelMap modelMap,
@@ -180,6 +189,142 @@ public class ReportAdminController extends CommonController {
 			}
 			
 			rm.setRows(all_goods);
+			rm.setCode(1);
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("report", e);
+			return this.errorJump(modelMap, e.getMessage());
+		}
+		
+		return this.writeJson(rm);
+	}
+	
+	
+	/**
+	 * 某商品的销售量统计页面
+	 * @param modelMap
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping("/manage/oneOrderGoodsReport")
+	public String oneOrderGoodsReport(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response ) {	
+		try{			
+//			ReturnObject<HaiOrderInfo> rm = orderInfoService.orderinfo_list(request);
+//			modelMap.addAttribute("rm", rm);
+			
+			//下面是代理查帐使用的情况
+			String adminClassify = (String)request.getSession().getAttribute(EConstants.SESSION_ADMIN_CLASSIFY);
+			if(StringUtils.isNotBlank(adminClassify) && adminClassify.equals(EAdminClassifyEnum.partner)){
+				Long adminId = (Long) request.getSession().getAttribute(EConstants.SESSION_ADMIN_ID);
+				EHaiAdminUserWithBLOBs adminUser = eHaiAdminUserMapper.selectByPrimaryKey(adminId);
+				List<EHaiStore> listStore = eStoreService.partnerStore(adminUser.getPartnerId());
+				modelMap.addAttribute("listStore", listStore);
+			}
+			
+			
+			
+			return "/"+this.getStoreTheme(request)+"/report/one_order_goods_view";
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("report", e);
+			return this.errorJump(modelMap, e.getMessage());
+		}
+	}
+	
+	/**
+	 * 获取某商户的所有分类与商品信息
+	 * @param modelMap
+	 * @param request
+	 * @param response
+	 * @param store_id
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/manage/loadCategoryGoodsStatistics",method=RequestMethod.POST)
+	public String loadCategoryGoodsStatistics(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "store_id", required = false) Integer store_id
+			) {	
+		ReturnObject<Object> rm = new ReturnObject<Object>();
+		rm.setCode(0);
+		
+		if(store_id == null || store_id == 0)store_id = (Integer) request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		try{
+			HaiGoodsExample gexp = new HaiGoodsExample();
+			gexp.createCriteria().andStoreIdEqualTo(store_id);
+			List<HaiGoods> listGoods = haiGoodsMapper.selectByExample(gexp);
+			HaiCategoryExample cexp = new HaiCategoryExample();
+			cexp.createCriteria().andStoreIdEqualTo(store_id);
+			cexp.setOrderByClause("sort_order asc");
+			List<HaiCategory> listCategory = haiCategoryMapper.selectByExample(cexp);
+			
+			Map<String, Object> map = new HashMap<String,Object>();
+			map.put("listGoods", listGoods);
+			map.put("listCategory", listCategory);
+			
+			rm.setMap(map);
+			rm.setCode(1);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return this.writeJson(rm);
+	}
+	
+	/**
+	 * 查看某商户某商品某时间段的销售量
+	 * @param modelMap
+	 * @param request
+	 * @param response
+	 * @param state_date
+	 * @param end_date
+	 * @param store_id
+	 * @param goods_id
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/manage/OneOrderGoodsStatistics",method=RequestMethod.POST)
+	public String OneOrderGoodsStatistics(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "state_date", required = true) String state_date,
+			@RequestParam(value = "end_date", required = true) String end_date,
+			@RequestParam(value = "store_id", required = false) Integer store_id,
+			@RequestParam(value = "goods_id", required = false) Long goods_id
+			) {	
+		ReturnObject<OrderGoodsDaySaleStatistics> rm = new ReturnObject<OrderGoodsDaySaleStatistics>();
+		rm.setCode(0);
+		try{
+			if(store_id == null || store_id == 0)store_id = (Integer) request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+			Date startDate = DateUtil.formatDate(state_date, DateUtil.FORMATSTR_3);
+			Date endDate = DateUtil.formatDate(end_date, DateUtil.FORMATSTR_3);
+			endDate = DateUtil.addDate(endDate, 1);
+			Integer start_time = Long.valueOf(startDate.getTime() / 1000).intValue();
+			Integer end_time = Long.valueOf(endDate.getTime() / 1000).intValue();
+			
+			List<OrderGoodsDaySaleStatistics> order_goods_day_sale_list = haiOrderInfoMapper.order_goods_day_sale_statistics(store_id, start_time, end_time, goods_id);
+			int d = DateUtil.diffDate(startDate, endDate);
+			List<OrderGoodsDaySaleStatistics> day_sale = new ArrayList<OrderGoodsDaySaleStatistics>();
+			boolean f = true;
+			for(int i = 0 ; i < d ; i++){
+				f = true;
+				Date cDate = DateUtil.addDate(startDate, i);
+				for (OrderGoodsDaySaleStatistics og : order_goods_day_sale_list) {
+					if(DateUtil.compare_date(cDate, og.getSaleDate()) == 0){
+						day_sale.add(og);
+						f = false;
+						break;
+					}
+				}
+				if(f){
+					OrderGoodsDaySaleStatistics ogs = new OrderGoodsDaySaleStatistics();
+					ogs.setQuantity(0);
+					ogs.setSaleDate(cDate);
+					day_sale.add(ogs);
+				}
+			}
+			rm.setRows(day_sale);
 			rm.setCode(1);
 		}catch(Exception e){
 			e.printStackTrace();
