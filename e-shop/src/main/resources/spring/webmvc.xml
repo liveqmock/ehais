@@ -102,6 +102,13 @@
 			<ref bean="loginAdminInterceptor"/>
 		</mvc:interceptor>
 		
+		
+		<mvc:interceptor>
+			<mvc:mapping path="/ceo/**"/>
+			<ref bean="ceoInterceptor"/>
+		</mvc:interceptor>
+		
+		
 		<mvc:interceptor>
 			<mvc:mapping path="/api/**"/>
 			<ref bean="apiInterceptor"/>
@@ -197,7 +204,17 @@
 		</property>
 	</bean>
 	
-
+	<bean id="ceoInterceptor" class="org.ehais.interceptor.CEOInterceptor">
+		<property name="loginUrl" value="/ceologin"/>
+		<property name="notpermissionUrl" value="/notpermission"/>
+		<property name="ignoreUrls">
+			<list>
+				<value>/ceologin</value>
+				<value>/ceo_login_submit</value>
+			</list>
+		</property>
+	</bean>
+	
 
 
 <bean id="stringHttpMessageConverter"

@@ -79,6 +79,13 @@ public class EhaisAdminController extends CommonController{
 			session.removeAttribute(EConstants.SESSION_ADMIN_NAME);
 			session.removeAttribute(EConstants.SESSION_STORE_ID);
 			session.removeAttribute(EConstants.SESSION_STORE_NAME);
+			session.removeAttribute(EConstants.SESSION_ADMIN_CLASSIFY);
+			session.removeAttribute(EConstants.SESSION_ADMIN_PROJECT_FOLDER);
+			session.removeAttribute(EConstants.SESSION_ROLE_ID_ARRAY);
+			session.removeAttribute(EConstants.SESSION_PARTNER_ID);
+			session.removeAttribute(EConstants.SESSION_PARTNER_NAME);
+			session.removeAttribute(EConstants.SESSION_PARTNER_THEME);
+			session.removeAttribute(EConstants.SESSION_STORE_THEME);
 			
 		}catch(Exception e){
 			e.printStackTrace();

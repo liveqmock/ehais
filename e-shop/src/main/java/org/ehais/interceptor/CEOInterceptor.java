@@ -9,11 +9,12 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.ehais.cache.ERolePermissionCacheManager;
 import org.ehais.common.EConstants;
+import org.ehais.enums.EAdminClassifyEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-public class AdminInterceptor extends HandlerInterceptorAdapter{
+public class CEOInterceptor extends HandlerInterceptorAdapter{
 
 	private String loginUrl;
 	private String notpermissionUrl;
@@ -25,10 +26,11 @@ public class AdminInterceptor extends HandlerInterceptorAdapter{
 		String url = request.getRequestURI().toString();
 //		System.out.println(url);
 		
-		String account = (String) request.getSession().getAttribute(EConstants.SESSION_ADMIN_NAME);
+		Long ceo_id = (Long) request.getSession().getAttribute(EConstants.SESSION_CEO_ID);
+		String classify = (String) request.getSession().getAttribute(EConstants.SESSION_ADMIN_CLASSIFY);
 		
 		//如果session中用户名为空，则跳转到登录页面
-		if (StringUtils.isBlank(account)) {
+		if (ceo_id == null || ceo_id == 0 || StringUtils.isBlank(classify) || !classify.equals(EAdminClassifyEnum.ceo)) {
 			//如果是ajax请求
 			if (request.getHeader("X-Requested-With") != null) {
 //				response.getWriter().write(JsonResult.buildException("未登录，或已退出").toString());

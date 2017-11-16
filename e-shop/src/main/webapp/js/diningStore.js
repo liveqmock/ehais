@@ -399,9 +399,11 @@ $(function(){
     	if($.isArray(payModule["weixin"])){
     		if(payModule["weixin"][0] == "invisible"){//不可见
     			$(".icon-weixin").hide();
+    			$(".icon-xianjin").addClass("active");
     		}
     		if(payModule["weixin"][1] == "disabled"){//不可使用
-    			$(".icon-weixin").attr("disabled",true);
+    			$(".icon-weixin").attr("disabled",true).removeClass("active");
+    			$(".icon-xianjin").addClass("active");
     		}
     	}
     	if($.isArray(payModule["cash"])){

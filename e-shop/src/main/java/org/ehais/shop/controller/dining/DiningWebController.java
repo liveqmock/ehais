@@ -33,6 +33,7 @@ import org.ehais.epublic.service.WeiXinPayService;
 import org.ehais.shop.controller.ehais.EhaisCommonController;
 import org.ehais.shop.mapper.HaiAdMapper;
 import org.ehais.shop.mapper.HaiCategoryMapper;
+import org.ehais.shop.mapper.HaiCouponsMapper;
 import org.ehais.shop.mapper.HaiGoodsGalleryMapper;
 import org.ehais.shop.mapper.HaiGoodsMapper;
 import org.ehais.shop.mapper.HaiOrderGoodsMapper;
@@ -40,6 +41,8 @@ import org.ehais.shop.model.HaiAd;
 import org.ehais.shop.model.HaiAdExample;
 import org.ehais.shop.model.HaiCategory;
 import org.ehais.shop.model.HaiCategoryExample;
+import org.ehais.shop.model.HaiCoupons;
+import org.ehais.shop.model.HaiCouponsExample;
 import org.ehais.shop.model.HaiGoods;
 import org.ehais.shop.model.HaiGoodsExample;
 import org.ehais.shop.model.HaiGoodsGallery;
@@ -66,6 +69,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 @Controller
@@ -89,6 +93,8 @@ public class DiningWebController extends EhaisCommonController{
 	@Autowired
 	private EHaiUsersMapper eHaiUsersMapper;
 	@Autowired
+	private HaiCouponsMapper haiCouponsMapper;
+	@Autowired
 	private EStoreService eStoreService;
 	@Autowired
 	private OrderInfoService orderInfoService;
@@ -97,7 +103,7 @@ public class DiningWebController extends EhaisCommonController{
 	
 	
 	//http://127.0.0.1/diningStore!934a1580-0c1e0501-156ed21242-2b36621253-314dd0C104-49175b56
-	//http://6aff5b26.ngrok.io/diningStore!934a1580-0c1e0501-156ed21242-2b36621253-314dd0C104-49175b56
+	//http://631a7eb3.ngrok.io/diningStore!934a1580-0c1e0501-156ed21242-2b36621253-314dd0C104-49175b56
 	@RequestMapping("/diningStore!{sid}")
 	public String diningStore(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -200,6 +206,7 @@ public class DiningWebController extends EhaisCommonController{
 		cExp.setOrderByClause("sort_order asc");
 		List<HaiCategory> listCategory = haiCategoryMapper.selectByExample(cExp);
 		modelMap.addAttribute("listCategory", listCategory);
+//		modelMap.addAttribute("listCategory", JSONArray.fromObject(listCategory).toString());
 		
 		
 		//读取菜品列表信息
@@ -215,6 +222,7 @@ public class DiningWebController extends EhaisCommonController{
 			haiGoods.setGoodsUrl(goodsUrl);
 		}
 		modelMap.addAttribute("listGoods", listGoods);
+//		modelMap.addAttribute("listGoods", JSONArray.fromObject(listGoods).toString());
 		
 		modelMap.addAttribute("defaultimg", defaultimg);
 
@@ -222,6 +230,11 @@ public class DiningWebController extends EhaisCommonController{
 		
 		this.shareWeiXin(modelMap, request, response, wp, store_id, store.getStoreName()+"--"+wp.getPublicName(), link, store.getDescription(), store.getStoreLogo());
 
+		//获取此商家优惠券
+//		HaiCouponsExample coupExp = new HaiCouponsExample();
+//		coupExp.createCriteria().andStoreIdEqualTo(store_id);
+//		haiCouponsMapper
+		
 	}
 	
 	
@@ -760,6 +773,23 @@ public class DiningWebController extends EhaisCommonController{
 		return this.writeJson(rm) ;
 	}
 	
+	/**
+	 * 获取优惠券
+	 * @param modelMap
+	 * @param request
+	 * @param response
+	 * @param sid
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/coupons!{sid}")
+	public String coupons(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@PathVariable(value = "sid") String sid){
+		ReturnObject<HaiCoupons> rm = new ReturnObject<HaiCoupons>();
+		
+		return this.writeJson(rm) ;
+	}
 	
 	public static void main(String[] args) {
 		try {

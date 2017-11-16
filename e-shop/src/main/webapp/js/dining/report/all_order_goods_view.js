@@ -90,6 +90,7 @@ $(function(){
 
 
 var option = {
+		color: ['#3398DB'],
 	    title: {
 	        text: '菜品销量',
 	        textStyle : {
@@ -98,7 +99,10 @@ var option = {
 	        }
 	    },
 	    tooltip: {
-	        trigger: 'axis'
+	        trigger: 'axis',
+	        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+	            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+	        }
 	    },
 	    legend: {
 	        data:['销量']
@@ -123,7 +127,10 @@ var option = {
                     color:'#aaa',
                     width:1,//这里是为了突出显示加上的
                 }
-            } 
+            },
+            axisTick: {
+                alignWithLabel: true
+            }
 	    },
 	    yAxis: {
 	        type: 'value',
@@ -137,7 +144,7 @@ var option = {
 	    series: [
 	        {
 	            name:'销量',
-	            type:'line',
+	            type:'bar',
 	            stack: '总量',
 	            data:[],
 	            lineStyle : {

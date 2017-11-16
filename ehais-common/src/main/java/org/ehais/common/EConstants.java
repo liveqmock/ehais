@@ -2,6 +2,9 @@ package org.ehais.common;
 
 public class EConstants {
 
+	//首席执行官
+	public static final String SESSION_CEO_ID = "session_ceo_id";
+	public static final String SESSION_CEO_NAME = "session_ceo_id";
 	//商户号
 	public static final String SESSION_STORE_ID = "session_store_id";
 	public static final String SESSION_STORE_NAME = "session_store_name";

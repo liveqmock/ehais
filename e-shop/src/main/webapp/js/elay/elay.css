@@ -23,6 +23,7 @@
   width: 120px;
   height: 80px;
   background: #000000;
+  z-index: 1001;
   filter: alpha(opacity=40);
   -moz-opacity: 0.4;
   opacity: 0.4;
@@ -43,6 +44,7 @@
 .e-lay-view .loading .fa-spinner {
   display: block;
   color: #ffffff;
+  z-index: 1001;
   -webkit-animation: circle 1s infinite linear;
   /*匀速 循环*/
 }
@@ -52,6 +54,7 @@
   left: 50%;
   margin-top: -10%;
   margin-left: -140px;
+  z-index: 1001;
   width: 280px;
   border-radius: 5px;
   background: #fff;
@@ -79,6 +82,7 @@
 .e-lay-view .toast {
   position: fixed;
   bottom: 40%;
+  z-index: 1001;
   max-width: 200px;
   min-height: 10px;
   background: #000;
@@ -93,6 +97,7 @@
   width: 280px;
   min-height: 120px;
   background: #fff;
+  z-index: 1001;
   filter: alpha(opacity=99);
   -moz-opacity: 0.99;
   opacity: 0.99;

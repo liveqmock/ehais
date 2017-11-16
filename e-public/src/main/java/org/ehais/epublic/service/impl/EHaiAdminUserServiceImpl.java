@@ -341,7 +341,7 @@ public class EHaiAdminUserServiceImpl  extends CommonServiceImpl implements EHai
 		
 		
 		
-		if(adminuser.getClassify() != null && adminuser.getClassify().equals(EAdminClassifyEnum.partner)){
+		if(StringUtils.isNotBlank(adminuser.getClassify()) && adminuser.getClassify().equals(EAdminClassifyEnum.partner)){
 			//合作伙伴
 			HaiPartner partner = haiPartnerMapper.selectByPrimaryKey(adminuser.getPartnerId());
 			if(partner == null){
@@ -354,7 +354,9 @@ public class EHaiAdminUserServiceImpl  extends CommonServiceImpl implements EHai
 			//强行做法
 			session.setAttribute(EConstants.SESSION_STORE_THEME, partner.getTheme());
 			
-		}else{
+		}else if(StringUtils.isNotBlank(adminuser.getClassify()) && adminuser.getClassify().equals(EAdminClassifyEnum.ceo)){
+			session.setAttribute(EConstants.SESSION_CEO_ID, adminuser.getAdminId());
+		}else{//普通商户
 			if(adminuser.getStoreId() == null || adminuser.getStoreId() == 0){
 				rm.setMsg("非本后台的用户");
 				return rm;
