@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="/js/jquery-2.1.4.min.js" ></script>
+		
+		<link rel="stylesheet" href="/js/bootstrap/css/bootstrap.min.css" />
+		<script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js" ></script>
+		<link rel="stylesheet" href="/css/admin.css" />
+		
+		<link rel="stylesheet" href="/js/bootstrap/treeview/bootstrap-treeview.min.css" />
+		<script type="text/javascript" src="/js/bootstrap/treeview/bootstrap-treeview.min.js" ></script>
+		
+		<link rel="stylesheet" href="/js/bootstrap/table/bootstrap-table.min.css" />
+		<script type="text/javascript" src="/js/bootstrap/table/bootstrap-table.min.js" ></script>
+		<script type="text/javascript" src="/js/bootstrap/table/locale/bootstrap-table-zh-CN.min.js" ></script>
+		
+		<link rel="stylesheet" href="/js/layer/skin/default/layer.css" />
+		<script type="text/javascript" src="/js/layer/layer.js" ></script>
+		
+		<script type="text/javascript" src="/js/adminCommon.js" ></script>
+		
+	</head>
+	<body>
+		<div class="header">
+			<div class="nav">
+				<i class="icon fa fa-home">&nbsp;</i>
+				<div class="nav0">商户管理信息管理</div>
+				<a href="haiStoreAddDetail" class="fa fa-plus btn btn-primary" >添加</a>
+			</div>
+		</div>
+		<div class="body">
+			<div class="container_box">
+				
+				<div class="col_main body">
+								
+					<div class="panel panel-default">
+						<div class="panel-heading">搜索条件</div>
+						<div class="panel-body single">					    
+							<div>
+								<select id="sel_partner_id" class="btn btn-default">
+									<option value="">--请选择合伙人--</option>
+									<#if (partnerList?? && partnerList?size > 0)>
+									<#list partnerList as partner>
+										<option value="${partner.partnerId!0}">${partner.partnerName!''}</option>
+									</#list>
+									</#if>
+								</select>
+							</div>
+							<div><label>商家名称：</label><input id="storeName" class="control"/></div>
+							<div><button id="btnSearch" class="fa fa-search btn btn-default control">搜索</button></div>
+						</div>
+					</div>
+					
+					
+					<div class="main_table">
+						<table id="bsTable" data-show-columns="false"></table>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" src="/js/ceo/store/view.js" ></script>
+	</body>
+</html>

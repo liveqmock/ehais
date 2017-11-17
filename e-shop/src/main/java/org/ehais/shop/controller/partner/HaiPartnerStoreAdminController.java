@@ -66,10 +66,10 @@ public class  HaiPartnerStoreAdminController extends EhaisCommonController {
 	public String haiStoreListJson(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@ModelAttribute EConditionObject condition,
-			@RequestParam(value = "keySubId", required = false) Integer keySubId,
+//			@RequestParam(value = "keySubId", required = false) Integer keySubId,
 			@RequestParam(value = "storeName", required = false) String storeName) {
 		try{
-			ReturnObject<EHaiStore> rm = haiStoreService.store_list_json(request, condition,keySubId,storeName);
+			ReturnObject<EHaiStore> rm = haiStoreService.store_list_json(request, condition,null,storeName);
 			return this.writeJson(rm);
 		}catch(Exception e){
 			e.printStackTrace();

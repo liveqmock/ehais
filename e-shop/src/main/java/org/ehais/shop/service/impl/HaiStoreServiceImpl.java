@@ -51,15 +51,16 @@ public class HaiStoreServiceImpl  extends CommonServiceImpl implements HaiStoreS
 		return rm;
 	}
 
-	public ReturnObject<EHaiStore> store_list_json(HttpServletRequest request,EConditionObject condition,Integer keySubId,String storeName) throws Exception {
+	public ReturnObject<EHaiStore> store_list_json(HttpServletRequest request,EConditionObject condition,Integer partnerId,String storeName) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiStore> rm = new ReturnObject<EHaiStore>();
 		rm.setCode(0);
 		
 		EHaiStoreExample example = new EHaiStoreExample();
 		EHaiStoreExample.Criteria c = example.createCriteria();
-		Integer partner_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_PARTNER_ID);
-		c.andPartnerIdEqualTo(partner_id);
+		if(partnerId == null)
+		partnerId = (Integer)request.getSession().getAttribute(EConstants.SESSION_PARTNER_ID);
+		c.andPartnerIdEqualTo(partnerId);
 		example.setLimitStart(condition.getStart());
 		example.setLimitEnd(condition.getRows());
 		example.setOrderByClause("store_id desc");
@@ -349,6 +350,27 @@ public class HaiStoreServiceImpl  extends CommonServiceImpl implements HaiStoreS
 		rm.setMsg("删除成功");
 		return rm;
 	}
+	
+	
+	public ReturnObject<EHaiStore> store_cache(HttpServletRequest request,Integer storeId)
+			throws Exception {
+		// TODO Auto-generated method stub
+		ReturnObject<EHaiStore> rm = new ReturnObject<EHaiStore>();
+		rm.setCode(0);
+		
+		EHaiStore store = haiStoreMapper.selectByPrimaryKey(storeId);
+		if(store == null){
+			rm.setMsg("记录不存在");
+			return rm;
+		}
+		
+		eStoreService.setEStore(storeId, store);
+		
+		rm.setCode(1);
+		rm.setMsg("更新成功");
+		return rm;
+	}
+	
 	
 }
 
