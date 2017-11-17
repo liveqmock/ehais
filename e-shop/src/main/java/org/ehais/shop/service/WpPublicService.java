@@ -25,6 +25,8 @@ public interface WpPublicService extends CommonService{
 	public ReturnObject<WpPublicWithBLOBs> public_detail_submit(HttpServletRequest request,WpPublicWithBLOBs model) throws Exception;
 	
 	
+	public ReturnObject<WpPublicWithBLOBs> public_cache(HttpServletRequest request,Integer id) throws Exception;
+	
 
 }
 

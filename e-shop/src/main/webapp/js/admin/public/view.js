@@ -4,7 +4,7 @@ var publicName = "";
 
 
 $(function(){
-	getTree();
+//	getTree();
 	
 	
 	$("#addCate").click(function(){addCate();});
@@ -123,32 +123,30 @@ $(function(){
 },{
     field: 'mchSecret',
     title: 'mchSecret'
-},{
-    field: 'storeId',
-    title: 'storeId'
 },
 
         {
             field: 'id',
             title: '操作',
             formatter : function(value,row,index){
-            	var a = "<a href ='wpPublicEditDetail?id="+value+"'>编辑</a>";
+            	var a = "&nbsp;|&nbsp;<a href ='wpPublicEditDetail?id="+value+"'>编辑</a>";
             	var b = "&nbsp;|&nbsp;<a href ='javascript:;' onclick='wpPublicDelete("+value+");' >删除</a>";
-            	return a+b;
+            	var c = "<a href ='javascript:;' onclick='wpPublicCache("+value+");' >缓存</a>";
+            	return c+a+b;
             }
         }
         
         ],responseHandler : function (res){
         	
-        	var cat = res.map.tempSublateList ;
-        	var catObj = {};
-        	for(var i = 0 ; i < cat.length ; i ++){
-        		catObj[cat[i].keySubId] = cat[i].mustSubName;
-        	}
-        	var rows = res.rows;
-        	for(var i = 0 ; i < rows.length ; i++){
-        		rows[i].mustSubName = catObj[rows[i].keySubId];
-        	}
+//        	var cat = res.map.tempSublateList ;
+//        	var catObj = {};
+//        	for(var i = 0 ; i < cat.length ; i ++){
+//        		catObj[cat[i].keySubId] = cat[i].mustSubName;
+//        	}
+//        	var rows = res.rows;
+//        	for(var i = 0 ; i < rows.length ; i++){
+//        		rows[i].mustSubName = catObj[rows[i].keySubId];
+//        	}
         	
         	return res;
         }
@@ -178,113 +176,11 @@ function wpPublicDelete(id){
 }
 
 
-function getTree() {
+function wpPublicCache(publicId){
 	$.ajax({
-		url : "wpTempSublateListJson",type:"post",dataType:"json",data:{},
-		success : function(result){
-			var rows = result.rows;
-			var nodes = new Array();
-			for(var i = 0 ; i < rows.length ; i++){
-				nodes.push({text : rows[i].mustSubName , id : rows[i].keySubId });
-			}
-			
-		    $('#tree').treeview({
-		        data: [{
-			        text: "微信菜单管理分类",
-			        nodes: nodes
-			    }],
-		        levels: 5,
-		        multiSelect: false,
-		        onNodeSelected: function (event, data) {
-		        	if(data.nodeId == 0){
-		        		keySubId = 0;
-		        	}else{
-		        		keySubId = data.id;
-		        	}
-		        	$("#publicName").val("");publicName = "";
-		        	bsTable.bootstrapTable('refresh', { query : {keySubId : keySubId , page : 1} });
-		        }
-		    });
+		url : "wpPublicCache",type:"post",dataType:"json",data:{publicId:publicId},
+		success:function(result){
+			layer.msg(result.msg);
 		}
 	});
-	
-
-}
-
-
-function addCate(){
-	layer.prompt({title: '请输入微信菜单管理分类名称', formType: 0}, function(text, index){
-	    
-		if(text == null || text == ""){
-			layer.msg("请输入微信菜单管理分类名称");return ;
-		}
-		$.ajax({
-			url : "wpTempSublateAddSubmit",
-			data  : {mustSubName : text},
-			success : function(result){
-				if(result.code != 1){
-					layer.msg(result.msg);
-					return ;
-				}
-				layer.close(index);
-				layer.msg(result.msg);
-				getTree();
-			}
-		});
-	});
-}
-function editCate(){
-	var node = $('#tree').treeview('getSelected');	
-	if(node == null || node.length == 0 || node[0].nodeId == 0){
-		layer.msg("请选择分类");
-		return ;
-	}
-	var keySubId = node[0].id;
-	layer.prompt({title: '请输入微信菜单管理分类名称', formType: 0 ,value : node[0].text}, function(text, index){
-	    
-		if(text == null || text == ""){
-			layer.msg("请输入微信菜单管理分类名称");return ;
-		}
-		$.ajax({
-			url : "wpTempSublateEditSubmit",
-			data  : {mustSubName : text , keySubId : keySubId},
-			success : function(result){
-				if(result.code != 1){
-					layer.msg(result.msg);
-					return ;
-				}
-				layer.close(index);
-				layer.msg(result.msg);
-				getTree();
-			}
-		});
-	});
-	
-}
-function deleteCate(){
-	var node = $('#tree').treeview('getSelected');	
-	if(node == null || node.length == 0 || node[0].nodeId == 0){
-		layer.msg("请选择微信菜单管理分类");
-		return ;
-	}
-	var keySubId = node[0].id;
-	
-	layer.confirm('您确定要删除此项吗？',{
-		btn: ['确定删除','不删除'] //按钮
-	}, function(){
-		$.ajax({
-			url : "wpTempSublateDelete",data:{keySubId:keySubId},
-			success:function(result){
-				layer.msg(result.msg);
-				if(result.code != 1){
-					return ;
-				}
-				
-				getTree();
-			}
-		});
-	}, function(){
-		layer.closeAll();
-	});
-	
 }

@@ -257,7 +257,7 @@ namespace print
 
 
 
-            fltYPos += fltRowHeight*3;
+            fltYPos += fltRowHeight*1;
             g.DrawLine(Pens.Black, fltXPos, fltYPos + fltRowHeight / 2, fltScreenWidth, fltYPos + fltRowHeight / 2);
 
             fltYPos += fltRowHeight;
@@ -375,7 +375,7 @@ namespace print
             fltYPos = fltTopMargin;
             RectangleF rec = new RectangleF(fltXPos, fltYPos, fltScreenWidth, fltRowHeight);//
 
-            fltYPos += (fltRowHeight * 3);
+            fltYPos += (fltRowHeight * 1);
             rec = new RectangleF(fltXPos, fltYPos, fltScreenWidth, fltRowHeight);
             stringFormat.Alignment = StringAlignment.Center;
 

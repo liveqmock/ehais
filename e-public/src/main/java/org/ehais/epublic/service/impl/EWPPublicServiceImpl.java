@@ -36,8 +36,8 @@ public class EWPPublicServiceImpl implements EWPPublicService {
 		return wpPublic;
 	}
 	@Override
-	public void setWpPublic(Integer store_id, WpPublicWithBLOBs wpPublic) throws Exception {
+	public void setWpPublic(Integer public_id, WpPublicWithBLOBs wpPublic) throws Exception {
 		// TODO Auto-generated method stub
-		WXPublicCacheManager.getInstance().putWXPublic(store_id, wpPublic);
+		WXPublicCacheManager.getInstance().putWXPublic(public_id, wpPublic);
 	}
 }

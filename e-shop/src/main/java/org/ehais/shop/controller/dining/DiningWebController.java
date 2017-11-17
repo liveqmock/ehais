@@ -26,8 +26,10 @@ import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.epublic.model.EHaiUsersExample;
 import org.ehais.epublic.model.HaiOrderInfoExample;
 import org.ehais.epublic.model.HaiOrderInfoWithBLOBs;
+import org.ehais.epublic.model.HaiPartner;
 import org.ehais.epublic.model.HaiStoreStatistics;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
+import org.ehais.epublic.service.EPartnerService;
 import org.ehais.epublic.service.EStoreService;
 import org.ehais.epublic.service.WeiXinPayService;
 import org.ehais.shop.controller.ehais.EhaisCommonController;
@@ -42,7 +44,6 @@ import org.ehais.shop.model.HaiAdExample;
 import org.ehais.shop.model.HaiCategory;
 import org.ehais.shop.model.HaiCategoryExample;
 import org.ehais.shop.model.HaiCoupons;
-import org.ehais.shop.model.HaiCouponsExample;
 import org.ehais.shop.model.HaiGoods;
 import org.ehais.shop.model.HaiGoodsExample;
 import org.ehais.shop.model.HaiGoodsGallery;
@@ -69,7 +70,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 @Controller
@@ -100,6 +100,8 @@ public class DiningWebController extends EhaisCommonController{
 	private OrderInfoService orderInfoService;
 	@Autowired
 	private HaiStoreStatisticsMapper haiStoreStatisticsMapper;
+	@Autowired
+	private EPartnerService ePartnerService;
 	
 	
 	//http://127.0.0.1/diningStore!934a1580-0c1e0501-156ed21242-2b36621253-314dd0C104-49175b56
@@ -228,7 +230,14 @@ public class DiningWebController extends EhaisCommonController{
 
 		String link = request.getScheme() + "://" + request.getServerName() + "/diningStore!"+sid;
 		
-		this.shareWeiXin(modelMap, request, response, wp, store_id, store.getStoreName()+"["+wp.getPublicName()+"]", link, store.getDescription(), store.getStoreLogo());
+		String partnerName = "";
+		if(store.getPartnerId()!=null && store.getPartnerId() > 0){
+			HaiPartner partner = ePartnerService.getEPartner(store.getPartnerId());
+			partnerName = "["+partner.getPartnerName()+"]";
+		}
+		
+		
+		this.shareWeiXin(modelMap, request, response, wp, store_id, store.getStoreName() + partnerName, link, store.getDescription(), store.getStoreLogo());
 
 		//获取此商家优惠券
 //		HaiCouponsExample coupExp = new HaiCouponsExample();

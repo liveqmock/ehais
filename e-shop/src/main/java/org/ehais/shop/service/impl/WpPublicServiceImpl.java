@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
+import org.ehais.epublic.cache.WXPublicCacheManager;
 import org.ehais.epublic.mapper.WpPublicMapper;
 import org.ehais.epublic.model.WpPublic;
 import org.ehais.epublic.model.WpPublicExample;
@@ -54,7 +55,7 @@ public class WpPublicServiceImpl  extends CommonServiceImpl implements WpPublicS
 //		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
 		example.setLimitStart(condition.getStart());
 		example.setLimitEnd(condition.getRows());
-		example.setOrderByClause("update_date desc");
+		example.setOrderByClause("id desc");
 //		if(keySubId > 0 ) c.andKeySubIdEqualTo(keySubId);
 		if(StringUtils.isNotEmpty(publicName))c.andPublicNameLike("%"+publicName+"%");
 		List<WpPublic> list = wpPublicMapper.selectByExample(example);
@@ -119,6 +120,8 @@ public class WpPublicServiceImpl  extends CommonServiceImpl implements WpPublicS
 
 
 		int code = wpPublicMapper.insertSelective(model);
+		
+		eWPPublicService.setWpPublic(model.getId(), model);
 		rm.setCode(code);
 		rm.setMsg("添加成功");
 		return rm;
@@ -162,7 +165,7 @@ public class WpPublicServiceImpl  extends CommonServiceImpl implements WpPublicS
 		WpPublicExample.Criteria c = example.createCriteria();
 		
 //		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
-//		c.andIdEqualTo(model.getId());
+		c.andIdEqualTo(model.getId());
 //		c.andStoreIdEqualTo(store_id);
 
 		long count = wpPublicMapper.countByExample(example);
@@ -205,7 +208,10 @@ bean.setMchSecret(model.getMchSecret());
 		Date date = new Date();
 //		model.setUpdateDate(date);
 
-		int code = wpPublicMapper.updateByExampleSelective(bean, example);
+		int code = wpPublicMapper.updateByPrimaryKey(bean);
+		
+		eWPPublicService.setWpPublic(bean.getId(), bean);
+		
 		rm.setCode(code);
 		rm.setMsg("编辑成功");
 		return rm;
@@ -325,7 +331,7 @@ bean.setMchSecret(model.getMchSecret());
 			wpPublicMapper.updateByPrimaryKeySelective(bean);
 		}
 		
-		eWPPublicService.setWpPublic(store_id, bean);
+		eWPPublicService.setWpPublic(bean.getId(), bean);
 
 		rm.setCode(1);
 		rm.setMsg("保存成功");
@@ -368,6 +374,24 @@ bean.setMchSecret(model.getMchSecret());
 
 
 
+	public ReturnObject<WpPublicWithBLOBs> public_cache(HttpServletRequest request,Integer id)
+			throws Exception {
+		// TODO Auto-generated method stub
+		ReturnObject<WpPublicWithBLOBs> rm = new ReturnObject<WpPublicWithBLOBs>();
+		rm.setCode(0);
+		
+		WpPublicWithBLOBs model = wpPublicMapper.selectByPrimaryKey(id);
+		if(model == null){
+			rm.setMsg("记录不存在");
+			return rm;
+		}
+
+		WXPublicCacheManager.getInstance().putWXPublic(id, model);
+		
+		rm.setCode(1);
+		rm.setMsg("更新缓存成功");
+		return rm;
+	}
 
 
 
