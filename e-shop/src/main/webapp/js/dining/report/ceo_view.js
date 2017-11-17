@@ -2,9 +2,10 @@ $(function(){
 	$("#sel_store_id").change(function(){IncomeStatistics();});
 	
 	$("#sel_partner_id").change(function(){
-		if($(this).val().length == 0)return ;
 		
 		$("#sel_store_id option:not(:first)").remove();
+		if($(this).val().length == 0)return ;
+		
 		$.ajax({
 			url : "partnerStoreList",data : {partnerId : $(this).val()},
 			success : function(result){
@@ -22,6 +23,9 @@ $(function(){
 	
 });
 
+function OrderDiningStatistics(){
+	IncomeStatistics();
+}
 
 function IncomeStatistics(){
 	$.ajax({
