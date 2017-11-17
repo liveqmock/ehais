@@ -33,8 +33,8 @@ public interface HaiOrderInfoMapper {
 	
 	//统计某时间段所有商品的售销量
 	@Select("select goods_id,SUM(goods_number) as quantity " + 
-	" from hai_order_goods where order_id in (${order_ids})" + 
-	" GROUP BY goods_id ")
+	" from hai_order_goods where order_id in (${order_ids}) " + 
+	" GROUP BY goods_id order by quantity desc ")
 	@Results(value = {
 			@Result(property="goodsId", column="goods_id"),
 			@Result(property="quantity", column="quantity")

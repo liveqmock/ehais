@@ -179,8 +179,8 @@ public class ReportAdminController extends CommonController {
 			List<OrderGoodsStatistics> goodsStatistics = haiOrderInfoMapper.order_goods_statistics(orderIdJoin);
 			
 			
-			for (HaiGoods g : all_goods) {
-				for (OrderGoodsStatistics go : goodsStatistics) {
+			for (OrderGoodsStatistics go : goodsStatistics) {
+				for (HaiGoods g : all_goods) {
 					if(g.getGoodsId().longValue() == go.getGoodsId().longValue()){
 						g.setSaleCount(go.getQuantity());
 						continue;

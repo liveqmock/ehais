@@ -58,6 +58,15 @@ $(function(){
     field: 'couponsName',
     title: '优惠名称'
 },{
+    field: 'couponsQuantity',
+    title: '数量限额',formatter : function(value,rows,index){
+    	if(value == 0){
+    		return "不限";
+    	}else{
+    		return value;
+    	}
+    }
+},{
     field: 'quota',
     title: '优惠方式',formatter : function(value,rows,index){
     	if(rows.couponsType=="reduce"){
