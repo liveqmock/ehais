@@ -40,57 +40,22 @@
 					
 					
 					<ul id="menu-list-group" class="list-group">
-						<@permission url="haiAdminUserView">
+						<@permission url="haiPartnerView">
 						<li class="list-group-item active">
-							<a data-addtab="addad" data-url="ehaisArticleView">
+							<a data-addtab="partner" data-url="haiPartnerView">
 								<i class="glyphicon glyphicon-cloud"></i>
-								推广软文
+								代理信息管理
 							</a>							
 						</li>
 						</@permission>
 						
+						<@permission url="thinkRoleView">
 						<li class="list-group-item">
-							<a data-addtab="addlist" data-url="ehaisGoodsView">
-								<i class="glyphicon glyphicon-glass"></i>商品信息
+							<a data-addtab="role" data-url="thinkRoleView">
+								<i class="glyphicon glyphicon-sunglasses"></i>角色管理
 							</a>
 						</li>
-						
-						<li class="list-group-item active">
-							<a data-addtab="agency" data-url="haiAgencyView">
-								<i class="glyphicon glyphicon-leaf"></i>
-								代理等级
-							</a>
-						</li>
-						<li class="list-group-item active gray">
-							<a href="javascript:;">
-								<i class="glyphicon glyphicon-minus-sign"></i>
-								地区代理
-							</a>							
-						</li>
-						<li class="list-group-item active ">
-							<a data-addtab="order" data-url="ehaisOrderView">
-								<i class="glyphicon glyphicon-list-alt"></i>
-								订单信息
-							</a>							
-						</li>
-						<li class="list-group-item active gray">
-							<a href="javascript:;">
-								<i class="glyphicon glyphicon-minus-sign"></i>
-								会员信息
-							</a>							
-						</li>
-						<li class="list-group-item active gray">
-							<a href="javascript:;">
-								<i class="glyphicon glyphicon-minus-sign"></i>
-								品酒心语
-							</a>
-						</li>
-						<li class="list-group-item active">
-							<a data-addtab="coupons" data-url="haiCouponsView">
-								<i class="glyphicon glyphicon-sound-dolby"></i>
-								优惠券
-							</a>
-						</li>
+						</@permission>
 						
 					</ul>
 				</div>

@@ -31,7 +31,7 @@ public class MainCEOController extends CommonController{
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		return "/ceo/main";
+		return "/"+this.getAdminProjectFolder(request)+"/main";
 	}
 	
 	

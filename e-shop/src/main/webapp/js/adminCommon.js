@@ -128,3 +128,7 @@ String.prototype.formatDate = function(format) {
 	return date.format(format);
 }
 
+function isBlank(v){
+	if(v == null || v == "null" || v == "" || v == undefined || v == "undefined" || v.length == 0)return true;
+	return false;
+}

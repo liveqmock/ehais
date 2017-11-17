@@ -228,7 +228,7 @@ public class DiningWebController extends EhaisCommonController{
 
 		String link = request.getScheme() + "://" + request.getServerName() + "/diningStore!"+sid;
 		
-		this.shareWeiXin(modelMap, request, response, wp, store_id, store.getStoreName()+"--"+wp.getPublicName(), link, store.getDescription(), store.getStoreLogo());
+		this.shareWeiXin(modelMap, request, response, wp, store_id, store.getStoreName()+"["+wp.getPublicName()+"]", link, store.getDescription(), store.getStoreLogo());
 
 		//获取此商家优惠券
 //		HaiCouponsExample coupExp = new HaiCouponsExample();
