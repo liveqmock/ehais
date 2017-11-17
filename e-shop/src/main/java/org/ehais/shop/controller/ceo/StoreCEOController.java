@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/ceo")
 public class StoreCEOController extends CommonController{
 
-	private static Logger log = LoggerFactory.getLogger(HaiPartnerStoreAdminController.class);
+	private static Logger log = LoggerFactory.getLogger(StoreCEOController.class);
 
 	@Autowired
 	private HaiStoreService haiStoreService;
