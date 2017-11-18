@@ -242,8 +242,8 @@ public class DiningWebController extends EhaisCommonController{
 		//获取此商家优惠券
 //		HaiCouponsExample coupExp = new HaiCouponsExample();
 //		coupExp.createCriteria().andStoreIdEqualTo(store_id);
-//		haiCouponsMapper
-		
+		long countCoupons = haiCouponsMapper.countStoreCoupons(store_id);
+		System.out.println("countCoupons:"+countCoupons);
 	}
 	
 	

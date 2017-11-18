@@ -444,4 +444,47 @@
       update_date = #{updateDate,jdbcType=TIMESTAMP}
     where coupons_id = #{couponsId,jdbcType=INTEGER}
   </update>
+  
+  
+  
+  
+  
+  
+  
+  
+  <sql id="WhereSQL">
+  	(coupons_quantity = 0 or (coupons_quantity &gt; 0 and receive_count &lt; coupons_quantity)) 
+
+	AND
+
+	(
+	
+		(start_date is null and end_date is null) 
+		OR  
+		(start_date is not null and end_date is null and DATE_FORMAT(start_date,'%Y-%m-%d') &lt;= DATE_FORMAT(now(),'%Y-%m-%d') )
+		OR
+		(start_date is null and end_date is not null and DATE_FORMAT(end_date,'%Y-%m-%d') &gt;= DATE_FORMAT(now(),'%Y-%m-%d') )
+		OR
+		(start_date is not null and end_date is not null and DATE_FORMAT(start_date,'%Y-%m-%d') &lt;= DATE_FORMAT(now(),'%Y-%m-%d') and DATE_FORMAT(end_date,'%Y-%m-%d') &gt;= DATE_FORMAT(now(),'%Y-%m-%d') )
+	) 
+		and is_valid = 1 and store_id = #{store_id}
+  </sql>
+  
+  <select id="selectStoreCoupons" parameterType="map" resultMap="BaseResultMap">
+  	select * from hai_coupons where <include refid="WhereSQL" /> 
+  </select>
+  
+  <select id="countStoreCoupons" parameterType="map" resultType="java.lang.Long">
+  	select count(*) from hai_coupons where <include refid="WhereSQL" /> 
+  </select>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 </mapper>
