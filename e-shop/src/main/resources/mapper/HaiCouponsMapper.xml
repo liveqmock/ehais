@@ -471,7 +471,7 @@
   </sql>
   
   <select id="selectStoreCoupons" parameterType="map" resultMap="BaseResultMap">
-  	select * from hai_coupons where <include refid="WhereSQL" /> 
+  	select * from hai_coupons where <include refid="WhereSQL" /> order by coupons_type desc, discounts asc
   </select>
   
   <select id="countStoreCoupons" parameterType="map" resultType="java.lang.Long">

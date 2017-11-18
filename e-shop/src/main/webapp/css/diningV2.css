@@ -36,6 +36,9 @@ footer *,
   color: #fff;
   background: #7ECDF4;
 }
+.w > ul.tab.t3 li {
+  width: 33.33%;
+}
 .w > div.menu {
   background: #F5F5F5;
   margin-bottom: 0.45rem;
@@ -193,6 +196,53 @@ footer *,
 .w > div.myOrder > ul > li div:nth-child(3) {
   text-align: right;
   font-size: 0.12rem;
+}
+.w > div.coupons ul li {
+  font-size: 0.12rem;
+  background: #D71837;
+  color: #FDE9C1;
+  margin: 0.05rem 0 0;
+}
+.w > div.coupons ul li > div {
+  height: 0.7rem;
+}
+.w > div.coupons ul li .t {
+  width: 30%;
+  text-align: center;
+  font-size: 0.18rem;
+  line-height: 0.8rem;
+}
+.w > div.coupons ul li .t b {
+  width: auto;
+  float: none;
+  font-size: 0.35rem;
+}
+.w > div.coupons ul li .c {
+  width: 45%;
+}
+.w > div.coupons ul li .c b {
+  font-size: 0.15rem;
+  line-height: 0.5rem;
+}
+.w > div.coupons ul li .g {
+  width: 25%;
+  float: right;
+  text-align: center;
+  line-height: 0.9rem;
+  font-size: 0.18rem;
+  background: #F4C900;
+  color: #D71837;
+  height: 0.9rem;
+}
+.w > div.coupons ul li .g.h {
+  color: #f0f0f0;
+}
+.w > div.coupons ul li .l {
+  width: 75%;
+  text-align: center;
+  height: 0.25rem;
+  line-height: 0.25rem;
+  padding-right: 0.05rem;
 }
 .w .order_detail {
   width: 100%;

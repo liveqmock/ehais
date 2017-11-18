@@ -36,6 +36,7 @@ import org.ehais.shop.controller.ehais.EhaisCommonController;
 import org.ehais.shop.mapper.HaiAdMapper;
 import org.ehais.shop.mapper.HaiCategoryMapper;
 import org.ehais.shop.mapper.HaiCouponsMapper;
+import org.ehais.shop.mapper.HaiCouponsUserMapper;
 import org.ehais.shop.mapper.HaiGoodsGalleryMapper;
 import org.ehais.shop.mapper.HaiGoodsMapper;
 import org.ehais.shop.mapper.HaiOrderGoodsMapper;
@@ -44,6 +45,8 @@ import org.ehais.shop.model.HaiAdExample;
 import org.ehais.shop.model.HaiCategory;
 import org.ehais.shop.model.HaiCategoryExample;
 import org.ehais.shop.model.HaiCoupons;
+import org.ehais.shop.model.HaiCouponsUser;
+import org.ehais.shop.model.HaiCouponsUserExample;
 import org.ehais.shop.model.HaiGoods;
 import org.ehais.shop.model.HaiGoodsExample;
 import org.ehais.shop.model.HaiGoodsGallery;
@@ -67,6 +70,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -102,6 +106,8 @@ public class DiningWebController extends EhaisCommonController{
 	private HaiStoreStatisticsMapper haiStoreStatisticsMapper;
 	@Autowired
 	private EPartnerService ePartnerService;
+	@Autowired
+	private HaiCouponsUserMapper haiCouponsUserMapper;
 	
 	
 	//http://127.0.0.1/diningStore!934a1580-0c1e0501-156ed21242-2b36621253-314dd0C104-49175b56
@@ -239,11 +245,11 @@ public class DiningWebController extends EhaisCommonController{
 		
 		this.shareWeiXin(modelMap, request, response, wp, store_id, store.getStoreName() + partnerName, link, store.getDescription(), store.getStoreLogo());
 
-		//获取此商家优惠券
-//		HaiCouponsExample coupExp = new HaiCouponsExample();
-//		coupExp.createCriteria().andStoreIdEqualTo(store_id);
+		//获取此商家是否有优惠券
 		long countCoupons = haiCouponsMapper.countStoreCoupons(store_id);
-		System.out.println("countCoupons:"+countCoupons);
+		modelMap.addAttribute("countCoupons", countCoupons);//是否有可用优惠券
+		
+//		System.out.println("countCoupons:"+countCoupons);
 	}
 	
 	
@@ -255,7 +261,7 @@ public class DiningWebController extends EhaisCommonController{
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/diningUserOrderList")
+	@RequestMapping(value="/diningUserOrderList",method=RequestMethod.POST)
 	public String diningUserOrderList(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@ModelAttribute EConditionObject condition ){
@@ -291,7 +297,7 @@ public class DiningWebController extends EhaisCommonController{
 	}
 	
 	@ResponseBody
-	@RequestMapping("/diningSubmitOrder")
+	@RequestMapping(value="/diningSubmitOrder",method=RequestMethod.POST)
 	public String diningSubmitOrder(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "sid", required = true) String sid,
@@ -611,7 +617,7 @@ public class DiningWebController extends EhaisCommonController{
 	}
 	
 	//http://127.0.0.1/dining_user_order_detail!d3172580-0ff0d6231-1b45db1012017091511435351591252-2bf77a1253-36d5b3oiGBot1K1vYJA2DFv2B-0W2xL9O04-44cdc5ba
-	@RequestMapping("/dining_user_order_detail!{oid}")
+	@RequestMapping(value="/dining_user_order_detail!{oid}",method=RequestMethod.POST)
 	public String dining_user_order_detail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@PathVariable(value = "oid") String oid	,
@@ -669,7 +675,7 @@ public class DiningWebController extends EhaisCommonController{
 	}
 	
 	
-	@RequestMapping("/dining_store_order_detail!{oid}")
+	@RequestMapping(value="/dining_store_order_detail!{oid}",method=RequestMethod.POST)
 	public String dining_store_order_detail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@PathVariable(value = "oid") String oid	,
@@ -737,7 +743,7 @@ public class DiningWebController extends EhaisCommonController{
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/dining_goods!{gid}")
+	@RequestMapping(value="/dining_goods!{gid}",method=RequestMethod.POST)
 	public String diningGoods(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@PathVariable(value = "gid") String gid	){
@@ -791,12 +797,81 @@ public class DiningWebController extends EhaisCommonController{
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping("/coupons!{sid}")
+	@RequestMapping(value="/coupons!{sid}",method=RequestMethod.POST)
 	public String coupons(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@PathVariable(value = "sid") String sid){
 		ReturnObject<HaiCoupons> rm = new ReturnObject<HaiCoupons>();
-		
+		rm.setCode(0);
+		Integer store_id = SignUtil.getUriStoreId(sid);
+		if(store_id == 0){
+			return this.writeJson(rm) ;
+		}
+		Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
+		try{
+			//获取店铺的优惠券
+			List<HaiCoupons> list = haiCouponsMapper.selectStoreCoupons(store_id);
+			List<Integer> couponsIds = new ArrayList<Integer>();
+			for (HaiCoupons c : list) {
+				couponsIds.add(c.getCouponsId());
+			}
+			//获取用户的优惠券
+			HaiCouponsUserExample cuexp = new HaiCouponsUserExample();
+			cuexp.createCriteria()
+			.andCouponsIdIn(couponsIds)
+			.andUserIdEqualTo(user_id)
+			.andIsUseEqualTo(false);
+			List<HaiCouponsUser> culist = haiCouponsUserMapper.selectByExample(cuexp);
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("user_coupons", culist);
+			rm.setMap(map);
+			rm.setRows(list);
+			rm.setCode(1);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return this.writeJson(rm) ;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/receive_coupons!{sid}",method=RequestMethod.POST)
+	public String receive_coupons(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@PathVariable(value = "sid") String sid,
+			@RequestParam(value = "couponsId", required = true) Integer couponsId){
+		ReturnObject<HaiCoupons> rm = new ReturnObject<HaiCoupons>();
+		rm.setCode(0);
+		Integer store_id = SignUtil.getUriStoreId(sid);
+		if(store_id == 0){
+			return this.writeJson(rm) ;
+		}
+		Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
+
+		try{
+			HaiCouponsUserExample cuexp = new HaiCouponsUserExample();
+			cuexp.createCriteria()
+			.andCouponsIdEqualTo(couponsId)
+			.andUserIdEqualTo(user_id)
+			.andIsUseEqualTo(false);
+			long c = haiCouponsUserMapper.countByExample(cuexp);
+			if(c > 0){
+				rm.setMsg("已领取");
+				return this.writeJson(rm) ;
+			}
+			
+			HaiCouponsUser cu = new HaiCouponsUser();
+			cu.setCouponsId(couponsId);
+			cu.setUserId(user_id);
+			cu.setReceiveTime(new Date());
+			cu.setIsUse(false);
+			haiCouponsUserMapper.insert(cu);
+			
+			rm.setMsg("成功领取");
+			rm.setCode(1);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		return this.writeJson(rm) ;
 	}
 	

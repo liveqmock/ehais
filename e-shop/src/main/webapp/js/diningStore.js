@@ -1,6 +1,7 @@
 var jroll_menu_cate;
 var jroll_menu_list;
-var jroll_myOrder;
+var jroll_myOrderList;
+var jroll_couponsList;
 var cartArray = null;//购物车数据
 var path = window.location.search;//页面跟的参数地址
 var offsets = [];
@@ -141,6 +142,7 @@ $(function(){
 	$("#menu_cate").height($(".menu").height());
 	$("#menu_list").height($(".menu").height());
 	$("#myOrderList").height($(".menu").height());
+	$("#couponsList").height($(".menu").height());
 	
 
 //	console.log($(".menu").height() +"+"+ $(window).height() +"+"+ $(".swiper-container").height() +"+"+ $(".tab").height() +"+"+ $("footer").height());
@@ -153,6 +155,7 @@ $(function(){
 	jroll_menu_cate = new JRoll("#menu_cate", {scrollBarY:false});
 	jroll_menu_list = new JRoll("#menu_list", {scrollBarY:false});
 	jroll_myOrderList = new JRoll("#myOrderList", {scrollBarY:false});
+	jroll_couponsList = new JRoll("#couponsList", {scrollBarY:false});
 	
 	jroll_menu_cate.on("scrollEnd", function() {
 	    if(-this.y > wPos && $(window).scrollTop() < wPos ){
@@ -299,21 +302,30 @@ $(function(){
 	//点餐选项
 	$("#orderFood").click(function(){
 		if(!$("#orderFood").hasClass("active")){
+			$("ul.tab li").removeClass("active");
 			$(this).addClass("active");
-			$("#myOrder").removeClass("active");
 			$(".menu , footer").show();
 			$(".myOrder").hide();
-		}
-		
+		}		
 	});
 	//我的订单
 	$("#myOrder").click(function(){
 		if(!$("#myOrder").hasClass("active")){
+			$("ul.tab li").removeClass("active");
 			$(this).addClass("active");
-			$("#orderFood").removeClass("active");
 			$(".menu , footer").hide();
 			$(".myOrder").show();
 			jroll_myOrderList.refresh();
+		}
+	});
+	//优惠券
+	$("#coupons").click(function(){
+		if(!$("#coupons").hasClass("active")){
+			$("ul.tab li").removeClass("active");
+			$(this).addClass("active");
+			$(".menu , footer").hide();
+			$(".coupons").show();
+			coupons();
 		}
 	});
 	
@@ -578,5 +590,53 @@ function diningUserOrderList(){
 	});
 }
 
+function coupons(){
+	if($("#couponsUl li").length > 0)return ;
+	$.ajax({
+		url : "coupons!"+sid,
+		success:function(result){
+			$.each(result.rows,function(k,v){
+				$("#couponsUl").append("<li value='"+v.couponsId+"'>"+
+						"<div class='t'>"+(v.couponsType == "reduce"?"￥":"折")+"<b>"+v.discounts+"</b></div>"+
+						"<div class='c'>"+
+							"<b>"+v.couponsName+"</b>"+
+							"满"+v.quota+"元使用"+(v.couponsQuantity > 0 ? "(限"+v.couponsQuantity+"名)" : "")+
+						"</div>"+
+						"<div class='g cg"+v.couponsId+"'>领取</div>"+
+						"<div class='l'>"+(
+							(!isBlank(v.startDate) && !isBlank(v.endDate)) ? 
+								(v.startDate.substr(0,10) +"~"+ v.endDate.substr(0,10)) : (
+										(!isBlank(v.startDate) && isBlank(v.endDate))? (v.startDate.substr(0,10)+"开始"):(
+												(isBlank(v.startDate) && !isBlank(v.endDate))? (v.endDate.substr(0,10)+"结束"):""
+										)
+								)
+							) +
+						"</div>"+
+					"</li>");
+			});
+			
+			$.each(result.map.user_coupons,function(k,v){
+				$(".cg"+v.couponsId).addClass("h").html("已领取");
+			});
+			
+			$("#couponsUl >li >.g").click(function(){
+				if($(this).hasClass("h"))return;
+				receive_coupons($(this).parent().attr("value"));
+			});
+		}
+	});
+}
+
+function receive_coupons(couponsId){
+	$.ajax({
+		url : "receive_coupons!"+sid,data:{couponsId:couponsId},
+		success:function(result){
+			elay.toast({content:result.msg});
+			if(result.code == 1){
+				$(".cg"+couponsId).addClass("h").html("已领取");
+			}
+		}
+	});
+}
 
 

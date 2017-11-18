@@ -38,9 +38,12 @@
 				<!-- 如果需要分页器 -->
 			    <div class="swiper-pagination"></div>
 			</div>
-			<ul class="tab">					
+			<ul class="tab <#if (countCoupons?? && countCoupons > 0)>t3</#if>">					
 				<li id="orderFood" class="active">我要点餐</li>
 				<li id="myOrder">历史订单</li>
+				<#if (countCoupons?? && countCoupons > 0)>
+				<li id="coupons">优惠券</li>
+				</#if>
 			</ul>
 			<div class="menu">
 				<div class="left" id="menu_cate">
@@ -83,7 +86,11 @@
 			<div class="myOrder dn" id="myOrderList">
 				<ul id="myOrderUl"></ul>
 			</div>
-		
+			<#if (countCoupons?? && countCoupons > 0)>
+			<div class="coupons dn" id="couponsList">
+				<ul id="couponsUl"></ul>
+			</div>
+			</#if>
 		</div>
 		<footer class="fd">
 			<div class="sCart">
