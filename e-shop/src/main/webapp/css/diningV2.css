@@ -576,6 +576,13 @@ footer.active > div.sCart > i:nth-child(2) {
   margin-left: 0.15rem;
   font-size: 0.16rem;
 }
+.wco > div i {
+  width: auto;
+  float: right;
+}
+.wco > div #usercoupons {
+  width: auto;
+}
 .result {
   background: #fff;
   z-index: 106;

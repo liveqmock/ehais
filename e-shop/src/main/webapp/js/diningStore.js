@@ -6,7 +6,7 @@ var cartArray = null;//购物车数据
 var path = window.location.search;//页面跟的参数地址
 var offsets = [];
 var targets = [];
-
+var couponsId = 0;
 
 //添加菜品入购物车
 function addCartMenu(that){
@@ -26,7 +26,7 @@ function minusCartMenu(that){
 	badge --;
 	$(".badge_"+$(that).parent().parent().parent().attr("value")).html(badge);
 	if(parseInt(badge) == 0){
-		$(".badge_"+$(that).parent().parent().parent().attr("value")).parent().removeClass("active").children(".minusCart").removeClass("active");
+		$(".badge_"+$(that).parent().parent().parent().attr("value")).removeClass("active").parent().removeClass("active").children(".minusCart").removeClass("active");
 	}
 	badge = null;
 	//统计数量与金额，购物列表
@@ -112,7 +112,7 @@ function checkOutCart(){
 	});
 
 	$("#oq").html("数量:"+quantity);
-	$("#ot").html("￥"+(total / 100).toFixed(2));
+	$("#ot").html("￥"+(total / 100).toFixed(2)).attr("total",total);
 	
 	total = null ; quantity = null;
 	cartArray = null;
@@ -265,6 +265,9 @@ $(function(){
 		if($("footer.fd").hasClass("active")){
 			$(".wco").addClass("active");
 			checkOutCart();
+			
+			//验证优惠券
+			checkCoupons();
 		}
 	});
 	$(".icon-xiangzuojiantou").click(function(){$(".wco").removeClass("active");});
@@ -428,6 +431,8 @@ $(function(){
     	}
     }
 	
+	
+	coupons();
 	
 });
 
@@ -596,7 +601,7 @@ function coupons(){
 		url : "coupons!"+sid,
 		success:function(result){
 			$.each(result.rows,function(k,v){
-				$("#couponsUl").append("<li value='"+v.couponsId+"'>"+
+				$("#couponsUl").append("<li value='"+v.couponsId+"' couponsName='"+v.couponsName+"' quota='"+v.quota+"' couponsType='"+v.couponsType+"' discounts='"+v.discounts+"' couponsQuantity='"+v.couponsQuantity+"' startDate='"+v.startDate+"' endDate='"+v.endDate+"' >"+
 						"<div class='t'>"+(v.couponsType == "reduce"?"￥":"折")+"<b>"+v.discounts+"</b></div>"+
 						"<div class='c'>"+
 							"<b>"+v.couponsName+"</b>"+
@@ -627,16 +632,54 @@ function coupons(){
 	});
 }
 
-function receive_coupons(couponsId){
+function receive_coupons(_couponsId){
 	$.ajax({
-		url : "receive_coupons!"+sid,data:{couponsId:couponsId},
+		url : "receive_coupons!"+sid,data:{couponsId:_couponsId},
 		success:function(result){
 			elay.toast({content:result.msg});
 			if(result.code == 1){
-				$(".cg"+couponsId).addClass("h").html("已领取");
+				$(".cg"+_couponsId).addClass("h").html("已领取");
 			}
 		}
 	});
 }
 
-
+//验证优惠券
+function checkCoupons(){
+	if($("#couponsUl").length == 0)return ;
+	var _amount = $("#ot").attr("total");
+	var _couponsId = 0;
+	var usercoupons = "";
+	
+	$("#couponsUl li").each(function(i,e){
+		if(parseInt($("#ot").attr("total")) >= parseInt($(e).attr("quota")) * 100){
+			if($(e).attr("couponstype") == "reduce"){//减
+				if((parseInt($("#ot").attr("total")) - parseInt($(e).attr("discounts")) * 100) < _amount ){
+					_amount = parseInt($("#ot").attr("total")) - parseInt($(e).attr("discounts")) * 100;
+					_couponsId = $(e).attr("value");
+					usercoupons = $(e).attr("couponsName")+"满"+$(e).attr("quota")+"减"+$(e).attr("discounts");
+				}
+			}else if($(e).attr("couponstype") == "rebate"){//折扣
+				console.log((parseInt($("#ot").attr("total")) - parseInt($("#ot").attr("total")) * parseInt($(e).attr("discounts")) / 100));
+				if((parseInt($("#ot").attr("total")) * parseInt($(e).attr("discounts")) / 100 ) < _amount ){
+					_amount = parseInt($("#ot").attr("total")) * parseInt($(e).attr("discounts")) / 100;
+					_couponsId = $(e).attr("value");
+					usercoupons = $(e).attr("couponsName")+"满"+$(e).attr("quota")+"打折"+$(e).attr("discounts");
+				}
+			}
+		}
+	});
+	
+	if(parseInt(_couponsId) > 0){
+		var amount = parseInt($("#ot").attr("total")) - parseInt(_amount);
+		$("#choose_coupons").attr("couponsId",_couponsId).attr("amount",_amount);
+		$("#usercoupons").html(usercoupons);
+		$("#ot").html(($("#ot").attr("total") / 100).toFixed(2) +"-"+ (amount / 100).toFixed(2) +"="+ (_amount / 100 ).toFixed(2) );
+		amount = null;
+		$("#choose_coupons").removeClass("dn");
+	}else{
+		$("#choose_coupons").addClass("dn");
+	}
+	
+	
+}
