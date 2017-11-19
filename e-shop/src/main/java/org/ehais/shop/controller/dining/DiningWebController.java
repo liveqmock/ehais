@@ -301,11 +301,12 @@ public class DiningWebController extends EhaisCommonController{
 	public String diningSubmitOrder(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "sid", required = true) String sid,
-			@RequestParam(value = "couponseId", required = false) Integer couponseId,//优惠券ID
+			@RequestParam(value = "couponsId", required = false) Integer couponsId,//优惠券ID
 			@RequestParam(value = "tPay", required = true) String tPay,
 			@RequestParam(value = "cart", required = true) String cart,
 			@RequestParam(value = "message", required = false) String message,
-			@RequestParam(value = "wTotal", required = false) Integer wTotal//经后台运算与前端的匹配			
+			@RequestParam(value = "wTotal", required = false) Integer wTotal,//总价格，经后台运算与前端的匹配
+			@RequestParam(value = "wPayAmount", required = false) Integer wPayAmount//支付价格，经后台运算与前端的匹配
 			){
 		ReturnObject<HaiOrderInfoWithBLOBs> rm = new ReturnObject<HaiOrderInfoWithBLOBs>();
 		rm.setCode(0);

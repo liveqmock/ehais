@@ -567,6 +567,17 @@ footer.active > div.sCart > i:nth-child(2) {
 .wco > div:last-child div {
   color: #FD402C;
 }
+.wco > div:last-child div div {
+  float: none;
+  font-size: 0.08rem;
+  line-height: 0.15rem;
+}
+.wco > div:last-child div div:first-child {
+  line-height: 0.25rem;
+}
+.wco > div:last-child > div:last-child {
+  padding-right: 0.05rem;
+}
 .wco > div:last-child button {
   border: 0;
   width: 30%;

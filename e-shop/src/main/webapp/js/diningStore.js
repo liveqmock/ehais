@@ -112,7 +112,7 @@ function checkOutCart(){
 	});
 
 	$("#oq").html("数量:"+quantity);
-	$("#ot").html("￥"+(total / 100).toFixed(2)).attr("total",total);
+	$("#ot").html("￥"+(total / 100).toFixed(2)).attr("total",total).attr("wpayamount",total);
 	
 	total = null ; quantity = null;
 	cartArray = null;
@@ -476,6 +476,8 @@ function getScrollTop(){
  */
 function diningSubmitOrder(tPay){
 	var cartArray = new Object();
+	var wTotal = $("#ot").attr("total");
+	var wPayAmount = $("#ot").attr("wpayamount");
 	
 	$(".badge.active").each(function(){
 		if(parseInt($(this).parent().parent().parent().attr("cid")) > 0 && parseInt($(this).html()) > 0 ){
@@ -491,6 +493,9 @@ function diningSubmitOrder(tPay){
 		url : "/diningSubmitOrder",
 		data : {
 			sid:sid,
+			couponsId:couponsId,
+			wTotal:wTotal,
+			wPayAmount:wPayAmount,
 			tPay:tPay,
 			cart:JSON.stringify(cartArray),
 			message:$("#postscript").val()
@@ -671,10 +676,12 @@ function checkCoupons(){
 	});
 	
 	if(parseInt(_couponsId) > 0){
+		couponsId = _couponsId;
 		var amount = parseInt($("#ot").attr("total")) - parseInt(_amount);
-		$("#choose_coupons").attr("couponsId",_couponsId).attr("amount",_amount);
+		$("#choose_coupons").attr("couponsId",_couponsId).attr("amount",_amount.toFixed(0));
 		$("#usercoupons").html(usercoupons);
-		$("#ot").html(($("#ot").attr("total") / 100).toFixed(2) +"-"+ (amount / 100).toFixed(2) +"="+ (_amount / 100 ).toFixed(2) );
+		$("#ot").html("￥"+ (_amount / 100 ).toFixed(2)).attr("wpayamount",_amount.toFixed(0));
+		$("#coup_amount").html("<div>￥"+($("#ot").attr("total") / 100).toFixed(2)+"</div><div>优惠￥"+(amount / 100).toFixed(2)+"</div>");
 		amount = null;
 		$("#choose_coupons").removeClass("dn");
 	}else{
