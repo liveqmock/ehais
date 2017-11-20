@@ -382,7 +382,7 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 		orderInfo.setTax(0F);//'发票税额',
 		orderInfo.setIsSeparate(0);//'0，未分成或等待分成；1，已分成；2，取消分成；',
 		orderInfo.setParentId(0L);// '能获得推荐分成的用户id，id取值于表ecs_users',
-		orderInfo.setDiscount(0F);//'折扣金额',
+		orderInfo.setDiscount(0);//'折扣金额',
 		orderInfo.setIsVoid(EIsVoidEnum.valid);
 		orderInfo.setRemark("");
 	}
@@ -393,10 +393,14 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 		// TODO Auto-generated method stub
 		ReturnObject<HaiOrderInfoWithBLOBs> rm = new ReturnObject<HaiOrderInfoWithBLOBs>();
 		rm.setCode(0);
+		
 		if(condition.getStore_id() == null && request.getSession().getAttribute(EConstants.SESSION_STORE_ID) == null ){
 			rm.setMsg("empty store");
 			return rm;
 		}
+		
+		Integer store_id = condition.getStore_id();
+		if(store_id == null) store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		HaiOrderInfoExample example = new HaiOrderInfoExample();
 		HaiOrderInfoExample.Criteria c = example.createCriteria();
@@ -424,7 +428,7 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 		
 		try{
 			if(classify.equals(EOrderClassifyEnum.dining)){//餐饮模式.........
-				WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(condition.getStore_id());
+				WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
 				String sid = null;
 				List<Long> userIdList = new ArrayList<Long>();
 				for (HaiOrderInfoWithBLOBs order : list) {

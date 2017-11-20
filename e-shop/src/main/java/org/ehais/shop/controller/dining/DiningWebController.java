@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
+import org.ehais.enums.ECouponsTypeEnum;
 import org.ehais.enums.EOrderClassifyEnum;
 import org.ehais.enums.EOrderSourceEnum;
 import org.ehais.enums.EOrderStatusEnum;
@@ -58,6 +59,7 @@ import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.DateUtil;
 import org.ehais.util.ECommon;
+import org.ehais.util.ResourceUtil;
 import org.ehais.util.SignUtil;
 import org.ehais.weixin.model.WeiXinTemplateMessage;
 import org.ehais.weixin.model.WeiXinWCPay;
@@ -109,6 +111,8 @@ public class DiningWebController extends EhaisCommonController{
 	@Autowired
 	private HaiCouponsUserMapper haiCouponsUserMapper;
 	
+	
+	protected String prefix_order_dining = ResourceUtil.getProValue("prefix.order.dining");
 	
 	//http://127.0.0.1/diningStore!934a1580-0c1e0501-156ed21242-2b36621253-314dd0C104-49175b56
 	//http://631a7eb3.ngrok.io/diningStore!934a1580-0c1e0501-156ed21242-2b36621253-314dd0C104-49175b56
@@ -296,17 +300,33 @@ public class DiningWebController extends EhaisCommonController{
 		return this.writeJson(rm);
 	}
 	
+	/**
+	 * 
+	 * @param modelMap
+	 * @param request
+	 * @param response
+	 * @param sid
+	 * @param couponsId
+	 * @param tPay
+	 * @param cart
+	 * @param message
+	 * @param wTotal : 参数总价格
+	 * @param wPayAmount : 参数支付的价格
+	 * @param total :商品总价格
+	 * @param amount : 订单的价格[去掉优惠券的，折扣的]
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(value="/diningSubmitOrder",method=RequestMethod.POST)
 	public String diningSubmitOrder(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "sid", required = true) String sid,
-			@RequestParam(value = "couponsId", required = false) Integer couponsId,//优惠券ID
+			@RequestParam(value = "couponsId", required = true) Integer couponsId,//优惠券ID
 			@RequestParam(value = "tPay", required = true) String tPay,
 			@RequestParam(value = "cart", required = true) String cart,
 			@RequestParam(value = "message", required = false) String message,
-			@RequestParam(value = "wTotal", required = false) Integer wTotal,//总价格，经后台运算与前端的匹配
-			@RequestParam(value = "wPayAmount", required = false) Integer wPayAmount//支付价格，经后台运算与前端的匹配
+			@RequestParam(value = "wTotal", required = true) Integer wTotal,//总价格，经后台运算与前端的匹配
+			@RequestParam(value = "wPayAmount", required = true) Integer wPayAmount//支付价格，经后台运算与前端的匹配
 			){
 		ReturnObject<HaiOrderInfoWithBLOBs> rm = new ReturnObject<HaiOrderInfoWithBLOBs>();
 		rm.setCode(0);
@@ -365,6 +385,13 @@ public class DiningWebController extends EhaisCommonController{
 				total += goodsObj.getInt("price") * goodsObj.getInt("badge");
 				badge += goodsObj.getInt("badge");
 			}
+			
+			//参数中的商品数组价格与传递价格不一致的情况v2...........
+			if(total.intValue() != wTotal.intValue()){
+				rm.setMsg("you are black person");
+				return this.writeJson(rm);
+			}
+			
 			//读取商品信息
 			HaiGoodsExample goodsExample = new HaiGoodsExample();
 			goodsExample.createCriteria().andStoreIdEqualTo(store_id).andGoodsIdIn(goodsIds);
@@ -381,10 +408,45 @@ public class DiningWebController extends EhaisCommonController{
 				amount += haiGoods.getShopPrice() * goodsObj.getInt("badge");
 				sb.append(haiGoods.getGoodsName()+"【"+goodsObj.getInt("badge")+"】 ");
 			}
-			//价格效验
+			
 			if(total.intValue() != amount.intValue()){
 				rm.setMsg("you are black person");
 				return this.writeJson(rm);
+			}
+			
+			if(couponsId != null && couponsId > 0){
+				
+				//带优惠券的价格效验v2版本.......................
+				//获取优惠券，判断优惠券ID是否正确
+				List<HaiCoupons> list = haiCouponsMapper.selectStoreCoupons(store_id);
+				Integer _amount = 0;//优惠的金额
+				Integer _couponsId = 0;
+				for (HaiCoupons hcp : list) {
+					if(total.intValue() >= hcp.getQuota().intValue()){
+						if(hcp.getCouponsType().equals(ECouponsTypeEnum.reduce)){//立减优惠
+							if(hcp.getDiscounts().intValue() > _amount.intValue()){
+								_amount = hcp.getDiscounts();
+								_couponsId = hcp.getCouponsId();
+							}
+						}else if(hcp.getCouponsType().equals(ECouponsTypeEnum.rebate)){//折扣优惠
+							if(total.intValue() * (100 - hcp.getDiscounts().intValue()) / 100 > _amount.intValue()){
+								_amount = total.intValue() * (100 - hcp.getDiscounts().intValue()) / 100;
+								_couponsId = hcp.getCouponsId();
+							}
+						}
+					}
+				}
+				//判断优惠券的价格是否正确
+				if((wTotal.intValue() - wPayAmount.intValue()) != _amount.intValue()){
+					rm.setMsg("your coupons amount is wrong");
+					return this.writeJson(rm);
+				}
+				if(_couponsId.intValue() != couponsId.intValue()){
+					rm.setMsg("your coupons id is wrong");
+					return this.writeJson(rm);
+				}
+				//更新支付金额为优惠后的金额
+				amount = amount -_amount;
 			}
 			
 			
@@ -393,7 +455,7 @@ public class DiningWebController extends EhaisCommonController{
 			HaiOrderInfoWithBLOBs orderInfo = new HaiOrderInfoWithBLOBs();
 			orderInfoService.setDefaultOrder(orderInfo,date,store_id);//公共设置订单的默认值
 			
-			String orderSn = "101"+DateUtil.formatDate(date, DateUtil.FORMATSTR_4) + map.get("userId").toString() + ECommon.nonceInt(4);
+			String orderSn = prefix_order_dining + DateUtil.formatDate(date, DateUtil.FORMATSTR_4) + map.get("userId").toString() + ECommon.nonceInt(4);
 			orderInfo.setOrderSn(orderSn);
 			orderInfo.setUserId(Long.valueOf(map.get("userId").toString()));
 			orderInfo.setOrderStatus(EOrderStatusEnum.init);
@@ -412,15 +474,21 @@ public class DiningWebController extends EhaisCommonController{
 			}
 			
 			orderInfo.setPostscript(message!=null?message:"");//订单附言
-			orderInfo.setGoodsAmount(amount);//商品价格
+			orderInfo.setGoodsAmount(total);//商品价格
 			orderInfo.setOrderAmount(amount);//订单价格
 			orderInfo.setAddTime(date);
 			orderInfo.setOrderSource(EOrderSourceEnum.dining_in_store);
 			orderInfo.setGoodsDesc(sb.toString());
 			orderInfo.setClassify(EOrderClassifyEnum.dining);
 			orderInfo.setSid(sid);
+			//保存优惠券编号
+			if(couponsId != null && couponsId > 0){
+				orderInfo.setCouponsId(couponsId);
+				orderInfo.setCouponsUserId(0L);
+				orderInfo.setDiscount(wTotal.intValue() - wPayAmount.intValue());
+			}
 			
-			int code = haiOrderInfoMapper.insert(orderInfo);
+			haiOrderInfoMapper.insert(orderInfo);
 			Long order_id = orderInfo.getOrderId();
 			
 			List<HaiOrderGoods> orderGoodsList = new ArrayList<HaiOrderGoods>();

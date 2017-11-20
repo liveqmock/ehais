@@ -308,7 +308,7 @@ $(function(){
 			$("ul.tab li").removeClass("active");
 			$(this).addClass("active");
 			$(".menu , footer").show();
-			$(".myOrder").hide();
+			$(".myOrder,.coupons").hide();
 		}		
 	});
 	//我的订单
@@ -316,7 +316,7 @@ $(function(){
 		if(!$("#myOrder").hasClass("active")){
 			$("ul.tab li").removeClass("active");
 			$(this).addClass("active");
-			$(".menu , footer").hide();
+			$(".menu , footer,.coupons").hide();
 			$(".myOrder").show();
 			jroll_myOrderList.refresh();
 		}
@@ -326,7 +326,7 @@ $(function(){
 		if(!$("#coupons").hasClass("active")){
 			$("ul.tab li").removeClass("active");
 			$(this).addClass("active");
-			$(".menu , footer").hide();
+			$(".menu , footer,.myOrder").hide();
 			$(".coupons").show();
 			coupons();
 		}
@@ -430,8 +430,7 @@ $(function(){
     		}
     	}
     }
-	
-	
+
 	coupons();
 	
 });
@@ -605,29 +604,37 @@ function coupons(){
 	$.ajax({
 		url : "coupons!"+sid,
 		success:function(result){
-			$.each(result.rows,function(k,v){
-				$("#couponsUl").append("<li value='"+v.couponsId+"' couponsName='"+v.couponsName+"' quota='"+v.quota+"' couponsType='"+v.couponsType+"' discounts='"+v.discounts+"' couponsQuantity='"+v.couponsQuantity+"' startDate='"+v.startDate+"' endDate='"+v.endDate+"' >"+
-						"<div class='t'>"+(v.couponsType == "reduce"?"￥":"折")+"<b>"+v.discounts+"</b></div>"+
-						"<div class='c'>"+
-							"<b>"+v.couponsName+"</b>"+
-							"满"+v.quota+"元使用"+(v.couponsQuantity > 0 ? "(限"+v.couponsQuantity+"名)" : "")+
-						"</div>"+
-						"<div class='g cg"+v.couponsId+"'>领取</div>"+
-						"<div class='l'>"+(
-							(!isBlank(v.startDate) && !isBlank(v.endDate)) ? 
-								(v.startDate.substr(0,10) +"~"+ v.endDate.substr(0,10)) : (
-										(!isBlank(v.startDate) && isBlank(v.endDate))? (v.startDate.substr(0,10)+"开始"):(
-												(isBlank(v.startDate) && !isBlank(v.endDate))? (v.endDate.substr(0,10)+"结束"):""
-										)
-								)
-							) +
-						"</div>"+
-					"</li>");
-			});
+			if(!isBlank(result.rows)){
+
+				$.each(result.rows,function(k,v){
+					$("#couponsUl").append("<li value='"+v.couponsId+"' couponsName='"+v.couponsName+"' quota='"+v.quota+"' couponsType='"+v.couponsType+"' discounts='"+v.discounts+"' couponsQuantity='"+v.couponsQuantity+"' startDate='"+v.startDate+"' endDate='"+v.endDate+"' >"+
+							"<div class='t'>"+(v.couponsType == "reduce"?"￥":"折")+"<b>"+v.discounts+"</b></div>"+
+							"<div class='c'>"+
+								"<b>"+v.couponsName+"</b>"+
+								"满"+v.quota+"元使用"+(v.couponsQuantity > 0 ? "(限"+v.couponsQuantity+"名)" : "")+
+							"</div>"+
+							"<div class='g cg"+v.couponsId+"'>领取</div>"+
+							"<div class='l'>"+(
+								(!isBlank(v.startDate) && !isBlank(v.endDate)) ? 
+									(v.startDate.substr(0,10) +"~"+ v.endDate.substr(0,10)) : (
+											(!isBlank(v.startDate) && isBlank(v.endDate))? (v.startDate.substr(0,10)+"开始"):(
+													(isBlank(v.startDate) && !isBlank(v.endDate))? (v.endDate.substr(0,10)+"结束"):""
+											)
+									)
+								) +
+							"</div>"+
+						"</li>");
+				});
+			}
 			
-			$.each(result.map.user_coupons,function(k,v){
-				$(".cg"+v.couponsId).addClass("h").html("已领取");
-			});
+			
+			
+			if(!isBlank(result.map) && !isBlank(result.map.user_coupons)){
+				$.each(result.map.user_coupons,function(k,v){
+					$(".cg"+v.couponsId).addClass("h").html("已领取");
+				});
+			}
+			
 			
 			$("#couponsUl >li >.g").click(function(){
 				if($(this).hasClass("h"))return;
@@ -651,23 +658,23 @@ function receive_coupons(_couponsId){
 
 //验证优惠券
 function checkCoupons(){
+	couponsId = 0;
 	if($("#couponsUl").length == 0)return ;
-	var _amount = $("#ot").attr("total");
+	var _amount = 0;
 	var _couponsId = 0;
 	var usercoupons = "";
 	
 	$("#couponsUl li").each(function(i,e){
 		if(parseInt($("#ot").attr("total")) >= parseInt($(e).attr("quota")) * 100){
 			if($(e).attr("couponstype") == "reduce"){//减
-				if((parseInt($("#ot").attr("total")) - parseInt($(e).attr("discounts")) * 100) < _amount ){
-					_amount = parseInt($("#ot").attr("total")) - parseInt($(e).attr("discounts")) * 100;
+				if(parseInt($(e).attr("discounts")) * 100 > _amount ){
+					_amount = parseInt($(e).attr("discounts")) * 100;
 					_couponsId = $(e).attr("value");
 					usercoupons = $(e).attr("couponsName")+"满"+$(e).attr("quota")+"减"+$(e).attr("discounts");
 				}
 			}else if($(e).attr("couponstype") == "rebate"){//折扣
-				console.log((parseInt($("#ot").attr("total")) - parseInt($("#ot").attr("total")) * parseInt($(e).attr("discounts")) / 100));
-				if((parseInt($("#ot").attr("total")) * parseInt($(e).attr("discounts")) / 100 ) < _amount ){
-					_amount = parseInt($("#ot").attr("total")) * parseInt($(e).attr("discounts")) / 100;
+				if((parseInt($("#ot").attr("total")) * (100 - parseInt($(e).attr("discounts"))) / 100 ) > _amount ){
+					_amount = parseInt($("#ot").attr("total")) * (100 - parseInt($(e).attr("discounts"))) / 100;
 					_couponsId = $(e).attr("value");
 					usercoupons = $(e).attr("couponsName")+"满"+$(e).attr("quota")+"打折"+$(e).attr("discounts");
 				}
@@ -678,10 +685,10 @@ function checkCoupons(){
 	if(parseInt(_couponsId) > 0){
 		couponsId = _couponsId;
 		var amount = parseInt($("#ot").attr("total")) - parseInt(_amount);
-		$("#choose_coupons").attr("couponsId",_couponsId).attr("amount",_amount.toFixed(0));
+		$("#choose_coupons").attr("couponsId",_couponsId).attr("amount",amount.toFixed(0));
 		$("#usercoupons").html(usercoupons);
-		$("#ot").html("￥"+ (_amount / 100 ).toFixed(2)).attr("wpayamount",_amount.toFixed(0));
-		$("#coup_amount").html("<div>￥"+($("#ot").attr("total") / 100).toFixed(2)+"</div><div>优惠￥"+(amount / 100).toFixed(2)+"</div>");
+		$("#ot").html("￥"+ (amount / 100 ).toFixed(2)).attr("wpayamount",amount.toFixed(0));
+		$("#coup_amount").html("<div>￥"+($("#ot").attr("total") / 100).toFixed(2)+"</div><div>优惠￥"+(_amount / 100).toFixed(2)+"</div>");
 		amount = null;
 		$("#choose_coupons").removeClass("dn");
 	}else{

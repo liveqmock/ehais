@@ -323,7 +323,7 @@ public class ShoppingServiceImpl extends CommonServiceImpl implements ShoppingSe
 		order.setAgencyId(0);
 		order.setInvType("");
 		order.setParentId(0L);
-		order.setDiscount(0F);
+		order.setDiscount(0);
 //		order.setStoreId(0);
 		order.setRemark("");
 		order.setIsVoid("1");

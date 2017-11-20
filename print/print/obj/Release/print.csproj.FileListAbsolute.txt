@@ -14,6 +14,7 @@ D:\workspace_jee\ehais\print\print\bin\Release\print.exe
 D:\workspace_jee\ehais\print\print\bin\Release\print.pdb
 D:\workspace_jee\ehais\print\print\bin\Release\print.exe.CodeAnalysisLog.xml
 D:\workspace_jee\ehais\print\print\bin\Release\print.exe.lastcodeanalysissucceeded
+D:\workspace_jee\ehais\print\print\obj\Release\print.csprojResolveAssemblyReference.cache
 D:\workspace_jee\ehais\print\print\obj\Release\print.WeiXinPrintExe.resources
 D:\workspace_jee\ehais\print\print\obj\Release\print.Properties.Resources.resources
 D:\workspace_jee\ehais\print\print\obj\Release\print.csproj.GenerateResource.Cache

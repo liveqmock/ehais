@@ -68,6 +68,12 @@ $(function(){
     field: 'payName',
     title: '支付方式'
 },{
+    field: 'goodsAmount',
+    title: '菜品金额',
+    formatter : function(value,rows,index){
+    	return ( value / 100 ).toFixed(2);
+    }
+},{
     field: 'orderAmount',
     title: '订单金额',
     formatter : function(value,rows,index){
@@ -83,6 +89,12 @@ $(function(){
     	}else{
     		return "";
     	}
+    }
+},{
+    field: 'discount',
+    title: '优惠/折扣',
+    formatter : function(value,rows,index){
+    	return ( value / 100 ).toFixed(2);
     }
 },{
     field: 'zipcode',

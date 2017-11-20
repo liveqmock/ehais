@@ -56,7 +56,7 @@ namespace print
 
             //设置边距
 
-            Margins margin = new Margins(10, 10, 10, 10);
+            Margins margin = new Margins(0, 0, 10, 10);
 
             pd.DefaultPageSettings.Margins = margin;
             pdKitchen.DefaultPageSettings.Margins = margin;
@@ -64,9 +64,9 @@ namespace print
 
             ////纸张设置默认
 
-            Console.WriteLine("getYc(100):" + getYc(58) + "--" + getYc(100));
+            //Console.WriteLine("getYc(100):" + getYc(58) + "--" + getYc(100));
 
-            PaperSize pageSize = new PaperSize("First custom size", getYc(58), 600);
+            //PaperSize pageSize = new PaperSize("First custom size", getYc(58), 600);
 
             //pd.DefaultPageSettings.PaperSize = pageSize;
             //pdKitchen.DefaultPageSettings.PaperSize = pageSize;
@@ -152,7 +152,7 @@ namespace print
             float fltXPos = 0;                   //每一行的X坐标  
             float fltLeftMargin = e.MarginBounds.Left;                     //获取打印起始位置  
             float fltTopMargin = e.MarginBounds.Top;
-            float fltScreenWidth = this.pd.DefaultPageSettings.PaperSize.Width - fltLeftMargin;
+            float fltScreenWidth = this.pd.DefaultPageSettings.PaperSize.Width - fltLeftMargin - 10;
             float fltRowHeight = printFont.GetHeight(e.Graphics) + 10;
 
 
@@ -226,7 +226,7 @@ namespace print
                     fltYPos += fltRowHeight;
                     //rec = new RectangleF(fltXPos, fltYPos, fltScreenWidth/2 - fltXPos, fltRowHeight);
                     //g.DrawString("> "+item["goodsName"].ToString(), printFont, Brushes.Black, rec, stringFormat);
-                    g.DrawString("> " + item["goodsName"].ToString() , printFont, System.Drawing.Brushes.Black, fltXPos, fltYPos);
+                    g.DrawString(item["goodsName"].ToString() , printFont, System.Drawing.Brushes.Black, fltXPos, fltYPos);
 
 
                     fltYPos += fltRowHeight;
@@ -257,7 +257,7 @@ namespace print
 
 
 
-            fltYPos += fltRowHeight*1;
+            fltYPos += fltRowHeight;
             g.DrawLine(Pens.Black, fltXPos, fltYPos + fltRowHeight / 2, fltScreenWidth, fltYPos + fltRowHeight / 2);
 
             fltYPos += fltRowHeight;
@@ -362,7 +362,7 @@ namespace print
             float fltXPos = 0;                   //每一行的X坐标  
             float fltLeftMargin = e.MarginBounds.Left;                     //获取打印起始位置  
             float fltTopMargin = e.MarginBounds.Top;
-            float fltScreenWidth = this.pd.DefaultPageSettings.PaperSize.Width - fltLeftMargin;
+            float fltScreenWidth = this.pd.DefaultPageSettings.PaperSize.Width - fltLeftMargin - 10;
             float fltRowHeight = printFont.GetHeight(e.Graphics) + 10;
 
 
@@ -375,8 +375,8 @@ namespace print
             fltYPos = fltTopMargin;
             RectangleF rec = new RectangleF(fltXPos, fltYPos, fltScreenWidth, fltRowHeight);//
 
-            fltYPos += (fltRowHeight * 1);
-            rec = new RectangleF(fltXPos, fltYPos, fltScreenWidth, fltRowHeight);
+            //fltYPos += (fltRowHeight * 1);
+            //rec = new RectangleF(fltXPos, fltYPos, fltScreenWidth, fltRowHeight);
             stringFormat.Alignment = StringAlignment.Center;
 
             printFont = new Font(new FontFamily("Arial"), 10);
