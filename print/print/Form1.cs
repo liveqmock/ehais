@@ -49,17 +49,17 @@ namespace print
             pd = new PrintDocument();
             pdKitchen = new PrintDocument();
 
-            PrintDialog BS = new PrintDialog();
-            int x = BS.PrinterSettings.DefaultPageSettings.PaperSize.Width;//打印机默认纸张大小
-            int y = BS.PrinterSettings.DefaultPageSettings.PaperSize.Height;
-            Console.WriteLine("当前打印机的设置：" + x + "====" + y);
+            //PrintDialog BS = new PrintDialog();
+            //int x = BS.PrinterSettings.DefaultPageSettings.PaperSize.Width;//打印机默认纸张大小
+            //int y = BS.PrinterSettings.DefaultPageSettings.PaperSize.Height;
+            //Console.WriteLine("当前打印机的设置：" + x + "====" + y);
 
             //设置边距
 
-            Margins margin = new Margins(0, 0, 10, 10);
+            //Margins margin = new Margins(0, 0, 0, 0);
 
-            pd.DefaultPageSettings.Margins = margin;
-            pdKitchen.DefaultPageSettings.Margins = margin;
+            //pd.DefaultPageSettings.Margins = margin;
+            //pdKitchen.DefaultPageSettings.Margins = margin;
 
 
             ////纸张设置默认
@@ -76,6 +76,8 @@ namespace print
             //pd.PrintPage += new PrintPageEventHandler(this.pd_PrintPage);
             pd.PrintPage += new PrintPageEventHandler(this.MyPrintDocument_PrintPage);
 
+
+            //小丸子不要厨房单
             pdKitchen.PrintPage += new PrintPageEventHandler(this.MyPrintDocument_PrintPage_to_Kitchen);
 
 
@@ -150,9 +152,9 @@ namespace print
 
             float fltYPos = 0;                   //每一行的Y坐标  
             float fltXPos = 0;                   //每一行的X坐标  
-            float fltLeftMargin = e.MarginBounds.Left;                     //获取打印起始位置  
-            float fltTopMargin = e.MarginBounds.Top;
-            float fltScreenWidth = this.pd.DefaultPageSettings.PaperSize.Width - fltLeftMargin - 10;
+            float fltLeftMargin = 0;// e.MarginBounds.Left;                     //获取打印起始位置  
+            float fltTopMargin = 0;// e.MarginBounds.Top;
+            float fltScreenWidth = this.pd.DefaultPageSettings.PaperSize.Width - fltLeftMargin - 40;
             float fltRowHeight = printFont.GetHeight(e.Graphics) + 10;
 
 
@@ -204,6 +206,7 @@ namespace print
 
             printFont = new Font(new FontFamily("Arial"), 8);
 
+            
 
             fltYPos += fltRowHeight;            
             g.DrawLine(Pens.Black, fltXPos, fltYPos + fltRowHeight / 2, fltScreenWidth, fltYPos + fltRowHeight / 2);
@@ -215,6 +218,8 @@ namespace print
             g.DrawString("小计", printFont, System.Drawing.Brushes.Black, fltScreenWidth / 2 + fltScreenWidth / 2 / 3 * 2, fltYPos);
 
             stringFormat.Alignment = StringAlignment.Near;
+
+            printFont = new Font(new FontFamily("Arial"), 10);
 
             int quantity = 0;
             long total = 0;
@@ -362,7 +367,7 @@ namespace print
             float fltXPos = 0;                   //每一行的X坐标  
             float fltLeftMargin = e.MarginBounds.Left;                     //获取打印起始位置  
             float fltTopMargin = e.MarginBounds.Top;
-            float fltScreenWidth = this.pd.DefaultPageSettings.PaperSize.Width - fltLeftMargin - 10;
+            float fltScreenWidth = this.pd.DefaultPageSettings.PaperSize.Width - fltLeftMargin - 40;
             float fltRowHeight = printFont.GetHeight(e.Graphics) + 10;
 
 
@@ -388,6 +393,14 @@ namespace print
 
             g.DrawString("餐桌：" + joOrder["zipcode"].ToString(), printFont, Brushes.Black, rec, stringFormat);
 
+            stringFormat.Alignment = StringAlignment.Near;
+            fltYPos += fltRowHeight;
+            g.DrawString("订单编号：" + joOrder["daySerialNumber"].ToString(), printFont, System.Drawing.Brushes.Black, fltXPos, fltYPos);
+
+            fltYPos += fltRowHeight;
+            g.DrawString("日期：" + joOrder["addTime"].ToString(), printFont, System.Drawing.Brushes.Black, fltXPos, fltYPos);
+
+
 
             fltYPos += fltRowHeight;
             g.DrawLine(Pens.Black, fltXPos, fltYPos + fltRowHeight / 2, fltScreenWidth, fltYPos + fltRowHeight / 2);
@@ -399,7 +412,7 @@ namespace print
             g.DrawString("菜名", printFont, System.Drawing.Brushes.Black, fltXPos, fltYPos);
             g.DrawString("数量", printFont, System.Drawing.Brushes.Black, fltScreenWidth / 5 * 4, fltYPos);
 
-            stringFormat.Alignment = StringAlignment.Near;
+            //stringFormat.Alignment = StringAlignment.Near;
 
 
             foreach (JObject item in jOrderGoodsList)

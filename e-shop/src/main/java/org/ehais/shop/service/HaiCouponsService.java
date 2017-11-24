@@ -20,6 +20,14 @@ public interface HaiCouponsService extends CommonService{
 	
 
 
+	/**
+	 * 获取代理合伙的对应下属非餐饮商家的所有优惠券
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	public ReturnObject<HaiCoupons> partner_coupons_list(HttpServletRequest request,Integer partnerId)throws Exception;
+	
 	
 
 }

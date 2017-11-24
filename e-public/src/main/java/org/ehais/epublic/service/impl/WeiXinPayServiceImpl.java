@@ -66,6 +66,9 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 	@Autowired
 	private HaiStoreStatisticsMapper haiStoreStatisticsMapper;
 		
+	/**
+	 * 微信支付需要的js参数通过此方法返回
+	 */
 	@Override
 	public WeiXinWCPay WeiXinPayApi(HttpServletRequest request, String cid,
 			String openid,
@@ -178,6 +181,9 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 	}
 
 
+	/**
+	 * 微信支付回调函数
+	 */
 	@Override
 	public ReturnObject<WeiXinNotifyPay> WeiXinNotifyPay(HttpServletRequest request,
 			WeiXinNotifyPay notifyPay,String cid,
@@ -211,9 +217,10 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 				rm.setMsg("订单状态异常");return rm;
 			}
 			
+			//获取流水号
 			int daySerialCount = haiOrderInfoMapper.daySerialNumber(store_id);
 			
-			
+			//更新订单的状态
 			haiOrderInfoMapper.updateOrderPayStatus(
 					store_id, 
 					notifyPay.getOut_trade_no(), 
@@ -222,7 +229,13 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 					Long.valueOf(System.currentTimeMillis() / 1000).intValue(),
 					0,"微信支付",daySerialCount+1);
 			
+			//更新统一下单的订单信息
 			wxUnifiedorderMapper.UpdatePayStatue(store_id, notifyPay.getOut_trade_no(), EOrderStatusEnum.success);
+			
+			//更新优惠券的使用数量
+			if(orderInfo.getCouponsId() != null && orderInfo.getCouponsId() > 0){
+				haiOrderInfoMapper.updateCouponsUseCount(store_id, orderInfo.getCouponsId());
+			}
 			
 			HaiStoreStatistics storeStatistics = haiStoreStatisticsMapper.selectByPrimaryKey(store_id);
 			if(storeStatistics == null){

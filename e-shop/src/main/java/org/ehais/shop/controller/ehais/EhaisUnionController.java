@@ -18,6 +18,7 @@ import org.ehais.epublic.mapper.EHaiAdminUserMapper;
 import org.ehais.epublic.mapper.EHaiStoreMapper;
 import org.ehais.epublic.mapper.EHaiUsersMapper;
 import org.ehais.epublic.mapper.HaiOrderInfoMapper;
+import org.ehais.epublic.mapper.HaiPartnerMapper;
 import org.ehais.epublic.mapper.HaiStoreStatisticsMapper;
 import org.ehais.epublic.mapper.WpPublicMapper;
 import org.ehais.epublic.model.EHaiAdminUser;
@@ -29,6 +30,7 @@ import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.epublic.model.EHaiUsersExample;
 import org.ehais.epublic.model.HaiOrderInfoExample;
 import org.ehais.epublic.model.HaiOrderInfoWithBLOBs;
+import org.ehais.epublic.model.HaiPartner;
 import org.ehais.epublic.model.HaiStoreStatistics;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.epublic.service.EStoreService;
@@ -36,6 +38,7 @@ import org.ehais.epublic.service.EWPPublicService;
 import org.ehais.shop.mapper.HaiOrderGoodsMapper;
 import org.ehais.shop.model.HaiOrderGoods;
 import org.ehais.shop.model.HaiOrderGoodsExample;
+import org.ehais.shop.service.HaiStoreService;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.DateUtil;
@@ -76,7 +79,10 @@ public class EhaisUnionController extends EhaisCommonController{
 	protected WpPublicMapper wpPublicMapper;
 	@Autowired
 	private HaiStoreStatisticsMapper haiStoreStatisticsMapper;
-	
+	@Autowired
+	private HaiPartnerMapper haiPartnerMapper;
+	@Autowired
+	private HaiStoreService haiStoreService;
 	
 	//http://127.0.0.1/ehaisUnion!7623c10-01151d01-10865702-2816ee03-32c12e32b9acd
 	//http://mg.ehais.com/ehaisUnion!7623c10-01151d01-10865702-2816ee03-32c12e32b9acd
@@ -146,16 +152,16 @@ public class EhaisUnionController extends EhaisCommonController{
 			EHaiStore store = eStoreService.getEStore(Integer.valueOf(map.get("store_id").toString()));
 			modelMap.addAttribute("store",store);
 			
-			HaiStoreStatistics storeStatistics = haiStoreStatisticsMapper.selectByPrimaryKey(Integer.valueOf(map.get("store_id").toString()));
-			if(storeStatistics == null){
-				storeStatistics = new HaiStoreStatistics();
-				storeStatistics.setStoreId(Integer.valueOf(map.get("store_id").toString()));
-				storeStatistics.setWeixinAmount(0);
-				storeStatistics.setWeixinQuantity(0);
-				storeStatistics.setCashAmount(0);
-				storeStatistics.setCashQuantity(0);
-			}
-			modelMap.addAttribute("storeStatistics", storeStatistics);
+//			HaiStoreStatistics storeStatistics = haiStoreStatisticsMapper.selectByPrimaryKey(Integer.valueOf(map.get("store_id").toString()));
+//			if(storeStatistics == null){
+//				storeStatistics = new HaiStoreStatistics();
+//				storeStatistics.setStoreId(Integer.valueOf(map.get("store_id").toString()));
+//				storeStatistics.setWeixinAmount(0);
+//				storeStatistics.setWeixinQuantity(0);
+//				storeStatistics.setCashAmount(0);
+//				storeStatistics.setCashQuantity(0);
+//			}
+//			modelMap.addAttribute("storeStatistics", storeStatistics);
 			request.getSession().setAttribute(EConstants.SESSION_STORE_ID,user.getStoreId());
 			return "/ehais/ehaisManage";
 		}
@@ -205,6 +211,13 @@ public class EhaisUnionController extends EhaisCommonController{
 			long sUser = eHaiStoreMapper.countByExample(storeExp);
 			if(sUser > 0){rm.setMsg("此商户名称已存在，如同名请联系管理员微信:haisoftware");return this.writeJson(rm);}
 			
+			//代理编号
+//			Integer partnerId = Integer.valueOf(map.get("partnerId").toString());
+//			HaiPartner partner = haiPartnerMapper.selectByPrimaryKey(partnerId);
+//			if(partner == null){
+//				rm.setMsg("代理帐号不存在");return this.writeJson(rm);
+//			}
+			
 			Integer addTime = Long.valueOf(System.currentTimeMillis() / 1000).intValue();
 			EHaiStore store = new EHaiStore();
 			store.setStoreName(store_name);
@@ -219,6 +232,7 @@ public class EhaisUnionController extends EhaisCommonController{
 			store.setPublicId(default_public_id);
 			store.setState(true);
 			if(map.get("partnerId")!=null)store.setPartnerId(Integer.valueOf(map.get("partnerId").toString()));
+//			store.setPayModule(partner.getPayModule());//继承代理的默认支付模式
 			eHaiStoreMapper.insert(store);
 			
 			user.setStoreId(store.getStoreId());
@@ -256,6 +270,19 @@ public class EhaisUnionController extends EhaisCommonController{
 		
 		
 		return this.writeJson(rm);
+		
+
+//		try {
+//			ReturnObject<EHaiStore> rm = haiStoreService.store_register(request, pid, username, password, confirmPassword, store_name, contacts, mobile, address, EAdminClassifyEnum.dining, weixin_token,EUserTypeEnum.dining);
+//			return this.writeJson(rm);
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		return this.writeJsonObject(new HashMap<String,Object>(){{this.put("code", 0);this.put("msg", "注册失败");}});
+		
+		
 	}
 	
 	

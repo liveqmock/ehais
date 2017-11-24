@@ -26,7 +26,7 @@ import org.ehais.common.EConstants;
 import org.ehais.epublic.mapper.EHaiUsersMapper;
 import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.epublic.model.EHaiUsersExample;
-import org.ehais.epublic.model.OrderDiningStatistics;
+import org.ehais.epublic.model.OrderStoreStatistics;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.protocol.PermissionProtocol;
 import org.ehais.shop.controller.ehais.EhaisCommonController;

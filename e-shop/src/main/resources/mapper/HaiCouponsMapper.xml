@@ -453,7 +453,7 @@
   
   
   <sql id="WhereSQL">
-  	(coupons_quantity = 0 or (coupons_quantity &gt; 0 and receive_count &lt; coupons_quantity)) 
+  	(coupons_quantity = 0 or (coupons_quantity &gt; 0 and use_count &lt; coupons_quantity)) 
 
 	AND
 

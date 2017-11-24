@@ -13,6 +13,7 @@ import org.ehais.epublic.model.EHaiArticle;
 import org.ehais.epublic.model.EHaiArticleCat;
 import org.ehais.epublic.model.EHaiArticleCatExample;
 import org.ehais.epublic.model.EHaiArticleExample;
+import org.ehais.shop.service.HaiStoreStatisticsService;
 import org.ehais.util.EHttpClientUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,11 +31,14 @@ public class TestWebController extends CommonController{
 	private EHaiArticleMapper eHaiArticleMapper;
 	@Autowired
 	private EHaiArticleCatMapper eHaiArticleCatMapper;
-
+	@Autowired
+	private HaiStoreStatisticsService haiStoreStatisticsService;
+	
+	
 	@RequestMapping("/validate")
 	public String index(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) throws Exception {
-		
+		haiStoreStatisticsService.dayStoreStatistics();
 		return "/web/test/validate";
 	}
 	

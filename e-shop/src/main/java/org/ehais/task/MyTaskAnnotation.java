@@ -8,12 +8,12 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.controller.CommonController;
 import org.ehais.epublic.mapper.EHaiUsersMapper;
 import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.epublic.model.EHaiUsersExample;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.epublic.service.EWPPublicService;
+import org.ehais.shop.service.HaiStoreStatisticsService;
 import org.ehais.shop.service.VtuService;
 import org.ehais.util.DateUtil;
 import org.ehais.util.EmojiFilterUtils;
@@ -48,6 +48,8 @@ public class MyTaskAnnotation {
 	private HttpServletRequest request;
 	@Autowired
 	private VtuService vtuService;
+	@Autowired
+	private HaiStoreStatisticsService haiStoreStatisticsService;
 
 	public static String webapp_domain = ResourceUtil.getProValue("webapp.domain");
 	public static String webapp_vtu = ResourceUtil.getProValue("webapp.vtu");
@@ -199,6 +201,21 @@ public class MyTaskAnnotation {
 //		System.out.println(DateUtil.formatDate(date, DateUtil.FORMATSTR_1)
 //				+ "========================================Task4");
 //	}
+	
+	//零晨07分运行
+	@Scheduled(cron = "0 14 4  * * ? ")
+	public void storeStatistics() {
+		Date date = new Date();
+		log.info(DateUtil.formatDate(date, DateUtil.FORMATSTR_1) + "========storeStatistics");
+
+		try {
+			haiStoreStatisticsService.dayStoreStatistics();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
 	
 	
 	

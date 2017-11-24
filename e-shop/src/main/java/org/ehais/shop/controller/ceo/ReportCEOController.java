@@ -17,7 +17,7 @@ import org.ehais.epublic.mapper.HaiPartnerMapper;
 import org.ehais.epublic.model.EHaiStore;
 import org.ehais.epublic.model.EHaiStoreExample;
 import org.ehais.epublic.model.HaiPartner;
-import org.ehais.epublic.model.OrderDiningStatistics;
+import org.ehais.epublic.model.OrderStoreStatistics;
 import org.ehais.protocol.PermissionProtocol;
 import org.ehais.shop.service.HaiStoreService;
 import org.ehais.tools.ReturnObject;
@@ -78,7 +78,7 @@ public class ReportCEOController extends CommonController{
 			@RequestParam(value = "end_date", required = true) String end_date,
 			@RequestParam(value = "store_id", required = false) Integer store_id
 			) {	
-		ReturnObject<OrderDiningStatistics> rm = new ReturnObject<OrderDiningStatistics>();
+		ReturnObject<OrderStoreStatistics> rm = new ReturnObject<OrderStoreStatistics>();
 		rm.setCode(0);
 		try{
 			if(store_id == null || store_id == 0)store_id = (Integer) request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
@@ -87,7 +87,7 @@ public class ReportCEOController extends CommonController{
 			endDate = DateUtil.addDate(endDate, 1);
 			Integer start_time = Long.valueOf(startDate.getTime() / 1000).intValue();
 			Integer end_time = Long.valueOf(endDate.getTime() / 1000).intValue();
-			List<OrderDiningStatistics> list = haiOrderInfoMapper.order_dining_statistics(store_id, start_time, end_time);
+			List<OrderStoreStatistics> list = haiOrderInfoMapper.order_dining_statistics(store_id, start_time, end_time);
 			rm.setRows(list);
 			rm.setCode(1);
 		}catch(Exception e){

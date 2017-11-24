@@ -291,6 +291,17 @@ bean.setUseCount(model.getUseCount());
 		return bootStrapList;
 	}
 
+	
+	/**
+	 * 获取代理合伙的对应下属非餐饮商家的所有优惠券
+	 */
+	@Override
+	public ReturnObject<HaiCoupons> partner_coupons_list(HttpServletRequest request,Integer partnerId) throws Exception {
+		// TODO Auto-generated method stub
+		//获取代理下属的非餐饮的商家
+		return null;
+	}
+
 
 
 

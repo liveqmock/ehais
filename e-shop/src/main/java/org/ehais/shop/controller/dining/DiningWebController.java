@@ -115,7 +115,7 @@ public class DiningWebController extends EhaisCommonController{
 	protected String prefix_order_dining = ResourceUtil.getProValue("prefix.order.dining");
 	
 	//http://127.0.0.1/diningStore!934a1580-0c1e0501-156ed21242-2b36621253-314dd0C104-49175b56
-	//http://631a7eb3.ngrok.io/diningStore!934a1580-0c1e0501-156ed21242-2b36621253-314dd0C104-49175b56
+	//http://e827fa24.ngrok.io/diningStore!934a1580-0c1e0501-156ed21242-2b36621253-314dd0C104-49175b56
 	@RequestMapping("/diningStore!{sid}")
 	public String diningStore(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -415,17 +415,27 @@ public class DiningWebController extends EhaisCommonController{
 			}
 			
 			if(couponsId != null && couponsId > 0){
+				HaiCoupons haiCoupons = haiCouponsMapper.selectByPrimaryKey(couponsId);
+				if(haiCoupons == null ){
+					rm.setMsg("优惠券无效");
+					return this.writeJson(rm);
+				}
+				if(haiCoupons.getUseCount() != null && haiCoupons.getCouponsQuantity() != null && haiCoupons.getCouponsQuantity() > 0 && haiCoupons.getUseCount().intValue() >= haiCoupons.getCouponsQuantity().intValue()){
+					rm.setMsg("优惠券已使用满额，请刷新重新下单");
+					return this.writeJson(rm);
+				}
 				
 				//带优惠券的价格效验v2版本.......................
 				//获取优惠券，判断优惠券ID是否正确
 				List<HaiCoupons> list = haiCouponsMapper.selectStoreCoupons(store_id);
-				Integer _amount = 0;//优惠的金额
+				
+				Integer _amount = 0;//优惠的金额，以分为单位判断
 				Integer _couponsId = 0;
 				for (HaiCoupons hcp : list) {
 					if(total.intValue() >= hcp.getQuota().intValue()){
 						if(hcp.getCouponsType().equals(ECouponsTypeEnum.reduce)){//立减优惠
-							if(hcp.getDiscounts().intValue() > _amount.intValue()){
-								_amount = hcp.getDiscounts();
+							if(hcp.getDiscounts().intValue() * 100 > _amount.intValue()){
+								_amount = hcp.getDiscounts() * 100;
 								_couponsId = hcp.getCouponsId();
 							}
 						}else if(hcp.getCouponsType().equals(ECouponsTypeEnum.rebate)){//折扣优惠
@@ -437,12 +447,12 @@ public class DiningWebController extends EhaisCommonController{
 					}
 				}
 				//判断优惠券的价格是否正确
-				if((wTotal.intValue() - wPayAmount.intValue()) != _amount.intValue()){
-					rm.setMsg("your coupons amount is wrong");
+				if((wTotal.intValue() - wPayAmount.intValue()) != _amount.intValue() ){
+					rm.setMsg("优惠券金额不正确");
 					return this.writeJson(rm);
 				}
 				if(_couponsId.intValue() != couponsId.intValue()){
-					rm.setMsg("your coupons id is wrong");
+					rm.setMsg("优惠券使用有误");
 					return this.writeJson(rm);
 				}
 				//更新支付金额为优惠后的金额
@@ -490,6 +500,10 @@ public class DiningWebController extends EhaisCommonController{
 			
 			haiOrderInfoMapper.insert(orderInfo);
 			Long order_id = orderInfo.getOrderId();
+			
+			if(couponsId != null && couponsId > 0){//更新优惠券记录使用数量				
+				haiOrderInfoMapper.updateCouponsUseCount(store_id, couponsId);
+			}
 			
 			List<HaiOrderGoods> orderGoodsList = new ArrayList<HaiOrderGoods>();
 			for (HaiGoods haiGoods : listGoods) {
@@ -562,6 +576,7 @@ public class DiningWebController extends EhaisCommonController{
 			
 			rm.setCode(1);
 			rm.setModel(orderInfo);
+			rm.setMsg("订单提交成功");
 			
 		}catch(Exception e){
 			e.printStackTrace();

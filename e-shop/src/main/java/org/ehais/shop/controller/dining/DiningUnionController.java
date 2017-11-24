@@ -1,6 +1,6 @@
 package org.ehais.shop.controller.dining;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,28 +19,19 @@ import org.ehais.epublic.mapper.HaiOrderInfoMapper;
 import org.ehais.epublic.mapper.HaiPartnerMapper;
 import org.ehais.epublic.mapper.HaiStoreStatisticsMapper;
 import org.ehais.epublic.mapper.WpPublicMapper;
-import org.ehais.epublic.model.EHaiAdminUser;
-import org.ehais.epublic.model.EHaiAdminUserExample;
-import org.ehais.epublic.model.EHaiAdminUserWithBLOBs;
 import org.ehais.epublic.model.EHaiStore;
-import org.ehais.epublic.model.EHaiStoreExample;
 import org.ehais.epublic.model.EHaiUsers;
-import org.ehais.epublic.model.EHaiUsersExample;
 import org.ehais.epublic.model.HaiOrderInfoExample;
 import org.ehais.epublic.model.HaiOrderInfoWithBLOBs;
 import org.ehais.epublic.model.HaiPartner;
-import org.ehais.epublic.model.HaiStoreStatistics;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.epublic.service.EPartnerService;
-import org.ehais.epublic.service.EStoreService;
 import org.ehais.epublic.service.EWPPublicService;
 import org.ehais.shop.controller.ehais.EhaisCommonController;
+import org.ehais.shop.service.HaiStoreService;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
-import org.ehais.util.EncryptUtils;
 import org.ehais.util.SignUtil;
-import org.ehais.weixin.model.WeiXinSignature;
-import org.ehais.weixin.utils.WeiXinUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,8 +42,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import net.sf.json.JSONObject;
 
 @Controller
 @RequestMapping("/")
@@ -70,8 +59,6 @@ public class DiningUnionController extends EhaisCommonController{
 	@Autowired
 	private HaiPartnerMapper haiPartnerMapper;
 	@Autowired
-	private EStoreService eStoreService;
-	@Autowired
 	private EWPPublicService eWPPublicService;
 	@Autowired
 	protected WpPublicMapper wpPublicMapper;
@@ -79,6 +66,8 @@ public class DiningUnionController extends EhaisCommonController{
 	private HaiStoreStatisticsMapper haiStoreStatisticsMapper;
 	@Autowired
 	private EPartnerService ePartnerService;
+	@Autowired
+	private HaiStoreService haiStoreService;
 	
 	
 	//http://127.0.0.1/diningUnion!5674d100-033b4b301-1299581252-2e64baa931f09d6c22
@@ -88,6 +77,11 @@ public class DiningUnionController extends EhaisCommonController{
 			HttpServletRequest request,HttpServletResponse response,
 			@PathVariable(value = "pid") String pid	,
 			@RequestParam(value = "code", required = false) String code ) {	
+		
+		Integer store_id = SignUtil.getUriStoreId(pid);
+		if(store_id == 0 || store_id == null){
+			return "redirect:"+website; //错误的链接，跳转商城
+		}
 		
 		try{
 			Map<String,Object> map = SignUtil.getPartnerId(pid,weixin_token);
@@ -121,35 +115,42 @@ public class DiningUnionController extends EhaisCommonController{
 					EHaiUsers user = eHaiUsersMapper.selectByPrimaryKey(user_id);
 //					EHaiStore store = eStoreService.getEStore(Integer.valueOf(map.get("store_id").toString()));
 					WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(Integer.valueOf(map.get("store_id").toString()));
-					String link = request.getScheme() + "://" + request.getServerName() + "/diningUnion!"+pid;
-					WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, Integer.valueOf(map.get("store_id").toString()), weixin_appid, weixin_appsecret, null);
-					signature.setTitle(partnerName+"微信点餐应用");
-					signature.setLink(link);
-					signature.setDesc("帮助餐厅“互联网+”转型的移动O2O服务平台");
-					signature.setImgUrl(defaultimg);
-					List<String> jsApiList = new ArrayList<String>();
-					jsApiList.add("onMenuShareTimeline");
-					jsApiList.add("onMenuShareAppMessage");
-					jsApiList.add("onMenuShareQQ");
-					jsApiList.add("onMenuShareWeibo");
-					jsApiList.add("onMenuShareQZone");
-					signature.setJsApiList(jsApiList);
-					modelMap.addAttribute("signature", JSONObject.fromObject(signature).toString());
+					String link = request.getScheme() + "://" + request.getServerName() + "/diningUnion!"+SignUtil.setPartnerId(store_id, Integer.valueOf(map.get("partnerId").toString()), Long.valueOf(map.get("userId").toString()), user_id, wp.getToken());
+//					WeiXinSignature signature = WeiXinUtil.SignatureJSSDK(request, Integer.valueOf(map.get("store_id").toString()), weixin_appid, weixin_appsecret, null);
+//					signature.setTitle(partnerName+"微信点餐应用");
+//					signature.setLink(link);
+//					signature.setDesc("帮助餐厅“互联网+”转型的移动O2O服务平台");
+//					signature.setImgUrl(defaultimg);
+//					List<String> jsApiList = new ArrayList<String>();
+//					jsApiList.add("onMenuShareTimeline");
+//					jsApiList.add("onMenuShareAppMessage");
+//					jsApiList.add("onMenuShareQQ");
+//					jsApiList.add("onMenuShareWeibo");
+//					jsApiList.add("onMenuShareQZone");
+//					signature.setJsApiList(jsApiList);
+//					modelMap.addAttribute("signature", JSONObject.fromObject(signature).toString());
 					
+//					EHaiStore store = eStoreService.getEStore(store_id);
+					
+					this.shareWeiXin(modelMap, request, response, wp, store_id, partnerName+"微信点餐应用", link, "帮助餐厅“互联网+”转型的移动O2O服务平台", defaultimg);
+					
+					
+					modelMap.addAttribute("department", "餐饮");
+					modelMap.addAttribute("regiterUnion", "diningRegiterUnion");
 					
 					if(user == null || user.getUserType() != EUserTypeEnum.dining){
 						return "/dining/diningUnion";
 					}else{
-						HaiStoreStatistics storeStatistics = haiStoreStatisticsMapper.selectByPrimaryKey(Integer.valueOf(map.get("store_id").toString()));
-						if(storeStatistics == null){
-							storeStatistics = new HaiStoreStatistics();
-							storeStatistics.setStoreId(Integer.valueOf(map.get("store_id").toString()));
-							storeStatistics.setWeixinAmount(0);
-							storeStatistics.setWeixinQuantity(0);
-							storeStatistics.setCashAmount(0);
-							storeStatistics.setCashQuantity(0);
-						}
-						modelMap.addAttribute("storeStatistics", storeStatistics);
+//						HaiStoreStatistics storeStatistics = haiStoreStatisticsMapper.selectByPrimaryKey(Integer.valueOf(map.get("store_id").toString()));
+//						if(storeStatistics == null){
+//							storeStatistics = new HaiStoreStatistics();
+//							storeStatistics.setStoreId(Integer.valueOf(map.get("store_id").toString()));
+//							storeStatistics.setWeixinAmount(0);
+//							storeStatistics.setWeixinQuantity(0);
+//							storeStatistics.setCashAmount(0);
+//							storeStatistics.setCashQuantity(0);
+//						}
+//						modelMap.addAttribute("storeStatistics", storeStatistics);
 						request.getSession().setAttribute(EConstants.SESSION_STORE_ID,user.getStoreId());
 						return "/dining/diningManage";
 					}
@@ -187,94 +188,17 @@ public class DiningUnionController extends EhaisCommonController{
 			@RequestParam(value = "address", required = false) String address
 			
 			) {	
-		ReturnObject<EHaiAdminUser> rm = new ReturnObject<EHaiAdminUser>();
-		rm.setCode(0);
-		Map<String,Object> map = SignUtil.getPartnerId(pid,weixin_token);
-		try{
-			
-			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
-			if(user_id == null || user_id == 0){rm.setMsg("user sess empty");return this.writeJson(rm);}
-			if(user_id.longValue() != Long.valueOf(map.get("userId").toString()).longValue()){rm.setMsg("user sess wrong");return this.writeJson(rm);}
-			
-			EHaiUsers user = eHaiUsersMapper.selectByPrimaryKey(user_id);
-			if(user == null){rm.setMsg("user obj empty");return this.writeJson(rm);}
-			//效验用户名
-			EHaiUsersExample userExp = new EHaiUsersExample();
-			userExp.createCriteria().andUserNameEqualTo(username).andUserIdNotEqualTo(user_id);
-			Long cUser = eHaiUsersMapper.countByExample(userExp);
-			if(cUser > 0){rm.setMsg("此用户名已存在");return this.writeJson(rm);}
-
-			//效验用户名
-			EHaiAdminUserExample adminExp = new EHaiAdminUserExample();
-			adminExp.createCriteria().andUserNameEqualTo(username);
-			long aUser = eHaiAdminUserMapper.countByExample(adminExp);
-			if(aUser > 0){rm.setMsg("此用户名已存在");return this.writeJson(rm);}
-			
-			//效验商家名称
-			EHaiStoreExample storeExp = new EHaiStoreExample();
-			storeExp.createCriteria().andStoreNameEqualTo(store_name);
-			long sUser = eHaiStoreMapper.countByExample(storeExp);
-			if(sUser > 0){rm.setMsg("此商户名称已存在，如同名请联系管理员微信:haisoftware");return this.writeJson(rm);}
-			
-			//代理编号
-			Integer partnerId = Integer.valueOf(map.get("partnerId").toString());
-			HaiPartner partner = haiPartnerMapper.selectByPrimaryKey(partnerId);
-			if(partner == null){
-				rm.setMsg("代理帐号不存在");return this.writeJson(rm);
-			}
-			
-			Integer addTime = Long.valueOf(System.currentTimeMillis() / 1000).intValue();
-			EHaiStore store = new EHaiStore();
-			store.setStoreName(store_name);
-			store.setContacts(contacts);
-			store.setMobile(mobile);
-			store.setAddress(address);
-			store.setTheme(EAdminClassifyEnum.dining);
-			store.setOwnerName(contacts);
-			store.setZipcode("");
-			store.setTel(mobile);
-			store.setAddTime(addTime);
-			store.setPartnerId(partnerId);
-			store.setPublicId(default_public_id);
-			store.setState(true);
-			store.setPayModule(partner.getPayModule());//继承代理的默认支付模式
-			eHaiStoreMapper.insert(store);
-			
-			user.setStoreId(store.getStoreId());
-			user.setUserType(EUserTypeEnum.dining);
-			eHaiUsersMapper.updateByPrimaryKey(user);
-			
-			EHaiAdminUserWithBLOBs admin = new EHaiAdminUserWithBLOBs();
-			admin.setUserName(username);
-			admin.setPassword(EncryptUtils.md5(password));
-			admin.setStoreId(store.getStoreId());
-			admin.setEmail("");
-			admin.setClassify(EAdminClassifyEnum.dining);
-			admin.setAddTime(addTime);
-			admin.setLastLogin(addTime);
-			admin.setPartnerId(Integer.valueOf(map.get("partnerId").toString()));
-			eHaiAdminUserMapper.insert(admin);
-			
-//			WpPublicWithBLOBs wp = new WpPublicWithBLOBs();
-//			wp.setPublicName(store_name);
-//			wp.setToken(weixin_token);
-//			wp.setAppid(weixin_appid);
-//			wp.setSecret(weixin_appsecret);
-//			wp.setMchId(weixin_mch_id);
-//			wp.setMchSecret(weixin_mch_secret);
-//			wp.setStoreId(store.getStoreId());
-//			wpPublicMapper.insert(wp);
-			
-			
-			rm.setModel(admin);
-			rm.setCode(1);
-			rm.setMsg("注册成功");
-		}catch(Exception e){
+		
+		try {
+			ReturnObject<EHaiStore> rm = haiStoreService.store_register(request, pid, username, password, confirmPassword, store_name, contacts, mobile, address, EAdminClassifyEnum.dining, weixin_token,EUserTypeEnum.dining);
+			return this.writeJson(rm);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
+		return this.writeJsonObject(new HashMap<String,Object>(){{this.put("code", 0);this.put("msg", "注册失败");}});
 		
-		return this.writeJson(rm);
 	}
 	
 	

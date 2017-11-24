@@ -12,12 +12,17 @@ import org.apache.ibatis.annotations.Update;
 import org.ehais.epublic.model.HaiOrderInfo;
 import org.ehais.epublic.model.HaiOrderInfoExample;
 import org.ehais.epublic.model.HaiOrderInfoWithBLOBs;
-import org.ehais.epublic.model.OrderDiningStatistics;
 import org.ehais.epublic.model.OrderGoodsDaySaleStatistics;
 import org.ehais.epublic.model.OrderGoodsStatistics;
 import org.ehais.epublic.model.OrderStatus;
+import org.ehais.epublic.model.OrderStoreStatistics;
 
 public interface HaiOrderInfoMapper {
+	
+	
+	@Update("update hai_coupons set use_count = ifnull(use_count,0) + 1 where is_valid = 1 and store_id = #{store_id} and coupons_id = #{coupons_id} ")
+	int updateCouponsUseCount(@Param("store_id") Integer store_id,
+			@Param("coupons_id") Integer coupons_id);
 	
 	
 	//查找某时间段所有订单
@@ -136,7 +141,7 @@ public interface HaiOrderInfoMapper {
 			@Result(property="cashAmount", column="cash_amount"),
 			@Result(property="payTime", column="pay_time")
 	})
-	List<OrderDiningStatistics> order_dining_statistics(
+	List<OrderStoreStatistics> order_dining_statistics(
 			@Param("store_id") Integer store_id,
 			@Param("start_time") Integer start_time,
 			@Param("end_time") Integer end_time

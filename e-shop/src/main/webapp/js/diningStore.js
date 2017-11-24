@@ -142,7 +142,7 @@ $(function(){
 	$("#menu_cate").height($(".menu").height());
 	$("#menu_list").height($(".menu").height());
 	$("#myOrderList").height($(".menu").height());
-	$("#couponsList").height($(".menu").height());
+	if($("#coupons").length>0)$("#couponsList").height($(".menu").height());
 	
 
 //	console.log($(".menu").height() +"+"+ $(window).height() +"+"+ $(".swiper-container").height() +"+"+ $(".tab").height() +"+"+ $("footer").height());
@@ -155,7 +155,7 @@ $(function(){
 	jroll_menu_cate = new JRoll("#menu_cate", {scrollBarY:false});
 	jroll_menu_list = new JRoll("#menu_list", {scrollBarY:false});
 	jroll_myOrderList = new JRoll("#myOrderList", {scrollBarY:false});
-	jroll_couponsList = new JRoll("#couponsList", {scrollBarY:false});
+	if($("#coupons").length>0)jroll_couponsList = new JRoll("#couponsList", {scrollBarY:false});
 	
 	jroll_menu_cate.on("scrollEnd", function() {
 	    if(-this.y > wPos && $(window).scrollTop() < wPos ){
@@ -323,7 +323,7 @@ $(function(){
 	});
 	//优惠券
 	$("#coupons").click(function(){
-		if(!$("#coupons").hasClass("active")){
+		if($("#coupons").length>0 && !$("#coupons").hasClass("active")){
 			$("ul.tab li").removeClass("active");
 			$(this).addClass("active");
 			$(".menu , footer,.myOrder").hide();
@@ -350,7 +350,7 @@ $(function(){
 	
 	diningUserOrderList();//获取用户的订单列表
 	
-	$("#resultBtn").click(function(){$(".result").removeClass("active");});
+	$("#resultBtn").click(function(){$(".result").removeClass("active");history.back();});
 	
 	//点击图片放大
 	$("#scroller_menu_goods_list >li >div.img img").click(function(){
@@ -431,7 +431,7 @@ $(function(){
     	}
     }
 
-	coupons();
+	if($("#coupons").length>0)coupons();
 	
 });
 
@@ -439,16 +439,16 @@ $(function(){
 window.onpopState = function(){
     var json = window.history.state;//获取当前所在的state
     console.log(JSON.stringify(json));
-    $("#gd , #gd .g_d").removeClass("active");
+    $("#gd , #gd .g_d,.result").removeClass("active");
 }
 
 
 window.addEventListener('popstate', function(e){
-	if (history.state){
-		var state = e.state;
-	    //do something(state.url, state.title);
-	}
-	$("#gd , #gd .g_d").removeClass("active");
+		if (history.state){
+			var state = e.state;
+		    //do something(state.url, state.title);
+		}
+		$("#gd , #gd .g_d , .result").removeClass("active");
 		console.log(JSON.stringify(history));
 	}, false);
 
@@ -532,12 +532,18 @@ function orderSuccess(){
 	$(".result").addClass("active");
 	$(".result i").attr("class","iconfont icon-chenggong");
 	$(".result div").html("下单成功");
+	
+	history.pushState({page:"orderSuccess"}, "orderSuccess", "orderSuccess");
+	
 }
 function orderFail(){
 	$(".cart_layer,.wco").removeClass("active");
 	$(".result").addClass("active");
 	$(".result i").attr("class","icon-shibai");
 	$(".result div").html("下单失败");
+	
+	history.pushState({page:"orderFail"}, "orderFail", "orderFail");
+	
 }
 
 //清空购物车事件
@@ -587,7 +593,7 @@ function diningUserOrderList(){
 							"<span>订单已完成</span>"+
 						"</div>"+
 						"<ul>"+item+"</ul>"+
-						"<div>共"+quantity+"件菜品，"+v.payName+"￥"+(v.orderAmount / 100).toFixed(2)+"元</div>"+
+						"<div>共"+quantity+"件菜品，"+(v.discount > 0 ? ("优惠￥"+(v.discount / 100).toFixed(2) ) +"元，" : "" )+v.payName+"￥"+(v.orderAmount / 100).toFixed(2)+"元</div>"+
 					"</li>");
 				
 				item = null;
