@@ -1,7 +1,9 @@
 package org.ehais.shop.controller.ceo;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,9 +16,12 @@ import org.ehais.controller.CommonController;
 import org.ehais.epublic.mapper.EHaiStoreMapper;
 import org.ehais.epublic.mapper.HaiOrderInfoMapper;
 import org.ehais.epublic.mapper.HaiPartnerMapper;
+import org.ehais.epublic.mapper.HaiStoreStatisticsMapper;
 import org.ehais.epublic.model.EHaiStore;
 import org.ehais.epublic.model.EHaiStoreExample;
 import org.ehais.epublic.model.HaiPartner;
+import org.ehais.epublic.model.HaiStoreStatistics;
+import org.ehais.epublic.model.HaiStoreStatisticsExample;
 import org.ehais.epublic.model.OrderStoreStatistics;
 import org.ehais.protocol.PermissionProtocol;
 import org.ehais.shop.service.HaiStoreService;
@@ -49,6 +54,8 @@ public class ReportCEOController extends CommonController{
 	private HaiOrderInfoMapper haiOrderInfoMapper;
 	@Autowired
 	private EHaiStoreMapper eHaiStoreMapper;
+	@Autowired
+	private HaiStoreStatisticsMapper haiStoreStatisticsMapper;
 	
 	
 	@EPermissionMethod(intro="打开商户管理页面",value="income",type=PermissionProtocol.URL)
@@ -113,6 +120,62 @@ public class ReportCEOController extends CommonController{
 			List<EHaiStore> list = eHaiStoreMapper.selectByExample(exp);
 			rm.setRows(list);
 			rm.setCode(1);
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("report", e);
+			return this.errorJSON( e);
+		}
+		return this.writeJson(rm);
+	}
+	
+	
+	@EPermissionMethod(intro="打开商户管理页面",value="storeStatistics",relation="storeStatisticsJSON",type=PermissionProtocol.URL)
+	@RequestMapping("/storeStatistics")
+	public String storeStatistics(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response ) {	
+		try{
+			Date date = new Date();
+			date = DateUtil.addDate(date, -1);
+			modelMap.addAttribute("date", DateUtil.formatDate(date, DateUtil.FORMATSTR_3));
+			return "/ceo/report/storeStatistics";
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("store", e);
+			return this.errorJump(modelMap, e.getMessage());
+		}
+		
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value="/storeStatisticsJSON",method=RequestMethod.POST)
+	public String storeStatisticsJSON(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "date", required = false) String date){
+		ReturnObject<HaiPartner> rm = new ReturnObject<HaiPartner>();
+		rm.setCode(0);
+		try{
+			
+			List<HaiPartner> list = haiPartnerMapper.selectByExample(null);
+			rm.setRows(list);
+			
+			Map<String,Object> map = new HashMap<String,Object>();
+			
+			
+			List<EHaiStore> listStore = eHaiStoreMapper.selectByExample(null);
+			map.put("listStore", listStore);
+			
+			Date cdate = DateUtil.formatDate(date, DateUtil.FORMATSTR_3);
+			HaiStoreStatisticsExample exp = new HaiStoreStatisticsExample();
+			exp.createCriteria().andStatisticsDateEqualTo(cdate);
+			
+			List<HaiStoreStatistics> listStoreStatistics = haiStoreStatisticsMapper.selectByExample(exp);
+			map.put("listStoreStatistics", listStoreStatistics);
+			
+			rm.setTotal(list.size() + listStore.size());
+			rm.setMap(map);
+			rm.setCode(1);
+			
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("report", e);

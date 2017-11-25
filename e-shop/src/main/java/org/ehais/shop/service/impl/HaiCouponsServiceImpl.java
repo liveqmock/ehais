@@ -191,6 +191,7 @@ bean.setIsValid(model.getIsValid());
 bean.setStoreId(model.getStoreId());
 bean.setReceiveCount(model.getReceiveCount());
 bean.setUseCount(model.getUseCount());
+bean.setCouponsQuantity(model.getCouponsQuantity());
 
 
 		Date date = new Date();

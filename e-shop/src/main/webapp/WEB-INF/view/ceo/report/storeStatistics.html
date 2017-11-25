@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+	<script type="text/javascript" src="/js/jquery-2.1.4.min.js" ></script>
+	<link rel="stylesheet" href="/js/bootstrap/css/bootstrap.min.css" />
+	<script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js" ></script>
+	<link rel="stylesheet" href="/js/bootstrap/table/bootstrap-table.min.css" />
+	<script type="text/javascript" src="/js/bootstrap/table/bootstrap-table.min.js" ></script>
+	<script type="text/javascript" src="/js/bootstrap/table/locale/bootstrap-table-zh-CN.min.js" ></script>
+	<link rel="stylesheet" href="/css/admin.css" />
+	<link rel="stylesheet" href="/js/layer/skin/default/layer.css" />
+	<script type="text/javascript" src="/js/layer/layer.js" ></script>
+	<script type="text/javascript" src="/js/adminCommon.js" ></script>
+	<script type="text/javascript" src="/js/DateUtils.js" ></script>
+	<script type="text/javascript" src="/ehais/js/echarts.min.js" ></script>
+	
+	<link rel="stylesheet" href="/js/bootstrap/datetimepicker/css/daterangepicker-bs3.css" />
+	<script type="text/javascript" src="/js/bootstrap/datetimepicker/js/moment.js" ></script>
+	<script type="text/javascript" src="/js/bootstrap/datetimepicker/js/daterangepicker.js" ></script>
+	<script type="text/javascript" src="/js/bootstrap/datetimepicker/js/bootstrap-datetimepicker.min.js" ></script>
+	<script type="text/javascript" src="/js/bootstrap/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" ></script>
+	
+</head>
+<body>
+<#include "/FreemarkerMacro.html"/>
+	<div class="header">
+		<div class="nav">
+			<i class="icon fa fa-home">&nbsp;</i>
+			<div class="nav0">查帐信息管理</div>
+		</div>
+	</div>
+	<div class="body">
+		<div class="container_box">
+			<div class="col_main body">
+				<div class="panel panel-default">
+					
+					<div class="panel-body single">					    
+						<form class="form-horizontal">
+												    
+						    <div class="form-group">
+				                <label for="dtp_input1" class="col-md-1 control-label">日期</label>
+				                <div class="input-group date col-md-3" id="datetimepicker" data-date="${date}" data-date-format="yyyy-MM-dd" data-link-field="date">
+				                    <input class="form-control" size="10" type="text" value="${date}" readonly="">
+				                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+									<span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+									<span class="input-group-addon" id="btnSearch"><span class="glyphicon glyphicon-search"></span></span>
+				                </div>
+								<input type="hidden" id="date" value="${date}" ><br>
+				            </div>
+             
+					    </form>
+					</div>
+				</div>
+				
+				
+				<div class="main_table">
+					<table id="bsTable" data-show-columns="false"></table>
+				</div>
+			</div>
+		</div>
+	</div>
+<script type="text/javascript">
+var bsTable = null;
+$(function(){
+    
+	$('#datetimepicker').datetimepicker({
+        language:  'zh-CN',
+        weekStart: 1,
+        todayBtn:  1,
+		autoclose: 1,
+		todayHighlight: 1,
+		startView: 2,
+		minView: 2,
+		forceParse: 0,
+		format: 'yyyy-mm-dd'
+    });
+	
+	$("#btnSearch").click(function(){bsTable.bootstrapTable('refresh');});
+    
+	bsTable = $('#bsTable').bootstrapTable({
+        dataType: "json",
+        contentType: "application/x-www-form-urlencoded",
+        url: 'storeStatisticsJSON',//请求后台的url
+        method: 'post',//请求方式
+        pagination: true, //分页
+        striped: true,//是否显示行间隔色
+        cache: false,
+        sortable: true,//是否启用排序
+        sortOrder: 'asc',//排序方式
+        clickToSelect: true,//是否启用点击选中行
+		sidePagination: "server", //服务端处理分页
+        pageNumber: 1,
+	    pageSize: 100,
+	    pageList: [10,20,30,40,50,100],
+	    queryParamsType:'',
+	    queryParams: function (params) {
+	        return {
+	            rows: params.pageSize,   //页面大小  
+                page: params.pageNumber,  //页码        
+                sort: params.sort,  //排序列名  
+                sortOrder: params.order,//排位命令（desc，asc）
+                date : $("#date").val()
+	        }
+	    },
+        columns: [
+
+			{
+			    field: 'partnerName',
+			    title: '代理名称'
+			},{
+			    field: 'storeName',
+			    title: '商户名称'
+			},{
+			    field: 'weixinAmount',
+			    title: '微信收益',formatter : function(value,rows,index){
+			    	if(isBlank(value)){
+			    		return 0 ;
+			    	}else{
+			    		return (value / 100).toFixed(2);
+			    	}
+			    	
+			    }
+			},{
+			    field: 'weixinQuantity',
+			    title: '微信订单数'
+			},{
+			    field: 'cashAmount',
+			    title: '现金收益',formatter : function(value,rows,index){
+			    	if(isBlank(value)){
+			    		return 0 ;
+			    	}else{
+			    		return (value / 100).toFixed(2);
+			    	}
+			    }
+			},{
+			    field: 'cashQuantity',
+			    title: '现金订单数'
+			} 
+        
+        ],responseHandler : function (res){
+        	
+        	var rows = [];
+        	if(res.map==null)res.map = {listStore:[],listStoreStatistics:[]};
+        	if(res.map.listStore==null)res.map.listStore = [];
+        	if(res.map.listStoreStatistics==null)res.map.listStoreStatistics = [];
+        	
+        	$.each(res.rows,function(k,v){
+        		rows.push({partnerName:v.partnerName,classify:"partner"});
+        		
+        		$.each(res.map.listStore,function(k1,v1){
+        			if(parseInt(v1.partnerId) == parseInt(v.partnerId)){
+        				var storeRow = {storeName:v1.storeName,classify:"store"};
+            			
+            			$.each(res.map.listStoreStatistics,function(k2,v2){
+            				if(parseInt(v1.storeId) == parseInt(v2.storeId)){
+            					storeRow.weixinAmount = v2.weixinAmount;
+            					storeRow.weixinQuantity = v2.weixinQuantity;
+            					storeRow.cashAmount = v2.cashAmount;
+            					storeRow.cashQuantity = v2.cashQuantity;
+            				}
+            			});
+            			
+            			rows.push(storeRow);
+        			}        			
+        		});
+        		
+        	});
+        	
+        	res.rows = rows;
+        	
+        	return res;
+        }
+    });
+	
+
+
+	
+	
+});
+</script>	
+</body>
+</html>

@@ -33,9 +33,12 @@
 
 <div class="form-group">
 <label class="col-sm-2 control-label">数量限额</label>
-<div class="col-sm-5">
-	<@quantityDefaultsPicker id="couponsQuantity" value="${rm.model.couponsQuantity!'0'}" rule="defaults"/>
-	数量为0，表示不限，数量大于0即表示优惠券数量
+<div class="col-sm-3">
+	<@BSRadioChatPicker id="couponsQuantityType" key="" text="" list={"0":"不限数量","1":"设置数量"} value="0" />
+</div>
+<div class="col-sm-2" id="couponsQuantity_div">
+	<@quantityPicker id="couponsQuantity" value="${rm.model.couponsQuantity!'0'}" />
+	
 </div>
 </div>
 
@@ -111,8 +114,28 @@
 <script type="text/javascript" src="/js/ehais/coupons/detail.js" ></script>             
 <script type="text/javascript">
 var couponsType = "${rm.model.couponsType!''}";
+var couponsQuantity = ${rm.model.couponsQuantity!'0'};
 $(function(){
 	
+	$("#radioPicker_couponsQuantityType li").removeClass("active");
+	$("#radioPicker_couponsQuantityType li").each(function(){
+		if(couponsQuantity == 0){
+			if(parseInt($(this).attr("value")) == 0)$(this).addClass("active");
+			$("#couponsQuantity_div").hide();
+		}else{
+			if(parseInt($(this).attr("value")) == 1)$(this).addClass("active");
+			$("#couponsQuantity_div").show();
+		}
+	});
+
+	$("#radioPicker_couponsQuantityType li").click(function(){
+		if(parseInt($("#couponsQuantityType").val()) == 0){
+			$("#couponsQuantity_div").hide();
+		}else{
+			$("#couponsQuantity_div").show();
+		}
+	});
+
 	if(couponsType!=""){
 		$(".quota_div,.discounts_div").removeClass("dn");
 		

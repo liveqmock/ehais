@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/test")
+@RequestMapping("/")
 public class TestWebController extends CommonController{
 	
 	@Autowired
@@ -35,7 +35,7 @@ public class TestWebController extends CommonController{
 	private HaiStoreStatisticsService haiStoreStatisticsService;
 	
 	
-	@RequestMapping("/validate")
+	@RequestMapping("/test/validate")
 	public String index(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) throws Exception {
 		haiStoreStatisticsService.dayStoreStatistics();
@@ -43,7 +43,7 @@ public class TestWebController extends CommonController{
 	}
 	
 	
-	@RequestMapping("/article_cat")
+	@RequestMapping("/test/article_cat")
 	public String article_cat(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) throws Exception {
 		try{
@@ -63,7 +63,7 @@ public class TestWebController extends CommonController{
 	}
 	
 	
-	@RequestMapping("/article_{catId}")
+	@RequestMapping("/test/article_{catId}")
 	public String article(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@PathVariable(value="catId") Integer catId
@@ -86,7 +86,7 @@ public class TestWebController extends CommonController{
 	}
 	
 	
-	@RequestMapping("/article_detail_{articleId}")
+	@RequestMapping("/test/article_detail_{articleId}")
 	public String article_detail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@PathVariable(value="articleId") Integer articleId
@@ -112,7 +112,7 @@ public class TestWebController extends CommonController{
 	}
 	
 	@ResponseBody
-	@RequestMapping("/test_ws")
+	@RequestMapping("/test/test_ws")
 	public String test_ws(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response
 			) throws Exception {
@@ -125,7 +125,7 @@ public class TestWebController extends CommonController{
 	
 	
 	@ResponseBody
-	@RequestMapping("/chrome")
+	@RequestMapping("/test/chrome")
 	public String chrome(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "str", required = true) String str
@@ -133,6 +133,22 @@ public class TestWebController extends CommonController{
 		String req = "chrom";
 		System.out.println("网络请求的参数 ："+str);
 		return req;
+	}
+	
+	@RequestMapping("/cn/newsview.asp")
+	public String newsview(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "Id", required = false) Integer Id
+			) throws Exception {
+		
+		try{
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		
+		return "/temp/newsview";
 	}
 	
 	
