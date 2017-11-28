@@ -131,6 +131,7 @@ $(function(){
 	$("#radioPicker_couponsQuantityType li").click(function(){
 		if(parseInt($("#couponsQuantityType").val()) == 0){
 			$("#couponsQuantity_div").hide();
+			$("#couponsQuantity").val(0);
 		}else{
 			$("#couponsQuantity_div").show();
 		}
