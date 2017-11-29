@@ -34,6 +34,7 @@ public class TestWebController extends CommonController{
 	@Autowired
 	private HaiStoreStatisticsService haiStoreStatisticsService;
 	
+	private Integer store_id = 87;//78[美院],87[岭南]
 	
 	@RequestMapping("/test/validate")
 	public String index(ModelMap modelMap,
@@ -50,7 +51,8 @@ public class TestWebController extends CommonController{
 			
 			
 			EHaiArticleCatExample expc = new EHaiArticleCatExample();
-			expc.createCriteria().andStoreIdEqualTo(78);
+			expc.createCriteria()
+			.andStoreIdEqualTo(store_id);
 			List<EHaiArticleCat> listc = eHaiArticleCatMapper.selectByExample(expc);
 			
 			modelMap.addAttribute("listc", listc);
@@ -70,7 +72,9 @@ public class TestWebController extends CommonController{
 			) throws Exception {
 		try{
 			EHaiArticleExample exp = new EHaiArticleExample();
-			exp.createCriteria().andStoreIdEqualTo(78).andCatIdEqualTo(catId);
+			exp.createCriteria()
+			.andStoreIdEqualTo(store_id)
+			.andCatIdEqualTo(catId);
 			List<EHaiArticle> list = eHaiArticleMapper.selectByExample(exp);
 			
 			modelMap.addAttribute("list", list);
@@ -95,13 +99,20 @@ public class TestWebController extends CommonController{
 		try{
 			EHaiArticle model = eHaiArticleMapper.selectByPrimaryKey(articleId);
 			if(StringUtils.isNotBlank(model.getArticleThumb())){
-				model.setArticleThumb(model.getArticleThumb().replace("http://lib.gzarts.edu.cn/images/newBookCover/", request.getScheme()+"://"+request.getServerName()+"/eUploads/"));
+//				model.setArticleThumb(model.getArticleThumb().replace("http://lib.gzarts.edu.cn/images/newBookCover/", request.getScheme()+"://"+request.getServerName()+"/eUploads/"));
 			}
 			modelMap.addAttribute("model", model);
 			
 			EHaiArticleCat cat = eHaiArticleCatMapper.selectByPrimaryKey(model.getCatId());
 			modelMap.addAttribute("cat", cat);
 			
+			if(model.getModule().equals("exhibit")){
+				return "/web/test/article_detail_exhibit";
+			}else if(model.getModule().equals("book")){
+				return "/web/test/article_detail_book";
+			}else if(model.getModule().equals("collection")){
+				return "/web/test/article_detail_collection";
+			}
 			
 		}catch(Exception e){
 			e.printStackTrace();

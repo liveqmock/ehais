@@ -122,7 +122,7 @@ public class LingNansJUnit {
 	        
 	        
 		}catch(Exception e){
-			
+			e.printStackTrace();
 		}		
 	}
 	
@@ -271,8 +271,8 @@ public class LingNansJUnit {
 	        	mapCat.put(ret2.getInt("cat_type"), ret2.getInt("cat_id"));
 	        }
 	        
-	        while(ret1.next()){
-	        	String install = "insert into hai_article (cat_id,title,content,read_count,create_date,module,store_id,article_thumb,author,keywords,description,article_label) values (?,?,?,?,?,?,?,?,?,?,?,?) ";
+	        while(ret1.next()){System.out.println(ret1.getString("Title"));
+	        	String install = "insert into hai_article (cat_id,title,content,read_count,create_date,module,store_id,article_thumb,article_source,keywords,description,article_label) values (?,?,?,?,?,?,?,?,?,?,?,?) ";
 	        	PreparedStatement pstmt = (PreparedStatement) conn2.prepareStatement(install);
 	        	 pstmt.setInt(1, Integer.valueOf(mapCat.get(ret1.getInt("ClassId")).toString()));
 	             pstmt.setString(2, ret1.getString("Title"));
@@ -292,9 +292,55 @@ public class LingNansJUnit {
 	        
 	        
 		}catch(Exception e){
-			
+			e.printStackTrace();
 		}		
 	}
+	
+	
+	
+	@Test
+	public void collection(){
+		try{
+			Class.forName(name);//指定连接类型  
+	        conn1 = DriverManager.getConnection(link1, user, password);//获取连接  
+	        conn2 = DriverManager.getConnection(link2, user, password);//获取连接  
+	        String sql1 = "select * from collection";
+	        String sql2 = "select * from hai_article_cat where store_id = 87";
+	        statement1 = conn1.createStatement();
+	        statement2 = conn2.createStatement();
+	        
+	        ret1 = statement1.executeQuery(sql1);
+	        ret2 = statement2.executeQuery(sql2);
+	        Map<Integer,Integer> mapCat = new HashMap<Integer,Integer>();
+	        while(ret2.next()){
+	        	mapCat.put(ret2.getInt("cat_type"), ret2.getInt("cat_id"));
+	        }
+	        
+	        while(ret1.next()){
+	        	String install = "insert into hai_article (cat_id,title,content,author,create_date,module,store_id,article_source,keywords,article_label,article_thumb) values (?,?,?,?,?,?,?,?,?,?,?) ";
+	        	PreparedStatement pstmt = (PreparedStatement) conn2.prepareStatement(install);
+	        	 pstmt.setInt(1, Integer.valueOf(mapCat.get(ret1.getInt("ClassId")).toString()));
+	             pstmt.setString(2, ret1.getString("Title"));
+	             pstmt.setString(3, ret1.getString("Content"));
+	             pstmt.setString(4, ret1.getString("Author"));
+	             pstmt.setString(5, ret1.getString("AddTime"));
+	             pstmt.setString(6, "collection");
+	             pstmt.setInt(7, 87);
+	             pstmt.setString(8, ret1.getString("AddYear"));
+	             pstmt.setString(9, ret1.getString("Spe"));
+	             pstmt.setString(10, ret1.getString("Stuff"));
+	             pstmt.setString(11, ret1.getString("Pic"));
+	             pstmt.executeUpdate();
+	             pstmt.close();
+	        }
+	        
+	        
+		}catch(Exception e){
+			e.printStackTrace();
+		}		
+	}
+	
+	
 	
 	
 

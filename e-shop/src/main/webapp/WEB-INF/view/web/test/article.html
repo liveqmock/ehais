@@ -12,9 +12,8 @@
 <ul>
 <#list list as a>
 <li>
-
 <a href="article_detail_${a.articleId}" target="_blank">${a.title!''}</a>
-<i>${a.articleThumb!''}</i>
+<span>${(a.createDate?string('yyyy-MM-dd'))!''}</span>
 </li>
 </#list>
 </ul>

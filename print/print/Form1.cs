@@ -78,7 +78,7 @@ namespace print
 
 
             //小丸子不要厨房单
-            pdKitchen.PrintPage += new PrintPageEventHandler(this.MyPrintDocument_PrintPage_to_Kitchen);
+            //pdKitchen.PrintPage += new PrintPageEventHandler(this.MyPrintDocument_PrintPage_to_Kitchen);
 
 
             //ppd.Document = pd;
@@ -148,7 +148,7 @@ namespace print
 
             Graphics g = e.Graphics;
 
-            Font printFont = new Font(new FontFamily("Arial"), 6);
+            Font printFont = new Font(new FontFamily("Arial"), 10);
 
             float fltYPos = 0;                   //每一行的Y坐标  
             float fltXPos = 0;                   //每一行的X坐标  
@@ -166,14 +166,15 @@ namespace print
             fltXPos = fltLeftMargin;
             fltYPos = fltTopMargin;
             RectangleF rec = new RectangleF(fltXPos, fltYPos, fltScreenWidth, fltRowHeight);//
-            g.DrawString(joStore["model"]["storeName"].ToString() + "【尚阶餐饮】", printFont, Brushes.Black, rec, stringFormat);
+            g.DrawString(joStore["model"]["storeName"].ToString() + "", printFont, Brushes.Black, rec, stringFormat);
 
             fltYPos += fltRowHeight;
             rec = new RectangleF(fltXPos, fltYPos, fltScreenWidth, fltRowHeight);
 
-            printFont = new Font(new FontFamily("Arial"), 10);
-            g.DrawString("欢迎光临", printFont, Brushes.Black, rec, stringFormat);
-
+            //printFont = new Font(new FontFamily("Arial"), 10);
+            //g.DrawString("欢迎光临", printFont, Brushes.Black, rec, stringFormat);
+            g.DrawString("【尚阶餐饮】", printFont, Brushes.Black, rec, stringFormat);
+            
             fltYPos += fltRowHeight;
 
             g.DrawLine(Pens.Black, fltXPos, fltYPos + fltRowHeight / 2, fltScreenWidth, fltYPos + fltRowHeight / 2);
@@ -189,7 +190,7 @@ namespace print
 
             printFont = new Font(new FontFamily("Arial"), 10);
             
-            g.DrawString(joOrder["daySerialNumber"].ToString(), printFont, System.Drawing.Brushes.Black, fltXPos + sizeF.Width, fltYPos - 5);
+            g.DrawString(joOrder["daySerialNumber"].ToString(), printFont, System.Drawing.Brushes.Black, fltXPos + sizeF.Width, fltYPos - 2);
 
             printFont = new Font(new FontFamily("Arial"), 8);
 
@@ -202,7 +203,7 @@ namespace print
             g.DrawString("餐桌：", printFont, System.Drawing.Brushes.Black, fltXPos, fltYPos);
 
             printFont = new Font(new FontFamily("Arial"), 10);
-            g.DrawString(joOrder["zipcode"].ToString(), printFont, System.Drawing.Brushes.Black, fltXPos + sizeF.Width, fltYPos - 5);
+            g.DrawString(joOrder["zipcode"].ToString(), printFont, System.Drawing.Brushes.Black, fltXPos + sizeF.Width, fltYPos - 2);
 
             printFont = new Font(new FontFamily("Arial"), 8);
 
@@ -214,12 +215,12 @@ namespace print
             fltYPos += fltRowHeight;
             g.DrawString("菜名", printFont, System.Drawing.Brushes.Black, fltXPos, fltYPos);
             g.DrawString("数量", printFont, System.Drawing.Brushes.Black, fltScreenWidth / 2, fltYPos);
-            g.DrawString("单价", printFont, System.Drawing.Brushes.Black, fltScreenWidth / 2 + fltScreenWidth / 2 / 3, fltYPos);
+            //g.DrawString("单价", printFont, System.Drawing.Brushes.Black, fltScreenWidth / 2 + fltScreenWidth / 2 / 3, fltYPos);
             g.DrawString("小计", printFont, System.Drawing.Brushes.Black, fltScreenWidth / 2 + fltScreenWidth / 2 / 3 * 2, fltYPos);
 
             stringFormat.Alignment = StringAlignment.Near;
 
-            printFont = new Font(new FontFamily("Arial"), 10);
+            
 
             int quantity = 0;
             long total = 0;
@@ -231,12 +232,13 @@ namespace print
                     fltYPos += fltRowHeight;
                     //rec = new RectangleF(fltXPos, fltYPos, fltScreenWidth/2 - fltXPos, fltRowHeight);
                     //g.DrawString("> "+item["goodsName"].ToString(), printFont, Brushes.Black, rec, stringFormat);
+                    printFont = new Font(new FontFamily("Arial"), 10);
                     g.DrawString(item["goodsName"].ToString() , printFont, System.Drawing.Brushes.Black, fltXPos, fltYPos);
 
-
+                    printFont = new Font(new FontFamily("Arial"), 8);
                     fltYPos += fltRowHeight;
-                    g.DrawString(item["goodsNumber"].ToString(), printFont, System.Drawing.Brushes.Black, fltScreenWidth / 2, fltYPos);
-                    g.DrawString(Convert.ToDouble(Convert.ToDouble(item["goodsPrice"].ToString()) / 100).ToString("0.00"), printFont, System.Drawing.Brushes.Black, fltScreenWidth / 2 + fltScreenWidth / 2 / 3 - fltScreenWidth / 12, fltYPos);
+                    g.DrawString("x"+item["goodsNumber"].ToString(), printFont, System.Drawing.Brushes.Black, fltScreenWidth / 2, fltYPos);
+                    //g.DrawString(Convert.ToDouble(Convert.ToDouble(item["goodsPrice"].ToString()) / 100).ToString("0.00"), printFont, System.Drawing.Brushes.Black, fltScreenWidth / 2 + fltScreenWidth / 2 / 3 - fltScreenWidth / 12, fltYPos);
                     g.DrawString(Convert.ToDouble(Convert.ToDouble(Convert.ToDouble(item["goodsNumber"].ToString()) * Convert.ToDouble(item["goodsPrice"].ToString()) ) / 100 ).ToString("0.00"), printFont, System.Drawing.Brushes.Black, fltScreenWidth / 2 + fltScreenWidth / 2 / 3 * 2, fltYPos);
 
                     quantity += Convert.ToInt32(item["goodsNumber"].ToString());
@@ -245,6 +247,7 @@ namespace print
                 
             }
 
+            printFont = new Font(new FontFamily("Arial"), 10);
 
             fltYPos += fltRowHeight;
             if(joOrder["postscript"].ToString().Length > 0 && joOrder["postscript"].ToString().Length <= 16)
@@ -256,15 +259,16 @@ namespace print
                 rec = new RectangleF(fltXPos, fltYPos, fltScreenWidth, fltRowHeight*4);
 
                 g.DrawString("留言：" + joOrder["postscript"].ToString(), printFont, Brushes.Black, rec, stringFormat);
-
-
+                
             }
 
 
+            fltYPos += fltRowHeight;
 
             fltYPos += fltRowHeight;
             g.DrawLine(Pens.Black, fltXPos, fltYPos + fltRowHeight / 2, fltScreenWidth, fltYPos + fltRowHeight / 2);
 
+            printFont = new Font(new FontFamily("Arial"), 10);
             fltYPos += fltRowHeight;
             g.DrawString("合计：", printFont, System.Drawing.Brushes.Black, fltXPos, fltYPos);
             g.DrawString(quantity.ToString(), printFont, System.Drawing.Brushes.Black, fltScreenWidth / 2, fltYPos);
@@ -280,13 +284,13 @@ namespace print
             //fltYPos += fltRowHeight;
             //g.DrawString("联系电话：" + joOrder["tel"].ToString(), printFont, System.Drawing.Brushes.Black, fltXPos, fltYPos);
 
-            printFont = new Font(new FontFamily("Arial"), 6);
+            printFont = new Font(new FontFamily("Arial"), 7);
 
             fltYPos += fltRowHeight;
             g.DrawString("服务商：广州易海司信息科技有限公司", printFont, System.Drawing.Brushes.Black, fltXPos, fltYPos);
 
-            fltYPos += fltRowHeight;
-            g.DrawString("微信号：gzehais", printFont, System.Drawing.Brushes.Black, fltXPos, fltYPos);
+            fltYPos += fltRowHeight-1;
+            g.DrawString("微信服务号：gzehais", printFont, System.Drawing.Brushes.Black, fltXPos, fltYPos);
 
 
             ////////////////////////////厨房用单///////////////////////////////////////////////////////////////////
@@ -570,7 +574,7 @@ namespace print
                 {
                     joOrder = item;
                     pd.Print();
-                    pdKitchen.Print();
+                    //pdKitchen.Print();
 
                 }
             }else

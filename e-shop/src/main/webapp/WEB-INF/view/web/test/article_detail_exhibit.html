@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+/* .mynews,.MsoNormal,.MsoNormal span{width:100%;}
+.MsoNormal span{text-align: center;display: inline-block;}
+.mynews img{margin:0 auto;} */
+</style>
+</head>
+<body>
+<h3>${model.title!''}</h3>
+<span class="time">${(model.createDate?string('yyyy-MM-dd'))!''}</span>
+<b>${cat.catName}</b>
+
+<i style="width:100%;text-align: center;display: block;"><img src="${model.articleThumb}"/></i>
+<div id="exhibit">
+<div><b>时间：</b><div id="date">${(model.startPublishDate?string('yyyy-MM-dd'))!''}至${(model.endPublishDate?string('yyyy-MM-dd'))!''}</div></div>
+<div><b>主办单位：</b><div id="article_label">${model.articleLabel!''}</div></div>
+<div><b>场地：</b><div id="article_source">${model.articleSource!''}</div></div>
+</div>
+<p class="content"><div class="mynews">${model.content}</div></p>
+</body>
+</html>
