@@ -8,7 +8,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.ehais.annotation.EPermissionMethod;
 import org.ehais.common.EConstants;
+import org.ehais.enums.EUserTypeEnum;
+import org.ehais.epublic.mapper.EHaiUsersMapper;
+import org.ehais.epublic.model.EHaiStore;
 import org.ehais.epublic.model.EHaiUsers;
+import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.protocol.PermissionProtocol;
 import org.ehais.shop.model.HaiCoupons;
 import org.ehais.shop.service.HaiCouponsService;
@@ -25,15 +29,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/")
-public class EhaisCouponsController extends EhaisCommonController {
+public class StoreCouponsController extends EhaisCommonController {
 
-	private static Logger log = LoggerFactory.getLogger(EhaisCouponsController.class);
+	private static Logger log = LoggerFactory.getLogger(StoreCouponsController.class);
 
+	@Autowired
+	private EHaiUsersMapper eHaiUsersMapper;
+	
 	@Autowired
 	private HaiCouponsService haiCouponsService;
 	
-	@RequestMapping("/couponsView!{cid}")
-	public String couponsView(ModelMap modelMap,
+	@RequestMapping("/wx_store_coupons!{cid}")
+	public String wx_store_coupons(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@PathVariable(value = "cid") String cid	,
 			@RequestParam(value = "code", required = false) String code ) {	
@@ -55,7 +62,7 @@ public class EhaisCouponsController extends EhaisCommonController {
 			
 			if(this.isWeiXin(request)){//微信端登录
 				if((user_id == null || user_id == 0 ) && StringUtils.isBlank(code)){
-					return this.redirect_wx_authorize(request , weixin_appid , "/couponsView!"+cid);
+					return this.redirect_wx_authorize(request , weixin_appid , "/wx_store_coupons!"+cid);
 				}else if(StringUtils.isNotEmpty(code)){
 					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map);
 					if(user.getSubscribe() == null || user.getSubscribe() != 1){
@@ -63,22 +70,22 @@ public class EhaisCouponsController extends EhaisCommonController {
 						
 					}
 					String newPid = SignUtil.setCid(default_store_id,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), user.getUserId(), weixin_token);
-					String link = request.getScheme() + "://" + request.getServerName() + "/couponsView!"+newPid;
+					String link = request.getScheme() + "://" + request.getServerName() + "/wx_store_coupons!"+newPid;
 					return "redirect:"+link;
 				}else if(user_id > 0 && Long.valueOf(map.get("userId").toString()).longValue() == user_id.longValue()){//经过code获取用户信息跳回自己的链接中来
-//					return this.ehaisUnionData(modelMap, request, user_id, cid, map);
+					return this.couponsData(modelMap, request, user_id, cid, map);
 				}else if(Long.valueOf(map.get("userId").toString()).longValue() != user_id.longValue()){
 					System.out.println("user_id != map.userId condition is worng");
 					request.getSession().removeAttribute(EConstants.SESSION_USER_ID);
-				    return this.redirect_wx_authorize(request,weixin_appid, "/ehaisUnion!"+cid);
+				    return this.redirect_wx_authorize(request,weixin_appid, "/wx_store_coupons!"+cid);
 				}else{
 					System.out.println(cid+" condition is worng");
 					return "redirect:"+website; //错误的链接，跳转商城
 				}
 			}else{
-//				return this.ehaisUnionData(modelMap, request, user_id, cid, map);
+				return this.couponsData(modelMap, request, user_id, cid, map);
 			}
-			return "/ehais/coupons/view";
+			
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("coupons", e);
@@ -86,5 +93,30 @@ public class EhaisCouponsController extends EhaisCommonController {
 		}
 		
 	}
+	
+	
+	
+	private String couponsData(ModelMap modelMap,
+			HttpServletRequest request,Long user_id,String cid,Map<String,Object> map) throws Exception{
+		EHaiUsers user = eHaiUsersMapper.selectByPrimaryKey(user_id);
+		WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(Integer.valueOf(map.get("store_id").toString()));
+		String link = request.getScheme() + "://" + request.getServerName() + "/wx_store_coupons!"+cid;
+		
+		this.shareWeiXin(modelMap, request, null, wp, Integer.valueOf(map.get("store_id").toString()), weixin_share_description , link, "", "");
+		
+		
+		if(user == null || user.getUserType() != EUserTypeEnum.shop || user.getStoreId() == null || user.getStoreId().intValue() == 0){
+			return "/ehais/store_coupons";
+		}else{
+			
+			EHaiStore store = eStoreService.getEStore(Integer.valueOf(map.get("store_id").toString()));
+			modelMap.addAttribute("store",store);
+			
+			request.getSession().setAttribute(EConstants.SESSION_STORE_ID,user.getStoreId());
+			return "/ehais/store_coupons";
+		}
+	}
+	
+	
 	
 }

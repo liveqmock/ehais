@@ -142,7 +142,7 @@ public class EhaisUnionController extends EhaisCommonController{
 		WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(Integer.valueOf(map.get("store_id").toString()));
 		String link = request.getScheme() + "://" + request.getServerName() + "/ehaisUnion!"+cid;
 		
-		this.shareWeiXin(modelMap, request, null, wp, Integer.valueOf(map.get("store_id").toString()), "易微销事业加盟", link, "", "");
+		this.shareWeiXin(modelMap, request, null, wp, Integer.valueOf(map.get("store_id").toString()), weixin_share_description, link, "", "");
 		
 		
 		if(user == null || user.getUserType() != EUserTypeEnum.shop || user.getStoreId() == null || user.getStoreId().intValue() == 0){
