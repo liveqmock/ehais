@@ -13,8 +13,9 @@
 <h3>${model.title!''}</h3>
 <span class="time">${(model.createDate?string('yyyy-MM-dd'))!''}</span>
 <b>${cat.catName}</b>
-
+<#if (model.articleThumb?? && model.articleThumb != "null"  && model.articleThumb != "" )>
 <i style="width:100%;text-align: center;display: block;"><img src="${model.articleThumb}" style="margin:0 auto;"/></i>
+</#if>
 <div id="exhibit">
 <div><b>编著：</b><div id="article_edit">${model.articleSource}</div></div>
 <div><b>出版者：</b><div id="article_publisher">${model.keywords!''}</div></div>

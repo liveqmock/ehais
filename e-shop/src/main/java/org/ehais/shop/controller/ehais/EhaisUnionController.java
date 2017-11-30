@@ -128,7 +128,7 @@ public class EhaisUnionController extends EhaisCommonController{
 					return "redirect:"+website; //错误的链接，跳转商城
 				}
 			}else{
-				return this.ehaisUnionData(modelMap, request, user_id, cid, map);
+//				return this.ehaisUnionData(modelMap, request, user_id, cid, map);
 			}
 		}catch(Exception e){
 			e.printStackTrace();

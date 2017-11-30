@@ -13,7 +13,7 @@
 <h3>${model.title!''}</h3>
 <span class="time">${(model.createDate?string('yyyy-MM-dd'))!''}</span>
 <b>${cat.catName}</b>
-<#if model.articleThumb??>
+<#if (model.articleThumb?? && model.articleThumb != "null"  && model.articleThumb != "" )>
 <i style="width:100%;text-align: center;display: block;"><img class="article_thumb" src="${model.articleThumb}"/></i>
 </#if>
 <p class="content"><div class="mynews">${model.content}</div></p>
