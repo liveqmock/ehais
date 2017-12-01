@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+/* .mynews,.MsoNormal,.MsoNormal span{width:100%;}
+.MsoNormal span{text-align: center;display: inline-block;}
+.mynews img{margin:0 auto;} */
+</style>
+</head>
+<body>
+<h3>${model.title!''}</h3>
+<!-- <div id="a_uthor_">
+<div><b>年份：</b><div id="article_bri">${model.keywords!''}-${model.articleLabel!''}</div></div>
+<div><b>性别：</b><div id="article_sex">${(model.isHot?string('女', '男'))!'男'}</div></div>
+</div> -->
+
+<div id="author">
+<div><b>年份：</b><div id="article_bri">${model.keywords!''}-${model.articleLabel!''}</div></div>
+<div><b>性别：</b><div id="article_sex">${(model.isHot?string('女', '男'))!'男'}</div></div>
+</div>
+
+<span class="time">${(model.createDate?string('yyyy-MM-dd'))!''}</span>
+<b>${cat.catName}</b>
+<#if (model.articleThumb?? && model.articleThumb != "null"  && model.articleThumb != "" )>
+<i style="width:100%;text-align: center;display: block;"><img src="${model.articleThumb}" style="margin:0 auto;"/></i>
+</#if>
+
+<div id="author2">
+<div><div id="article_bri">年份：${model.keywords!''}-${model.articleLabel!''}</div></div>
+<div><div id="article_sex">性别：${(model.isHot?string('女', '男'))!'男'}</div></div>
+</div>
+<p class="content"><div class="mynews">${model.content}</div></p>
+</body>
+</html>

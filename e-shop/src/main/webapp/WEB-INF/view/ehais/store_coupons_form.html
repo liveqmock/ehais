@@ -1,0 +1,58 @@
+
+<ul id="coupons_form" class="f">
+	<li>
+		<div>优惠券名称</div>
+		<div><input type="text" id="couponsName" ><input type="hidden" id="couponsId" ></div>
+		
+		
+	</li>
+	<li>
+		<div>数量限制</div>
+		<div class="radio" id="couponsQuantityType">
+			<div value="0" class="active">不限数量</div>
+			<div value="1">设定数量</div>
+		</div>
+	</li>
+	<li id="couponsQuantity_div" class="dn">
+		<div></div>
+		<label>优惠券数量</label>
+		<div><input type="number" id="couponsQuantity" value="0" v="1" ></div>
+	</li>
+	<li>
+		<div>类型</div>
+		<div class="radio" id="couponsTypeRadio">
+			<div value="reduce" class="active" txt="减额(元)">减额优惠(元)</div>
+			<div value="rebate" txt="打折(%)">打折优惠(%)</div>
+		</div>
+	</li>
+	<li>
+		<div>额满</div>
+		<label>注 ：额满元使用</label>
+		<div><input type="number" id="quota" ></div>
+	</li>
+	<li>
+		<div class="couponsType">减额(元)</div>
+		<label class="couponsUnit">元</label>
+		<div><input type="number" id="discounts" ></div>
+	</li>
+	<li>
+		<div>使用范围</div>
+		<div class="radio">
+			<div class="active">全场</div>
+			<input type="hidden" id="scope" value="all" />
+		</div>
+	</li>
+	<li>
+		<div >开始日期</div>
+		<div>
+			<input type="date" id="startDate" >
+		</div>
+	</li>
+	<li>
+		<div >截止日期</div>
+		<div><input type="date" id="endDate" ></div>
+	</li>
+	<li>
+		<button id="saveCoupons">提交</button>
+	</li>
+</ul>

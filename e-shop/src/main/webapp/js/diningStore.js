@@ -669,7 +669,7 @@ function checkCoupons(){
 	var _amount = 0;
 	var _couponsId = 0;
 	var usercoupons = "";
-	
+	$("#coup_amount").html("");
 	$("#couponsUl li").each(function(i,e){
 		if(parseInt($("#ot").attr("total")) >= parseInt($(e).attr("quota")) * 100){
 			if($(e).attr("couponstype") == "reduce"){//减

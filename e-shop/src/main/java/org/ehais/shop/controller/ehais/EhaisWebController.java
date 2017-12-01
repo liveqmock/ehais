@@ -129,7 +129,7 @@ public class EhaisWebController extends EhaisCommonController {
 			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			
 			if(this.isWeiXin(request)){//微信端登录
-				if((user_id == null || user_id == 0 ) && StringUtils.isEmpty(code)){
+				if((user_id == null || user_id == 0 ) && StringUtils.isBlank(code)){
 					return this.redirect_wx_authorize(request , wp.getAppid() , "/w_shop!"+cid);
 				}else if(StringUtils.isNotEmpty(code)){
 					System.out.println(code);
@@ -151,8 +151,8 @@ public class EhaisWebController extends EhaisCommonController {
 					return "redirect:"+website; //错误的链接，跳转商城
 				}
 			}else{
-				return this.shopData(modelMap, request, response, wp, store, cid, store_id, user_id, map);
-				
+//				return this.shopData(modelMap, request, response, wp, store, cid, store_id, user_id, map);
+				return "redirect:"+website;
 			}
 			
 			

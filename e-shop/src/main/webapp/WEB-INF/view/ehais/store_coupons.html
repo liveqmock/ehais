@@ -7,8 +7,11 @@
 		<title>商家后台帐户</title>
 		<script type="text/javascript" src="js/jquery-2.1.4.min.js" ></script>
 		<script type="text/javascript" src="js/common.js" ></script>
-		<link rel="stylesheet" href="js/swiper/swiper-3.4.2.min.css" />
-		<script type="text/javascript" src="js/swiper/swiper-3.4.2.jquery.min.js" ></script>
+		<link rel="stylesheet" href="../js/elay/elay.css" />
+		<script type="text/javascript" src="../js/elay/elay.js" ></script>
+		
+		<script type="text/javascript" src="js/jroll/jroll.js" ></script>
+		
 		
 		<link rel="stylesheet" href="css/ehaisManageV2.css" />
 	</head>
@@ -17,25 +20,14 @@
 			<header>
 				<i class="iconfont icon-xiangzuojiantou"></i>
 				优惠券管理
-				<i class="iconfont icon-14052229"></i>
+				<i class="iconfont icon-14052229" id="coupons_add"></i>
 			</header>
-			<ul class="l">
-				<li>
-					<div class="l">
-						<b>￥30</b>
-						满300元
-					</div>
-					<div class="d">
-						<h4>春节优惠活动</h4>
-						<div class="t sm">不限数量</div>
-						<div class="t s">发布中</div>
-						<div class="sm">2017-11-20~2017-11-30</div>
-						
-					</div>
-					<i class="iconfont icon-xiangyoujiantou"></i>
-					
-				</li>
-			</ul>
+			<ul class="l active" id="coupons_list"></ul>
+			<#include "store_coupons_form.html"/>
+			
 		</div>
+		
+		<script type="text/javascript" src="js/ehais/store_coupons.js" ></script>
+		
 	</body>
 </html>

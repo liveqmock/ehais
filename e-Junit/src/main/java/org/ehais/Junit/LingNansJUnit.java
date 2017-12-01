@@ -231,23 +231,26 @@ public class LingNansJUnit {
 	        }
 	        
 	        while(ret1.next()){
-	        	String install = "insert into hai_article (cat_id,title,content,keywords,create_date,module,store_id,article_thumb) values (?,?,?,?,?,?,?,?) ";
+	        	System.out.println(ret1.getString("Title"));
+	        	String install = "insert into hai_article (cat_id,title,content,keywords,create_date,module,store_id,article_thumb,article_label,is_hot) values (?,?,?,?,?,?,?,?,?,?) ";
 	        	PreparedStatement pstmt = (PreparedStatement) conn2.prepareStatement(install);
 	        	 pstmt.setInt(1, Integer.valueOf(mapCat.get(ret1.getInt("ClassId")).toString()));
 	             pstmt.setString(2, ret1.getString("Title"));
 	             pstmt.setString(3, ret1.getString("Content"));
-	             pstmt.setString(4, ret1.getString("Birth")+"-"+ret1.getString("PassAway"));
+	             pstmt.setString(4, ret1.getString("Birth"));
 	             pstmt.setString(5, ret1.getString("AddTime"));
 	             pstmt.setString(6, "author");
 	             pstmt.setInt(7, 87);
 	             pstmt.setString(8, ret1.getString("Pic"));
+	             pstmt.setString(9, ret1.getString("PassAway"));
+	             pstmt.setString(10, ret1.getString("Sex"));
 	             pstmt.executeUpdate();
 	             pstmt.close();
 	        }
 	        
 	        
 		}catch(Exception e){
-			
+			e.printStackTrace();
 		}		
 	}
 	

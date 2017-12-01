@@ -37,7 +37,7 @@
 	<@BSRadioChatPicker id="couponsQuantityType" key="" text="" list={"0":"不限数量","1":"设置数量"} value="0" />
 </div>
 <div class="col-sm-2" id="couponsQuantity_div">
-	<@quantityPicker id="couponsQuantity" value="${rm.model.couponsQuantity!'0'}" />
+	<@quantityDefaultsPicker id="couponsQuantity" value="${rm.model.couponsQuantity!'0'}" rule="defaults"/>
 	
 </div>
 </div>
@@ -92,7 +92,7 @@
 <div class="form-group">
 <label class="col-sm-2 control-label">状态</label>
 <div class="col-sm-5">
-	<@BSRadioChatPicker id="isValid" key="" text="" list={"0":"可编辑","1":"发布","-1":"停用"} value="${rm.model.isValid!''}" />
+	<@BSRadioChatPicker id="isValid" key="" text="" list={"0":"可编辑","1":"发布","-1":"停用"} value="${rm.model.isValid!'0'}" />
 </div>
 </div>
 
@@ -116,15 +116,17 @@
 var couponsType = "${rm.model.couponsType!''}";
 var couponsQuantity = ${rm.model.couponsQuantity!'0'};
 $(function(){
-	
+	$("#couponsQuantity").attr("v",couponsQuantity);
 	$("#radioPicker_couponsQuantityType li").removeClass("active");
 	$("#radioPicker_couponsQuantityType li").each(function(){
 		if(couponsQuantity == 0){
 			if(parseInt($(this).attr("value")) == 0)$(this).addClass("active");
 			$("#couponsQuantity_div").hide();
+			$("#couponsQuantity").attr("v",$("#couponsQuantity").val()).val(0);
 		}else{
 			if(parseInt($(this).attr("value")) == 1)$(this).addClass("active");
 			$("#couponsQuantity_div").show();
+			$("#couponsQuantity").val($("#couponsQuantity").attr("v"));
 		}
 	});
 

@@ -112,6 +112,8 @@ public class TestWebController extends CommonController{
 				return "/web/test/article_detail_book";
 			}else if(model.getModule().equals("collection")){
 				return "/web/test/article_detail_collection";
+			}else if(model.getModule().equals("author")){
+				return "/web/test/article_detail_author";
 			}
 			
 		}catch(Exception e){

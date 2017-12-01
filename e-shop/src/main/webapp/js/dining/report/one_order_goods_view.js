@@ -144,7 +144,7 @@ var option = {
 	        {
 	            name:'销量',
 	            type:'line',
-	            stack: '总量',
+//	            stack: '总量',
 	            data:[],
 	            lineStyle : {
 	            	normal : {

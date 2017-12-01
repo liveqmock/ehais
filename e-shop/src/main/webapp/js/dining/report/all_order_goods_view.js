@@ -145,7 +145,7 @@ var option = {
 	        {
 	            name:'销量',
 	            type:'bar',
-	            stack: '总量',
+//	            stack: '总量',
 	            data:[],
 	            lineStyle : {
 	            	normal : {

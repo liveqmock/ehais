@@ -59,6 +59,7 @@ import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.DateUtil;
 import org.ehais.util.ECommon;
+import org.ehais.util.IpUtil;
 import org.ehais.util.ResourceUtil;
 import org.ehais.util.SignUtil;
 import org.ehais.weixin.model.WeiXinTemplateMessage;
@@ -115,12 +116,19 @@ public class DiningWebController extends EhaisCommonController{
 	protected String prefix_order_dining = ResourceUtil.getProValue("prefix.order.dining");
 	
 	//http://127.0.0.1/diningStore!934a1580-0c1e0501-156ed21242-2b36621253-314dd0C104-49175b56
-	//http://e827fa24.ngrok.io/diningStore!934a1580-0c1e0501-156ed21242-2b36621253-314dd0C104-49175b56
+	//http://286ef960.ngrok.io/diningStore!934a1580-0c1e0501-156ed21242-2b36621253-314dd0C104-49175b56
 	@RequestMapping("/diningStore!{sid}")
 	public String diningStore(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@PathVariable(value = "sid") String sid	,
 			@RequestParam(value = "code", required = false) String code ) {	
+		
+		System.out.println("request.getRequestURL():"+request.getRequestURL());
+		System.out.println("IP address : "+IpUtil.getIpAddrV2(request));
+		
+		log.info("request.getRequestURL():"+request.getRequestURL());
+		log.info("IP address : "+IpUtil.getIpAddrV2(request));
+		
 		Integer store_id = SignUtil.getUriStoreId(sid);
 		if(store_id == 0){
 			return "redirect:"+website; //错误的链接，跳转商城
@@ -154,8 +162,9 @@ public class DiningWebController extends EhaisCommonController{
 					this.dining(modelMap, request, response,wp,store,store_id, sid);
 				}else if(Long.valueOf(map.get("userId").toString()).longValue() != user_id.longValue()){
 					System.out.println("user_id != map.userId condition is worng");
-					request.getSession().removeAttribute(EConstants.SESSION_USER_ID);
-
+//					request.getSession().removeAttribute(EConstants.SESSION_USER_ID);
+//					根据user_id重置sid
+					sid = SignUtil.setDiningId(store_id, Integer.valueOf(map.get("agencyId").toString()), Long.valueOf(map.get("parentId").toString()), user_id, map.get("tableNo").toString(), wp.getToken());
 				    return this.redirect_wx_authorize(request,wp.getAppid(), "/diningStore!"+sid);
 				}else{
 					System.out.println(sid+" condition is worng");

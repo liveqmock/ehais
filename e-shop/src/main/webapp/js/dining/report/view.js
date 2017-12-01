@@ -152,7 +152,7 @@ var option = {
 	        {
 	            name:'微信收益',
 	            type:'line',
-	            stack: '总量',
+//	            stack: '总量',
 	            data:[0.524,0.697,0.720,0.771,0.776,0.763,0.767,0.786,0.796,0.799],
 	            lineStyle : {
 	            	normal : {
@@ -164,7 +164,7 @@ var option = {
 	        {
 	            name:'现金收益',
 	            type:'line',
-	            stack: '总量',
+//	            stack: '总量',
 	            data:[0.488,0.493,0.501,0.523,0.539,0.549,0.578,0.580,0.584,0.588],
 	            lineStyle : {
 	            	normal : {

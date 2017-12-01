@@ -31,7 +31,7 @@ $(function(){
          { field: 'id', title: '编号', width: 80 },         
          { field: 'name', title: '名称', width: 150},
          { field: 'url', title: '链接', width: 400 },
-         { field: 'vieworder', title: '排序', width: 80 },
+         { field: 'sort', title: '排序', width: 80 },
          { field: 'action', title: '编辑', width: 100, align:'center' ,formatter:function(value,row,index){  
         		var e = '<a href="nav_update?id='+row.id+'">编辑</a> ';  
             	var d = '<a href="nav_delete?id='+row.id+'" onclick="return myConfirm();">删除</a> ';  

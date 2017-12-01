@@ -45,7 +45,7 @@
 
 <BootStrapModel>
     <control>text</control>
-    <name>vieworder</name>
+    <name>sort</name>
     <label>排序</label>
     <prompt>请输入序号</prompt>
     <oksign></oksign>
@@ -104,7 +104,7 @@
 
 <BootStrapModel>
     <control>text</control>
-    <name>vieworder</name>
+    <name>sort</name>
     <label>排序</label>
     <prompt>请输入序号</prompt>
     <oksign></oksign>
@@ -163,7 +163,7 @@
 
 <BootStrapModel>
     <control>text</control>
-    <name>vieworder</name>
+    <name>sort</name>
     <label>排序</label>
     <prompt>请输入序号</prompt>
     <oksign></oksign>

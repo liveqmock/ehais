@@ -71,6 +71,21 @@ public class CouponsIController extends CommonController{
 	
 	
 	@ResponseBody
+	@RequestMapping(value="/haiCouponsInfo",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
+	public String haiCouponsInfo(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "id", required = false) Integer id
+			) {
+		try{
+			return this.writeJson(haiCouponsService.coupons_info(request, id));
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("coupons", e);
+			return this.errorJSON(e);
+		}
+	}
+	
+	@ResponseBody
 	@RequestMapping(value="/haiCouponsEditSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String haiCouponsEditSubmit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -87,6 +102,5 @@ public class CouponsIController extends CommonController{
 		}
 	}
 	
-
 
 }

@@ -39,6 +39,8 @@ public class StoreCouponsController extends EhaisCommonController {
 	@Autowired
 	private HaiCouponsService haiCouponsService;
 	
+	
+	//http://127.0.0.1/wx_store_coupons!afa5890-062c0c01-12b7b002-2c960b1253-37ca2179f7b3b
 	@RequestMapping("/wx_store_coupons!{cid}")
 	public String wx_store_coupons(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,

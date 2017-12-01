@@ -34,6 +34,7 @@ import org.ehais.shop.model.HaiSearchHistory;
 import org.ehais.shop.model.HaiSearchHistoryExample;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
+import org.ehais.util.IpUtil;
 import org.ehais.util.SignUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -77,6 +78,7 @@ public class EhaisMallController extends EhaisCommonController {
 		modelMap.addAttribute("cid", cid);
 		modelMap.addAttribute("footer_home", "class='active'");
 		
+		System.out.println("user_id.....mallData..:"+user_id);
 		
 		HaiAdExample adExample = new HaiAdExample();
 		adExample.createCriteria()
@@ -105,6 +107,7 @@ public class EhaisMallController extends EhaisCommonController {
 //		goodsExample.setLimitEnd(20);
 		goodsExample.setOrderByClause("sort_order asc");
 		List<HaiGoods> goodsList = haiGoodsMapper.selectByExample(goodsExample);
+		
 		for (HaiGoods haiGoods : goodsList) {
 			haiGoods.setGoodsUrl(SignUtil.setSid(store_id, Integer.valueOf(map.get("agencyId").toString()), Long.valueOf(map.get("userId").toString()), user_id, 0 , haiGoods.getGoodsId(), wp.getToken()));
 		}
@@ -135,6 +138,7 @@ public class EhaisMallController extends EhaisCommonController {
 	
 	
 	//http://127.0.0.1/w_mall!afa5890-062c0c01-12b7b002-2c960b1253-37ca2179f7b3b
+	//http://286ef960.ngrok.io/w_mall!afa5890-062c0c01-12b7b002-2c960b1253-37ca2179f7b3b
 	@RequestMapping("/w_mall!{cid}")
 	public String w_mall(ModelMap modelMap,
 			HttpServletRequest request,
@@ -149,6 +153,9 @@ public class EhaisMallController extends EhaisCommonController {
 		}
 		request.getSession().setAttribute(EConstants.SESSION_STORE_ID, store_id);
 		
+		System.out.println("request.getRequestURL():"+request.getRequestURL());
+		System.out.println("IP address : "+IpUtil.getIpAddrV2(request));
+		
 		try{
 			EHaiStore store = eStoreService.getEStore(store_id);
 			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
@@ -157,7 +164,7 @@ public class EhaisMallController extends EhaisCommonController {
 			    return "redirect:"+website; //错误的链接，跳转商城
 			}
 			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
-			
+			System.out.println("user_id.....:"+user_id);
 			if(this.isWeiXin(request)){//微信端登录
 				if((user_id == null || user_id == 0 ) && StringUtils.isEmpty(code)){
 					return this.redirect_wx_authorize(request , wp.getAppid() , "/w_mall!"+cid);
@@ -174,15 +181,16 @@ public class EhaisMallController extends EhaisCommonController {
 					
 				}else if(Long.valueOf(map.get("userId").toString()).longValue() != user_id.longValue()){
 					System.out.println("user_id != map.userId condition is worng");
-					request.getSession().removeAttribute(EConstants.SESSION_USER_ID);
+//					request.getSession().removeAttribute(EConstants.SESSION_USER_ID);
+					cid = SignUtil.setCid(store_id, Integer.valueOf(map.get("agencyId").toString()), Long.valueOf(map.get("parentId").toString()), user_id, wp.getToken());
 				    return this.redirect_wx_authorize(request,wp.getAppid(), "/w_mall!"+cid);
 				}else{
 					System.out.println(cid+" condition is worng");
 					return "redirect:"+website; //错误的链接，跳转商城
 				}
 			}else{
-				return this.mallData(modelMap, request, response, wp, store, cid, store_id, user_id, map);
-				
+//				return this.mallData(modelMap, request, response, wp, store, cid, store_id, user_id, map);
+				return "redirect:"+website;
 			}
 			
 			

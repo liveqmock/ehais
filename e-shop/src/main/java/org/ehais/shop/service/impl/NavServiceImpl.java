@@ -184,7 +184,7 @@ public class NavServiceImpl  extends CommonServiceImpl implements NavService{
 		HaiNavExample example = new HaiNavExample();
 		HaiNavExample.Criteria c = example.createCriteria();
 		c.andStoreIdEqualTo((Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID));
-		example.setOrderByClause("vieworder asc");
+		example.setOrderByClause("sort asc");
 		List<HaiNav> list = haiNavMapper.selectByExample(example);
 		
 		return list;
