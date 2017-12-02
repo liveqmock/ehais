@@ -21,6 +21,7 @@ public class StoreManagerController extends EhaisCommonController{
 
 	private static Logger log = LoggerFactory.getLogger(StoreManagerController.class);
 
+	//http://8937e8ed.ngrok.io/wx_store_manager
 	@RequestMapping("/wx_store_manager")
 	public String wx_store_manager(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -28,11 +29,11 @@ public class StoreManagerController extends EhaisCommonController{
 		
 		try{
 //			EHaiStore store = eStoreService.getEStore(default_store_id);
-			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(default_store_id);
+			
 			
 			
 			if(this.isWeiXin(request)){//微信端登录
-				
+				WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(default_store_id);
 				if(StringUtils.isBlank(code)){
 					return this.redirect_wx_authorize(request , wp.getAppid() , "/wx_store_manager");
 				}else if(StringUtils.isNotEmpty(code)){
@@ -47,15 +48,13 @@ public class StoreManagerController extends EhaisCommonController{
 						return "redirect:"+link;
 					}
 					
-					
-					
 					return "/ehais/store_manager";
 				}
 			}else{
-//				return "redirect:"+website;
-				String cid = SignUtil.setCid(default_store_id, 0, 0L, 0L, wp.getToken());
-				modelMap.addAttribute("cid", cid);
-				return "/ehais/store_manager";
+				return "redirect:"+website;
+//				String cid = SignUtil.setCid(default_store_id, 0, 0L, 0L, wp.getToken());
+//				modelMap.addAttribute("cid", cid);
+//				return "/ehais/store_manager";
 			}
 			
 		}catch(Exception e){
