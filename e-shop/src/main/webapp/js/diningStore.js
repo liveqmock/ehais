@@ -144,14 +144,9 @@ $(function(){
 	$("#myOrderList").height($(".menu").height());
 	if($("#coupons").length>0)$("#couponsList").height($(".menu").height());
 	
-
-//	console.log($(".menu").height() +"+"+ $(window).height() +"+"+ $(".swiper-container").height() +"+"+ $(".tab").height() +"+"+ $("footer").height());
-//	console.log("window height:"+$(window).outerHeight(true));
-//	console.log("body height:"+$(document.body).outerHeight(true));
+//	wPos = $(document.body).outerHeight(true) - $(window).outerHeight(true);
+	wPos = $(".w").height() - $(window).outerHeight(true);
 	
-	wPos = $(document.body).outerHeight(true) - $(window).outerHeight(true);
-	
-//	console.log("wPos:"+wPos);
 	jroll_menu_cate = new JRoll("#menu_cate", {scrollBarY:false});
 	jroll_menu_list = new JRoll("#menu_list", {scrollBarY:false});
 	jroll_myOrderList = new JRoll("#myOrderList", {scrollBarY:false});
@@ -235,7 +230,7 @@ $(function(){
 							"<i class='iconfont icon-jia-xianxingfangkuang'></i>"+
 							"<div class='q'>"+$(this).html()+"</div>"+
 							"<i class='iconfont icon-jian-xianxingfangkuang'></i>"+
-							"<div class='p'>￥"+((parseFloat($(this).parent().parent().parent().attr("price")) * parseInt($(this).html()) * parseInt($(this).html())) / 100).toFixed(2) +"</div>"+
+							"<div class='p'>￥"+((parseFloat($(this).parent().parent().parent().attr("price")) * parseInt($(this).html())) / 100).toFixed(2) +"</div>"+
 						"</dd>");
 				}
 			});
