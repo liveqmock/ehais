@@ -3,6 +3,8 @@ package org.ehais.shop.controller.admin;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.ehais.annotation.EPermissionController;
+import org.ehais.annotation.EPermissionModuleGroup;
 import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.ehais.shop.model.HaiNav;
@@ -18,6 +20,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+@EPermissionModuleGroup(name="应用模组")
+
+@EPermissionController(name="导航管理",intro="导航管理功能",value="navController")
 
 @Controller
 @RequestMapping("/admin")

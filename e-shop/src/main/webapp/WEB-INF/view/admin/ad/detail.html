@@ -36,8 +36,8 @@
 <body>
 <div class="header">
 	<div class="nav">
-		<a href="javascript:;" id="back" class="icon fa fa-arrow-left ">&nbsp;</a>
-		<div class="nav0">角色</div>
+		<i id="back" class="icon fa fa-arrow-left">&nbsp;</i>
+		<div class="nav0">广告管理</div>
 		<div class="nav1">信息编辑</div>
 	</div>
 </div>
@@ -46,37 +46,59 @@
 <form id="myForm" name="myForm" class="form-horizontal" action="${rm.action?default('')}" method="post">
 
 
-<input type="hidden" class="form-control" id="roleId" name="roleId" value="${rm.model.roleId!''}" >
-<input type="hidden" class="form-control" id="parentId" name="parentId" value="1" placeholder="">
-
-<div class="form-group">
-<label class="col-sm-2 control-label">角色名称</label>
+<input type="hidden" class="form-control" id="adId" name="adId" value="${rm.model.adId!''}" >
+<div class="form-group dn">
+<label class="col-sm-2 control-label">位置</label>
 <div class="col-sm-5">
-	<input type="text" class="form-control" id="name" name="name" value="${rm.model.name!''}" placeholder="">
+	<select id="positionId" name="positionId" class="form-control" >
+		<option value="">请选择位置</option>
+		<#if (rm.map.adpositionList?? && rm.map.adpositionList?size > 0 )>
+		<#list rm.map.adpositionList as p>
+			<option value="${p.positionId}"  <#if (p.positionId == rm.model.positionId!0)>selected="selected"</#if> >${p["positionName"]}【${p.adWidth}*${p.adHeight}】</option>
+		</#list>
+		</#if>
+	</select>
 </div>
 </div>
-
 
 <div class="form-group">
-<label class="col-sm-2 control-label">可用状态</label>
+<label class="col-sm-2 control-label">广告名称</label>
 <div class="col-sm-5">
-	<@checkboxPicker id="status" value="${(rm.model.status?string('yes', 'no'))!'no'}" />
+	<input type="text" class="form-control" id="adName" name="adName" value="${rm.model.adName!''}" placeholder="">
+	可当作广告标语使用
 </div>
 </div>
-
 
 <div class="form-group">
-<label class="col-sm-2 control-label">备注</label>
+<label class="col-sm-2 control-label">链接</label>
 <div class="col-sm-8">
-	<textarea class="form-control" id="remark" name="remark" placeholder="">${rm.model.remark!''}</textarea>
+	<input type="text" class="form-control" id="adLink" name="adLink" value="${rm.model.adLink!''}" placeholder="">
 </div>
 </div>
 
+<div class="form-group">
+<label class="col-sm-2 control-label">图片</label>
+<div class="col-sm-5">
+	<@bsQiniuImagesPicker id="adPic" value="${rm.model.adPic!''}" domain="${domain}" uptoken="${uptoken}"/>
+</div>
+</div>
 
+<div class="form-group">
+<label class="col-sm-2 control-label">是否生效</label>
+<div class="col-sm-2">
+	<@checkboxIntegerPicker id="isVoid" value="${(rm.model.isVoid?string(''))!'1'}" />
+</div>
+</div>
 
+<div class="form-group">
+<label class="col-sm-2 control-label">排序</label>
+<div class="col-sm-2">
+	<@quantityPicker id="sort" value="${rm.model.sort!1}" />
+</div>
+</div>
 
-
-
+<input type="hidden" id="adCode" name="adCode" value="${rm.model.adCode!''}">
+<input type="hidden" id="isMobile" name="isMobile" value="1">
 
 <div class="form-group">
 	<div class="col-sm-3"></div>
@@ -91,7 +113,7 @@
 </div>    
 
 
-<script type="text/javascript" src="/js/gzhmt/role/detail.js" ></script>             
+<script type="text/javascript" src="/js/partner/ad/detail.js" ></script>             
 
 
 </body>

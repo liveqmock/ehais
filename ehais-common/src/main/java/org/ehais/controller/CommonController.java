@@ -1,10 +1,12 @@
 package org.ehais.controller;
 
 
+import java.io.File;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,7 +14,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.ECommon;
-import org.ehais.util.IpUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ui.ModelMap;
@@ -36,10 +37,10 @@ public class CommonController {
 	 * @return
 	 */
 	public String config_file(HttpServletRequest request,String file_name){
-		String path = "";		
+		String path = "";	
+		Properties sysProperty=System.getProperties(); //系统属性
 		if(this.isLocalHost(request)){
-			path = request.getRealPath("").replace("webapp", "");
-			path += "/resources/config/"+file_name;
+			path = request.getRealPath("/resources/config/"+file_name).replace("webapp"+sysProperty.getProperty("file.separator"), "");
 		}else{
 			path = request.getRealPath("/WEB-INF/classes/config/"+file_name);
 		}		
@@ -68,6 +69,29 @@ public class CommonController {
 	protected Integer getStoreId(HttpServletRequest request){
 		return (Integer) request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 	}
+	
+	protected String view(HttpServletRequest request,String html){
+		String project_folder = (String) request.getSession().getAttribute(EConstants.SESSION_ADMIN_PROJECT_FOLDER);
+		String path = request.getRealPath("/WEB-INF/view/"+project_folder+html)+".html";
+		File file = new File(path);
+		if(file.exists()){
+			return "/"+project_folder+html;
+		}else{
+			return "/admin"+html;
+		}
+	}
+	
+	protected String view(HttpServletRequest request,String theme,String html){
+		String path = request.getRealPath("/WEB-INF/view/"+theme+html)+".html";
+		File file = new File(path);
+		if(file.exists()){
+			return "/"+theme+html;
+		}else{
+			return "/admin"+html;
+		}
+	}
+	
+	
 	
 	/**
 	 * 获取普通管理的样式

@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+
+		<#include "/include.html"/>
+		<#include "/FreemarkerMacro.html"/>
+
+<title>Insert title here</title>
+</head>
+<body>
+<div class="header">
+	<div class="nav">
+		<a href="javascript:;" id="back" class="icon fa fa-arrow-left ">&nbsp;</a>
+		<div class="nav0">导航管理</div>
+		<div class="nav1">信息编辑</div>
+	</div>
+</div>
+<div style="width: 100%;height: 40px;"></div>
+<div class="container-fluid">
+<form id="myForm" name="myForm" class="form-horizontal" action="${rm.action?default('')}" method="post">
+
+
+<input type="hidden" class="form-control" id="id" name="id" value="${rm.model.id!''}" >
+<div class="form-group">
+<label class="col-sm-2 control-label">名称</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="name" name="name" value="${rm.model.name!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">简介</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="intro" name="intro" placeholder="">${rm.model.intro!''}</textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">生效</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="isValid" name="isValid" value="${rm.model.isValid!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">排序</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="sort" name="sort" value="${rm.model.sort!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">新窗口</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="opennew" name="opennew" value="${rm.model.opennew!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">链接</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="url" name="url" placeholder="">${rm.model.url!''}</textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">类型</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="classify" name="classify" value="${rm.model.classify!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">store_id</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="storeId" name="storeId" value="${rm.model.storeId!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">联系手机号</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="isMobile" name="isMobile" value="${rm.model.isMobile!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">样式类</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="className" name="className" value="${rm.model.className!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">父栏目</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="parentId" name="parentId" value="${rm.model.parentId!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">缩略图</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="thumb" name="thumb" value="${rm.model.thumb!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">图片</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="image" name="image" value="${rm.model.image!''}" placeholder="">
+</div>
+</div>
+
+
+
+
+
+<div class="form-group">
+	<div class="col-sm-3"></div>
+	<div class="col-sm-6"><button id="saveSubmit" type="button" class="btn btn-primary">提交信息</button></div>
+</div>
+       
+
+
+
+
+</form>
+</div>    
+
+
+<script type="text/javascript" src="/js/admin/nav/detail.js" ></script>             
+
+
+</body>
+</html>

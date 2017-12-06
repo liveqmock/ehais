@@ -56,7 +56,8 @@ public class EIndexAdminController extends CommonController{
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		return "/"+this.getAdminProjectFolder(request)+"/main/index";
+//		return "/"+this.getAdminProjectFolder(request)+"/main/index";
+		return this.view(request, "/main/index");
 	}
 	
 	@RequestMapping("/main")
@@ -67,7 +68,8 @@ public class EIndexAdminController extends CommonController{
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		return "/"+this.getAdminProjectFolder(request)+"/main/main";
+//		return "/"+this.getAdminProjectFolder(request)+"/main/main";
+		return this.view(request, "/main/main");
 	}
 	
 }

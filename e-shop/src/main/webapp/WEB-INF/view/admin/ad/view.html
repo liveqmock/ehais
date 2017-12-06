@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="/js/jquery-2.1.4.min.js" ></script>
+		
+		<link rel="stylesheet" href="/js/bootstrap/css/bootstrap.min.css" />
+		<script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js" ></script>
+		<link rel="stylesheet" href="/css/admin.css" />
+		
+		<link rel="stylesheet" href="/js/bootstrap/treeview/bootstrap-treeview.min.css" />
+		<script type="text/javascript" src="/js/bootstrap/treeview/bootstrap-treeview.min.js" ></script>
+		
+		<link rel="stylesheet" href="/js/bootstrap/table/bootstrap-table.min.css" />
+		<script type="text/javascript" src="/js/bootstrap/table/bootstrap-table.min.js" ></script>
+		<script type="text/javascript" src="/js/bootstrap/table/locale/bootstrap-table-zh-CN.min.js" ></script>
+		
+		<link rel="stylesheet" href="/js/layer/skin/default/layer.css" />
+		<script type="text/javascript" src="/js/layer/layer.js" ></script>
+		
+		<script type="text/javascript" src="/js/adminCommon.js" ></script>
+		
+	</head>
+	<body>
+	<#include "/FreemarkerMacro.html"/>
+		<div class="header">
+			<div class="nav">
+				<i class="icon fa fa-home">&nbsp;</i>
+				<div class="nav0">广告管理信息管理</div>
+			</div>
+		</div>
+		<div class="body">
+			<div class="container_box">
+				<div class="col_side dn">
+					<h4>
+						<i class="fa fa-cubes"></i>
+						广告分类
+						<!-- 
+						<i id="deleteCate" class="fr fa fa-trash-o"></i>
+						<i id="editCate" class="fr fa fa-edit"></i>
+						<i id="addCate" class="fr fa fa-plus"></i>
+						 -->
+					</h4>
+					<div class="category">
+						<div id="tree"></div>
+					</div>
+				</div>
+				<div class="col_main body">
+					<h4>
+						<i class="fa fa-list"></i>
+						广告管理信息列表
+						<a href="haiAdAddDetail" class="fa fa-plus btn btn-primary" >添加</a>
+					</h4>			
+					<div class="panel panel-default">
+						<div class="panel-heading">搜索条件</div>
+						<div class="panel-body single">					    
+							<div><label>标题：</label><input id="adName" class="control"/></div>
+							<div><button id="btnSearch" class="fa fa-search btn btn-default control">搜索</button></div>
+						</div>
+					</div>
+					
+					
+					<div class="main_table">
+						<table id="bsTable" data-show-columns="false"></table>
+					</div>
+
+				</div>
+			</div>
+			
+			
+			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">  
+			    <div class="modal-dialog" role="document">  
+			        <div class="modal-content">  
+			            <div class="modal-header">  
+			                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span  
+			                        aria-hidden="true">×</span></button>  
+			                <h4 class="modal-title" id="exampleModalLabel">广告位置管理</h4>  
+			            </div>  
+			            <div class="modal-body">  
+			                <form id="formPosition" class="form-horizontal">  
+			                    <div class="form-group">  
+			                        <label for="recipient-name" class="control-label col-sm-2">名称:</label>  
+			                        <div class="col-sm-5">
+			                        <input type="text" class="form-control" id="positionName" name="positionName">
+			                        </div>  
+			                    </div>  
+			                    <div class="form-group">  
+			                        <label for="message-text" class="control-label col-sm-2">宽度:</label>  
+			                        <div class="col-sm-3">
+			                        <input type="text" class="form-control" id="adWidth" name="adWidth">
+			                        </div>  
+			                    </div>  
+			                    <div class="form-group">  
+			                        <label for="message-text" class="control-label col-sm-2">高度:</label>  
+			                        <div class="col-sm-3">
+			                        <input type="text" class="form-control" id="adHeight" name="adHeight">
+			                        </div>  
+			                    </div>
+			                </form>  
+			            </div>  
+			            <div class="modal-footer">  
+			                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>  
+			                <button type="button" class="btn btn-primary" id="savePosition">保存</button>  
+			            </div>  
+			        </div>  
+			    </div>  
+			</div> 
+			
+
+		</div>
+		<script type="text/javascript" src="/js/partner/ad/view.js" ></script>
+	</body>
+</html>

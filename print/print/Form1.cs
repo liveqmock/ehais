@@ -78,7 +78,7 @@ namespace print
 
 
             //小丸子不要厨房单
-            //pdKitchen.PrintPage += new PrintPageEventHandler(this.MyPrintDocument_PrintPage_to_Kitchen);
+            pdKitchen.PrintPage += new PrintPageEventHandler(this.MyPrintDocument_PrintPage_to_Kitchen);
 
 
             //ppd.Document = pd;
@@ -154,7 +154,7 @@ namespace print
             float fltXPos = 0;                   //每一行的X坐标  
             float fltLeftMargin = 0;// e.MarginBounds.Left;                     //获取打印起始位置  
             float fltTopMargin = 0;// e.MarginBounds.Top;
-            float fltScreenWidth = this.pd.DefaultPageSettings.PaperSize.Width - fltLeftMargin - 40;
+            float fltScreenWidth = this.pd.DefaultPageSettings.PaperSize.Width - fltLeftMargin; // - 40
             float fltRowHeight = printFont.GetHeight(e.Graphics) + 10;
 
 
@@ -179,7 +179,7 @@ namespace print
 
             g.DrawLine(Pens.Black, fltXPos, fltYPos + fltRowHeight / 2, fltScreenWidth, fltYPos + fltRowHeight / 2);
 
-            printFont = new Font(new FontFamily("Arial"), 8);
+            //printFont = new Font(new FontFamily("Arial"), 8);
 
 
             SizeF sizeF = g.MeasureString("订单编号：", printFont);
@@ -188,11 +188,11 @@ namespace print
             fltYPos += fltRowHeight;
             g.DrawString("订单编号：", printFont, System.Drawing.Brushes.Black, fltXPos, fltYPos);
 
-            printFont = new Font(new FontFamily("Arial"), 10);
+            //printFont = new Font(new FontFamily("Arial"), 10);
             
             g.DrawString(joOrder["daySerialNumber"].ToString(), printFont, System.Drawing.Brushes.Black, fltXPos + sizeF.Width, fltYPos - 2);
 
-            printFont = new Font(new FontFamily("Arial"), 8);
+            //printFont = new Font(new FontFamily("Arial"), 8);
 
             fltYPos += fltRowHeight;
             g.DrawString("日期："+joOrder["addTime"].ToString(), printFont, System.Drawing.Brushes.Black, fltXPos, fltYPos);
@@ -202,12 +202,12 @@ namespace print
             fltYPos += fltRowHeight;
             g.DrawString("餐桌：", printFont, System.Drawing.Brushes.Black, fltXPos, fltYPos);
 
-            printFont = new Font(new FontFamily("Arial"), 10);
+            printFont = new Font(new FontFamily("Arial"), 12);
             g.DrawString(joOrder["zipcode"].ToString(), printFont, System.Drawing.Brushes.Black, fltXPos + sizeF.Width, fltYPos - 2);
 
-            printFont = new Font(new FontFamily("Arial"), 8);
+            printFont = new Font(new FontFamily("Arial"), 10);
 
-            
+
 
             fltYPos += fltRowHeight;            
             g.DrawLine(Pens.Black, fltXPos, fltYPos + fltRowHeight / 2, fltScreenWidth, fltYPos + fltRowHeight / 2);
@@ -235,7 +235,7 @@ namespace print
                     printFont = new Font(new FontFamily("Arial"), 10);
                     g.DrawString(item["goodsName"].ToString() , printFont, System.Drawing.Brushes.Black, fltXPos, fltYPos);
 
-                    printFont = new Font(new FontFamily("Arial"), 8);
+                    //printFont = new Font(new FontFamily("Arial"), 8);
                     fltYPos += fltRowHeight;
                     g.DrawString("x"+item["goodsNumber"].ToString(), printFont, System.Drawing.Brushes.Black, fltScreenWidth / 2, fltYPos);
                     //g.DrawString(Convert.ToDouble(Convert.ToDouble(item["goodsPrice"].ToString()) / 100).ToString("0.00"), printFont, System.Drawing.Brushes.Black, fltScreenWidth / 2 + fltScreenWidth / 2 / 3 - fltScreenWidth / 12, fltYPos);
@@ -243,11 +243,12 @@ namespace print
 
                     quantity += Convert.ToInt32(item["goodsNumber"].ToString());
                     total += Convert.ToInt32(item["goodsNumber"].ToString()) * Convert.ToInt32(item["goodsPrice"].ToString());
+
                 }
                 
             }
 
-            printFont = new Font(new FontFamily("Arial"), 10);
+            //printFont = new Font(new FontFamily("Arial"), 10);
 
             fltYPos += fltRowHeight;
             if(joOrder["postscript"].ToString().Length > 0 && joOrder["postscript"].ToString().Length <= 16)
@@ -369,9 +370,9 @@ namespace print
 
             float fltYPos = 0;                   //每一行的Y坐标  
             float fltXPos = 0;                   //每一行的X坐标  
-            float fltLeftMargin = e.MarginBounds.Left;                     //获取打印起始位置  
-            float fltTopMargin = e.MarginBounds.Top;
-            float fltScreenWidth = this.pd.DefaultPageSettings.PaperSize.Width - fltLeftMargin - 40;
+            float fltLeftMargin = 0;                     //获取打印起始位置  
+            float fltTopMargin = 0;
+            float fltScreenWidth = this.pd.DefaultPageSettings.PaperSize.Width - fltLeftMargin; // - 40
             float fltRowHeight = printFont.GetHeight(e.Graphics) + 10;
 
 
@@ -418,6 +419,8 @@ namespace print
 
             //stringFormat.Alignment = StringAlignment.Near;
 
+            int quantity = 0;
+            long total = 0;
 
             foreach (JObject item in jOrderGoodsList)
             {
@@ -429,11 +432,22 @@ namespace print
                     //g.DrawString(item["goodsName"].ToString(), printFont, Brushes.Black, rec, stringFormat);
                     g.DrawString(item["goodsName"].ToString(), printFont, System.Drawing.Brushes.Black, fltXPos, fltYPos);
                     fltYPos += fltRowHeight;
-                    g.DrawString(item["goodsNumber"].ToString(), printFont, System.Drawing.Brushes.Black, fltScreenWidth / 5 * 4, fltYPos);
+                    g.DrawString("x"+item["goodsNumber"].ToString(), printFont, System.Drawing.Brushes.Black, fltScreenWidth / 5 * 4, fltYPos);
+
+                    quantity += Convert.ToInt32(item["goodsNumber"].ToString());
+                    total += Convert.ToInt32(item["goodsNumber"].ToString()) * Convert.ToInt32(item["goodsPrice"].ToString());
+
 
                 }
 
             }
+
+            
+            fltYPos += fltRowHeight;
+            g.DrawString("合计：", printFont, System.Drawing.Brushes.Black, fltXPos, fltYPos);
+            g.DrawString(quantity.ToString(), printFont, System.Drawing.Brushes.Black, fltScreenWidth / 2, fltYPos);
+            g.DrawString(Convert.ToDouble(Convert.ToDouble(total) / 100).ToString("#0.00"), printFont, System.Drawing.Brushes.Black, fltScreenWidth / 2 + fltScreenWidth / 2 / 3 * 2, fltYPos);
+
 
             fltYPos += fltRowHeight;
             g.DrawString("支付方式：" + joOrder["payName"].ToString(), printFont, System.Drawing.Brushes.Black, fltXPos, fltYPos);
@@ -574,7 +588,7 @@ namespace print
                 {
                     joOrder = item;
                     pd.Print();
-                    //pdKitchen.Print();
+                    pdKitchen.Print();
 
                 }
             }else

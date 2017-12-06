@@ -148,13 +148,13 @@
 	</bean>
 	
 	<bean id="loginAdminInterceptor" class="org.ehais.interceptor.AdminInterceptor">
-		<property name="loginUrl" value="/adminlogin"/>
+		<property name="loginUrl" value="/admin_login"/>
 		<property name="notpermissionUrl" value="/notpermission"/>
 		<property name="ignoreUrls">
 			<list>
-				<value>/adminlogin</value>
+				<value>/admin_login</value>
 				<value>/adminLoginSubmitAjax</value>
-				<value>/adminlogout</value>
+				<value>/admin_logout</value>
 				<value>/admin/index</value>
 				<value>/admin/main</value>
 			</list>

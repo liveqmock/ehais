@@ -54,14 +54,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="print.exe" size="59904">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="print.exe" size="60416">
       <assemblyIdentity name="print" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>iVofkPnH3ug0QiHuoy7BKZfRvrJs3DDz7hQ1/O6VAw8=</dsig:DigestValue>
+        <dsig:DigestValue>JyDFng53GBCTSQOSQaKGtitp+cdwuhi7Fz0500Ak7QQ=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

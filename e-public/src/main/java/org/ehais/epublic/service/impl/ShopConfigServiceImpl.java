@@ -38,7 +38,7 @@ public class ShopConfigServiceImpl  extends CommonServiceImpl implements ShopCon
 			throws Exception {
 		// TODO Auto-generated method stub  ,HaiShopConfig model
 		ReturnObject<HaiShopConfig> rm = new ReturnObject<HaiShopConfig>();
-		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_ADMIN_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiShopConfigExample example = new HaiShopConfigExample();
 		HaiShopConfigExample.Criteria c = null;
 		int count = 0;
@@ -89,7 +89,7 @@ public class ShopConfigServiceImpl  extends CommonServiceImpl implements ShopCon
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiShopConfig> rm = new ReturnObject<HaiShopConfig>();
-		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_ADMIN_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		HaiShopConfigExample example = new HaiShopConfigExample();
 		HaiShopConfigExample.Criteria c = example.createCriteria();

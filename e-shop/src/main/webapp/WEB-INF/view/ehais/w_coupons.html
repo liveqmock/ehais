@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="format-detection" content="telephone=no, email=no "/>
+		<title>商家后台帐户</title>
+		<script type="text/javascript" src="js/jquery-2.1.4.min.js" ></script>
+		<script type="text/javascript" src="js/common.js" ></script>
+		<link rel="stylesheet" href="js/swiper/swiper-3.4.2.min.css" />
+		<script type="text/javascript" src="js/swiper/swiper-3.4.2.jquery.min.js" ></script>
+		
+		<link rel="stylesheet" href="css/coupons.css" />
+	</head>
+	<body>
+		<div class="em">
+			<header>
+				<i class="iconfont icon-xiangzuojiantou"></i>
+				优惠券
+				<i ></i>
+			</header>
+			<div class="coupons">
+				<div class="store">${store.storeName}</div>
+				<div class="clist">
+					<ul>
+						<#if (list?? && list?size > 0)>
+						<#list list as c>
+						<li>
+							<div><#if c.couponsType == "reduce">￥${c.discounts}<#else>折${c.discounts}</#if></div>
+							<div>满${c.quota}使用</div>
+							<div>领取</div>
+						</li>
+						</#list>
+						</#if>
+						
+					</ul>
+				</div>
+				
+				<#if (subscribe?? && subscribe == 0)>
+				<div class="attention">
+					<div>"长按二维码"关注易海司公众号</div>
+					<div>菜单"我的优惠券"查看</div>
+					<img src="images/qrcode.jpg" />
+				</div>
+				</#if>
+				
+				
+			</div>
+			
+			
+			
+		</div>
+	</body>
+</html>

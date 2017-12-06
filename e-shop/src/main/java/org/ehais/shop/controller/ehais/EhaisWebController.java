@@ -30,6 +30,7 @@ import org.ehais.shop.mapper.HaiArticleGoodsMapper;
 import org.ehais.shop.mapper.HaiArticleRecordMapper;
 import org.ehais.shop.mapper.HaiCartMapper;
 import org.ehais.shop.mapper.HaiCategoryMapper;
+import org.ehais.shop.mapper.HaiCouponsMapper;
 import org.ehais.shop.mapper.HaiFavoritesMapper;
 import org.ehais.shop.mapper.HaiForumMapper;
 import org.ehais.shop.mapper.HaiGoodsGalleryMapper;
@@ -46,6 +47,7 @@ import org.ehais.shop.model.HaiCart;
 import org.ehais.shop.model.HaiCartExample;
 import org.ehais.shop.model.HaiCategory;
 import org.ehais.shop.model.HaiCategoryExample;
+import org.ehais.shop.model.HaiCoupons;
 import org.ehais.shop.model.HaiFavorites;
 import org.ehais.shop.model.HaiFavoritesExample;
 import org.ehais.shop.model.HaiGoods;
@@ -99,12 +101,13 @@ public class EhaisWebController extends EhaisCommonController {
 	private HaiGoodsGalleryMapper haiGoodsGalleryMapper;
 	@Autowired
 	private HaiFavoritesMapper haiFavoritesMapper;
-	
 	@Autowired
 	private HaiAdMapper haiAdMapper;
 	@Autowired
 	private HaiCategoryMapper haiCategoryMapper;
-
+	@Autowired
+	private HaiCouponsMapper haiCouponsMapper;
+	
 	
 	//http://127.0.0.1/w_shop!afa5890-062c0c01-12b7b002-2c960b1253-37ca2179f7b3b
 	@RequestMapping("/w_shop!{cid}")
@@ -681,7 +684,7 @@ public class EhaisWebController extends EhaisCommonController {
 					return "redirect:"+website; //错误的链接，跳转商城
 				}
 			}else{
-				this.shop_encode(request);
+//				this.shop_encode(request);
 				return this.article_goods(modelMap, request, response,wp, sid,user_id,map,"/ehais/w_article_goods");//整理此软文与商品所有内容
 			}
 			
@@ -772,7 +775,7 @@ public class EhaisWebController extends EhaisCommonController {
 				
 			}else{
 				
-				this.shop_encode(request);
+//				this.shop_encode(request);
 				return this.goods_detail(modelMap, request, response,wp, sid,user_id,map,"/ehais/w_goods_detail");//整理此软文与商品所有内容
 			}
 			
@@ -1007,11 +1010,95 @@ public class EhaisWebController extends EhaisCommonController {
 		}
 	}
 	
+	/**
+	 * 商家优惠券
+	 * http://127.0.0.1/w_coupons!360e4580-0e976401-1df85c02-2235841253-381d74ad39712
+	 * @param modelMap
+	 * @param request
+	 * @param response
+	 * @param sid
+	 * @param code
+	 * @return
+	 */
+	@RequestMapping("/w_coupons!{cid}")
+	public String w_coupons(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@PathVariable(value = "cid") String cid	,
+			@RequestParam(value = "code", required = false) String code) {
+		Integer store_id = SignUtil.getUriStoreId(cid);
+		if(store_id == 0 || store_id == null){
+			System.out.println(cid+" store_id is worng");
+			return "redirect:"+website; //错误的链接，跳转商城
+		}
+		request.getSession().setAttribute(EConstants.SESSION_STORE_ID, store_id);
+		
+		try{
+			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
+			Map<String,Object> map = SignUtil.getCid(cid,wp.getToken());
+			if(map == null){
+			    return "redirect:"+website; //错误的链接，跳转商城
+			}
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
+			
+			if(this.isWeiXin(request)){//微信端登录
+
+				if((user_id == null || user_id == 0) && StringUtils.isEmpty(code)){
+					return this.redirect_wx_authorize(request,wp.getAppid(), "/w_coupons!"+cid);
+				}else if(StringUtils.isNotEmpty(code)){
+					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map,false);
+					request.getSession().setAttribute("subscribe", user.getSubscribe());//关注
+					String newSid = SignUtil.setSid(store_id,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), user.getUserId(), Integer.valueOf(map.get("articleId").toString()), Long.valueOf(map.get("goodsId").toString()),wp.getToken());
+					String link = request.getScheme() + "://" + request.getServerName() + "/w_coupons!"+newSid;
+					return "redirect:"+link;
+				}else if(user_id > 0 && Long.valueOf(map.get("userId").toString()).longValue() == user_id.longValue()){
+					return this.coupons(modelMap, request, response,wp,store_id, cid,user_id,map,"/ehais/w_coupons");//整理此软文与商品所有内容
+				}else if(Long.valueOf(map.get("userId").toString()).longValue() != user_id.longValue()){
+					System.out.println("user_id != map.userId condition is worng");
+//					request.getSession().removeAttribute(EConstants.SESSION_USER_ID);
+					cid = SignUtil.setCid(store_id, Integer.valueOf(map.get("agencyId").toString()), Long.valueOf(map.get("parentId").toString()), user_id, wp.getToken());
+				    return this.redirect_wx_authorize(request,wp.getAppid(), "/w_coupons!"+cid);
+				}else{
+					System.out.println(cid+" condition is worng");
+					return "redirect:"+website; //错误的链接，跳转商城
+				}
+				
+			}else{
+				
+//				this.shop_encode(request);
+				return this.coupons(modelMap, request, response,wp,store_id, cid,user_id,map,"/ehais/w_coupons");//整理此软文与商品所有内容
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return "/ehais/w_coupons";
+	}
+	
+	//商家优惠券数据
+	private String coupons(ModelMap modelMap,HttpServletRequest request,HttpServletResponse response,WpPublicWithBLOBs wp,Integer store_id,String cid,Long user_id,Map<String,Object> map,String path) throws NumberFormatException, Exception{
+		
+		EHaiStore store = eStoreService.getEStore(store_id);
+		modelMap.addAttribute("store", store);
+		
+		List<HaiCoupons> list = haiCouponsMapper.selectStoreCoupons(store_id);
+		modelMap.addAttribute("list", list);
+		System.out.println("list:"+list.size());
+		
+		cid = SignUtil.setCid(store_id, Integer.valueOf(map.get("agencyId").toString()), user_id, user_id, wp.getToken());
+		String link = request.getScheme() + "://" + request.getServerName() + "/w_coupons!"+cid;
+		this.shareWeiXin(modelMap, request, response, wp, store_id, 
+				store.getStoreName()+weixin_coupons_title, //title 
+				link, 
+				weixin_coupons_desc, //desc
+				defaultimg);//img
+		
+		return path;
+	}
 	
 	
 	public static void main(String[] args) throws Exception {
-		String sid = SignUtil.setSid(9, 0, 0L, 125L, 0, 0L, "ehais_wxdev");
-		String cid = SignUtil.setCid(9, 0, 0L, 125L, "ehais_wxdev");
+		String sid = SignUtil.setSid(58, 0, 0L, 125L, 0, 0L, "ehais_wxdev");
+		String cid = SignUtil.setCid(58, 0, 0L, 125L, "ehais_wxdev");
 		System.out.println(sid);
 		System.out.println(cid);
 	}
