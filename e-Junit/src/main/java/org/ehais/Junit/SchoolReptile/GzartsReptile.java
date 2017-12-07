@@ -1,4 +1,4 @@
-package org.ehais.Junit;
+package org.ehais.Junit.SchoolReptile;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

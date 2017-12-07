@@ -44,26 +44,56 @@ public class ArticleApiController extends ArticleIController{
 	public String article_save(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@ModelAttribute EHaiArticle article,
-			@RequestParam(value = "cat_name", required = true) String cat_name			
+			@RequestParam(value = "cat_name", required = true) String cat_name,		
+			@RequestParam(value = "parent_cat_name", required = false) String parent_cat_name	
 			){		
 		try {
 //			Bean2Utils.printEntity(article);
+			
+			Integer parent_cat_id = 0 ;
+			if(StringUtils.isNotBlank(parent_cat_name)){
+				EHaiArticleCatExample ace = new EHaiArticleCatExample();
+				ace.createCriteria()
+				.andStoreIdEqualTo(article.getStoreId())
+				.andCatNameEqualTo(parent_cat_name)
+				.andParentIdEqualTo(0)
+				.andModuleEqualTo(EArticleModuleEnum.ARTICLE);
+				List<EHaiArticleCat> articleCatList = haiArticleCatMapper.selectByExample(ace);
+				if(articleCatList != null && articleCatList.size() > 0){
+					parent_cat_id = articleCatList.get(0).getCatId();
+				}else{
+					EHaiArticleCat ac = new EHaiArticleCat();
+					ac.setCatName(parent_cat_name);
+					ac.setParentId(0);
+					ac.setStoreId(article.getStoreId());
+					ac.setModule(EArticleModuleEnum.ARTICLE);
+					ac.setIsValid(true);ac.setCatType(true);ac.setKeywords("");ac.setCatDesc("");ac.setSortOrder(Byte.valueOf("1"));ac.setShowInNav(true);ac.setParentId(0);
+					haiArticleCatMapper.insert(ac);
+					parent_cat_id = ac.getCatId();
+				}
+				
+			}
+			
+			System.out.println(cat_name+"==========="+parent_cat_name+"-----------"+parent_cat_id);
+			
 			//获取分类
 			EHaiArticleCatExample acExp = new EHaiArticleCatExample();
 			acExp.createCriteria()
 			.andStoreIdEqualTo(article.getStoreId())
 			.andCatNameEqualTo(cat_name)
+			.andParentIdEqualTo(parent_cat_id)
 			.andModuleEqualTo(EArticleModuleEnum.ARTICLE);
 			List<EHaiArticleCat> articleCatList = haiArticleCatMapper.selectByExample(acExp);
 			EHaiArticleCat ac = null;
-			if(articleCatList == null || articleCatList.size() == 0){
+			if(articleCatList == null || articleCatList.size() == 0){System.out.println(cat_name+"**********"+parent_cat_id);
 				ac = new EHaiArticleCat();
 				ac.setCatName(cat_name);
+				ac.setParentId(parent_cat_id);
 				ac.setStoreId(article.getStoreId());
 				ac.setModule(EArticleModuleEnum.ARTICLE);
-				ac.setIsValid(true);ac.setCatType(true);ac.setKeywords("");ac.setCatDesc("");ac.setSortOrder(Byte.valueOf("1"));ac.setShowInNav(true);ac.setParentId(0);
+				ac.setIsValid(true);ac.setCatType(true);ac.setKeywords("");ac.setCatDesc("");ac.setSortOrder(Byte.valueOf("1"));ac.setShowInNav(true);
 				haiArticleCatMapper.insert(ac);
-			}else{
+			}else{System.out.println(cat_name+"&&&&&&&&&&&&&&&&&&&&"+parent_cat_id);
 				ac = articleCatList.get(0);
 			}
 			

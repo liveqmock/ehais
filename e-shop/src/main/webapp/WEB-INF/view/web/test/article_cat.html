@@ -7,7 +7,14 @@
 <body>
 <ul>
 <#list listc as c>
-<li><a href="article_${c.catId}">${c.catName!''}</a></li>
+	<#if (c.parentId == 0 )>
+		<li>${c.parentId}<a href="article_${c.catId}">${c.catName!''}</a></li>
+		<#list listc as cc>
+			<#if (cc.parentId == c.catId)>
+				<li>======<a href="article_${cc.catId}">${cc.catName!''}</a></li>
+			</#if>
+		</#list>
+	</#if>
 </#list>
 </ul>
 </body>

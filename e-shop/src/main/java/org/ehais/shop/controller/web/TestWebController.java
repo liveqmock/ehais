@@ -34,7 +34,7 @@ public class TestWebController extends CommonController{
 	@Autowired
 	private HaiStoreStatisticsService haiStoreStatisticsService;
 	
-	private Integer store_id = 87;//78[美院],87[岭南]
+//	private Integer store_id = 87;//78[美院],87[岭南]
 	
 	@RequestMapping("/test/validate")
 	public String index(ModelMap modelMap,
@@ -44,9 +44,10 @@ public class TestWebController extends CommonController{
 	}
 	
 	
-	@RequestMapping("/test/article_cat")
+	@RequestMapping("/test/article_cat_{store_id}")
 	public String article_cat(ModelMap modelMap,
-			HttpServletRequest request,HttpServletResponse response ) throws Exception {
+			HttpServletRequest request,HttpServletResponse response,
+			@PathVariable(value = "store_id") Integer store_id) throws Exception {
 		try{
 			
 			
@@ -73,7 +74,7 @@ public class TestWebController extends CommonController{
 		try{
 			EHaiArticleExample exp = new EHaiArticleExample();
 			exp.createCriteria()
-			.andStoreIdEqualTo(store_id)
+//			.andStoreIdEqualTo(store_id)
 			.andCatIdEqualTo(catId);
 			List<EHaiArticle> list = eHaiArticleMapper.selectByExample(exp);
 			

@@ -13,6 +13,7 @@ public class ArticleCommonReptile {
 	public static String appkey = "Ehais";
 	public static String secret = "EhaisSecret";
 	
+	
 	public static void article_save(String store_id,
 			String cat_name,
 			String title,
@@ -22,6 +23,21 @@ public class ArticleCommonReptile {
 			String content,
 			String articleSource,
 			String link
+			){
+		article_save(store_id, cat_name, title, articleThumb, articleImages, description, content, articleSource, link,"","");
+	}
+	
+	public static void article_save(String store_id,
+			String cat_name,
+			String title,
+			String articleThumb,
+			String articleImages,
+			String description,
+			String content,
+			String articleSource,
+			String link,
+			String parent_cat_name,
+			String article_date
 			){
 		Map<String, String> paramsMap = new HashMap<String, String>();
 		paramsMap.put("appkey", appkey);
@@ -38,6 +54,8 @@ public class ArticleCommonReptile {
     	paramsMap.put("articleSource", articleSource);
     	paramsMap.put("articleThumb", articleThumb);
     	paramsMap.put("articleImages", articleImages);
+    	paramsMap.put("parent_cat_name", parent_cat_name);
+    	paramsMap.put("article_date", article_date);
     	
     	
 		try {
