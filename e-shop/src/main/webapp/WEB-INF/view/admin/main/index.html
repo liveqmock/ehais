@@ -46,9 +46,41 @@
 							<a data-addtab="addad" data-url="ehaisArticleView">
 								<i class="glyphicon glyphicon-cloud"></i>
 								栏目资讯
-							</a>							
+							</a>				
 						</li>
 						</@permission>
+						
+						
+						
+						<@permission url="ehaisArticleDetail">
+						<#if session_admin_id == 9003>
+						<li class="list-group-item active">
+							<a data-addtab="company" data-url="ehaisArticleDetail?module=company">
+								<i class="glyphicon glyphicon-leaf"></i>
+								公司简介
+							</a>
+						</li>
+						<li class="list-group-item active">
+							<a data-addtab="agent" data-url="ehaisArticleDetail?module=agent">
+								<i class="glyphicon glyphicon-leaf"></i>
+								代理加盟
+							</a>
+						</li>
+						<li class="list-group-item active">
+							<a data-addtab="technical" data-url="ehaisArticleDetail?module=technical">
+								<i class="glyphicon glyphicon-leaf"></i>
+								技术资源
+							</a>
+						</li>
+						<li class="list-group-item active">
+							<a data-addtab="about" data-url="ehaisArticleDetail?module=about">
+								<i class="glyphicon glyphicon-leaf"></i>
+								联系我们
+							</a>
+						</li>
+						</#if>
+						</@permission>
+						
 						
 						<li class="list-group-item">
 							<a data-addtab="addlist" data-url="haiActivityView?module=activity">

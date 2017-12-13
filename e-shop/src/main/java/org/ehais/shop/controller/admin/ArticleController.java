@@ -298,5 +298,42 @@ public class ArticleController extends CommonController{
 	
 	
 	
+
+	@EPermissionMethod(name="单页面内容",intro="打开软文页面",value="ehaisArticleDetail",relation="ehaisArticleDetailSubmit",type=PermissionProtocol.URL)
+	@RequestMapping("/ehaisArticleDetail")
+	public String ehaisArticleDetail(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response ,
+			@RequestParam(value = "module", required = true) String module) {	
+		try{
+			
+			ReturnObject<EHaiArticle> rm = ehaisArticleService.article_module(request,module);
+			modelMap.addAttribute("rm", rm);
+			modelMap.addAttribute("uptoken", QiniuUtil.getUpToken(accessKey,secretKey,bucket));
+			modelMap.addAttribute("domain", domain);
+			
+			return this.view(request, "/article/module");
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("article", e);
+			return this.errorJump(modelMap, e.getMessage());
+		}
+		
+	}
+	
+	@ResponseBody
+	@EPermissionMethod(intro="",value="ehaisArticleDetailSubmit",type=PermissionProtocol.JSON)
+	@RequestMapping(value="/ehaisArticleDetailSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
+	public String ehaisArticleDetailSubmit(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "articleId", required = true) Integer articleId,
+			@ModelAttribute("article") EHaiArticle article) {
+		try{
+			return this.writeJson(ehaisArticleService.article_update_submit(request,article.getModule(),article,null));
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("article", e);
+			return this.errorJSON(e);
+		}
+	}
 	
 }

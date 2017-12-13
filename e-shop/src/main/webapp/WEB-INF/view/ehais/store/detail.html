@@ -51,6 +51,11 @@
 
 
 <input type="hidden" class="form-control" id="storeId" name="storeId" value="${rm.model.storeId!''}" >
+<input type="hidden" class="form-control" id="partnerId" name="partnerId" value="${rm.model.partnerId!''}" >
+<input type="hidden" class="form-control" id="theme" name="theme" value="${rm.model.theme!''}" >
+<input type="hidden" class="form-control" id="publicId" name="publicId" value="${rm.model.publicId!''}" >
+
+
 <div class="form-group">
 <label class="col-sm-2 control-label">商家名称</label>
 <div class="col-sm-5">
@@ -100,6 +105,52 @@
 	<textarea class="form-control" id="description" name="description" placeholder="">${rm.model.description!''}</textarea>
 </div>
 </div>
+
+<#if (session_admin_classify == "partner" || session_admin_classify == "ceo" )>
+
+
+<div class="form-group">
+<label class="col-sm-2 control-label">微信支付</label>
+<div class="col-sm-5">
+	
+<div id="radioPicker_weixin_pay_visible" class="btn-group" role="group" aria-label="...">
+  <button id="weixin_pay_visible" type="button" class="btn btn-success" value="visible">显示</button>
+  <button id="weixin_pay_invisible" type="button" class="btn btn-default" value="invisible">不显示</button>
+</div>
+
+<div id="radioPicker_weixin_pay_enabled" class="btn-group" role="group" aria-label="...">
+  <button id="weixin_pay_enabled" type="button" class="btn btn-success" value="enabled">可用</button>
+  <button id="weixin_pay_disabled" type="button" class="btn btn-default" value="disabled">不可用</button>
+</div>
+
+	
+</div>
+</div>
+
+
+
+<div class="form-group">
+<label class="col-sm-2 control-label">现金支付</label>
+<div class="col-sm-5">
+	
+<div id="radioPicker_cash_pay_visible" class="btn-group" role="group" aria-label="...">
+  <button id="cash_pay_visible" type="button" class="btn " value="visible">显示</button>
+  <button id="cash_pay_invisible" type="button" class="btn " value="invisible">不显示</button>
+</div>
+
+<div id="radioPicker_cash_pay_enabled" class="btn-group" role="group" aria-label="...">
+  <button id="cash_pay_enabled" type="button" class="btn " value="enabled">可用</button>
+  <button id="cash_pay_disabled" type="button" class="btn " value="disabled">不可用</button>
+</div>
+
+	
+</div>
+</div>
+
+
+
+</#if>
+
 
 <div class="form-group">
 	<div class="col-sm-3"></div>

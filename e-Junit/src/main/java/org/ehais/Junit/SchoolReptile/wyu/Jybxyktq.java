@@ -22,14 +22,17 @@ public class Jybxyktq extends ArticleCommonReptile{
     		for (Element l : li1) {
 				Element a = l.select(">a").first();
 				System.out.println(a.text());
+				if(a.attr("href").indexOf("about")>-1){
+					this.about(website+"/"+a.attr("href"),a.text(),"");
+				}
 				Elements ll = l.select(">ul").select(">li");
 				for (Element e : ll) {
 					Element aa = e.select(">a").first();
 					System.out.println("===="+aa.text());
-					if(aa.attr("href").indexOf("base")>-1){
+					if(aa.attr("href").indexOf("about")>-1){
 						this.about(website+"/"+aa.attr("href"),aa.text(),a.text());
 					}else if(aa.attr("href").indexOf("news")>-1){
-//						this.news(website+"/"+aa.attr("href"),aa.text(),a.text());
+						this.news(website+"/"+aa.attr("href"),aa.text(),a.text());
 					}
 				}
 			}
@@ -53,7 +56,7 @@ public class Jybxyktq extends ArticleCommonReptile{
 				String width = e.attr("width");
 				if(width.equals("685")){
 					String content = e.getElementsByClass("he").html();
-					System.out.println(content);
+//					System.out.println(content);
 		    		article_save(store_id, cat_name, cat_name, "", "", "", content,articleSource, url, parent_cat_name,"");
 				}
 			}
@@ -65,8 +68,9 @@ public class Jybxyktq extends ArticleCommonReptile{
 	
 	@Test
 	public void tnews(){
-		String url = "http://jpkc.wyu.edu.cn/jybxyktq/news.asp?classid=86&navi_id=195";
-		this.news(url, "", "");
+//		String url = "http://jpkc.wyu.edu.cn/jybxyktq/news.asp?classid=86&navi_id=195";
+		String url = "http://jpkc.wyu.edu.cn/jybxyktq/newsshow.asp?Id=1028&classid=86&navi_id=195";
+		this.newsinfo(url, "", "");
 	}
 	
 	
@@ -80,18 +84,14 @@ public class Jybxyktq extends ArticleCommonReptile{
 					Element t = e.getElementsByTag("table").first();
 					Elements a = t.getElementsByTag("a");
 					for (Element el : a) {
-						System.out.println(el.attr("href"));
+						if(el.attr("href").indexOf("newsshow") > -1){
+							newsinfo(website+"/"+el.attr("href"),cat_name,parent_cat_name);
+						}
+						
 					}
 				}
 			}
     		
-//    		Document doc = Jsoup.connect(url).get();
-//    		Element news_list = doc.getElementsByClass("news_list").first();
-//    		Elements li = news_list.select(">li");
-//    		for (Element e : li) {
-//				Element a = e.getElementsByTag("a").first();
-////				newsinfo(website+"/"+a.attr("href"),cat_name,parent_cat_name);
-//			}
     	}catch(Exception e){
     		e.printStackTrace();
     	}
@@ -100,20 +100,30 @@ public class Jybxyktq extends ArticleCommonReptile{
 	
 	public void newsinfo(String url,String cat_name,String parent_cat_name){
     	try{
+    		
     		Document doc = Jsoup.connect(url).get();
-    		Element about = doc.getElementsByClass("about").first();
-    		Element etitle = about.getElementsByClass("ab_title").first();
-    		Element etime = about.getElementsByClass("ab_time").first();
-    		Element news_foot = about.getElementsByClass("news_foot").first();
-    		Element back = about.getElementsByClass("back").first();
-    		String title = etitle.text();
-    		String date = etime.text().replace("发布时间：", "");
-    		etitle.remove();
-    		etime.remove();
-    		news_foot.remove();
-    		back.remove();
-    		String content = about.html();
-    		article_save(store_id, cat_name, title, "", "", "", content,articleSource, url, parent_cat_name,date);
+    		Elements table = doc.getElementsByTag("table");
+    		for (Element e : table) {
+				String width = e.attr("width");
+				if(width.equals("685")){
+					
+					Elements ts = e.getElementsByTag("table");
+					if(ts!=null){
+						for (Element es : ts) {
+							String widths = es.attr("width");
+							if(widths.equals("685")){
+								System.out.println(es.html());
+								String title = es.getElementsByClass("he").html();
+								article_save(store_id, cat_name, title, "", "", "", es.html(),articleSource, url, parent_cat_name,null);
+								
+							}
+						}
+					}
+					
+				}
+			}
+    		
+    		
     	}catch(Exception e){
     		e.printStackTrace();
     	}

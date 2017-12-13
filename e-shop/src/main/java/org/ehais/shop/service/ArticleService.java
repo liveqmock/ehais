@@ -41,4 +41,7 @@ public interface ArticleService extends CommonService{
 	public ReturnObject<EHaiArticle> ehaisArticleSendGroupWeixin(HttpServletRequest request,String moduleEnum,Integer articleId) throws Exception;
 	
 	
+	public ReturnObject<EHaiArticle> article_module(HttpServletRequest request,String moduleEnum) throws Exception;
+	
+	
 }

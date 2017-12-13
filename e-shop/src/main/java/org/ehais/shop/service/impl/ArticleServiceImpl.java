@@ -714,6 +714,34 @@ bean.setArticleSource(model.getArticleSource());//网络来源
 		
 		return rm;
 	}
+
+
+	@Override
+	public ReturnObject<EHaiArticle> article_module(HttpServletRequest request, String moduleEnum) throws Exception {
+		// TODO Auto-generated method stub
+		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
+		rm.setCode(0);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		EHaiArticleExample example = new EHaiArticleExample();
+		EHaiArticleExample.Criteria c = example.createCriteria();
+		c.andStoreIdEqualTo(store_id);
+		c.andModuleEqualTo(moduleEnum);
+		List<EHaiArticle> list = eHaiArticleMapper.selectByExampleWithBLOBs(example);
+		EHaiArticle model = null;
+		if(list == null || list.size() == 0){
+			model = new EHaiArticle();
+			model.setModule(moduleEnum);
+			model.setStoreId(store_id);
+			model.setContent("");
+			eHaiArticleMapper.insertSelective(model);
+		}else{
+			model = list.get(0);
+		}
+		
+		rm.setCode(1);
+		rm.setModel(model);
+		return rm;
+	}
 	
 	
 }
