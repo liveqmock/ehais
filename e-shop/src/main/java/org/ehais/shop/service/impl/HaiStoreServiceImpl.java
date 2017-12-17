@@ -297,6 +297,7 @@ public class HaiStoreServiceImpl  extends CommonServiceImpl implements HaiStoreS
 		bean.setPartnerId(model.getPartnerId());
 		bean.setContacts(model.getContacts());
 		bean.setMobile(model.getMobile());
+		bean.setPayModule(model.getPayModule());
 	}
 
 	public ReturnObject<EHaiStore> store_info(HttpServletRequest request,Integer storeId)

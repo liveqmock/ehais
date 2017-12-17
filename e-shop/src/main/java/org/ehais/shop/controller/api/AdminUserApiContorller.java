@@ -1,5 +1,8 @@
 package org.ehais.shop.controller.api;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -8,6 +11,8 @@ import org.ehais.epublic.cache.EAdminTokenCacheManager;
 import org.ehais.epublic.mapper.EHaiAdminUserMapper;
 import org.ehais.epublic.model.EHaiAdminUser;
 import org.ehais.epublic.model.EHaiStore;
+import org.ehais.epublic.model.HaiPartner;
+import org.ehais.epublic.service.EPartnerService;
 import org.ehais.epublic.service.EStoreService;
 import org.ehais.shop.controller.api.include.AdminUserIController;
 import org.ehais.tools.ReturnObject;
@@ -28,6 +33,8 @@ public class AdminUserApiContorller extends AdminUserIController{
 	private EHaiAdminUserMapper eHaiAdminUserMapper;
 	@Autowired
 	protected EStoreService eStoreService;
+	@Autowired
+	private EPartnerService ePartnerService;
 	
 	@ResponseBody
 	@RequestMapping("/dining_manage_login")
@@ -44,13 +51,27 @@ public class AdminUserApiContorller extends AdminUserIController{
 				rm.setMsg("用户名或密码不正确");
 				return this.writeJson(rm);
 			}
-			if(adminuser.getClassify() == null || !adminuser.getClassify().equals(EAdminClassifyEnum.dining)){
-				rm.setMsg("商家不正确");
+			if(adminuser.getClassify() == null || !adminuser.getClassify().equals(EAdminClassifyEnum.dining) || adminuser.getStoreId() == null || adminuser.getStoreId() == 0){
+				rm.setMsg("商家设置不正确");
 				return this.writeJson(rm);
 			}
+			
 			String token = ECommon.nonceStr(16);
 			EAdminTokenCacheManager.getInstance().putAdminToken(adminuser.getStoreId(), token);
 			EHaiStore store = eStoreService.getEStore(adminuser.getStoreId());
+			if(store == null){
+				rm.setMsg("商家信息不正确");
+				return this.writeJson(rm);
+			}
+			HaiPartner partner = ePartnerService.getEPartner(store.getPartnerId());
+			if(partner == null){
+				rm.setMsg("代理信息不正确");
+				return this.writeJson(rm);
+			}
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("partnerName", partner.getPartnerName());
+			rm.setMap(map);
+			
 			rm.setModel(store);
 			rm.setCode(1);
 			rm.setToken(token);

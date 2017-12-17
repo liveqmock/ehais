@@ -165,6 +165,7 @@
 </div>
        
 
+<input type="hidden" class="form-control" id="payModule" name="payModule" value="" placeholder="">
 
 
 
@@ -173,6 +174,133 @@
 
 
 <script type="text/javascript" src="/js/partner/store/detail.js" ></script>             
+
+
+<script type="text/javascript">
+var payModule = ${rm.model.payModule!'{"weixin":["visible","enabled"],"cash":["visible","enabled"]}'};
+$(function(){
+	$("#payModule").val(JSON.stringify(payModule));
+	if(typeof(payModule) == "object" &&  Object.prototype.toString.call(payModule).toLowerCase() == "[object object]" && !payModule.length){
+		
+		if($.isArray(payModule.weixin)){
+			if(payModule.weixin[0] == "visible"){
+				$("#weixin_pay_visible").removeClass("btn-default").addClass("btn-success");
+				$("#weixin_pay_invisible").removeClass("btn-success").addClass("btn-default");
+			}else{
+				$("#radioPicker_weixin_pay_enabled").hide();
+				$("#weixin_pay_visible").removeClass("btn-success").addClass("btn-default");
+				$("#weixin_pay_invisible").removeClass("btn-default").addClass("btn-success");
+			}
+			if(payModule.weixin[1] == "enabled"){
+				$("#weixin_pay_enabled").removeClass("btn-default").addClass("btn-success");
+				$("#weixin_pay_disabled").removeClass("btn-success").addClass("btn-default");
+			}else{
+				$("#weixin_pay_enabled").removeClass("btn-success").addClass("btn-default");
+				$("#weixin_pay_disabled").removeClass("btn-default").addClass("btn-success");
+			}
+		}else{
+			$("#weixin_pay_visible").removeClass("btn-default").addClass("btn-success");
+			$("#weixin_pay_invisible").removeClass("btn-success").addClass("btn-default");
+			$("#weixin_pay_enabled").removeClass("btn-default").addClass("btn-success");
+			$("#weixin_pay_disabled").removeClass("btn-success").addClass("btn-default");
+		}
+		
+		if($.isArray(payModule.cash)){
+			if(payModule.cash[0] == "visible"){
+				$("#cash_pay_visible").removeClass("btn-default").addClass("btn-success");
+				$("#cash_pay_invisible").removeClass("btn-success").addClass("btn-default");
+			}else{
+				$("#radioPicker_cash_pay_enabled").hide();
+				$("#cash_pay_visible").removeClass("btn-success").addClass("btn-default");
+				$("#cash_pay_invisible").removeClass("btn-default").addClass("btn-success");
+			}
+			if(payModule.cash[1] == "enabled"){
+				$("#cash_pay_enabled").removeClass("btn-default").addClass("btn-success");
+				$("#cash_pay_disabled").removeClass("btn-success").addClass("btn-default");
+			}else{
+				$("#cash_pay_enabled").removeClass("btn-success").addClass("btn-default");
+				$("#cash_pay_disabled").removeClass("btn-default").addClass("btn-success");
+			}
+		}else{
+			$("#cash_pay_visible").removeClass("btn-default").addClass("btn-success");
+			$("#cash_pay_invisible").removeClass("btn-success").addClass("btn-default");
+			$("#cash_pay_enabled").removeClass("btn-default").addClass("btn-success");
+			$("#cash_pay_disabled").removeClass("btn-success").addClass("btn-default");
+		}
+		
+	}
+
+	
+	
+/* 	$("#radioPicker_weixin_pay_visible button").click(function(){
+		$("#radioPicker_weixin_pay_visible button").toggleClass("btn-success").toggleClass("btn-default");
+		if($("#weixin_pay_visible").hasClass("btn-success")){
+			$("#radioPicker_weixin_pay_enabled").show();
+		}else{
+			$("#radioPicker_weixin_pay_enabled").hide();
+			$("#weixin_pay_enabled").removeClass("btn-success").addClass("btn-default");
+			$("#weixin_pay_disabled").removeClass("btn-default").addClass("btn-success");
+		}
+		
+		loadPayModule();
+	}); */
+	
+	$("#radioPicker_weixin_pay_enabled button").click(function(){
+		$("#radioPicker_weixin_pay_enabled button").toggleClass("btn-success").toggleClass("btn-default");
+		loadPayModule();
+	});
+	
+	$("#radioPicker_cash_pay_visible button").click(function(){
+		$("#radioPicker_cash_pay_visible button").toggleClass("btn-success").toggleClass("btn-default");
+		if($("#cash_pay_visible").hasClass("btn-success")){
+			$("#radioPicker_cash_pay_enabled").show();
+		}else{
+			$("#radioPicker_cash_pay_enabled").hide();
+			$("#cash_pay_enabled").removeClass("btn-success").addClass("btn-default");
+			$("#cash_pay_disabled").removeClass("btn-default").addClass("btn-success");
+		}
+		loadPayModule();
+	});
+	
+	$("#radioPicker_cash_pay_enabled button").click(function(){
+		$("#radioPicker_cash_pay_enabled button").toggleClass("btn-success").toggleClass("btn-default");
+		loadPayModule();
+	});
+	
+	
+});
+
+function loadPayModule(){
+	var pm = {"weixin":[],"cash":[]};
+	if($("#weixin_pay_visible").hasClass("btn-success")){
+		pm.weixin[0] = "visible";
+	}else{
+		pm.weixin[0] = "invisible";
+	}
+	
+	if($("#weixin_pay_enabled").hasClass("btn-success")){
+		pm.weixin[1] = "enabled";
+	}else{
+		pm.weixin[1] = "disabled";
+	}
+	
+	
+	if($("#cash_pay_visible").hasClass("btn-success")){
+		pm.cash[0] = "visible";
+	}else{
+		pm.cash[0] = "invisible";
+	}
+	
+	if($("#cash_pay_enabled").hasClass("btn-success")){
+		pm.cash[1] = "enabled";
+	}else{
+		pm.cash[1] = "disabled";
+	}
+	
+	$("#payModule").val(JSON.stringify(pm));
+	
+}
+</script>
 
 
 </body>

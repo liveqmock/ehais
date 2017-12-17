@@ -278,7 +278,7 @@ namespace print
             fltYPos += fltRowHeight;
             g.DrawString("支付方式："+ joOrder["payName"].ToString(), printFont, System.Drawing.Brushes.Black, fltXPos, fltYPos);
 
-            if(Convert.ToInt16(joOrder["discount"]) > 0)
+            if(Convert.ToInt32(joOrder["discount"].ToString()) > 0)
             {
                 fltYPos += fltRowHeight;
                 g.DrawString("优惠金额：" + joOrder["discount"].ToString(), printFont, System.Drawing.Brushes.Black, fltXPos, fltYPos);
@@ -460,7 +460,7 @@ namespace print
             fltYPos += fltRowHeight;
             g.DrawString("支付方式：" + joOrder["payName"].ToString(), printFont, System.Drawing.Brushes.Black, fltXPos, fltYPos);
 
-            if (Convert.ToInt16(joOrder["discount"]) > 0)
+            if (Convert.ToInt32(joOrder["discount"].ToString()) > 0)
             {
                 fltYPos += fltRowHeight;
                 g.DrawString("优惠金额：" + joOrder["discount"].ToString(), printFont, System.Drawing.Brushes.Black, fltXPos, fltYPos);
