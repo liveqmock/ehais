@@ -48,10 +48,10 @@ public class BrandServiceImpl  extends CommonServiceImpl implements BrandService
 		HaiBrandExample example = new HaiBrandExample();
 		HaiBrandExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
-		example.setStart(start);
-		example.setLen(len);
+//		example.setStart(start);
+//		example.setLen(len);
 		List<HaiBrand> list = haiBrandMapper.hai_brand_list_by_example(example);
-		Integer total = haiBrandMapper.countByExample(example);
+		long total = haiBrandMapper.countByExample(example);
 		rm.setCode(1);
 		rm.setRows(list);
 		rm.setTotal(total);
@@ -91,7 +91,7 @@ public class BrandServiceImpl  extends CommonServiceImpl implements BrandService
 		// TODO Auto-generated method stub
 		ReturnObject<HaiBrand> rm = new ReturnObject<HaiBrand>();
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
-		HaiBrand model = haiBrandMapper.selectByPrimaryKey(Short.valueOf(brandId+""));
+		HaiBrand model = haiBrandMapper.selectByPrimaryKey(brandId);
 		rm.setBootStrapList(this.formatBootStrapList(request,model));
 		
 		rm.setCode(1);
@@ -121,7 +121,7 @@ public class BrandServiceImpl  extends CommonServiceImpl implements BrandService
 		ReturnObject<HaiBrand> rm = new ReturnObject<HaiBrand>();
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
-		HaiBrand model = haiBrandMapper.selectByPrimaryKey(Short.valueOf(brandId+""));
+		HaiBrand model = haiBrandMapper.selectByPrimaryKey(brandId);
 		rm.setBootStrapList(this.formatBootStrapList(request,model));
 		
 		rm.setCode(1);

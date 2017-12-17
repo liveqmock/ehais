@@ -53,7 +53,7 @@
 						
 						
 						<@permission url="ehaisArticleDetail">
-						<#if session_admin_id == 9003>
+						<#if session_admin_id == 9003 || session_admin_id == 10009>
 						<li class="list-group-item active">
 							<a data-addtab="company" data-url="ehaisArticleDetail?module=company">
 								<i class="glyphicon glyphicon-leaf"></i>
@@ -80,6 +80,10 @@
 						</li>
 						</#if>
 						</@permission>
+						
+						
+						
+						
 						
 						
 						<li class="list-group-item">
@@ -141,6 +145,17 @@
 							</a>							
 						</li>
 						 -->
+						 
+						<@permission url="haiBrandView">
+						<li class="list-group-item active">
+							<a data-addtab="haiBrandView" data-url="haiBrandView">
+								<i class="glyphicon glyphicon-leaf"></i>
+								品牌管理
+							</a>
+						</li>
+						</@permission>
+						
+						
 						<@permission url="ehaisGoodsView">
 						<li class="list-group-item active">
 							<a data-addtab="ehaisGoodsView" data-url="ehaisGoodsView">
