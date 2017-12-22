@@ -134,6 +134,13 @@
 			<ref bean="ehaisAgencyInterceptor"/>
 		</mvc:interceptor>
 		
+		<mvc:interceptor>
+			<mvc:mapping path="/**.mg"/>
+			<ref bean="mediaAdminInterceptor"/>
+		</mvc:interceptor>
+		
+		
+		
 	</mvc:interceptors>
 	<bean id="loginInterceptor" class="org.ehais.interceptor.LoginInterceptor">
 		<property name="loginUrl" value="/login"/>
@@ -214,6 +221,20 @@
 			</list>
 		</property>
 	</bean>
+	
+	
+	
+	<bean id="mediaAdminInterceptor" class="org.ehais.interceptor.AdminInterceptor">
+		<property name="loginUrl" value="/login.me"/>
+		<property name="notpermissionUrl" value="/notpermission"/>
+		<property name="ignoreUrls">
+			<list>
+				<value>/mediaLogout.json</value>
+				<value>/mediaLoginSubmitAjax.json</value>
+			</list>
+		</property>
+	</bean>
+	
 	
 
 

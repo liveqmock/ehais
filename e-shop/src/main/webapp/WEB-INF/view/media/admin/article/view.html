@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="/js/jquery-2.1.4.min.js" ></script>
+		
+		<link rel="stylesheet" href="/js/bootstrap/css/bootstrap.min.css" />
+		<script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js" ></script>
+		<link rel="stylesheet" href="/css/media.css" />
+		
+		<link rel="stylesheet" href="/js/bootstrap/treeview/bootstrap-treeview.min.css" />
+		<script type="text/javascript" src="/js/bootstrap/treeview/bootstrap-treeview.min.js" ></script>
+		
+		<link rel="stylesheet" href="/js/bootstrap/table/bootstrap-table.min.css" />
+		<script type="text/javascript" src="/js/bootstrap/table/bootstrap-table.min.js" ></script>
+		<script type="text/javascript" src="/js/bootstrap/table/locale/bootstrap-table-zh-CN.min.js" ></script>
+		
+		<link rel="stylesheet" href="/js/layer/skin/default/layer.css" />
+		<script type="text/javascript" src="/js/layer/layer.js" ></script>
+		<script type="text/javascript" src="/js/adminCommon.js" ></script>
+		
+		
+		<link rel="stylesheet" href="/js/bootstrap/datetimepicker/css/bootstrap-datetimepicker.min.css" />
+		<script type="text/javascript" src="/js/bootstrap/datetimepicker/js/bootstrap-datetimepicker.min.js" ></script>
+		<script type="text/javascript" src="/js/bootstrap/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" ></script>
+		
+		
+		<script type="text/javascript" charset="utf-8" src="/js/ueditor/ueditor.config.js"></script>
+		<script type="text/javascript" charset="utf-8" src="/js/ueditor/ueditor.all.min.js"> </script>
+		<script type="text/javascript" charset="utf-8" src="/js/ueditor/lang/zh-cn/zh-cn.js"></script>
+
+<link rel="stylesheet" href="/js/bootstrap/spinner/bootstrap-spinner.css" />
+<script type="text/javascript" src="/js/bootstrap/spinner/jquery.spinner.js" ></script>
+
+
+		<#include "/FreemarkerMacro.html"/>
+	</head>
+	<body>
+		<div class="header">
+			<div class="nav">
+				<i class="icon fa fa-home">&nbsp;</i>
+				<div class="nav0">O-E视频管理系统</div>
+				
+				<ul class="header_icon">
+					<li id="addCate" class="fr fa fa-plus">新增分类</li>
+					<li id="editCate" class="fr fa fa-edit">编辑分类</li>
+					<li id="deleteCate" class="fr fa fa-trash-o">删除分类</li>
+					<li id="mediaArticleAddDetail" class="fr fa fa-plus">新增视频</li>
+				</ul>
+				<div class="search_icon">
+					<input id="keyword" class="control"/>
+					<button id="btnSearch" class="fa fa-search btn btn-default control">搜索</button>
+				</div>
+				<ul class="header_icon">
+					<li>帐号：${session_admin_name}</li>
+					<li id="logout">退出</li>
+				</ul>
+			</div>
+		</div>
+		<div class="body">
+			<div class="container_box">
+				<div class="col_side">
+					<div class="category">
+						<ul id="tree"><li val="0" class="active">全部</li></ul>
+					</div>
+				</div>
+				<div class="col_main">
+					<div class="main_table">
+						<table id="bsTable" data-show-columns="false"></table>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+<div class="modal fade" id="mediaDetailModal" tabindex="-1" role="dialog" aria-labelledby="mediaDetailModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="mediaLabel">视频信息管理</h4>
+            </div>
+            <div class="modal-body">
+            	<form id="mediaDetailFormModal" name="mediaDetailFormModal" class="form-horizontal" method="post">
+
+					<#include "detail.html"/>
+
+            	</form>
+            </div>
+            <div class="modal-footer dn">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="haiTempSublateFormSubmit">提交</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+		
+		<script type="text/javascript" src="/js/media/admin/article_view.js" ></script>
+	</body>
+</html>
