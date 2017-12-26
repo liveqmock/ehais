@@ -14,6 +14,7 @@ function mediaArticleAddSubmit(){
 				return ;
 			}else{
 				$('#mediaDetailFormModal')[0].reset();
+				ue.setContent("");
 				layer.confirm(result.msg, {
 					btn: ['继续添加','返回列表'] //按钮
 				}, function(){

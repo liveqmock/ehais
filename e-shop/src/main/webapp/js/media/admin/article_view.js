@@ -60,7 +60,7 @@ $(function(){
 			},{
 			    field: 'articleThumb',
 			    title: '图片',formatter:function(value,rows,index){
-			    	if(!isBlank(value))return "<img src='"+value+"' width='40'>";
+			    	if(!isBlank(value))return "<img src='"+value+"' width='60'>";
 			    	return "";
 			    }
 			},{
@@ -70,6 +70,15 @@ $(function(){
 			    	return value == null ? "" : value.formatDate("yyyy-MM-dd");
 			    }
 			}, {
+	            field: 'openType',
+	            title: '首页推荐',
+	            formatter : function(value,rows,index){
+	            	var c = "" ;
+	            	if(value) c = "active";
+	            	
+	            	return "<i href='javascript:;' class='"+c+" iconfont icon-remai' onClick='setOpenType(this,"+rows.articleId+");'></i>";
+	            }
+	        }, {
 	            field: 'isHot',
 	            title: '推荐',
 	            formatter : function(value,rows,index){
@@ -115,6 +124,22 @@ function setHot(that,id){
 	
 	$.ajax({
 		url : "/ws/set_hot_article",data:{articleId:id,hot:isHot},
+		success : function(d){
+			if(d.code == 1){
+				$(that).toggleClass("active");
+			}
+		}
+	});
+}
+
+function setOpenType(that,id){
+	var openType = 1;
+	if($(that).hasClass("active")){
+		openType = 0;
+	}
+	
+	$.ajax({
+		url : "/ws/set_open_type_article",data:{articleId:id,open_type:openType},
 		success : function(d){
 			if(d.code == 1){
 				$(that).toggleClass("active");
@@ -258,17 +283,23 @@ function mediaArticleAddDetail(){
 	$("input,textarea").val("");
 	ue.setContent("");
 	mediaDetailModal.modal("show");	
+	
+	$("#qiniu_image_articleThumb").remove();
+	$("#eq_preview_wrapper_articleThumb").addClass("hide");
+	
 	$("#mediaDetailFormModal").attr("action","add");
 }
 
 function mediaArticleEditDetail(articleId){
+	
+	$("#qiniu_image_articleThumb").remove();
+	$("#eq_preview_wrapper_articleThumb").addClass("hide");
+	
 	//分类下拉菜单
 	getSelectCat();
 	$.ajax({
 		url : "mediaArticleEditDetail",data:{articleId:articleId},dataType:"json",type:"post",
 		success:function(result){
-			$("#qiniu_image_articleThumb").remove();
-			$("#eq_preview_wrapper_articleThumb").addClass("hide");
 			
 			$.each(result.model,function(k,v){
 				$("#"+k).val(v);

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" href="css/pclive.css" />
+	</head>
+	<body>
+		
+		<div class="main">
+			<div class="header">
+				<div class="logo"></div>
+				<div class="nav">
+					<ul>
+						<li class="active">首页</li>
+						
+						<#if (listArticleCat?? && listArticleCat?size > 0 ) >
+						<#list listArticleCat as cat>
+						<li>${cat.catName}</li>
+						</#list>
+						</#if>
+					</ul>
+				</div>
+			</div>
+			<div class="ad">
+				<div class="wrapper">
+					<ul>
+						<li><img src="img/web/banner.png" /></li>
+					</ul>
+				</div>
+				<div class="nav">
+					<ul>
+						<li class="active">
+							<div>歌舞青春</div>
+							<div>挥洒斗志，成就梦想</div>
+						</li>
+						<li class="">
+							<div>学思践悟十九大：畅想2050</div>
+							<div></div>
+						</li>
+						<li class="">
+							<div>共筑中国梦：共筑中国梦</div>
+							<div></div>
+						</li>
+						<li class="">
+							<div>公仆之路：公仆之路</div>
+							<div></div>
+						</li>
+						<li class="">
+							<div>走进科学：蒙丽莎的真相</div>
+							<div></div>
+						</li>
+						<li class="">
+							<div>校内原创视频：视频</div>
+							<div></div>
+						</li>
+						<li class="">
+							<div>宣传片：炫风车手进校园</div>
+							<div></div>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="recommend">
+				<div class="rec">
+					<#if (listArticleIndex?? && listArticleIndex?size > 0)>
+					<#list listArticleIndex as a>
+					<#if a_index == 0>
+					<div>
+						<img src="${a.articleThumb!''}" />
+						<div>${a.articleLabel!''}</div>
+					</div>					
+					<div>${a.title!''}</div>
+					</#if>
+					</#list>
+					</#if>
+				</div>
+				<div class="item">
+					<ul>
+						<#if (listArticleIndex?? && listArticleIndex?size > 0)>
+						<#list listArticleIndex as a>
+						<#if (a_index > 0) >
+						<li class="">
+							<div>
+								<img src="${a.articleThumb!''}" />
+								<div>${a.articleLabel!''}</div>
+								<img src="img/web/play.png" />
+							</div>
+							<div>${a.title!''}</div>
+							
+						</li>
+						</#if>
+						</#list>
+						</#if>
+					
+					</ul>
+				</div>
+			</div>
+			<div class="live">
+				
+				<!-- 学术讲座 start -->
+				
+				<#if (listArticleCat?? && listArticleCat?size > 0)>
+				<#list listArticleCat as c>
+				<div class="module l">
+					<div class="title">
+						<img class="icon" src="${c.images!''}"/>
+						<h3>${c.catName}</h3>
+						<div class="more"><a href="javascript:;">更多&gt;&gt;</a></div>
+					</div>
+					<ul>
+						<#if mapArticle?? && (mapArticle?size > 0) >
+						<#list mapArticle?keys as key>
+						<#if ( key = c.catId?string('0') ) >
+						<#assign item = mapArticle[key]>
+						<#list item as a >
+						<li class="">
+							<div>
+								<img src="${a.articleThumb!''}" />
+								<div>${a.articleLabel!''}</div>
+								<img src="img/web/play.png" />
+							</div>
+							<div>${a.title!''}</div>
+							
+						</li>
+						</#list>
+						</#if>
+						</#list>
+						</#if>
+					</ul>
+				</div>
+				</#list>
+				</#if>
+				
+				
+				
+				
+				<!-- 校园电视台 start -->
+				<div class="module all">
+					<div class="title">
+						<img class="icon" src="img/web/icon5.png"/>
+						<h3>校园电视台</h3>
+						<div class="more">更多&gt;&gt;</div>
+					</div>
+					<ul>
+						<li class="">
+							<div>
+								<img src="img/web/img3.png" />
+								<div>30:16</div>
+								<img src="img/web/play.png" />
+							</div>
+							<div>老外遇到广东早茶，吃的开始怀疑人生，为啥中国美食都那么好</div>
+							
+						</li>
+						<li>
+							<div>
+								<img src="img/web/img3.png" />
+								<div>30:16</div>
+								<img src="img/web/play.png" />
+							</div>
+							<div>老外遇到广东早茶，吃的开始怀疑人生，为啥中国美食都那么好</div>
+							
+						</li>
+						<li>
+							<div>
+								<img src="img/web/img3.png" />
+								<div>30:16</div>
+								<img src="img/web/play.png" />
+							</div>
+							<div>老外遇到广东早茶，吃的开始怀疑人生，为啥中国美食都那么好</div>
+							
+						</li>
+						<li>
+							<div>
+								<img src="img/web/img3.png" />
+								<div>30:16</div>
+								<img src="img/web/play.png" />
+							</div>
+							<div>老外遇到广东早茶，吃的开始怀疑人生，为啥中国美食都那么好</div>
+							
+						</li>
+						
+						<li class="">
+							<div>
+								<img src="img/web/img3.png" />
+								<div>30:16</div>
+								<img src="img/web/play.png" />
+							</div>
+							<div>老外遇到广东早茶，吃的开始怀疑人生，为啥中国美食都那么好</div>
+							
+						</li>
+						<li>
+							<div>
+								<img src="img/web/img3.png" />
+								<div>30:16</div>
+								<img src="img/web/play.png" />
+							</div>
+							<div>老外遇到广东早茶，吃的开始怀疑人生，为啥中国美食都那么好</div>
+							
+						</li>
+						<li>
+							<div>
+								<img src="img/web/img3.png" />
+								<div>30:16</div>
+								<img src="img/web/play.png" />
+							</div>
+							<div>老外遇到广东早茶，吃的开始怀疑人生，为啥中国美食都那么好</div>
+							
+						</li>
+						<li>
+							<div>
+								<img src="img/web/img3.png" />
+								<div>30:16</div>
+								<img src="img/web/play.png" />
+							</div>
+							<div>老外遇到广东早茶，吃的开始怀疑人生，为啥中国美食都那么好</div>
+							
+						</li>
+						
+					</ul>
+				</div>
+				<!-- 校园电视台 end -->
+				
+				
+				
+				
+				
+				
+				
+				
+			</div>
+			<div class="footer">
+				Copyright ⓒ 2017 广州城市职业学院 技术支持：碧辉腾乐（UNSUN.NET）网站管理 访问人数：123123
+			</div>
+		
+		</div>
+		
+	</body>
+</html>

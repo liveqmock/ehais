@@ -50,12 +50,6 @@ public class MediaAdminController extends CommonController{
 	@Autowired
 	private ArticleCatService mediaArticleCatService;
 	@Autowired
-	private HaiArticleGoodsMapper haiArticleGoodsMapper;
-	@Autowired
-	private EHaiArticleMapper eHaiArticleMapper;
-	@Autowired
-	private HaiGoodsMapper haiGoodsMapper;
-	@Autowired
 	private EHaiAdminUserService eHaiAdminUserService;
 	
 	@EPermissionMethod(name="查询",intro="打开视频管理页面",value="login.me",relation="mediaArticleListJson",type=PermissionProtocol.URL)

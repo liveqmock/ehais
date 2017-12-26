@@ -48,4 +48,32 @@ public class ArticleWSController extends ArticleIController{
 	}
 	
 	
+	
+	@ResponseBody
+	@RequestMapping(value="/set_open_type_article",method=RequestMethod.POST)
+	public String set_open_type_article(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "articleId", required = true) Integer articleId,
+			@RequestParam(value = "open_type", required = true) Integer open_type ){
+		
+		ReturnObject<Integer> rm = new ReturnObject<Integer>();
+		rm.setCode(0);
+		try {
+			Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+			int c = eCommonMapper.commonUpdateBooleanValue("hai_article", "open_type", open_type.toString(), "article_id", articleId.toString(), store_id);
+			
+			rm.setCode(1);
+			rm.setMsg("success");
+			rm.setModel(c);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			log.error("error :", e);
+		}
+		return this.writeJson(rm);
+	}
+	
+	
+	
 }
