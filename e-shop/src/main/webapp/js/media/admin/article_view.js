@@ -53,13 +53,16 @@ $(function(){
 			    title: '编号'
 			},{
 			    field: 'catName',
-			    title: '软文分类'
+			    title: '视频分类'
 			},{
 			    field: 'title',
 			    title: '标题'
 			},{
-			    field: 'readCount',
-			    title: '阅读量'
+			    field: 'articleThumb',
+			    title: '图片',formatter:function(value,rows,index){
+			    	if(!isBlank(value))return "<img src='"+value+"' width='40'>";
+			    	return "";
+			    }
 			},{
 			    field: 'articleDate',
 			    title: '发布日期',
@@ -68,7 +71,7 @@ $(function(){
 			    }
 			}, {
 	            field: 'isHot',
-	            title: '热销',
+	            title: '推荐',
 	            formatter : function(value,rows,index){
 	            	var c = "" ;
 	            	if(value) c = "active";
@@ -264,14 +267,21 @@ function mediaArticleEditDetail(articleId){
 	$.ajax({
 		url : "mediaArticleEditDetail",data:{articleId:articleId},dataType:"json",type:"post",
 		success:function(result){
+			$("#qiniu_image_articleThumb").remove();
+			$("#eq_preview_wrapper_articleThumb").addClass("hide");
+			
 			$.each(result.model,function(k,v){
 				$("#"+k).val(v);
 			});
-			$("#articleDate").val(result.model.articleDate.substr(0,10));
+			if(!isBlank(result.model.articleDate))$("#articleDate").val(result.model.articleDate.substr(0,10));
+			
+			if(!isBlank(result.model.articleThumb))show_articleThumb_pic(result.model.articleThumb);
 			ue.setContent(result.model.content);
 			
 			mediaDetailModal.modal("show");
 			$("#mediaDetailFormModal").attr("action","edit");
+			
+			
 		}
 	});
 }

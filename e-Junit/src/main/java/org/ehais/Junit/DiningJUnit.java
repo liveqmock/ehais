@@ -43,4 +43,35 @@ public class DiningJUnit {
 	}
 	
 	
+	@Test
+	public void ar_write_code() throws UnsupportedEncodingException{
+		Map<String,String> paramsMap = new HashMap<String,String>();
+		paramsMap.put("appkey", "Ehais");
+		paramsMap.put("version", "v1");
+		paramsMap.put("timestamp", String.valueOf(System.currentTimeMillis()));
+		paramsMap.put("appkey", "Ehais");
+		paramsMap.put("code", "v002");
+		String sign = SignUtil.getSignWS(paramsMap, "EhaisSecret");
+		paramsMap.put("sign", sign);
+//		String req = EHttpClientUtil.httpPost("http://127.0.0.1/api/dining_manage_login", paramsMap);
+		String req = EHttpClientUtil.httpPost("http://127.0.0.1:800/api/write_code", paramsMap);
+		System.out.println("req:"+req);
+	}
+	
+	
+	@Test
+	public void ar_read_code() throws UnsupportedEncodingException{
+		Map<String,String> paramsMap = new HashMap<String,String>();
+		paramsMap.put("appkey", "Ehais");
+		paramsMap.put("version", "v1");
+		paramsMap.put("timestamp", String.valueOf(System.currentTimeMillis()));
+		paramsMap.put("appkey", "Ehais");
+		String sign = SignUtil.getSignWS(paramsMap, "EhaisSecret");
+		paramsMap.put("sign", sign);
+//		String req = EHttpClientUtil.httpPost("http://127.0.0.1/api/dining_manage_login", paramsMap);
+		String req = EHttpClientUtil.httpPost("http://127.0.0.1:800/api/read_code", paramsMap);
+		System.out.println("req:"+req);
+	}
+	
+	
 }

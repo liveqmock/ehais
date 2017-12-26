@@ -118,10 +118,16 @@ $(function(){
 
 <!-- 复选项控件：< @ checkboxPicker id="XX" value="$ {(rm.model.boolean?string('yes', 'no'))!'no'}" /> -->
 <#macro checkboxPicker id value >
-	<input type="checkbox"  id="${id}" name="${id}" value="1" placeholder="" <#if value == 'yes'> checked="checked" </#if> >
+	<input type="checkbox"  id="${id}" name="${id}" value="<#if value == 'yes'>1<#else>0</#if>" placeholder="" <#if value == 'yes'> checked="checked" </#if> >
 <script type="text/javascript">
 $(function(){
-	
+	$("#${id}").change(function() { 
+		if($(this).is(':checked')) {
+			$(this).val(1);
+		}else{
+			$(this).val(0);
+		}
+	});
 });
 </script>	
 </#macro>
@@ -129,7 +135,18 @@ $(function(){
 
 <!-- 复选项控件：< @ checkboxIntegerPicker id="XX" value="$ {(rm.model.boolean?string(''))!'1'}" /> -->
 <#macro checkboxIntegerPicker id value >
-	<input type="checkbox"  id="${id}" name="${id}" value="1" placeholder="" <#if value == '1'> checked="checked" </#if> >
+	<input type="checkbox"  id="${id}" name="${id}" value="<#if value == '1'>1<#else>0</#if>" placeholder="" <#if value == '1'> checked="checked" </#if> >
+	<script type="text/javascript">
+$(function(){
+	$("#${id}").change(function() { 
+		if($(this).is(':checked')) {
+			$(this).val(1);
+		}else{
+			$(this).val(0);
+		}
+	});
+});
+</script>
 </#macro>
 
 
@@ -275,7 +292,7 @@ $(function(){
 
 
 <!-- 图片控件：
-<#include "/qiniu.html"/>
+< # include "/qiniu.html"/>
 < @ bsQiniuImagesPicker id="a" value="b" domain="$ {domain}" uptoken="$ {uptoken}"/> 
 -->
 <#macro bsQiniuImagesPicker id value domain uptoken>
@@ -545,6 +562,126 @@ function trash_gallery_${id}_pic(imgId,no){
 		if($("#eq_preview_${id} > div").length == 0){
 			$("#eq_preview_wrapper_"+imgId).addClass("hide");
 		}
+	}
+}
+</script> 
+</#macro>
+
+
+
+
+<!-- 本地图片控件：
+< # include "/uploadfile.html"/>
+< @ uploadImagesPicker id="a" value="b" /> 
+-->
+<#macro uploadImagesPicker id value >
+<!-- ////// -->
+<div id="eq_qiniuPicker_${id}" class="file-input file-input-ajax-new">
+	<div id="eq_preview_wrapper_${id}" class="file-preview hide">
+	    <div class=" file-drop-zone">
+		    <div class="file-preview-thumbnails" id="eq_preview_${id}">
+		    </div>
+		    <div class="clearfix"></div>
+	    </div>
+	</div>
+	<div class="kv-upload-progress hide" id="eq_progress_${id}">
+		<div class="progress">
+		    <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%;">
+		        0%
+		     </div>
+		</div>
+	</div>
+<div class="input-group file-caption-main">
+
+<div tabindex="500" class="form-control file-caption  kv-fileinput-caption">
+   <div class="file-caption-name" title=""></div>
+</div>
+
+   <div class="input-group-btn" id="eq_pickfiles_${id}">
+       <div class="btn btn-primary btn-file">
+	       <i class="glyphicon glyphicon-folder-open"></i>&nbsp;  
+	       <span class="hidden-xs">选择 …</span>
+       </div>
+   </div>
+</div>
+</div>
+
+<input type="hidden" id="${id}" name="${id}" value="${value!''}" >
+
+<input type="file" accept="image/*" id="upload_file_${id}" multiple="" data-updateid="" data-action="add" class="item_img_input pointer" name="imgs_${id}" style="opacity : 0;">
+
+			
+	<!-- /////////// -->
+	
+<script type="text/javascript">
+$(function() {
+	
+	show_${id}_pic("${value!''}");
+	
+	$("#eq_pickfiles_${id}").click(function(){
+		$("#upload_file_${id}").click();
+	});
+	
+	
+	$("#upload_file_${id}").fileupload({
+        url: "/upload/image.upd",
+        formData : {
+        	
+        },
+        dataType: 'json',
+        done: function (e, data) {
+        	
+        },
+        beforeSend: function(jqXHR) {
+        },complete: function() {
+        },
+        success : function(data, textStatus, jqXHR){
+        	console.log(JSON.stringify(data));
+        	if(parseInt(data.code) != 1){
+				alert(data.info);
+				return;
+			}
+        	show_${id}_pic(data.msg);
+        	$("#${id}").val(data.msg);
+        },
+        progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#progress .progress-bar').css(
+                'width',
+                progress + '%'
+            );
+        }
+    }).prop('disabled', !$.support.fileInput)
+        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+	
+	
+	
+});
+
+function show_${id}_pic(path){
+	if(path == null || path == "")return ;
+	$("#eq_preview_wrapper_${id}").removeClass("hide");
+	$("#eq_preview_${id}").html("<div id=\"qiniu_image_${id}\" class=\"file-preview-frame krajee-default  kv-preview-thumb\" ><div class=\"kv-file-content\">"+
+			"<img src=\""+path+"\"  style=\"max-width:220px;max-height:220px;\">"+
+	"</div>"+
+	"<div class=\"file-thumbnail-footer\">"+
+		"<div class=\"file-actions\">"+
+		    "<div class=\"file-footer-buttons\">"+			        
+		        "<button type=\"button\" class=\"kv-file-remove btn btn-xs btn-default\" title=\"删除文件\" onclick=\"trash_${id}_pic('${id}');\">"+
+		        	"<i class=\"glyphicon glyphicon-trash text-danger\"></i>"+
+		        "</button>"+
+		 	"</div>"+
+		    "<div class=\"clearfix\"></div>"+
+		"</div>"+
+	"</div>"+
+	"</div>");
+}
+
+function trash_${id}_pic(imgId){
+	if(confirm("确认要删除?")){
+		$("#qiniu_image_"+imgId).remove();
+		$("#eq_preview_wrapper_"+imgId).addClass("hide");
+		$("#${id}").val("");
 	}
 }
 </script> 

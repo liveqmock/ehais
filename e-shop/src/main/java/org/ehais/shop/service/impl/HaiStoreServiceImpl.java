@@ -203,7 +203,8 @@ public class HaiStoreServiceImpl  extends CommonServiceImpl implements HaiStoreS
 		}
 
 		EHaiStore bean = haiStoreMapper.selectByPrimaryKey(model.getStoreId());
-
+		model.setPartnerId(partner_id);
+		
 		this.StoreModelToBean(bean, model);
 
 		int code = haiStoreMapper.updateByExampleSelective(bean, example);
@@ -245,6 +246,8 @@ public class HaiStoreServiceImpl  extends CommonServiceImpl implements HaiStoreS
 			rm.setMsg("记录不存在");
 			return rm;
 		}
+		
+		model.setPartnerId(bean.getPartnerId());
 		
 		this.StoreModelToBean(bean, model);
 

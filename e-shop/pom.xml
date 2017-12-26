@@ -316,7 +316,7 @@
 				<configuration>
 					<path>/</path>
 					<uriEncoding>UTF-8</uriEncoding>
-					<port>800</port>
+					<port>80</port>
 					<java.util.logging.manager>org.apache.juli.ClassLoaderLogManager</java.util.logging.manager>
 					<mode>context</mode>
 					<contextFile>${basedir}/../../context.xml</contextFile>
