@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="css/pclive.css" />
+		<script type="text/javascript" src="/js/jquery-2.1.4.min.js" ></script>
+		<script type="text/javascript" src="/js/media/web.js" ></script>		
+	</head>
+	<body>
+		<div class="main list">
+			<#include "header.html">
+			
+			<div class="wrapper">
+				<div class="content">
+					<div class="left">
+						<div class="head">
+							<img src="${articleCat.images!''}" />
+							${articleCat.catName}
+						</div>
+						<ul >
+							<#if (listArticle?? && listArticle?size > 0)>
+							<#list listArticle as a>
+							
+							<li class="play" val="${a.articleId}">
+								<div>
+									<img src="${a.articleThumb!''}" />
+									<div>${a.articleLabel!''}</div>
+									<img src="img/1366/play.png" />
+								</div>
+								<div>${a.title!''}</div>
+								<div>
+									<div class="date">${(a.articleDate?string('yyyy-MM-dd'))!''}</div>
+									<div class="counts">${a.readCount!0}次</div>
+								</div>
+							</li>
+							
+							</#list>
+							</#if>
+					
+							
+						</ul>
+						
+					</div>
+					<div class="right">
+						<div class="head">
+							热门视频
+						</div>
+						<ul>
+							
+							<#if (listArticleHot?? && listArticleHot?size > 0)>
+							<#list listArticleHot as a>
+							<#if (a_index == 0) >
+							<li class="play" val="${a.articleId}">
+								<div>
+									<img src="${a.articleThumb!''}" />
+									<div>${a.articleLabel!''}</div>
+									<img src="img/1360/play.png" />
+								</div>
+								<div>${a.title!''}</div>
+								<div>
+									<div class="date">${(a.articleDate?string('yyyy-MM-dd'))!''}</div>
+									<div class="counts">${a.readCount!0}次</div>
+								</div>
+							</li>
+							<#else>
+							<li class="play" val="${a.articleId}">
+								<div class="<#if (a_index < 3)>r</#if>">${a_index+1}</div>${a.title!''}
+							</li>
+							</#if>
+							
+							</#list>
+							</#if>
+							
+							
+							
+						</ul>					
+						
+					</div>
+				</div>
+			</div>
+			
+			
+			<#include "footer.html">
+			
+		</div>
+	</body>
+</html>
