@@ -1,0 +1,16 @@
+
+<header>
+	<img src="img/media_h5/logo.png" />
+</header>
+<nav>
+	<ul id="menu">
+		<li <#if (currentNav?? && currentNav == "index")>class="active"</#if> href="index.do" >首页</li>
+		
+		<#if (listArticleCat?? && listArticleCat?size > 0 ) >
+		<#list listArticleCat as cat>
+		<li <#if (currentNav?? && (currentNav == cat.catId+"" ) )>class="active"</#if> href="list_${cat.catId}.lv" >${cat.catName}</li>
+		</#list>
+		</#if>
+	</ul>
+	<div class="nav"></div>
+</nav>

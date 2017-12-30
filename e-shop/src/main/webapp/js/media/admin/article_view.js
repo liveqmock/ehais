@@ -2,11 +2,13 @@ var cat_id = 0;
 var bsTable ;
 var keyword = "";
 var mediaDetailModal;
+var mediaCategoryModal;
 
 $(function(){
 	getTree();
 	
 	mediaDetailModal = $("#mediaDetailModal").modal({ keyboard: false , show : false });
+	mediaCategoryModal = $("#mediaCategoryModal").modal({ keyboard: false , show : false });
 	
 	$("#addCate").click(function(){addCate();});
 	$("#editCate").click(function(){editCate();});
@@ -190,52 +192,86 @@ function mediaArticleDelete(articleId){
 }
 
 function addCate(){
-	layer.prompt({title: '请输入分类名称', formType: 0}, function(text, index){
-	    console.log(text);
-		if(text == null || text == ""){
-			layer.msg("请输入分类名称");return ;
-		}
-		$.ajax({
-			url : "mediaArticleCatAddSubmit",
-			data  : {catName : text},
-			success : function(result){
-				if(result.code != 1){
-					layer.msg(result.msg);
-					return ;
-				}
-				layer.close(index);
-				layer.msg(result.msg);
-				getTree();
-			}
-		});
-	});
+	$("input,textarea").val("");
+	mediaCategoryModal.modal("show");
+	$("#mediaCategoryFormModal").attr("action","add");
+	
+	$("#qiniu_image_images").remove();
+	$("#eq_preview_wrapper_images").addClass("hide");
+	
+//	layer.prompt({title: '请输入分类名称', formType: 0}, function(text, index){
+//	    console.log(text);
+//		if(text == null || text == ""){
+//			layer.msg("请输入分类名称");return ;
+//		}
+//		$.ajax({
+//			url : "mediaArticleCatAddSubmit",
+//			data  : {catName : text},
+//			success : function(result){
+//				if(result.code != 1){
+//					layer.msg(result.msg);
+//					return ;
+//				}
+//				layer.close(index);
+//				layer.msg(result.msg);
+//				getTree();
+//			}
+//		});
+//	});
 }
 function editCate(){
+	
+	$("input,textarea").val("");
+	
+	$("#qiniu_image_images").remove();
+	$("#eq_preview_wrapper_images").addClass("hide");
+	$("#mediaCategoryFormModal").attr("action","edit");
+	
 	var node = $('#tree li.active');	
 	if(node == null || node.length == 0 || parseInt(node.attr("val")) == 0){
 		layer.msg("请选择分类");
 		return ;
 	}
 	var id = node.attr("val");
-	layer.prompt({title: '请输入分类名称', formType: 0 ,value : node.text()}, function(text, index){
-	    
-		if(text == null || text == ""){
-			layer.msg("请输入分类名称");return ;
+	
+	$.ajax({
+		url : "mediaArticleCatEdit",data:{catId:id},dataType:"json",type:"post",
+		success:function(result){
+			
+			$.each(result.model,function(k,v){
+				$("#"+k).val(v);
+			});
+			$("#cat_id").val(id);
+			if(!isBlank(result.model.images))show_images_pic(result.model.images);
+			
+			$("#mediaDetailFormModal").attr("action","edit");
+			
+			mediaCategoryModal.modal("show");
+			
+			
 		}
-		$.ajax({
-			url : "mediaArticleCatEditSubmit",
-			data  : {catName : text,catId : id},
-			success : function(result){
-				if(result.code != 1){
-					layer.msg(result.msg);
-					return ;
-				}
-				layer.close(index);
-				layer.msg(result.msg);
-				getTree();
-			}
-		});
 	});
+	
+
+//	layer.prompt({title: '请输入分类名称', formType: 0 ,value : node.text()}, function(text, index){
+//	    
+//		if(text == null || text == ""){
+//			layer.msg("请输入分类名称");return ;
+//		}
+//		$.ajax({
+//			url : "mediaArticleCatEditSubmit",
+//			data  : {catName : text,catId : id},
+//			success : function(result){
+//				if(result.code != 1){
+//					layer.msg(result.msg);
+//					return ;
+//				}
+//				layer.close(index);
+//				layer.msg(result.msg);
+//				getTree();
+//			}
+//		});
+//	});
 	
 }
 function deleteCate(){

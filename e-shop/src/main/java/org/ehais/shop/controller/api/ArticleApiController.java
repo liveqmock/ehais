@@ -67,7 +67,7 @@ public class ArticleApiController extends ArticleIController{
 					ac.setParentId(0);
 					ac.setStoreId(article.getStoreId());
 					ac.setModule(EArticleModuleEnum.ARTICLE);
-					ac.setIsValid(true);ac.setCatType(true);ac.setKeywords("");ac.setCatDesc("");ac.setSortOrder(Byte.valueOf("1"));ac.setShowInNav(true);ac.setParentId(0);
+					ac.setIsValid(true);ac.setCatType(1);ac.setKeywords("");ac.setCatDesc("");ac.setSortOrder(1);ac.setShowInNav(true);ac.setParentId(0);
 					haiArticleCatMapper.insert(ac);
 					parent_cat_id = ac.getCatId();
 				}
@@ -91,7 +91,7 @@ public class ArticleApiController extends ArticleIController{
 				ac.setParentId(parent_cat_id);
 				ac.setStoreId(article.getStoreId());
 				ac.setModule(EArticleModuleEnum.ARTICLE);
-				ac.setIsValid(true);ac.setCatType(true);ac.setKeywords("");ac.setCatDesc("");ac.setSortOrder(Byte.valueOf("1"));ac.setShowInNav(true);
+				ac.setIsValid(true);ac.setCatType(1);ac.setKeywords("");ac.setCatDesc("");ac.setSortOrder(1);ac.setShowInNav(true);
 				haiArticleCatMapper.insert(ac);
 			}else{System.out.println(cat_name+"&&&&&&&&&&&&&&&&&&&&"+parent_cat_id);
 				ac = articleCatList.get(0);

@@ -270,6 +270,22 @@ public class MediaAdminController extends CommonController{
 	}
 	
 	
+	@ResponseBody
+	@EPermissionMethod(name="编辑分类",intro="编辑提交视频",value="mediaArticleCatEdit",relation="mediaArticleCatEditSubmit",type=PermissionProtocol.DATA)
+	@RequestMapping(value="/mediaArticleCatEdit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
+	public String mediaArticleCatEdit(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "catId", required = true) Integer catId
+			) {
+		try{
+			return this.writeJson(mediaArticleCatService.articlecat_info(request, EArticleModuleEnum.ARTICLE, catId));
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("articlecat", e);
+			return this.errorJSON(e);
+		}
+	}
+	
 	
 	@ResponseBody
 	@EPermissionMethod(name="编辑分类",intro="编辑提交视频",value="mediaArticleCatEditSubmit",type=PermissionProtocol.DATA)

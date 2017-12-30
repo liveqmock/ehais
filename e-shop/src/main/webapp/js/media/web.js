@@ -1,5 +1,5 @@
 $(function(){
-	$("li.play").click(function(){
+	$(".play").click(function(){
 		window.location.href = "play"+$(this).attr("val")+".lv";
 	});
 	

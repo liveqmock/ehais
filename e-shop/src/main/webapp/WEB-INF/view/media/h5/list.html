@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<title></title>
+		<link rel="stylesheet" href="css/h5live.css" />
+		<script type="text/javascript" src="/js/jquery-2.1.4.min.js" ></script>
+		<script type="text/javascript" src="/js/media/web.js" ></script>		
+	</head>
+	<body>
+		<div class="w">
+			<#include "header.html">
+			
+			<article class="category">
+				<ul id="">
+					<#if (listArticle?? && listArticle?size > 0)>
+					<#list listArticle as a>
+					<li class="play" val="${a.articleId}">
+						<div>
+							<img src="${a.articleThumb!''}" />
+							<div>${a.articleLabel!''}</div>
+							<img src="img/media_h5/play.png" />
+						</div>
+						<div>${a.title!''}</div>
+						<div>
+							<div class="date">${(a.articleDate?string('yyyy-MM-dd'))!''}</div>
+							<div class="counts">${a.readCount!0}次</div>
+						</div>
+					</li>
+					</#list>
+					</#if>
+					
+					
+				</ul>
+			</article>
+			
+			<#include "footer.html">
+		</div>
+	</body>
+</html>

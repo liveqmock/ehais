@@ -1,0 +1,42 @@
+
+<div style="width: 100%;height: 40px;"></div>
+<div class="container-fluid">
+
+<input type="hidden" class="form-control" id="cat_id" name="cat_id" value="0" placeholder="">
+
+
+<div class="form-group">
+<label class="col-sm-2 control-label">标题</label>
+<div class="col-sm-10">
+	<input type="text" class="form-control" id="catName" name="catName" value="" placeholder="">
+</div>
+</div>
+
+
+<div class="form-group">
+<label class="col-sm-2 control-label">排序</label>
+<div class="col-sm-10">
+	<@quantityPicker id="sortOrder" value="1" />
+</div>
+</div>
+
+
+<div class="form-group">
+<label class="col-sm-2 control-label">图标</label>
+<div class="col-sm-10">
+	<@uploadImagesPicker id="images" value="" /> 
+	图片尺寸：20*15
+</div>
+</div>
+
+
+<div class="form-group">
+	<div class="col-sm-3"></div>
+	<div class="col-sm-6"><button id="saveCateSubmit" type="button" class="btn btn-primary">提交信息</button></div>
+</div>
+
+</div>
+
+<script type="text/javascript" src="/js/media/admin/article_cat.js"></script>             
+
+

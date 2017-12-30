@@ -34,6 +34,7 @@ public class MediaWebController extends CommonController{
 	private Integer store_id = 27;
 	private String modal = "web";
 	private Integer len  = 4;
+	private Integer hot_len  = 9;
 
 	@RequestMapping("/index.do")
 	public String index(ModelMap modelMap,
@@ -41,7 +42,10 @@ public class MediaWebController extends CommonController{
 		try{
 			modelMap.addAttribute("currentNav", "index");
 			
-			if(isWeiXin(request))modal = "h5";
+			if(isWeiXin(request) || JudgeIsMoblie(request)){
+				modal = "h5";
+				hot_len = 4;
+			}
 			
 			EHaiArticleCatExample ace = new EHaiArticleCatExample();
 			ace.createCriteria().andStoreIdEqualTo(store_id);
@@ -57,7 +61,7 @@ public class MediaWebController extends CommonController{
 			.andOpenTypeEqualTo(Short.valueOf("1"));
 			ae.setOrderByClause("sort asc");
 			ae.setLimitStart(0);
-			ae.setLimitEnd(9);
+			ae.setLimitEnd(hot_len);
 			List<EHaiArticle> listArticleIndex = eHaiArticleMapper.selectByExample(ae);
 			modelMap.addAttribute("listArticleIndex", listArticleIndex);
 			
@@ -93,7 +97,7 @@ public class MediaWebController extends CommonController{
 		modelMap.addAttribute("currentNav", cid.toString());
 		
 		try{
-			if(isWeiXin(request))modal = "h5";
+			if(isWeiXin(request) || JudgeIsMoblie(request))modal = "h5";
 			if(p == null)p = 1;
 			
 			EHaiArticleCatExample ace = new EHaiArticleCatExample();
@@ -150,7 +154,7 @@ public class MediaWebController extends CommonController{
 			@PathVariable(value = "id") Integer id){
 		
 		try{
-			if(isWeiXin(request))modal = "h5";
+			if(isWeiXin(request) || JudgeIsMoblie(request))modal = "h5";
 			
 			
 			EHaiArticleCatExample ace = new EHaiArticleCatExample();
