@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.ehais.annotation.EPermissionController;
 import org.ehais.annotation.EPermissionMethod;
 import org.ehais.common.EConstants;
@@ -62,10 +63,13 @@ public class  ArticleAdminController extends EhaisCommonController {
 	@EPermissionMethod(intro="打开软文页面",value="ehaisArticleView",type=PermissionProtocol.URL)
 	@RequestMapping("/manage/ehaisArticleView")
 	public String ehaisArticleView(ModelMap modelMap,
-			HttpServletRequest request,HttpServletResponse response ) {	
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "module", required = false) String module) {	
+		if(StringUtils.isBlank(module))module = EArticleModuleEnum.ARTICLE;
 		try{
-			ReturnObject<EHaiArticle> rm = ehaisArticleService.article_list(request,EArticleModuleEnum.ARTICLE);
+			ReturnObject<EHaiArticle> rm = ehaisArticleService.article_list(request,module);
 			modelMap.addAttribute("rm", rm);
+			modelMap.addAttribute("module", module);
 			return "/"+this.getStoreTheme(request)+"/article/view";
 		}catch(Exception e){
 			e.printStackTrace();
@@ -83,9 +87,11 @@ public class  ArticleAdminController extends EhaisCommonController {
 			HttpServletRequest request,HttpServletResponse response,
 			@ModelAttribute EConditionObject condition,
 			@RequestParam(value = "cat_id", required = false) Integer cat_id,
-			@RequestParam(value = "title", required = false) String title) {
+			@RequestParam(value = "title", required = false) String title,
+			@RequestParam(value = "module", required = false) String module) {
+		if(StringUtils.isBlank(module))module = EArticleModuleEnum.ARTICLE;
 		try{
-			ReturnObject<EHaiArticle> rm = ehaisArticleService.article_list_json(request,EArticleModuleEnum.ARTICLE, condition , cat_id , title);
+			ReturnObject<EHaiArticle> rm = ehaisArticleService.article_list_json(request,module, condition , cat_id , title);
 			return this.writeJson(rm);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -99,10 +105,13 @@ public class  ArticleAdminController extends EhaisCommonController {
 	@EPermissionMethod(name="新增",intro="新增软文",value="ehaisArticleAddDetail",type=PermissionProtocol.BUTTON)
 	@RequestMapping(value="/manage/ehaisArticleAddDetail",method=RequestMethod.GET)
 	public String ehaisArticleAddDetail(ModelMap modelMap,
-			HttpServletRequest request,HttpServletResponse response
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "module", required = false) String module
 			) {
+		if(StringUtils.isBlank(module))module = EArticleModuleEnum.ARTICLE;
+		modelMap.addAttribute("module", module);
 		try{
-			ReturnObject<EHaiArticle> rm = ehaisArticleService.article_insert(request,EArticleModuleEnum.ARTICLE);
+			ReturnObject<EHaiArticle> rm = ehaisArticleService.article_insert(request,module);
 			modelMap.addAttribute("rm", rm);
 			modelMap.addAttribute("uptoken", QiniuUtil.getUpToken(accessKey,secretKey,bucket));
 			modelMap.addAttribute("domain", domain);
@@ -123,13 +132,15 @@ public class  ArticleAdminController extends EhaisCommonController {
 	public String ehaisArticleAddSubmit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "goodsId", required = false) Long goodsId,
+			@RequestParam(value = "module", required = false) String module,
 			@Valid @ModelAttribute("article") EHaiArticle article,
 			BindingResult result
 			) {
 			if(result.hasErrors())return this.writeBindingResult(result);
+			if(StringUtils.isBlank(module))module = EArticleModuleEnum.ARTICLE;
 		try{
 			
-			ReturnObject<EHaiArticle> rm = ehaisArticleService.article_insert_submit(request,EArticleModuleEnum.ARTICLE, article,goodsId);
+			ReturnObject<EHaiArticle> rm = ehaisArticleService.article_insert_submit(request,module, article,goodsId);
 			return this.writeJson(rm);
 			
 		}catch(Exception e){
@@ -145,10 +156,13 @@ public class  ArticleAdminController extends EhaisCommonController {
 	@RequestMapping(value="/manage/ehaisArticleEditDetail",method=RequestMethod.GET)
 	public String ehaisArticleEditDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
-			@RequestParam(value = "articleId", required = true) Integer articleId
+			@RequestParam(value = "articleId", required = true) Integer articleId,
+			@RequestParam(value = "module", required = false) String module
 			) {
+		if(StringUtils.isBlank(module))module = EArticleModuleEnum.ARTICLE;
+		modelMap.addAttribute("module", module);
 		try{
-			ReturnObject<EHaiArticle> rm = ehaisArticleService.article_update(request,EArticleModuleEnum.ARTICLE,articleId);
+			ReturnObject<EHaiArticle> rm = ehaisArticleService.article_update(request,module,articleId);
 			modelMap.addAttribute("rm", rm);
 			modelMap.addAttribute("uptoken", QiniuUtil.getUpToken(accessKey,secretKey,bucket));
 			modelMap.addAttribute("domain", domain);
@@ -168,12 +182,14 @@ public class  ArticleAdminController extends EhaisCommonController {
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "articleId", required = true) Integer articleId,
 			@RequestParam(value = "goodsId", required = false) Long goodsId,
+			@RequestParam(value = "module", required = false) String module,
 			@Valid @ModelAttribute("article") EHaiArticle article,
 			BindingResult result
 			) {
 			if(result.hasErrors())return this.writeBindingResult(result);
+			if(StringUtils.isBlank(module))module = EArticleModuleEnum.ARTICLE;
 		try{
-			return this.writeJson(ehaisArticleService.article_update_submit(request,EArticleModuleEnum.ARTICLE,article,goodsId));
+			return this.writeJson(ehaisArticleService.article_update_submit(request,module,article,goodsId));
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("article", e);
@@ -188,10 +204,12 @@ public class  ArticleAdminController extends EhaisCommonController {
 	public String ehaisArticleDelete(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "articleId", required = true) Integer articleId,
-			@RequestParam(value = "code", required = false) String code
+			@RequestParam(value = "code", required = false) String code,
+			@RequestParam(value = "module", required = false) String module
 			) {
+		if(StringUtils.isBlank(module))module = EArticleModuleEnum.ARTICLE;
 		try{
-			return this.writeJson(ehaisArticleService.article_delete(request,EArticleModuleEnum.ARTICLE, articleId));
+			return this.writeJson(ehaisArticleService.article_delete(request,module, articleId));
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("article", e);
@@ -208,9 +226,11 @@ public class  ArticleAdminController extends EhaisCommonController {
 	public String ehaisArticleCatListJson(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@ModelAttribute EConditionObject condition,
-			@RequestParam(value = "other", required = false) String other) {
+			@RequestParam(value = "other", required = false) String other,
+			@RequestParam(value = "module", required = false) String module) {
+		if(StringUtils.isBlank(module))module = EArticleModuleEnum.ARTICLE;
 		try{
-			ReturnObject<EHaiArticleCat> rm = ehaisArticleCatService.articlecat_list_json(request,EArticleModuleEnum.ARTICLE, condition);
+			ReturnObject<EHaiArticleCat> rm = ehaisArticleCatService.articlecat_list_json(request,module, condition);
 			return this.writeJson(rm);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -226,13 +246,15 @@ public class  ArticleAdminController extends EhaisCommonController {
 	@RequestMapping(value="/manage/ehaisArticleCatAddSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String ehaisArticleCatAddSubmit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "module", required = false) String module,
 			@Valid @ModelAttribute("articlecat") EHaiArticleCat articlecat,
 			BindingResult result
 			) {
 			if(result.hasErrors())return this.writeBindingResult(result);
+			if(StringUtils.isBlank(module))module = EArticleModuleEnum.ARTICLE;
 		try{
 			
-			ReturnObject<EHaiArticleCat> rm = ehaisArticleCatService.articlecat_insert_submit(request,EArticleModuleEnum.ARTICLE, articlecat);
+			ReturnObject<EHaiArticleCat> rm = ehaisArticleCatService.articlecat_insert_submit(request,module, articlecat);
 			return this.writeJson(rm);
 			
 		}catch(Exception e){
@@ -250,12 +272,14 @@ public class  ArticleAdminController extends EhaisCommonController {
 	public String ehaisArticleCatEditSubmit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "catId", required = true) Integer catId,
+			@RequestParam(value = "module", required = false) String module,
 			@Valid @ModelAttribute("articlecat") EHaiArticleCat articlecat,
 			BindingResult result
 			) {
 			if(result.hasErrors())return this.writeBindingResult(result);
+			if(StringUtils.isBlank(module))module = EArticleModuleEnum.ARTICLE;
 		try{
-			return this.writeJson(ehaisArticleCatService.articlecat_update_submit(request,EArticleModuleEnum.ARTICLE,articlecat));
+			return this.writeJson(ehaisArticleCatService.articlecat_update_submit(request,module,articlecat));
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("articlecat", e);
@@ -270,10 +294,12 @@ public class  ArticleAdminController extends EhaisCommonController {
 	public String ehaisArticleCatDelete(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "catId", required = true) Integer catId,
-			@RequestParam(value = "code", required = false) String code
+			@RequestParam(value = "code", required = false) String code,
+			@RequestParam(value = "module", required = false) String module
 			) {
+		if(StringUtils.isBlank(module))module = EArticleModuleEnum.ARTICLE;
 		try{
-			return this.writeJson(ehaisArticleCatService.articlecat_delete(request,EArticleModuleEnum.ARTICLE, catId));
+			return this.writeJson(ehaisArticleCatService.articlecat_delete(request,module, catId));
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("articlecat", e);
@@ -300,6 +326,46 @@ public class  ArticleAdminController extends EhaisCommonController {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	
+	
+	
+	@EPermissionMethod(name="单页面内容",intro="打开软文页面",value="ehaisArticleDetail",relation="ehaisArticleDetailSubmit",type=PermissionProtocol.URL)
+	@RequestMapping("/manage/ehaisArticleDetail")
+	public String ehaisArticleDetail(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response ,
+			@RequestParam(value = "module", required = true) String module) {	
+		try{
+			
+			ReturnObject<EHaiArticle> rm = ehaisArticleService.article_module(request,module);
+			modelMap.addAttribute("rm", rm);
+			modelMap.addAttribute("uptoken", QiniuUtil.getUpToken(accessKey,secretKey,bucket));
+			modelMap.addAttribute("domain", domain);
+			
+			return "/"+this.getStoreTheme(request)+"/article/module";
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("article", e);
+			return this.errorJump(modelMap, e.getMessage());
+		}
+		
+	}
+	
+	@ResponseBody
+	@EPermissionMethod(intro="",value="ehaisArticleDetailSubmit",type=PermissionProtocol.JSON)
+	@RequestMapping(value="/manage/ehaisArticleDetailSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
+	public String ehaisArticleDetailSubmit(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "articleId", required = true) Integer articleId,
+			@ModelAttribute("article") EHaiArticle article) {
+		try{
+			return this.writeJson(ehaisArticleService.article_update_submit(request,article.getModule(),article,null));
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("article", e);
+			return this.errorJSON(e);
+		}
 	}
 	
 	

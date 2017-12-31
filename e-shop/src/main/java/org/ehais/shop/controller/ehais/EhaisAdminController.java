@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
@@ -104,7 +105,7 @@ public class EhaisAdminController extends CommonController{
 			modelMap.addAttribute("endDate", endDate);
 			
 			String adminClasssify = (String)request.getSession().getAttribute(EConstants.SESSION_ADMIN_CLASSIFY);
-			if(adminClasssify.equals(EAdminClassifyEnum.shop)){
+			if(StringUtils.isNotBlank(adminClasssify) && adminClasssify.equals(EAdminClassifyEnum.shop)){
 				Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 				WpPublic wp = eWPPublicService.getWpPublic(store_id);
 				String cid = SignUtil.setCid(store_id, 0, 0l, 0l, wp.getToken());

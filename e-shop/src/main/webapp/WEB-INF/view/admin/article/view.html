@@ -73,7 +73,33 @@
 		<form id="qrform" name="qrform" action="article_qrcode" method="post" target="_blank">
 			<input type="hidden" id="articleId" name="articleId">
 		</form>
-		
+
+
+
+<div class="modal fade" id="prefixTempSublateModal" tabindex="-1" role="dialog" aria-labelledby="prefixTempSublateLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="prefixTempSublateLabel">FunctionName分类管理</h4>
+            </div>
+            <div class="modal-body">
+            	<form id="prefixTempSublateFormModal" name="prefixTempSublateFormModal" class="form-horizontal" method="post">
+
+
+
+            	</form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="prefixTempSublateFormSubmit">提交</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div><!-- /.modal end -->
+
+
+
 		<script type="text/javascript" src="/js/admin/article/article_view.js" ></script>
 	</body>
 </html>

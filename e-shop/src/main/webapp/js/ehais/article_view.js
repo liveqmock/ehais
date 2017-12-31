@@ -38,7 +38,8 @@ $(function(){
                 sort: params.sort,  //排序列名  
                 sortOrder: params.order,//排位命令（desc，asc）
                 cat_id : cat_id,
-                keyword : keyword
+                keyword : keyword,
+                module : module
 	        }
 	    },
         sidePagination: "server", //服务端处理分页
@@ -78,7 +79,7 @@ $(function(){
             title: '操作',
             formatter : function(value,row,index){
             	var c = "<a href='javascript:;' onclick='qrformPost("+value+");'>分享</a>";
-            	var a = "&nbsp;|&nbsp;<a href ='ehaisArticleEditDetail?articleId="+value+"'>编辑</a>";
+            	var a = "&nbsp;|&nbsp;<a href ='ehaisArticleEditDetail?articleId="+value+"&module="+module+"'>编辑</a>";
             	var b = "&nbsp;|&nbsp;<a href ='javascript:;' onclick='ehaisArticleDelete("+value+");' >删除</a>";
             	return c+a+b;
             }
@@ -120,7 +121,7 @@ function setHot(that,id){
 
 function getTree() {
 	$.ajax({
-		url : "ehaisArticleCatListJson",type:"post",dataType:"json",data:{},
+		url : "ehaisArticleCatListJson",type:"post",dataType:"json",data:{module:module},
 		success : function(result){
 			var rows = result.rows;
 			var nodes = new Array();
@@ -158,7 +159,7 @@ function ehaisArticleDelete(articleId){
 		btn: ['确定删除','不删除'] //按钮
 	}, function(){
 		$.ajax({
-			url : "ehaisArticleDelete",type:"post",dataType:"json",data:{articleId:articleId},
+			url : "ehaisArticleDelete",type:"post",dataType:"json",data:{articleId:articleId,module:module},
 			success:function(result){
 				layer.msg(result.msg);
 				bsTable.bootstrapTable('refresh');
@@ -177,7 +178,7 @@ function addCate(){
 		}
 		$.ajax({
 			url : "ehaisArticleCatAddSubmit",
-			data  : {catName : text},
+			data  : {catName : text,module:module},
 			success : function(result){
 				if(result.code != 1){
 					layer.msg(result.msg);
@@ -204,7 +205,7 @@ function editCate(){
 		}
 		$.ajax({
 			url : "ehaisArticleCatEditSubmit",
-			data  : {catName : text,catId : id},
+			data  : {catName : text,catId : id,module:module},
 			success : function(result){
 				if(result.code != 1){
 					layer.msg(result.msg);
@@ -230,7 +231,7 @@ function deleteCate(){
 		btn: ['确定删除','不删除'] //按钮
 	}, function(){
 		$.ajax({
-			url : "ehaisArticleCatDelete",data:{catId:id},
+			url : "ehaisArticleCatDelete",data:{catId:id,module:module},
 			success:function(result){
 				layer.msg(result.msg);
 				if(result.code != 1){
