@@ -25,6 +25,7 @@ public interface ArticleCatService extends CommonService{
 	public ReturnObject<EHaiArticleCat> articlecat_insert_submit(HttpServletRequest request,String moduleEnum,EHaiArticleCat model) throws Exception;
 	public ReturnObject<EHaiArticleCat> articlecat_update(HttpServletRequest request,String moduleEnum,Integer catId) throws Exception;
 	public ReturnObject<EHaiArticleCat> articlecat_update_submit(HttpServletRequest request,String moduleEnum,EHaiArticleCat model) throws Exception;
+	public ReturnObject<EHaiArticleCat> articlecat_info(HttpServletRequest request,String moduleEnum) throws Exception;
 	public ReturnObject<EHaiArticleCat> articlecat_info(HttpServletRequest request,String moduleEnum,Integer catId) throws Exception;
 	public ReturnObject<EHaiArticleCat> articlecat_find(HttpServletRequest request,String moduleEnum,Integer catId) throws Exception;
 	public ReturnObject<EHaiArticleCat> articlecat_delete(HttpServletRequest request,String moduleEnum,Integer catId) throws Exception;

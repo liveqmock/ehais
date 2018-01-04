@@ -472,8 +472,8 @@
     <if test="orderByClause != null" >
       <![CDATA[ order by ${orderByClause}  ]]>
     </if>
-    <if test="start != null and len != null and start >= 0 and len > 0" >
-      <![CDATA[ limit #{start,jdbcType=INTEGER},#{len,jdbcType=INTEGER}  ]]>
+    <if test="limitStart != null and limitEnd != null and limitStart >= 0 and limitEnd > 0" >
+      <![CDATA[ limit #{limitStart,jdbcType=INTEGER},#{limitEnd,jdbcType=INTEGER}  ]]>
     </if>
   </select>
   

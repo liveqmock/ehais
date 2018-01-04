@@ -80,6 +80,7 @@ public class EhaisMallController extends EhaisCommonController {
 		
 		System.out.println("user_id.....mallData..:"+user_id);
 		
+		///////读取store_id的广告
 		HaiAdExample adExample = new HaiAdExample();
 		adExample.createCriteria()
 		.andStoreIdEqualTo(store.getStoreId())
@@ -87,6 +88,17 @@ public class EhaisMallController extends EhaisCommonController {
 		.andIsVoidEqualTo(1);
 		adExample.setOrderByClause("sort asc");
 		List<HaiAd> adList = haiAdMapper.selectByExample(adExample);
+		
+		//如果无原广告数据，则用上层代理的广告图片
+		if(adList.size() == 0 && store.getPartnerId()!=null && store.getPartnerId()>0){
+			adExample.clear();
+			adExample.createCriteria()
+			.andPartnerIdEqualTo(store.getPartnerId())
+			.andIsMobileEqualTo(1)
+			.andIsVoidEqualTo(1);
+			adExample.setOrderByClause("sort asc");
+			adList = haiAdMapper.selectByExample(adExample);
+		}
 		
 		HaiNavExample navExample = new HaiNavExample();
 		navExample.createCriteria()
@@ -137,8 +149,9 @@ public class EhaisMallController extends EhaisCommonController {
 	
 	
 	
-	//http://127.0.0.1/w_mall!afa5890-062c0c01-12b7b002-2c960b1253-37ca2179f7b3b
-	//http://286ef960.ngrok.io/w_mall!afa5890-062c0c01-12b7b002-2c960b1253-37ca2179f7b3b
+	//http://127.0.0.1/w_mall!9b2f4710-0f9cbf01-1386c202-2b1d0903-3b7a1ba090e40
+	//http://mg.ehais.com/w_mall!5a9b8710-027ed301-130ff402-243aef1253-3ee8f62f575a2
+	//http://a9e03339.ngrok.io/w_mall!9b2f4710-0f9cbf01-1386c202-2b1d0903-3b7a1ba090e40
 	@RequestMapping("/w_mall!{cid}")
 	public String w_mall(ModelMap modelMap,
 			HttpServletRequest request,
@@ -189,8 +202,13 @@ public class EhaisMallController extends EhaisCommonController {
 					return "redirect:"+website; //错误的链接，跳转商城
 				}
 			}else{
-//				return this.mallData(modelMap, request, response, wp, store, cid, store_id, user_id, map);
-				return "redirect:"+website;
+				if(isLocalHost(request)){
+					return this.mallData(modelMap, request, response, wp, store, cid, store_id, user_id, map);
+				}else{
+					return "redirect:"+website;
+				}
+				
+				
 			}
 			
 			

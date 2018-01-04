@@ -50,9 +50,9 @@ function member(){
 			}else{
 				$(".p").html("未绑定");
 			}
-			$("#amount").html("帐户余额:￥"+(model.userMoney / 100).toFixed(2) );
+			$("#amount").html("帐户:￥"+(model.userMoney / 100).toFixed(2) );
 			$("#integral").html("积分:"+model.payPoints );
-			$("#signCount").html("签到天数:"+result.map.signCount );
+			$("#signCount").html("签到:"+result.map.signCount );
 			
 			isTodaySign = result.map.isTodaySign;
 			signCount = result.map.signCount;

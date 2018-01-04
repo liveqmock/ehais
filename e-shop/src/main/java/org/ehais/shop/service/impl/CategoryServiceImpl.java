@@ -52,7 +52,7 @@ public class CategoryServiceImpl  extends EShopCommonServiceImpl implements Cate
 		example.setLimitStart(start);
 		example.setLimitEnd(len);
 		List<HaiCategory> list = haiCategoryMapper.hai_category_list_by_example(example);
-		Integer total = haiCategoryMapper.countByExample(example);
+		long total = haiCategoryMapper.countByExample(example);
 		rm.setCode(1);
 		rm.setRows(list);
 		rm.setTotal(total);

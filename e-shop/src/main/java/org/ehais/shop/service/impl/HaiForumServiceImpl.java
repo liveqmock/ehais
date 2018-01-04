@@ -70,7 +70,7 @@ public class HaiForumServiceImpl  extends CommonServiceImpl implements HaiForumS
 		List<Integer> articlesId = new ArrayList<Integer>();
 		for (HaiForum haiForum : list) {
 			usersId.add(haiForum.getUserId());
-			articlesId.add(haiForum.getTableId().intValue());
+			if(haiForum.getTableId()!=null)articlesId.add(haiForum.getTableId().intValue());
 		}
 		
 		Map<String, Object> map = new HashMap<String, Object>();

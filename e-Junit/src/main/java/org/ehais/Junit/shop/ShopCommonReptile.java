@@ -13,7 +13,7 @@ import org.ehais.util.SignUtil;
 import net.sf.json.JSONObject;
 
 public class ShopCommonReptile {
-	private static String web_url = "http://mg.ehais.com";
+	private static String web_url = "http://eg.ehais.com";
 //	private static String web_url = "http://127.0.0.1";
 	public static String appkey = "Ehais";
 	public static String secret = "EhaisSecret";

@@ -3,6 +3,11 @@ package org.ehais.shop.controller.project;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,7 +31,6 @@ import org.ehais.common.EConstants;
 import org.ehais.epublic.mapper.EHaiUsersMapper;
 import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.epublic.model.EHaiUsersExample;
-import org.ehais.epublic.model.OrderStoreStatistics;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.protocol.PermissionProtocol;
 import org.ehais.shop.controller.ehais.EhaisCommonController;
@@ -34,7 +38,7 @@ import org.ehais.shop.mapper.project.HaiBegOffMapper;
 import org.ehais.shop.model.project.HaiBegOff;
 import org.ehais.shop.model.project.HaiBegOffExample;
 import org.ehais.shop.model.project.HaiBegOffStatistics;
-import org.ehais.shop.model.tp.TpDiningOrder;
+import org.ehais.shop.model.project.HaiBegOffUser;
 import org.ehais.shop.service.ProjectBegOffService;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
@@ -77,13 +81,13 @@ import net.sf.json.JSONObject;
 @RequestMapping("/")
 public class EpSchoolWeiXinController extends EhaisCommonController {
 
-	protected Integer default_store_id = Integer.valueOf(ResourceUtil.getProValue("default_store_id"));
-	protected Integer default_public_id = Integer.valueOf(ResourceUtil.getProValue("default_public_id"));
-	protected String website = ResourceUtil.getProValue("website");
-	protected String defaultimg = ResourceUtil.getProValue("defaultimg");
-	protected String weixin_appid = ResourceUtil.getProValue("weixin_appid");
-	protected String weixin_appsecret = ResourceUtil.getProValue("weixin_appsecret");
-	protected String weixin_token = ResourceUtil.getProValue("weixin_token");
+//	protected Integer default_store_id = Integer.valueOf(ResourceUtil.getProValue("default_store_id"));
+//	protected Integer default_public_id = Integer.valueOf(ResourceUtil.getProValue("default_public_id"));
+//	protected String website = ResourceUtil.getProValue("website");
+//	protected String defaultimg = ResourceUtil.getProValue("defaultimg");
+//	protected String weixin_appid = ResourceUtil.getProValue("weixin_appid");
+//	protected String weixin_appsecret = ResourceUtil.getProValue("weixin_appsecret");
+//	protected String weixin_token = ResourceUtil.getProValue("weixin_token");
 	
 	
 	@Autowired
@@ -93,7 +97,14 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 	@Autowired
 	private ProjectBegOffService projectBegOffService;
 	
-
+	private Connection conn;
+	private Statement stmt;
+	private ResultSet rs;
+	private String url = "jdbc:sqlserver://localhost:1433;DatabaseName=EPDDmenjin;";
+	private String sa = "ThirdPartyWXApplication";
+	private String pwd = "WXApplication123";
+	private String DRIVE_NAME = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+	
 	@RequestMapping("/ep_school_bind")
 	public String bind(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -346,6 +357,117 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 	}
 	
 	
+	/**
+	 * 班主任，部长，学生处的用户查看针对自己的请假信息
+	 * @param modelMap
+	 * @param request
+	 * @param response
+	 * @param code
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/ep_school_begapprove_list")
+	public String begapprove_list(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "code", required = false) String code ) throws Exception {	
+		try{
+			if(this.isWeiXin(request)){
+				if(StringUtils.isBlank(code)){
+					return this.redirect_wx_authorize(request , weixin_appid , "/ep_school_begapprove_list" , "snsapi_base");
+				}else if(StringUtils.isNotBlank(code)){
+					WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(default_store_id);
+					OpenidInfo open = WeiXinUtil.getOpenid(code,wp.getAppid(),wp.getSecret());
+					if(open == null || open.getOpenid() == null) return "/ep_school/web/subscribe";
+					
+					request.getSession().setAttribute(EConstants.SESSION_OPEN_ID, open.getOpenid());
+					
+					AccessToken token = WeiXinUtil.getAccessToken(default_store_id, wp.getAppid(), wp.getSecret());
+					WeiXinUserInfo wxUser = WeiXinUtil.getUserInfo(token.getAccess_token(), open.getOpenid());
+					
+					if(wxUser.getSubscribe() == null || wxUser.getSubscribe().intValue() != 1){
+						//进入关注页面
+						return "/ep_school/web/subscribe";
+					}
+					
+					EHaiUsers users = eHaiUsersMapper.userInfoOpenIdStore(default_store_id ,open.getOpenid());
+					if(users == null){//未绑定的学生，去到绑定页面
+						return "/ep_school/web/begbind";
+					}
+					modelMap.addAttribute("users", users);
+					
+					//判断用户身份
+					String alias = users.getAlias();
+					if(StringUtils.isBlank(alias)){//身份为空，则不是合法用户
+						return "/ep_school/web/subscribe";
+					}
+					//查找对应身份的未审批请假信息
+					HaiBegOffExample exp = new HaiBegOffExample();
+					HaiBegOffExample.Criteria boe = exp.createCriteria();
+					boe.andUserIdEqualTo(users.getUserId())
+					.andStoreIdEqualTo(default_store_id);
+					
+					if(alias.equals("班主任")){
+						boe.andTeacherUserIdEqualTo(users.getUserId()).andTeacherApproveIsNull();
+					}else if(alias.equals("部长")){
+						boe.andDepartmentUserIdEqualTo(users.getUserId()).andDepartmentApproveIsNull();
+					}else if(alias.equals("学生处")){
+						boe.andLeaderUserIdEqualTo(users.getUserId()).andLeaderApproveIsNull();
+					}else{
+						return "/ep_school/web/subscribe";//非法身份进入
+					}
+					
+					
+					exp.setOrderByClause("begoff_id desc");
+					
+					List<HaiBegOff> list = haiBegOffMapper.selectByExample(exp);
+					List<Long> userList = new ArrayList<Long>();
+					for (HaiBegOff haiBegOff : list) {
+						userList.add(haiBegOff.getUserId());
+					}
+					List<HaiBegOffUser> listBegOffUser = new ArrayList<HaiBegOffUser>();
+					
+					if(userList.size()>0){
+						EHaiUsersExample expu = new EHaiUsersExample();
+						expu.createCriteria().andUserIdIn(userList).andStoreIdEqualTo(default_store_id);
+						List<EHaiUsers> user_list = eHaiUsersMapper.selectByExample(expu);
+						if(user_list.size() == 0){
+							
+						}
+						
+						for (HaiBegOff h : list) {
+							HaiBegOffUser b = new HaiBegOffUser();
+							b.setUserId(h.getUserId());
+							b.setNumber(b.getNumber());
+							b.setReason(b.getReason());
+							b.setBegoffId(h.getBegoffId());
+							for(EHaiUsers u : user_list){
+								if(u.getUserId().longValue() == h.getUserId().longValue()){
+									b.setUsername(u.getNickname());
+									break;
+								}
+							}
+						}
+						modelMap.addAttribute("listBegOffUser", listBegOffUser);
+						
+					}
+					
+					
+					
+					return "/ep_school/web/begapprove_list";
+				}
+			}else{
+				if(this.isLocalHost(request)){
+					
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return "/ep_school/web/subscribe";
+	}
+	
+	
 	@RequestMapping("/ep_school_begapprove!{begid}")
 	public String begapprove(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -544,7 +666,7 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 								, "请假审批通知", map, "");
 						
 						//通知开闸
-						this.approve_open_door(request, student.getNickname());
+						this.approve_open_door(request, student);
 					}else{
 						//大于2天通知部长审批
 						EHaiUsers depart = eHaiUsersMapper.userNameByStore(default_store_id, users.getAnswer());
@@ -608,7 +730,7 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 						
 						if(approve == 1){
 							//通知开闸
-							this.approve_open_door(request, student.getNickname());
+							this.approve_open_door(request, student);
 						}
 					}else{
 						//大于3天通知部长审批
@@ -669,7 +791,7 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 					
 					if(approve == 1){
 						//通知开闸
-						this.approve_open_door(request, student.getNickname());
+						this.approve_open_door(request, student);
 					}
 				}
 			}
@@ -896,14 +1018,52 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 		return this.writeJsonObject(new HashMap<String,Object>(){{this.put("code", 0);this.put("msg", "fail");}});
 	}
 	
+//	@ResponseBody
+//	@RequestMapping("/testdb")
+	public String testdb(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response){
+		try{
+			List<EHaiUsers> user = eHaiUsersMapper.selectByExample(null);
+			this.approve_open_door(request, user.get(0));
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return "success";
+	}
 	
 	/**
 	 * 对接开门的应用
 	 * @param request
 	 * @param cardNo
 	 */
-	private void approve_open_door(HttpServletRequest request,String cardNo){
+	private void approve_open_door(HttpServletRequest request,EHaiUsers student){
 		log.info("======对接开门禁======================");
+		try{
+			Class.forName(DRIVE_NAME);
+			// 连接数据库
+            conn = DriverManager.getConnection(url, sa, pwd);
+            // 建立Statement对象
+            stmt = conn.createStatement();
+            
+            String sql = "insert into ThirdPartyTempAccess(CardHolderName,StudentNumberColumnName,StudentNumber,StartTime,EndTime,AccessLevelID,ProcessFlag)values(?,?,?,?,?,?,?);";
+            PreparedStatement psstmt = conn.prepareStatement(sql);// 加载sql
+            psstmt.setString(1, student.getUserName());
+            psstmt.setString(2, student.getRealname());
+            psstmt.setString(3, student.getNickname());
+            java.sql.Date sdate = new java.sql.Date(System.currentTimeMillis());
+            psstmt.setDate(4, sdate);
+            java.sql.Date edate = new java.sql.Date(System.currentTimeMillis()+24*60*60*1000);
+            psstmt.setDate(5, edate);
+            psstmt.setInt(6, 0);
+            psstmt.setInt(7, 0);
+            int rowN = psstmt.executeUpdate();// 执行sql
+            if (rowN == 1) {// 执行成功时
+            	
+            }
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	
 	

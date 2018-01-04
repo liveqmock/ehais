@@ -31,7 +31,7 @@ public class MediaWebController extends CommonController{
 	@Autowired
 	private EHaiArticleCatMapper eHaiArticleCatMapper;
 	
-	private Integer store_id = 27;
+	private Integer store_id = 1;
 	private String modal = "web";
 	private Integer len  = 4;
 	private Integer hot_len  = 9;

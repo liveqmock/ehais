@@ -4,6 +4,7 @@ import java.util.List;
 
 public class HaiGoodsEntity {
 	private String catName;
+	private String categoryUrl;
 	private String storeId;
 	private HaiGoodsWithBLOBs goods;
 	private List<HaiGoodsAttr> goodsAttrList;
@@ -37,6 +38,12 @@ public class HaiGoodsEntity {
 	}
 	public void setStoreId(String storeId) {
 		this.storeId = storeId;
+	}
+	public String getCategoryUrl() {
+		return categoryUrl;
+	}
+	public void setCategoryUrl(String categoryUrl) {
+		this.categoryUrl = categoryUrl;
 	}
 	
 	

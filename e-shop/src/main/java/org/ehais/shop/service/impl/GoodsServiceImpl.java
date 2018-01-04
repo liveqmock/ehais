@@ -102,6 +102,7 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 	
 	//当新增商品或查不到商品的信息时，初始化一下商品对应的分销值，非插入数据库
 	private HaiGoodsDistribution initGoodsDistribution(HaiStoreSetting setting){
+		if(setting == null)return null;
 		HaiGoodsDistribution gd = new HaiGoodsDistribution();
 		gd.setJoinDistribution(true);
 		gd.setDefaultDistribution(true);

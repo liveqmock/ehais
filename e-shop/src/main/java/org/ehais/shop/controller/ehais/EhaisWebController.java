@@ -1097,8 +1097,8 @@ public class EhaisWebController extends EhaisCommonController {
 	
 	
 	public static void main(String[] args) throws Exception {
-		String sid = SignUtil.setSid(58, 0, 0L, 125L, 0, 0L, "ehais_wxdev");
-		String cid = SignUtil.setCid(58, 0, 0L, 125L, "ehais_wxdev");
+		String sid = SignUtil.setSid(71, 0, 0L, 125L, 0, 0L, "ehais_wxdev");
+		String cid = SignUtil.setCid(71, 0, 0L, 0L, "ehais_wxdev");
 		System.out.println(sid);
 		System.out.println(cid);
 	}

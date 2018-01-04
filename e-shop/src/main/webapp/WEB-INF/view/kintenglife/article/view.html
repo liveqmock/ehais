@@ -23,18 +23,15 @@
 		<link rel="stylesheet" href="/js/bootstrap/datetimepicker/css/bootstrap-datetimepicker.min.css" />
 		<script type="text/javascript" src="/js/bootstrap/datetimepicker/js/bootstrap-datetimepicker.min.js" ></script>
 		
+		<#include "/qiniu.html"/>
 		<#include "/FreemarkerMacro.html"/>
 	</head>
 	<body>
 		<div class="header">
-			<div class="nav">
-				<i class="icon fa fa-home">&nbsp;</i>
-				<div class="nav0">推广软文</div>
-			</div>
 		</div>
 		<div class="body">
 			<div class="container_box">
-				<div class="col_side">
+				<div class="col_side dn">
 					<h4>
 						<i class="fa fa-cubes"></i>
 						分类
@@ -47,11 +44,14 @@
 						<div id="tree"></div>
 					</div>
 				</div>
-				<div class="col_main">
+				<div class="col_main body">
 					<h4>
 						<i class="fa fa-list"></i>
-						软文列表
-						<a href="ehaisArticleAddDetail?module=${module}" class="fa fa-plus btn btn-primary" >添加软文</a>
+						列表
+						<a href="ehaisArticleAddDetail?module=${module}" class="fa fa-plus btn btn-primary" >新增</a>
+						
+						<button id="articleCatModalBtn" class="fa fa-picture-o btn btn-success fr" >封面图片</button>
+						
 					</h4>				
 					<div class="panel panel-default">
 						<div class="panel-heading">搜索条件</div>
@@ -70,13 +70,12 @@
 			</div>
 		</div>
 		
-		<form id="qrform" name="qrform" action="article_qrcode" method="post" target="_blank">
-			<input type="hidden" id="articleId" name="articleId">
-			<input type="hidden" id="module" name="module" value="${module}">
-		</form>
+		
+		<#include "article_cat.html"/>
+		
 		<script type="text/javascript">
 		var module = "${module}";
 		</script>
-		<script type="text/javascript" src="/js/ehais/article_view.js" ></script>
+		<script type="text/javascript" src="/js/kintenglife/article_view.js" ></script>
 	</body>
 </html>

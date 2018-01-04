@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<title>恩平广播电视大学请假审批</title>
+		<script type="text/javascript" src="js/jquery-2.1.4.min.js" ></script>
+		<script type="text/javascript" src="js/common.js" ></script>
+		
+		<link rel="stylesheet" href="js/elay/elay.css" />
+		<script type="text/javascript" src="js/elay/elay.js" ></script>
+		
+		<link rel="stylesheet" href="css/begoff.css" />
+	</head>
+	<body>
+		
+		<div class="wrapper">
+			<header>
+				<div>恩平广播电视大学</div>
+				<div>请假列表</div>
+			</header>
+			<ul class="begapprove_ul">
+				<#if (listBegOffUser?? && listBegOffUser?size > 0)>
+				<#list listBegOffUser as l>
+				<li val="${l.begoffId}" class="begoff">${l.username!''}请假${l.number!'0'}天，理由：${l.reason!'无'}【进入审批】</li>
+				</#list>
+				<#else>
+				<li>暂无审批信息</li>
+				</#if>
+				
+			</ul>
+		</div>
+	</body>
+</html>

@@ -70,6 +70,10 @@ public class  ArticleAdminController extends EhaisCommonController {
 			ReturnObject<EHaiArticle> rm = ehaisArticleService.article_list(request,module);
 			modelMap.addAttribute("rm", rm);
 			modelMap.addAttribute("module", module);
+			
+			modelMap.addAttribute("uptoken", QiniuUtil.getUpToken(accessKey,secretKey,bucket));
+			modelMap.addAttribute("domain", domain);
+			
 			return "/"+this.getStoreTheme(request)+"/article/view";
 		}catch(Exception e){
 			e.printStackTrace();
@@ -368,6 +372,25 @@ public class  ArticleAdminController extends EhaisCommonController {
 		}
 	}
 	
+	
+	
+	
+	@ResponseBody
+	@EPermissionMethod(intro="根据module获取分类",value="ehaisArticleCatModule",type=PermissionProtocol.DATA)
+	@RequestMapping(value="/manage/ehaisArticleCatModule",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
+	public String ehaisArticleCatModule(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "module", required = false) String module
+			) {
+			if(StringUtils.isBlank(module))module = EArticleModuleEnum.ARTICLE;
+		try{
+			return this.writeJson(ehaisArticleCatService.articlecat_info(request,module));
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("articlecat", e);
+			return this.errorJSON(e);
+		}
+	}
 	
 	
 	

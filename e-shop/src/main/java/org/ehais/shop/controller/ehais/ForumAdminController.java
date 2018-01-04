@@ -69,7 +69,7 @@ public class  ForumAdminController extends CommonController {
 			@RequestParam(value = "tablename", required = true) String tablename) {
 		try{
 			if(log.isInfoEnabled()){
-				System.out.println("s返回评论管理数据");
+				System.out.println("返回评论管理数据");
 				log.info("i返回评论管理数据");
 			}
 			ReturnObject<HaiForum> rm = haiForumService.forum_list_json(request, condition,tablename);

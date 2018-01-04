@@ -333,4 +333,42 @@ bean.setIsValid(true);
 		return rm;
 	}
 
+	
+	
+	
+	public ReturnObject<EHaiArticleCat> articlecat_info(HttpServletRequest request,String moduleEnum)
+			throws Exception {
+		// TODO Auto-generated method stub
+		ReturnObject<EHaiArticleCat> rm = new ReturnObject<EHaiArticleCat>();
+		rm.setCode(0);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		EHaiArticleCatExample example = new EHaiArticleCatExample();
+		EHaiArticleCatExample.Criteria c = example.createCriteria();
+		c.andStoreIdEqualTo(store_id);
+		c.andModuleEqualTo(moduleEnum);
+		EHaiArticleCat model = null;
+		List<EHaiArticleCat> list = eHaiArticleCatMapper.selectByExample(example);
+		if(list == null || list.size() == 0){
+			//添加分类信息
+			model = new EHaiArticleCat();
+			model.setCatName(moduleEnum);
+			model.setModule(moduleEnum);
+			model.setCatType(0);
+			model.setKeywords("");
+			model.setCatDesc("");
+			model.setSortOrder(0);
+			model.setShowInNav(false);
+			model.setParentId(0);
+			model.setStoreId(store_id);
+			eHaiArticleCatMapper.insert(model);
+		}else{
+			model = list.get(0);
+		}
+		
+		rm.setCode(1);
+		rm.setModel(model);
+		return rm;
+	}
+	
+	
 }

@@ -100,12 +100,12 @@ public class GoodsApiController extends GoodsIController{
 			cate.setSubCatName("");
 			cate.setParentId(0);
 			cate.setCatDesc("");
-			cate.setSortOrder(Short.valueOf("0"));
+			cate.setSortOrder(0);
 			cate.setTemplateFile("");
 			cate.setMeasureUnit("");
 			cate.setShowInNav(false);
 			cate.setStyle("");
-			cate.setGrade(Short.valueOf("0"));
+			cate.setGrade(0);
 			cate.setFilterAttr("");
 			cate.setStoreId(store_id);
 			haiCategoryMapper.insertSelective(cate);

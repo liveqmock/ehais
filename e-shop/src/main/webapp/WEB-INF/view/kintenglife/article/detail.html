@@ -47,6 +47,7 @@
 <form id="myForm" name="myForm" class="form-horizontal" action="${rm.action?default('')}" method="post">
 
 <input type="hidden" class="form-control" id="articleId" name="articleId" value="${rm.model.articleId!'0'}" placeholder="">
+<input type="hidden" class="form-control" id="catId" name="catId" value="${rm.model.catId!'0'}" placeholder="">
 
 
 
@@ -58,20 +59,7 @@
 </div>
 </div>
 
-<div class="form-group">
-<label class="col-sm-2 control-label">分类</label>
-<div class="col-sm-3">
-	<select class="form-control" id="catId" name="catId" >
-		<option value="0">--请选择分类--</option>
-		
-		<#if rm.map.articleCatList??&&rm.map.articleCatList?size gt 0>
-		<#list rm.map.articleCatList as cate>
-		<option value="${cate.catId!0}" <#if cate.catId == rm.model.catId!0 >selected="selected"</#if> >${cate.catName!''}</option>
-		</#list>
-		</#if>
-	</select>
-</div>
-</div>
+
 
 <div class="form-group">
 <label class="col-sm-2 control-label">摘要</label>
@@ -102,35 +90,13 @@
 <label class="col-sm-2 control-label">封面图片</label>
 <div class="col-sm-5">
 
-<@bsQiniuImagesPicker id="articleImages" value="${rm.model.articleImages!''}" domain="${domain}" uptoken="${uptoken}" />
+<@bsQiniuImagesPicker id="articleThumb" value="${rm.model.articleThumb!''}" domain="${domain}" uptoken="${uptoken}" />
 
 <br>
 请上传正方形的图片，尺寸建议使用640*640
 </div>
 </div>
 
-
-<div class="form-group">
-<label class="col-sm-2 control-label">关联商品</label>
-<div class="col-sm-3">
-	<select class="form-control" id="goodsId" name="goodsId" >
-		<option value="0">--请选择关联商品--</option>
-		<#if rm.map.goodsList??&&rm.map.goodsList?size gt 0>
-		<#list rm.map.goodsList as goods>
-		<option value="${goods.goodsId!0}" <#if goods.goodsId == rm.map.agId!0 >selected="selected"</#if> >${goods.goodsName!''}</option>
-		</#list>
-		</#if>
-	</select>
-</div>
-</div>
-
-
-<div class="form-group">
-<label class="col-sm-2 control-label">热点</label>
-<div class="col-sm-3">
-	<@checkboxPicker id="isHot" value="${(rm.model.isHot?string('yes', 'no'))!'no'}" />
-</div>
-</div>
 
 
 
@@ -141,21 +107,6 @@
 </div>
 </div>
 
-<div class="form-group">
-<label class="col-sm-2 control-label">网络来源</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="articleSource" name="articleSource" value="${rm.model.articleSource!''}" placeholder="">
-	如非原创资讯，请注明转载来源
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">来源网址</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="link" name="link" value="${rm.model.link!''}" placeholder="">
-	如来源网络的资讯，请注册来源的网址
-</div>
-</div>
 
 
 
