@@ -329,7 +329,7 @@ public class ShoppingServiceImpl extends CommonServiceImpl implements ShoppingSe
 		order.setIsVoid("1");
 		
 		order.setConfirmTime(0);
-		order.setPayTime(0);
+		order.setPayTime(0l);
 		order.setShippingTime(0);
 		order.setTax(0F);
 		order.setIsSeparate(0);

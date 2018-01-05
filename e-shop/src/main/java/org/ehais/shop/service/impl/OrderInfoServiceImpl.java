@@ -367,7 +367,7 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 		orderInfo.setReferer("");//'订单的来源页面',
 		orderInfo.setAddTime(date);//'订单生成时间',
 		orderInfo.setConfirmTime(0);//'订单确认时间',Long.valueOf(System.currentTimeMillis() / 1000).intValue()
-		orderInfo.setPayTime(0);//'订单支付时间',
+		orderInfo.setPayTime(0l);//'订单支付时间',
 		orderInfo.setShippingTime(0);//'订单配送时间',
 		orderInfo.setPackId(0);//'包装id，取值取值表ecs_pack',
 		orderInfo.setCardId(0);//'贺卡id，用户在页面选择，取值取值ecs_card ',
@@ -412,12 +412,12 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 			example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
 		}
 		if(StringUtils.isNotBlank(startDate)){
-			c.andPayTimeGreaterThanOrEqualTo(Long.valueOf(DateUtil.formatDate(startDate, DateUtil.FORMATSTR_3).getTime() / 1000).intValue());
-			System.out.println(Long.valueOf(DateUtil.formatDate(startDate, DateUtil.FORMATSTR_3).getTime() / 1000).intValue());
+			c.andPayTimeGreaterThanOrEqualTo(DateUtil.formatDate(startDate, DateUtil.FORMATSTR_3).getTime());
+			System.out.println(DateUtil.formatDate(startDate, DateUtil.FORMATSTR_3).getTime());
 		}
 		if(StringUtils.isNotBlank(endDate)){
-			c.andPayTimeLessThanOrEqualTo(Long.valueOf(DateUtil.addDate(DateUtil.formatDate(endDate, DateUtil.FORMATSTR_3), 1).getTime() / 1000).intValue());
-			System.out.println(Long.valueOf(DateUtil.addDate(DateUtil.formatDate(endDate, DateUtil.FORMATSTR_3), 1).getTime() / 1000).intValue());
+			c.andPayTimeLessThanOrEqualTo(DateUtil.addDate(DateUtil.formatDate(endDate, DateUtil.FORMATSTR_3), 1).getTime());
+			System.out.println(DateUtil.addDate(DateUtil.formatDate(endDate, DateUtil.FORMATSTR_3), 1).getTime());
 		}
 		example.setLimitStart(condition.getStart());
 		example.setLimitEnd(condition.getRows());

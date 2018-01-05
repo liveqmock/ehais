@@ -480,7 +480,7 @@ public class DiningWebController extends EhaisCommonController{
 			orderInfo.setOrderStatus(EOrderStatusEnum.init);
 			if(tPay.equals(EPayEnum.cash)){
 				orderInfo.setOrderStatus(EOrderStatusEnum.success);//现金支付，不需要理订单状态
-				orderInfo.setPayTime(Long.valueOf(System.currentTimeMillis() / 1000).intValue());
+				orderInfo.setPayTime(System.currentTimeMillis());
 				orderInfo.setPayStatus(EPayStatusEnum.cash);
 				orderInfo.setPayName("现金支付");
 				

@@ -1018,8 +1018,8 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 		return this.writeJsonObject(new HashMap<String,Object>(){{this.put("code", 0);this.put("msg", "fail");}});
 	}
 	
-//	@ResponseBody
-//	@RequestMapping("/testdb")
+	@ResponseBody
+	@RequestMapping("/testdb")
 	public String testdb(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response){
 		try{

@@ -111,7 +111,7 @@ public class OrderInfoApiController extends OrderInfoIController{
 			if(p == null){
 				p = new HaiDiningPrintTime();
 				p.setStoreId(store_id);
-				p.setPrintTime(Long.valueOf(System.currentTimeMillis() / 1000 ).intValue());
+				p.setPrintTime(System.currentTimeMillis());
 				haiDiningPrintTimeMapper.insert(p);
 			}
 			HaiOrderInfoExample example = new HaiOrderInfoExample();
@@ -148,5 +148,68 @@ public class OrderInfoApiController extends OrderInfoIController{
 		
 		return this.writeJson(rm);
 	}
+	
+	
+	
+	/**
+	 * 传递时间的打印
+	 * @param modelMap
+	 * @param request
+	 * @param response
+	 * @param paytime
+	 * @param store_id
+	 * @param token
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value="/dining_order_list_print",method=RequestMethod.POST)
+	public String dining_order_list_print(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "paytime", required = true) Long paytime,
+			@RequestParam(value = "store_id", required = true) Integer store_id,
+			@RequestParam(value = "token", required = true) String token){
+		ReturnObject<HaiOrderInfoWithBLOBs> rm = new ReturnObject<HaiOrderInfoWithBLOBs>();
+		rm.setCode(0);
+		String t = EAdminTokenCacheManager.getInstance().getAdminToken(store_id);
+		if(StringUtils.isBlank(t) || !t.equals(token)){
+			rm.setMsg("token wrong");
+			return this.writeJson(rm);
+		}
+		
+		try{
+			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
+			HaiOrderInfoExample example = new HaiOrderInfoExample();
+			HaiOrderInfoExample.Criteria c = example.createCriteria();
+			c.andStoreIdEqualTo(store_id).andPayTimeGreaterThan(paytime);//////
+			example.setOrderByClause("pay_time asc");
+			List<HaiOrderInfoWithBLOBs> list = haiOrderInfoMapper.selectByExampleWithBLOBs(example);
+			
+			if(list != null && list.size() > 0){
+				List<Long> orderIds = new ArrayList<Long>();
+				for (HaiOrderInfoWithBLOBs haiOrderInfoWithBLOBs : list) {
+					orderIds.add(haiOrderInfoWithBLOBs.getOrderId());
+					Map<String,Object> mapSign = SignUtil.getDiningId(haiOrderInfoWithBLOBs.getSid(), wp.getToken());
+					haiOrderInfoWithBLOBs.setZipcode(mapSign.get("tableNo").toString());
+				}
+				HaiOrderGoodsExample gExp = new HaiOrderGoodsExample();
+				gExp.createCriteria().andOrderIdIn(orderIds);
+				List<HaiOrderGoods> listGoods = haiOrderGoodsMapper.selectByExampleWithBLOBs(gExp);
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("listGoods", listGoods);
+				rm.setMap(map);
+				
+				
+			}
+			rm.setCode(1);
+			rm.setRows(list);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		
+		return this.writeJson(rm);
+	}
+	
+	
 	
 }

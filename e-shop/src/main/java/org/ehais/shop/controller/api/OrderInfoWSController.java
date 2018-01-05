@@ -89,7 +89,7 @@ public class OrderInfoWSController extends OrderInfoIController{
 	@RequestMapping(value="/new_order_tip",method=RequestMethod.POST)
 	public String new_order_tip(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
-			@RequestParam(value = "paytime", required = true) Integer paytime){
+			@RequestParam(value = "paytime", required = true) Long paytime){
 		ReturnObject<HaiOrderInfo> rm = new ReturnObject<HaiOrderInfo>();
 		rm.setCode(0);
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
