@@ -226,7 +226,7 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 					notifyPay.getOut_trade_no(), 
 					EOrderStatusEnum.success,
 					EPayStatusEnum.success,
-					Long.valueOf(System.currentTimeMillis() / 1000).intValue(),
+					System.currentTimeMillis(),
 					0,"微信支付",daySerialCount+1);
 			
 			//更新统一下单的订单信息

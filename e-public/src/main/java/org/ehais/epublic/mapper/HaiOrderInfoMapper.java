@@ -98,7 +98,7 @@ public interface HaiOrderInfoMapper {
 			@Param("order_sn") String order_sn,
 			@Param("order_status") Integer order_status,
 			@Param("pay_status") Integer pay_status,
-			@Param("pay_time") Integer pay_time,
+			@Param("pay_time") Long pay_time,
 			@Param("pay_id") Integer pay_id,
 			@Param("pay_name") String pay_name,
 			@Param("day_serial_number") Integer day_serial_number
