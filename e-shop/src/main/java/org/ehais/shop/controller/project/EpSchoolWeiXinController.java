@@ -1023,7 +1023,11 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 	public String testdb(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response){
 		try{
-			List<EHaiUsers> user = eHaiUsersMapper.selectByExample(null);
+			EHaiUsersExample ue = new EHaiUsersExample();
+			ue.setOrderByClause("user_id asc");
+			ue.setLimitStart(0);
+			ue.setLimitEnd(1);
+			List<EHaiUsers> user = eHaiUsersMapper.selectByExample(ue);
 			this.approve_open_door(request, user.get(0));
 		}catch(Exception e){
 			e.printStackTrace();
