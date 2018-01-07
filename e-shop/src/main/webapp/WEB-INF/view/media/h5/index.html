@@ -6,86 +6,104 @@
 		<title></title>
 		<link rel="stylesheet" href="css/h5live.css" />
 		<script type="text/javascript" src="/js/jquery-2.1.4.min.js" ></script>
-		<script type="text/javascript" src="/js/media/web.js" ></script>		
+		<script type="text/javascript" src="js/common.js" ></script>
+		
+		<link rel="stylesheet" href="../js/elay/elay.css" />
+		<script type="text/javascript" src="../js/elay/elay.js" ></script>
+		
+		<script type="text/javascript" src="js/jroll/jroll.js" ></script>
+		
+		
+				
 	</head>
 	<body>
 		<div class="w">
 			<#include "header.html">
 			
-			<div class="ad">
-				<ul>
-					<li><img src="img/media_h5/banner.png" /></li>
-				</ul>
-			</div>
-			
-			<div class="rec">
-				<ul>
-					<#if (listArticleIndex?? && listArticleIndex?size > 0)>
-					<#list listArticleIndex as a>
-					
-					<li class="play" val="${a.articleId}">
-						<div>
-							<img src="${a.articleThumb!''}" />
-							<div>${a.articleLabel!''}</div>
-							<img src="img/1360/play.png" />
-						</div>
-						<div>${a.title!''}</div>
-					</li>
-					
-					</#list>
-					</#if>
-				</ul>
-			</div>
 			
 			
-			
-			
-			
-			<article class="index">
-				
-				<#if (listArticleCat?? && listArticleCat?size > 0)>
-				<#list listArticleCat as c>
-				
-				<dl>
-					<dt>
-						<img src="${c.images!''}">
-						<h4>${c.catName}</h4>
-						<div href="list_${c.catId}.lv" class="more">更多</div>
-					</dt>
-					
-					
-					<#if mapArticle?? && (mapArticle?size > 0) >
-					<#list mapArticle?keys as key>
-					<#if ( key = c.catId?string('0') ) >
-					<#assign item = mapArticle[key]>
-					<#list item as a >
-					
-					<dd class="play" val="${a.articleId}">
-						<div>
-							<img src="${a.articleThumb!''}" />
-							<div>${a.articleLabel!''}</div>
-							<img src="img/media_h5/play.png" />
-						</div>
-						<div>${a.title!''}</div>
-					</dd>
-					
-					</#list>
-					</#if>
-					</#list>
-					</#if>
+			<div id="clist">
+				<!-- c0 start -->
+				<div id="c0" class="active">
+					<ul>
+						<li class="ad"><img src="img/media_h5/banner.png" /></li>
 						
-				</dl>
+						
+						<!-- 推荐视频 -->
+						<#if (listArticleIndex?? && listArticleIndex?size > 0)> 
+						<#list listArticleIndex as a>
+	
+							<li class="rec play" val="${a.articleId}">
+								<div>
+									<img src="${a.articleThumb!''}" />
+									<div>${a.articleLabel!''}</div>
+									<img src="img/1360/play.png" />
+								</div>
+								<div>${a.title!''}</div>
+							</li> 
+						</#list> 
+							
+						</#if>
+						
+						
+						<#if (listArticleCat?? && listArticleCat?size > 0)> 
+						<#list listArticleCat as c>
+						
+						<li class="title">
+							<img src="${c.images!''}">
+							<h4>${c.catName}</h4>
+							<div href="list_${c.catId}.lv" class="more">更多</div>
+						</li>
+						
+							
+	
+	
+							<#if mapArticle?? && (mapArticle?size > 0) > 
+							<#list mapArticle?keys as key> 
+							<#if ( key = c.catId?string('0') ) >
+							<#assign item = mapArticle[key]> 
+							<#list item as a >
+	
+							<li class="rec play" val="${a.articleId}">
+								<div>
+									<img src="${a.articleThumb!''}" />
+									<div>${a.articleLabel!''}</div>
+									<img src="img/media_h5/play.png" />
+								</div>
+								<div>${a.title!''}</div>
+							</li>
+	
+							</#list> 
+							</#if> 
+							</#list> 
+							</#if>
+	
+	
+						</#list> 
+						</#if>
+						
+						
+							
+							
+					</ul>
+						
+					
+				</div>
+				<!-- c0 end -->
 				
-				</#list>
-				</#if>
-				
-				
-				
-			</article>
+			</div>
+			
 			
 			
 			<#include "footer.html">
 		</div>
+		<script type="text/javascript">
+		var json = ${json!''};
+		</script>
+		
+		<script type="text/javascript" src="/js/media/web.js" ></script>		
+		<script type="text/javascript" src="/js/media/h5.js" ></script>
+		
 		
 	</body>
 </html>

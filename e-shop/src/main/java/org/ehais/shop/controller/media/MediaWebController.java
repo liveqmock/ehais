@@ -21,6 +21,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 
 @Controller
@@ -45,16 +49,24 @@ public class MediaWebController extends CommonController{
 			
 			modal = "web";
 			hot_len  = 9;
+			
 			if(isWeiXin(request) || JudgeIsMoblie(request)){
 				modal = "h5";
 				hot_len = 4;
 			}
+			
+			Map<String,Object> map = new HashMap<String,Object>();
+			
 			
 			EHaiArticleCatExample ace = new EHaiArticleCatExample();
 			ace.createCriteria().andStoreIdEqualTo(store_id);
 			ace.setOrderByClause("sort_order asc");
 			List<EHaiArticleCat> listArticleCat = eHaiArticleCatMapper.selectByExample(ace);
 			modelMap.addAttribute("listArticleCat", listArticleCat);
+			
+			
+			
+			
 			
 			EHaiArticleExample ae = new EHaiArticleExample();
 			
@@ -81,6 +93,16 @@ public class MediaWebController extends CommonController{
 			}
 			modelMap.addAttribute("mapArticle", mapArticle);
 			
+			
+			if(isWeiXin(request) || JudgeIsMoblie(request)){
+				map.put("listArticleCat", listArticleCat);
+				map.put("hotArticleList", listArticleIndex);
+				
+				
+				modelMap.addAttribute("json", JSONObject.fromObject(map).toString());
+			}
+			
+			
 			return "/media/"+modal+"/index";
 			
 		}catch(Exception e){
@@ -88,6 +110,42 @@ public class MediaWebController extends CommonController{
 			log.error("article", e);
 			return this.errorJump(modelMap, e.getMessage());
 		}		
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping("/media_cat_list_{cid}.lv")
+	public String media_cat_list(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@PathVariable(value = "cid") Integer cid,
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "rows", required = false) Integer rows){
+		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
+		rm.setCode(0);
+		try{
+			int psize = rows==null?len:rows;
+			EHaiArticleExample ae = new EHaiArticleExample();
+			ae.createCriteria().andStoreIdEqualTo(store_id).andCatIdEqualTo(cid);
+			ae.setOrderByClause("sort asc");
+			ae.setLimitStart(( page - 1 ) * psize);
+			ae.setLimitEnd(psize);
+			List<EHaiArticle> listArticle = eHaiArticleMapper.selectByExample(ae);
+			
+			modelMap.addAttribute("listArticle", listArticle);
+			
+			Long count = eHaiArticleMapper.countByExample(ae);
+			
+			
+			rm.setRows(listArticle);
+			rm.setTotal(count);
+			rm.setCode(1);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return this.writeJson(rm);
+		
 	}
 	
 	
