@@ -14,6 +14,7 @@ import org.ehais.epublic.model.EHaiArticle;
 import org.ehais.epublic.model.EHaiArticleCat;
 import org.ehais.epublic.model.EHaiArticleCatExample;
 import org.ehais.epublic.model.EHaiArticleExample;
+import org.ehais.tools.ReturnObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -42,6 +43,8 @@ public class MediaWebController extends CommonController{
 		try{
 			modelMap.addAttribute("currentNav", "index");
 			
+			modal = "web";
+			hot_len  = 9;
 			if(isWeiXin(request) || JudgeIsMoblie(request)){
 				modal = "h5";
 				hot_len = 4;
@@ -92,13 +95,14 @@ public class MediaWebController extends CommonController{
 	public String list(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@PathVariable(value = "cid") Integer cid,
-			@RequestParam(value = "p", required = false) Integer p){
+			@RequestParam(value = "page", required = false) Integer page){
 		
 		modelMap.addAttribute("currentNav", cid.toString());
 		
 		try{
+			modal = "web";
 			if(isWeiXin(request) || JudgeIsMoblie(request))modal = "h5";
-			if(p == null)p = 1;
+			if(page == null)page = 1;
 			
 			EHaiArticleCatExample ace = new EHaiArticleCatExample();
 			ace.createCriteria().andStoreIdEqualTo(store_id);
@@ -122,12 +126,21 @@ public class MediaWebController extends CommonController{
 			EHaiArticleExample ae = new EHaiArticleExample();
 			ae.createCriteria().andStoreIdEqualTo(store_id).andCatIdEqualTo(cid);
 			ae.setOrderByClause("sort asc");
-			ae.setLimitStart(( p - 1 ) * len);
+			ae.setLimitStart(( page - 1 ) * len);
 			ae.setLimitEnd(len);
 			List<EHaiArticle> listArticle = eHaiArticleMapper.selectByExample(ae);
 			
 			modelMap.addAttribute("listArticle", listArticle);
 			
+			Long count = eHaiArticleMapper.countByExample(ae);
+			
+			ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
+			rm.setRows(listArticle);
+			rm.setTotal(count);
+			rm.setAction("list_"+cid+".lv");
+			rm.setPageSize(len);
+			rm.setCurrentPage(page);
+			modelMap.addAttribute("rm", rm);
 			
 			ae.clear();
 			ae.createCriteria()
@@ -154,6 +167,7 @@ public class MediaWebController extends CommonController{
 			@PathVariable(value = "id") Integer id){
 		
 		try{
+			modal = "web";
 			if(isWeiXin(request) || JudgeIsMoblie(request))modal = "h5";
 			
 			

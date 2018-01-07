@@ -7,8 +7,8 @@ var mediaCategoryModal;
 $(function(){
 	getTree();
 	
-	mediaDetailModal = $("#mediaDetailModal").modal({ keyboard: false , show : false });
-	mediaCategoryModal = $("#mediaCategoryModal").modal({ keyboard: false , show : false });
+	mediaDetailModal = $("#mediaDetailModal").modal({ backdrop: 'static', keyboard: false , show : false });
+	mediaCategoryModal = $("#mediaCategoryModal").modal({ backdrop: 'static', keyboard: false , show : false });
 	
 	$("#addCate").click(function(){addCate();});
 	$("#editCate").click(function(){editCate();});

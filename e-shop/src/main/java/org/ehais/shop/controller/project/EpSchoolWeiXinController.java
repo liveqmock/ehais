@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -886,9 +887,19 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 //                Iterator<Cell> cells = row.cellIterator();    //获得第一行的迭代器  
                 EHaiUsers users = new EHaiUsers();
                 if(row.getCell(0)!=null){
-                	users.setUserName(df.format(row.getCell(0).getNumericCellValue()).trim());//学号
+                	
+                	if(row.getCell(0).getCellType() == HSSFCell.CELL_TYPE_NUMERIC){
+                		users.setUserName(df.format(row.getCell(0).getNumericCellValue()).trim());//学号
+                	}else if(row.getCell(0).getCellType() == HSSFCell.CELL_TYPE_STRING){
+                		users.setUserName(row.getCell(0).getStringCellValue().trim());//学号
+                	}
+                	
                     if(row.getCell(1)!=null){
-                    	users.setNickname(df.format(row.getCell(1).getNumericCellValue()).trim());//卡号
+                    	if(row.getCell(1).getCellType() == HSSFCell.CELL_TYPE_NUMERIC){
+                    		users.setNickname(df.format(row.getCell(1).getNumericCellValue()).trim());//卡号
+                    	}else if(row.getCell(1).getCellType() == HSSFCell.CELL_TYPE_STRING){
+                    		users.setNickname(row.getCell(1).getStringCellValue().trim());//卡号
+                    	}
                     }else{
                     	users.setNickname("");
                     }
@@ -906,7 +917,11 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
                 	}
                     
                 	if(row.getCell(4)!=null){
-                		users.setAnswer(df.format(row.getCell(4).getNumericCellValue()).trim());//上级工号
+                		if(row.getCell(4).getCellType() == HSSFCell.CELL_TYPE_NUMERIC){
+                    		users.setAnswer(df.format(row.getCell(4).getNumericCellValue()).trim());//上级工号
+                    	}else if(row.getCell(4).getCellType() == HSSFCell.CELL_TYPE_STRING){
+                    		users.setAnswer(row.getCell(4).getStringCellValue().trim());//上级工号
+                    	}
                 	}else{
                 		users.setAnswer("");
                 	}

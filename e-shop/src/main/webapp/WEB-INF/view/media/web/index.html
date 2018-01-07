@@ -97,7 +97,7 @@
 				<#if (listArticleCat?? && listArticleCat?size > 0)>
 				<#list listArticleCat as c>
 				
-				<div class="module <#if (c_index < listArticleCat?size - 1)><#if (c_index % 2 == 0)>l<#else>r</#if><#else>all</#if>">
+				<div class="module <#if (c_index < listArticleCat?size - 1)><#if (c_index % 2 == 0)>l<#else>r</#if><#else>al l</#if>">
 					<div class="title">
 						<img class="icon" src="${c.images!''}"/>
 						<h3>${c.catName}</h3>

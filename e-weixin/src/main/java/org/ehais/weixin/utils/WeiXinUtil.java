@@ -145,8 +145,9 @@ public class WeiXinUtil {
 		log.info("请求AccessToken地址:"+requestUrl);
 		
 		String request = EHttpClientUtil.methodGet(requestUrl);
+		log.info("返回AccessToken的信息:"+request);
 		JSONObject jsonObject = JSONObject.fromObject(request);
-		log.info("返回AccessToken的信息:"+jsonObject.toString());
+		
 		if (null != jsonObject) {
 			if(jsonObject.has("errcode")){//如果报错，强制重新获取一次
 				log.info("retry access token");

@@ -3,8 +3,8 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
-		<title></title>
 		
+		<#if articleCat?? ><title>${articleCat.catName!''}</title></#if>
 		<script type="text/javascript" src="js/jquery-2.1.4.min.js" ></script>
 		<script type="text/javascript" src="js/common.js" ></script>
 		
@@ -20,7 +20,7 @@
 	<body >
 		<div class="a">
 			<header>
-				<span id="title">艾兰度产品与美食搭配</span>
+				<span id="title"><#if articleCat?? >${articleCat.catName!''}</#if></span>
 			</header>
 			
 			<div id="clist">
@@ -29,9 +29,11 @@
 				
 					<ul id="ui">
 					<li class="scroll swiper-container">
+						<#if articleCat?? >
 						<ul class="swiper-wrapper">
 							<li class="swiper-slide"><img src="${articleCat.images!''}" /></li>
 						</ul>
+						</#if>
 					</li>
 					</ul>
 		

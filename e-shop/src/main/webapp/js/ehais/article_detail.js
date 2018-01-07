@@ -19,6 +19,7 @@ function ehaisArticleAddSubmit(){
 				}, function(){
 				  //继续添加
 					layer.closeAll();
+					ue_content.setContent('');
 				}, function(){
 				  //返回列表
 					layer.closeAll();

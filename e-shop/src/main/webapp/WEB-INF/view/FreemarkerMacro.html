@@ -73,10 +73,10 @@ $(function(){
 <#macro ueditorPicker id value >
 <textarea  id="${id}" name="${id}" >${value!''}</textarea>
 <script type="text/javascript">
+var ue_${id} = null;
 $(function(){
-	var ue_${id} = UE.getEditor('${id}');
+	ue_${id} = UE.getEditor('${id}');
 	
-    
 });
 </script>
 </#macro>

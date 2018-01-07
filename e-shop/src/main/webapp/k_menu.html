@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<link rel="stylesheet" href="css/kintenglife.css" />
+		<script type="text/javascript" src="js/jquery-2.1.4.min.js" ></script>
+		
+	</head>
+	<body>
+		<div class="w">
+			<div class="tc" style="font-size: 0.3rem;">
+				微信菜单摸拟界面
+			</div>
+			<footer class="weixin">
+				<ul>
+					<li>
+						<a href="javascript:;">关于金藤</a>
+						<ul>
+							<li href="http://eg.ehais.com/index!kintenglife.kintenglife">金藤酒荟</li>
+							<li href="http://eg.ehais.com/index!alandu_brand.kintenglife">艾兰度酒庄</li>
+							<li href="http://eg.ehais.com/index!alen_brand.kintenglife">艾伦酒庄</li>
+							<li href="http://eg.ehais.com/index!aivisa_brand.kintenglife">爱维莎酒庄</li>
+							
+						</ul>
+					</li>
+					<li>
+						<a href="javascript:;">资讯</a>
+						<ul>
+							<li href="http://eg.ehais.com/list!alandu.kintenglife">艾兰度产品</li>
+							<li href="http://eg.ehais.com/list!alen.kintenglife">艾伦产品</li>
+							<li href="http://eg.ehais.com/list!aivisa.kintenglife">爱维莎产品</li>
+							<li href="http://eg.ehais.com/list!kintenglifeNews.kintenglife">最新资讯</li>
+							<li href="http://eg.ehais.com/list!kintenglifeWine.kintenglife">红酒课堂</li>
+						</ul>
+					</li>
+					<li>
+						<a>粉丝专享</a>
+						<ul>
+							<li href="http://eg.ehais.com/list!coupons.kintenglife">优惠活动</li>
+							<li href="http://8abe8d7c.ngrok.io/business.kintenglife">招商加盟</li>
+							<li href="http://eg.ehais.com/guestbook.kintenglife">粉丝留言</li>
+						</ul>
+					</li>
+				</ul>
+			</footer>
+		</div>
+		<script type="text/javascript">
+			$(function(){
+				$("li").each(function(){
+					$(this).click(function(){
+						var href = $(this).attr("href");
+						if(href != null && href != ""){
+							window.location.href = $(this).attr("href");
+						}
+					});
+				});
+			});
+		</script>
+	</body>
+</html>

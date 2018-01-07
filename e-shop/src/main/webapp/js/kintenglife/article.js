@@ -5,7 +5,8 @@ var loaded;
 
 $(function(){
 	
-$("#jroll").height(parseFloat($(window).height()) - parseFloat($("#clist").css('padding-top').replaceAll("px","")));
+$("#jroll").height(parseFloat($(window).height()) - parseFloat($("header").css('height').replaceAll("px","")));
+//$("#jroll").height(parseFloat($(window).height()));
 	
 	loaded = "";
 	jroll = new JRoll("#jroll", {scrollBarY:false});
@@ -60,7 +61,7 @@ function article_list(){
 			if(result.rows!=null && result.rows.length > 0){
 				page++;
 				$.each(result.rows,function(i,v){
-					$("#ui").append("<li val='"+v.articleId+"'>"+
+					$("#ui").append("<li herf='"+((v.link == null || v.link == "")?("detail!"+v.articleId+".kintenglife"):v.link)+"'>"+
 							"<div class='img'><img src='"+v.articleThumb+"'></div>"+
 							"<div class='i'>"+
 							"	<div class='t'>"+v.title+"</div>"+
@@ -75,7 +76,7 @@ function article_list(){
 			
 			$("#jroll ul li").unbind();
 			$("#jroll ul li:not(:first-child)").click(function(){
-				window.location.href = "detail!"+$(this).attr("val")+".kintenglife";
+				window.location.href = $(this).attr("herf");
 			});
 		}
 	})
