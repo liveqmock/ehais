@@ -49,6 +49,7 @@
 <form id="myForm" name="myForm" class="form-horizontal" action="${rm.action?default('')}" method="post">
 
 <input type="hidden" class="form-control" id="articleId" name="articleId" value="${rm.model.articleId!'0'}" placeholder="">
+<input type="hidden" class="form-control" id="module" name="module" value="${module!''}" placeholder="">
 
 
 
@@ -60,6 +61,7 @@
 </div>
 </div>
 
+<#if (single?? && single=='false')>
 <div class="form-group">
 <label class="col-sm-2 control-label">分类</label>
 <div class="col-sm-3">
@@ -74,6 +76,9 @@
 	</select>
 </div>
 </div>
+<#else>
+<input type="hidden" class="form-control" id="catId" name="catId" value="0" placeholder="">
+</#if>
 
 <div class="form-group">
 <label class="col-sm-2 control-label">摘要</label>

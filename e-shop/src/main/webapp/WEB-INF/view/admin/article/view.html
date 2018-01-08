@@ -34,7 +34,7 @@
 		</div>
 		<div class="body">
 			<div class="container_box">
-				<div class="col_side">
+				<div class="col_side <#if (single?? && single=='true')>dn</#if>">
 					<h4>
 						<i class="fa fa-cubes"></i>
 						分类
@@ -47,11 +47,11 @@
 						<div id="tree"></div>
 					</div>
 				</div>
-				<div class="col_main">
+				<div class="col_main <#if (single?? && single=='true')>body</#if>">
 					<h4>
 						<i class="fa fa-list"></i>
 						资讯列表
-						<a href="ehaisArticleAddDetail" class="fa fa-plus btn btn-primary" >添加资讯</a>
+						<a href="ehaisArticleAddDetail?module=${module!''}&single=${single!''}" class="fa fa-plus btn btn-primary" >添加资讯</a>
 					</h4>				
 					<div class="panel panel-default">
 						<div class="panel-heading">搜索条件</div>
@@ -98,6 +98,10 @@
     </div><!-- /.modal -->
 </div><!-- /.modal end -->
 
+<script type="text/javascript">
+var module = "${module!''}";
+var single = "${single!''}";
+</script>
 
 
 		<script type="text/javascript" src="/js/admin/article/article_view.js" ></script>

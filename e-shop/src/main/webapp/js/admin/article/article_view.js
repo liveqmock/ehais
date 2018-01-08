@@ -38,7 +38,8 @@ $(function(){
                 sort: params.sort,  //排序列名  
                 sortOrder: params.order,//排位命令（desc，asc）
                 cat_id : cat_id,
-                keyword : keyword
+                keyword : keyword,
+                module:module
 	        }
 	    },
         sidePagination: "server", //服务端处理分页

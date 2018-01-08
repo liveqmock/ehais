@@ -41,21 +41,21 @@
 					<span>${haiBegOff.reason}</span>
 				</div>
 				
-				<#if haiBegOff.teacherUserId??>
+				<#if (haiBegOff.teacherUserId?? && haiBegOff.teacherApprove?? )>
 				<div class="item mtb10">
 					<label>审批一：</label>
 					<span>${teacher!''}</span>
 				</div>
 				</#if>
 				
-				<#if haiBegOff.departmentUserId??>
+				<#if (haiBegOff.departmentUserId?? && haiBegOff.departmentApprove?? )>
 				<div class="item mtb10">
 					<label>审批二：</label>
 					<span>${department!''}</span>
 				</div>
 				</#if>
 				
-				<#if haiBegOff.leaderUserId??>
+				<#if (haiBegOff.leaderUserId?? && haiBegOff.leaderApprove?? )>
 				<div class="item mtb10">
 					<label>审批三：</label>
 					<span>${leader!''}</span>

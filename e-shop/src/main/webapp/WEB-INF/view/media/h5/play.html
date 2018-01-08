@@ -15,14 +15,19 @@
 			
 			
 			
-			<section>
-				<div class="video"></div>
+			<section >
+				<div class="video"><img src="${article.articleThumb}"></div>
 				<div class="title">老外遇到广东早茶，吃的开始怀疑人生，为啥中国美食都那么好</div>
 			</section>
 			
 			
 			<article class="category">
 				<ul id="">
+					<li class="title">
+						<img src="img/media_h5/icon2.png">
+						<h4>推荐视频</h4>
+						
+					</li>
 					<#if (listArticleHot?? && listArticleHot?size > 0)>
 					<#list listArticleHot as a>
 					<li class="play" val="${a.articleId}">

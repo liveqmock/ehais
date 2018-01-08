@@ -11,7 +11,8 @@ var loaded;
 var defaultimg = "http://ovug9f17p.bkt.clouddn.com/dining121.jpg";
 
 $(function(){
-
+	
+	
 	$("#clist").height(parseFloat($(window).height()) - parseFloat($("header").height()) - parseFloat($("footer").height()) - parseFloat($("#cate").height()) - parseFloat($("footer").css('padding-top').replaceAll("px","")) - parseFloat($("footer").css('padding-bottom').replaceAll("px","")));
 	
 	$.each(json.listArticleCat,function(k,v){
@@ -55,10 +56,16 @@ $(function(){
 			
 			jroll[cat_id].refresh();
 			
+			
+			bind_play_click();
+			
 		}
 		
 		
 	});
+	
+	bind_play_click();
+	
 });
 
 
@@ -97,7 +104,7 @@ function articleItem(d,catId){
 	$.each(d,function(k,v){
 		t = "";
 		if(v.articleImages == null || v.articleImages == "")t=" class='t' ";
-		$("#a"+catId).append("<li class='rec play' val='"+v.articleId+"'>"+
+		$("#a"+catId).append("<li class='rec play' href='play"+v.articleId+".lv'>"+
 								"<div>"+
 									"<img src="+ ((v.articleThumb == null || v.articleThumb == "")?defaultimg:v.articleThumb) +" />"+
 									"<div>"+v.articleLabel+"</div>"+
@@ -110,11 +117,7 @@ function articleItem(d,catId){
 	
 	jroll[catId].refresh();
 	
-	$("#clist>div>ul>li").unbind();
-	$("#clist>div>ul>li").click(function(){
-		if($(this).attr("link") != null && $(this).attr("link") != "")window.location.href = "w_article_goods!"+$(this).attr("link");
-	});
-	
+	bind_play_click();
 	
 	imgRefresh(catId);
 	
@@ -164,5 +167,14 @@ function article_list_cat_id(){
 		}
 	});
 }
+
+
+function bind_play_click(){
+	$(".play").unbind();
+	$(".play").click(function(){
+		window.location.href = "play"+$(this).attr("val")+".lv";
+	});
+}
+
 
 

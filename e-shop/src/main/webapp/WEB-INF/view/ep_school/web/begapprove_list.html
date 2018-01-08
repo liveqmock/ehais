@@ -10,7 +10,7 @@
 		<link rel="stylesheet" href="js/elay/elay.css" />
 		<script type="text/javascript" src="js/elay/elay.js" ></script>
 		
-		<link rel="stylesheet" href="css/begoff.css" />
+		<link rel="stylesheet" href="css/begoff.css?1" />
 	</head>
 	<body>
 		
@@ -22,7 +22,11 @@
 			<ul class="begapprove_ul">
 				<#if (listBegOffUser?? && listBegOffUser?size > 0)>
 				<#list listBegOffUser as l>
-				<li val="${l.begoffId}" class="begoff">${l.username!''}请假${l.number!'0'}天，理由：${l.reason!'无'}【进入审批】</li>
+				<li val="${l.begoffId}" class="begoff">
+				<a href="/ep_school_begapprove!${l.begoffId}">
+				${l.username!''}请假${l.number!'0'}天，理由：${l.reason!'无'}【进入审批】
+				</a>
+				</li>
 				</#list>
 				<#else>
 				<li>暂无审批信息</li>

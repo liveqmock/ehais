@@ -93,8 +93,9 @@ $(function(){
             field: 'userId',
             title: '操作',
             formatter : function(value,row,index){
+            	var a = "<a href ='epUserEdit?userId="+value+"' class='glyphicon glyphicon-edit' ></a>";
             	var b = "<a href ='javascript:;' onclick='haiUsersDelete("+value+");' class='glyphicon glyphicon-trash' ></a>";
-            	return b;
+            	return a+b;
             }
         }
         

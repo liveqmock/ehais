@@ -46,7 +46,7 @@ public class  NavController extends CommonController {
 			e.printStackTrace();
 			log.error("nav", e);
 		}
-		return "/admin/nav/list";
+		return this.view(request, "/nav/list");
 	}
 	
 	@ResponseBody

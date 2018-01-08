@@ -50,7 +50,8 @@ public class  HaiNavAdminController extends CommonController {
 		try{
 			ReturnObject<HaiNav> rm = haiNavService.nav_list(request);
 			modelMap.addAttribute("rm", rm);
-			return "/"+this.getAdminProjectFolder(request)+"/nav/view";
+//			return "/"+this.getAdminProjectFolder(request)+"/nav/view";
+			return this.view(request, "/nav/view");
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("nav", e);
@@ -88,7 +89,7 @@ public class  HaiNavAdminController extends CommonController {
 		try{
 			ReturnObject<HaiNav> rm = haiNavService.nav_insert(request);
 			modelMap.addAttribute("rm", rm);
-			return "/"+this.getAdminProjectFolder(request)+"/nav/detail";
+			return this.view(request, "/nav/detail");
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -131,7 +132,7 @@ public class  HaiNavAdminController extends CommonController {
 		try{
 			ReturnObject<HaiNav> rm = haiNavService.nav_update(request,id);
 			modelMap.addAttribute("rm", rm);
-			return "/"+this.getAdminProjectFolder(request)+"/nav/detail";
+			return this.view(request, "/nav/detail");
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("nav", e);

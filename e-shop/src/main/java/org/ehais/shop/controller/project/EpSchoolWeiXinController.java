@@ -305,7 +305,7 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 			
 			EHaiUsers teacher = eHaiUsersMapper.userNameByStore(default_store_id, users.getAnswer());
 			if(teacher == null){
-				rm.setMsg("班主任信息未录入");
+				rm.setMsg("班主任信息未设置");
 				return this.writeJson(rm);
 			}
 			
@@ -327,11 +327,33 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 				return this.writeJson(rm);
 			}
 			
+			EHaiUsers teacherModel = this.getUserByStudentNo(users.getAnswer());
+			EHaiUsers departmentModel = null;
+			EHaiUsers leaderModel = null;
+			
+			if(teacherModel!=null)departmentModel = this.getUserByStudentNo(teacherModel.getAnswer());
+			if(departmentModel!=null)leaderModel = this.getUserByStudentNo(departmentModel.getAnswer());
+			
+			
 			HaiBegOff begoff = new HaiBegOff();
 			begoff.setUserId(users.getUserId());
 			begoff.setNumber(number);
 			begoff.setReason(reason);
 			begoff.setCreateDate(new Date());
+			
+			if(teacherModel!=null)begoff.setTeacherUserId(teacherModel.getUserId());
+			begoff.setTeacherApprove(null);
+			begoff.setTeacherApproveTime(null);
+			
+			if(departmentModel!=null)begoff.setDepartmentUserId(departmentModel.getUserId());
+			begoff.setDepartmentApprove(null);
+			begoff.setDepartmentApproveTime(null);
+			
+			if(leaderModel!=null)begoff.setLeaderUserId(leaderModel.getUserId());
+			begoff.setLeaderApprove(null);
+			begoff.setLeaderApproveTime(null);
+			
+			
 			begoff.setStoreId(default_store_id);
 			
 			haiBegOffMapper.insert(begoff);
@@ -404,8 +426,7 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 					//查找对应身份的未审批请假信息
 					HaiBegOffExample exp = new HaiBegOffExample();
 					HaiBegOffExample.Criteria boe = exp.createCriteria();
-					boe.andUserIdEqualTo(users.getUserId())
-					.andStoreIdEqualTo(default_store_id);
+					boe.andStoreIdEqualTo(default_store_id);
 					
 					if(alias.equals("班主任")){
 						boe.andTeacherUserIdEqualTo(users.getUserId()).andTeacherApproveIsNull();
@@ -438,15 +459,16 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 						for (HaiBegOff h : list) {
 							HaiBegOffUser b = new HaiBegOffUser();
 							b.setUserId(h.getUserId());
-							b.setNumber(b.getNumber());
-							b.setReason(b.getReason());
+							b.setNumber(h.getNumber());
+							b.setReason(h.getReason());
 							b.setBegoffId(h.getBegoffId());
 							for(EHaiUsers u : user_list){
 								if(u.getUserId().longValue() == h.getUserId().longValue()){
-									b.setUsername(u.getNickname());
+									b.setUsername(u.getRealname());
 									break;
 								}
 							}
+							listBegOffUser.add(b);
 						}
 						modelMap.addAttribute("listBegOffUser", listBegOffUser);
 						
@@ -520,9 +542,9 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 						Long leaderUserId = haiBegOff.getLeaderUserId();
 						
 						List<Long> userIds = new ArrayList<Long>();
-						if(teacherUserId!=null && teacherUserId.longValue()>0)userIds.add(teacherUserId);
-						if(departmentUserId!=null && departmentUserId.longValue()>0)userIds.add(departmentUserId);
-						if(leaderUserId!=null && leaderUserId.longValue()>0)userIds.add(leaderUserId);
+						if(teacherUserId!=null && teacherUserId.longValue()>0 && haiBegOff.getTeacherApprove() != null)userIds.add(teacherUserId);
+						if(departmentUserId!=null && departmentUserId.longValue()>0 && haiBegOff.getDepartmentApprove() != null)userIds.add(departmentUserId);
+						if(leaderUserId!=null && leaderUserId.longValue()>0 && haiBegOff.getLeaderApprove() != null)userIds.add(leaderUserId);
 						
 						if(userIds.size()>0){
 							
@@ -541,15 +563,15 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 							}
 						}
 						
-						if(users.getAlias().equals("班主任") && haiBegOff.getTeacherUserId() == null){
+						if(users.getAlias().equals("班主任") && haiBegOff.getTeacherApprove() == null){
 							modelMap.addAttribute("permit","permit");
 						}
 						
-						if(users.getAlias().equals("部长") && haiBegOff.getDepartmentUserId() == null){
+						if(users.getAlias().equals("部长") && haiBegOff.getDepartmentApprove() == null && haiBegOff.getTeacherApprove() != null && haiBegOff.getTeacherApprove().intValue() == 1){
 							modelMap.addAttribute("permit","permit");
 						}
-						
-						if(users.getAlias().equals("学生处") && haiBegOff.getLeaderUserId() == null){
+					
+						if(users.getAlias().equals("学生处") && haiBegOff.getLeaderApprove() == null && haiBegOff.getDepartmentApprove() != null && haiBegOff.getDepartmentApprove().intValue() == 1){
 							modelMap.addAttribute("permit","permit");
 						}
 						
@@ -1197,6 +1219,146 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 		
 	}
 	
+	
+	//通过学号/工号找用户
+	private EHaiUsers getUserByStudentNo(String user_name){
+		if(StringUtils.isBlank(user_name))return null;
+		try{
+			EHaiUsersExample ue = new EHaiUsersExample();
+			ue.createCriteria().andStoreIdEqualTo(default_store_id).andUserNameEqualTo(user_name);
+			List<EHaiUsers> list = eHaiUsersMapper.selectByExample(ue);
+			if(list.size()>0){
+				return list.get(0);
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
+	@RequestMapping("/admin/epUserAdd")
+	public String ep_user_add(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response ) {	
+		try{
+			EHaiUsers user = new EHaiUsers();
+			ReturnObject<EHaiUsers> rm = new ReturnObject<EHaiUsers>();
+			rm.setCode(1);
+			rm.setModel(user);
+			rm.setAction("epUserAddSubmit");
+			modelMap.addAttribute("rm", rm);
+			return "/ep_school/user/user_detail";
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("statisticsBegOff", e);
+			return this.errorJump(modelMap, e.getMessage());
+		}
+		
+	}
+	
+	@ResponseBody
+	@RequestMapping("/admin/epUserAddSubmit")
+	public String ep_user_add_submit(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@ModelAttribute EHaiUsers users) {
+		ReturnObject<EHaiUsers> rm = new ReturnObject<EHaiUsers>();
+		rm.setCode(0);
+		if(StringUtils.isBlank(users.getUserName())){
+			rm.setMsg("学号/工号不能为空");
+			return this.writeJson(rm);
+		}
+		if(StringUtils.isBlank(users.getRealname())){
+			rm.setMsg("姓名不能为空");
+			return this.writeJson(rm);
+		}
+		try{
+			EHaiUsersExample ue = new EHaiUsersExample();
+			ue.createCriteria().andUserNameEqualTo(users.getUserName());//判断学号是否存在
+			if(StringUtils.isNotBlank(users.getNickname()))ue.or().andNicknameEqualTo(users.getNickname()).andRealnameEqualTo(users.getRealname());
+			if(StringUtils.isNotBlank(users.getQuestion()))ue.or().andRealnameEqualTo(users.getRealname()).andQuestionEqualTo(users.getQuestion());
+			List<EHaiUsers> list = eHaiUsersMapper.selectByExample(ue);
+			if(list.size()>0){
+				rm.setMsg("存在相同的学号、工号、卡号、姓名");
+				return this.writeJson(rm);
+			}
+			
+			users.setStoreId(default_store_id);
+			eHaiUsersMapper.insertSelective(users);
+			
+			rm.setCode(1);
+			rm.setMsg("添加成功");
+			return this.writeJson(rm);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("statisticsBegOff", e);
+			return this.errorJump(modelMap, e.getMessage());
+		}
+		
+	}
+	
+	
+	@RequestMapping("/admin/epUserEdit")
+	public String ep_user_edit(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "userId", required = true) Long userId
+			) {	
+		ReturnObject<EHaiUsers> rm = new ReturnObject<EHaiUsers>();
+		try{
+			EHaiUsersExample ue = new EHaiUsersExample();
+			ue.createCriteria().andStoreIdEqualTo(default_store_id).andUserIdEqualTo(userId);
+			List<EHaiUsers> list = eHaiUsersMapper.selectByExample(ue);
+			rm.setModel(list.get(0));
+			rm.setCode(1);
+			rm.setAction("epUserEditSubmit");
+			modelMap.addAttribute("rm", rm);
+			modelMap.addAttribute("readonly", "readonly='readonly'");
+			
+			return "/ep_school/user/user_detail";
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("statisticsBegOff", e);
+			return this.errorJump(modelMap, e.getMessage());
+		}
+		
+	}
+	
+	@ResponseBody
+	@RequestMapping("/admin/epUserEditSubmit")
+	public String ep_user_edit_submit(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@ModelAttribute EHaiUsers users) {	
+		ReturnObject<EHaiUsers> rm = new ReturnObject<EHaiUsers>();
+		rm.setCode(0);
+		try{
+			EHaiUsersExample ue = new EHaiUsersExample();
+			ue.createCriteria().andStoreIdEqualTo(default_store_id).andUserIdEqualTo(users.getUserId());
+			List<EHaiUsers> list = eHaiUsersMapper.selectByExample(ue);
+			if(list.size() == 0){
+				rm.setMsg("用户不存在");
+				return this.writeJson(rm);
+			}
+			
+			EHaiUsers bean = list.get(0);
+			bean.setNickname(users.getNickname());
+			bean.setRealname(users.getRealname());
+			bean.setAlias(users.getAlias());
+			bean.setQuestion(users.getQuestion());
+			bean.setAnswer(users.getAnswer());
+			eHaiUsersMapper.updateByPrimaryKey(bean);
+			rm.setCode(1);
+			rm.setMsg("更新成功");
+			
+			return this.writeJson(rm);
+					
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("statisticsBegOff", e);
+			return this.errorJump(modelMap, e.getMessage());
+		}
+		
+	}
 	
 	
 	

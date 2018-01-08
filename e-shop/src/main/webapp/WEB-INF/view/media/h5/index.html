@@ -64,7 +64,7 @@
 							<#assign item = mapArticle[key]> 
 							<#list item as a >
 	
-							<li class="rec play" val="${a.articleId}">
+							<li class="rec play" href="play${a.articleId}.lv">
 								<div>
 									<img src="${a.articleThumb!''}" />
 									<div>${a.articleLabel!''}</div>
@@ -101,7 +101,6 @@
 		var json = ${json!''};
 		</script>
 		
-		<script type="text/javascript" src="/js/media/web.js" ></script>		
 		<script type="text/javascript" src="/js/media/h5.js" ></script>
 		
 		

@@ -43,8 +43,7 @@ public class CacheController extends CommonController{
 	public String clear(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) throws UnsupportedEncodingException {
 		
-		
-		return "/admin/cache/clear";
+		return this.view(request, "/cache/clear");
 	}
 	
 	
@@ -66,7 +65,7 @@ public class CacheController extends CommonController{
     	mapHeader.put("User-Agent", "ehais");
 		String req = EHttpClientUtil.httpPost("http://"+url+"/Cache-Clear.api", paramsMap);
 		modelMap.addAttribute("req", req);
-		return "/admin/cache/clear";
+		return this.view(request, "/cache/clear");
 	}
 	
 	
