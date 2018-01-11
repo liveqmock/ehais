@@ -138,7 +138,19 @@
 			<mvc:mapping path="/**.mg"/>
 			<ref bean="mediaAdminInterceptor"/>
 		</mvc:interceptor>
-		
+	
+		<mvc:interceptor>
+			<mvc:mapping path="/**.do" /> 
+			<mvc:mapping path="/**.lv" /> 
+			<mvc:mapping path="/js/media/**.js" /> 
+			<ref bean="mediaInterceptor"/>
+		</mvc:interceptor>
+<!-- 		
+		<mvc:interceptor>
+			<mvc:mapping path="/**.lv" /> 
+			<ref bean="mediaInterceptor"/>
+		</mvc:interceptor>
+ -->
 		
 		
 	</mvc:interceptors>
@@ -234,6 +246,10 @@
 			</list>
 		</property>
 	</bean>
+	
+	
+	<bean id="mediaInterceptor" class="org.ehais.interceptor.MediaInterceptor"></bean>
+	
 	
 	
 

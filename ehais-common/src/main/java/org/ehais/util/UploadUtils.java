@@ -2,13 +2,16 @@ package org.ehais.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -167,5 +170,99 @@ public class UploadUtils {
 		JSONObject json = JSONObject.fromObject(map);
 		return json.toString();
 	}
+	
+	
+	
+	public static String upload_video(HttpServletRequest request,
+			HttpServletResponse response,
+			String video_path,boolean transfer,String posturl,String postfix,String website
+			) throws IllegalStateException, IOException{
+		
+		String path = video_path;
+		String pre_path = "/eUploads/video";
+		if(StringUtils.isBlank(video_path)){
+			path = request.getRealPath(pre_path);
+		}
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		// 解析器解析request的上下文
+		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
+		// 先判断request中是否包涵multipart类型的数据，
+		if (multipartResolver.isMultipart(request)) {
+			// 再将request中的数据转化成multipart类型的数据
+			MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+			Iterator iter = multiRequest.getFileNames();
+			while (iter.hasNext()) {
+				MultipartFile filedata = multiRequest.getFile((String) iter
+						.next());
+				if (filedata != null && !filedata.isEmpty()) {
+					// 获取图片的文件名
+					String fileName = filedata.getOriginalFilename();
+					// 获取图片的扩展名
+					String extensionName = fileName.substring(fileName.lastIndexOf(".") + 1);
+					if(StringUtils.isNotBlank(postfix)){
+						//判断后缀名是否正确
+						boolean post = false;
+						List<String> result = Arrays.asList(StringUtils.split(postfix,","));  
+						for (String string : result) {
+							if(string.equals(extensionName)){
+								post = true;
+								break;
+							}
+						}
+						if(!post){
+							map.put("code", 0);
+							map.put("err", "文件格式不正确");
+							JSONObject json = JSONObject.fromObject(map);
+							return json.toString();
+						}
+					}
+					
+					// 新的图片文件名 = 获取时间戳+"."图片扩展名
+					String newFileName = String.valueOf(System.currentTimeMillis()) + "." + extensionName;
+					/* 构建文件目录 */
+					File fileDir = new File(path);
+					if (!fileDir.exists()) {
+						fileDir.mkdirs();
+					}
+
+					File localFile = new File(path + "/" + newFileName);
+					// 写文件到本地
+					filedata.transferTo(localFile);
+
+					String url = website;
+					
+					if(StringUtils.isBlank(website)){
+						url = request.getScheme() + "://"
+								+ request.getServerName() + ":"
+								+ request.getLocalPort();
+					}
+					
+					if(StringUtils.isBlank(video_path)){
+						url += pre_path;
+					}
+					
+					//需要转到某服务器
+					if(transfer && StringUtils.isNotBlank(posturl)){
+						Map<String, String> fileMap = new HashMap<String, String>();
+						fileMap.put(newFileName, path + "/" + newFileName);
+						String req = EHttpClientUtil.postHttpClientFile(posturl, null, fileMap, null);
+						System.out.println("远程返回："+req);
+						JSONObject json = JSONObject.fromObject(req);
+						map.put("msg", json.getString("msg"));
+					}else{
+						map.put("msg", url + "/" + newFileName);
+					}
+
+				}
+			}
+
+		}
+		map.put("code", 1);
+		map.put("err", "");
+		JSONObject json = JSONObject.fromObject(map);
+		return json.toString();
+	}
+	
 	
 }

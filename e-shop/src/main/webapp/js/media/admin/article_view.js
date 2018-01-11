@@ -331,6 +331,10 @@ function mediaArticleEditDetail(articleId){
 	$("#qiniu_image_articleThumb").remove();
 	$("#eq_preview_wrapper_articleThumb").addClass("hide");
 	
+	$("#qiniu_image_videoUpload").remove();
+	$("#eq_preview_wrapper_videoUpload").addClass("hide");
+	
+	
 	//分类下拉菜单
 	getSelectCat();
 	$.ajax({
@@ -343,6 +347,7 @@ function mediaArticleEditDetail(articleId){
 			if(!isBlank(result.model.articleDate))$("#articleDate").val(result.model.articleDate.substr(0,10));
 			
 			if(!isBlank(result.model.articleThumb))show_articleThumb_pic(result.model.articleThumb);
+			if(!isBlank(result.model.videoUrl))show_videoUpload_pic("/images/video.png");
 			ue.setContent(result.model.content);
 			
 			mediaDetailModal.modal("show");

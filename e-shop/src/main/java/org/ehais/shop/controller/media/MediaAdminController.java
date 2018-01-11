@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.apache.commons.lang.StringUtils;
 import org.ehais.annotation.EPermissionController;
 import org.ehais.annotation.EPermissionMethod;
 import org.ehais.annotation.EPermissionModuleGroup;
@@ -27,6 +28,8 @@ import org.ehais.shop.service.ArticleService;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.DateUtil;
+import org.ehais.util.ResourceUtil;
+import org.ehais.util.UploadUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -45,6 +48,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/")
 public class MediaAdminController extends CommonController{
 
+	//视频保存路径配置
+	protected String video_path = ResourceUtil.getProValue("video.path");
+	//视频是否中转
+	protected boolean video_transfer_bool = Boolean.getBoolean(ResourceUtil.getProValue("video.transfer.bool"));
+	//视频中转地址
+	protected String video_transfer_posturl = ResourceUtil.getProValue("video.transfer.posturl");
+	//视频访问地址
+	protected String video_transfer_website = ResourceUtil.getProValue("video.transfer.website");
+	//视频上传格式
+	protected String video_postfix = ResourceUtil.getProValue("video.postfix");
+	
+			
 	@Autowired
 	private ArticleService mediaArticleService;
 	@Autowired
@@ -360,6 +375,28 @@ public class MediaAdminController extends CommonController{
 			return this.errorJSON(e);
 		}
 	}
+	
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "/video.mg", method = RequestMethod.POST)
+	public String videoUpload(ModelMap modelMap, HttpServletRequest request,
+			HttpServletResponse response
+	) {
+
+
+		try {
+			
+			return UploadUtils.upload_video(request, response,video_path,true,video_transfer_posturl,video_postfix,video_transfer_website);
+
+		} catch (Exception e) {
+			log.error("上传文件失败.", e);
+
+		}
+
+		return null;
+	}
+	
 	
 	
 }

@@ -1,0 +1,106 @@
+<div id="eq_qiniuPicker_videoUpload" class="file-input file-input-ajax-new">
+		<div id="eq_preview_wrapper_videoUpload" class="file-preview hide">
+		    <div class=" file-drop-zone">
+			    <div class="file-preview-thumbnails" id="eq_preview_videoUpload">
+			    </div>
+			    <div class="clearfix"></div>
+		    </div>
+		</div>
+		<div class="kv-upload-progress hide" id="eq_progress_videoUpload">
+			<div class="progress">
+			    <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%;">
+			        0%
+			     </div>
+			</div>
+		</div>
+	<div class="input-group file-caption-main">
+	
+	<div tabindex="500" class="form-control file-caption  kv-fileinput-caption">
+	   <div class="file-caption-name" title=""></div>
+	</div>
+	
+	   <div class="input-group-btn" id="eq_pickfiles_videoUpload">
+	       <div class="btn btn-primary btn-file">
+		       <i class="glyphicon glyphicon-folder-open"></i>&nbsp;  
+		       <span class="hidden-xs">选择视频文件 …</span>
+	       </div>
+	   </div>
+	</div>
+	</div>
+	视频文件仅限mp4文件
+	<input id="videoUpload" name="videoUpload" value="" type="hidden">
+	<input accept="image/*" id="upload_file_videoUpload" multiple="" data-updateid="" data-action="add" class="item_img_input pointer" name="imgs_videoUpload" style="opacity : 0;" type="file">
+	<script type="text/javascript">
+$(function() {
+	
+	show_videoUpload_pic("");
+	
+	$("#eq_pickfiles_videoUpload").click(function(){
+		$("#upload_file_videoUpload").click();
+	});
+	
+	
+	$("#upload_file_videoUpload").fileupload({
+        url: "video.mg",
+        formData : {
+        	
+        },
+        dataType: 'json',
+        done: function (e, data) {
+        	
+        },
+        beforeSend: function(jqXHR) {
+        },complete: function() {
+        },
+        success : function(data, textStatus, jqXHR){
+        	console.log(JSON.stringify(data));
+        	if(parseInt(data.code) != 1){
+				alert(data.err);
+				return;
+			}
+        	show_videoUpload_pic("/images/video.png");
+        	$("#videoUpload").val(data.msg);
+        	$("#videoUrl").val(data.msg);
+        },
+        progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#progress .progress-bar').css(
+                'width',
+                progress + '%'
+            );
+        }
+    }).prop('disabled', !$.support.fileInput)
+        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+	
+	
+	
+});
+
+function show_videoUpload_pic(path){
+	if(path == null || path == "")return ;
+	$("#eq_preview_wrapper_videoUpload").removeClass("hide");
+	$("#eq_preview_videoUpload").html("<div id=\"qiniu_image_videoUpload\" class=\"file-preview-frame krajee-default  kv-preview-thumb\" ><div class=\"kv-file-content\">"+
+			"<img src=\""+path+"\"  style=\"max-width:220px;max-height:220px;\">"+
+	"</div>"+
+	"<div class=\"file-thumbnail-footer\">"+
+		"<div class=\"file-actions\">"+
+		    "<div class=\"file-footer-buttons\">"+			        
+		        "<button type=\"button\" class=\"kv-file-remove btn btn-xs btn-default\" title=\"删除文件\" onclick=\"trash_videoUpload_pic('videoUpload');\">"+
+		        	"<i class=\"glyphicon glyphicon-trash text-danger\"></i>"+
+		        "</button>"+
+		 	"</div>"+
+		    "<div class=\"clearfix\"></div>"+
+		"</div>"+
+	"</div>"+
+	"</div>");
+}
+
+function trash_videoUpload_pic(imgId){
+	if(confirm("确认要删除?")){
+		$("#qiniu_image_"+imgId).remove();
+		$("#eq_preview_wrapper_"+imgId).addClass("hide");
+		$("#videoUpload").val("");
+	}
+}
+</script>
+

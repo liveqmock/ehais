@@ -16,6 +16,7 @@ import org.ehais.controller.CommonController;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.epublic.service.EWPPublicService;
 import org.ehais.util.ResourceUtil;
+import org.ehais.util.UploadUtils;
 import org.ehais.weixin.WXConstants;
 import org.ehais.weixin.model.AccessToken;
 import org.ehais.weixin.utils.WeiXinUtil;
@@ -49,6 +50,21 @@ public class UploadController extends CommonController {
 	private static String secretKey = ResourceUtil.getProValue("qiniu.secretkey");
 	private static String bucket = ResourceUtil.getProValue("qiniu.bucket");
 	private static String domain = ResourceUtil.getProValue("qiniu.domain");
+	
+	
+	//视频保存路径配置
+	protected String video_path = ResourceUtil.getProValue("video.path");
+	//视频是否中转
+	protected boolean video_transfer_bool = Boolean.getBoolean(ResourceUtil.getProValue("video.transfer.bool"));
+	//视频中转地址
+	protected String video_transfer_posturl = ResourceUtil.getProValue("video.transfer.posturl");
+	//视频访问地址
+	protected String video_transfer_website = ResourceUtil.getProValue("video.transfer.website");
+	//视频上传格式
+	protected String video_postfix = ResourceUtil.getProValue("video.postfix");
+		
+		
+		
 	
 	@Autowired
 	protected EWPPublicService eWPPublicService;
@@ -190,5 +206,30 @@ public class UploadController extends CommonController {
 		return JSONObject.fromObject(map);
 		
 	}
+	
+	
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "/video.upd", method = RequestMethod.POST)
+	public String videoUpload(ModelMap modelMap, HttpServletRequest request,
+			HttpServletResponse response
+	) {
+
+
+		try {
+			
+//			return UploadUtils.upload_video(request, response,video_path,video_transfer_bool,video_transfer_posturl,video_postfix,video_transfer_website);
+			return UploadUtils.upload_video(request, response,video_path,false,video_transfer_posturl,video_postfix,video_transfer_website);
+
+		} catch (Exception e) {
+			log.error("上传文件失败.", e);
+
+		}
+
+		return null;
+	}
+	
+	
 
 }

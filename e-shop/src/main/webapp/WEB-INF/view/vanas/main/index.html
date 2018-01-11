@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="/js/jquery-2.1.4.min.js" ></script>
+		
+		<link rel="stylesheet" href="/js/bootstrap/css/bootstrap.min.css" />
+		<script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js" ></script>
+		
+		<link rel="stylesheet" href="/js/bootstrap/addtabs/bootstrap.addtabs.css" />
+		<link rel="stylesheet" href="/js/bootstrap/addtabs/mylayout.css" />
+		<script type="text/javascript" src="/js/bootstrap/addtabs/bootstrap.addtabs.js" ></script>
+		
+		<script type="text/javascript" src="/js/jquery.qrcode.min.js" ></script>
+<style type="text/css">
+.mylayout .list-group-item.gray > a{
+	color: #cfcfcf;
+}
+</style>		
+	</head>
+	<body>
+		<div class="mylayout">
+				<div class="north">
+					<div style="float: left;padding: 5px 0 0 20px;font-size: 24px;color: #fff;">${session_store_name }</div>
+					<div style="float: right;color: #fff;padding: 10px;">
+
+					管理编号：${session_admin_id }
+					
+					&nbsp;&nbsp;&nbsp;
+					
+					管理帐号：${session_admin_name }
+					
+					
+					&nbsp;&nbsp;&nbsp;
+					<a href="/admin_logout" style="color: #fff">退出系统</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					</div>
+				</div>
+				<div class="west">
+					
+					
+					<ul id="menu-list-group" class="list-group">
+						
+						<@permission url="ehaisArticleView">
+						<li class="list-group-item active">
+							<a data-addtab="vanas_article" data-url="ehaisArticleView?module=vanas_article&single=true">
+								<i class="glyphicon glyphicon-cloud"></i>
+								公司动态
+							</a>				
+						</li>
+						<li class="list-group-item active">
+							<a data-addtab="technical" data-url="ehaisArticleView?module=technical&single=true">
+								<i class="glyphicon glyphicon-cloud"></i>
+								技术参数
+							</a>				
+						</li>
+						</@permission>
+						
+						
+						
+						<@permission url="ehaisArticleDetail">
+						<li class="list-group-item active">
+							<a data-addtab="company" data-url="ehaisArticleDetail?module=introduce">
+								<i class="glyphicon glyphicon-leaf"></i>
+								公司简介
+							</a>
+						</li>
+						<li class="list-group-item active">
+							<a data-addtab="agent" data-url="ehaisArticleDetail?module=agent">
+								<i class="glyphicon glyphicon-leaf"></i>
+								代理加盟
+							</a>
+						</li>
+						
+						<li class="list-group-item active">
+							<a data-addtab="about" data-url="ehaisArticleDetail?module=contact">
+								<i class="glyphicon glyphicon-leaf"></i>
+								联系我们
+							</a>
+						</li>
+						</@permission>
+						
+						
+						 
+						<@permission url="haiBrandView">
+						<li class="list-group-item active">
+							<a data-addtab="haiBrandView" data-url="haiBrandView">
+								<i class="glyphicon glyphicon-leaf"></i>
+								品牌管理
+							</a>
+						</li>
+						</@permission>
+						
+						
+						<@permission url="ehaisGoodsView">
+						<li class="list-group-item active">
+							<a data-addtab="ehaisGoodsView" data-url="ehaisGoodsView">
+								<i class="glyphicon glyphicon-globe"></i>商品信息
+							</a>							
+						</li>
+						</@permission>
+						
+						<@permission url="haiAdView">
+						<li class="list-group-item active">
+							<a data-addtab="ad" data-url="haiAdView">
+								<i class="glyphicon glyphicon-globe"></i>广告信息
+							</a>							
+						</li>
+						</@permission>
+						
+						<@permission url="haiNavView">
+						<li class="list-group-item">
+							<a data-addtab="haiNavView" data-url="haiNavView">
+								<i class="glyphicon glyphicon-user"></i>导航管理
+							</a>
+						</li>
+						</@permission>
+						
+						<@permission url="shopconfig">
+						<li class="list-group-item">
+							<a data-addtab="shopconfig" data-url="shopconfig">
+								<i class="glyphicon glyphicon-user"></i>企业信息
+							</a>
+						</li>
+						</@permission>
+						
+						
+						<@permission url="cache_clear">
+						<li class="list-group-item">
+							<a data-addtab="cache_clear" data-url="cache_clear">
+								<i class="glyphicon glyphicon-user"></i>清空缓存
+							</a>
+						</li>
+						</@permission>
+						
+						
+					</ul>
+				</div>
+				<div class="center">
+					<div id="pctabs">
+						<!-- Nav tabs -->
+						<ul id="my-nav-tabs" class="nav nav-tabs" role="tablist">
+							<li role="presentation" class="active">
+								<a href="#home" aria-controls="home" role="tab" data-toggle="tab">主页</a>
+							</li>
+						</ul>
+
+						<!-- Tab panes -->
+						<div id="my-tab-content" class="tab-content">
+							<div role="tabpanel" class="tab-pane active" id="home">
+							<div id="jqrcode" ></div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<div class="south">技术支持：广州易海司信息科技有限公司</div>
+			</div>
+<script type="text/javascript">
+var north_w="",north_h="",south_w="",south_h="",west_w="",west_h="",center_w="",center_h="";
+var my_nav_tabs_w="",my_nav_tabs_h="",my_tab_content_w="",my_tab_content_h="";
+var menu_height = 0;
+$(function(){
+	
+	menu_height = $("#menu-list-group").height();
+	
+	north_w = $(".north").width();
+	north_h = $(".north").height();	
+	
+	west_w = $(".west").width();
+	west_h = $(".west").height();
+	
+	center_w = $(".center").width();
+	center_h = $(".center").height();
+	
+	my_nav_tabs_w = $("#my-nav-tabs").width();
+	my_nav_tabs_h = $("#my-nav-tabs").height();
+	
+	my_tab_content_w = $("#my-tab-content").width();
+	$("#my-tab-content").height(center_h - my_nav_tabs_h);
+	$(".tab-content > div[role = \"tabpanel\"]").height(center_h - my_nav_tabs_h);
+	$(".tab-content > div[role = \"tabpanel\"] > iframe").height(center_h - my_nav_tabs_h);
+	my_tab_content_h = $("#my-tab-content").height();
+	
+	$("#layerx").html("layerx"+(center_h - my_nav_tabs_h));
+	
+	
+	
+/* 	
+ 	$(".north").html(north_w+"+"+north_h +
+	"="+
+	west_w+"+"+west_h+
+	"=="+
+	center_w+"+"+center_h+
+	"==="+
+	my_nav_tabs_w+"+"+my_nav_tabs_h+
+	"==="+
+	my_tab_content_w+"+"+my_tab_content_h+
+	"====="+
+	menu_height+";==;"+$(document).height()+";===;"+$(window).height()
+	
+	); 
+ 	 */
+	south_w = $(".south").width();
+	south_h = $(".south").height();	
+	//$(".south").html(south_w+"+"+south_h);
+	//$.addtabs({settings:{iframeHeight:500}});
+//	alert($.addtabs.settings.iframeHeight);
+});
+
+$(window).resize(function () {          //当浏览器大小变化时
+//  alert($(window).height());          //浏览器时下窗口可视区域高度
+//  alert($(document).height());        //浏览器时下窗口文档的高度
+//  alert($(document.body).height());   //浏览器时下窗口文档body的高度
+//  alert($(document.body).outerHeight(true)); //浏览器时下窗口文档body的总高度 包括border padding margin
+    
+	north_w = $(".north").width();
+	north_h = $(".north").height();	
+	
+	west_w = $(".west").width();
+	west_h = $(".west").height();
+	
+	center_w = $(".center").width();
+	center_h = $(".center").height();
+	
+	my_nav_tabs_w = $("#my-nav-tabs").width();
+	my_nav_tabs_h = $("#my-nav-tabs").height();
+	
+	my_tab_content_w = $("#my-tab-content").width();
+	
+	$("#my-tab-content").height(center_h - my_nav_tabs_h);
+	$(".tab-content > div[role = \"tabpanel\"]").height(center_h - my_nav_tabs_h);
+	$(".tab-content > div[role = \"tabpanel\"] > iframe").height(center_h - my_nav_tabs_h);
+	my_tab_content_h = $("#my-tab-content").height();
+	
+//	$("#layerx").html("layerx"+(center_h - my_nav_tabs_h));
+/* 	
+	$(".north").html(north_w+"+"+north_h +
+	"="+
+	west_w+"+"+west_h+
+	"=="+
+	center_w+"+"+center_h+
+	"==="+
+	my_nav_tabs_w+"+"+my_nav_tabs_h+
+	"==="+
+	my_tab_content_w+"+"+my_tab_content_h+
+	"====="+
+	menu_height+";==;"+$(document).height()+";===;"+$(window).height()
+	);
+	 */
+	south_w = $(".south").width();
+	south_h = $(".south").height();	
+	//$(".south").html(south_w+"+"+south_h);
+	
+});
+
+function show_qrcode(){
+	
+}
+
+</script>
+
+
+	</body>
+</html>

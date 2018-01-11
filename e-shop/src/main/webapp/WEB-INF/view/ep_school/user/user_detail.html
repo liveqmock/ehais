@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>用户信息管理</title>
+		<#include "/include.html"/>
+		<#include "/FreemarkerMacro.html"/>
+</head>
+<body>
+<div class="header">
+	<div class="nav">
+		<a href="javascript:;" id="back" class="icon fa fa-arrow-left ">&nbsp;</a>
+		<div class="nav0">资讯</div>
+		<div class="nav1">信息编辑</div>
+	</div>
+</div>
+<div style="width: 100%;height: 40px;"></div>
+<div class="container-fluid">
+<form id="myForm" name="myForm" class="form-horizontal" action="${rm.action?default('')}" method="post">
+
+<input type="hidden" class="form-control" id="userId" name="userId" value="${rm.model.userId!'0'}" placeholder="">
+
+
+
+
+<div class="form-group">
+<label class="col-sm-2 control-label">学号</label>
+<div class="col-sm-3">
+	<input type="text" class="form-control" id="userName" name="userName" value="${rm.model.userName!''}" placeholder="" ${readonly!''}>
+</div>
+</div>
+
+
+<div class="form-group">
+<label class="col-sm-2 control-label">卡号</label>
+<div class="col-sm-3">
+	<input type="text" class="form-control" id="nickname" name="nickname" value="${rm.model.nickname!''}" placeholder="">
+</div>
+</div>
+
+
+<div class="form-group">
+<label class="col-sm-2 control-label">姓名</label>
+<div class="col-sm-3">
+	<input type="text" class="form-control" id="realname" name="realname" value="${rm.model.realname!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">班级</label>
+<div class="col-sm-3">
+	<input type="text" class="form-control" id="question" name="question" value="${rm.model.question!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">身份</label>
+<div class="col-sm-3">
+	<select class="form-control" id="alias" name="alias" >
+		<option value="学生" <#if (rm.model?? && rm.model.alias?? && rm.model.alias == "学生")>selected="selected"</#if>>学生</option>
+		<option value="班主任" <#if (rm.model?? && rm.model.alias?? && rm.model.alias == "班主任")>selected="selected"</#if>>班主任</option>
+		<option value="部长" <#if (rm.model?? && rm.model.alias?? && rm.model.alias == "部长")>selected="selected"</#if>>部长</option>
+		<option value="学生处" <#if (rm.model?? && rm.model.alias?? && rm.model.alias == "学生处")>selected="selected"</#if>>学生处</option>
+	</select>
+</div>
+</div>
+
+
+<div class="form-group">
+<label class="col-sm-2 control-label">上级工号</label>
+<div class="col-sm-3">
+	<input type="text" class="form-control" id="answer" name="answer" value="${rm.model.answer!''}" placeholder="">
+</div>
+</div>
+
+
+
+
+<div class="form-group">
+	<div class="col-sm-3"></div>
+	<div class="col-sm-6"><button id="saveSubmit" type="button" class="btn btn-primary">提交信息</button></div>
+</div>
+       
+
+
+
+
+</form>
+</div>    
+<script type="text/javascript" src="/js/ep_school/user_detail.js"></script>             
+
+
+</body>
+</html>
