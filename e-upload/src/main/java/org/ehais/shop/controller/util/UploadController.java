@@ -3,6 +3,7 @@ package org.ehais.shop.controller.util;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.ehais.controller.CommonController;
 import org.ehais.util.IpUtil;
 import org.ehais.util.ResourceUtil;
@@ -28,6 +29,8 @@ public class UploadController extends CommonController {
 	protected String media_transfer_website = ResourceUtil.getProValue("media.transfer.website");
 	//视频上传格式
 	protected String media_postfix = ResourceUtil.getProValue("media.postfix");
+	//限制当前IP
+	protected String media_transfer_ip = ResourceUtil.getProValue("media.transfer.ip");
 		
 		
 		
@@ -40,7 +43,14 @@ public class UploadController extends CommonController {
 			HttpServletResponse response
 	) {
 
-System.out.println("当前IP："+IpUtil.getIpAddr(request));
+
+		String ip = IpUtil.getIpAddr(request);
+		System.out.println("当前IP："+ip);
+		
+		if( StringUtils.isNotBlank(media_transfer_ip) && !ip.equals(media_transfer_ip)){
+			return "{'code':0,'msg':'非合法请求101'}";
+		}
+
 
 		try {
 			

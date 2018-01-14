@@ -15,8 +15,7 @@ public class MediaInterceptor extends HandlerInterceptorAdapter{
 		response.addHeader("X-XSS-Protection", "1");
 		response.addHeader("X-Frame-Options", "deny");
 		response.addHeader("X-Content-Type-Options", "nosniff");
-		response.addHeader("Content-Security-Policy", "default-src 'self' "+request.getServerName()+" 10.0.10.220;style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval';");
-//		response.addHeader("Content-Security-Policy", "default-src 'self' * ;style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'");
+		response.addHeader("Content-Security-Policy", "default-src 'self' "+request.getServerName()+" 10.0.10.220 219.222.224.28 219.222.224.45;style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval';");
 		response.addHeader("Set-Cookie", "key=value; HttpOnly");
 		response.addHeader("Content-Type", "text/html;charset:utf-8;");
 		

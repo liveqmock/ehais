@@ -164,7 +164,7 @@ public class MediaWebController extends CommonController{
 			
 			EHaiArticleCatExample ace = new EHaiArticleCatExample();
 			ace.createCriteria().andStoreIdEqualTo(store_id);
-			ace.setOrderByClause("sort_order asc,article_id desc");
+			ace.setOrderByClause("sort_order asc");
 			List<EHaiArticleCat> listArticleCat = eHaiArticleCatMapper.selectByExample(ace);
 			modelMap.addAttribute("listArticleCat", listArticleCat);
 			
@@ -183,7 +183,7 @@ public class MediaWebController extends CommonController{
 			
 			EHaiArticleExample ae = new EHaiArticleExample();
 			ae.createCriteria().andStoreIdEqualTo(store_id).andCatIdEqualTo(cid);
-			ae.setOrderByClause("sort asc");
+			ae.setOrderByClause("sort asc,article_id desc");
 			ae.setLimitStart(( page - 1 ) * len);
 			ae.setLimitEnd(len);
 			List<EHaiArticle> listArticle = eHaiArticleMapper.selectByExample(ae);

@@ -3,8 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <title>upload</title>
+
+<script type="text/javascript" src="/js/jquery-2.1.4.min.js" ></script>
+
+<link rel="stylesheet" href="/js/bootstrap/css/bootstrap.min.css" />
+<script type="text/javascript" src="/js/bootstrap/js/bootstrap.min.js" ></script>
+
+<script src="/js/jQuery_File_Upload/js/vendor/jquery.ui.widget.js"></script>
+<script src="/js/jQuery_File_Upload/js/jquery.iframe-transport.js"></script>
+<script src="/js/jQuery_File_Upload/js/jquery.fileupload.js"></script>
+
 </head>
 <body>
-Upload
+
+<div class="container-fluid">
+<form id="myForm" name="myForm" class="form-horizontal" action="/upload/media.upd" enctype="multipart/form-data" method="post">
+
+<input type="file" name="uploadfile"/>
+
+<input type="submit" id="submit" name="submit" value="提交">
+
+</form>
+</div> 
+
+
+
+
+
 </body>
 </html>

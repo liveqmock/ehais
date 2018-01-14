@@ -248,13 +248,17 @@ public class UploadUtils {
 						fileMap.put(newFileName, path + "/" + newFileName);
 						
 						Map<String , String > headerMap = new HashMap<String , String >();
-						headerMap.put("Content-type", "application/x-www-form-urlencoded");  
-						headerMap.put("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)"); 
+//						headerMap.put("Content-type", "application/x-www-form-urlencoded");  
+//						headerMap.put("Content-type", "multipart/form-data");
+//						headerMap.put("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)"); 
 						
 						String req = EHttpClientUtil.postHttpClientFile(posturl, null, fileMap, headerMap);
 						System.out.println("远程返回："+req);
 						JSONObject json = JSONObject.fromObject(req);
 						map.put("msg", json.getString("msg"));
+						
+						FSO.deletefile(path + "/" + newFileName);
+						
 					}else{
 						System.out.println("直接保存。。。"+url + "/" + newFileName);
 						map.put("msg", url + "/" + newFileName);
