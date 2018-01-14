@@ -24,6 +24,7 @@
     <module>e-user-center</module>
     <module>minaUnit</module>
      -->
+    <module>e-upload</module>
   </modules>
   
   	<properties>

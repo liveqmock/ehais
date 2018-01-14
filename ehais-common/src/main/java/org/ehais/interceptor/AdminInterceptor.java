@@ -21,10 +21,19 @@ public class AdminInterceptor extends HandlerInterceptorAdapter{
 	
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
+		response.addHeader("X-XSS-Protection", "1");
+		response.addHeader("X-Frame-Options", "deny");
+		response.addHeader("X-Content-Type-Options", "nosniff");
+		response.addHeader("Content-Security-Policy", "default-src 'self' "+request.getServerName()+" ;style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval';");
+		response.addHeader("Set-Cookie", "key=value; HttpOnly");
+		response.addHeader("Content-Type", "text/html;charset:utf-8;");
+		
 		//获取当前请求URL
 		String url = request.getRequestURI().toString();
 //		System.out.println(url);
-		
+		if (url.equals(loginUrl)) {
+			return true;
+		}
 		String account = (String) request.getSession().getAttribute(EConstants.SESSION_ADMIN_NAME);
 		
 		//如果session中用户名为空，则跳转到登录页面
@@ -38,6 +47,18 @@ public class AdminInterceptor extends HandlerInterceptorAdapter{
 			return false;
 		}
 		
+		
+		
+		// 从 HTTP 头中取得 Referer 值
+		String referer=request.getHeader("Referer");
+		// 判断 Referer 是否以 bank.example 开头
+
+		if(referer==null || !referer.trim().startsWith(request.getScheme() + "://" + request.getServerName())){
+			response.sendRedirect(notpermissionUrl);
+			return false;
+		} 
+		 
+		 
 		//判断当前URL是不是登录页面，如果是，则不拦截
 		for (String s : ignoreUrls) {
 			if (url.equals(s)) {

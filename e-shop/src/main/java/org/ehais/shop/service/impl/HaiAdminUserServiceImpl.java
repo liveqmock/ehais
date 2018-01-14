@@ -441,7 +441,34 @@ bean.setPartnerId(model.getPartnerId());
 	public ReturnObject<EHaiAdminUser> adminuser_modify_password(HttpServletRequest request, String old_password,
 			String new_password, String confirmed_password) throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		Long adminId = (Long)request.getSession().getAttribute(EConstants.SESSION_ADMIN_ID);
+		ReturnObject<EHaiAdminUser> rm = new ReturnObject<EHaiAdminUser>();
+		rm.setCode(0);
+		
+		if(!new_password.equals(confirmed_password)){
+			rm.setMsg("确认密码不一致");
+			return rm;
+		}
+		
+		EHaiAdminUserWithBLOBs adminUser = haiAdminUserMapper.selectByPrimaryKey(adminId);
+		if(adminUser == null){
+			rm.setMsg("当前用户信息错误");
+			return rm;
+		}
+		
+		old_password = EncryptUtils.md5(old_password);
+		if(!adminUser.getPassword().equals(old_password)){
+			rm.setMsg("旧密码不正确");
+			return rm;
+		}
+		
+		new_password = EncryptUtils.md5(new_password);
+		adminUser.setPassword(new_password);
+		
+		rm.setCode(1);
+		rm.setMsg("密码更换成功");
+		
+		return rm;
 	}
 
 

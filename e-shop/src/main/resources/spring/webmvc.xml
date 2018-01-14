@@ -135,7 +135,13 @@
 		</mvc:interceptor>
 		
 		<mvc:interceptor>
+			<mvc:mapping path="/**.me"/>
 			<mvc:mapping path="/**.mg"/>
+			<mvc:mapping path="/media**Json"/>
+			<mvc:mapping path="/media**Submit"/>
+			<mvc:mapping path="/media**Detail"/>
+			<mvc:mapping path="/media**Delete"/>
+			<mvc:mapping path="/media**Edit"/>
 			<ref bean="mediaAdminInterceptor"/>
 		</mvc:interceptor>
 	
@@ -143,6 +149,7 @@
 			<mvc:mapping path="/**.do" /> 
 			<mvc:mapping path="/**.lv" /> 
 			<mvc:mapping path="/js/media/**.js" /> 
+			<mvc:mapping path="/js/ueditor/**.js" /> 
 			<ref bean="mediaInterceptor"/>
 		</mvc:interceptor>
 <!-- 		

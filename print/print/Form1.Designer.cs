@@ -41,6 +41,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.lbl_timestamp = new System.Windows.Forms.Label();
+            this.lbl_pay_time = new System.Windows.Forms.Label();
             this.loginPanel.SuspendLayout();
             this.userPanel.SuspendLayout();
             this.SuspendLayout();
@@ -168,11 +170,29 @@
             this.label5.TabIndex = 10;
             this.label5.Text = "微信点餐订单打印小程序";
             // 
+            // lbl_timestamp
+            // 
+            this.lbl_timestamp.AutoSize = true;
+            this.lbl_timestamp.Location = new System.Drawing.Point(70, 271);
+            this.lbl_timestamp.Name = "lbl_timestamp";
+            this.lbl_timestamp.Size = new System.Drawing.Size(0, 12);
+            this.lbl_timestamp.TabIndex = 11;
+            // 
+            // lbl_pay_time
+            // 
+            this.lbl_pay_time.AutoSize = true;
+            this.lbl_pay_time.Location = new System.Drawing.Point(70, 296);
+            this.lbl_pay_time.Name = "lbl_pay_time";
+            this.lbl_pay_time.Size = new System.Drawing.Size(0, 12);
+            this.lbl_pay_time.TabIndex = 12;
+            // 
             // WeiXinPrintExe
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(504, 381);
+            this.Controls.Add(this.lbl_pay_time);
+            this.Controls.Add(this.lbl_timestamp);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -204,6 +224,8 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label lbl_timestamp;
+        private System.Windows.Forms.Label lbl_pay_time;
     }
 }
 

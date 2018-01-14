@@ -164,7 +164,7 @@ public class MediaWebController extends CommonController{
 			
 			EHaiArticleCatExample ace = new EHaiArticleCatExample();
 			ace.createCriteria().andStoreIdEqualTo(store_id);
-			ace.setOrderByClause("sort_order asc");
+			ace.setOrderByClause("sort_order asc,article_id desc");
 			List<EHaiArticleCat> listArticleCat = eHaiArticleCatMapper.selectByExample(ace);
 			modelMap.addAttribute("listArticleCat", listArticleCat);
 			
@@ -270,6 +270,14 @@ public class MediaWebController extends CommonController{
 			log.error("article", e);
 			return this.errorJump(modelMap, e.getMessage());
 		}
+	}
+	
+	
+	@RequestMapping("/ueditor.lv")
+	public String ueditor(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response){
+		return "/media/ueditor";
+		
 	}
 	
 }

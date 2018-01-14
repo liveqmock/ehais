@@ -53,9 +53,7 @@ public class UploadUtils {
 					filedata.transferTo(localFile);
 
 
-					String url = request.getScheme() + "://"
-							+ request.getServerName() + ":"
-							+ request.getLocalPort();
+					String url = request.getScheme() + "://"+ request.getServerName() ;//+ ":"+ request.getLocalPort();
 					url += "/eUploads/images/" + newFileName;
 					map.put("msg", url);
 
@@ -107,9 +105,7 @@ public class UploadUtils {
 							path + "/" + newFileName+ "_120_120." + extensionName,extensionName);
 					
 					
-					String url = request.getScheme() + "://"
-							+ request.getServerName() + ":"
-							+ request.getLocalPort();
+					String url = request.getScheme() + "://" + request.getServerName() ;//+ ":"+ request.getLocalPort();
 					url += "/eUploads/images/" + newFileName+ "." + extensionName;
 					
 					map.put("msg", url);
@@ -177,7 +173,7 @@ public class UploadUtils {
 			HttpServletResponse response,
 			String video_path,boolean transfer,String posturl,String postfix,String website
 			) throws IllegalStateException, IOException{
-		
+		System.out.println("common upload start");
 		String path = video_path;
 		String pre_path = "/eUploads/video";
 		if(StringUtils.isBlank(video_path)){
@@ -189,15 +185,19 @@ public class UploadUtils {
 		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
 		// 先判断request中是否包涵multipart类型的数据，
 		if (multipartResolver.isMultipart(request)) {
+			System.out.println("if multipartResolver.isMultipart(request).........");
 			// 再将request中的数据转化成multipart类型的数据
 			MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
 			Iterator iter = multiRequest.getFileNames();
 			while (iter.hasNext()) {
+				System.out.println("while (iter.hasNext()).............");
 				MultipartFile filedata = multiRequest.getFile((String) iter
 						.next());
 				if (filedata != null && !filedata.isEmpty()) {
+					System.out.println("if (filedata != null && !filedata.isEmpty())..............");
 					// 获取图片的文件名
 					String fileName = filedata.getOriginalFilename();
+					System.out.println("fileName:::::"+fileName);
 					// 获取图片的扩展名
 					String extensionName = fileName.substring(fileName.lastIndexOf(".") + 1);
 					if(StringUtils.isNotBlank(postfix)){
@@ -226,6 +226,7 @@ public class UploadUtils {
 						fileDir.mkdirs();
 					}
 
+					System.out.println("path....:"+path + "/" + newFileName);
 					File localFile = new File(path + "/" + newFileName);
 					// 写文件到本地
 					filedata.transferTo(localFile);
@@ -233,9 +234,7 @@ public class UploadUtils {
 					String url = website;
 					
 					if(StringUtils.isBlank(website)){
-						url = request.getScheme() + "://"
-								+ request.getServerName() + ":"
-								+ request.getLocalPort();
+						url = request.getScheme() + "://" + request.getServerName() ;//+ ":" + request.getLocalPort();
 					}
 					
 					if(StringUtils.isBlank(video_path)){
@@ -244,13 +243,20 @@ public class UploadUtils {
 					
 					//需要转到某服务器
 					if(transfer && StringUtils.isNotBlank(posturl)){
+						System.out.println("中转视频...");
 						Map<String, String> fileMap = new HashMap<String, String>();
 						fileMap.put(newFileName, path + "/" + newFileName);
-						String req = EHttpClientUtil.postHttpClientFile(posturl, null, fileMap, null);
+						
+						Map<String , String > headerMap = new HashMap<String , String >();
+						headerMap.put("Content-type", "application/x-www-form-urlencoded");  
+						headerMap.put("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)"); 
+						
+						String req = EHttpClientUtil.postHttpClientFile(posturl, null, fileMap, headerMap);
 						System.out.println("远程返回："+req);
 						JSONObject json = JSONObject.fromObject(req);
 						map.put("msg", json.getString("msg"));
 					}else{
+						System.out.println("直接保存。。。"+url + "/" + newFileName);
 						map.put("msg", url + "/" + newFileName);
 					}
 

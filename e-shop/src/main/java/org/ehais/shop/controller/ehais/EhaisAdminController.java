@@ -15,6 +15,7 @@ import org.ehais.epublic.model.EHaiAdminUser;
 import org.ehais.epublic.model.WpPublic;
 import org.ehais.epublic.service.EHaiAdminUserService;
 import org.ehais.epublic.service.EWPPublicService;
+import org.ehais.shop.service.HaiAdminUserService;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.DateUtil;
 import org.ehais.util.IpUtil;
@@ -32,6 +33,10 @@ public class EhaisAdminController extends CommonController{
 
 	@Autowired
 	private EHaiAdminUserService adminUserService;
+	
+	@Autowired
+	private HaiAdminUserService haiAdminUserService;
+	
 //	private AdminUserService adminUserService;
 	@Autowired
 	protected EWPPublicService eWPPublicService;
@@ -124,5 +129,44 @@ public class EhaisAdminController extends CommonController{
 		}
 		return "/"+this.getStoreTheme(request)+"/main";
 	}
+	
+	
+
+	/**
+	 * 修改密码
+	 * @param modelMap
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping("/manage/modifyPassword")
+	public String modify_password(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response ) {	
+		return "/"+this.getStoreTheme(request)+"/modify_password";
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping("/manage/modifyPasswordSubmit")
+	public String modifyPasswordSubmit(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "old_password", required = true) String old_password,
+			@RequestParam(value = "new_password", required = true) String new_password,
+			@RequestParam(value = "confirmed_password", required = true) String confirmed_password
+			) {	
+		try{
+			
+			ReturnObject<EHaiAdminUser> rm = haiAdminUserService.adminuser_modify_password(request, old_password, new_password, confirmed_password);
+			return this.writeJson(rm);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+		
+	}
+	
+	
+	
 	
 }

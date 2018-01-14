@@ -51,7 +51,7 @@ public class MediaAdminController extends CommonController{
 	//视频保存路径配置
 	protected String video_path = ResourceUtil.getProValue("video.path");
 	//视频是否中转
-	protected boolean video_transfer_bool = Boolean.getBoolean(ResourceUtil.getProValue("video.transfer.bool"));
+	protected boolean video_transfer_bool = Boolean.parseBoolean(ResourceUtil.getProValue("video.transfer.bool"));
 	//视频中转地址
 	protected String video_transfer_posturl = ResourceUtil.getProValue("video.transfer.posturl");
 	//视频访问地址
@@ -67,11 +67,21 @@ public class MediaAdminController extends CommonController{
 	@Autowired
 	private EHaiAdminUserService eHaiAdminUserService;
 	
-	@EPermissionMethod(name="查询",intro="打开视频管理页面",value="login.me",relation="mediaArticleListJson",type=PermissionProtocol.URL)
+	@EPermissionMethod(name="查询",intro="打开视频管理页面",value="login.me",type=PermissionProtocol.URL)
 	@RequestMapping("/login.me")
 	public String login(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) {	
+		
+		response.addHeader("X-XSS-Protection", "1");
+		response.addHeader("X-Frame-Options", "deny");
+		response.addHeader("X-Content-Type-Options", "nosniff");
+		response.addHeader("Content-Security-Policy", "default-src 'self' "+request.getServerName()+" ;style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval';");
+//		response.addHeader("Content-Security-Policy", "default-src 'self' * ;style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'");
+		response.addHeader("Set-Cookie", "key=value; HttpOnly");
+		response.addHeader("Content-Type", "text/html;charset:utf-8;");
+		
 		try{
+			
 			modelMap.addAttribute("submit", "mediaLoginSubmitAjax.json");
 			modelMap.addAttribute("redirect", "index.mg");
 			return "/media/admin/login";
@@ -125,7 +135,7 @@ public class MediaAdminController extends CommonController{
 	
 	
 	
-	@EPermissionMethod(name="查询",intro="打开视频管理页面",value="index.mg",relation="mediaArticleListJson",type=PermissionProtocol.URL)
+	@EPermissionMethod(name="查询",intro="打开视频管理页面",value="index.mg",type=PermissionProtocol.URL)
 	@RequestMapping("/index.mg")
 	public String mediaArticleView(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) {	
@@ -387,7 +397,7 @@ public class MediaAdminController extends CommonController{
 
 		try {
 			
-			return UploadUtils.upload_video(request, response,video_path,true,video_transfer_posturl,video_postfix,video_transfer_website);
+			return UploadUtils.upload_video(request, response,video_path,video_transfer_bool,video_transfer_posturl,video_postfix,video_transfer_website);
 
 		} catch (Exception e) {
 			log.error("上传文件失败.", e);

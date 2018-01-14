@@ -165,6 +165,7 @@ public class OrderInfoApiController extends OrderInfoIController{
 	@RequestMapping(value="/dining_order_list_print",method=RequestMethod.POST)
 	public String dining_order_list_print(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "timestamp", required = true) Long timestamp,
 			@RequestParam(value = "paytime", required = true) Long paytime,
 			@RequestParam(value = "store_id", required = true) Integer store_id,
 			@RequestParam(value = "token", required = true) String token){
@@ -180,7 +181,9 @@ public class OrderInfoApiController extends OrderInfoIController{
 			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
 			HaiOrderInfoExample example = new HaiOrderInfoExample();
 			HaiOrderInfoExample.Criteria c = example.createCriteria();
-			c.andStoreIdEqualTo(store_id).andPayTimeGreaterThan(paytime);//////
+			c.andStoreIdEqualTo(store_id)
+			.andPayTimeLessThanOrEqualTo(timestamp)
+			.andPayTimeGreaterThan(paytime);//////
 			example.setOrderByClause("pay_time asc");
 			List<HaiOrderInfoWithBLOBs> list = haiOrderInfoMapper.selectByExampleWithBLOBs(example);
 			

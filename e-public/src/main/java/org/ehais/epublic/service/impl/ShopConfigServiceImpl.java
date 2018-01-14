@@ -24,6 +24,8 @@ import org.ehais.util.StoreConfigUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import net.sf.json.JSONArray;
+
 //model里面对应的日期添加的 @DateTimeFormat( pattern = "yyyy-MM-dd" )
 
 
@@ -101,6 +103,26 @@ public class ShopConfigServiceImpl  extends CommonServiceImpl implements ShopCon
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("config", config);
 		rm.setMap(map);
+		rm.setCode(1);
+		return rm;
+	}
+	
+	
+	
+	public ReturnObject<HaiShopConfig> shopconfig_info(HttpServletRequest request)
+			throws Exception {
+		// TODO Auto-generated method stub
+		ReturnObject<HaiShopConfig> rm = new ReturnObject<HaiShopConfig>();
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		
+		HaiShopConfigExample example = new HaiShopConfigExample();
+		HaiShopConfigExample.Criteria c = example.createCriteria();
+		c.andStoreIdEqualTo(store_id);
+		c.andIsvoidEqualTo("1");
+//		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+		List<HaiShopConfig> list = haiShopConfigMapper.selectByExampleWithBLOBs(example);
+		rm.setMsg(JSONArray.fromObject(list).toString());
+		rm.setRows(list);
 		rm.setCode(1);
 		return rm;
 	}

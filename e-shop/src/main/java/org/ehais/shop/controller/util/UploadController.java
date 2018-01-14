@@ -53,15 +53,15 @@ public class UploadController extends CommonController {
 	
 	
 	//视频保存路径配置
-	protected String video_path = ResourceUtil.getProValue("video.path");
+	protected String media_path = ResourceUtil.getProValue("media.path");
 	//视频是否中转
-	protected boolean video_transfer_bool = Boolean.getBoolean(ResourceUtil.getProValue("video.transfer.bool"));
+	protected boolean media_transfer_bool = Boolean.parseBoolean(ResourceUtil.getProValue("media.transfer.bool"));
 	//视频中转地址
-	protected String video_transfer_posturl = ResourceUtil.getProValue("video.transfer.posturl");
+	protected String media_transfer_posturl = ResourceUtil.getProValue("media.transfer.posturl");
 	//视频访问地址
-	protected String video_transfer_website = ResourceUtil.getProValue("video.transfer.website");
+	protected String media_transfer_website = ResourceUtil.getProValue("media.transfer.website");
 	//视频上传格式
-	protected String video_postfix = ResourceUtil.getProValue("video.postfix");
+	protected String media_postfix = ResourceUtil.getProValue("media.postfix");
 		
 		
 		
@@ -211,16 +211,16 @@ public class UploadController extends CommonController {
 	
 	
 	@ResponseBody
-	@RequestMapping(value = "/video.upd", method = RequestMethod.POST)
-	public String videoUpload(ModelMap modelMap, HttpServletRequest request,
+	@RequestMapping(value = "/media.upd", method = RequestMethod.POST)
+	public String mediaUpload(ModelMap modelMap, HttpServletRequest request,
 			HttpServletResponse response
 	) {
 
 
 		try {
 			
-//			return UploadUtils.upload_video(request, response,video_path,video_transfer_bool,video_transfer_posturl,video_postfix,video_transfer_website);
-			return UploadUtils.upload_video(request, response,video_path,false,video_transfer_posturl,video_postfix,video_transfer_website);
+//			return UploadUtils.upload_media(request, response,media_path,media_transfer_bool,media_transfer_posturl,media_postfix,media_transfer_website);
+			return UploadUtils.upload_video(request, response,media_path,false,media_transfer_posturl,media_postfix,media_transfer_website);
 
 		} catch (Exception e) {
 			log.error("上传文件失败.", e);

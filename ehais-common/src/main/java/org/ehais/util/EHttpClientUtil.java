@@ -529,6 +529,7 @@ public class EHttpClientUtil {
 			
 			// 执行
 			HttpResponse response = httpclient.execute(httppost);
+			System.out.println("返回状态值："+response.getStatusLine().getStatusCode());
 			if (HttpStatus.SC_OK == response.getStatusLine().getStatusCode()) {
 				HttpEntity entity = response.getEntity();
 				// 显示内容

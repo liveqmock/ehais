@@ -22,6 +22,7 @@ namespace print
         //private Font printFont;
         //private StreamReader streamToPrint;
         private String website = "http://mg.ehais.com";
+        //private String website = "http://eg.ehais.com";
         //private String website = "http://192.168.0.104";
         private String appkey = "Ehais";
         private String secret = "EhaisSecret";
@@ -39,6 +40,7 @@ namespace print
         private JObject joOrder;
         private JArray jOrderGoodsList;
         private Dictionary<double, string> dic = new Dictionary<double, string>();
+        private String pay_time;
 
 
         public WeiXinPrintExe()
@@ -50,6 +52,8 @@ namespace print
             pd = new PrintDocument();
             pdKitchen = new PrintDocument();
             pdCashierDesk = new PrintDocument();
+
+            pay_time = this.GetTimeStamp();//当前启动的当前时间
 
             //PrintDialog BS = new PrintDialog();
             //int x = BS.PrinterSettings.DefaultPageSettings.PaperSize.Width;//打印机默认纸张大小
@@ -76,14 +80,14 @@ namespace print
             //打印事件设置            
 
             //pd.PrintPage += new PrintPageEventHandler(this.pd_PrintPage);
-            pd.PrintPage += new PrintPageEventHandler(this.MyPrintDocument_PrintPage);
+            //pd.PrintPage += new PrintPageEventHandler(this.MyPrintDocument_PrintPage);
 
 
             //小丸子不要厨房单
             pdKitchen.PrintPage += new PrintPageEventHandler(this.MyPrintDocument_PrintPage_to_Kitchen);
 
 
-            pdCashierDesk.PrintPage += new PrintPageEventHandler(this.MyPrintDocument_PrintPage_to_CashierDesk);
+            //pdCashierDesk.PrintPage += new PrintPageEventHandler(this.MyPrintDocument_PrintPage_to_CashierDesk);
 
             //ppd.Document = pd;
 
@@ -638,7 +642,9 @@ private void MyPrintDocument_PrintPage_to_CashierDesk(object sender, System.Draw
         void myTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             Console.WriteLine("定时器获取最新订单数据:"+ DateTime.Now.ToString());
-            String response = this.dining_order_list(store_id, token);
+            //String response = this.dining_order_list(store_id, token);
+
+            String response = this.dining_order_list_print(store_id, token);
 
             if (response == null || response.ToString().Equals("") )
             {
@@ -668,9 +674,9 @@ private void MyPrintDocument_PrintPage_to_CashierDesk(object sender, System.Draw
                 foreach (JObject item in jArray)
                 {
                     joOrder = item;
-                    pd.Print();
+                    //pd.Print();
                     pdKitchen.Print();
-                    pdCashierDesk.Print();
+                    //pdCashierDesk.Print();
 
                 }
             }else
@@ -712,6 +718,50 @@ private void MyPrintDocument_PrintPage_to_CashierDesk(object sender, System.Draw
             return response;
             
         }
+
+
+
+        public string dining_order_list_print(String _store_id, String _token)
+        {
+            String timestamp = this.GetTimeStamp();
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+            dic.Add("appkey", appkey);
+            dic.Add("version", version);
+            dic.Add("timestamp", timestamp);
+            dic.Add("paytime", pay_time);            
+            dic.Add("token", _token);
+            dic.Add("store_id", _store_id);
+
+            //this.lbl_timestamp.Text = timestamp;
+            //this.lbl_pay_time.Text = pay_time;
+
+
+            Action<String> timestampDelegate = delegate (String b) { this.lbl_timestamp.Text = b; };
+            this.lbl_timestamp.Invoke(timestampDelegate, timestamp);
+
+            Action<String> payTimeDelegate = delegate (String b) { this.lbl_pay_time.Text = b; };
+            this.lbl_pay_time.Invoke(payTimeDelegate, pay_time);
+
+
+
+            String sign = this.GetSortedParas(dic) + secret;
+            Console.WriteLine(sign);
+            sign = this.EncryptWithMD5(sign);
+            Console.WriteLine(sign);
+            dic.Add("sign", sign);
+            
+
+            String response = this.Post(website + "/api/dining_order_list_print", dic);
+
+            pay_time = timestamp;
+
+            Console.WriteLine("订单表列返回数据：" + response);
+
+            return response;
+
+        }
+
+
 
         /**
         系统退出登录

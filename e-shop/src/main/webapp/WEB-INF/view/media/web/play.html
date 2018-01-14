@@ -19,6 +19,20 @@
 						<div class="title">${article.title}</div>
 						<div class="p" style="background:url(${article.articleThumb})">
 							
+<object id="video" width="640" height="400" border="0" classid="clsid:CFCDAA03-8BE4-11cf-B84B-0020AFBBCCFA"> 
+<param name="ShowDisplay" value="0"> 
+<param name="ShowControls" value="1"> 
+<param name="AutoStart" value="1"> 
+<param name="AutoRewind" value="0"> 
+<param name="PlayCount" value="0"> 
+<param name="Appearance" value="0" value=""> 
+<param name="BorderStyle" value="0" value=""> 
+<param name="MovieWindowHeight" value="400"> 
+<param name="MovieWindowWidth" value="640"> 
+<param name="FileName" value="${article.videoUrl}"> 
+<embed width="640" height="400" border="0" showdisplay="0" showcontrols="1" autostart="1" autorewind="0" playcount="0" moviewindowheight="400" moviewindowwidth="640" filename="${article.videoUrl}" src="${article.videoUrl}"></embed> 
+</object>
+
 						</div>
 					</div>
 					
