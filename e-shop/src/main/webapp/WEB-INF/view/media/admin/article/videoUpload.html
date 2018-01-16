@@ -21,13 +21,14 @@
 	
 	   <div class="input-group-btn" id="eq_pickfiles_videoUpload">
 	       <div class="btn btn-primary btn-file">
-		       <i class="glyphicon glyphicon-folder-open"></i>&nbsp;  
+		       <i id="choose_icon_videoUpload" class="glyphicon glyphicon-folder-open"></i>&nbsp;  
+		       <img id="loading_videoUpload" src="/images/loading.gif" style="display:none;" >
 		       <span class="hidden-xs">选择视频文件 …</span>
 	       </div>
 	   </div>
 	</div>
 	</div>
-	视频文件仅限mp4文件
+	
 	<input id="videoUpload" name="videoUpload" value="" type="hidden">
 	<input accept="file/*" id="upload_file_videoUpload" multiple="" data-updateid="" data-action="add" class="item_img_input pointer" name="imgs_videoUpload" style="opacity : 0;" type="file">
 	<script type="text/javascript">
@@ -50,7 +51,11 @@ $(function() {
         	
         },
         beforeSend: function(jqXHR) {
+        	$("#choose_icon_videoUpload").hide();
+        	$("#loading_videoUpload").show();
         },complete: function() {
+        	$("#choose_icon_videoUpload").show();
+        	$("#loading_videoUpload").hide();
         },
         success : function(data, textStatus, jqXHR){
         	console.log(JSON.stringify(data));

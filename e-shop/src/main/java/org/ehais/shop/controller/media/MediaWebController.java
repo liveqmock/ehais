@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.ehais.controller.CommonController;
 import org.ehais.epublic.mapper.EHaiArticleCatMapper;
 import org.ehais.epublic.mapper.EHaiArticleMapper;
@@ -248,7 +249,18 @@ public class MediaWebController extends CommonController{
 				return this.errorJump(modelMap, "空数据");
 			}
 			
-			modelMap.addAttribute("article", listArticle.get(0));
+			EHaiArticle article =  listArticle.get(0);
+			
+			modelMap.addAttribute("article", article);
+			
+			String videoUrl = article.getVideoUrl();
+			if(StringUtils.isNotBlank(videoUrl) && videoUrl.indexOf("mp4") > 0){
+				modelMap.addAttribute("playHtml", "mp4");
+			}else if(StringUtils.isNotBlank(videoUrl) && videoUrl.indexOf("flv") > 0){
+				modelMap.addAttribute("playHtml", "flv");
+			}else{
+				modelMap.addAttribute("playHtml", "");
+			}
 			
 			modelMap.addAttribute("currentNav", listArticle.get(0).getCatId().toString());
 			
@@ -273,11 +285,6 @@ public class MediaWebController extends CommonController{
 	}
 	
 	
-	@RequestMapping("/ueditor.lv")
-	public String ueditor(ModelMap modelMap,
-			HttpServletRequest request,HttpServletResponse response){
-		return "/media/ueditor";
-		
-	}
+
 	
 }

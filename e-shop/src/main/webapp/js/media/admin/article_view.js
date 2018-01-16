@@ -307,21 +307,24 @@ function getSelectCat(){
 	$("#catId option:not(:first-child)").remove();
 	$("#tree li").each(function(index,ele){
 		if(parseInt($(ele).attr("val")) > 0){
-			$("#catId").append("<option value='"+$(ele).attr("val")+"'>"+$(ele).text()+"</option>");
+			$("#catId").append("<option value='"+$(ele).attr("val")+"' "+($(ele).hasClass("active")?" selected='selected' ":"")+">"+$(ele).text()+"</option>");
 		}
 	});
 }
 
 function mediaArticleAddDetail(){
+	$("#qiniu_image_articleThumb").remove();
+	$("#eq_preview_wrapper_articleThumb").addClass("hide");
+	
+	$("#qiniu_image_videoUpload").remove();
+	$("#eq_preview_wrapper_videoUpload").addClass("hide");
 	//分类下拉菜单
 	getSelectCat();
 	//初始化值
 	$("input,textarea").val("");
-	ue.setContent("");
+//	ue.setContent("");
 	mediaDetailModal.modal("show");	
 	
-	$("#qiniu_image_articleThumb").remove();
-	$("#eq_preview_wrapper_articleThumb").addClass("hide");
 	
 	$("#mediaDetailFormModal").attr("action","add");
 }
@@ -348,7 +351,7 @@ function mediaArticleEditDetail(articleId){
 			
 			if(!isBlank(result.model.articleThumb))show_articleThumb_pic(result.model.articleThumb);
 			if(!isBlank(result.model.videoUrl))show_videoUpload_pic("/images/video.png");
-			ue.setContent(result.model.content);
+//			ue.setContent(result.model.content);
 			
 			mediaDetailModal.modal("show");
 			$("#mediaDetailFormModal").attr("action","edit");

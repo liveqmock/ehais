@@ -16,8 +16,16 @@
 			
 			
 			<section >
-				<div class="video"><img src="${article.articleThumb}"></div>
-				<div class="title">老外遇到广东早茶，吃的开始怀疑人生，为啥中国美食都那么好</div>
+				<div class="video" style="background:url(${article.articleThumb})">
+				
+				
+				<video width="320" height="240" controls="controls">
+				  <source src="${article.videoUrl}" type="video/mp4">
+					Your browser does not support the video tag.
+				</video>
+
+				</div>
+				<div class="title">${article.title}</div>
 			</section>
 			
 			

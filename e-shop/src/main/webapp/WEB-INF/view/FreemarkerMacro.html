@@ -599,7 +599,9 @@ function trash_gallery_${id}_pic(imgId,no){
 
    <div class="input-group-btn" id="eq_pickfiles_${id}">
        <div class="btn btn-primary btn-file">
-	       <i class="glyphicon glyphicon-folder-open"></i>&nbsp;  
+	       <i id="choose_icon_${id}" class="glyphicon glyphicon-folder-open"></i>
+	       <img id="loading_${id}" src="/images/loading.gif" style="display:none;">
+	       &nbsp;  
 	       <span class="hidden-xs">选择 …</span>
        </div>
    </div>
@@ -631,11 +633,13 @@ $(function() {
         dataType: 'json',
         done: function (e, data) {
         	
-        },
-        beforeSend: function(jqXHR) {
+        },beforeSend: function(jqXHR) {
+        	$("#choose_icon_${id}").hide();
+        	$("#loading_${id}").show();
         },complete: function() {
-        },
-        success : function(data, textStatus, jqXHR){
+        	$("#choose_icon_${id}").show();
+        	$("#loading_${id}").hide();
+        },success : function(data, textStatus, jqXHR){
         	console.log(JSON.stringify(data));
         	if(parseInt(data.code) != 1){
 				alert(data.info);
@@ -643,8 +647,7 @@ $(function() {
 			}
         	show_${id}_pic(data.msg);
         	$("#${id}").val(data.msg);
-        },
-        progressall: function (e, data) {
+        },progressall: function (e, data) {
             var progress = parseInt(data.loaded / data.total * 100, 10);
             $('#progress .progress-bar').css(
                 'width',

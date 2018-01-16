@@ -18,7 +18,9 @@
 					<div class="playwra">
 						<div class="title">${article.title}</div>
 						<div class="p" style="background:url(${article.articleThumb})">
-							
+
+
+<#if (playHtml == "mp4" )> 
 <object id="video" width="640" height="400" border="0" classid="clsid:CFCDAA03-8BE4-11cf-B84B-0020AFBBCCFA"> 
 <param name="ShowDisplay" value="0"> 
 <param name="ShowControls" value="1"> 
@@ -32,6 +34,20 @@
 <param name="FileName" value="${article.videoUrl}"> 
 <embed width="640" height="400" border="0" showdisplay="0" showcontrols="1" autostart="1" autorewind="0" playcount="0" moviewindowheight="400" moviewindowwidth="640" filename="${article.videoUrl}" src="${article.videoUrl}"></embed> 
 </object>
+</#if>
+
+<#if (playHtml == "flv")> 
+<object class id="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="/js/swflash.cab#version=7,0,19,0" width="640" height="400">
+  <param name="movie" value="/js/flvplayer.swf">
+  <param name="quality" value="high">
+  <param name="allowFullScreen" value="true">
+  <param name="FlashVars" value="vcastr_file=${article.videoUrl}">
+  <embed src="/js/flvplayer.swf" allowfullscreen="true" flashvars="vcastr_file=${article.videoUrl}" quality="high"  type="application/x-shockwave-flash" width="640" height="400"></embed>
+</object>
+</#if>
+
+
+
 
 						</div>
 					</div>

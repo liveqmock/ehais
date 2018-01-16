@@ -3,8 +3,33 @@ $(function(){
 
 });
 
+function checkVal(){
+	var title = $("#title").val();
+	var catId = $("#catId").val();
+	var videoUrl = $("#videoUrl").val();
+	var articleThumb = $("#articleThumb").val();
+	if(title.length == 0){
+		layer.msg("请输入标题");
+		return false;
+	}
+	if(catId == 0){
+		layer.msg("请选择分类");
+		return false;
+	}
+	if(videoUrl.length == 0){
+		layer.msg("请上传视频");
+		return false;
+	}
+	if(articleThumb.length == 0){
+		layer.msg("请上传图片");
+		return false;
+	}
+	return true;
+}
+
 
 function mediaArticleAddSubmit(){
+	if(!checkVal())return;
 	$.ajax({
 		url : "mediaArticleAddSubmit",
 		type:"post",dataType:"json",data:$("#mediaDetailFormModal").serialize(),
@@ -14,7 +39,7 @@ function mediaArticleAddSubmit(){
 				return ;
 			}else{
 				$('#mediaDetailFormModal')[0].reset();
-				ue.setContent("");
+//				ue.setContent("");
 				layer.confirm(result.msg, {
 					btn: ['继续添加','返回列表'] //按钮
 				}, function(){
