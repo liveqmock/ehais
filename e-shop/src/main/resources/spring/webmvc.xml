@@ -256,8 +256,8 @@
 	
 	
 	<bean id="mediaInterceptor" class="org.ehais.interceptor.MediaInterceptor">
-		<!-- <property name="securityPolicy" value="vod2.gcp.edu.cn vodmedia.gcp.edu.cn 219.222.224.45"/> -->
-		<property name="securityPolicy" value="10.0.10.220"/>
+		<property name="securityPolicy" value="vod2.gcp.edu.cn vodmedia.gcp.edu.cn 219.222.224.45 10.0.10.220 ovug9f17p.bkt.clouddn.com"/>
+		<!-- <property name="securityPolicy" value="10.0.10.220"/> -->
 	</bean>
 	
 	

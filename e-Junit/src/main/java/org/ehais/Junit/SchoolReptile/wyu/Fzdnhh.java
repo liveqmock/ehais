@@ -68,8 +68,8 @@ public class Fzdnhh extends ArticleCommonReptile{
 	
 	@Test
 	public void tnews(){
-		String url = "http://demo.ltpower.net/web/fzdnhh/news/show-4253.html";
-		this.newsinfo(url, "", "");
+		String url = "http://demo.ltpower.net/web/dzswpt/news/1197.html";
+		this.news(url, "", "");
 	}
 	
 	
@@ -95,24 +95,19 @@ public class Fzdnhh extends ArticleCommonReptile{
 	public void newsinfo(String url,String cat_name,String parent_cat_name){
     	try{
     		
+    		Document doc = Jsoup.connect(url).get();
+    		Elements table = doc.getElementsByTag("table");
+    		String title = doc.getElementsByClass("right-main-title").text();
+    		String date = doc.getElementsByClass("right-sub-title").first().getElementsByTag("span").first().text();
+    		Element c = doc.getElementsByClass("right-main-show").first();
+    		Element manu = c.getElementsByClass("manu").first();
+    		if(manu!=null)manu.remove();
+    		String content = c.html();
     		
-    		System.out.println(Jsoup.connect(url).get().html());
-    		
-    		
-//    		Document doc = Jsoup.connect(url).get();
-    		
-//    		Elements table = doc.getElementsByTag("table");
-//    		String title = doc.getElementsByClass("right-main-title").text();
-//    		String date = doc.getElementsByClass("right-sub-title").first().getElementsByTag("span").first().text();
-//    		Element c = doc.getElementsByClass("right-main-show").first();
-//    		Element manu = c.getElementsByClass("manu").first();
-//    		if(manu!=null)manu.remove();
-//    		String content = c.html();
-//    		
-////    		System.out.println(title);
-////    		System.out.println(date);
-////    		System.out.println(content);
-//    		article_save(store_id, cat_name, title, "", "", "", content,articleSource, url, parent_cat_name,null);
+//    		System.out.println(title);
+//    		System.out.println(date);
+//    		System.out.println(content);
+    		article_save(store_id, cat_name, title, "", "", "", content,articleSource, url, parent_cat_name,null);
     		
     		
     		

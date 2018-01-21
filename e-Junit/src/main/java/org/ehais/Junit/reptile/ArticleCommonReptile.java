@@ -72,4 +72,45 @@ public class ArticleCommonReptile {
     	
 	}
 	
+	public static void video_save(String store_id,
+			String cat_name,
+			String title,
+			String videoUrl,
+			String articleSource,
+			String link
+			){
+		Map<String, String> paramsMap = new HashMap<String, String>();
+		paramsMap.put("appkey", appkey);
+    	paramsMap.put("version", "v1.0");
+    	paramsMap.put("timestamp", String.valueOf(System.currentTimeMillis()));
+    	
+    	paramsMap.put("title", title);
+    	paramsMap.put("store_id", store_id);
+    	paramsMap.put("storeId", store_id);
+    	paramsMap.put("link", link);
+    	paramsMap.put("description", "");
+    	paramsMap.put("content", "");
+    	paramsMap.put("cat_name", cat_name);
+    	paramsMap.put("articleSource", articleSource);
+    	paramsMap.put("articleThumb", "");
+    	paramsMap.put("articleImages", "");
+    	paramsMap.put("videoUrl", videoUrl);
+    	
+    	
+		try {
+			String sign = SignUtil.getSignWS(paramsMap,secret).toLowerCase();
+			paramsMap.put("sign", sign);
+
+	    	String req = EHttpClientUtil.httpPost(web_url+"/api/article_save", paramsMap);
+			System.out.println(req);
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	
+	}
+	
+	
+	
 }

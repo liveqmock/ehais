@@ -116,6 +116,12 @@ $(function(){
     });
     
     
+    
+    $("#ftp_videoUrl").click(function(){
+    	getFTP();
+    });
+    
+    
 });
 
 function setHot(that,id){
@@ -375,3 +381,18 @@ function logout(){
 		layer.closeAll();
 	});
 }
+
+
+function getFTP() {
+
+	$.ajax({
+		url : "ftp.json",type:"post",dataType:"json",data:{},
+		success : function(result){
+			
+			
+		}
+	});
+	
+
+}
+

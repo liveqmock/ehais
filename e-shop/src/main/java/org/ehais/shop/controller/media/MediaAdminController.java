@@ -1,7 +1,10 @@
 package org.ehais.shop.controller.media;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,6 +31,8 @@ import org.ehais.shop.service.ArticleService;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.DateUtil;
+import org.ehais.util.FSO;
+import org.ehais.util.FfmpegUtil;
 import org.ehais.util.ResourceUtil;
 import org.ehais.util.UploadUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +63,14 @@ public class MediaAdminController extends CommonController{
 	protected String video_transfer_website = ResourceUtil.getProValue("video.transfer.website");
 	//视频上传格式
 	protected String video_postfix = ResourceUtil.getProValue("video.postfix");
-	
+	//视频截图尺寸
+	protected String video_pic_size = ResourceUtil.getProValue("video.pic.size");
+	//ffmpeg的路径
+	protected String video_ffmpeg_path = ResourceUtil.getProValue("video.ffmpeg.path");
+	//ftp的地址
+	protected String video_ftp_path = ResourceUtil.getProValue("video.ftp.path");
+	//ffmpeg转码图片的地址
+	private String images_path ;
 			
 	@Autowired
 	private ArticleService mediaArticleService;
@@ -66,6 +78,8 @@ public class MediaAdminController extends CommonController{
 	private ArticleCatService mediaArticleCatService;
 	@Autowired
 	private EHaiAdminUserService eHaiAdminUserService;
+	@Autowired
+	private EHaiArticleMapper eHaiArticleMapper;
 	
 	@EPermissionMethod(name="查询",intro="打开视频管理页面",value="login.me",type=PermissionProtocol.URL)
 	@RequestMapping("/login.me")
@@ -182,9 +196,26 @@ public class MediaAdminController extends CommonController{
 			BindingResult result
 			) {
 			if(result.hasErrors())return this.writeBindingResult(result);
+			
+			images_path = request.getRealPath("/eUploads/images");
+			
 		try{
+
+			//如果保存的视频非mp4，则异步转码，并设置数据为转码中状态
+			if(StringUtils.isNotBlank(article.getVideoUrl()) && article.getVideoUrl().indexOf("mp4")<0){
+				article.setIsOpen(false);
+			}else{
+				article.setIsOpen(true);
+			}
+			
 			
 			ReturnObject<EHaiArticle> rm = mediaArticleService.article_insert_submit(request,EArticleModuleEnum.ARTICLE, article,goodsId);
+			if(StringUtils.isNotBlank(article.getVideoUrl()) && article.getVideoUrl().indexOf("mp4")<0){
+				FfmpegThread ft = new FfmpegThread(article.getArticleId() ,article.getVideoUrl());
+				ft.start();
+			}
+			
+			
 			return this.writeJson(rm);
 			
 		}catch(Exception e){
@@ -224,8 +255,27 @@ public class MediaAdminController extends CommonController{
 			BindingResult result
 			) {
 			if(result.hasErrors())return this.writeBindingResult(result);
+			
+			images_path = request.getRealPath("/eUploads/images");
+			
 		try{
-			return this.writeJson(mediaArticleService.article_update_submit(request,EArticleModuleEnum.ARTICLE,article,goodsId));
+			
+			//如果保存的视频非mp4，则异步转码，并设置数据为转码中状态
+			if(StringUtils.isNotBlank(article.getVideoUrl()) && article.getVideoUrl().indexOf("mp4")<0){
+				article.setIsOpen(false);
+			}else{
+				article.setIsOpen(true);
+			}
+			
+			
+			ReturnObject<EHaiArticle> rm = mediaArticleService.article_update_submit(request,EArticleModuleEnum.ARTICLE,article,goodsId);
+			if(StringUtils.isNotBlank(article.getVideoUrl()) && article.getVideoUrl().indexOf("mp4")<0){
+				FfmpegThread ft = new FfmpegThread(article.getArticleId() ,article.getVideoUrl());
+				ft.start();
+				
+			}
+			
+			return this.writeJson(rm);
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("article", e);
@@ -408,5 +458,66 @@ public class MediaAdminController extends CommonController{
 	}
 	
 	
+	@ResponseBody
+	@RequestMapping(value = "/ftp.json", method = RequestMethod.POST)
+	public String ftp_list(ModelMap modelMap, HttpServletRequest request,
+			HttpServletResponse response){
+		ReturnObject<String> rm = new ReturnObject<String>();
+		List<String> list = new ArrayList<String>();
+		
+		try {
+			FSO.ReadfileList(list, video_ftp_path);
+			
+			rm.setRows(list);
+			rm.setCode(1);
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return this.writeJson(rm);
+	}
+	
+	
+	class FfmpegThread extends Thread{  
+	    private Integer articleId;  
+	    private String videoUrl;  
+	    public FfmpegThread(Integer articleId,String videoUrl) {  
+	       this.articleId=articleId;  
+	       this.videoUrl=videoUrl;  
+	    }  
+	    public void run() {  
+	        System.out.println("============转码开始==================");
+	    	try {
+	    		
+	    		System.out.println(video_ffmpeg_path);
+	    		System.out.println(video_path+videoUrl);
+	    		System.out.println(video_path+videoUrl.substring(0, videoUrl.indexOf("."))+"mp4");
+	    		System.out.println(images_path+"/"+String.valueOf(System.currentTimeMillis())+".png");
+	    		System.out.println(video_pic_size);
+	    		
+	    		String article_video = videoUrl.substring(0, videoUrl.indexOf("."))+".mp4";
+	    		String article_images = String.valueOf(System.currentTimeMillis())+".png";
+	    		
+				FfmpegUtil.executeCodecs(video_ffmpeg_path, video_path+videoUrl, video_path+article_video ,images_path+"/"+article_images ,  video_pic_size);
+				
+				
+				EHaiArticle article = eHaiArticleMapper.selectByPrimaryKey(articleId);
+				if(StringUtils.isBlank(article.getArticleThumb()))article.setArticleImages("/eUploads/images/"+article_images);
+				article.setVideoUrl(article_video);
+				article.setIsOpen(true);
+				eHaiArticleMapper.updateByPrimaryKey(article);
+				
+				
+				System.out.println("============转码结束==================");
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	         
+	    }  
+	} 
 	
 }

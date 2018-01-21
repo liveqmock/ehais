@@ -1,4 +1,18 @@
 
+<div class="modal fade" id="mediaDetailModal" tabindex="-1" role="dialog" aria-labelledby="mediaDetailModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="mediaLabel">视频信息管理</h4>
+            </div>
+            <div class="modal-body">
+            	<form id="mediaDetailFormModal" name="mediaDetailFormModal" class="form-horizontal" method="post">
+
+					
+
+
+<!-- main start -->
 <div style="width: 100%;height: 40px;"></div>
 <div class="container-fluid">
 
@@ -27,7 +41,7 @@
 <label class="col-sm-2 control-label">视频链接</label>
 <div class="col-sm-10">
 	<#include "videoUpload.html"/>
-	<input type="text" class="form-control" id="videoUrl" name="videoUrl" value="" placeholder="">
+	<input type="text" class="form-control" id="videoUrl" name="videoUrl" value="" placeholder="网站外部链接手动录入">
 </div>
 </div>
 
@@ -57,6 +71,17 @@
 	<div class="col-sm-6"><button id="saveSubmit" type="button" class="btn btn-primary">提交信息</button></div>
 </div>
 
+</div>
+
+<!-- main end -->
+            	</form>
+            </div>
+            <div class="modal-footer dn">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="haiTempSublateFormSubmit">提交</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
 </div>
 
 <script type="text/javascript">

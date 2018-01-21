@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.ehais.epublic.mapper.EHaiArticleCatMapper;
 import org.ehais.epublic.mapper.EHaiArticleMapper;
@@ -15,7 +16,12 @@ import org.ehais.epublic.model.EHaiArticle;
 import org.ehais.epublic.model.EHaiArticleCat;
 import org.ehais.epublic.model.EHaiArticleCatExample;
 import org.ehais.epublic.model.EHaiArticleExample;
+import org.ehais.shop.mapper.HaiCartMapper;
+import org.ehais.shop.model.HaiCart;
+import org.ehais.shop.model.HaiCartExample;
+import org.ehais.shop.model.HaiCartWithBLOBs;
 import org.ehais.tools.ReturnObject;
+import org.ehais.util.ResourceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -36,6 +42,12 @@ public class MediaWebController extends CommonController{
 	private EHaiArticleMapper eHaiArticleMapper;
 	@Autowired
 	private EHaiArticleCatMapper eHaiArticleCatMapper;
+	@Autowired
+	private HaiCartMapper haiCartMapper;
+	
+	
+	protected String video_transfer_website = ResourceUtil.getProValue("video.transfer.website");
+	
 	
 	private Integer store_id = 1;
 	private String modal = "web";
@@ -225,6 +237,8 @@ public class MediaWebController extends CommonController{
 			HttpServletRequest request,HttpServletResponse response,
 			@PathVariable(value = "id") Integer id){
 		
+		String s_encode = (String) request.getSession().getAttribute(EConstants.SESSION_SHOP_ENCODE);
+		
 		try{
 			modal = "web";
 			if(isWeiXin(request) || JudgeIsMoblie(request))modal = "h5";
@@ -251,7 +265,7 @@ public class MediaWebController extends CommonController{
 			
 			EHaiArticle article =  listArticle.get(0);
 			
-			modelMap.addAttribute("article", article);
+			
 			
 			String videoUrl = article.getVideoUrl();
 			if(StringUtils.isNotBlank(videoUrl) && videoUrl.indexOf("mp4") > 0){
@@ -276,6 +290,47 @@ public class MediaWebController extends CommonController{
 			modelMap.addAttribute("listArticleHot", listArticleHot);
 			
 			
+			HaiCartExample cartExample = new HaiCartExample();
+			cartExample.createCriteria()
+			.andSessionIdEqualTo(s_encode)
+			.andArticleIdEqualTo(id)
+			.andExtensionCodeEqualTo("video");
+			Long c = haiCartMapper.countByExample(cartExample);
+			if(c == 0){//访问数量
+				HaiCartWithBLOBs cart = new HaiCartWithBLOBs();
+				cart.setSessionId(s_encode);
+				cart.setArticleId(id);
+				cart.setExtensionCode("video");
+				cart.setUserId(0L);
+				cart.setGoodsId(0L);
+				cart.setGoodsName("");
+				cart.setMarketPrice(0);
+				cart.setGoodsPrice(0);
+				cart.setGoodsNumber(0);
+				cart.setGoodsSn("");
+				
+				cart.setGoodsAttr("");
+				cart.setStoreId(store_id);
+				cart.setParentUserId(0L);//来源分销的用户
+				cart.setAgencyId(0);
+				cart.setProductId(0L);
+				cart.setIsReal(true);
+				cart.setParentId(0L);
+				cart.setRecType(true);
+				cart.setIsGift(Short.parseShort("0"));
+				cart.setIsShipping(true);
+				cart.setCanHandsel(Byte.valueOf("0"));
+				
+				haiCartMapper.insert(cart);
+				
+				article.setReadCount((article.getReadCount()==null?0:article.getReadCount())+1);
+				
+				eHaiArticleMapper.updateByPrimaryKey(article);
+			}
+			
+			modelMap.addAttribute("article", article);
+			modelMap.addAttribute("video_transfer_website", video_transfer_website);
+			
 			return "/media/"+modal+"/play";
 		}catch(Exception e){
 			e.printStackTrace();
@@ -285,6 +340,11 @@ public class MediaWebController extends CommonController{
 	}
 	
 	
+	
+	 
 
 	
 }
+
+
+

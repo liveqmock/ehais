@@ -53,8 +53,8 @@ public class UploadUtils {
 					filedata.transferTo(localFile);
 
 
-					String url = request.getScheme() + "://"+ request.getServerName() ;//+ ":"+ request.getLocalPort();
-					url += "/eUploads/images/" + newFileName;
+//					String url = request.getScheme() + "://"+ request.getServerName() ;//+ ":"+ request.getLocalPort();
+					String url = "/eUploads/images/" + newFileName;
 					map.put("msg", url);
 
 					map.put("location", path + "/" + newFileName);
@@ -105,8 +105,8 @@ public class UploadUtils {
 							path + "/" + newFileName+ "_120_120." + extensionName,extensionName);
 					
 					
-					String url = request.getScheme() + "://" + request.getServerName() ;//+ ":"+ request.getLocalPort();
-					url += "/eUploads/images/" + newFileName+ "." + extensionName;
+//					String url = request.getScheme() + "://" + request.getServerName() ;//+ ":"+ request.getLocalPort();
+					String url = "/eUploads/images/" + newFileName+ "." + extensionName;
 					
 					map.put("msg", url);
 
@@ -231,15 +231,16 @@ public class UploadUtils {
 					// 写文件到本地
 					filedata.transferTo(localFile);
 
-					String url = website;
+//					String url = website;
+					String url = "";
 					
-					if(StringUtils.isBlank(website)){
-						url = request.getScheme() + "://" + request.getServerName() ;//+ ":" + request.getLocalPort();
-					}
+//					if(StringUtils.isBlank(website)){
+//						url = request.getScheme() + "://" + request.getServerName() ;//+ ":" + request.getLocalPort();
+//					}
 					
-					if(StringUtils.isBlank(video_path)){
-						url += pre_path;
-					}
+//					if(StringUtils.isBlank(video_path)){
+//						url += pre_path;
+//					}
 					
 					//需要转到某服务器
 					if(transfer && StringUtils.isNotBlank(posturl)){

@@ -19,16 +19,22 @@
 	   <div class="file-caption-name" title=""></div>
 	</div>
 	
-	   <div class="input-group-btn" id="eq_pickfiles_videoUpload">
-	       <div class="btn btn-primary btn-file">
+	   <div class="input-group-btn" >
+	       <div class="btn btn-primary btn-file" id="eq_pickfiles_videoUpload">
 		       <i id="choose_icon_videoUpload" class="glyphicon glyphicon-folder-open"></i>&nbsp;  
 		       <img id="loading_videoUpload" src="/images/loading.gif" style="display:none;" >
-		       <span class="hidden-xs">选择视频文件 …</span>
+		       <span class="hidden-xs">上传视频 …</span>
 	       </div>
+	       
+	       <div class="btn btn-primary btn-file" id="ftp_videoUrl">
+		       <i id="choose_icon_videoUpload" class="glyphicon glyphicon-folder-open"></i>&nbsp;  
+		       <span class="hidden-xs">FTP视频 …</span>
+	       </div>
+	       
 	   </div>
 	</div>
 	</div>
-	视频格式支持rm|rmvb|wmv|avi|mp4|3gp|mkv|flv
+	上传视频格式支持不超过500M的rm|rmvb|wmv|avi|mp4|3gp|mkv|flv文件，超过500M的文件请使用ftp工具上传
 	<input id="videoUpload" name="videoUpload" value="" type="hidden">
 	<input accept="file/*" id="upload_file_videoUpload" multiple="" data-updateid="" data-action="add" class="item_img_input pointer" name="imgs_videoUpload" style="opacity : 0;" type="file">
 	<script type="text/javascript">
