@@ -3,12 +3,15 @@ var bsTable ;
 var keyword = "";
 var mediaDetailModal;
 var mediaCategoryModal;
+var modifyPwdModal;
 
 $(function(){
 	getTree();
 	
 	mediaDetailModal = $("#mediaDetailModal").modal({ backdrop: 'static', keyboard: false , show : false });
 	mediaCategoryModal = $("#mediaCategoryModal").modal({ backdrop: 'static', keyboard: false , show : false });
+	modifyPwdModal = $("#modifyPwdModal").modal({ backdrop: 'static', keyboard: false , show : false });
+	
 	
 	$("#addCate").click(function(){addCate();});
 	$("#editCate").click(function(){editCate();});
@@ -122,6 +125,14 @@ $(function(){
     });
     
     
+    $("#modifyPwd").click(function(){
+    	modifyPwdModal.modal("show");
+    });
+    
+    
+    $("#mediaMedifyPwdFormSubmit").click(function(){
+    	mediaMedifyPwdFormSubmit();
+    });
 });
 
 function setHot(that,id){
@@ -195,6 +206,45 @@ function mediaArticleDelete(articleId){
 	}, function(){
 		layer.closeAll();
 	});
+}
+
+//修改密码
+function mediaMedifyPwdFormSubmit(){
+	
+	var old_password = $("#old_password").val();
+	var new_password = $("#new_password").val();
+	var confirmed_password = $("#confirmed_password").val();
+	if(old_password.length == 0){
+		layer.msg("请输入旧密码");
+		return false;
+	}
+	if(new_password.length == 0){
+		layer.msg("请输入新密码");
+		return false;
+	}
+	if(confirmed_password.length == 0){
+		layer.msg("请输入确认密码");
+		return false;
+	}
+	if(new_password != confirmed_password){
+		layer.msg("确认密码不一致");
+		return false;
+	}
+	
+	
+	$.ajax({
+		url : "mediaModifyPwdSubmit",type:"post",dataType:"json",data:{
+			old_password:old_password,
+			new_password:new_password,
+			confirmed_password:confirmed_password
+		},
+		success:function(result){
+			layer.msg(result.msg);
+			modifyPwdModal.modal("hide");
+		}
+	});
+	
+	
 }
 
 function addCate(){

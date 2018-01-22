@@ -71,7 +71,7 @@
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-left">
 															<input type="text" id="verificationcode" name="verificationcode" class="form-control w100" placeholder="验证码" />
-															<img class="vcode" id="verificationimg" name="verificationimg" src="/auth/AuthImage"/>
+															<img class="vcode" id="verificationimg" height="30" name="verificationimg" src="/auth/AuthImage2"/>
 															<i class="fa fa-refresh"></i>
 														</span>
 													</label>
@@ -164,7 +164,7 @@ function login_submit(){
 }
 
 function changeImg(){
-    $("#verificationimg").attr("src","/auth/AuthImage?date=" + new Date())
+    $("#verificationimg").attr("src","/auth/AuthImage2?date=" + new Date())
 }
 
 </script>

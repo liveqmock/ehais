@@ -28,6 +28,7 @@ import org.ehais.shop.mapper.HaiArticleGoodsMapper;
 import org.ehais.shop.mapper.HaiGoodsMapper;
 import org.ehais.shop.service.ArticleCatService;
 import org.ehais.shop.service.ArticleService;
+import org.ehais.shop.service.HaiAdminUserService;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.DateUtil;
@@ -80,6 +81,9 @@ public class MediaAdminController extends CommonController{
 	private EHaiAdminUserService eHaiAdminUserService;
 	@Autowired
 	private EHaiArticleMapper eHaiArticleMapper;
+	@Autowired
+	private HaiAdminUserService haiAdminUserService;
+	
 	
 	@EPermissionMethod(name="查询",intro="打开视频管理页面",value="login.me",type=PermissionProtocol.URL)
 	@RequestMapping("/login.me")
@@ -435,6 +439,29 @@ public class MediaAdminController extends CommonController{
 			return this.errorJSON(e);
 		}
 	}
+	
+	
+	
+	@ResponseBody
+	@RequestMapping("/mediaModifyPwdSubmit")
+	public String mediaModifyPwdSubmit(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "old_password", required = true) String old_password,
+			@RequestParam(value = "new_password", required = true) String new_password,
+			@RequestParam(value = "confirmed_password", required = true) String confirmed_password
+			) {	
+		try{
+			
+			ReturnObject<EHaiAdminUser> rm = haiAdminUserService.adminuser_modify_password(request, old_password, new_password, confirmed_password);
+			return this.writeJson(rm);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+		
+	}
+	
 	
 	
 	

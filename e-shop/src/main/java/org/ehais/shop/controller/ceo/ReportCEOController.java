@@ -92,8 +92,8 @@ public class ReportCEOController extends CommonController{
 			Date startDate = DateUtil.formatDate(state_date, DateUtil.FORMATSTR_3);
 			Date endDate = DateUtil.formatDate(end_date, DateUtil.FORMATSTR_3);
 			endDate = DateUtil.addDate(endDate, 1);
-			Integer start_time = Long.valueOf(startDate.getTime() / 1000).intValue();
-			Integer end_time = Long.valueOf(endDate.getTime() / 1000).intValue();
+			Long start_time = startDate.getTime();
+			Long end_time = endDate.getTime();
 			List<OrderStoreStatistics> list = haiOrderInfoMapper.order_dining_statistics(store_id, start_time, end_time);
 			rm.setRows(list);
 			rm.setCode(1);

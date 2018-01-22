@@ -31,8 +31,8 @@ public interface HaiOrderInfoMapper {
 			" and pay_time >= #{start_time} and pay_time < #{end_time} ")
 	List<Long> order_id_paytime_record(
 			@Param("store_id") Integer store_id,
-			@Param("start_time") Integer start_time,
-			@Param("end_time") Integer end_time
+			@Param("start_time") Long start_time,
+			@Param("end_time") Long end_time
 			);
 	
 	
@@ -48,19 +48,19 @@ public interface HaiOrderInfoMapper {
 	
 	
 	//统计某商品在某时间段的销售量
-	@Select("select SUM(g.goods_number) as quantity,DATE_FORMAT(FROM_UNIXTIME(o.pay_time),'%Y-%m-%d') as sale_date " + 
+	@Select("select SUM(g.goods_number) as quantity,DATE_FORMAT(FROM_UNIXTIME(o.pay_time / 1000),'%Y-%m-%d') as sale_date " + 
 			" from hai_order_info o left join hai_order_goods g on o.order_id = g.order_id " + 
 			" where o.order_status = 1 and g.goods_id = #{goods_id} and o.store_id = #{store_id} " +
 			" and o.pay_time >= #{start_time} and o.pay_time < #{end_time} "+
-			" group by DATE_FORMAT(FROM_UNIXTIME(o.pay_time),'%Y-%m-%d')")
+			" group by DATE_FORMAT(FROM_UNIXTIME(o.pay_time / 1000),'%Y-%m-%d')")
 	@Results(value = {
 			@Result(property="saleDate", column="sale_date"),
 			@Result(property="quantity", column="quantity")
 	})
 	List<OrderGoodsDaySaleStatistics> order_goods_day_sale_statistics(
 			@Param("store_id") Integer store_id,
-			@Param("start_time") Integer start_time,
-			@Param("end_time") Integer end_time,
+			@Param("start_time") Long start_time,
+			@Param("end_time") Long end_time,
 			@Param("goods_id") Long goods_id);
 	
 	
@@ -132,10 +132,10 @@ public interface HaiOrderInfoMapper {
 	@Select("select "+
 			" sum(case when pay_name='微信支付' then order_amount end) as weixin_amount, "+
 			" sum(case when pay_name='现金支付' then order_amount end) as cash_amount, "+
-			" DATE_FORMAT(FROM_UNIXTIME(pay_time),'%Y-%m-%d') as pay_time "+
+			" DATE_FORMAT(FROM_UNIXTIME(pay_time / 1000),'%Y-%m-%d') as pay_time "+
 			" from hai_order_info where store_id = #{store_id} and order_status = 1 " + 
 			" and pay_time >= #{start_time} and pay_time < #{end_time} " + 
-			" GROUP BY DATE_FORMAT(FROM_UNIXTIME(pay_time),'%Y-%m-%d')")
+			" GROUP BY DATE_FORMAT(FROM_UNIXTIME(pay_time / 1000),'%Y-%m-%d')")
 	@Results(value = {
 			@Result(property="weixinAmount", column="weixin_amount"),
 			@Result(property="cashAmount", column="cash_amount"),
@@ -143,8 +143,8 @@ public interface HaiOrderInfoMapper {
 	})
 	List<OrderStoreStatistics> order_dining_statistics(
 			@Param("store_id") Integer store_id,
-			@Param("start_time") Integer start_time,
-			@Param("end_time") Integer end_time
+			@Param("start_time") Long start_time,
+			@Param("end_time") Long end_time
 			);
 	
 

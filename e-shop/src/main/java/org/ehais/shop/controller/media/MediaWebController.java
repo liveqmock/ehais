@@ -53,6 +53,18 @@ public class MediaWebController extends CommonController{
 	private String modal = "web";
 	private Integer len  = 4;
 	private Integer hot_len  = 9;
+	
+	private void v_common(ModelMap modelMap,HttpServletRequest request) {
+		store_id = 1;
+		modelMap.addAttribute("logo", "logo");
+		modelMap.addAttribute("company", "广州城市职业学院");			
+		String serverName = request.getServerName();
+		if(serverName.equals("gjs.ehais.org")) {
+			store_id = 2;
+			modelMap.addAttribute("logo", "g_logo");
+			modelMap.addAttribute("company", "广东技术师范学院");
+		}
+	}
 
 	@RequestMapping("/index.do")
 	public String index(ModelMap modelMap,
@@ -62,6 +74,8 @@ public class MediaWebController extends CommonController{
 			
 			modal = "web";
 			hot_len  = 9;
+			
+			this.v_common(modelMap,request);
 			
 			if(isWeiXin(request) || JudgeIsMoblie(request)){
 				modal = "h5";
@@ -135,6 +149,9 @@ public class MediaWebController extends CommonController{
 			@RequestParam(value = "rows", required = false) Integer rows){
 		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
 		rm.setCode(0);
+		
+		this.v_common(modelMap,request);
+		
 		try{
 			int psize = rows==null?len:rows;
 			EHaiArticleExample ae = new EHaiArticleExample();
@@ -169,6 +186,8 @@ public class MediaWebController extends CommonController{
 			@RequestParam(value = "page", required = false) Integer page){
 		
 		modelMap.addAttribute("currentNav", cid.toString());
+		
+		this.v_common(modelMap,request);
 		
 		try{
 			modal = "web";
@@ -238,6 +257,8 @@ public class MediaWebController extends CommonController{
 			@PathVariable(value = "id") Integer id){
 		
 		String s_encode = (String) request.getSession().getAttribute(EConstants.SESSION_SHOP_ENCODE);
+		
+		this.v_common(modelMap,request);
 		
 		try{
 			modal = "web";
