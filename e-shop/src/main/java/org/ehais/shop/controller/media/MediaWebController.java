@@ -59,7 +59,7 @@ public class MediaWebController extends CommonController{
 		modelMap.addAttribute("logo", "logo");
 		modelMap.addAttribute("company", "广州城市职业学院");			
 		String serverName = request.getServerName();
-		if(serverName.equals("gjs.ehais.org")) {
+		if(serverName.equals("gjs.ehais.org") || serverName.equals("gmedia.ehais.com")) {
 			store_id = 2;
 			modelMap.addAttribute("logo", "g_logo");
 			modelMap.addAttribute("company", "广东技术师范学院");

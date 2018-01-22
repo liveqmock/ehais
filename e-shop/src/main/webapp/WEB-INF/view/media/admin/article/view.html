@@ -15,21 +15,78 @@
 				<i class="icon fa fa-home">&nbsp;</i>
 				<div class="nav0">O-E视频管理系统</div>
 				
-				<ul class="header_icon">
-					<li id="addCate" class="fr fa fa-plus">新增分类</li>
-					<li id="editCate" class="fr fa fa-edit">编辑分类</li>
-					<li id="deleteCate" class="fr fa fa-trash-o">删除分类</li>
-					<li id="mediaArticleAddDetail" class="fr fa fa-plus">新增视频</li>
-				</ul>
+				<div class="dropdown">
+					<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuUser" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+					<span class="glyphicon glyphicon-th"></span> 
+					 分类管理
+					<span class="caret"></span>
+					</button>
+				  <ul class="dropdown-menu" aria-labelledby="dropdownMenuUser">
+				    <li><a id="addCate" href="javascript:;" class="glyphicon glyphicon-plus-sign">新增分类</a></li>
+				    <li><a id="editCate" href="javascript:;" class="glyphicon glyphicon-cog">编辑分类</a></li>
+				    <li><a id="deleteCate" href="javascript:;" class="glyphicon glyphicon-trash">删除分类</a></li>
+				  </ul>
+				</div>
+				
+				<div class="dropdown" >
+					<button  class="btn btn-default dropdown-toggle" type="button" id="mediaArticleAddDetail"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+					<span class="glyphicon glyphicon-plus"></span> 
+					上传视频
+					</button>
+				</div>
+				
+				
+				
+				
 				<div class="search_icon">
 					<input id="keyword" class="control"/>
 					<button id="btnSearch" class="fa fa-search btn btn-default control">搜索</button>
 				</div>
-				<ul class="header_icon">
-					<li>帐号：${session_admin_name}</li>
-					<li id="modifyPwd">修改密码</li>
-					<li id="logout">退出</li>
-				</ul>
+								
+				
+				
+				
+				<div class="dropdown">
+					<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+					<span class="glyphicon glyphicon-film"></span> 
+					 宣传图管理
+				<span class="caret"></span>
+				</button>
+				  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+				    <li><a href="javascript:;" class="glyphicon glyphicon-plus-sign">新增宣传图</a></li>
+				    <li role="separator" class="divider"></li>
+				    <li><a href="javascript:;" class="glyphicon glyphicon-align-justify">宣传图管理</a></li>
+				  </ul>
+				</div>
+				
+				
+				<div class="dropdown">
+					<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuUser" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+					<span class="glyphicon glyphicon-th"></span> 
+					 管理员信息
+				<span class="caret"></span>
+				</button>
+				  <ul class="dropdown-menu" aria-labelledby="dropdownMenuUser">
+				    <li><a href="javascript:;" class="glyphicon glyphicon-plus-sign">新增管理员</a></li>
+				    <li role="separator" class="divider"></li>
+				    <li><a href="javascript:;" class="glyphicon glyphicon-align-justify">管理信息</a></li>
+				  </ul>
+				</div>
+				
+				<div class="dropdown">
+					<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuUser" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+					<span class="glyphicon glyphicon-user"></span> 
+					 帐号：${session_admin_name}
+				<span class="caret"></span>
+				</button>
+				  <ul class="dropdown-menu" aria-labelledby="dropdownMenuUser">
+				    <li><a id="modifyPwd" href="javascript:;" class="glyphicon glyphicon-screenshot">修改密码</a></li>					
+				    <li role="separator" class="divider"></li>
+				    <li><a id="logout" href="javascript:;" class="glyphicon glyphicon-share-alt">退出</a></li>
+				  </ul>
+				</div>
+
+
 			</div>
 		</div>
 		<div class="body">
@@ -42,6 +99,12 @@
 				<div class="col_main">
 					<div class="main_table">
 						<table id="bsTable" data-show-columns="false"></table>
+						
+						<table id="adTable" data-show-columns="false"></table>
+						
+						
+						<table id="adminTable" data-show-columns="false"></table>
+						
 					</div>
 				</div>
 			</div>
