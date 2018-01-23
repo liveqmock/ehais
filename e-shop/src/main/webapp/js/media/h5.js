@@ -12,6 +12,13 @@ var defaultimg = "http://ovug9f17p.bkt.clouddn.com/dining121.jpg";
 
 $(function(){
 	
+	var mySwiper = new Swiper ('.swiper-container', {
+	    direction: 'horizontal',
+	    loop: true,
+	    autoplay: 5000,
+	    pagination: '.swiper-pagination',
+	}); 
+	
 	
 	$("#clist").height(parseFloat($(window).height()) - parseFloat($("header").height()) - parseFloat($("footer").height()) - parseFloat($("#cate").height()) - parseFloat($("footer").css('padding-top').replaceAll("px","")) - parseFloat($("footer").css('padding-bottom').replaceAll("px","")));
 	

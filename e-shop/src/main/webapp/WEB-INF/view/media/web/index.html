@@ -2,12 +2,15 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<title></title>
+		<title>${company}</title>
 		<link rel="stylesheet" href="css/pclive.css" />
 		
 		<script type="text/javascript" src="/js/jquery-1.8.3.min.js" ></script>
 		<script type="text/javascript" src="/js/media/web.js" ></script>
 		<script type="text/javascript" src="/js/media/vod.js" ></script>
+		
+		<link rel="stylesheet" href="js/swiper/swiper-3.4.2.min.css" />
+		<script type="text/javascript" src="js/swiper/swiper-3.4.2.jquery.min.js" ></script>
 		
 	</head>
 	<body>
@@ -17,45 +20,20 @@
 			<#include "header.html">
 			
 			<div class="ad">
-				<div class="adwrap">
-					<ul>
+				<div class="scroll swiper-container">
+					<ul class="swiper-wrapper">
+						<#if (adList?? && adList?size > 0)>
+						<#list adList as ad>
+						<li class="swiper-slide"><a href="javascript:;" title="${ad.adName!''}"><img src="${ad.adPic!''}"></a></li>
+						</#list>
+						<#else>
 						<li><img src="img/1366/banner.png" /></li>
+						</#if>
+						
 					</ul>
+					<div class="swiper-pagination"></div>
 				</div>
-				<!-- 
-				<div class="nav">
-					<ul>
-						<li class="active">
-							<div>歌舞青春</div>
-							<div>挥洒斗志，成就梦想</div>
-						</li>
-						<li class="">
-							<div>学思践悟十九大：畅想2050</div>
-							<div></div>
-						</li>
-						<li class="">
-							<div>共筑中国梦：共筑中国梦</div>
-							<div></div>
-						</li>
-						<li class="">
-							<div>公仆之路：公仆之路</div>
-							<div></div>
-						</li>
-						<li class="">
-							<div>走进科学：蒙丽莎的真相</div>
-							<div></div>
-						</li>
-						<li class="">
-							<div>校内原创视频：视频</div>
-							<div></div>
-						</li>
-						<li class="">
-							<div>宣传片：炫风车手进校园</div>
-							<div></div>
-						</li>
-					</ul>
-				</div>
-				 -->
+				
 				 
 			</div>
 			<div class="recommend">

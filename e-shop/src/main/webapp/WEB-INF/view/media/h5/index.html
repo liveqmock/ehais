@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
-		<title>城职院视频</title>
+		<title>${company}</title>
 		<link rel="stylesheet" href="css/h5live.css" />
 		<script type="text/javascript" src="/js/jquery-2.1.4.min.js" ></script>
 		<script type="text/javascript" src="js/common.js" ></script>
@@ -13,6 +13,8 @@
 		
 		<script type="text/javascript" src="js/jroll/jroll.js" ></script>
 		
+		<link rel="stylesheet" href="js/swiper/swiper-3.4.2.min.css" />
+		<script type="text/javascript" src="js/swiper/swiper-3.4.2.jquery.min.js" ></script>
 		
 				
 	</head>
@@ -26,7 +28,25 @@
 				<!-- c0 start -->
 				<div id="c0" class="active">
 					<ul>
-						<li class="ad"><img src="img/media_h5/banner.png" /></li>
+						<li class="ad">
+						
+						
+						<div class="scroll swiper-container">
+							<ul class="swiper-wrapper">
+								<#if (adList?? && adList?size > 0)>
+								<#list adList as ad>
+								<li class="swiper-slide"><a href="javascript:;" title="${ad.adName!''}"><img src="${ad.adPic!''}"></a></li>
+								</#list>
+								<#else>
+								<li><img src="img/media_h5/banner.png" /></li>
+								</#if>								
+							</ul>
+							<div class="swiper-pagination"></div>
+						</div>
+				
+						
+						
+						</li>
 						
 						
 						<!-- 推荐视频 -->

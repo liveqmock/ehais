@@ -10,8 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
+import org.ehais.epublic.mapper.EHaiAdMapper;
 import org.ehais.epublic.mapper.EHaiArticleCatMapper;
 import org.ehais.epublic.mapper.EHaiArticleMapper;
+import org.ehais.epublic.model.EHaiAd;
+import org.ehais.epublic.model.EHaiAdExample;
 import org.ehais.epublic.model.EHaiArticle;
 import org.ehais.epublic.model.EHaiArticleCat;
 import org.ehais.epublic.model.EHaiArticleCatExample;
@@ -44,6 +47,8 @@ public class MediaWebController extends CommonController{
 	private EHaiArticleCatMapper eHaiArticleCatMapper;
 	@Autowired
 	private HaiCartMapper haiCartMapper;
+	@Autowired
+	private EHaiAdMapper eHaiAdMapper;
 	
 	
 	protected String video_transfer_website = ResourceUtil.getProValue("video.transfer.website");
@@ -92,7 +97,15 @@ public class MediaWebController extends CommonController{
 			modelMap.addAttribute("listArticleCat", listArticleCat);
 			
 			
-			
+			EHaiAdExample adExample = new EHaiAdExample();
+			EHaiAdExample.Criteria cad = adExample.createCriteria();
+			cad.andStoreIdEqualTo(store_id);
+			if(modal.equals("h5")) {
+				cad.andIsMobileEqualTo(1);
+			}
+			adExample.setOrderByClause("ad_id desc");
+			List<EHaiAd> adList = eHaiAdMapper.selectByExample(adExample);
+			modelMap.addAttribute("adList", adList);
 			
 			
 			EHaiArticleExample ae = new EHaiArticleExample();

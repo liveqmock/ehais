@@ -31,10 +31,17 @@
 <label class="col-sm-2 control-label">图片</label>
 <div class="col-sm-10">
 	<@uploadImagesPicker id="adPic" value="" /> 
-	图片尺寸：1360*355
+	PC图片尺寸：1360*355;移动端尺寸：750*320
 </div>
 </div>
 
+
+<div class="form-group">
+<label class="col-sm-2 control-label">终端</label>
+<div class="col-sm-10">
+	<@BSRadioIntPicker id="isMobile" key="key" text="text" list=[{"key":0,"text":"PC端"},{"key":1,"text":"移动端"}] value="0" />
+</div>
+</div>
 
 
 <div class="form-group">

@@ -47,6 +47,15 @@ $(function(){
 			    	if(!isBlank(value))return "<img src='"+value+"' height='60'>";
 			    	return "";
 			    }
+			},{
+			    field: 'isMobile',
+			    title: '终端',formatter:function(value,rows,index){
+			    	if(value){
+			    		return "移动端";
+			    	}else{
+			    		return "PC端";
+			    	}
+			    }
 			},
 			{
 	            field: 'adId',
@@ -70,6 +79,12 @@ $(function(){
 		$("#eq_preview_wrapper_adPic").addClass("hide");
 		//初始化值
 		$("input,textarea").val("");
+		
+		
+		$("#radioPicker_isMobile li").removeClass("active");
+		$("#radioPicker_isMobile li:first").addClass("active");
+		$("#isMobile").val("0");
+		
 	});
 	
 	$("#mediaAdList").click(function(){
@@ -136,6 +151,11 @@ function mediaAdEditDetail(adId){
 			
 			mediaAdModal.modal("show");
 			$("#mediaAdFormModal").attr("action","edit");
+			
+			
+			$("#radioPicker_isMobile li").removeClass("active");
+			$("#radioPicker_isMobile li").eq(result.model.isMobile).addClass("active");
+			
 			
 			
 		}
