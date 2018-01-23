@@ -28,9 +28,7 @@ $(function(){
 	            rows: params.pageSize,   //页面大小  
                 page: params.pageNumber,  //页码        
                 sort: params.sort,  //排序列名  
-//                sortOrder: params.order,//排位命令（desc，asc）
-//                cat_id : cat_id,
-//                keyword : keyword
+                sortOrder: params.order,//排位命令（desc，asc）
 	        }
 	    },
         sidePagination: "server", //服务端处理分页

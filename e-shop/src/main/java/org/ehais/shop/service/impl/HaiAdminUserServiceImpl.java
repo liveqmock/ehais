@@ -160,7 +160,11 @@ public class HaiAdminUserServiceImpl  extends CommonServiceImpl implements HaiAd
 			return rm;
 		}
 
-		model.setPassword(EncryptUtils.md5("123456"));
+		if(StringUtils.isBlank(model.getPassword())) {
+			model.setPassword(EncryptUtils.md5("123456"));
+		} else {
+			model.setPassword(EncryptUtils.md5(model.getPassword()));
+		}
 
 		int code = haiAdminUserMapper.insertSelective(model);
 		

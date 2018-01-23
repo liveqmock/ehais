@@ -47,8 +47,8 @@
 				
 				
 				<div class="search_icon">
-					<input id="keyword" class="control"/>
-					<button id="btnSearch" class="fa fa-search btn btn-default control">搜索</button>
+					<input id="keyword" class="control" placeholder="视频名称搜索"/>
+					<button id="btnSearch" class="fa fa-search btn btn-default control">搜索视频</button>
 				</div>
 								
 				
@@ -75,9 +75,9 @@
 				<span class="caret"></span>
 				</button>
 				  <ul class="dropdown-menu" aria-labelledby="dropdownMenuUser">
-				    <li><a href="javascript:;" class="glyphicon glyphicon-plus-sign">新增管理员</a></li>
+				    <li><a id="mediaAdminUserAdd" href="javascript:;" class="glyphicon glyphicon-plus-sign">新增管理员</a></li>
 				    <li role="separator" class="divider"></li>
-				    <li><a href="javascript:;" class="glyphicon glyphicon-align-justify">管理信息</a></li>
+				    <li><a id="mediaAdminUserList" href="javascript:;" class="glyphicon glyphicon-align-justify">管理信息</a></li>
 				  </ul>
 				</div>
 				
@@ -125,6 +125,7 @@
 <#include "article_cat.html"/>
 <#include "modify_pwd.html"/>
 <#include "../ad/detail.html"/>
+<#include "../admin_user/detail.html"/>
 
 
 

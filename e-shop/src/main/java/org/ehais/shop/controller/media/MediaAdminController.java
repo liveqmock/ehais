@@ -614,7 +614,7 @@ public class MediaAdminController extends CommonController{
 
 		try {
 			
-			ReturnObject<EHaiAdminUserWithBLOBs> rm = haiAdminUserService.adminuser_update_submit(request, model, "1");
+			ReturnObject<EHaiAdminUserWithBLOBs> rm = haiAdminUserService.adminuser_insert_submit(request, model, "1");
 			return this.writeJson(rm);
 			
 		} catch (Exception e) {
@@ -628,8 +628,8 @@ public class MediaAdminController extends CommonController{
 	
 	
 	@ResponseBody
-	@RequestMapping(value = "/mediaAdminUserEdit", method = RequestMethod.POST)
-	public String mediaAdminUserEdit(ModelMap modelMap, HttpServletRequest request,
+	@RequestMapping(value = "/mediaAdminUserEditDetail", method = RequestMethod.POST)
+	public String mediaAdminUserEditDetail(ModelMap modelMap, HttpServletRequest request,
 			HttpServletResponse response,
 			@RequestParam(value = "adminId", required = true) Long adminId) {
 
