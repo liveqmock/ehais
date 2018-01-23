@@ -53,7 +53,7 @@
 				<span class="caret"></span>
 				</button>
 				  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-				    <li><a href="javascript:;" class="glyphicon glyphicon-plus-sign">新增宣传图</a></li>
+				    <li><a id="mediaAdAdd" href="javascript:;" class="glyphicon glyphicon-plus-sign">新增宣传图</a></li>
 				    <li role="separator" class="divider"></li>
 				    <li><a href="javascript:;" class="glyphicon glyphicon-align-justify">宣传图管理</a></li>
 				  </ul>
@@ -97,14 +97,14 @@
 					</div>
 				</div>
 				<div class="col_main">
-					<div class="main_table">
+					<div id="bsMainTable" class="main_table">
 						<table id="bsTable" data-show-columns="false"></table>
-						
+					</div>
+					<div id="adMainTable" class="main_table">
 						<table id="adTable" data-show-columns="false"></table>
-						
-						
+					</div>
+					<div id="adminMainTable" class="main_table">
 						<table id="adminTable" data-show-columns="false"></table>
-						
 					</div>
 				</div>
 			</div>
@@ -121,6 +121,9 @@
 
 
 <script type="text/javascript" src="/js/media/admin/article_view.js" ></script>
+<script type="text/javascript" src="/js/media/admin/ad.js" ></script>
+<script type="text/javascript" src="/js/media/admin/admin_user.js" ></script>
+
 		
 	</body>
 </html>

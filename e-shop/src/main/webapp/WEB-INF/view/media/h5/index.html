@@ -64,7 +64,7 @@
 							<#assign item = mapArticle[key]> 
 							<#list item as a >
 	
-							<li class="rec play" href="play${a.articleId}.lv">
+							<li class="rec play" val="${a.articleId}">
 								<div>
 									<img src="${a.articleThumb!''}" />
 									<div>${a.articleLabel!''}</div>

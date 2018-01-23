@@ -19,13 +19,14 @@ import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.ehais.enums.EArticleModuleEnum;
 import org.ehais.epublic.mapper.EHaiArticleMapper;
+import org.ehais.epublic.model.EHaiAd;
 import org.ehais.epublic.model.EHaiAdminUser;
+import org.ehais.epublic.model.EHaiAdminUserWithBLOBs;
 import org.ehais.epublic.model.EHaiArticle;
 import org.ehais.epublic.model.EHaiArticleCat;
+import org.ehais.epublic.service.EAdService;
 import org.ehais.epublic.service.EHaiAdminUserService;
 import org.ehais.protocol.PermissionProtocol;
-import org.ehais.shop.mapper.HaiArticleGoodsMapper;
-import org.ehais.shop.mapper.HaiGoodsMapper;
 import org.ehais.shop.service.ArticleCatService;
 import org.ehais.shop.service.ArticleService;
 import org.ehais.shop.service.HaiAdminUserService;
@@ -83,6 +84,8 @@ public class MediaAdminController extends CommonController{
 	private EHaiArticleMapper eHaiArticleMapper;
 	@Autowired
 	private HaiAdminUserService haiAdminUserService;
+	@Autowired
+	private EAdService eAdService;
 	
 	
 	@EPermissionMethod(name="查询",intro="打开视频管理页面",value="login.me",type=PermissionProtocol.URL)
@@ -483,6 +486,208 @@ public class MediaAdminController extends CommonController{
 
 		return null;
 	}
+	
+	////////////////////////////////////////////////////////////////////////
+	
+	@ResponseBody
+	@RequestMapping(value = "/mediaAdListJson", method = RequestMethod.POST)
+	public String mediaAdListJson(ModelMap modelMap, HttpServletRequest request,
+			HttpServletResponse response,
+			@ModelAttribute EConditionObject condition) {
+
+		try {
+			ReturnObject<EHaiAd> rm = eAdService.ad_list_json(request, null, condition.getPage(), condition.getRows());
+			return this.writeJson(rm);
+			
+		} catch (Exception e) {
+			log.error("视频后台", e);
+
+		}
+
+		return null;
+	}
+	
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "/mediaAdAddSubmit", method = RequestMethod.POST)
+	public String mediaAdAddSubmit(ModelMap modelMap, HttpServletRequest request,
+			HttpServletResponse response,
+			@ModelAttribute("model") EHaiAd model
+			) {
+
+		try {
+			ReturnObject<EHaiAd> rm = eAdService.ad_insert_submit(request, model);
+			return this.writeJson(rm);
+		} catch (Exception e) {
+			log.error("视频后台", e);
+
+		}
+
+		return null;
+	}
+	
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "/mediaAdEdit", method = RequestMethod.POST)
+	public String mediaAdEdit(ModelMap modelMap, HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestParam(value = "adId", required = true) Integer adId) {
+
+		try {
+			
+			ReturnObject<EHaiAd> rm = eAdService.ad_update(request, adId);
+			return this.writeJson(rm);
+		} catch (Exception e) {
+			log.error("视频后台", e);
+
+		}
+
+		return null;
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "/mediaAdEditSubmit", method = RequestMethod.POST)
+	public String mediaAdEditSubmit(ModelMap modelMap, HttpServletRequest request,
+			HttpServletResponse response,
+			@ModelAttribute("model") EHaiAd model) {
+
+		try {
+			ReturnObject<EHaiAd> rm = eAdService.ad_update_submit(request, model);
+			return this.writeJson(rm);
+
+		} catch (Exception e) {
+			log.error("视频后台", e);
+
+		}
+
+		return null;
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "/mediaAdDelete", method = RequestMethod.POST)
+	public String mediaAdDelete(ModelMap modelMap, HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestParam(value = "adId", required = true) Integer adId) {
+
+		try {
+			ReturnObject<EHaiAd> rm = eAdService.ad_delete(request, adId);
+			return this.writeJson(rm);
+
+		} catch (Exception e) {
+			log.error("视频后台", e);
+
+		}
+
+		return null;
+	}
+	
+	
+	//////////////////////////////////////////////////////////////
+	@ResponseBody
+	@RequestMapping(value = "/mediaAdminUserListJson", method = RequestMethod.POST)
+	public String mediaAdminUserListJson(ModelMap modelMap, HttpServletRequest request,
+			HttpServletResponse response,
+			@ModelAttribute EConditionObject condition) {
+
+		try {
+			ReturnObject<EHaiAdminUser> rm = haiAdminUserService.adminuser_list_json(request, condition, null, null);
+			return this.writeJson(rm);
+		} catch (Exception e) {
+			log.error("视频后台", e);
+
+		}
+
+		return null;
+	}
+	
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "/mediaAdminUserAddSubmit", method = RequestMethod.POST)
+	public String mediaAdminUserAddSubmit(ModelMap modelMap, HttpServletRequest request,
+			HttpServletResponse response,
+			@ModelAttribute("model") EHaiAdminUserWithBLOBs model) {
+
+		try {
+			
+			ReturnObject<EHaiAdminUserWithBLOBs> rm = haiAdminUserService.adminuser_update_submit(request, model, "1");
+			return this.writeJson(rm);
+			
+		} catch (Exception e) {
+			log.error("视频后台", e);
+
+		}
+
+		return null;
+	}
+	
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "/mediaAdminUserEdit", method = RequestMethod.POST)
+	public String mediaAdminUserEdit(ModelMap modelMap, HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestParam(value = "adminId", required = true) Long adminId) {
+
+		try {
+
+			ReturnObject<EHaiAdminUserWithBLOBs> rm = haiAdminUserService.adminuser_update(request, adminId);
+			return this.writeJson(rm);
+			
+		} catch (Exception e) {
+			log.error("视频后台", e);
+
+		}
+
+		return null;
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "/mediaAdminUserEditSubmit", method = RequestMethod.POST)
+	public String mediaAdminUserEditSubmit(ModelMap modelMap, HttpServletRequest request,
+			HttpServletResponse response,
+			@ModelAttribute("model") EHaiAdminUserWithBLOBs model) {
+
+		try {
+			
+			ReturnObject<EHaiAdminUserWithBLOBs> rm = haiAdminUserService.adminuser_update_submit(request, model, "1");
+			return this.writeJson(rm);
+
+		} catch (Exception e) {
+			log.error("视频后台", e);
+
+		}
+
+		return null;
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "/mediaAdminUserDelete", method = RequestMethod.POST)
+	public String mediaAdminUserDelete(ModelMap modelMap, HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestParam(value = "adminId", required = true) Long adminId) {
+
+		try {
+
+			ReturnObject<EHaiAdminUser> rm = haiAdminUserService.adminuser_delete(request, adminId);
+			return this.writeJson(rm);
+
+
+		} catch (Exception e) {
+			log.error("视频后台", e);
+
+		}
+
+		return null;
+	}
+	///////////////////////////////////////////////////////////////////////////////
+	
 	
 	
 	@ResponseBody

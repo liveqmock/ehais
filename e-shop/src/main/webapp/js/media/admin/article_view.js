@@ -133,6 +133,10 @@ $(function(){
     $("#mediaMedifyPwdFormSubmit").click(function(){
     	mediaMedifyPwdFormSubmit();
     });
+    
+    
+    switchTable("bsMainTable");
+    
 });
 
 function setHot(that,id){
@@ -248,6 +252,7 @@ function mediaMedifyPwdFormSubmit(){
 }
 
 function addCate(){
+	switchTable("bsMainTable");
 	$("input,textarea").val("");
 	mediaCategoryModal.modal("show");
 	$("#mediaCategoryFormModal").attr("action","add");
@@ -276,7 +281,7 @@ function addCate(){
 //	});
 }
 function editCate(){
-	
+	switchTable("bsMainTable");
 	$("input,textarea").val("");
 	
 	$("#qiniu_image_images").remove();
@@ -331,6 +336,7 @@ function editCate(){
 	
 }
 function deleteCate(){
+	switchTable("bsMainTable");
 	var node = $('#tree li.active');	
 	if(node == null || node.length == 0 || parseInt(node.attr("val")) == 0){
 		layer.msg("请选择分类");
@@ -369,6 +375,7 @@ function getSelectCat(){
 }
 
 function mediaArticleAddDetail(){
+	switchTable("bsMainTable");
 	$("#qiniu_image_articleThumb").remove();
 	$("#eq_preview_wrapper_articleThumb").addClass("hide");
 	
@@ -444,5 +451,11 @@ function getFTP() {
 	});
 	
 
+}
+
+//切换表格列表
+function switchTable(id){
+	$("#bsMainTable,#adMainTable,#adminMainTable").hide();
+	$("#"+id).show();
 }
 

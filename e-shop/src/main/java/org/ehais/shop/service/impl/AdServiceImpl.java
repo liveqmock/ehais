@@ -28,11 +28,11 @@ public class AdServiceImpl extends CommonServiceImpl implements AdService{
 		EHaiAdExample example = new EHaiAdExample();
 		example.createCriteria()
 		.andStoreIdEqualTo(store_id)
-		.andPositionIdEqualTo(Short.valueOf(position_id+""))
-		.andEnabledEqualTo(Byte.valueOf(enabled+""))
-		.andIsMobileEqualTo(Short.valueOf(is_mobile+""));
-		example.setStart(start);
-		example.setLen(len);
+		.andPositionIdEqualTo(position_id)
+		.andEnabledEqualTo(enabled==0?false:true)
+		.andIsMobileEqualTo(is_mobile);
+		example.setLimitStart(start);
+		example.setLimitEnd(len);
 		
 		List<EHaiAd> list = eHaiAdMapper.selectByExampleWithBLOBs(example);
 				

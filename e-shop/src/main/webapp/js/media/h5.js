@@ -171,7 +171,8 @@ function article_list_cat_id(){
 
 function bind_play_click(){
 	$(".play").unbind();
-	$(".play").click(function(){
+	$(".play").on("click",function(e){
+		
 		window.location.href = "play"+$(this).attr("val")+".lv";
 	});
 }

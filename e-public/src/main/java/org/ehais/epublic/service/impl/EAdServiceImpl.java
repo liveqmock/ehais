@@ -52,11 +52,11 @@ public class EAdServiceImpl  extends CommonServiceImpl implements EAdService{
 		EHaiAdExample.Criteria c = example.createCriteria();
 		c.andStoreIdEqualTo(store_id);
 //		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
-		example.setStart(start);
-		example.setLen(len);
+		example.setLimitStart(start);
+		example.setLimitEnd(len);
 		example.setOrderByClause("ad_id desc");
 		List<EHaiAd> list = eHaiAdMapper.hai_ad_list_by_example(example);
-		Integer total = eHaiAdMapper.countByExample(example);
+		Long total = eHaiAdMapper.countByExample(example);
 		
 		
 		rm.setCode(1);
@@ -105,7 +105,7 @@ public class EAdServiceImpl  extends CommonServiceImpl implements EAdService{
 		EHaiAdExample.Criteria c = example.createCriteria();
 		c.andAdNameEqualTo(model.getAdName());
 		c.andStoreIdEqualTo(store_id);
-		int count = eHaiAdMapper.countByExample(example);
+		Long count = eHaiAdMapper.countByExample(example);
 		if(count > 0){
 			rm.setMsg("存在相同的记录");
 			return rm;
@@ -123,7 +123,7 @@ public class EAdServiceImpl  extends CommonServiceImpl implements EAdService{
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiAd> rm = new ReturnObject<EHaiAd>();
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
-		EHaiAd model = eHaiAdMapper.selectByPrimaryKey(Short.valueOf(adId+""));
+		EHaiAd model = eHaiAdMapper.selectByPrimaryKey(adId);
 		
 		Map<String,Object> map = new HashMap<String,Object>();
 		EHaiAdPositionExample adExample = new EHaiAdPositionExample();
@@ -149,7 +149,7 @@ public class EAdServiceImpl  extends CommonServiceImpl implements EAdService{
 		c.andAdIdEqualTo(model.getAdId());
 		c.andStoreIdEqualTo(store_id);
 
-		int count = eHaiAdMapper.countByExample(example);
+		Long count = eHaiAdMapper.countByExample(example);
 		if(count == 0){
 			rm.setMsg("记录不存在");
 			return rm;
@@ -167,7 +167,7 @@ public class EAdServiceImpl  extends CommonServiceImpl implements EAdService{
 		ReturnObject<EHaiAd> rm = new ReturnObject<EHaiAd>();
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
-		EHaiAd model = eHaiAdMapper.selectByPrimaryKey(Short.valueOf(adId+""));
+		EHaiAd model = eHaiAdMapper.selectByPrimaryKey(adId);
 		rm.setBootStrapList(this.formatBootStrapList(request,model));
 		
 		rm.setCode(1);
@@ -183,7 +183,7 @@ public class EAdServiceImpl  extends CommonServiceImpl implements EAdService{
 		EHaiAdExample example = new EHaiAdExample();
 		EHaiAdExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
-		c.andAdIdEqualTo(Short.valueOf(adId+""));
+		c.andAdIdEqualTo(adId);
 		int code = eHaiAdMapper.deleteByExample(example);
 		rm.setCode(code);
 		rm.setMsg("删除成功");
