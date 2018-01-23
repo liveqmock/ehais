@@ -530,8 +530,8 @@ public class MediaAdminController extends CommonController{
 	
 	
 	@ResponseBody
-	@RequestMapping(value = "/mediaAdEdit", method = RequestMethod.POST)
-	public String mediaAdEdit(ModelMap modelMap, HttpServletRequest request,
+	@RequestMapping(value = "/mediaAdEditDetail", method = RequestMethod.POST)
+	public String mediaAdEditDetail(ModelMap modelMap, HttpServletRequest request,
 			HttpServletResponse response,
 			@RequestParam(value = "adId", required = true) Integer adId) {
 

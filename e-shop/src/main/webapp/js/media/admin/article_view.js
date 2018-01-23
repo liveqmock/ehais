@@ -119,6 +119,10 @@ $(function(){
     });
     
     
+    $("#mediaList").click(function(){
+    	switchTable("bsMainTable");
+    });
+    
     
     $("#ftp_videoUrl").click(function(){
     	getFTP();

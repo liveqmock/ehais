@@ -28,12 +28,20 @@
 				  </ul>
 				</div>
 				
-				<div class="dropdown" >
-					<button  class="btn btn-default dropdown-toggle" type="button" id="mediaArticleAddDetail"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-					<span class="glyphicon glyphicon-plus"></span> 
-					上传视频
+				<div class="dropdown">
+					<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuMedia" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+					<span class="glyphicon glyphicon-th"></span> 
+					 视频管理
+					<span class="caret"></span>
 					</button>
+				  <ul class="dropdown-menu" aria-labelledby="dropdownMenuUser">
+				    <li><a id="mediaArticleAddDetail" href="javascript:;" class="glyphicon glyphicon-plus-sign">新增视频</a></li>
+				    <li role="separator" class="divider"></li>
+				    <li><a id="mediaList" href="javascript:;" class="glyphicon glyphicon-align-justify">视频列表</a></li>
+				  </ul>
 				</div>
+				
+				
 				
 				
 				
@@ -55,7 +63,7 @@
 				  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
 				    <li><a id="mediaAdAdd" href="javascript:;" class="glyphicon glyphicon-plus-sign">新增宣传图</a></li>
 				    <li role="separator" class="divider"></li>
-				    <li><a href="javascript:;" class="glyphicon glyphicon-align-justify">宣传图管理</a></li>
+				    <li><a id="mediaAdList" href="javascript:;" class="glyphicon glyphicon-align-justify">宣传图管理</a></li>
 				  </ul>
 				</div>
 				
@@ -116,6 +124,7 @@
 <#include "detail.html"/>
 <#include "article_cat.html"/>
 <#include "modify_pwd.html"/>
+<#include "../ad/detail.html"/>
 
 
 
