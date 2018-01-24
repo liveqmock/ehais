@@ -27,7 +27,7 @@ public interface EHaiAdminUserService extends CommonService{
 	public ReturnObject<EHaiAdminUser> hai_login_submit(HttpServletRequest request,
 			String username,
 			String password,
-			String verificationcode,Boolean isRole) throws Exception;
+			String verificationcode,Boolean isRole,Boolean isVerification) throws Exception;
 	
 }
 

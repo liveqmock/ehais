@@ -264,7 +264,7 @@ public class EHaiAdminUserServiceImpl  extends CommonServiceImpl implements EHai
 			String username, 
 			String password, 
 			String verificationcode,
-			Boolean isRole
+			Boolean isRole,Boolean isVerification
 			)
 			throws Exception {
 		// TODO Auto-generated method stub
@@ -279,14 +279,14 @@ public class EHaiAdminUserServiceImpl  extends CommonServiceImpl implements EHai
 			rm.setMsg("密码不能为空");
 			return rm;
 		}
-		if(StringUtils.isEmpty(verificationcode)){
+		if(isVerification && StringUtils.isEmpty(verificationcode)){
 			rm.setMsg("验证码不能为空");
 			return rm;
 		}
 		
 		HttpSession session = request.getSession(true);
 		String verCode = (String)session.getAttribute("verCode");
-		if(verCode == null || !verCode.toLowerCase().equals(verificationcode.toLowerCase())){
+		if(isVerification && (verCode == null || !verCode.toLowerCase().equals(verificationcode.toLowerCase()))){
 			rm.setMsg("验证码错误");
 			return rm;
 		}

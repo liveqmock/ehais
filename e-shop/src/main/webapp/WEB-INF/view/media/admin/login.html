@@ -67,15 +67,15 @@
 															<i class="fa fa-lock"></i>
 														</span>
 													</label>
-													
+													<!-- 
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-left">
 															<input type="text" id="verificationcode" name="verificationcode" class="form-control w100" placeholder="验证码" />
-															<img class="vcode" id="verificationimg" height="30" name="verificationimg" src="/auth/AuthImage2"/>
+															<img class="vcode" id="verificationimg" height="30" name="verificationimg" src="/auth/AuthImage"/>
 															<i class="fa fa-refresh"></i>
 														</span>
 													</label>
-													
+													 -->
 
 													<div class="space"></div>
 
@@ -146,7 +146,7 @@ function login_submit(){
 		data:{
 			username:$("#username").val(),
 			password:$("#password").val(),
-			verificationcode:$("#verificationcode").val()
+			//verificationcode:$("#verificationcode").val()
 		},
 		success:function(result){
 			if(result.code != 1){
@@ -164,7 +164,7 @@ function login_submit(){
 }
 
 function changeImg(){
-    $("#verificationimg").attr("src","/auth/AuthImage2?date=" + new Date())
+    $("#verificationimg").attr("src","/auth/AuthImage?date=" + new Date())
 }
 
 </script>

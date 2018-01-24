@@ -21,12 +21,12 @@ public class AdminInterceptor extends HandlerInterceptorAdapter{
 	
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
-		response.addHeader("X-XSS-Protection", "1");
-		response.addHeader("X-Frame-Options", "deny");
-		response.addHeader("X-Content-Type-Options", "nosniff");
-		response.addHeader("Content-Security-Policy", "default-src 'self' "+request.getServerName()+" ;style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval';");
-		response.addHeader("Set-Cookie", "key=value; HttpOnly");
-		response.addHeader("Content-Type", "text/html;charset:utf-8;");
+//		response.addHeader("X-XSS-Protection", "1");
+//		response.addHeader("X-Frame-Options", "deny");
+//		response.addHeader("X-Content-Type-Options", "nosniff");
+//		response.addHeader("Content-Security-Policy", "default-src 'self' "+request.getServerName()+" ;style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval';");
+//		response.addHeader("Set-Cookie", "key=value; HttpOnly");
+//		response.addHeader("Content-Type", "text/html;charset:utf-8;");
 		
 		//获取当前请求URL
 		String url = request.getRequestURI().toString();

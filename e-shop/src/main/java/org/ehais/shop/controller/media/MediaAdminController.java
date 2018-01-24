@@ -118,11 +118,11 @@ public class MediaAdminController extends CommonController{
 	@RequestMapping(value = "/mediaLoginSubmitAjax.json", method = RequestMethod.POST)
 	public String mediaLoginSubmitAjax(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response,
 			@RequestParam(value = "username", required = true) String username,
-			@RequestParam(value = "password", required = true) String password,
-			@RequestParam(value = "verificationcode", required = true) String verificationcode
+			@RequestParam(value = "password", required = true) String password
+//			@RequestParam(value = "verificationcode", required = true) String verificationcode
 			) {
 		try {
-			ReturnObject<EHaiAdminUser> rm = eHaiAdminUserService.hai_login_submit(request, username, password,verificationcode,true);
+			ReturnObject<EHaiAdminUser> rm = eHaiAdminUserService.hai_login_submit(request, username, password,null,true,false);
 			
 			return this.writeJson(rm);
 		} catch (Exception e) {
