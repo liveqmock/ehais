@@ -26,16 +26,9 @@
 			<div class="wrapper">
 				<div class="content">
 					<div class="playwra">
-						<div class="title">${article.title}</div>
-						<div class="p" style="background:url(${video_url_website}${article.articleThumb})">
-<!-- 
-<video src="${article.videoUrl}" width="640" height="400" controls="controls">
-Your browser does not support the video tag.
-</video>
+						<div class="title">直播</div>
+						<div class="p" >
 
-
-<embed src="/js/flvplayer.swf?IsAutoPlay=1&vcastr_file=${article.videoUrl}" type="application/x-shockwave-flash" width="640" height="400" quality="high" allowfullscreen="true" />
- -->
 
 
 <video id="video_id" class="video-js vjs-default-skin" controls="controls" preload="none" autoplay="autoplay" width="640" height="400"  data-setup="{}">
@@ -44,7 +37,7 @@ Your browser does not support the video tag.
 
 <script type="text/javascript">
 $(function(){ 
-    init("${video_transfer_website}${article.videoUrl}");
+    init("http://219.222.224.45/hls/live");
 });
 
 function init(path){
@@ -59,27 +52,46 @@ function init(path){
 					
 					<div class="recom">
 						<div class="head">
-							热门视频
+							直播视频
 						</div>
 						<ul>
 							
-							<#if (listArticleHot?? && listArticleHot?size > 0)>
-							<#list listArticleHot as a>
-							<li class="play" val="${a.articleId}">
+							<li class="play" >
 								<div>
-									<img src="${video_url_website}${a.articleThumb!''}" />
-									<div>${a.articleLabel!''}</div>
+									<img src="/img/1366/img3.png" />
+									<div>直播一</div>
 									<img src="img/1360/play.png" />
 								</div>
-								<div>${a.title!''}</div>
+								<div>直播一</div>
+								
+							</li>	
+							<li class="play" >
 								<div>
-									<div class="date">${(a.articleDate?string('yyyy-MM-dd'))!''}</div>
-									<div class="counts">${a.readCount!'0'}次</div>
+									<img src="/img/1366/img3.png" />
+									<div>直播2</div>
+									<img src="img/1360/play.png" />
 								</div>
+								<div>直播2</div>
+								
+							</li>	
+							<li class="play" >
+								<div>
+									<img src="/img/1366/img3.png" />
+									<div>直播3</div>
+									<img src="img/1360/play.png" />
+								</div>
+								<div>直播3</div>
+								
+							</li>	
+							<li class="play" >
+								<div>
+									<img src="/img/1366/img3.png" />
+									<div>直播4</div>
+									<img src="img/1360/play.png" />
+								</div>
+								<div>直播4</div>
+								
 							</li>							
-							
-							</#list>
-							</#if>
 							
 							
 							

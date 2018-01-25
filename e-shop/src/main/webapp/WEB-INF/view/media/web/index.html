@@ -24,7 +24,7 @@
 					<ul class="swiper-wrapper">
 						<#if (adList?? && adList?size > 0)>
 						<#list adList as ad>
-						<li class="swiper-slide"><a href="javascript:;" title="${ad.adName!''}"><img src="${ad.adPic!''}"></a></li>
+						<li class="swiper-slide"><a href="javascript:;" title="${ad.adName!''}"><img src="${video_url_website}${ad.adPic!''}"></a></li>
 						</#list>
 						<#else>
 						<li><img src="img/1366/banner.png" /></li>
@@ -42,7 +42,7 @@
 					<#list listArticleIndex as a>
 					<#if a_index == 0>
 					<div>
-						<img src="${a.articleThumb!''}" />
+						<img src="${video_url_website}${a.articleThumb!''}" />
 						<div>${a.articleLabel!''}</div>
 					</div>					
 					<div>${a.title!''}</div>
@@ -57,7 +57,7 @@
 						<#if (a_index > 0) >
 						<li class="play" val="${a.articleId}">
 							<div>
-								<img src="${a.articleThumb!''}" />
+								<img src="${video_url_website}${a.articleThumb!''}" />
 								<div>${a.articleLabel!''}</div>
 								<img src="img/1360/play.png" />
 							</div>
@@ -90,7 +90,7 @@
 						<#list item as a >
 						<li class="play" val="${a.articleId}">
 							<div>
-								<img src="${a.articleThumb!''}" />
+								<img src="${video_url_website}${a.articleThumb!''}" />
 								<div>${a.articleLabel!''}</div>
 								<img src="img/1360/play.png" />
 							</div>

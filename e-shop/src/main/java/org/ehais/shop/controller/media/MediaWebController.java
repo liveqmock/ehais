@@ -52,6 +52,7 @@ public class MediaWebController extends CommonController{
 	
 	
 	protected String video_transfer_website = ResourceUtil.getProValue("video.transfer.website");
+	protected String video_url_website = ResourceUtil.getProValue("video.url.website");
 	
 	
 	private Integer store_id = 1;
@@ -76,6 +77,7 @@ public class MediaWebController extends CommonController{
 			HttpServletRequest request,HttpServletResponse response ) {	
 		try{
 			modelMap.addAttribute("currentNav", "index");
+			modelMap.addAttribute("video_url_website", video_url_website);
 			
 			modal = "web";
 			hot_len  = 9;
@@ -164,7 +166,7 @@ public class MediaWebController extends CommonController{
 		rm.setCode(0);
 		
 		this.v_common(modelMap,request);
-		
+		modelMap.addAttribute("video_url_website", video_url_website);
 		try{
 			int psize = rows==null?len:rows;
 			EHaiArticleExample ae = new EHaiArticleExample();
@@ -199,7 +201,7 @@ public class MediaWebController extends CommonController{
 			@RequestParam(value = "page", required = false) Integer page){
 		
 		modelMap.addAttribute("currentNav", cid.toString());
-		
+		modelMap.addAttribute("video_url_website", video_url_website);
 		this.v_common(modelMap,request);
 		
 		try{
@@ -270,7 +272,7 @@ public class MediaWebController extends CommonController{
 			@PathVariable(value = "id") Integer id){
 		
 		String s_encode = (String) request.getSession().getAttribute(EConstants.SESSION_SHOP_ENCODE);
-		
+		modelMap.addAttribute("video_url_website", video_url_website);
 		this.v_common(modelMap,request);
 		
 		try{
@@ -375,7 +377,13 @@ public class MediaWebController extends CommonController{
 	
 	
 	
-	 
+	@RequestMapping("/live.lv")
+	public String live(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response){
+		
+		return "/media/web/live";
+		
+	}
 
 	
 }
