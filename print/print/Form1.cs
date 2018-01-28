@@ -80,11 +80,11 @@ namespace print
             //打印事件设置            
 
             //pd.PrintPage += new PrintPageEventHandler(this.pd_PrintPage);
-            //pd.PrintPage += new PrintPageEventHandler(this.MyPrintDocument_PrintPage);
+            pd.PrintPage += new PrintPageEventHandler(this.MyPrintDocument_PrintPage);
 
 
             //小丸子不要厨房单
-            pdKitchen.PrintPage += new PrintPageEventHandler(this.MyPrintDocument_PrintPage_to_Kitchen);
+            //pdKitchen.PrintPage += new PrintPageEventHandler(this.MyPrintDocument_PrintPage_to_Kitchen);
 
 
             //pdCashierDesk.PrintPage += new PrintPageEventHandler(this.MyPrintDocument_PrintPage_to_CashierDesk);
@@ -289,8 +289,9 @@ namespace print
             if(Convert.ToInt32(joOrder["discount"].ToString()) > 0)
             {
                 fltYPos += fltRowHeight;
-                g.DrawString("优惠金额：" + joOrder["discount"].ToString(), printFont, System.Drawing.Brushes.Black, fltXPos, fltYPos);
-
+                g.DrawString("优惠金额：" + Convert.ToDouble(Convert.ToInt32(joOrder["discount"].ToString()) / 100).ToString("#0.00"), printFont, System.Drawing.Brushes.Black, fltXPos, fltYPos);
+                fltYPos += fltRowHeight;
+                g.DrawString("实付金额：" + Convert.ToDouble((Convert.ToDouble(total) - Convert.ToDouble(joOrder["discount"].ToString())) / 100).ToString("#0.00"), printFont, System.Drawing.Brushes.Black, fltXPos, fltYPos);
             }
 
             //g.DrawString(joOrder["payName"].ToString(), printFont, System.Drawing.Brushes.Black, fltScreenWidth / 2, fltYPos);
@@ -410,8 +411,9 @@ namespace print
             if (Convert.ToInt32(joOrder["discount"].ToString()) > 0)
             {
                 fltYPos += fltRowHeight;
-                g.DrawString("优惠金额：" + joOrder["discount"].ToString(), printFont, System.Drawing.Brushes.Black, fltXPos, fltYPos);
-
+                g.DrawString("优惠金额：" + Convert.ToDouble(Convert.ToInt32(joOrder["discount"].ToString()) / 100).ToString("#0.00"), printFont, System.Drawing.Brushes.Black, fltXPos, fltYPos);
+                fltYPos += fltRowHeight;
+                g.DrawString("实付金额：" + Convert.ToDouble((total - Convert.ToInt32(joOrder["discount"].ToString())) / 100).ToString("#0.00"), printFont, System.Drawing.Brushes.Black, fltXPos, fltYPos);
             }
 
 
@@ -532,8 +534,9 @@ private void MyPrintDocument_PrintPage_to_CashierDesk(object sender, System.Draw
             if (Convert.ToInt32(joOrder["discount"].ToString()) > 0)
             {
                 fltYPos += fltRowHeight;
-                g.DrawString("优惠金额：" + joOrder["discount"].ToString(), printFont, System.Drawing.Brushes.Black, fltXPos, fltYPos);
-
+                g.DrawString("优惠金额：" + Convert.ToDouble(Convert.ToInt32(joOrder["discount"].ToString()) / 100).ToString("#0.00")  , printFont, System.Drawing.Brushes.Black, fltXPos, fltYPos);
+                fltYPos += fltRowHeight;
+                g.DrawString("实付金额：" + Convert.ToDouble((total - Convert.ToInt32(joOrder["discount"].ToString())) / 100).ToString("#0.00"), printFont, System.Drawing.Brushes.Black, fltXPos, fltYPos);
             }
 
 
@@ -674,8 +677,8 @@ private void MyPrintDocument_PrintPage_to_CashierDesk(object sender, System.Draw
                 foreach (JObject item in jArray)
                 {
                     joOrder = item;
-                    //pd.Print();
-                    pdKitchen.Print();
+                    pd.Print();
+                    //pdKitchen.Print();
                     //pdCashierDesk.Print();
 
                 }
