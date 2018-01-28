@@ -1089,14 +1089,14 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
             
             String sql = "insert into ThirdPartyTempAccess(CardHolderName,StudentNumberColumnName,StudentNumber,StartTime,EndTime,AccessLevelID,ProcessFlag)values(?,?,?,?,?,?,?);";
             PreparedStatement psstmt = conn.prepareStatement(sql);// 加载sql
-            psstmt.setString(1, student.getUserName());
-            psstmt.setString(2, student.getRealname());
-            psstmt.setString(3, student.getNickname());
+            psstmt.setString(1, student.getRealname());
+            psstmt.setString(2, "");
+            psstmt.setString(3, student.getUserName());
             java.sql.Date sdate = new java.sql.Date(System.currentTimeMillis());
             psstmt.setDate(4, sdate);
             java.sql.Date edate = new java.sql.Date(System.currentTimeMillis()+24*60*60*1000);
             psstmt.setDate(5, edate);
-            psstmt.setInt(6, 0);
+            psstmt.setInt(6, 4);
             psstmt.setInt(7, 0);
             int rowN = psstmt.executeUpdate();// 执行sql
             if (rowN == 1) {// 执行成功时

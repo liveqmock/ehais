@@ -35,7 +35,7 @@
 							<ul class="swiper-wrapper">
 								<#if (adList?? && adList?size > 0)>
 								<#list adList as ad>
-								<li class="swiper-slide"><a href="javascript:;" title="${ad.adName!''}"><img src="${ad.adPic!''}"></a></li>
+								<li class="swiper-slide"><a href="javascript:;" title="${ad.adName!''}"><img src="${video_url_website}${ad.adPic!''}"></a></li>
 								</#list>
 								<#else>
 								<li><img src="img/media_h5/banner.png" /></li>
@@ -55,7 +55,7 @@
 	
 							<li class="rec play" val="${a.articleId}">
 								<div>
-									<img src="${a.articleThumb!''}" />
+									<img src="${video_url_website}${a.articleThumb!''}" />
 									<div>${a.articleLabel!''}</div>
 									<img src="img/1360/play.png" />
 								</div>
@@ -70,7 +70,7 @@
 						<#list listArticleCat as c>
 						
 						<li class="title">
-							<img src="${c.images!''}">
+							<img src="${video_url_website}${c.images!''}">
 							<h4>${c.catName}</h4>
 							<div href="list_${c.catId}.lv" class="more">更多</div>
 						</li>
@@ -86,7 +86,7 @@
 	
 							<li class="rec play" val="${a.articleId}">
 								<div>
-									<img src="${a.articleThumb!''}" />
+									<img src="${video_url_website}${a.articleThumb!''}" />
 									<div>${a.articleLabel!''}</div>
 									<img src="img/media_h5/play.png" />
 								</div>
@@ -119,6 +119,7 @@
 		</div>
 		<script type="text/javascript">
 		var json = ${json!''};
+		var video_url_website = "${video_url_website}/";
 		</script>
 		
 		<script type="text/javascript" src="/js/media/h5.js" ></script>

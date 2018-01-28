@@ -104,6 +104,8 @@ public class MediaWebController extends CommonController{
 			cad.andStoreIdEqualTo(store_id);
 			if(modal.equals("h5")) {
 				cad.andIsMobileEqualTo(1);
+			}else {
+				cad.andIsMobileEqualTo(0);
 			}
 			adExample.setOrderByClause("ad_id desc");
 			List<EHaiAd> adList = eHaiAdMapper.selectByExample(adExample);
@@ -380,6 +382,13 @@ public class MediaWebController extends CommonController{
 	@RequestMapping("/live.lv")
 	public String live(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response){
+		String s_encode = (String) request.getSession().getAttribute(EConstants.SESSION_SHOP_ENCODE);
+		modelMap.addAttribute("video_url_website", video_url_website);
+		this.v_common(modelMap,request);
+		
+		modelMap.addAttribute("currentNav", "index");
+		modelMap.addAttribute("video_url_website", video_url_website);
+		
 		
 		return "/media/web/live";
 		

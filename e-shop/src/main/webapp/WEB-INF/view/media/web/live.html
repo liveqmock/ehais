@@ -30,21 +30,12 @@
 						<div class="p" >
 
 
-
-<video id="video_id" class="video-js vjs-default-skin" controls="controls" preload="none" autoplay="autoplay" width="640" height="400"  data-setup="{}">
-  <source id="source_id"></source>
-</video>
-
-<script type="text/javascript">
-$(function(){ 
-    init("http://219.222.224.45/hls/live");
-});
-
-function init(path){
-    $('#source_id').attr('src',path);
-    $('#source_id').attr('type','video/mp4');
-}
-</script>
+  <video id="example_video_1" class="video-js vjs-default-skin" controls preload="auto"  poster="http://vjs.zencdn.net/v/oceans.png" data-setup="{}">
+    <source src="rtmp://219.222.224.45/hls/v1" type="rtmp/flv">
+    
+    <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+  </video>
+  
 
 
 						</div>

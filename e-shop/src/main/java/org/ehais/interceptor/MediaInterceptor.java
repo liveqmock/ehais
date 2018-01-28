@@ -20,12 +20,12 @@ public class MediaInterceptor extends HandlerInterceptorAdapter{
 		
 		
 		//获取当前请求URL
-		response.addHeader("X-XSS-Protection", "1");
-		response.addHeader("X-Frame-Options", "deny");
-		response.addHeader("X-Content-Type-Options", "nosniff");
-		response.addHeader("Content-Security-Policy", "default-src 'self' "+request.getServerName()+" "+securityPolicy+";style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval';");
-		response.addHeader("Set-Cookie", "key=value; HttpOnly");
-		response.addHeader("Content-Type", "text/html;charset:utf-8;");
+//		response.addHeader("X-XSS-Protection", "1");
+//		response.addHeader("X-Frame-Options", "deny");
+//		response.addHeader("X-Content-Type-Options", "nosniff");
+//		response.addHeader("Content-Security-Policy", "default-src 'self' "+request.getServerName()+" "+securityPolicy+";style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval';");
+//		response.addHeader("Set-Cookie", "key=value; HttpOnly");
+//		response.addHeader("Content-Type", "text/html;charset:utf-8;");
 		
 		
 		String s_encode = (String) request.getSession().getAttribute(EConstants.SESSION_SHOP_ENCODE);

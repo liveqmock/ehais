@@ -49,11 +49,11 @@ public class LoginAdminController extends CommonController {
 	@RequestMapping(value = "/adminLoginSubmitAjax", method = RequestMethod.POST)
 	public String admin_login_submit(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response,
 			@RequestParam(value = "username", required = true) String username,
-			@RequestParam(value = "password", required = true) String password
-//			@RequestParam(value = "verificationcode", required = true) String verificationcode
+			@RequestParam(value = "password", required = true) String password,
+			@RequestParam(value = "verificationcode", required = true) String verificationcode
 			) {
 		try {
-			ReturnObject<EHaiAdminUser> rm = eHaiAdminUserService.hai_login_submit(request, username, password,null,true,true);
+			ReturnObject<EHaiAdminUser> rm = eHaiAdminUserService.hai_login_submit(request, username, password,verificationcode,true,true);
 			
 			// 根据获取的用户名和密码封装成Token
 //			UsernamePasswordToken token = new UsernamePasswordToken(username, EncryptUtils.md5(password));

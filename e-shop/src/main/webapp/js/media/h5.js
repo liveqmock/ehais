@@ -113,7 +113,7 @@ function articleItem(d,catId){
 		if(v.articleImages == null || v.articleImages == "")t=" class='t' ";
 		$("#a"+catId).append("<li class='rec play' href='play"+v.articleId+".lv'>"+
 								"<div>"+
-									"<img src="+ ((v.articleThumb == null || v.articleThumb == "")?defaultimg:v.articleThumb) +" />"+
+									"<img src="+video_url_website+ ((v.articleThumb == null || v.articleThumb == "")?defaultimg:v.articleThumb) +" />"+
 									"<div>"+v.articleLabel+"</div>"+
 									"<img src='img/media_h5/play.png' />"+
 								"</div>"+
