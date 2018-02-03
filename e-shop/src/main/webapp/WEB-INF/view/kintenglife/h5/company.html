@@ -10,18 +10,28 @@
 	<body class="g">
 		<div class="w">
 			<header>
-				<span id="title">金藤酒荟</span>
+				<img class="logo" src="images/klogo.png" />
+				<span id="title"><#if articleCat?? >${articleCat.catName!''}</#if></span>
 			</header>
 			<div class="pic">
 				<img src="${article.articleThumb!''}" />
 			</div>
 			<article>
-				<h3>${article.title!''}</h3>
+				<h4>${article.title!''}</h4>
 				
 				<p class="detail">
-				${article.content!''}
+				${article.content}
 				</p>
 			</article>
+			
+			<footer class="copyright">
+				<img class="logo" src="images/klogo.png" />
+				<span>Copyright © 2017 KINTENG All Rights Reserved</span>
+				<span>广州易海司信息有限公司提供技术支持</span>
+				
+			</footer>
+			
+			
 		</div>
 	</body>
 </html>

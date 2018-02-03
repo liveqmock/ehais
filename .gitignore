@@ -2,3 +2,4 @@
 .project
 .gitignore
 target
+/print/print/bin
