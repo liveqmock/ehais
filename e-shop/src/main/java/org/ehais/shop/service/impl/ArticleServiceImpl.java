@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
+import org.ehais.enums.EArticleModuleEnum;
 import org.ehais.enums.EWXMediaTypeEnum;
 import org.ehais.epublic.mapper.EHaiArticleCatMapper;
 import org.ehais.epublic.mapper.EHaiArticleMapper;
@@ -741,6 +742,45 @@ bean.setArticleSource(model.getArticleSource());//网络来源
 		rm.setCode(1);
 		rm.setModel(model);
 		return rm;
+	}
+
+
+	@Override
+	public EHaiArticle articleSave(EHaiArticleCat cate , EHaiArticle article) throws Exception {
+		// TODO Auto-generated method stub
+				
+		article.setCatId(cate.getCatId());
+		
+		EHaiArticleExample aExp = new EHaiArticleExample();
+		aExp.createCriteria()
+		.andStoreIdEqualTo(article.getStoreId())
+		.andModuleEqualTo(EArticleModuleEnum.ARTICLE)
+		.andTitleEqualTo(article.getTitle())
+		.andLinkEqualTo(article.getLink()) ;
+		
+		List<EHaiArticle> articleList = eHaiArticleMapper.selectByExample(aExp);
+		if(articleList == null || articleList.size() == 0){
+			Date date = new Date();
+			article.setModule(EArticleModuleEnum.ARTICLE);
+			if(article.getArticleDate() == null)article.setArticleDate(date);
+			article.setCreateDate(date);
+			article.setUpdateDate(date);
+			article.setIsOpen(true);
+			article.setOpenType(true);
+			if(StringUtils.isNotBlank(article.getAuthor()))article.setAuthor("");
+			if(StringUtils.isNotBlank(article.getAuthorEmail()))article.setAuthorEmail("");
+			if(StringUtils.isNotBlank(article.getKeywords()))article.setKeywords("");
+			if(StringUtils.isNotBlank(article.getFileUrl()))article.setFileUrl("");
+							
+//			haiArticleMapper.insert(article);
+			eHaiArticleMapper.insertSelective(article);
+		}else{
+			article.setArticleId(articleList.get(0).getArticleId());
+			eHaiArticleMapper.updateByPrimaryKeySelective(article);
+		}
+		
+		
+		return article;
 	}
 	
 	

@@ -31,4 +31,8 @@ public interface ArticleCatService extends CommonService{
 	public ReturnObject<EHaiArticleCat> articlecat_delete(HttpServletRequest request,String moduleEnum,Integer catId) throws Exception;
 	
 	
+	//兼容插入与更新的方法
+	public EHaiArticleCat articleCatSave(EHaiArticleCat cate,String parent_cat_name,Integer store_id) throws Exception;
+	
+	
 }

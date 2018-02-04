@@ -7,7 +7,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
+import org.ehais.enums.EArticleModuleEnum;
 import org.ehais.epublic.mapper.EHaiArticleCatMapper;
 import org.ehais.epublic.mapper.EHaiArticleMapper;
 import org.ehais.epublic.model.EHaiArticle;
@@ -368,6 +370,65 @@ bean.setIsValid(true);
 		rm.setCode(1);
 		rm.setModel(model);
 		return rm;
+	}
+
+	@Override
+	public EHaiArticleCat articleCatSave(EHaiArticleCat cate,String parent_cat_name,Integer store_id) throws Exception {
+		// TODO Auto-generated method stub
+		
+		Integer parent_cat_id = 0 ;
+		if(StringUtils.isNotBlank(parent_cat_name)){
+			EHaiArticleCatExample ace = new EHaiArticleCatExample();
+			ace.createCriteria()
+			.andStoreIdEqualTo(store_id)
+			.andCatNameEqualTo(parent_cat_name)
+			.andParentIdEqualTo(0)
+			.andModuleEqualTo(EArticleModuleEnum.ARTICLE);
+			List<EHaiArticleCat> articleCatList = eHaiArticleCatMapper.selectByExample(ace);
+			if(articleCatList != null && articleCatList.size() > 0){
+				parent_cat_id = articleCatList.get(0).getCatId();
+			}else{
+				EHaiArticleCat ac = new EHaiArticleCat();
+				ac.setCatName(parent_cat_name);
+				ac.setParentId(0);
+				ac.setStoreId(store_id);
+				ac.setModule(EArticleModuleEnum.ARTICLE);
+				ac.setIsValid(true);ac.setCatType(1);ac.setKeywords("");ac.setCatDesc("");ac.setSortOrder(1);ac.setShowInNav(true);ac.setParentId(0);
+				eHaiArticleCatMapper.insert(ac);
+				parent_cat_id = ac.getCatId();
+			}
+			
+		}
+		
+		System.out.println(cate.getCatName()+"==========="+parent_cat_name+"-----------"+parent_cat_id);
+		
+		//获取分类
+		EHaiArticleCatExample acExp = new EHaiArticleCatExample();
+		acExp.createCriteria()
+		.andStoreIdEqualTo(store_id)
+		.andCatNameEqualTo(cate.getCatName())
+		.andParentIdEqualTo(parent_cat_id)
+		.andModuleEqualTo(EArticleModuleEnum.ARTICLE);
+		List<EHaiArticleCat> articleCatList = eHaiArticleCatMapper.selectByExample(acExp);
+//		EHaiArticleCat ac = null;
+		if(articleCatList == null || articleCatList.size() == 0){System.out.println(cate.getCatName()+"**********"+parent_cat_id);
+//			ac = new EHaiArticleCat();
+//			ac.setCatName(cate.getCatName());
+			cate.setParentId(parent_cat_id);
+			cate.setStoreId(store_id);
+			if(StringUtils.isBlank(cate.getModule())) {
+				cate.setModule(EArticleModuleEnum.ARTICLE);
+			}else {
+				cate.setModule(cate.getModule());
+			}
+			cate.setIsValid(true);cate.setCatType(1);cate.setKeywords("");cate.setCatDesc("");cate.setSortOrder(1);cate.setShowInNav(true);
+			eHaiArticleCatMapper.insert(cate);
+		}else{System.out.println(cate.getCatName()+"&&&&&&&&&&&&&&&&&&&&"+parent_cat_id);
+			cate = articleCatList.get(0);
+		}
+		
+		
+		return cate;
 	}
 	
 	

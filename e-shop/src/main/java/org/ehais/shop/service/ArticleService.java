@@ -3,6 +3,7 @@ package org.ehais.shop.service;
 import javax.servlet.http.HttpServletRequest;
 
 import org.ehais.epublic.model.EHaiArticle;
+import org.ehais.epublic.model.EHaiArticleCat;
 import org.ehais.service.CommonService;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
@@ -42,6 +43,9 @@ public interface ArticleService extends CommonService{
 	
 	
 	public ReturnObject<EHaiArticle> article_module(HttpServletRequest request,String moduleEnum) throws Exception;
+	
+	
+	public EHaiArticle articleSave(EHaiArticleCat cate ,EHaiArticle article) throws Exception;
 	
 	
 }
