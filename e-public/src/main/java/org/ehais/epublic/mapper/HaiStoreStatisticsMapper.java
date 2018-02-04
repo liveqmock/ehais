@@ -18,10 +18,10 @@ public interface HaiStoreStatisticsMapper {
 			" sum(case when pay_name='现金支付' then order_amount end) as cash_amount, "+
 			" count(case when pay_name='微信支付' then order_id end) as weixin_quantity, "+
 			" count(case when pay_name='现金支付' then order_id end) as cash_quantity, "+
-			" DATE_FORMAT(FROM_UNIXTIME(pay_time),'%Y-%m-%d') as pay_time "+
+			" DATE_FORMAT(FROM_UNIXTIME(pay_time / 1000),'%Y-%m-%d') as pay_time "+
 			" from hai_order_info where store_id = #{store_id} and order_status = 1 " + 
-			" and DATE_FORMAT(FROM_UNIXTIME(pay_time),'%Y-%m-%d') >= #{start_time} and DATE_FORMAT(FROM_UNIXTIME(pay_time),'%Y-%m-%d') <= #{end_time} " + 
-			" GROUP BY store_id, DATE_FORMAT(FROM_UNIXTIME(pay_time),'%Y-%m-%d')")
+			" and DATE_FORMAT(FROM_UNIXTIME(pay_time / 1000),'%Y-%m-%d') >= #{start_time} and DATE_FORMAT(FROM_UNIXTIME(pay_time / 1000),'%Y-%m-%d') <= #{end_time} " + 
+			" GROUP BY store_id, DATE_FORMAT(FROM_UNIXTIME(pay_time / 1000),'%Y-%m-%d')")
 	@Results(value = {
 			@Result(property="storeId", column="store_id"),
 			@Result(property="weixinAmount", column="weixin_amount"),

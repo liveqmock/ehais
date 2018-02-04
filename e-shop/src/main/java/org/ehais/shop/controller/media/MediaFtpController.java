@@ -191,7 +191,7 @@ public class MediaFtpController extends CommonController {
 
 				FfmpegUtil.executeCodecs(video_ffmpeg_path, 
 						ftpPath, 
-						video_path +"/"+ mediaName + ".mp4",
+						video_path +"/"+ md5MediaName + ".mp4",
 						images_path + "/" + md5MediaName + ".png", 
 						video_pic_size);
 
