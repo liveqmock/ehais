@@ -339,9 +339,11 @@ public class EHaiAdminUserServiceImpl  extends CommonServiceImpl implements EHai
 			
 		}
 		
-		
-		
-		if(StringUtils.isNotBlank(adminuser.getClassify()) && adminuser.getClassify().equals(EAdminClassifyEnum.partner)){
+		if(StringUtils.isNotBlank(adminuser.getClassify()) && (adminuser.getClassify().equals(EAdminClassifyEnum.admin) || adminuser.getClassify().equals(EAdminClassifyEnum.company) ) ) {
+			session.setAttribute(EConstants.SESSION_STORE_ID, Integer.valueOf(adminuser.getAdminId().intValue()));
+			session.setAttribute(EConstants.SESSION_STORE_NAME, adminuser.getUserName());
+			session.setAttribute(EConstants.SESSION_ROLE_TYPE, adminuser.getClassify());
+		}else if(StringUtils.isNotBlank(adminuser.getClassify()) && adminuser.getClassify().equals(EAdminClassifyEnum.partner)){
 			//合作伙伴
 			HaiPartner partner = haiPartnerMapper.selectByPrimaryKey(adminuser.getPartnerId());
 			if(partner == null){
@@ -356,9 +358,6 @@ public class EHaiAdminUserServiceImpl  extends CommonServiceImpl implements EHai
 			
 		}else if(StringUtils.isNotBlank(adminuser.getClassify()) && adminuser.getClassify().equals(EAdminClassifyEnum.ceo)){
 			session.setAttribute(EConstants.SESSION_CEO_ID, adminuser.getAdminId());
-		}else if(StringUtils.isNotBlank(adminuser.getClassify()) && adminuser.getClassify().equals(EAdminClassifyEnum.company)){
-			session.setAttribute(EConstants.SESSION_STORE_ID, Integer.valueOf(adminuser.getAdminId().intValue()));
-			session.setAttribute(EConstants.SESSION_STORE_NAME, adminuser.getUserName());
 		}else{//普通商户
 			if(adminuser.getStoreId() == null || adminuser.getStoreId() == 0){
 				rm.setMsg("非本后台的用户");

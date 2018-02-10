@@ -1,6 +1,7 @@
 package org.ehais.enums;
 
 public class EAdminClassifyEnum {
+	public static String admin = "admin";
 	public static String chairman = "chairman";//董事长
 	public static String ceo = "ceo";//首席执行官
 	public static String shop = "shop";
