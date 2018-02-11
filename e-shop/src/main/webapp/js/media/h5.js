@@ -28,27 +28,27 @@ $(function(){
 	});
 	
 	$(".swiper-wrapper").width($(window).outerWidth());
-	$("#cate").width($(window).outerWidth()-$(".nav").width());
-	
+	$("#cate").width($(window).outerWidth());
+	$("#cate_bor").width($(window).outerWidth()-$(".nav").width());
 	
 	jrollCat(cat_id);
-	$("#cate ul li").each(function() {
+	$("#cate_bor ul li").each(function() {
 		culw += parseFloat($(this).outerWidth()) + 1;
 	});
 	
 	$("#cate ul").outerWidth(culw);
 	
 	
-	jcate = new JRoll("#cate", {scrollX : true ,scrollY : false , scrollBarX:false});
+	jcate = new JRoll("#cate_bor", {scrollX : true ,scrollY : false , scrollBarX:false});
 
-	$("#cate ul li").click(function(){
+	$("#cate_bor ul li").click(function(){
 		
 		if(parseInt(cat_id) != parseInt($(this).attr("cat_id"))){
 			
 			cat_id = $(this).attr("cat_id");
 			sessionStorage.setItem("cat_id",cat_id);
 			
-			$("#cate ul li").removeClass("active");
+			$("#cate_bor ul li").removeClass("active");
 			$(this).addClass("active");			
 			$("#clist >div").removeClass("active");
 			$("#c"+cat_id).addClass("active");
