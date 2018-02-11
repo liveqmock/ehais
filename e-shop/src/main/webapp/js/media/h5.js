@@ -27,7 +27,8 @@ $(function(){
 		jrollCat(v.catId);
 	});
 	
-	$("#cate").width($(window).outerWidth());
+	$(".swiper-wrapper").width($(window).outerWidth());
+	$("#cate").width($(window).outerWidth()-$(".nav").width());
 	
 	
 	jrollCat(cat_id);
