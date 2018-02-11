@@ -8,7 +8,7 @@ var scroll_y = {0:0};//记录前位置
 var jroll = {};
 var cat_id = 0;
 var loaded;
-var defaultimg = "http://ovug9f17p.bkt.clouddn.com/dining121.jpg";
+var defaultimg = "http://eg.ehais.com/images/eICON.png";
 
 $(function(){
 	

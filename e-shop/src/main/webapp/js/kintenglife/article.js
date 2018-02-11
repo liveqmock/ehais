@@ -29,18 +29,7 @@ $("#jroll").height(parseFloat($(window).height()) - parseFloat($("header").css('
 		}
 	});
 	
-	var num = $("img").length;
-	$("img").load(function() {
-		num--;
-		if (num > 0) {
-			return;
-		}
-		jroll.refresh(); 
-	}).error(function(){
-		$(this).attr("src","http://ovug9f17p.bkt.clouddn.com/dining121.jpg");
-		jroll.refresh();
-	});
-	num = null;
+
 	
 	article_list();
 	
@@ -78,6 +67,21 @@ function article_list(){
 			$("#jroll ul li:not(:first-child)").click(function(){
 				window.location.href = $(this).attr("herf");
 			});
+			
+			var num = $("img").length;
+			$("img").load(function() {
+				num--;
+				if (num > 0) {
+					return;
+				}
+				jroll.refresh(); 
+			}).error(function(){
+				$(this).attr("src","http://eg.ehais.com/images/eICON.png");
+				jroll.refresh();
+			});
+			num = null;
+			
+			
 		}
 	})
 }

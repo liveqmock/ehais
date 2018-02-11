@@ -36,7 +36,7 @@ $(function(){
 		}
 		jroll.refresh(); 
 	}).error(function(){
-		$(this).attr("src","http://ovug9f17p.bkt.clouddn.com/dining121.jpg");
+		$(this).attr("src","http://eg.ehais.com/images/eICON.png");
 		jroll.refresh();
 	});
 	num = null;
@@ -92,7 +92,7 @@ function favorites_list(){
 				}
 				jroll.refresh(); 
 			}).error(function(){
-				$(this).attr("src","http://ovug9f17p.bkt.clouddn.com/dining121.jpg");
+				$(this).attr("src","http://eg.ehais.com/images/eICON.png");
 				jroll.refresh();
 			});
 			num = null;
