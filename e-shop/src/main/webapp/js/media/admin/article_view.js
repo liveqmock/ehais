@@ -18,6 +18,9 @@ $(function(){
 	$("#deleteCate").click(function(){deleteCate();});
 	$("#mediaArticleAddDetail").click(function(){mediaArticleAddDetail();});
 	$("#logout").click(function(){logout();});
+	$("#closeFtp").click(function(){
+		$(".ftp_main").removeClass("show");
+	});
 	
 	
     $("#btnSearch").click(function(){keyword = $.trim($("#keyword").val());bsTable.bootstrapTable('refresh', { query : {cat_id : cat_id , title : keyword , page : 1} });});
@@ -445,14 +448,29 @@ function logout(){
 
 
 function getFTP() {
-
-	$.ajax({
-		url : "ftp.json",type:"post",dataType:"json",data:{},
-		success : function(result){
-			
-			
-		}
-	});
+	if($(".media_ftp_list li").length == 0){
+		$.ajax({
+			url : "media_ftp.json",type:"post",dataType:"json",data:{},
+			success : function(result){
+				$(".ftp_main").addClass("show");
+				
+				$(".media_ftp_list li span").unbind();
+				$(".media_ftp_list li").remove();
+				$.each(result.rows,function(k,v){
+					var file_name = v.replace(result.token+"\\","");
+					$(".media_ftp_list").append("<li val='"+file_name+"'>"+file_name+"<span>确定</span></li>");
+				});
+				
+				$(".media_ftp_list li span").click(function(){
+					$("#videoUrl").val($(this).parent().attr("val"));
+					$(".ftp_main").removeClass("show");
+				});
+			}
+		});
+	}else{
+		$(".ftp_main").addClass("show");
+	}
+	
 	
 
 }

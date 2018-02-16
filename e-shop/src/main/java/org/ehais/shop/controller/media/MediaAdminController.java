@@ -691,8 +691,8 @@ public class MediaAdminController extends CommonController{
 	
 	
 	@ResponseBody
-	@RequestMapping(value = "/ftp.json", method = RequestMethod.POST)
-	public String ftp_list(ModelMap modelMap, HttpServletRequest request,
+	@RequestMapping(value = "/media_ftp.json", method = RequestMethod.POST)
+	public String media_ftp_list(ModelMap modelMap, HttpServletRequest request,
 			HttpServletResponse response){
 		ReturnObject<String> rm = new ReturnObject<String>();
 		List<String> list = new ArrayList<String>();
@@ -702,6 +702,7 @@ public class MediaAdminController extends CommonController{
 			
 			rm.setRows(list);
 			rm.setCode(1);
+			rm.setToken(video_ftp_path);
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

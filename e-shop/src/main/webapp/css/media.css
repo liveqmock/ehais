@@ -143,3 +143,39 @@ a.glyphicon{padding: 2px 5px;}
 #tree{width:100%;float:left;}
 #tree li{float:left;padding:8px;border:1px solid #555;margin-right:5px;cursor: pointer;}
 #tree li.active{background:#999;color:#fff;}
+.ftp_main{display: none;
+	z-index: 1060;
+    width: 350px;
+    height: 100%;
+    background: #fff;
+    position: fixed;
+    right: 0;}
+.ftp_main.show{display: block;}
+.ftp_main .header{padding: 0 20px 5px;}
+.ftp_main .media_ftp_list{
+	overflow-y:scroll; 
+	overflow-x: hidden;width: 100%;height: 100%;
+}
+.ftp_main .media_ftp_list li{
+	padding: 10px;box-sizing: border-box;cursor: pointer;
+}
+.ftp_main .media_ftp_list li span{display: none;}
+.ftp_main .media_ftp_list li:hover{
+	background: #ddd;
+}
+.ftp_main .media_ftp_list li:hover span{
+	display: block;
+	background: #337ab7;padding:2px 5px;border-radius: 5px;float: right;color: #fff;
+}
+.ftp_main .media_ftp_list li:hover span:hover{
+	background: #ca1818;
+}
+.ftp_main .media_ftp_list li:not(:last-child) {
+	border-bottom: 1px solid #ddd;
+}
+
+
+
+
+
+
