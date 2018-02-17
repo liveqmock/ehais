@@ -1,8 +1,13 @@
 package org.ehais.weixin;
 
-import org.ehais.util.EResourceUtil;
+import java.io.InputStream;
+import java.util.Properties;
 
 public class WXConstants {
+	Properties prop = new Properties();
+	InputStream ins = getClass().getResourceAsStream("/config/config.properties"); 
+//	prop.load(ins);
+	
 //	public static String weixin_appid = ResourceUtil.getProValue("weixin_appid");
 //	public static String weixin_appsecret = ResourceUtil.getProValue("weixin_appsecret");
 //	public static String weixin_mch_id = ResourceUtil.getProValue("weixin_mch_id");
@@ -17,11 +22,11 @@ public class WXConstants {
 		
 		
 	// 获取access_token的接口地址（GET） 限200（次/天）
-	public static String access_token_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
-//	public static String access_token_url = "http://mg.ehais.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
+//	public static String access_token_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
+	public static String access_token_url = "http://mg.ehais.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
 	// 获取getJsApiTicket
-	public static String get_jsapi_url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?type=jsapi&access_token=ACCESS_TOKEN&type=jsapi";
-//	public static String get_jsapi_url = "http://mg.ehais.com/cgi-bin/ticket/getticket?type=jsapi&access_token=ACCESS_TOKEN&type=jsapi";
+//	public static String get_jsapi_url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?type=jsapi&access_token=ACCESS_TOKEN&type=jsapi";
+	public static String get_jsapi_url = "http://mg.ehais.com/cgi-bin/ticket/getticket?type=jsapi&access_token=ACCESS_TOKEN&type=jsapi";
 		
 	// 菜单创建（POST） 限100（次/天）
 	public static String menu_create_url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN";
@@ -86,6 +91,9 @@ public class WXConstants {
 	
 	//获取临时素材
 	public static String get_temp_media = "https://api.weixin.qq.com/cgi-bin/media/get?access_token=ACCESS_TOKEN&media_id=MEDIA_ID";
+	
+	//下载对帐单
+	public static String downloadbill = "https://api.mch.weixin.qq.com/pay/downloadbill";
 	
 	
 	

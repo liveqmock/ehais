@@ -399,4 +399,16 @@ public class WeiXinJunit {
 		}
 	}
 	
+	
+	@Test
+	public void downloadbill() {
+		try {
+			String response = WeiXinUtil.downloadbill("wxb7e05d362dab27b1","1480510742","20180216","EhaisTylerEllen123456789LGJ628ok");
+			System.out.println(response);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 }

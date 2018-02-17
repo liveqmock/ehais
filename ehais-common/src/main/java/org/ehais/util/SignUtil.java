@@ -13,6 +13,10 @@ import org.apache.commons.lang3.StringUtils;
 public class SignUtil {
 
 
+	public static <T> String getSign(T t,String secret) throws UnsupportedEncodingException{
+		Map<String,Object> map = Bean2Utils.toSignMap(t);
+		return getSign(map, secret);
+	}
     
     public static String getSign(Map<String,Object> map,String secret) throws UnsupportedEncodingException{
         ArrayList<String> list = new ArrayList<String>();

@@ -13,7 +13,9 @@ import org.ehais.util.ECommon;
 import org.ehais.util.EHttpClientUtil;
 import org.ehais.util.EmojiFilterUtils;
 import org.ehais.util.EncryptUtils;
+import org.ehais.util.SignUtil;
 import org.ehais.util.StringUtil;
+import org.ehais.util.XStreamUtil;
 import org.ehais.weixin.WXConstants;
 import org.ehais.weixin.cache.AccessTokenCacheManager;
 import org.ehais.weixin.cache.JsApiTicketCacheManager;
@@ -21,6 +23,7 @@ import org.ehais.weixin.model.AccessToken;
 import org.ehais.weixin.model.JsApiTicket;
 import org.ehais.weixin.model.OpenidInfo;
 import org.ehais.weixin.model.WeiXinArticlesItem;
+import org.ehais.weixin.model.WeiXinDownloadBill;
 import org.ehais.weixin.model.WeiXinImage;
 import org.ehais.weixin.model.WeiXinMPNews;
 import org.ehais.weixin.model.WeiXinNotifyPay;
@@ -620,5 +623,24 @@ public class WeiXinUtil {
 		return EHttpClientUtil.httpPostEntity(url, json.toString());
 	}
 	
+	
+	//微信下载对帐单
+	public static String downloadbill(String appid,String mch_id,String bill_date,String secret) throws Exception{
+		WeiXinDownloadBill downloadbill = new WeiXinDownloadBill();
+		downloadbill.setAppid(appid);
+		downloadbill.setMch_id(mch_id);
+		downloadbill.setNonce_str(ECommon.nonceStr(32));
+		downloadbill.setSign_type("MD5");
+		downloadbill.setBill_date(bill_date);
+		downloadbill.setBill_type("SUCCESS");
+		String sign = SignUtil.getSign(downloadbill, secret);
+		downloadbill.setSign(sign);
+		
+		String content = XStreamUtil.toXml(downloadbill);
+		
+		System.out.println(content);
+		return EHttpClientUtil.httpPostEntity(WXConstants.downloadbill, content);
+		
+	}
 	
 }
