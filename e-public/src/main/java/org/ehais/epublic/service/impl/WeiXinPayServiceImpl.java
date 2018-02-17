@@ -307,6 +307,7 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 		p.setCouponCount(model.getCoupon_count());
 		p.setCouponId1(model.getCoupon_id_1());
 		p.setCouponFee1(model.getCoupon_fee_1());
+		
 		p.setTransactionId(model.getTransaction_id());
 		p.setOutTradeNo(model.getOut_trade_no());
 		p.setAttach(model.getAttach());

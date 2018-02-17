@@ -33,8 +33,18 @@ public class WeiXinNotifyPay implements Serializable{
 	private String cash_fee_type;
 	private Integer coupon_fee;
 	private Integer coupon_count;
-	private String coupon_id_1;
+	private String coupon_id_0;
+	private Integer coupon_fee_0;
+	private String coupon_id_1;	
 	private Integer coupon_fee_1;
+	private String coupon_id_2;	
+	private Integer coupon_fee_2;
+	private String coupon_id_3;	
+	private Integer coupon_fee_3;
+	private String coupon_id_4;	
+	private Integer coupon_fee_4;
+	private String coupon_id_5;	
+	private Integer coupon_fee_5;
 	private String transaction_id;
 	private String out_trade_no;
 	private String attach;
@@ -207,6 +217,66 @@ public class WeiXinNotifyPay implements Serializable{
 	}
 	public void setSettlement_total_fee(Integer settlement_total_fee) {
 		this.settlement_total_fee = settlement_total_fee;
+	}
+	public String getCoupon_id_0() {
+		return coupon_id_0;
+	}
+	public void setCoupon_id_0(String coupon_id_0) {
+		this.coupon_id_0 = coupon_id_0;
+	}
+	public Integer getCoupon_fee_0() {
+		return coupon_fee_0;
+	}
+	public void setCoupon_fee_0(Integer coupon_fee_0) {
+		this.coupon_fee_0 = coupon_fee_0;
+	}
+	public String getCoupon_id_2() {
+		return coupon_id_2;
+	}
+	public void setCoupon_id_2(String coupon_id_2) {
+		this.coupon_id_2 = coupon_id_2;
+	}
+	public Integer getCoupon_fee_2() {
+		return coupon_fee_2;
+	}
+	public void setCoupon_fee_2(Integer coupon_fee_2) {
+		this.coupon_fee_2 = coupon_fee_2;
+	}
+	public String getCoupon_id_3() {
+		return coupon_id_3;
+	}
+	public void setCoupon_id_3(String coupon_id_3) {
+		this.coupon_id_3 = coupon_id_3;
+	}
+	public Integer getCoupon_fee_3() {
+		return coupon_fee_3;
+	}
+	public void setCoupon_fee_3(Integer coupon_fee_3) {
+		this.coupon_fee_3 = coupon_fee_3;
+	}
+	public String getCoupon_id_4() {
+		return coupon_id_4;
+	}
+	public void setCoupon_id_4(String coupon_id_4) {
+		this.coupon_id_4 = coupon_id_4;
+	}
+	public Integer getCoupon_fee_4() {
+		return coupon_fee_4;
+	}
+	public void setCoupon_fee_4(Integer coupon_fee_4) {
+		this.coupon_fee_4 = coupon_fee_4;
+	}
+	public String getCoupon_id_5() {
+		return coupon_id_5;
+	}
+	public void setCoupon_id_5(String coupon_id_5) {
+		this.coupon_id_5 = coupon_id_5;
+	}
+	public Integer getCoupon_fee_5() {
+		return coupon_fee_5;
+	}
+	public void setCoupon_fee_5(Integer coupon_fee_5) {
+		this.coupon_fee_5 = coupon_fee_5;
 	}
 	public Map<String,Object> toMap(){
         Map<String,Object> map = new HashMap<String, Object>();

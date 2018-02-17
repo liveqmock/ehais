@@ -117,8 +117,10 @@ public class MediaFtpController extends CommonController {
 					System.out.print(path + "   ");
 					System.out.print(mediaName + "   ");
 
-					FfmpegThread ft = new FfmpegThread(catName, parentName, title, path, mediaName, images_path);
-					ft.start();
+					ffmpegMedia(catName, parentName, title, path, mediaName, images_path);
+					
+//					FfmpegThread ft = new FfmpegThread(catName, parentName, title, path, mediaName, images_path);
+//					ft.start();
 
 					// 循环每一列
 					// while (cellIterator.hasNext()) {
@@ -161,6 +163,35 @@ public class MediaFtpController extends CommonController {
 		}
 		return "";
 	}
+	
+	
+	private void ffmpegMedia(String catName, String parentName, String title, String path, String mediaName,
+				String imagesPath) throws Exception {
+		String ftpPath = "/home/ftp/" + path + "/" + mediaName;// 视频原路径
+		
+		String md5MediaName = EncryptUtils.md5(ftpPath);
+		String videoPath = md5MediaName + ".mp4";
+
+		FfmpegUtil.executeCodecs(video_ffmpeg_path, 
+				ftpPath, 
+				video_path +"/"+ md5MediaName + ".mp4",
+				images_path + "/" + md5MediaName + ".png", 
+				video_pic_size);
+
+		// 找到分类ID
+		EHaiArticleCat cate = new EHaiArticleCat();
+		cate.setCatName(catName);
+		cate = articleCatService.articleCatSave(cate, null, 1);
+		// 找到标题的ID
+		EHaiArticle article = new EHaiArticle();
+		article.setTitle(title);
+		article.setStoreId(store_id);
+		article.setArticleImages("/eUploads/images/"+md5MediaName+".png");
+		article.setVideoUrl(video_path + md5MediaName + ".mp4");
+		article.setLink("");
+		article.setContent("");
+		articleService.articleSave( cate, article);
+	}
 
 	class FfmpegThread extends Thread {
 		String catName;
@@ -184,30 +215,7 @@ public class MediaFtpController extends CommonController {
 			System.out.println("============转码开始==================");
 			try {
 
-				String ftpPath = "/home/ftp/" + path + "/" + mediaName;// 视频原路径
-				
-				String md5MediaName = EncryptUtils.md5(ftpPath);
-				String videoPath = md5MediaName + ".mp4";
-
-				FfmpegUtil.executeCodecs(video_ffmpeg_path, 
-						ftpPath, 
-						video_path +"/"+ md5MediaName + ".mp4",
-						images_path + "/" + md5MediaName + ".png", 
-						video_pic_size);
-
-				// 找到分类ID
-				EHaiArticleCat cate = new EHaiArticleCat();
-				cate.setCatName(catName);
-				cate = articleCatService.articleCatSave(cate, null, 1);
-				// 找到标题的ID
-				EHaiArticle article = new EHaiArticle();
-				article.setTitle(title);
-				article.setStoreId(store_id);
-				article.setArticleImages("/eUploads/images/"+md5MediaName+".png");
-				article.setVideoUrl(video_path + md5MediaName + ".mp4");
-				article.setLink("");
-				article.setContent("");
-				articleService.articleSave( cate, article);
+				ffmpegMedia(catName, parentName, title, path, mediaName, imagesPath);
 				// 更新
 
 			} catch (Exception e) {
@@ -216,4 +224,9 @@ public class MediaFtpController extends CommonController {
 			}
 		}
 	}
+	
+	
+	
+	
+	
 }

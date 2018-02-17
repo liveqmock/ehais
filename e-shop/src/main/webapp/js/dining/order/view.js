@@ -84,8 +84,8 @@ $(function(){
     title: '支付时间',
     formatter : function(value,rows,index){
     	if(parseInt(value) > 0){
-    		var date =  new Date(value * 1000);
-    		return date.format("yyyy-MM-dd");
+    		var date =  new Date(value );
+    		return date.format("yyyy-MM-dd hh:mm:ss");
     	}else{
     		return "";
     	}
