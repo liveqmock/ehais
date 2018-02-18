@@ -156,5 +156,11 @@ public class App {
 		System.out.println(arr2.toString());
 	}
 	
+	@Test
+	public void longstr() {
+		String s = "76.01";
+		Double l = Double.valueOf(s);
+		System.out.println(l);
+	}
 	
 }

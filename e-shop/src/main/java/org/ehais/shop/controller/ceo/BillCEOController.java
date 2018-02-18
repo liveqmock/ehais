@@ -98,9 +98,10 @@ public class BillCEOController extends CommonController{
 	@RequestMapping(value = "/weixin_import_csv.upd", method = RequestMethod.POST)
 	public String weixin_import_csv(ModelMap modelMap, HttpServletRequest request,
 			HttpServletResponse response,
-			@RequestParam(value = "bill_date", required = true) String bill_date
+			@RequestParam(value = "bill_date", required = false) String bill_date
 	) {
 		
+		bill_date = "2018-02-16";
 		
 		try{
 			String req = UploadUtils.upload_file(request, response);
@@ -132,7 +133,7 @@ public class BillCEOController extends CommonController{
             System.out.println("csv表格中所有行数："+allString.size());
             br.close();
             
-            FSO.deletefile(json.getString("msg"));
+            FSO.deletefile(json.getString("msg"));//将缓存文件删除
 	        
             ReturnObject<Object> rm = this.compareBill(allString, bill_date);
 			return this.writeJson(rm);
@@ -150,18 +151,20 @@ public class BillCEOController extends CommonController{
 		List<HaiOrderInfoWithBLOBs> list = haiOrderInfoMapper.listOrderInfoAddTimeBill(bill_date);
 		
 		boolean f = false;
+		Long dAmount = 0L ;
 		//微信帐单与线上帐单对帐
 		for(String str : allString){
 			f = false;
 			String[] bill = str.split(",");
 			for (HaiOrderInfoWithBLOBs order : list) {
-				if(bill[2].replaceAll("`", "").equals(order.getOrderSn())) {
+				if(bill[2].replaceAll("`", "").equals(order.getOrderSn()) && bill[4].equals("买家已支付")) {
 					f = true;
 					//可能出现的情况：1.无更新状态
 					if(order.getPayStatus()!=1) {
-						System.out.println(order.getOrderId()+":"+order.getOrderSn()+"状态不正确");
+						System.out.println(order.getOrderId()+":"+order.getOrderSn()+"状态不正确,金额"+order.getOrderAmount());
+						dAmount += order.getOrderAmount();
 					}
-					if( Long.valueOf(order.getOrderAmount() / 100) != Long.valueOf(bill[5]) ) {
+					if( Double.valueOf(order.getOrderAmount() / 100).doubleValue() != Double.parseDouble(bill[5]) ) {
 						System.out.println(order.getOrderId()+":"+order.getOrderSn()+"金额不正确");
 					}
 					
@@ -169,12 +172,17 @@ public class BillCEOController extends CommonController{
 				}
 			}
 		}
+		
+		System.out.println("差额为"+dAmount);
 				
 		//线上帐单与微信对帐
-		for (HaiOrderInfoWithBLOBs haiOrderInfoWithBLOBs : list) {
-			for(String str : allString) {
-				String[] bill = str.split(",");
+		for (HaiOrderInfoWithBLOBs order : list) {
+			if(order.getPayStatus().intValue()==1) {
+				for(String str : allString) {
+					String[] bill = str.split(",");
+				}
 			}
+			
 		}
 		
 		
