@@ -20,6 +20,11 @@ import org.ehais.epublic.model.OrderStoreStatistics;
 public interface HaiOrderInfoMapper {
 	
 	
+	@ResultMap(value = "ResultMapWithBLOBs")
+	@Select("select * from hai_order_info where DATE_FORMAT(add_time ,'%Y-%m-%d') = #{bill_date}")
+	public List<HaiOrderInfoWithBLOBs> listOrderInfoAddTimeBill(@Param("bill_date") String bill_date) ;
+	
+	
 	@Update("update hai_coupons set use_count = ifnull(use_count,0) + 1 where is_valid = 1 and store_id = #{store_id} and coupons_id = #{coupons_id} ")
 	int updateCouponsUseCount(@Param("store_id") Integer store_id,
 			@Param("coupons_id") Integer coupons_id);
