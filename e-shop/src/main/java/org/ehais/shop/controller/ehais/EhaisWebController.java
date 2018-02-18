@@ -110,6 +110,7 @@ public class EhaisWebController extends EhaisCommonController {
 	
 	
 	//http://127.0.0.1/w_shop!afa5890-062c0c01-12b7b002-2c960b1253-37ca2179f7b3b
+	//http://8f372c5b.ngrok.io/w_shop!afa5890-062c0c01-12b7b002-2c960b1253-37ca2179f7b3b
 	@RequestMapping("/w_shop!{cid}")
 	public String shop(ModelMap modelMap,
 			HttpServletRequest request,
@@ -154,8 +155,8 @@ public class EhaisWebController extends EhaisCommonController {
 					return "redirect:"+website; //错误的链接，跳转商城
 				}
 			}else{
-//				return this.shopData(modelMap, request, response, wp, store, cid, store_id, user_id, map);
-				return "redirect:"+website;
+				return this.shopData(modelMap, request, response, wp, store, cid, store_id, user_id, map);
+//				return "redirect:"+website;
 			}
 			
 			
@@ -180,6 +181,7 @@ public class EhaisWebController extends EhaisCommonController {
 		modelMap.addAttribute("store", store);
 		modelMap.addAttribute("cid", cid);
 		
+		//广告信息
 		HaiAdExample adExample = new HaiAdExample();
 		adExample.createCriteria()
 		.andStoreIdEqualTo(default_store_id)
@@ -187,6 +189,7 @@ public class EhaisWebController extends EhaisCommonController {
 		.andIsVoidEqualTo(1);
 		List<HaiAd> adList = haiAdMapper.selectByExample(adExample);
 		
+		//分类
 		HaiCategoryExample categoryExample = new HaiCategoryExample();
 		categoryExample.createCriteria()
 		.andStoreIdEqualTo(store_id)
@@ -194,6 +197,7 @@ public class EhaisWebController extends EhaisCommonController {
 		categoryExample.setOrderByClause("sort_order asc");
 		List<HaiCategory> categoryList = haiCategoryMapper.selectByExample(categoryExample);
 		
+		//热销商品
 		HaiGoodsExample goodsExample = new HaiGoodsExample();
 		goodsExample.createCriteria()
 		.andStoreIdEqualTo(store_id)

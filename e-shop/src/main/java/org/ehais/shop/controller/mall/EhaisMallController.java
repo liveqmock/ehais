@@ -63,7 +63,6 @@ public class EhaisMallController extends EhaisCommonController {
 	@Autowired
 	private HaiSearchHistoryMapper haiSearchHistoryMapper;
 	
-	
 
 	private String mallData(ModelMap modelMap,
 			HttpServletRequest request,
@@ -106,6 +105,14 @@ public class EhaisMallController extends EhaisCommonController {
 		.andIsMobileEqualTo(true)
 		.andIsValidEqualTo(true)
 		.andClassifyEqualTo(ENavClassifyEnum.MOBILE_MALL_INDEX);
+		
+		navExample.or()
+		.andStoreIdEqualTo(store.getStoreId())
+		.andIsMobileEqualTo(true)
+		.andIsValidEqualTo(true)
+		.andClassifyEqualTo(ENavClassifyEnum.NAV_CATEGORY_INDEX);
+		
+		
 		navExample.setOrderByClause("sort asc");
 		List<HaiNav> navList = haiNavMapper.selectByExample(navExample);
 		
@@ -151,7 +158,7 @@ public class EhaisMallController extends EhaisCommonController {
 	
 	//http://127.0.0.1/w_mall!9b2f4710-0f9cbf01-1386c202-2b1d0903-3b7a1ba090e40
 	//http://mg.ehais.com/w_mall!5a9b8710-027ed301-130ff402-243aef1253-3ee8f62f575a2
-	//http://a9e03339.ngrok.io/w_mall!9b2f4710-0f9cbf01-1386c202-2b1d0903-3b7a1ba090e40
+	//http://8f372c5b.ngrok.io/w_mall!9b2f4710-0f9cbf01-1386c202-2b1d0903-3b7a1ba090e40
 	@RequestMapping("/w_mall!{cid}")
 	public String w_mall(ModelMap modelMap,
 			HttpServletRequest request,
@@ -205,7 +212,8 @@ public class EhaisMallController extends EhaisCommonController {
 				if(isLocalHost(request)){
 					return this.mallData(modelMap, request, response, wp, store, cid, store_id, user_id, map);
 				}else{
-					return "redirect:"+website;
+					return this.mallData(modelMap, request, response, wp, store, cid, store_id, user_id, map);
+//					return "redirect:"+website;
 				}
 				
 				

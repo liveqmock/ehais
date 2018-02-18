@@ -24,6 +24,9 @@ $(function(){
 	$("#clist>li").click(function(){
 		if($(this).attr("h") != null && $(this).attr("h") != "")window.location.href = "w_goods_detail!"+$(this).attr("h");
 	});
+	$(".recommend li,.nav li").click(function(){
+		if($(this).attr("h") != null && $(this).attr("h") != "")window.location.href = $(this).attr("h");
+	});
 	
 	
 });

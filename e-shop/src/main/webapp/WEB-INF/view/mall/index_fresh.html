@@ -68,6 +68,18 @@
 						<i class="iconfont icon-dianpu"></i>
 						附近门店
 					</li>
+					
+					<#if (navList?? && navList?size > 0 )>
+						<#list navList as nav>
+						<#if (nav.classify == "nav_category_index")>
+						<li h="${nav.url!''}" class="${nav.className!''}">
+							<div></div>
+							<i class="iconfont icon-dianpu"></i>
+							${nav.name!''}
+						</li>
+						</#if>
+						</#list>
+					</#if>
 				</ul>
 			</div>
 			
@@ -75,6 +87,7 @@
 			<div class="recommend">
 				<ul>
 					<#list navList as nav>
+					<#if (nav.classify == "mobile_mall_index")>
 					<li h="${nav.url!''}">
 						<div>
 						<b>${nav.name!''}</b>
@@ -82,6 +95,7 @@
 						</div>
 						<img src="${nav.thumb!''}" />
 					</li>
+					</#if>
 					</#list>					
 				</ul>
 			</div>

@@ -9,10 +9,10 @@ $(function(){
 	    pagination: '.swiper-pagination',
 	});  
 	
-	$(".icon-gouwuche").click(function(){
+	$(".icon-gouwuche").tap(function(){
 		window.location.href="w_cart!"+cid;
 	});
-	$(".icon-huiyuan").click(function(){
+	$(".icon-huiyuan").tap(function(){
 		window.location.href="w_member";
 	});
 	wx_config(signature);
