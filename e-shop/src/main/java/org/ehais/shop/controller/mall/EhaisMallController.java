@@ -157,7 +157,7 @@ public class EhaisMallController extends EhaisCommonController {
 	
 	
 	//http://127.0.0.1/w_mall!9b2f4710-0f9cbf01-1386c202-2b1d0903-3b7a1ba090e40
-	//http://mg.ehais.com/w_mall!5a9b8710-027ed301-130ff402-243aef1253-3ee8f62f575a2
+	//http://eg.ehais.com/w_mall!3a3d5300-03a7df01-19978a02-252b9e03-361e0bcd28100
 	//http://8f372c5b.ngrok.io/w_mall!9b2f4710-0f9cbf01-1386c202-2b1d0903-3b7a1ba090e40
 	@RequestMapping("/w_mall!{cid}")
 	public String w_mall(ModelMap modelMap,
@@ -362,13 +362,22 @@ public class EhaisMallController extends EhaisCommonController {
 			String aid,
 			Integer store_id,
 			Long user_id ,
-			Map<String,Object> map ) throws Exception{
+			Map<String,Object> map,
+			Integer alone) throws Exception{
 		modelMap.addAttribute("store", store);
 		modelMap.addAttribute("aid", aid);
 		modelMap.addAttribute("defaultimg", defaultimg);
-		modelMap.addAttribute("category_active", "active");
-		modelMap.addAttribute("filtrate_active", "");
+		
 		modelMap.addAttribute("goods_list", "goods_list.js");
+		
+		if(alone==null) {
+			modelMap.addAttribute("category_active", "active");
+			modelMap.addAttribute("filtrate_active", "");
+		}else {
+			modelMap.addAttribute("category_active", "");
+			modelMap.addAttribute("filtrate_active", "active");
+		}
+
 		
 		//获取当前二级分类的所有三级分类
 		Integer catId = Integer.valueOf(map.get("articleId").toString());
@@ -412,13 +421,15 @@ public class EhaisMallController extends EhaisCommonController {
 			HttpServletRequest request,
 			HttpServletResponse response ,
 			@PathVariable(value = "aid") String aid,
-			@RequestParam(value = "code", required = false) String code
+			@RequestParam(value = "code", required = false) String code,
+			@RequestParam(value = "alone", required = false) Integer alone
 			) {	
 		Integer store_id = SignUtil.getUriStoreId(aid);
 		if(store_id == 0 || store_id == null){
 			return "redirect:"+website; //错误的链接，跳转商城
 		}
 		request.getSession().setAttribute(EConstants.SESSION_STORE_ID, store_id);
+		
 		try{
 			EHaiStore store = eStoreService.getEStore(store_id);
 			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
@@ -439,7 +450,7 @@ public class EhaisMallController extends EhaisCommonController {
 					return "redirect:"+link;
 				}else if(user_id > 0 && Long.valueOf(map.get("userId").toString()).longValue() == user_id.longValue()){//经过code获取用户信息跳回自己的链接中来
 					
-					return this.goodsListData(modelMap, request, response, wp, store, aid, store_id, user_id, map);
+					return this.goodsListData(modelMap, request, response, wp, store, aid, store_id, user_id, map,alone);
 					
 				}else if(Long.valueOf(map.get("userId").toString()).longValue() != user_id.longValue()){
 					System.out.println("user_id != map.userId condition is worng");
@@ -450,7 +461,7 @@ public class EhaisMallController extends EhaisCommonController {
 					return "redirect:"+website; //错误的链接，跳转商城
 				}
 			}else{
-				return this.goodsListData(modelMap, request, response, wp, store, aid, store_id, user_id, map);
+				return this.goodsListData(modelMap, request, response, wp, store, aid, store_id, user_id, map,alone);
 			}
 		}catch(Exception e){
 			e.printStackTrace();

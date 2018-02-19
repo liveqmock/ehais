@@ -144,7 +144,8 @@ public class WeiXinUtil {
 
 		String requestUrl = WXConstants.access_token_url
 				.replace("APPID", weixin_appid)
-				.replace("APPSECRET", weixin_appsecret);
+				.replace("APPSECRET", weixin_appsecret)
+				.replace("STORE_ID", storeId+"");
 		log.info("请求AccessToken地址:"+requestUrl);
 		
 		String request = EHttpClientUtil.methodGet(requestUrl);
@@ -163,8 +164,11 @@ public class WeiXinUtil {
 			accessToken = new AccessToken();
 			accessToken.setId(storeId);
 			accessToken.setAccess_token(jsonObject.getString("access_token"));
-			accessToken.setExpiresIn(jsonObject.getInt("expires_in"));
-			accessToken.setExpire_time(System.currentTimeMillis() + jsonObject.getInt("expires_in") * 1000);//毫秒数
+//			accessToken.setExpiresIn(jsonObject.getInt("expires_in"));
+//			accessToken.setExpires_in(jsonObject.getInt("expires_in"));
+			if(jsonObject.has("expiresIn"))accessToken.setExpires_in(jsonObject.getInt("expiresIn"));
+			if(jsonObject.has("expires_in"))accessToken.setExpires_in(jsonObject.getInt("expires_in"));
+			accessToken.setExpire_time(System.currentTimeMillis() + accessToken.getExpires_in() * 1000);//毫秒数
 			AccessTokenCacheManager.getInstance().putAccessToken(accessToken);//保存内存中，不需要经常读接口
 		}
 		
@@ -193,8 +197,10 @@ public class WeiXinUtil {
 			accessToken = new AccessToken();
 			accessToken.setId(storeId);
 			accessToken.setAccess_token(jsonObject.getString("access_token"));
-			accessToken.setExpiresIn(jsonObject.getInt("expires_in"));
-			accessToken.setExpire_time(System.currentTimeMillis() + jsonObject.getInt("expires_in") * 1000);//毫秒数
+//			accessToken.setExpiresIn(jsonObject.getInt("expires_in"));
+			if(jsonObject.has("expiresIn"))accessToken.setExpires_in(jsonObject.getInt("expiresIn"));
+			if(jsonObject.has("expires_in"))accessToken.setExpires_in(jsonObject.getInt("expires_in"));
+			accessToken.setExpire_time(System.currentTimeMillis() + accessToken.getExpires_in() * 1000);//毫秒数
 			AccessTokenCacheManager.getInstance().putAccessToken(accessToken);//保存内存中，不需要经常读接口
 		}
 		
@@ -224,7 +230,7 @@ public class WeiXinUtil {
 		}
 		
 		
-		String requestUrl = WXConstants.get_jsapi_url.replace("ACCESS_TOKEN", access_token);
+		String requestUrl = WXConstants.get_jsapi_url.replace("ACCESS_TOKEN", access_token).replace("STORE_ID", storeId+"");
 		System.out.println("JsApiTicket:"+requestUrl);
 		String request = EHttpClientUtil.methodGet(requestUrl);
 		JSONObject jsonObject = JSONObject.fromObject(request);
