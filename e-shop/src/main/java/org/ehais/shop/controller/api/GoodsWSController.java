@@ -10,6 +10,7 @@ import org.ehais.tools.ReturnObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -65,6 +66,28 @@ public class GoodsWSController extends GoodsIController{
 		}
 		return this.writeJson(rm);
 	}
+	
+	
+	@ResponseBody
+	@RequestMapping("/goods_list_aid!{cid}")
+	public String goods_list_aid(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@PathVariable(value = "cid") String cid,
+			@RequestParam(value = "store_id", required = true) Integer store_id,
+			@RequestParam(value = "catId", required = true) Integer catId,
+			@RequestParam(value = "page", required = true) Integer page,
+			@RequestParam(value = "len", required = true) Integer len){
+		
+		try {
+			return this.writeJson(goodsService.goods_list(request,cid,store_id, catId, page, len));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			log.error("error :", e);
+		}
+		return null;
+	}
+	
 	
 	
 }

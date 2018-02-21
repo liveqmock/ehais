@@ -17,13 +17,13 @@ import com.thoughtworks.xstream.XStream;
 public class StoreConfigJUnit {
 
 	public static void main(String[] args) {
-//		String menu_path = "D:/workspace_luna/ehais/e-Junit/src/main/resources/config/StoreConfig.xml";
-		String menu_path = "/Users/gzepro/developer/j2ee/workspace/ehais/e-Junit/src/main/resources/config/StoreConfig.xml";
+		String menu_path = "D:/workspace_luna/ehais/e-Junit/src/main/resources/config/StoreConfig.xml";
+//		String menu_path = "/Users/gzepro/developer/j2ee/workspace/ehais/e-Junit/src/main/resources/config/StoreConfig.xml";
 		
 		try {
-			String content = FSO.BufferedReader(menu_path);
-			XStream xStream = new XStream();
-			xStream.autodetectAnnotations(true); 
+//			String content = FSO.BufferedReader(menu_path);
+//			XStream xStream = new XStream();
+//			xStream.autodetectAnnotations(true); 
 			
 			/*
 			StoreConfigXml scXml = new StoreConfigXml();
@@ -43,21 +43,21 @@ public class StoreConfigJUnit {
 			System.out.println(xml);
 			*/
 			
-			xStream.alias("xml",StoreConfigXml.class);
-			xStream.alias("config",StoreConfigParent.class);
-			xStream.alias("item",StoreConfigSub.class);
+//			xStream.alias("xml",StoreConfigXml.class);
+//			xStream.alias("config",StoreConfigParent.class);
+//			xStream.alias("item",StoreConfigSub.class);
+//			
+//			StoreConfigXml xml = (StoreConfigXml) xStream.fromXML(content);
+//			List<StoreConfigParent> config = xml.getConfig();
+//			for (StoreConfigParent parent : config) {
+//				System.out.println(parent.getCode());
+//				List<StoreConfigSub> sub = parent.getItem();
+//				for (StoreConfigSub storeConfigSub : sub) {
+//					System.out.println("   "+storeConfigSub.getCode());
+//				}
+//			}
 			
-			StoreConfigXml xml = (StoreConfigXml) xStream.fromXML(content);
-			List<StoreConfigParent> config = xml.getConfig();
-			for (StoreConfigParent parent : config) {
-				System.out.println(parent.getCode());
-				List<StoreConfigSub> sub = parent.getItem();
-				for (StoreConfigSub storeConfigSub : sub) {
-					System.out.println("   "+storeConfigSub.getCode());
-				}
-			}
-			
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

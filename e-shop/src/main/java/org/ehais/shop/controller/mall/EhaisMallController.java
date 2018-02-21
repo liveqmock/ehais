@@ -33,6 +33,7 @@ import org.ehais.shop.model.HaiNav;
 import org.ehais.shop.model.HaiNavExample;
 import org.ehais.shop.model.HaiSearchHistory;
 import org.ehais.shop.model.HaiSearchHistoryExample;
+import org.ehais.shop.service.GoodsService;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.IpUtil;
@@ -63,6 +64,9 @@ public class EhaisMallController extends EhaisCommonController {
 	private HaiNavMapper haiNavMapper;
 	@Autowired
 	private HaiSearchHistoryMapper haiSearchHistoryMapper;
+	@Autowired
+	private GoodsService goodsService;
+	
 	
 
 	private String mallData(ModelMap modelMap,
@@ -159,7 +163,7 @@ public class EhaisMallController extends EhaisCommonController {
 	
 	//http://127.0.0.1/w_mall!9b2f4710-0f9cbf01-1386c202-2b1d0903-3b7a1ba090e40
 	//http://eg.ehais.com/w_mall!3a3d5300-03a7df01-19978a02-252b9e03-361e0bcd28100
-	//http://8f372c5b.ngrok.io/w_mall!9b2f4710-0f9cbf01-1386c202-2b1d0903-3b7a1ba090e40
+	//http://32c7e3aa.ngrok.io/w_mall!9b2f4710-0f9cbf01-1386c202-2b1d0903-3b7a1ba090e40
 	@RequestMapping("/w_mall!{cid}")
 	public String w_mall(ModelMap modelMap,
 			HttpServletRequest request,
@@ -276,7 +280,8 @@ public class EhaisMallController extends EhaisCommonController {
 		this.shareWeiXin(modelMap, request, response, wp, store_id, store.getStoreName(), link, store.getDescription(), store.getStoreLogo());
 		
 		
-		return "/mall/category_fresh";
+//		return "/mall/category_fresh";
+		return "/mall/category_single_fresh";
 	}
 	
 	
@@ -401,20 +406,7 @@ public class EhaisMallController extends EhaisCommonController {
 		return "/mall/goods_list_fresh";
 	}
 	
-	private Map<String,Object> dealGoods(WpPublicWithBLOBs wp ,
-			Integer store_id,
-			Long user_id ,
-			Map<String,Object> map,
-			HaiGoods goods) throws Exception{
-		Map<String,Object> gMap = new HashMap<String,Object>();
-		gMap.put("goodsName", goods.getGoodsName());
-		gMap.put("actDesc", goods.getActDesc());
-		gMap.put("goodsThumb", goods.getGoodsThumb());
-		gMap.put("shopPrice", goods.getShopPrice());
-		gMap.put("marketPrice", goods.getMarketPrice());
-		gMap.put("goodsUrl", SignUtil.setSid(store_id, Integer.valueOf(map.get("agencyId").toString()), Long.valueOf(map.get("userId").toString()), user_id, 0 , goods.getGoodsId(), wp.getToken()));
-		return gMap;
-	}
+	
 	
 	
 	@RequestMapping("/w_goods_list!{aid}")
@@ -566,7 +558,7 @@ public class EhaisMallController extends EhaisCommonController {
 			
 			List<Map<String,Object>> gMapList = new ArrayList<Map<String,Object>>();
 			for (HaiGoods haiGoods : listGoods) {
-				gMapList.add(this.dealGoods(wp, store_id, user_id, map, haiGoods));
+				gMapList.add(goodsService.dealGoods(wp, store_id, user_id, map, haiGoods));
 			}
 			Long total = haiGoodsMapper.countFilterCateKeyword(store_id, 
 					cat_id_in, 

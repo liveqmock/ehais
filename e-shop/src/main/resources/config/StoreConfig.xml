@@ -16,6 +16,12 @@
       </item>
     </parent>
     
+    <parent code="shop" text="商城设置" sort="2" type="group" isvoid="1" role="admin">
+    	<item>
+    		 <sub code="shop_name" text="名称" sort="1" type="text" isvoid="1" role="" />
+    	</item>
+    </parent>
+    
     
   </config>
 </xml>

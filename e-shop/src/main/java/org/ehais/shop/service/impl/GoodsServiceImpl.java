@@ -14,6 +14,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
 import org.ehais.enums.EAdminClassifyEnum;
 import org.ehais.enums.EStoreDistributionTypeEnum;
+import org.ehais.epublic.model.EHaiStore;
+import org.ehais.epublic.model.WpPublicWithBLOBs;
+import org.ehais.epublic.service.EStoreService;
+import org.ehais.epublic.service.EWPPublicService;
 import org.ehais.model.BootStrapModel;
 import org.ehais.model.ExtendsField.ExtendsFieldsTabs;
 import org.ehais.shop.mapper.HaiAgencyMapper;
@@ -44,6 +48,7 @@ import org.ehais.shop.model.HaiStoreSetting;
 import org.ehais.shop.service.GoodsService;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
+import org.ehais.util.SignUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -71,7 +76,10 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 	private HaiStoreSettingMapper haiStoreSettingMapper;
 	@Autowired
 	private HaiGoodsDistributionMapper haiGoodsDistributionMapper;
-	
+	@Autowired
+	protected EWPPublicService eWPPublicService;
+	@Autowired
+	protected EStoreService eStoreService;
 	
 	/**
 	 * 获取商户的设置
@@ -805,6 +813,39 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 			Integer store_id, Integer catId,Integer page, Integer len) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiGoods> rm = new ReturnObject<HaiGoods>();
+		HaiGoodsExample example = new HaiGoodsExample();
+		HaiGoodsExample.Criteria c = example.createCriteria();
+		c.andStoreIdEqualTo(store_id);
+		if(catId!=null && catId.intValue() != 0)c.andCatIdEqualTo(catId);
+		example.setLimitStart((page - 1 ) * len);
+		example.setLimitEnd(len);
+		example.setOrderByClause("goods_id desc");
+		
+		Long total = haiGoodsMapper.countByExample(example);		
+		List<HaiGoods> list = haiGoodsMapper.hai_goods_list_by_example(example);
+		
+		
+		rm.setTotal(total);
+		rm.setCode(1);
+		rm.setRows(list);
+		
+		return rm;
+	}
+	
+	@Override
+	public ReturnObject<HaiGoods> goods_list(HttpServletRequest request,String cid,
+			Integer store_id, Integer catId,Integer page, Integer len) throws Exception {
+		// TODO Auto-generated method stub
+		ReturnObject<HaiGoods> rm = new ReturnObject<HaiGoods>();
+		rm.setCode(0);
+		EHaiStore store = eStoreService.getEStore(store_id);
+		WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
+		Map<String,Object> map = SignUtil.getCid(cid,wp.getToken());
+		if(map == null){
+		    rm.setMsg("非法链接地址");
+			return rm;
+		}
+		Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 		
 		HaiGoodsExample example = new HaiGoodsExample();
 		HaiGoodsExample.Criteria c = example.createCriteria();
@@ -816,6 +857,9 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		
 		Long total = haiGoodsMapper.countByExample(example);		
 		List<HaiGoods> list = haiGoodsMapper.hai_goods_list_by_example(example);
+		for (HaiGoods haiGoods : list) {
+			this.dealGoods(wp, store_id, user_id, map, haiGoods);
+		}
 		
 		rm.setTotal(total);
 		rm.setCode(1);
@@ -945,6 +989,25 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		return haiGoodsGalleryMapper.selectByExample(example);
 	}
 	
+	
+	@Override
+	public Map<String,Object> dealGoods(WpPublicWithBLOBs wp ,
+			Integer store_id,
+			Long user_id ,
+			Map<String,Object> map,
+			HaiGoods goods) throws Exception{
+		if(user_id == null)user_id = 0L;
+		String sid = SignUtil.setSid(store_id, Integer.valueOf(map.get("agencyId").toString()), Long.valueOf(map.get("userId").toString()), user_id, 0 , goods.getGoodsId(), wp.getToken());
+		goods.setGoodsUrl(sid);
+		Map<String,Object> gMap = new HashMap<String,Object>();
+		gMap.put("goodsName", goods.getGoodsName());
+		gMap.put("actDesc", goods.getActDesc());
+		gMap.put("goodsThumb", goods.getGoodsThumb());
+		gMap.put("shopPrice", goods.getShopPrice());
+		gMap.put("marketPrice", goods.getMarketPrice());
+		gMap.put("goodsUrl", sid);
+		return gMap;
+	}
 	
 }
 
