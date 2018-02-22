@@ -220,10 +220,15 @@ public class MediaAdminController extends CommonController{
 			if(StringUtils.isNotBlank(article.getVideoUrl()) && article.getVideoUrl().indexOf("mp4")<0){
 				FfmpegThread ft = new FfmpegThread(article.getArticleId() ,article.getVideoUrl());
 				ft.start();
-			}else if(StringUtils.isNotBlank(article.getVideoUrl()) && article.getVideoUrl().indexOf(video_ftp_path) >= 0) {
-				//把ftp的文件复制过去
-				//*****************
+			}else {
+				String media_filename = video_path + article.getVideoUrl();
+				String ftp_filename = video_ftp_path + article.getVideoUrl();
+				if(!FSO.TextFileExists(media_filename) && FSO.TextFileExists(ftp_filename)) {
+					FSO.copyFile(ftp_filename, media_filename);
+				}
 			}
+			
+			
 			
 			
 			return this.writeJson(rm);
@@ -283,6 +288,12 @@ public class MediaAdminController extends CommonController{
 				FfmpegThread ft = new FfmpegThread(article.getArticleId() ,article.getVideoUrl());
 				ft.start();
 				
+			}else {
+				String media_filename = video_path + article.getVideoUrl();
+				String ftp_filename = video_ftp_path + article.getVideoUrl();
+				if(!FSO.TextFileExists(media_filename) && FSO.TextFileExists(ftp_filename)) {
+					FSO.copyFile(ftp_filename, media_filename);
+				}
 			}
 			
 			return this.writeJson(rm);
