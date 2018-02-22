@@ -312,29 +312,67 @@ $(function(){
 		     </div>
 		</div>
 	</div>
-<div class="input-group file-caption-main">
+	<div class="input-group file-caption-main" id="local_files_${id}">
+		<div  tabindex="500" class="form-control file-caption  kv-fileinput-caption" >
+		   <div id="file_pickfiles_${id}" class="file-caption-name" title=""></div>
+		</div>
+	   <div class="input-group-btn" id="eq_pickfiles_${id}">
+	       <div class="btn btn-primary btn-file">
+		       <i class="glyphicon glyphicon-folder-open"></i>&nbsp;  
+		       <span class="hidden-xs">选择本地图片 …</span>
+	       </div>
+	   </div>
+	</div>
+	
+	<div class="input-group file-caption-main dn" id="network_files_${id}">
+		<div  tabindex="500" class="form-control file-caption  kv-fileinput-caption" >
+		   <input id="txt_pickfiles_${id}" class="" style="border:0;width:90%;" placeholder="请输入网络图片地址"/>
+		</div>
+		<div class="input-group-btn" id="eq_networkfiles_${id}">
+	       <div class="btn btn-primary btn-file">
+		       <i class="glyphicon glyphicon-folder-open"></i>&nbsp;  
+		       <span class="hidden-xs">录入网络图片 …</span>
+	       </div>
+	   </div>
+	</div>
 
-<div tabindex="500" class="form-control file-caption  kv-fileinput-caption">
-   <div class="file-caption-name" title=""></div>
+
+
 </div>
 
-   <div class="input-group-btn" id="eq_pickfiles_${id}">
-       <div class="btn btn-primary btn-file">
-	       <i class="glyphicon glyphicon-folder-open"></i>&nbsp;  
-	       <span class="hidden-xs">选择 …</span>
-       </div>
-   </div>
-</div>
-</div>
+
+
+
+
+<a id="a_pickfiles_${id}" href="javascript:;" onclick="local_thumb_${id}();" class="dn">本地图片</a>
+<a id="a_networkfiles_${id}" href="javascript:;" onclick="network_thumb_${id}();">网络图片</a>
+
 
 <input type="hidden" id="${id}" name="${id}" value="${value!''}" >
 
 	<!-- /////////// -->
 	
 <script type="text/javascript">
+function network_thumb_${id}(){
+	$("#local_files_${id},#a_networkfiles_${id}").addClass("dn");
+	$("#network_files_${id},#a_pickfiles_${id}").removeClass("dn");
+}
+function local_thumb_${id}(){
+	$("#network_files_${id},#a_pickfiles_${id}").addClass("dn");
+	$("#local_files_${id},#a_networkfiles_${id}").removeClass("dn");
+}
+
 $(function() {
 	
 	show_${id}_pic("${value!''}");
+	
+	$("#eq_networkfiles_${id}").click(function(){
+		if($("#txt_pickfiles_${id}").val()!=""){
+			$("#${id}").val($("#txt_pickfiles_${id}").val());            
+            show_${id}_pic($("#txt_pickfiles_${id}").val());
+            $("#txt_pickfiles_${id}").val("");
+		}
+	});
 	
     var u_${id}_ploader = Qiniu.uploader({
         disable_statistics_report: true,
@@ -443,26 +481,61 @@ function trash_${id}_pic(imgId){
 		     </div>
 		</div>
 	</div>
-<div class="input-group file-caption-main">
+	
+	
+	<div class="input-group file-caption-main" id="local_files_${id}">
+	
+		<div tabindex="500" class="form-control file-caption  kv-fileinput-caption">
+		   <div class="file-caption-name" title=""></div>
+		</div>
+	
+	   <div class="input-group-btn" id="eq_pickfiles_${id}">
+	       <div class="btn btn-primary btn-file">
+		       <i class="glyphicon glyphicon-folder-open"></i>&nbsp;  
+		       <span class="hidden-xs">选择 …</span>
+	       </div>
+	   </div>
+	</div>
 
-<div tabindex="500" class="form-control file-caption  kv-fileinput-caption">
-   <div class="file-caption-name" title=""></div>
+
+	<div class="input-group file-caption-main dn" id="network_files_${id}">
+		<div  tabindex="500" class="form-control file-caption  kv-fileinput-caption" >
+		   <input id="txt_pickfiles_${id}" class="" style="border:0;width:90%;" placeholder="请输入网络图片地址"/>
+		</div>
+		<div class="input-group-btn" id="eq_networkfiles_${id}">
+	       <div class="btn btn-primary btn-file">
+		       <i class="glyphicon glyphicon-folder-open"></i>&nbsp;  
+		       <span class="hidden-xs">录入网络图片 …</span>
+	       </div>
+	   </div>
+	</div>
+	
+
 </div>
 
-   <div class="input-group-btn" id="eq_pickfiles_${id}">
-       <div class="btn btn-primary btn-file">
-	       <i class="glyphicon glyphicon-folder-open"></i>&nbsp;  
-	       <span class="hidden-xs">选择 …</span>
-       </div>
-   </div>
-</div>
-</div>
+
+<a id="a_pickfiles_${id}" href="javascript:;" onclick="local_thumb_${id}();" class="dn">本地图片</a>
+<a id="a_networkfiles_${id}" href="javascript:;" onclick="network_thumb_${id}();">网络图片</a>
+
+
 
 <div id="gallery_hidden_${id}"></div>
 
 	<!-- /////////// -->
 	
 <script type="text/javascript">
+
+function network_thumb_${id}(){
+	$("#local_files_${id},#a_networkfiles_${id}").addClass("dn");
+	$("#network_files_${id},#a_pickfiles_${id}").removeClass("dn");
+}
+function local_thumb_${id}(){
+	$("#network_files_${id},#a_pickfiles_${id}").addClass("dn");
+	$("#local_files_${id},#a_networkfiles_${id}").removeClass("dn");
+}
+
+
+
 $(function() {
 	
 	<#if gallery??&&gallery?size gt 0>
@@ -471,7 +544,13 @@ $(function() {
 	</#list>
 	</#if>
 	
-	
+	$("#eq_networkfiles_${id}").click(function(){
+		if($("#txt_pickfiles_${id}").val()!=""){
+			$("#${id}").val($("#txt_pickfiles_${id}").val());            
+			gallery_${id}_pic($("#txt_pickfiles_${id}").val());
+			$("#txt_pickfiles_${id}").val("");
+		}
+	});
 	
     var u_${id}_ploader = Qiniu.uploader({
         disable_statistics_report: true,
