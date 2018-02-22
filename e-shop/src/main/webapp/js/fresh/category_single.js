@@ -61,6 +61,13 @@ function goodsList(catId){
 						"</li>");
 				});
 				
+				$("#scroller_menu_goods_list li").unbind();
+				$("#scroller_menu_goods_list li").click(function(){
+					if($(this).attr("h").length > 0){
+						window.location.href = "w_goods_detail!"+$(this).attr("h");
+					}
+				});
+				
 			}
 		})
 	}
