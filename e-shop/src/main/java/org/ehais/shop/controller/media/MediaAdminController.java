@@ -220,6 +220,9 @@ public class MediaAdminController extends CommonController{
 			if(StringUtils.isNotBlank(article.getVideoUrl()) && article.getVideoUrl().indexOf("mp4")<0){
 				FfmpegThread ft = new FfmpegThread(article.getArticleId() ,article.getVideoUrl());
 				ft.start();
+			}else if(StringUtils.isNotBlank(article.getVideoUrl()) && article.getVideoUrl().indexOf(video_ftp_path) >= 0) {
+				//把ftp的文件复制过去
+				//*****************
 			}
 			
 			

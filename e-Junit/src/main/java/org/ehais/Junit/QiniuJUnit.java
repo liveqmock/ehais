@@ -2,6 +2,7 @@ package org.ehais.Junit;
 
 import java.net.URLEncoder;
 
+import org.ehais.util.FSO;
 import org.junit.Test;
 
 import com.qiniu.common.Zone;
@@ -41,6 +42,15 @@ public class QiniuJUnit {
 		        System.out.println(item.mimeType);
 		        System.out.println(item.putTime);
 		        System.out.println(item.endUser);
+		        
+		        FSO.WriteTextFile("E:/qiniu.txt", "http://ook3av7gv.bkt.clouddn.com/"+item.key+"\r\n");
+		        FSO.WriteTextFile("E:/qiniu.txt", "hash:"+item.hash+"\r\n");
+		        FSO.WriteTextFile("E:/qiniu.txt", "fsize:"+item.fsize+"\r\n");
+		        FSO.WriteTextFile("E:/qiniu.txt", "mimeType:"+item.mimeType+"\r\n");
+		        FSO.WriteTextFile("E:/qiniu.txt", "putTime:"+item.putTime+"\r\n");
+		        FSO.WriteTextFile("E:/qiniu.txt", "endUser:"+item.endUser+"\r\n");
+		        FSO.WriteTextFile("E:/qiniu.txt", "====================**********************================="+"\r\n\r\n");
+		        
 		    }
 		}
 		

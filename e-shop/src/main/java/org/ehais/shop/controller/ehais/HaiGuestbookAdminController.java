@@ -51,8 +51,8 @@ public class  HaiGuestbookAdminController extends CommonController {
 		try{
 			ReturnObject<HaiGuestbook> rm = haiGuestbookService.guestbook_list(request);
 			modelMap.addAttribute("rm", rm);
-			return "/"+this.getStoreTheme(request)+"/guestbook/view";
-//			return this.view(request, "/guestbook/view");
+//			return "/"+this.getStoreTheme(request)+"/guestbook/view";
+			return this.view(request, "/guestbook/view");
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("guestbook", e);
