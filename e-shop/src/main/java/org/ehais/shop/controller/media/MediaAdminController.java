@@ -24,8 +24,10 @@ import org.ehais.epublic.model.EHaiAdminUser;
 import org.ehais.epublic.model.EHaiAdminUserWithBLOBs;
 import org.ehais.epublic.model.EHaiArticle;
 import org.ehais.epublic.model.EHaiArticleCat;
+import org.ehais.epublic.model.HaiShopConfig;
 import org.ehais.epublic.service.EAdService;
 import org.ehais.epublic.service.EHaiAdminUserService;
+import org.ehais.epublic.service.ShopConfigService;
 import org.ehais.protocol.PermissionProtocol;
 import org.ehais.shop.service.ArticleCatService;
 import org.ehais.shop.service.ArticleService;
@@ -86,6 +88,8 @@ public class MediaAdminController extends CommonController{
 	private HaiAdminUserService haiAdminUserService;
 	@Autowired
 	private EAdService eAdService;
+	@Autowired
+	private ShopConfigService shopconfigService;
 	
 	
 	@EPermissionMethod(name="查询",intro="打开视频管理页面",value="login.me",type=PermissionProtocol.URL)
@@ -700,6 +704,43 @@ public class MediaAdminController extends CommonController{
 
 		return null;
 	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "/media_config.json", method = RequestMethod.POST)
+	public String media_config(ModelMap modelMap, HttpServletRequest request,
+			HttpServletResponse response){
+		ReturnObject<HaiShopConfig> rm = null;
+		try {
+			rm = shopconfigService.shopconfig_info(request);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return this.writeJson(rm);
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value="/shopconfig_update_submit",method=RequestMethod.POST)
+	public String shopconfig_update_submit(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response
+			) {
+		try{
+			
+			ReturnObject<HaiShopConfig> rm = shopconfigService.shopconfig_update_submit(request);
+			return this.writeJson(rm);
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("shopconfig", e);
+		}
+		return this.ReturnJump(modelMap, 0, "保存出错", "setting");
+	}
+	
+	
+	
 	///////////////////////////////////////////////////////////////////////////////
 	
 	

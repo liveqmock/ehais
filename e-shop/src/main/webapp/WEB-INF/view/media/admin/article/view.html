@@ -71,13 +71,16 @@
 				<div class="dropdown">
 					<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuUser" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 					<span class="glyphicon glyphicon-th"></span> 
-					 管理员信息
+					 信息管理
 				<span class="caret"></span>
 				</button>
 				  <ul class="dropdown-menu" aria-labelledby="dropdownMenuUser">
 				    <li><a id="mediaAdminUserAdd" href="javascript:;" class="glyphicon glyphicon-plus-sign">新增管理员</a></li>
+				    
+				    <li><a id="mediaAdminUserList" href="javascript:;" class="glyphicon glyphicon-align-justify">管理员信息</a></li>
 				    <li role="separator" class="divider"></li>
-				    <li><a id="mediaAdminUserList" href="javascript:;" class="glyphicon glyphicon-align-justify">管理信息</a></li>
+				    <li><a id="waterStainA" href="javascript:;" class="glyphicon glyphicon-tag">水印图标</a></li>
+				    
 				  </ul>
 				</div>
 				
@@ -126,6 +129,7 @@
 <#include "modify_pwd.html"/>
 <#include "../ad/detail.html"/>
 <#include "../admin_user/detail.html"/>
+<#include "waterstain.html"/>
 <#include "ftp_list.html"/>
 
 
@@ -133,6 +137,7 @@
 <script type="text/javascript" src="/js/media/admin/article_view.js" ></script>
 <script type="text/javascript" src="/js/media/admin/ad.js" ></script>
 <script type="text/javascript" src="/js/media/admin/admin_user.js" ></script>
+<script type="text/javascript" src="/js/media/admin/waterStain.js" ></script>
 
 		
 	</body>
