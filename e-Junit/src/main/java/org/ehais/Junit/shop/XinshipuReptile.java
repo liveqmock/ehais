@@ -62,7 +62,7 @@ public class XinshipuReptile extends ShopCommonReptile{
 					String[] o = object.toString().split(" ");
 					recipeIngredient +="<p>"+o[0]+"："+o[1]+"</p>";
 				}else {
-					recipeIngredient = object.toString();
+					recipeIngredient += "<p>"+object.toString()+"</p>";
 				}
 				
 			}
@@ -70,7 +70,7 @@ public class XinshipuReptile extends ShopCommonReptile{
 			//做法
 			String step = obj.getString("recipeInstructions");
 			
-			String desc = "<p>材料</p><hr/>"+recipeIngredient+"<p>简介</p><hr/><p>"+obj.getString("description")+"</p><p>做法</p><hr/>"+step;
+			String desc = "<p>材料</p><hr/>"+recipeIngredient+"<p><br/></p><p>简介</p><hr/><p>"+obj.getString("description")+"</p><p><br/></p><p>做法</p><hr/>"+step;
 			goods.setGoodsDesc(desc);
 			
 			Bean2Utils.printEntity(goods);
@@ -78,7 +78,7 @@ public class XinshipuReptile extends ShopCommonReptile{
 			entity.setGoodsGalleryList(ggList);
 			entity.setGoodsAttrList(goodsAttrList);
 			
-//			goods_save(store_id, entity);
+			goods_save(store_id, entity);
 			
 			
 		}catch(Exception e) {
