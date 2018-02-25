@@ -12,15 +12,48 @@ import org.ehais.util.EHttpClientUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.junit.Test;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 public class XinshipuReptile extends ShopCommonReptile{
-	private static String website = "http://www.xinshipu.com";
+	private static String website = "https://www.xinshipu.com";
 	public static String store_id = "30";
 	public static String goodsSource = "心食谱";
+	
+	
+	
+	@Test
+	public void list() {
+//		String url = "https://www.xinshipu.com/s/b9e3b6abd2a9b2c4ccc0/";
+		String url = "https://www.xinshipu.com/s/b9e3b6abd2a9b2c4ccc0/?page=10";
+		this.list(url);
+	}
+	
+	private void list(String url ) {
+		System.out.println(url);
+		try {
+			String result = EHttpClientUtil.methodGet(url);
+//			System.out.println(result);
+			Document doc = Jsoup.parse(result);
+			
+			Element ul = doc.getElementsByClass("search-list").first();
+			System.out.println(ul.html());
+			Elements li = ul.select(">li.gb-block");
+			for (Element ele : li) {
+				String title = ele.getElementsByTag("a").first().text();
+				String a = website + ele.getElementsByTag("a").first().attr("href");
+				System.out.println(title+"---"+a);
+				this.info(a);
+			}
+			
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	@Test
 	public void info() {
@@ -36,9 +69,9 @@ public class XinshipuReptile extends ShopCommonReptile{
 			List<HaiGoodsGallery> ggList = new ArrayList<HaiGoodsGallery>();
 			List<HaiGoodsAttr> goodsAttrList = new ArrayList<HaiGoodsAttr>();
 			
-			String content = EHttpClientUtil.methodGet(url);
-			System.out.println(content);
-			Document doc = Jsoup.parse(content);
+			String result = EHttpClientUtil.methodGet(url);
+			System.out.println(result);
+			Document doc = Jsoup.parse(result);
 			Element main = doc.getElementsByClass("content").first();
 			String title = main.getElementsByTag("h1").first().text();
 			String thumb = "https:"+main.getElementsByTag("img").first().attr("src");
