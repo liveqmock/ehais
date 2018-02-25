@@ -1,6 +1,11 @@
 package org.ehais.Junit.shop;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.ehais.model.HaiGoodsAttr;
 import org.ehais.model.HaiGoodsEntity;
+import org.ehais.model.HaiGoodsGallery;
 import org.ehais.model.HaiGoodsWithBLOBs;
 import org.ehais.util.Bean2Utils;
 import org.ehais.util.EHttpClientUtil;
@@ -28,6 +33,8 @@ public class XinshipuReptile extends ShopCommonReptile{
 		try {
 			HaiGoodsEntity entity = new HaiGoodsEntity();
 			HaiGoodsWithBLOBs goods = new HaiGoodsWithBLOBs();
+			List<HaiGoodsGallery> ggList = new ArrayList<HaiGoodsGallery>();
+			List<HaiGoodsAttr> goodsAttrList = new ArrayList<HaiGoodsAttr>();
 			
 			String content = EHttpClientUtil.methodGet(url);
 			System.out.println(content);
@@ -43,6 +50,9 @@ public class XinshipuReptile extends ShopCommonReptile{
 			System.out.println(obj.toString());
 			
 			goods.setGoodsName(title);
+			goods.setGoodsThumb(thumb);
+			goods.setGoodsImg(thumb);
+			goods.setOriginalImg(thumb);
 			
 			//材料
 			String recipeIngredient = "";
@@ -58,17 +68,17 @@ public class XinshipuReptile extends ShopCommonReptile{
 			}
 			
 			//做法
-			String step = doc.getElementsByClass("re-step-wpic").first().html().replaceAll("li", "p").replaceAll("src=\"//", "src=\"https://");
+			String step = obj.getString("recipeInstructions");
 			
 			String desc = "<p>材料</p><hr/>"+recipeIngredient+"<p>简介</p><hr/><p>"+obj.getString("description")+"</p><p>做法</p><hr/>"+step;
 			goods.setGoodsDesc(desc);
 			
 			Bean2Utils.printEntity(goods);
 			entity.setGoods(goods);
-//			entity.setGoodsGalleryList(ggList);
-//			entity.setGoodsAttrList(goodsAttrList);
+			entity.setGoodsGalleryList(ggList);
+			entity.setGoodsAttrList(goodsAttrList);
 			
-			goods_save(store_id, entity);
+//			goods_save(store_id, entity);
 			
 			
 		}catch(Exception e) {
