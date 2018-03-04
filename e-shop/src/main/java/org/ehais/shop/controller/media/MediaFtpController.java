@@ -1,7 +1,10 @@
 package org.ehais.shop.controller.media;
 
 import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,11 +16,16 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.ehais.controller.CommonController;
+import org.ehais.enums.EArticleModuleEnum;
+import org.ehais.epublic.mapper.EHaiArticleMapper;
 import org.ehais.epublic.model.EHaiArticle;
-import org.ehais.epublic.model.EHaiArticleCat;
+import org.ehais.epublic.model.EHaiArticleExample;
 import org.ehais.shop.service.ArticleCatService;
 import org.ehais.shop.service.ArticleService;
+import org.ehais.thread.FfmpegThread;
+import org.ehais.util.ECommon;
 import org.ehais.util.EncryptUtils;
+import org.ehais.util.FSO;
 import org.ehais.util.FfmpegUtil;
 import org.ehais.util.ResourceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +39,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class MediaFtpController extends CommonController {
 
 	// 视频保存路径配置
-	protected String video_path = ResourceUtil.getProValue("video.path");
+	protected String video_folder = ResourceUtil.getProValue("video.folder");
 	// 视频是否中转
 	protected boolean video_transfer_bool = Boolean.parseBoolean(ResourceUtil.getProValue("video.transfer.bool"));
 	// 视频中转地址
@@ -45,13 +53,15 @@ public class MediaFtpController extends CommonController {
 	// ffmpeg的路径
 	protected String video_ffmpeg_path = ResourceUtil.getProValue("video.ffmpeg.path");
 	// ftp的地址
-	protected String video_ftp_path = ResourceUtil.getProValue("video.ftp.path");
+	protected String video_ftp_path = ResourceUtil.getProValue("video.ftp.folder");
+	//上传相对的图片
+	protected String upload_images = ResourceUtil.getProValue("upload.images");
 	// ffmpeg转码图片的地址
 	private String images_path;
-	Integer store_id = 1;
+	Integer store_id = 1000;
 
-//	@Autowired
-//	private EHaiArticleMapper eHaiArticleMapper;
+	@Autowired
+	private EHaiArticleMapper eHaiArticleMapper;
 //	@Autowired
 //	private EHaiArticleCatMapper eHaiArticleCatMapper;
 	@Autowired
@@ -63,7 +73,7 @@ public class MediaFtpController extends CommonController {
 	@RequestMapping("/index.ftp")
 	public String index(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response) {
 
-		images_path = request.getRealPath("/eUploads/images");
+		images_path = request.getRealPath(upload_images);
 
 		try {
 			// 读取excel
@@ -95,7 +105,7 @@ public class MediaFtpController extends CommonController {
 				int rowCount = 0;
 				// 循环每一行
 				while (rowIterator.hasNext()) {
-					System.out.print("第" + (rowCount++) + "行  ");
+//					System.out.print("第" + (rowCount++) + "行  ");
 
 					// 得到一行对象
 					Row row = rowIterator.next();
@@ -111,35 +121,14 @@ public class MediaFtpController extends CommonController {
 					String path = row.getCell(8).getStringCellValue();
 					String mediaName = row.getCell(9).getStringCellValue();
 
-					System.out.print(catName + "   ");
-					System.out.print(parentName + "   ");
-					System.out.print(title + "   ");
-					System.out.print(path + "   ");
-					System.out.print(mediaName + "   ");
+//					System.out.print(catName + "   ");
+//					System.out.print(parentName + "   ");
+//					System.out.print(title + "   ");
+//					System.out.print(path + "   ");
+//					System.out.print(mediaName + "   ");
 
 					ffmpegMedia(catName, parentName, title, path, mediaName, images_path);
 					
-//					FfmpegThread ft = new FfmpegThread(catName, parentName, title, path, mediaName, images_path);
-//					ft.start();
-
-					// 循环每一列
-					// while (cellIterator.hasNext()) {
-					// // System.out.print("第"+(columnCount++)+"列: ");
-					//
-					// // 得到单元格对象
-					// Cell cell = cellIterator.next();
-					//
-					// // 检查数据类型
-					// switch (cell.getCellType()) {
-					// case Cell.CELL_TYPE_STRING:
-					// System.out.print(cell.getStringCellValue() + " ");
-					// break;
-					// case Cell.CELL_TYPE_NUMERIC:
-					// System.out.print(cell.getNumericCellValue() + " ");
-					// break;
-					//
-					// }
-					// } // end of cell iterator
 
 					System.out.println();
 
@@ -174,12 +163,15 @@ public class MediaFtpController extends CommonController {
 
 		FfmpegUtil.executeCodecs(video_ffmpeg_path, 
 				ftpPath, 
-				video_path +"/"+ md5MediaName + ".mp4",
+				video_folder +"/"+ md5MediaName + ".mp4",
 				images_path + "/" + md5MediaName + ".png", 
 				video_pic_size);
 
 		// 找到分类ID
-		EHaiArticleCat cate = new EHaiArticleCat();
+/*
+ * 		//暂时屏一屏
+ * 
+ 		EHaiArticleCat cate = new EHaiArticleCat();
 		cate.setCatName(catName);
 		cate = articleCatService.articleCatSave(cate, null, 1);
 		// 找到标题的ID
@@ -191,42 +183,107 @@ public class MediaFtpController extends CommonController {
 		article.setLink("");
 		article.setContent("");
 		articleService.articleSave( cate, article);
+		
+		*/
 	}
 
-	class FfmpegThread extends Thread {
-		String catName;
-		String parentName;
-		String title;
-		String path;
-		String mediaName;
-		String imagesPath;
 
-		public FfmpegThread(String catName, String parentName, String title, String path, String mediaName,
-				String imagesPath) {
-			this.catName = catName;
-			this.parentName = parentName;
-			this.title = title;
-			this.path = path;
-			this.mediaName = mediaName;
-			this.imagesPath = imagesPath;
-		}
+	
+	@ResponseBody
+	@RequestMapping("/index.media")
+	public String index_ftp(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response) {
+		try {
+			images_path = request.getRealPath(upload_images);
+			String ftpPath = "/home/ftp/";
+//			String ftpPath = "F:\\广技师视频";
+			List<String> list = new ArrayList<String>();
+			FSO.ReadfileList(list, ftpPath);
+			for (String string : list) {
+				
+				try {
+					
+					
+					string = new String(string.getBytes("ISO-8859-1"),"gb2312");
+					System.out.println(string);
+					string = string.replace("\\", "/");
+					String title = string.substring(string.lastIndexOf("/")+1, string.lastIndexOf("."));
+					title = new String(title.getBytes("ISO-8859-1"),"gbk");//ISO-8859-1
+					System.out.println("title:"+title);
+					String suffix = string.substring(string.lastIndexOf(".")+1);//后缀名
+					
+					if(suffix.equals("flv") || string.equals("avi") || string.equals("mp4") ) {
+						
+						
+						FfmpegThread thread = new FfmpegThread(string,video_folder,images_path);
+						thread.run();
+						String filePath = thread.getFilePath();
+						String picPath = upload_images + thread.getPicPath();
+						
+						System.out.println(filePath+"||"+picPath);
+						
+						EHaiArticle article = new EHaiArticle();
+						article.setTitle(title);
+						article.setCatId(-1);
+						article.setModule(EArticleModuleEnum.MEDIA);
+						article.setContent("");
+						article.setArticleDate(new Date());
+						article.setOpenType(true);
+						article.setCreateDate(new Date());
+						article.setStoreId(store_id);
+						article.setArticleThumb(picPath);
+						article.setVideoUrl(filePath);
+						article.setAuthor("机器");
+						article.setAuthorEmail("");
+						article.setKeywords("");
+						article.setFileUrl("");
+						article.setOpenType(true);
+						article.setLink("");
+						article.setIsOpen(true);
+						
+						EHaiArticleExample example = new EHaiArticleExample();
+						example.createCriteria().andTitleEqualTo(title).andStoreIdEqualTo(store_id);
+						
+						long c = eHaiArticleMapper.countByExample(example);
+						if(c==0) {
+							eHaiArticleMapper.insert(article);
+						}
+						
+						
+					}
+					
+					
+				}catch(Exception e) {
+					e.printStackTrace();
+				}
+				
+				
 
-		public void run() {
-			System.out.println("============转码开始==================");
-			try {
-
-				ffmpegMedia(catName, parentName, title, path, mediaName, imagesPath);
-				// 更新
-
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				
+				
 			}
+		} catch (Exception e){
+			e.printStackTrace();
 		}
+		return "";
 	}
 	
-	
-	
+	public static void main(String[] args) {
+		String upFilePath = "F:\\广技师视频\\125青协志愿日新闻稿.mp4";
+//		String pre = upFilePath.substring(upFilePath.indexOf("."));
+//		System.out.println(pre);
+		
+		
+		
+		upFilePath = upFilePath.replace("\\", "/");
+		System.out.println(upFilePath);
+		System.out.println(upFilePath.lastIndexOf("/")+1);
+		System.out.println(upFilePath.lastIndexOf("."));
+		
+		
+		String title = upFilePath.substring(upFilePath.lastIndexOf("/")+1, upFilePath.lastIndexOf("."));
+		System.out.println(title);
+	}
+
 	
 	
 }

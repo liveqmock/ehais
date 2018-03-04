@@ -58,7 +58,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class MediaAdminController extends CommonController{
 
 	//视频保存路径配置
-	protected String video_path = ResourceUtil.getProValue("video.path");
+	protected String video_path = ResourceUtil.getProValue("video.folder");
 	//视频是否中转
 	protected boolean video_transfer_bool = Boolean.parseBoolean(ResourceUtil.getProValue("video.transfer.bool"));
 	//视频中转地址
@@ -72,7 +72,7 @@ public class MediaAdminController extends CommonController{
 	//ffmpeg的路径
 	protected String video_ffmpeg_path = ResourceUtil.getProValue("video.ffmpeg.path");
 	//ftp的地址
-	protected String video_ftp_path = ResourceUtil.getProValue("video.ftp.path");
+	protected String video_ftp_path = ResourceUtil.getProValue("video.ftp.folder");
 	//ffmpeg转码图片的地址
 	private String images_path ;
 			

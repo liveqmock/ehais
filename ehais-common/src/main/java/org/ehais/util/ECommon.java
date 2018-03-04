@@ -293,19 +293,47 @@ public class ECommon {
         int i = random.nextInt(max+1)%(max+1-min+1) + min;
         return i;
 	}
+	
+	
+	/**
+	 * 判断字符串中是否包含中文
+	 * @param str
+	 * 待校验字符串
+	 * @return 是否为中文
+	 * @warn 不能校验是否为中文标点符号 
+	 */
+	public static boolean isContainChinese(String str) {
+		Pattern p = Pattern.compile("[\u4e00-\u9fa5]");
+		Matcher m = p.matcher(str);
+		if (m.find()) {
+			return true;
+		}
+		return false;
+	}
+	
+	
 
 	public static void main(String[] args) {
-		System.out.println(ECommon.getRand(0, 4));
-		System.out.println(ECommon.getRand(0, 4));
-		System.out.println(ECommon.getRand(0, 4));
-		System.out.println(ECommon.getRand(0, 4));
-		System.out.println(ECommon.getRand(0, 4));
-		System.out.println(ECommon.getRand(0, 4));
-		System.out.println(ECommon.getRand(0, 4));
-		System.out.println(ECommon.getRand(0, 4));
-		System.out.println(ECommon.getRand(0, 4));
-		System.out.println(ECommon.getRand(0, 4));
-		System.out.println(ECommon.getRand(0, 4));
+		
+		
+		String str = "F:\\cc\\aa.mp4";
+		if(ECommon.isContainChinese(str)) {
+			System.out.println("存在中文");
+		}else {
+			System.out.println("无中文");
+		}
+		
+//		System.out.println(ECommon.getRand(0, 4));
+//		System.out.println(ECommon.getRand(0, 4));
+//		System.out.println(ECommon.getRand(0, 4));
+//		System.out.println(ECommon.getRand(0, 4));
+//		System.out.println(ECommon.getRand(0, 4));
+//		System.out.println(ECommon.getRand(0, 4));
+//		System.out.println(ECommon.getRand(0, 4));
+//		System.out.println(ECommon.getRand(0, 4));
+//		System.out.println(ECommon.getRand(0, 4));
+//		System.out.println(ECommon.getRand(0, 4));
+//		System.out.println(ECommon.getRand(0, 4));
 	}
 	
 }
