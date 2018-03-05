@@ -58,7 +58,7 @@ public class MediaFtpController extends CommonController {
 	protected String upload_images = ResourceUtil.getProValue("upload.images");
 	// ffmpeg转码图片的地址
 	private String images_path;
-	Integer store_id = 1000;
+	Integer store_id = 1;
 
 	@Autowired
 	private EHaiArticleMapper eHaiArticleMapper;
@@ -73,83 +73,83 @@ public class MediaFtpController extends CommonController {
 	@RequestMapping("/index.ftp")
 	public String index(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response) {
 
-		images_path = request.getRealPath(upload_images);
-
-		try {
-			// 读取excel
-			String fileName = "/home/tyler/workspace/VodData.xls";
-			FileInputStream fis = new FileInputStream(fileName);
-			Workbook workbook = null;
-			// 判断excel的两种格式xls,xlsx
-			if (fileName.toLowerCase().endsWith("xlsx")) {
-				workbook = new XSSFWorkbook(fis);
-			} else if (fileName.toLowerCase().endsWith("xls")) {
-				workbook = new HSSFWorkbook(fis);
-			}
-
-			// 得到sheet的总数
-			int numberOfSheets = workbook.getNumberOfSheets();
-
-			System.out.println("一共" + numberOfSheets + "个sheet");
-
-			// 循环每一个sheet
-			for (int i = 0; i < numberOfSheets; i++) {
-
-				// 得到第i个sheet
-				Sheet sheet = workbook.getSheetAt(i);
-				System.out.println(sheet.getSheetName() + "  sheet");
-
-				// 得到行的迭代器
-				Iterator<Row> rowIterator = sheet.iterator();
-
-				int rowCount = 0;
-				// 循环每一行
-				while (rowIterator.hasNext()) {
-//					System.out.print("第" + (rowCount++) + "行  ");
-
-					// 得到一行对象
-					Row row = rowIterator.next();
-
-					// 得到列对象
-					Iterator<Cell> cellIterator = row.cellIterator();
-
-					int columnCount = 0;
-
-					String catName = row.getCell(0).getStringCellValue();
-					String parentName = row.getCell(1).getStringCellValue();
-					String title = row.getCell(5).getStringCellValue();
-					String path = row.getCell(8).getStringCellValue();
-					String mediaName = row.getCell(9).getStringCellValue();
-
-//					System.out.print(catName + "   ");
-//					System.out.print(parentName + "   ");
-//					System.out.print(title + "   ");
-//					System.out.print(path + "   ");
-//					System.out.print(mediaName + "   ");
-
-					ffmpegMedia(catName, parentName, title, path, mediaName, images_path);
-					
-
-					System.out.println();
-
-				} // end of rows iterator
-
-			} // end of sheets for loop
-
-			System.out.println("\nread excel successfully...");
-
-			// close file input stream
-			fis.close();
-			// 解释ffmpeg的视频路径与图片路径
-
-			// 将信息保存在数据库
-
-			//
-		} catch (Exception e) {
-			e.printStackTrace();
-			log.error("article", e);
-			return this.errorJump(modelMap, e.getMessage());
-		}
+//		images_path = request.getRealPath(upload_images);
+//
+//		try {
+//			// 读取excel
+//			String fileName = "/home/tyler/workspace/VodData.xls";
+//			FileInputStream fis = new FileInputStream(fileName);
+//			Workbook workbook = null;
+//			// 判断excel的两种格式xls,xlsx
+//			if (fileName.toLowerCase().endsWith("xlsx")) {
+//				workbook = new XSSFWorkbook(fis);
+//			} else if (fileName.toLowerCase().endsWith("xls")) {
+//				workbook = new HSSFWorkbook(fis);
+//			}
+//
+//			// 得到sheet的总数
+//			int numberOfSheets = workbook.getNumberOfSheets();
+//
+//			System.out.println("一共" + numberOfSheets + "个sheet");
+//
+//			// 循环每一个sheet
+//			for (int i = 0; i < numberOfSheets; i++) {
+//
+//				// 得到第i个sheet
+//				Sheet sheet = workbook.getSheetAt(i);
+//				System.out.println(sheet.getSheetName() + "  sheet");
+//
+//				// 得到行的迭代器
+//				Iterator<Row> rowIterator = sheet.iterator();
+//
+//				int rowCount = 0;
+//				// 循环每一行
+//				while (rowIterator.hasNext()) {
+////					System.out.print("第" + (rowCount++) + "行  ");
+//
+//					// 得到一行对象
+//					Row row = rowIterator.next();
+//
+//					// 得到列对象
+//					Iterator<Cell> cellIterator = row.cellIterator();
+//
+//					int columnCount = 0;
+//
+//					String catName = row.getCell(0).getStringCellValue();
+//					String parentName = row.getCell(1).getStringCellValue();
+//					String title = row.getCell(5).getStringCellValue();
+//					String path = row.getCell(8).getStringCellValue();
+//					String mediaName = row.getCell(9).getStringCellValue();
+//
+////					System.out.print(catName + "   ");
+////					System.out.print(parentName + "   ");
+////					System.out.print(title + "   ");
+////					System.out.print(path + "   ");
+////					System.out.print(mediaName + "   ");
+//
+//					ffmpegMedia(catName, parentName, title, path, mediaName, images_path);
+//					
+//
+//					System.out.println();
+//
+//				} // end of rows iterator
+//
+//			} // end of sheets for loop
+//
+//			System.out.println("\nread excel successfully...");
+//
+//			// close file input stream
+//			fis.close();
+//			// 解释ffmpeg的视频路径与图片路径
+//
+//			// 将信息保存在数据库
+//
+//			//
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			log.error("article", e);
+//			return this.errorJump(modelMap, e.getMessage());
+//		}
 		return "";
 	}
 	
@@ -221,32 +221,32 @@ public class MediaFtpController extends CommonController {
 						
 						System.out.println(filePath+"||"+picPath);
 						
-						EHaiArticle article = new EHaiArticle();
-						article.setTitle(title);
-						article.setCatId(-1);
-						article.setModule(EArticleModuleEnum.MEDIA);
-						article.setContent("");
-						article.setArticleDate(new Date());
-						article.setOpenType(true);
-						article.setCreateDate(new Date());
-						article.setStoreId(store_id);
-						article.setArticleThumb(picPath);
-						article.setVideoUrl(filePath);
-						article.setAuthor("机器");
-						article.setAuthorEmail("");
-						article.setKeywords("");
-						article.setFileUrl("");
-						article.setOpenType(true);
-						article.setLink("");
-						article.setIsOpen(true);
+//						EHaiArticle article = new EHaiArticle();
+//						article.setTitle(title);
+//						article.setCatId(-1);
+//						article.setModule(EArticleModuleEnum.MEDIA);
+//						article.setContent("");
+//						article.setArticleDate(new Date());
+//						article.setOpenType(true);
+//						article.setCreateDate(new Date());
+//						article.setStoreId(store_id);
+//						article.setArticleThumb(picPath);
+//						article.setVideoUrl(filePath);
+//						article.setAuthor("机器");
+//						article.setAuthorEmail("");
+//						article.setKeywords("");
+//						article.setFileUrl("");
+//						article.setOpenType(true);
+//						article.setLink("");
+//						article.setIsOpen(true);
 						
-						EHaiArticleExample example = new EHaiArticleExample();
-						example.createCriteria().andTitleEqualTo(title).andStoreIdEqualTo(store_id);
-						
-						long c = eHaiArticleMapper.countByExample(example);
-						if(c==0) {
-							eHaiArticleMapper.insert(article);
-						}
+//						EHaiArticleExample example = new EHaiArticleExample();
+//						example.createCriteria().andTitleEqualTo(title).andStoreIdEqualTo(store_id);
+//						
+//						long c = eHaiArticleMapper.countByExample(example);
+//						if(c==0) {
+//							eHaiArticleMapper.insert(article);
+//						}
 						
 						
 					}

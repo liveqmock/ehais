@@ -165,7 +165,7 @@ public class MediaAdminController extends CommonController{
 	public String mediaArticleView(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) {	
 		try{
-			ReturnObject<EHaiArticle> rm = mediaArticleService.article_list(request,EArticleModuleEnum.ARTICLE);
+			ReturnObject<EHaiArticle> rm = mediaArticleService.article_list(request,EArticleModuleEnum.MEDIA);
 			modelMap.addAttribute("rm", rm);
 			modelMap.addAttribute("today", DateUtil.formatDate(new Date(), DateUtil.FORMATSTR_3));
 			return "/media/admin/article/view";
@@ -187,7 +187,7 @@ public class MediaAdminController extends CommonController{
 			@RequestParam(value = "cat_id", required = false) Integer cat_id,
 			@RequestParam(value = "title", required = false) String title) {
 		try{
-			ReturnObject<EHaiArticle> rm = mediaArticleService.article_list_json(request,EArticleModuleEnum.ARTICLE, condition , cat_id , title);
+			ReturnObject<EHaiArticle> rm = mediaArticleService.article_list_json(request,EArticleModuleEnum.MEDIA, condition , cat_id , title);
 			return this.writeJson(rm);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -220,7 +220,7 @@ public class MediaAdminController extends CommonController{
 			}
 			
 			
-			ReturnObject<EHaiArticle> rm = mediaArticleService.article_insert_submit(request,EArticleModuleEnum.ARTICLE, article,goodsId);
+			ReturnObject<EHaiArticle> rm = mediaArticleService.article_insert_submit(request,EArticleModuleEnum.MEDIA, article,goodsId);
 			if(StringUtils.isNotBlank(article.getVideoUrl()) && article.getVideoUrl().indexOf("mp4")<0){
 				FfmpegThread ft = new FfmpegThread(article.getArticleId() ,article.getVideoUrl());
 				ft.start();
@@ -253,7 +253,7 @@ public class MediaAdminController extends CommonController{
 			@RequestParam(value = "articleId", required = true) Integer articleId
 			) {
 		try{
-			ReturnObject<EHaiArticle> rm = mediaArticleService.article_update(request,EArticleModuleEnum.ARTICLE,articleId);
+			ReturnObject<EHaiArticle> rm = mediaArticleService.article_update(request,EArticleModuleEnum.MEDIA,articleId);
 			return this.writeJson(rm);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -287,7 +287,7 @@ public class MediaAdminController extends CommonController{
 			}
 			
 			
-			ReturnObject<EHaiArticle> rm = mediaArticleService.article_update_submit(request,EArticleModuleEnum.ARTICLE,article,goodsId);
+			ReturnObject<EHaiArticle> rm = mediaArticleService.article_update_submit(request,EArticleModuleEnum.MEDIA,article,goodsId);
 			if(StringUtils.isNotBlank(article.getVideoUrl()) && article.getVideoUrl().indexOf("mp4")<0){
 				FfmpegThread ft = new FfmpegThread(article.getArticleId() ,article.getVideoUrl());
 				ft.start();
@@ -318,7 +318,7 @@ public class MediaAdminController extends CommonController{
 			@RequestParam(value = "code", required = false) String code
 			) {
 		try{
-			return this.writeJson(mediaArticleService.article_delete(request,EArticleModuleEnum.ARTICLE, articleId));
+			return this.writeJson(mediaArticleService.article_delete(request,EArticleModuleEnum.MEDIA, articleId));
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("article", e);
@@ -337,7 +337,7 @@ public class MediaAdminController extends CommonController{
 			@ModelAttribute EConditionObject condition,
 			@RequestParam(value = "other", required = false) String other) {
 		try{
-			ReturnObject<EHaiArticleCat> rm = mediaArticleCatService.articlecat_list_json(request,EArticleModuleEnum.ARTICLE, condition);
+			ReturnObject<EHaiArticleCat> rm = mediaArticleCatService.articlecat_list_json(request,EArticleModuleEnum.MEDIA, condition);
 			return this.writeJson(rm);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -359,7 +359,7 @@ public class MediaAdminController extends CommonController{
 			if(result.hasErrors())return this.writeBindingResult(result);
 		try{
 			
-			ReturnObject<EHaiArticleCat> rm = mediaArticleCatService.articlecat_insert_submit(request,EArticleModuleEnum.ARTICLE, articlecat);
+			ReturnObject<EHaiArticleCat> rm = mediaArticleCatService.articlecat_insert_submit(request,EArticleModuleEnum.MEDIA, articlecat);
 			return this.writeJson(rm);
 			
 		}catch(Exception e){
@@ -378,7 +378,7 @@ public class MediaAdminController extends CommonController{
 			@RequestParam(value = "catId", required = true) Integer catId
 			) {
 		try{
-			return this.writeJson(mediaArticleCatService.articlecat_info(request, EArticleModuleEnum.ARTICLE, catId));
+			return this.writeJson(mediaArticleCatService.articlecat_info(request, EArticleModuleEnum.MEDIA, catId));
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("articlecat", e);
@@ -398,7 +398,7 @@ public class MediaAdminController extends CommonController{
 			) {
 			if(result.hasErrors())return this.writeBindingResult(result);
 		try{
-			return this.writeJson(mediaArticleCatService.articlecat_update_submit(request,EArticleModuleEnum.ARTICLE,articlecat));
+			return this.writeJson(mediaArticleCatService.articlecat_update_submit(request,EArticleModuleEnum.MEDIA,articlecat));
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("articlecat", e);
@@ -416,7 +416,7 @@ public class MediaAdminController extends CommonController{
 			@RequestParam(value = "code", required = false) String code
 			) {
 		try{
-			return this.writeJson(mediaArticleCatService.articlecat_delete(request,EArticleModuleEnum.ARTICLE, catId));
+			return this.writeJson(mediaArticleCatService.articlecat_delete(request,EArticleModuleEnum.MEDIA, catId));
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("articlecat", e);
