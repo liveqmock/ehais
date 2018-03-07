@@ -91,8 +91,10 @@ public class FfmpegUtil {
         		if(upFilePath.indexOf("mp4") < 0) {
 //            		Process videoProcess = new ProcessBuilder(command).redirectErrorStream(true).start();
             		
-            		Process videoProcess = new ProcessBuilder(command).redirectErrorStream(true).start();
-            		                         
+            		Process videoProcess = new ProcessBuilder(command)
+            				.redirectErrorStream(true).start();
+            		
+            		new PrintStream(videoProcess.getErrorStream()).start();
             		new PrintStream(videoProcess.getInputStream()).start();
             		            
             		videoProcess.waitFor();
