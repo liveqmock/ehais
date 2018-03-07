@@ -9,6 +9,9 @@
 			<li <#if (currentNav?? && (currentNav == cat.catId+"" ) )>class="active"</#if> href="list_${cat.catId}.lv" >${cat.catName}</li>
 			</#list>
 			</#if>
+			
+			<li <#if (currentNav?? && currentNav == "live")>class="active"</#if> href="live.lv" >直播</li>
+			
 		</ul>
 	</div>
 </div>

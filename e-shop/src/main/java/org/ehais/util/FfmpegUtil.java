@@ -3,6 +3,8 @@ package org.ehais.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.ehais.thread.PrintStream;
+
 public class FfmpegUtil {
 
 	
@@ -13,11 +15,13 @@ public class FfmpegUtil {
      * @param codcFilePath    格式转换后的的文件保存路径
      * @param mediaPicPath    截图保存路径
      * @param mediaPicSize    截图尺寸
+     * @param isVideoChange 是否转视频
+     * @param isPicChange 是否换图片
      * @return
      * @throws Exception
      */
     public static boolean executeCodecs(String ffmpegPath, String upFilePath, String codcFilePath,
-            String mediaPicPath,String mediaPicSize) throws Exception {
+            String mediaPicPath,String mediaPicSize,boolean isVideoChange,boolean isPicChange) throws Exception {
         // 创建一个List集合来保存转换视频文件为flv格式的命令
         
         
@@ -67,24 +71,39 @@ public class FfmpegUtil {
         
         
         boolean mark = true;
-        ProcessBuilder builderImg = new ProcessBuilder();
-//        ProcessBuilder builderVideo = new ProcessBuilder();
+        
         try {
         	
         	
-        	builderImg.command(cutpic);
-        	builderImg.redirectErrorStream(true);
-            //如果此属性为 true，则任何由通过此对象的 start() 方法启动的后续子进程生成的错误输出都将与标准输出合并，
-            //因此两者均可使用 Process.getInputStream() 方法读取。这使得关联错误消息和相应的输出变得更容易
-        	builderImg.start();
-        	
-        	if(upFilePath.indexOf("mp4") < 0) {
-        		Process videoProcess = new ProcessBuilder(command).redirectErrorStream(true).start();
-        	}else {
-        		//直接接mp4文件复制到文件夹
-        		FSO.copyFile(upFilePath, codcFilePath);
+//        	是否换图片
+        	if(isPicChange) {
+        		ProcessBuilder builderImg = new ProcessBuilder();
+        		builderImg.command(cutpic);
+            	builderImg.redirectErrorStream(true);
+                //如果此属性为 true，则任何由通过此对象的 start() 方法启动的后续子进程生成的错误输出都将与标准输出合并，
+                //因此两者均可使用 Process.getInputStream() 方法读取。这使得关联错误消息和相应的输出变得更容易
+            	builderImg.start();
         	}
-        	 
+        	
+        	
+        	//是否转视频
+        	if(isVideoChange) {
+        		if(upFilePath.indexOf("mp4") < 0) {
+//            		Process videoProcess = new ProcessBuilder(command).redirectErrorStream(true).start();
+            		
+            		Process videoProcess = new ProcessBuilder(command).redirectErrorStream(true).start();
+            		                         
+            		new PrintStream(videoProcess.getInputStream()).start();
+            		            
+            		videoProcess.waitFor();
+            		
+            		
+            	}else {
+            		//直接接mp4文件复制到文件夹
+            		FSO.copyFile(upFilePath, codcFilePath);
+            	}
+        	}
+        	
             
         } catch (Exception e) {
             mark = false;

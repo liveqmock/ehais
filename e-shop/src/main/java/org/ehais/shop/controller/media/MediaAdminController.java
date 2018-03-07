@@ -788,7 +788,7 @@ public class MediaAdminController extends CommonController{
 	    		String article_video = videoUrl.substring(0, videoUrl.indexOf("."))+".mp4";
 	    		String article_images = String.valueOf(System.currentTimeMillis())+".png";
 	    		
-				FfmpegUtil.executeCodecs(video_ffmpeg_path, video_path+videoUrl, video_path+article_video ,images_path+"/"+article_images ,  video_pic_size);
+				FfmpegUtil.executeCodecs(video_ffmpeg_path, video_path+videoUrl, video_path+article_video ,images_path+"/"+article_images ,  video_pic_size,true,true);
 				
 				
 				EHaiArticle article = eHaiArticleMapper.selectByPrimaryKey(articleId);

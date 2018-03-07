@@ -1,32 +1,17 @@
 package org.ehais.shop.controller.media;
 
-import java.io.FileInputStream;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.ehais.controller.CommonController;
-import org.ehais.enums.EArticleModuleEnum;
 import org.ehais.epublic.mapper.EHaiArticleMapper;
-import org.ehais.epublic.model.EHaiArticle;
-import org.ehais.epublic.model.EHaiArticleExample;
 import org.ehais.shop.service.ArticleCatService;
 import org.ehais.shop.service.ArticleService;
 import org.ehais.thread.FfmpegThread;
-import org.ehais.util.ECommon;
-import org.ehais.util.EncryptUtils;
 import org.ehais.util.FSO;
-import org.ehais.util.FfmpegUtil;
 import org.ehais.util.ResourceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -72,7 +57,7 @@ public class MediaFtpController extends CommonController {
 	@ResponseBody
 	@RequestMapping("/index.ftp")
 	public String index(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response) {
-
+//
 //		images_path = request.getRealPath(upload_images);
 //
 //		try {
@@ -158,33 +143,43 @@ public class MediaFtpController extends CommonController {
 				String imagesPath) throws Exception {
 		String ftpPath = "/home/ftp/" + path + "/" + mediaName;// 视频原路径
 		
-		String md5MediaName = EncryptUtils.md5(ftpPath);
-		String videoPath = md5MediaName + ".mp4";
+//		String md5MediaName = EncryptUtils.md5(ftpPath);
+//		String videoPath = md5MediaName + ".mp4";
 
-		FfmpegUtil.executeCodecs(video_ffmpeg_path, 
-				ftpPath, 
-				video_folder +"/"+ md5MediaName + ".mp4",
-				images_path + "/" + md5MediaName + ".png", 
-				video_pic_size);
+//		FfmpegUtil.executeCodecs(video_ffmpeg_path, 
+//				ftpPath, 
+//				video_folder +"/"+ md5MediaName + ".mp4",
+//				images_path + "/" + md5MediaName + ".png", 
+//				video_pic_size);
+		
+		FfmpegThread thread = new FfmpegThread(ftpPath,video_folder,images_path);
+		thread.run();
+		String filePath = thread.getFilePath();
+		String picPath = upload_images + thread.getPicPath();
+		
+		System.out.println(filePath);
+		System.out.println(picPath);
+		
+		System.out.println("--------------------------------------------------------");
 
 		// 找到分类ID
 /*
  * 		//暂时屏一屏
- * 
- 		EHaiArticleCat cate = new EHaiArticleCat();
-		cate.setCatName(catName);
-		cate = articleCatService.articleCatSave(cate, null, 1);
-		// 找到标题的ID
-		EHaiArticle article = new EHaiArticle();
-		article.setTitle(title);
-		article.setStoreId(store_id);
-		article.setArticleImages("/eUploads/images/"+md5MediaName+".png");
-		article.setVideoUrl(video_path + md5MediaName + ".mp4");
-		article.setLink("");
-		article.setContent("");
-		articleService.articleSave( cate, article);
+ * */
+// 		EHaiArticleCat cate = new EHaiArticleCat();
+//		cate.setCatName(catName);
+//		cate = articleCatService.articleCatSave(cate, null, 1);
+//		// 找到标题的ID
+//		EHaiArticle article = new EHaiArticle();
+//		article.setTitle(title);
+//		article.setStoreId(store_id);
+//		article.setArticleImages(picPath);
+//		article.setVideoUrl( filePath);
+//		article.setLink("");
+//		article.setContent("");
+//		articleService.articleSave( cate, article);
 		
-		*/
+		
 	}
 
 
@@ -239,7 +234,7 @@ public class MediaFtpController extends CommonController {
 //						article.setOpenType(true);
 //						article.setLink("");
 //						article.setIsOpen(true);
-						
+//						
 //						EHaiArticleExample example = new EHaiArticleExample();
 //						example.createCriteria().andTitleEqualTo(title).andStoreIdEqualTo(store_id);
 //						

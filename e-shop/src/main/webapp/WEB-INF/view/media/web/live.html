@@ -5,6 +5,7 @@
 		<title></title>
 		<link rel="stylesheet" href="css/pclive.css" />
 		<script type="text/javascript" src="/js/jquery-1.8.3.min.js" ></script>
+		<script type="text/javascript" src="js/swiper/swiper-3.4.2.jquery.min.js" ></script>
 		<script type="text/javascript" src="/js/html5media.min.js" ></script>
 		<script type="text/javascript" src="/js/media/web.js" ></script>	
 		<script type="text/javascript" src="/js/media/vod.js" ></script>	
@@ -17,6 +18,15 @@
              videojs.options.flash.swf = "/js/video/video-js.swf";
         </script>
 
+<style type="text/css">
+
+.initial-video video,.video-js{
+     width: 100%;
+     height: 100%; 
+     object-fit: cover;
+}
+
+</style>
 	</head>
 	<body>
 		
@@ -27,12 +37,16 @@
 				<div class="content">
 					<div class="playwra">
 						<div class="title">直播</div>
-						<div class="p" >
+						<div class="p initial-video" >
 
 
-  <video id="example_video_1" class="video-js vjs-default-skin" controls preload="auto"  poster="http://vjs.zencdn.net/v/oceans.png" data-setup="{}">
-    <source src="rtmp://219.222.224.45/hls/v1" type="rtmp/flv">
-    
+  <video id="example_video_1" 
+  class="video-js vjs-default-skin" 
+  controls preload="auto"  
+  poster="http://vjs.zencdn.net/v/oceans.png" 
+  data-setup="{}">
+    <!-- <source src="rtmp://219.222.224.45/hls/v1" type="rtmp/flv"> -->
+    <source src="http://127.0.0.1/tyler.mp4" type="video/mp4">
     <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
   </video>
   
