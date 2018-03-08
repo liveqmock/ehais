@@ -112,7 +112,7 @@ function articleItem(d,catId){
 	$.each(d,function(k,v){
 		t = "";
 		if(v.articleImages == null || v.articleImages == "")t=" class='t' ";
-		$("#a"+catId).append("<li class='rec play' href='play"+v.articleId+".lv'>"+
+		$("#a"+catId).append("<li class='rec play' val='"+v.articleId+"'>"+
 								"<div>"+
 									"<img src="+video_url_website+ ((v.articleThumb == null || v.articleThumb == "")?defaultimg:v.articleThumb) +" />"+
 									"<div>"+v.articleLabel+"</div>"+

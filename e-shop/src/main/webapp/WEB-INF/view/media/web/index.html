@@ -37,19 +37,21 @@
 				 
 			</div>
 			<div class="recommend">
-				<div class="rec">
+				
 					<#if (listArticleIndex?? && listArticleIndex?size > 0)>
 					<#list listArticleIndex as a>
 					<#if a_index == 0>
+					<div class="rec play" val="${a.articleId}">
 					<div>
 						<img src="${video_url_website}${a.articleThumb!''}" />
 						<div>${a.articleLabel!''}</div>
 					</div>					
 					<div>${a.title!''}</div>
+					</div>
 					</#if>
 					</#list>
 					</#if>
-				</div>
+				
 				<div class="item">
 					<ul>
 						<#if (listArticleIndex?? && listArticleIndex?size > 0)>

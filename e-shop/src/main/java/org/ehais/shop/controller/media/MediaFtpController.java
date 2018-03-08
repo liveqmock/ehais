@@ -1,17 +1,22 @@
 package org.ehais.shop.controller.media;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.FileInputStream;
+import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.ehais.controller.CommonController;
 import org.ehais.epublic.mapper.EHaiArticleMapper;
 import org.ehais.shop.service.ArticleCatService;
 import org.ehais.shop.service.ArticleService;
 import org.ehais.thread.FfmpegThread;
-import org.ehais.util.FSO;
 import org.ehais.util.ResourceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -57,84 +62,84 @@ public class MediaFtpController extends CommonController {
 	@ResponseBody
 	@RequestMapping("/index.ftp")
 	public String index(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response) {
-//
-//		images_path = request.getRealPath(upload_images);
-//
-//		try {
-//			// 读取excel
-//			String fileName = "/home/tyler/workspace/VodData.xls";
-//			FileInputStream fis = new FileInputStream(fileName);
-//			Workbook workbook = null;
-//			// 判断excel的两种格式xls,xlsx
-//			if (fileName.toLowerCase().endsWith("xlsx")) {
-//				workbook = new XSSFWorkbook(fis);
-//			} else if (fileName.toLowerCase().endsWith("xls")) {
-//				workbook = new HSSFWorkbook(fis);
-//			}
-//
-//			// 得到sheet的总数
-//			int numberOfSheets = workbook.getNumberOfSheets();
-//
-//			System.out.println("一共" + numberOfSheets + "个sheet");
-//
-//			// 循环每一个sheet
-//			for (int i = 0; i < numberOfSheets; i++) {
-//
-//				// 得到第i个sheet
-//				Sheet sheet = workbook.getSheetAt(i);
-//				System.out.println(sheet.getSheetName() + "  sheet");
-//
-//				// 得到行的迭代器
-//				Iterator<Row> rowIterator = sheet.iterator();
-//
-//				int rowCount = 0;
-//				// 循环每一行
-//				while (rowIterator.hasNext()) {
-////					System.out.print("第" + (rowCount++) + "行  ");
-//
-//					// 得到一行对象
-//					Row row = rowIterator.next();
-//
-//					// 得到列对象
-//					Iterator<Cell> cellIterator = row.cellIterator();
-//
-//					int columnCount = 0;
-//
-//					String catName = row.getCell(0).getStringCellValue();
-//					String parentName = row.getCell(1).getStringCellValue();
-//					String title = row.getCell(5).getStringCellValue();
-//					String path = row.getCell(8).getStringCellValue();
-//					String mediaName = row.getCell(9).getStringCellValue();
-//
-////					System.out.print(catName + "   ");
-////					System.out.print(parentName + "   ");
-////					System.out.print(title + "   ");
-////					System.out.print(path + "   ");
-////					System.out.print(mediaName + "   ");
-//
-//					ffmpegMedia(catName, parentName, title, path, mediaName, images_path);
-//					
-//
-//					System.out.println();
-//
-//				} // end of rows iterator
-//
-//			} // end of sheets for loop
-//
-//			System.out.println("\nread excel successfully...");
-//
-//			// close file input stream
-//			fis.close();
-//			// 解释ffmpeg的视频路径与图片路径
-//
-//			// 将信息保存在数据库
-//
-//			//
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			log.error("article", e);
-//			return this.errorJump(modelMap, e.getMessage());
-//		}
+
+		images_path = request.getRealPath(upload_images);
+
+		try {
+			// 读取excel
+			String fileName = "/home/tyler/workspace/VodData.xls";
+			FileInputStream fis = new FileInputStream(fileName);
+			Workbook workbook = null;
+			// 判断excel的两种格式xls,xlsx
+			if (fileName.toLowerCase().endsWith("xlsx")) {
+				workbook = new XSSFWorkbook(fis);
+			} else if (fileName.toLowerCase().endsWith("xls")) {
+				workbook = new HSSFWorkbook(fis);
+			}
+
+			// 得到sheet的总数
+			int numberOfSheets = workbook.getNumberOfSheets();
+
+			System.out.println("一共" + numberOfSheets + "个sheet");
+
+			// 循环每一个sheet
+			for (int i = 0; i < numberOfSheets; i++) {
+
+				// 得到第i个sheet
+				Sheet sheet = workbook.getSheetAt(i);
+				System.out.println(sheet.getSheetName() + "  sheet");
+
+				// 得到行的迭代器
+				Iterator<Row> rowIterator = sheet.iterator();
+
+				int rowCount = 0;
+				// 循环每一行
+				while (rowIterator.hasNext()) {
+//					System.out.print("第" + (rowCount++) + "行  ");
+
+					// 得到一行对象
+					Row row = rowIterator.next();
+
+					// 得到列对象
+					Iterator<Cell> cellIterator = row.cellIterator();
+
+					int columnCount = 0;
+
+					String catName = row.getCell(0).getStringCellValue();
+					String parentName = row.getCell(1).getStringCellValue();
+					String title = row.getCell(5).getStringCellValue();
+					String path = row.getCell(8).getStringCellValue();
+					String mediaName = row.getCell(9).getStringCellValue();
+
+//					System.out.print(catName + "   ");
+//					System.out.print(parentName + "   ");
+//					System.out.print(title + "   ");
+//					System.out.print(path + "   ");
+//					System.out.print(mediaName + "   ");
+
+					ffmpegMedia(catName, parentName, title, path, mediaName, images_path);
+					
+
+					System.out.println();
+
+				} // end of rows iterator
+
+			} // end of sheets for loop
+
+			System.out.println("\nread excel successfully...");
+
+			// close file input stream
+			fis.close();
+			// 解释ffmpeg的视频路径与图片路径
+
+			// 将信息保存在数据库
+
+			//
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error("article", e);
+			return this.errorJump(modelMap, e.getMessage());
+		}
 		return "";
 	}
 	
@@ -187,35 +192,35 @@ public class MediaFtpController extends CommonController {
 	@ResponseBody
 	@RequestMapping("/index.media")
 	public String index_ftp(ModelMap modelMap, HttpServletRequest request, HttpServletResponse response) {
-		try {
-			images_path = request.getRealPath(upload_images);
-			String ftpPath = "/home/ftp/";
-//			String ftpPath = "F:\\广技师视频";
-			List<String> list = new ArrayList<String>();
-			FSO.ReadfileList(list, ftpPath);
-			for (String string : list) {
-				
-				try {
-					
-					
-					string = new String(string.getBytes("ISO-8859-1"),"gb2312");
-					System.out.println(string);
-					string = string.replace("\\", "/");
-					String title = string.substring(string.lastIndexOf("/")+1, string.lastIndexOf("."));
-					title = new String(title.getBytes("ISO-8859-1"),"gbk");//ISO-8859-1
-					System.out.println("title:"+title);
-					String suffix = string.substring(string.lastIndexOf(".")+1);//后缀名
-					
-					if(suffix.equals("flv") || string.equals("avi") || string.equals("mp4") ) {
-						
-						
-						FfmpegThread thread = new FfmpegThread(string,video_folder,images_path);
-						thread.run();
-						String filePath = thread.getFilePath();
-						String picPath = upload_images + thread.getPicPath();
-						
-						System.out.println(filePath+"||"+picPath);
-						
+//		try {
+//			images_path = request.getRealPath(upload_images);
+//			String ftpPath = "/home/ftp/";
+////			String ftpPath = "F:\\广技师视频";
+//			List<String> list = new ArrayList<String>();
+//			FSO.ReadfileList(list, ftpPath);
+//			for (String string : list) {
+//				
+//				try {
+//					
+//					
+//					string = new String(string.getBytes("ISO-8859-1"),"gb2312");
+//					System.out.println(string);
+//					string = string.replace("\\", "/");
+//					String title = string.substring(string.lastIndexOf("/")+1, string.lastIndexOf("."));
+//					title = new String(title.getBytes("ISO-8859-1"),"gbk");//ISO-8859-1
+//					System.out.println("title:"+title);
+//					String suffix = string.substring(string.lastIndexOf(".")+1);//后缀名
+//					
+//					if(suffix.equals("flv") || string.equals("avi") || string.equals("mp4") ) {
+//						
+//						
+//						FfmpegThread thread = new FfmpegThread(string,video_folder,images_path);
+//						thread.run();
+//						String filePath = thread.getFilePath();
+//						String picPath = upload_images + thread.getPicPath();
+//						
+//						System.out.println(filePath+"||"+picPath);
+//						
 //						EHaiArticle article = new EHaiArticle();
 //						article.setTitle(title);
 //						article.setCatId(-1);
@@ -242,23 +247,23 @@ public class MediaFtpController extends CommonController {
 //						if(c==0) {
 //							eHaiArticleMapper.insert(article);
 //						}
-						
-						
-					}
-					
-					
-				}catch(Exception e) {
-					e.printStackTrace();
-				}
-				
-				
-
-				
-				
-			}
-		} catch (Exception e){
-			e.printStackTrace();
-		}
+//						
+//						
+//					}
+//					
+//					
+//				}catch(Exception e) {
+//					e.printStackTrace();
+//				}
+//				
+//				
+//
+//				
+//				
+//			}
+//		} catch (Exception e){
+//			e.printStackTrace();
+//		}
 		return "";
 	}
 	
