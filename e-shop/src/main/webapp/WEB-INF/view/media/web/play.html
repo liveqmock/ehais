@@ -5,17 +5,10 @@
 		<title></title>
 		<link rel="stylesheet" href="css/pclive.css" />
 		<script type="text/javascript" src="/js/jquery-1.8.3.min.js" ></script>
-		<script type="text/javascript" src="/js/html5media.min.js" ></script>
 		<script type="text/javascript" src="/js/media/play.js" ></script>	
 		<script type="text/javascript" src="/js/media/vod.js" ></script>	
 		
-
-		<link href="/js/video/video-js.min.css" rel="stylesheet">
-    	<script src="/js/video/video.min.js"></script>
-    	<script src="/js/video/ie8/videojs-ie8.min.js"></script>
-    	<script>
-             videojs.options.flash.swf = "/js/video/video-js.swf";
-        </script>
+		<script type="text/javascript" src="/js/jwplayer/jwplayer.js" ></script>
 
 	</head>
 	<body>
@@ -28,21 +21,17 @@
 					<div class="playwra">
 						<div class="title">${article.title}</div>
 						<div class="p" style="background:url(${video_url_website}${article.articleThumb})">
-<!-- 
-<video src="${article.videoUrl}" width="640" height="400" controls="controls">
-Your browser does not support the video tag.
-</video>
 
 
-<embed src="/js/flvplayer.swf?IsAutoPlay=1&vcastr_file=${article.videoUrl}" type="application/x-shockwave-flash" width="640" height="400" quality="high" allowfullscreen="true" />
- -->
 
-
-<video id="video_id" class="video-js vjs-default-skin" controls="controls" preload="none" autoplay="autoplay" width="640" height="400"  data-setup="{}">
-  <source id="source_id"></source>
+<video id="video_id" class="jwplayer" 
+controls="controls" preload="none" 
+autoplay="autoplay" width="640" height="400"  data-setup="{}"
+src="${video_transfer_website}/${article.videoUrl}" poster="${video_url_website}${article.articleThumb}" >
 </video>
 
 <script type="text/javascript">
+/**
 $(function(){ 
     init("${video_transfer_website}/${article.videoUrl}");
 });
@@ -50,7 +39,7 @@ $(function(){
 function init(path){
     $('#source_id').attr('src',path);
     $('#source_id').attr('type','video/mp4');
-}
+} */
 </script>
 
 

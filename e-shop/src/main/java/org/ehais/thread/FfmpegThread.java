@@ -30,7 +30,7 @@ public class FfmpegThread extends Thread{
 	public void run() {
 		System.out.println("============转码开始==================");
 		try {
-
+			System.out.println("upFilePath:"+upFilePath);
 			String md5MediaName = EncryptUtils.md5(upFilePath);
 			//获取后缀名
 			String pre = upFilePath.substring(upFilePath.indexOf("."));

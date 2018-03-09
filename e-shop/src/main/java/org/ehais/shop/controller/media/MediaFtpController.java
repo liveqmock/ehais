@@ -111,11 +111,11 @@ public class MediaFtpController extends CommonController {
 					String path = row.getCell(8).getStringCellValue();
 					String mediaName = row.getCell(9).getStringCellValue();
 
-//					System.out.print(catName + "   ");
-//					System.out.print(parentName + "   ");
-//					System.out.print(title + "   ");
-//					System.out.print(path + "   ");
-//					System.out.print(mediaName + "   ");
+					System.out.print(catName + "   ");
+					System.out.print(parentName + "   ");
+					System.out.print(title + "   ");
+					System.out.print(path + "   ");
+					System.out.print(mediaName + "   ");
 
 					ffmpegMedia(catName, parentName, title, path, mediaName, images_path);
 					
