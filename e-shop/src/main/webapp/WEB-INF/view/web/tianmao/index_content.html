@@ -6,7 +6,7 @@
 		<div class="inner-con1">
 			<div class="inner-con2 clearfix">
 				<#list navList as nav>
-				<#if nav.type == 'nav'>
+				<#if (nav.type?? && nav.type == 'nav')>
 					<a href="${nav.url?default('javascript:;')}">
 					${nav.name}
 					</a>
@@ -94,19 +94,7 @@
     
     </div>
     
-<!--      
-    <div data-spm="subpannel2016027">
-    
-      
-      <a href="https://nvzhuang.tmall.com/?acm=201603010.1003.2.735220&amp;aldid=dqo3UuJR&amp;scm=1003.2.201603010.OTHER_1470476828102_735220&amp;pos=1" class="activity clearfix">
-        <img src="https://img.alicdn.com/tps/TB1xnkQKVXXXXaJXXXXXXXXXXXX-378-174.jpg">
-        <div class="title"></div>
-        <div class="sub-title"></div>
-      </a>
-      
-    
-    </div>
-    -->
+
     
   </div>
    

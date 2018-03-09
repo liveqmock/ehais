@@ -57,7 +57,9 @@ public class EIndexAdminController extends CommonController{
 			e.printStackTrace();
 		}
 //		return "/"+this.getAdminProjectFolder(request)+"/main/index";
-		return this.view(request, "/main/index");
+		String index_path = this.view(request, "/main/index");
+		System.out.println(index_path);
+		return index_path;
 	}
 	
 	@RequestMapping("/main")
