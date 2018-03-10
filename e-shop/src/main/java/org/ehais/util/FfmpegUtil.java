@@ -7,9 +7,8 @@ import org.ehais.thread.PrintStream;
 
 public class FfmpegUtil {
 
-	
 	/**
-     * 视频转码
+     * 视频转码v
      * @param ffmpegPath    转码工具的存放路径
      * @param upFilePath    用于指定要转换格式的文件,要截图的视频源文件
      * @param codcFilePath    格式转换后的的文件保存路径
