@@ -35,7 +35,8 @@ public class FfmpegUtil {
         command.add("22050");  
         command.add("-qscale");  
         command.add("8");  
-        command.add("-r");  
+        command.add("-r");
+        command.add("-f");  
         command.add("25");  
         command.add("-s");  
         command.add(mediaPicSize);  

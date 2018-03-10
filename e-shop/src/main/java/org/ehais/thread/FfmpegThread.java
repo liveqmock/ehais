@@ -49,7 +49,7 @@ public class FfmpegThread extends Thread{
 					upFilePath, 
 					codcFileFolder+filePath,
 					mediaPicFolder+md5MediaName+".png", 
-					video_pic_size,false,true);
+					video_pic_size,true,true);
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
