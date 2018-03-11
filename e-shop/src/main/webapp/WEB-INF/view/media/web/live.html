@@ -41,7 +41,7 @@
 
 
   
-<video id="example-video" class="video-js vjs-default-skin" controls poster="http://i.onionstatic.com/onionstudios/3819/16x9/800.jpg">
+<video id="example-video" class="video-js vjs-default-skin" data-setup='{"techOrder": ["flash", "html5"]}'  controls poster="http://i.onionstatic.com/onionstudios/3819/16x9/800.jpg">
     <!--<source src="http://7xjr0i.com2.z0.glb.qiniucdn.com/test-vedio-hls.m3u8" type="application/x-mpegURL">-->
     <!--<source src="API/hls_test/hls_test/output.m3u8" type="application/x-mpegURL">-->
     <source src="http://192.168.3.148:82/hls/t1.m3u8" type="application/x-mpegURL">
@@ -109,14 +109,17 @@
 <script type="text/javascript">
 $(function(){
 	videojs.options.flash.swf = "/js/video/video-js.swf";
-    var player = videojs('example-video');
+	var opt = {flash:{hls:{withCredentials : true }},html5:{hls:{withCredentials : true }}};
+
+	
+    var player = videojs('example-video' );
     player.play();
     
 	$(".play").click(function(){
 		
 		var videoUrl = $(this).attr("m3u8");
 		
-		player.src([{type: "application/x-mpegURL", src: videoUrl }]);  
+		player.src([{type: "application/x-mpegURL", src: videoUrl ,withCredentials: false}]);  
 		player.play();
         
 	
