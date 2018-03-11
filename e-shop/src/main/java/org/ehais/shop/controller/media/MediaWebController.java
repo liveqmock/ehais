@@ -388,10 +388,17 @@ public class MediaWebController extends CommonController{
 		modelMap.addAttribute("video_url_website", video_url_website);
 		this.v_common(modelMap,request);
 		
+		EHaiArticleCatExample ace = new EHaiArticleCatExample();
+		ace.createCriteria().andStoreIdEqualTo(store_id);
+		ace.setOrderByClause("sort_order asc");
+		List<EHaiArticleCat> listArticleCat = eHaiArticleCatMapper.selectByExample(ace);
+//		System.out.println("listArticleCat.size():"+listArticleCat.size());
+		modelMap.addAttribute("listArticleCat", listArticleCat);
+		
 		modelMap.addAttribute("currentNav", "index");
 		modelMap.addAttribute("video_url_website", video_url_website);
-		
-		
+	    
+	    
 		return "/media/web/live";
 		
 	}
