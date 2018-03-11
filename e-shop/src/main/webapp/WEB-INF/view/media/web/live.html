@@ -7,7 +7,6 @@
 		<script type="text/javascript" src="/js/jquery-1.8.3.min.js" ></script>
 		<script type="text/javascript" src="js/swiper/swiper-3.4.2.jquery.min.js" ></script>
 		<script type="text/javascript" src="/js/html5media.min.js" ></script>
-		<script type="text/javascript" src="/js/media/web.js" ></script>	
 		<script type="text/javascript" src="/js/media/vod.js" ></script>	
 		
 
@@ -59,7 +58,7 @@
 						</div>
 						<ul>
 							
-							<li class="play" >
+							<li class="play" m3u8="http://d2zihajmogu5jn.cloudfront.net/bipbop-advanced/bipbop_16x9_variant.m3u8">
 								<div>
 									<img src="/img/1366/img3.png" />
 									<div>直播一</div>
@@ -68,7 +67,7 @@
 								<div>直播一</div>
 								
 							</li>	
-							<li class="play" >
+							<li class="play" m3u8="http://192.168.3.148:82/hls/t1.m3u8">
 								<div>
 									<img src="/img/1366/img3.png" />
 									<div>直播2</div>
@@ -77,7 +76,7 @@
 								<div>直播2</div>
 								
 							</li>	
-							<li class="play" >
+							<li class="play" m3u8="http://d2zihajmogu5jn.cloudfront.net/bipbop-advanced/bipbop_16x9_variant.m3u8">
 								<div>
 									<img src="/img/1366/img3.png" />
 									<div>直播3</div>
@@ -86,7 +85,7 @@
 								<div>直播3</div>
 								
 							</li>	
-							<li class="play" >
+							<li class="play" m3u8="http://192.168.3.148:82/hls/t1.m3u8">
 								<div>
 									<img src="/img/1366/img3.png" />
 									<div>直播4</div>
@@ -112,6 +111,22 @@ $(function(){
 	videojs.options.flash.swf = "/js/video/video-js.swf";
     var player = videojs('example-video');
     player.play();
+    
+	$(".play").click(function(){
+		
+		var videoUrl = $(this).attr("m3u8");
+		
+		player.src([{type: "application/x-mpegURL", src: videoUrl }]);  
+		player.play();
+        
+	
+	});
+	
+	$("#menu >li").click(function(){
+		window.location.href = $(this).attr("href");
+	});
+	
+	
 });
 
 </script>
