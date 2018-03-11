@@ -62,13 +62,13 @@ public class MediaWebController extends CommonController{
 	
 	private void v_common(ModelMap modelMap,HttpServletRequest request) {
 		store_id = 1;
-		modelMap.addAttribute("logo", "logo");
-		modelMap.addAttribute("company", "广州城市职业学院");			
+//		modelMap.addAttribute("logo", "logo");
+//		modelMap.addAttribute("company", "广州城市职业学院");			
 //		String serverName = request.getServerName();
 //		if(serverName.equals("gjs.ehais.org") || serverName.equals("gmedia.ehais.com")) {
 //			store_id = 2;
-//			modelMap.addAttribute("logo", "g_logo");
-//			modelMap.addAttribute("company", "广东技术师范学院");
+			modelMap.addAttribute("logo", "g_logo");
+			modelMap.addAttribute("company", "广东技术师范学院");
 //		}
 		
 		
