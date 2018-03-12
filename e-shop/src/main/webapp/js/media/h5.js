@@ -22,6 +22,7 @@ $(function(){
 	
 	$("#clist").height(parseFloat($(window).height()) - parseFloat($("header").height()) - parseFloat($("footer").height()) - parseFloat($("#cate").height()) - parseFloat($("footer").css('padding-top').replaceAll("px","")) - parseFloat($("footer").css('padding-bottom').replaceAll("px","")));
 	
+	
 	$.each(json.listArticleCat,function(k,v){
 		$("#cate ul").append("<li cat_id='"+v.catId+"'>"+v.catName+"</li>");
 		jrollCat(v.catId);
@@ -32,8 +33,11 @@ $(function(){
 	$("#cate_bor").width($(window).outerWidth()-$(".nav").width());
 	
 	jrollCat(cat_id);
+	var offLeft = 0;
 	$("#cate_bor ul li").each(function() {
+		$(this).attr("left",offLeft);
 		culw += parseFloat($(this).outerWidth()) + 1;
+		offLeft = culw;
 	});
 	
 	$("#cate ul").outerWidth(culw);
@@ -54,7 +58,6 @@ $(function(){
 			$("#c"+cat_id).addClass("active");
 			
 			if(pageData[cat_id] == null){
-				console.log(cat_id+" page is empty");
 				pageData[cat_id] = 1;
 				sessionStorage.setItem("pageData",JSON.stringify(pageData));
 				orderData[cat_id] = [];
@@ -68,6 +71,17 @@ $(function(){
 			bind_play_click();
 			
 		}
+		
+		
+	});
+	
+	$(".nav").click(function(){
+		$("#cate_bor ul li.active").next().click();
+		if(parseFloat($("#cate_bor ul li.active").attr("left")) > $(window).outerWidth() - $(".nav").width() - $("#cate_bor ul li.active").width()){
+			var left = parseFloat($("#cate_bor ul li.active").attr("left")) + $(".nav").width() - $(window).outerWidth() + $("#cate_bor ul li.active").width();
+			jcate.scrollTo(-left  , 0, 200);
+		}
+		
 		
 		
 	});
