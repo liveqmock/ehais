@@ -14,6 +14,8 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.ehais.controller.CommonController;
 import org.ehais.epublic.mapper.EHaiArticleMapper;
+import org.ehais.epublic.model.EHaiArticle;
+import org.ehais.epublic.model.EHaiArticleCat;
 import org.ehais.shop.service.ArticleCatService;
 import org.ehais.shop.service.ArticleService;
 import org.ehais.thread.FfmpegThread;
@@ -157,7 +159,7 @@ public class MediaFtpController extends CommonController {
 //				images_path + "/" + md5MediaName + ".png", 
 //				video_pic_size);
 		
-		FfmpegThread thread = new FfmpegThread(ftpPath,video_folder,images_path);
+		FfmpegThread thread = new FfmpegThread(ftpPath,video_folder,images_path,false,false);
 		thread.run();
 		String filePath = thread.getFilePath();
 		String picPath = upload_images + thread.getPicPath();
@@ -171,18 +173,18 @@ public class MediaFtpController extends CommonController {
 /*
  * 		//暂时屏一屏
  * */
-// 		EHaiArticleCat cate = new EHaiArticleCat();
-//		cate.setCatName(catName);
-//		cate = articleCatService.articleCatSave(cate, null, 1);
-//		// 找到标题的ID
-//		EHaiArticle article = new EHaiArticle();
-//		article.setTitle(title);
-//		article.setStoreId(store_id);
-//		article.setArticleImages(picPath);
-//		article.setVideoUrl( filePath);
-//		article.setLink("");
-//		article.setContent("");
-//		articleService.articleSave( cate, article);
+ 		EHaiArticleCat cate = new EHaiArticleCat();
+		cate.setCatName(catName);
+		cate = articleCatService.articleCatSave(cate, null, 1);
+		// 找到标题的ID
+		EHaiArticle article = new EHaiArticle();
+		article.setTitle(title);
+		article.setStoreId(store_id);
+		article.setArticleImages(picPath);
+		article.setVideoUrl( filePath);
+		article.setLink("");
+		article.setContent("");
+		articleService.articleSave( cate, article);
 		
 		
 	}

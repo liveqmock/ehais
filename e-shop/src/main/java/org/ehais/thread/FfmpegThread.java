@@ -13,6 +13,8 @@ public class FfmpegThread extends Thread{
 	String watchPicPath;//水印地址，如果为空，则不加水印
 	String filePath;//视频文件路径
 	String picPath;//图片文件路径
+	Boolean isVideoChange;
+	Boolean isPicChange;
 	
 	// ffmpeg的路径
 	protected String video_ffmpeg_path = ResourceUtil.getProValue("video.ffmpeg.path");
@@ -21,10 +23,12 @@ public class FfmpegThread extends Thread{
 	// 视频截图尺寸
 	protected String video_pic_size = ResourceUtil.getProValue("video.pic.size");
 		
-	public FfmpegThread(String upFilePath, String codcFileFolder, String mediaPicFolder) {
+	public FfmpegThread(String upFilePath, String codcFileFolder, String mediaPicFolder,Boolean isVideoChange,Boolean isPicChange) {
 		this.upFilePath = upFilePath;
 		this.codcFileFolder = codcFileFolder;
 		this.mediaPicFolder = mediaPicFolder;
+		this.isVideoChange = isVideoChange;
+		this.isPicChange = isPicChange;
 	}
 
 	public void run() {
@@ -49,7 +53,7 @@ public class FfmpegThread extends Thread{
 					upFilePath, 
 					codcFileFolder+filePath,
 					mediaPicFolder+md5MediaName+".png", 
-					video_pic_size,true,true);
+					video_pic_size,isVideoChange,isPicChange);
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
