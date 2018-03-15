@@ -28,6 +28,7 @@ public class FfmpegUtil {
         command.add(ffmpegPath);  
         command.add("-i");  
         command.add(upFilePath);  
+        command.add("-y");
         command.add("-ab");  
         command.add("56");  
         command.add("-ar");  
@@ -35,7 +36,6 @@ public class FfmpegUtil {
         command.add("-qscale");  
         command.add("8");  
         command.add("-r");
-        command.add("-f");  
         command.add("25");  
         command.add("-s");  
         command.add(mediaPicSize);  
@@ -87,7 +87,7 @@ public class FfmpegUtil {
         	
         	
         	//是否转视频
-        	if(isVideoChange) {
+        	if(isVideoChange && !FSO.TextFileExists(codcFilePath)) {
         		if(upFilePath.indexOf("mp4") < 0) {
 //            		Process videoProcess = new ProcessBuilder(command).redirectErrorStream(true).start();
             		

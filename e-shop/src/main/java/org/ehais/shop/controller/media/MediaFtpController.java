@@ -159,7 +159,7 @@ public class MediaFtpController extends CommonController {
 //				images_path + "/" + md5MediaName + ".png", 
 //				video_pic_size);
 		
-		FfmpegThread thread = new FfmpegThread(ftpPath,video_folder,images_path,false,false);
+		FfmpegThread thread = new FfmpegThread(ftpPath,video_folder,images_path,true,true);
 		thread.run();
 		String filePath = thread.getFilePath();
 		String picPath = upload_images + thread.getPicPath();

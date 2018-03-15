@@ -35,25 +35,35 @@ public class FfmpegThread extends Thread{
 		System.out.println("============转码开始==================");
 		try {
 			System.out.println("upFilePath:"+upFilePath);
-			String md5MediaName = EncryptUtils.md5(upFilePath);
-			//获取后缀名
-			String pre = upFilePath.substring(upFilePath.indexOf("."));
-			//如果路径或文件名是中文的，要转放到一个非中文的路径
-			if(ECommon.isContainChinese(upFilePath)) {				
-				//复制文件到另一文件夹
-				if(!FSO.TextFileExists(video_tmp_path+md5MediaName+pre))
-				FSO.copyFile(upFilePath, video_tmp_path+md5MediaName+pre);
-				upFilePath = video_tmp_path+md5MediaName+pre;
+			if(FSO.TextFileExists(upFilePath)) {
+				System.out.println("文件存在");
+				
+				
+				String md5MediaName = EncryptUtils.md5(upFilePath);
+				//获取后缀名
+				String pre = upFilePath.substring(upFilePath.indexOf("."));
+				//如果路径或文件名是中文的，要转放到一个非中文的路径
+				if(ECommon.isContainChinese(upFilePath)) {				
+					//复制文件到另一文件夹
+					if(!FSO.TextFileExists(video_tmp_path+md5MediaName+pre))
+					FSO.copyFile(upFilePath, video_tmp_path+md5MediaName+pre);
+					upFilePath = video_tmp_path+md5MediaName+pre;
+				}
+				
+				filePath = md5MediaName + ".mp4";
+				picPath = md5MediaName+".png";
+				
+				FfmpegUtil.executeCodecs(video_ffmpeg_path, 
+						upFilePath, 
+						codcFileFolder+filePath,
+						mediaPicFolder+md5MediaName+".png", 
+						video_pic_size,isVideoChange,isPicChange);
+				
+				
+			}else {
+				System.out.println("文件不存在");
 			}
 			
-			filePath = md5MediaName + ".mp4";
-			picPath = md5MediaName+".png";
-			
-			FfmpegUtil.executeCodecs(video_ffmpeg_path, 
-					upFilePath, 
-					codcFileFolder+filePath,
-					mediaPicFolder+md5MediaName+".png", 
-					video_pic_size,isVideoChange,isPicChange);
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
