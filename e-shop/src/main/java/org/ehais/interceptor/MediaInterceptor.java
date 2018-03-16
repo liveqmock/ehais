@@ -43,7 +43,6 @@ public class MediaInterceptor extends HandlerInterceptorAdapter{
 	    response.addHeader("Access-Control-Allow-Credentials","false");
 	    return super.preHandle(request, response, handler);
         
-        
 //		return true;
 	}
 	
