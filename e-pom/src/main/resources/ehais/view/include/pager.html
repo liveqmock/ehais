@@ -42,27 +42,27 @@
 	<div class="page">
 		<ul class="pagination fr">
         	<#if (currentPage > 1)>
-				<li>
+				<li class="p_first">
 					<a class="txt" href="${firstPageUrl}">首页</a>
 				</li>
 			<#else>
-				<li>
+				<li class="p_first">
 					<a class="txt">首页</a>
 				</li>
 			</#if>
 			<#if (currentPage > 1)>
-				<li>
+				<li class="p_previous">
 					<a class="txt" href="${prePageUrl}">上一页</a>
 				</li>
 			<#else>
-				<li>
+				<li class="p_previous">
 					<a class="txt">上一页</a>
 				</li>
 			</#if>
-			<#if (segment > 1)><li><a href="${baseUrl + "page=" + ((segment - 1) * maxShowPageCount) + parameter}">...</a></li></#if>
+			<#if (segment > 1)><li class="p_more"><a href="${baseUrl + "page=" + ((segment - 1) * maxShowPageCount) + parameter}">...</a></li></#if>
 			<#list startPageNumber .. endPageNumber as index>
 				<#if currentPage != index>
-					<li> 
+					<li class="p_href"> 
 						<a href="${baseUrl + "page=" + index + parameter}">${index}</a>
 					</li>
 				<#else>
@@ -71,30 +71,30 @@
 					</li>
 				</#if>
 			</#list>
-			<#if (segment < segmentCount)><li><a href="${baseUrl + "page=" + ((segment * maxShowPageCount) + 1 ) + parameter}">...</a></li></#if>
+			<#if (segment < segmentCount)><li class="p_more"><a href="${baseUrl + "page=" + ((segment * maxShowPageCount) + 1 ) + parameter}">...</a></li></#if>
 			<#if (currentPage < pageCount)>  
-                <li>  
+                <li class="p_next">  
                     <a class="txt" href="${nextPageUrl}">下一页</a>  
                 </li>  
 	        <#else>  
-	                <li>  
+	                <li class="p_next">  
 	                    <a class="txt">下一页</a> 
 	                </li>  
 	        </#if>
 			<#-- 末页 -->
 			<#if (currentPage < pageCount)>
-				<li>
+				<li class="p_last">
 					<a class="txt" href="${lastPageUrl}">末页</a>
 				</li>
 			<#else>
-				<li>
+				<li class="p_last">
 					<a class="txt">末页</a>
 				</li>
 			</#if>
 			
 			
            <!--  <li>到第<span class="page_input"><input type="text"></span>页</li> -->
-            <li><a href="javascript:;">第${currentPage} / ${pageCount} 页  &nbsp; 每页显示${pageSize}条记录 &nbsp; 共${total}条记录</a></li>
+            <li class="p_label"><a href="javascript:;">第${currentPage} / ${pageCount} 页  &nbsp; 每页显示${pageSize}条记录 &nbsp; 共${total}条记录</a></li>
             <!-- <li><a class="active txt" href="javascript:;">确定</a></li> -->
             
 	        

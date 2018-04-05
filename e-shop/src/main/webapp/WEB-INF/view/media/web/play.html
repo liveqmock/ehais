@@ -4,11 +4,23 @@
 		<meta charset="UTF-8">
 		<title></title>
 		<link rel="stylesheet" href="css/pclive.css" />
+		
+		<link rel="stylesheet" type="text/css" href="/js/video/video-js.min.css">
+		
 		<script type="text/javascript" src="/js/jquery-1.8.3.min.js" ></script>
 		<script type="text/javascript" src="/js/media/play.js" ></script>	
 		<script type="text/javascript" src="/js/media/vod.js" ></script>	
 		
+		<script type="text/javascript" src="/js/video/ie8/videojs-ie8.min.js"></script>
+		<script type="text/javascript" src="/js/video/video.min.js"></script>
+
+		<!-- 
 		<script type="text/javascript" src="/js/jwplayer/jwplayer.js" ></script>
+		 -->
+		 
+		 <script type="text/javascript">
+		　　videojs.options.flash.swf = '/js/video/video-js.swf';
+		</script>
 
 	</head>
 	<body>
@@ -23,24 +35,18 @@
 						<div class="p" style="background:url(${video_url_website}${article.articleThumb})">
 
 
-
+<!-- 
 <video id="video_id" class="jwplayer" 
 controls="controls" preload="none" 
 autoplay="autoplay" width="640" height="400"  data-setup="{}"
 src="${video_transfer_website}/${article.videoUrl}" poster="${video_url_website}${article.articleThumb}" >
 </video>
+ -->
+ 
+<video class="video-js vjs-default-skin vjs-big-play-centered" autoplay  width="640" height="400" controls data-setup='{"techOrder": ["flash", "html5"]}' >
+　　<source src="${video_transfer_website}/${article.videoUrl}" type="video/mp4">
+</video>
 
-<script type="text/javascript">
-/**
-$(function(){ 
-    init("${video_transfer_website}/${article.videoUrl}");
-});
-
-function init(path){
-    $('#source_id').attr('src',path);
-    $('#source_id').attr('type','video/mp4');
-} */
-</script>
 
 
 						</div>
@@ -60,8 +66,8 @@ function init(path){
 									<div>${a.articleLabel!''}</div>
 									<img src="img/1366/play.png" style="display:none;"/>
 								</div>
-								<div>${a.title!''}</div>
-								<div>
+								<div class="rtitle">${a.title!''}</div>
+								<div class="rprop">
 									<div class="date">${(a.articleDate?string('yyyy-MM-dd'))!''}</div>
 									<div class="counts">${a.readCount!'0'}次</div>
 								</div>

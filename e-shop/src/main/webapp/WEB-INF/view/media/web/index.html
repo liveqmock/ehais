@@ -3,14 +3,32 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>${company}</title>
-		<link rel="stylesheet" href="css/pclive.css" />
+		
 		
 		<script type="text/javascript" src="/js/jquery-1.8.3.min.js" ></script>
 		<script type="text/javascript" src="/js/media/web.js" ></script>
 		<script type="text/javascript" src="/js/media/vod.js" ></script>
 		
-		<link rel="stylesheet" href="js/swiper/swiper-3.4.2.min.css" />
-		<script type="text/javascript" src="js/swiper/swiper-3.4.2.jquery.min.js" ></script>
+		<link rel="stylesheet" href="/js/slideBox/css/jquery.slideBox.css" />
+		<script type="text/javascript" src="/js/slideBox/js/jquery.slideBox.min.js" ></script>
+		
+		<link rel="stylesheet" href="css/pclive.css" />
+		
+		
+		<script type="text/javascript">
+		$(function(){
+			$('#slide').slideBox({
+				direction : 'left',//left,top#方向
+				duration : 0.3,//滚动持续时间，单位：秒
+				easing : 'linear',//swing,linear//滚动特效
+				delay : 5,//滚动延迟时间，单位：秒
+				hideClickBar : true,//不自动隐藏点选按键
+				clickBarRadius : 10,
+				hideBottomBar : false//隐藏底栏
+			});
+		});
+		</script>
+		
 		
 	</head>
 	<body>
@@ -20,18 +38,26 @@
 			<#include "header.html">
 			
 			<div class="ad">
-				<div class="scroll swiper-container">
-					<ul class="swiper-wrapper">
+				<div id="slide" class="slideBox">
+					<ul class="items">
 						<#if (adList?? && adList?size > 0)>
-						<#list adList as ad>
-						<li class="swiper-slide"><a href="javascript:;" title="${ad.adName!''}"><img src="${video_url_website}${ad.adPic!''}"></a></li>
-						</#list>
+							
+							<#list adList as ad>
+							<li><a href="javascript:;" title="${ad.adName!''}"><img src="${video_url_website}${ad.adPic!''}"></a></li>
+							</#list>
+						
+							<#if (adList?? && adList?size == 1)>
+								<#list adList as ad>
+								<li><a href="javascript:;" title="${ad.adName!''}"><img src="${video_url_website}${ad.adPic!''}"></a></li>
+								</#list>
+							</#if>
+							
+							
 						<#else>
 						<li><img src="img/1366/banner.png" /></li>
 						</#if>
 						
 					</ul>
-					<div class="swiper-pagination"></div>
 				</div>
 				
 				 
@@ -40,15 +66,15 @@
 				
 					<#if (listArticleIndex?? && listArticleIndex?size > 0)>
 					<#list listArticleIndex as a>
-					<#if a_index == 0>
-					<div class="rec play" val="${a.articleId}">
-					<div>
-						<img src="${video_url_website}${a.articleThumb!''}" />
-						<div>${a.articleLabel!''}</div>
-					</div>					
-					<div>${a.title!''}</div>
-					</div>
-					</#if>
+						<#if a_index == 0>
+							<div class="rec play" val="${a.articleId}">
+								<div class="limg">
+									<img src="${video_url_website}${a.articleThumb!''}" />
+									<div>${a.articleLabel!''}</div>
+								</div>					
+								<div class="ltitle">${a.title!''}</div>
+							</div>
+						</#if>
 					</#list>
 					</#if>
 				
@@ -59,12 +85,13 @@
 						<#if (a_index > 0) >
 						<li class="play" val="${a.articleId}">
 							<div>
-								<img src="${video_url_website}${a.articleThumb!''}" />
-								<div>${a.articleLabel!''}</div>
-								<img src="img/1366/play.png" style="display:none;"/>
+								<div class="limg">
+									<img src="${video_url_website}${a.articleThumb!''}" />
+									<div>${a.articleLabel!''}</div>
+									<img src="img/1366/play.png" style="display:none;"/>
+								</div>
+								<div class="ltitle">${a.title!''}</div>
 							</div>
-							<div>${a.title!''}</div>
-							
 						</li>
 						</#if>
 						</#list>
@@ -92,11 +119,13 @@
 						<#list item as a >
 						<li class="play" val="${a.articleId}">
 							<div>
-								<img src="${video_url_website}${a.articleThumb!''}" />
-								<div>${a.articleLabel!''}</div>
-								<img src="img/1366/play.png" style="display:none;"/>
+								<div class="limg">
+									<img src="${video_url_website}${a.articleThumb!''}" />
+									<div>${a.articleLabel!''}</div>
+									<img src="img/1366/play.png" style="display:none;"/>
+								</div>
+								<div class="ltitle">${a.title!''}</div>
 							</div>
-							<div>${a.title!''}</div>
 						</li>
 						</#list>
 						</#if>

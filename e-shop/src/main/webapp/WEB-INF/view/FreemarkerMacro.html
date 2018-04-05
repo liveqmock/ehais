@@ -770,3 +770,18 @@ function trash_${id}_pic(imgId){
 </#macro>
 
 
+
+<!-- 本地图片控件：
+< # include "/uploadfile.html"/>
+< @ ESubstring title="a" num=1 /> 
+-->
+<#macro ESubstring title num >
+<#if (title?? && title?length gt num) >  
+    ${title?substring(0,num-3)}...  
+<#else>${title!''}   
+</#if> 
+</#macro>
+
+
+
+

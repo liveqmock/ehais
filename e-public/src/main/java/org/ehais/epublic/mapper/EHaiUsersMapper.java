@@ -10,6 +10,12 @@ import org.ehais.epublic.model.EHaiUsersExample;
 
 public interface EHaiUsersMapper {
 	
+	
+	@Select("select * from hai_users where user_name = #{userName}")
+	@ResultMap(value = "ResultMapWithBLOBs")
+    EHaiUsers getdusername(@Param("userName") String userName);
+	
+	
 	@ResultMap(value = "BaseResultMap")
     EHaiUsers login(@Param("user_name") String user_name, @Param("password") String password);
 

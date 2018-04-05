@@ -68,7 +68,7 @@ $(function(){
 			},{
 			    field: 'articleThumb',
 			    title: '图片',formatter:function(value,rows,index){
-			    	if(!isBlank(value))return "<img src='"+value+"' width='60'>";
+			    	if(!isBlank(value))return "<img src='"+value+"' width='180'>";
 			    	return "";
 			    }
 			},{

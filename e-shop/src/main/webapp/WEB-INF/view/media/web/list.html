@@ -3,13 +3,14 @@
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
-		<link rel="stylesheet" href="css/pclive.css" />
+		<link rel="stylesheet" href="css/pclive.css?v=1" />
 		<script type="text/javascript" src="/js/jquery-1.8.3.min.js" ></script>
 		<script type="text/javascript" src="js/swiper/swiper-3.4.2.jquery.min.js" ></script>
 		<script type="text/javascript" src="/js/media/web.js" ></script>
 		<script type="text/javascript" src="/js/media/vod.js" ></script>
 		
-		<#include "/include/pager.html">		
+		<#include "/include/pager.html">
+		<#include "/FreemarkerMacro.html">		
 	</head>
 	<body>
 		<div class="main list">
@@ -32,8 +33,8 @@
 									<div>${a.articleLabel!''}</div>
 									<img src="img/1366/play.png" style="display:none;"/>
 								</div>
-								<div>${a.title!''}</div>
-								<div>
+								<div class="mtitle">${a.title!''}</div>
+								<div class="mprop">
 									<div class="date">${(a.articleDate?string('yyyy-MM-dd'))!''}</div>
 									<div class="counts">${a.readCount!0}次</div>
 								</div>
@@ -63,15 +64,15 @@
 									<div>${a.articleLabel!''}</div>
 									<img src="img/1366/play.png" style="display:none;"/>
 								</div>
-								<div>${a.title!''}</div>
-								<div>
+								<div class="rtitle"><@ESubstring title=a.title num=20 /></div>
+								<div class="rprop">
 									<div class="date">${(a.articleDate?string('yyyy-MM-dd'))!''}</div>
 									<div class="counts">${a.readCount!0}次</div>
 								</div>
 							</li>
 							<#else>
-							<li class="play" val="${a.articleId}">
-								<div class="<#if (a_index < 3)>r</#if>">${a_index+1}</div>${a.title!''}
+							<li class="play notfirst" val="${a.articleId}">
+								<div class="<#if (a_index < 3)>r</#if>">${a_index+1}</div><@ESubstring title=a.title num=20 />
 							</li>
 							</#if>
 							

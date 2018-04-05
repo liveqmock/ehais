@@ -892,7 +892,8 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 	        if(ext.endsWith("xlsx")) isE2007 = true;  
 	        InputStream input = new FileInputStream(new File(json.getString("msg")));  //建立输入流  
 	        Workbook wb  = null;  
-            //根据文件格式(2003或者2007)来初始化  
+            //根据文件格式(2003或者2007)来初始化 
+	        System.out.println(isE2007);
             if(isE2007){
             	wb = new XSSFWorkbook(input);  
             }else{
@@ -901,62 +902,147 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
             DecimalFormat    df   = new DecimalFormat("0");   
             
             Sheet sheet = wb.getSheetAt(0);     //获得第一个表单
-            Iterator<Row> rows = sheet.rowIterator(); //获得第一个表单的迭代器  
+            Iterator<Row> rows = sheet.rowIterator(); //获得第一个表单的迭代器 
+            int rowNum=sheet.getLastRowNum();//有多少行
             while (rows.hasNext()) {  
                 Row row = rows.next();  //获得行数据  
-                if(row.getRowNum() == 0)continue;//排除第一行
+                if(row.getRowNum() == 0||row.getRowNum() == 1)continue;//排除第一行，第二行
 //                System.out.println("Row #" + row.getRowNum());  //获得行号从0开始  
 //                Iterator<Cell> cells = row.cellIterator();    //获得第一行的迭代器  
                 EHaiUsers users = new EHaiUsers();
-                if(row.getCell(0)!=null){
+                if(row.getCell(1)!=null){
                 	
-                	if(row.getCell(0).getCellType() == HSSFCell.CELL_TYPE_NUMERIC){
-                		users.setUserName(df.format(row.getCell(0).getNumericCellValue()).trim());//学号
-                	}else if(row.getCell(0).getCellType() == HSSFCell.CELL_TYPE_STRING){
-                		users.setUserName(row.getCell(0).getStringCellValue().trim());//学号
+                	if(row.getCell(1).getCellType() == HSSFCell.CELL_TYPE_NUMERIC){
+                		users.setUserName(df.format(row.getCell(1).getNumericCellValue()).trim());//学号
+                	}else if(row.getCell(1).getCellType() == HSSFCell.CELL_TYPE_STRING){
+                		users.setUserName(row.getCell(1).getStringCellValue().trim());//学号
                 	}
                 	
-                    if(row.getCell(1)!=null){
-                    	if(row.getCell(1).getCellType() == HSSFCell.CELL_TYPE_NUMERIC){
-                    		users.setNickname(df.format(row.getCell(1).getNumericCellValue()).trim());//卡号
-                    	}else if(row.getCell(1).getCellType() == HSSFCell.CELL_TYPE_STRING){
-                    		users.setNickname(row.getCell(1).getStringCellValue().trim());//卡号
+                    if(row.getCell(2)!=null){
+                    	if(row.getCell(2).getCellType() == HSSFCell.CELL_TYPE_NUMERIC){
+                    		users.setNickname(df.format(row.getCell(2).getNumericCellValue()).trim());//卡号
+                    	}else if(row.getCell(2).getCellType() == HSSFCell.CELL_TYPE_STRING){
+                    		users.setNickname(row.getCell(2).getStringCellValue().trim());//卡号
                     	}
                     }else{
                     	users.setNickname("");
                     }
                     
-                	if(row.getCell(2)!=null){
-                		users.setRealname(row.getCell(2).getStringCellValue().trim());//姓名
+                	if(row.getCell(3)!=null){
+                		users.setRealname(row.getCell(3).getStringCellValue().trim());//姓名
                 	}else{
                 		users.setRealname("");
                 	}
                 	
-                	if(row.getCell(3)!=null){
-                		users.setQuestion(row.getCell(3).getStringCellValue().trim());//班级
+                	if(row.getCell(4)!=null){
+                		users.setQuestion(row.getCell(4).getStringCellValue().trim());//班级
                 	}else{
                 		users.setQuestion("");
                 	}
                     
-                	if(row.getCell(4)!=null){
-                		if(row.getCell(4).getCellType() == HSSFCell.CELL_TYPE_NUMERIC){
-                    		users.setAnswer(df.format(row.getCell(4).getNumericCellValue()).trim());//上级工号
-                    	}else if(row.getCell(4).getCellType() == HSSFCell.CELL_TYPE_STRING){
-                    		users.setAnswer(row.getCell(4).getStringCellValue().trim());//上级工号
+                	if(row.getCell(5)!=null){
+                		if(row.getCell(5).getCellType() == HSSFCell.CELL_TYPE_NUMERIC){
+                    		users.setAnswer(df.format(row.getCell(5).getNumericCellValue()).trim());//上级工号
+                    	}else if(row.getCell(5).getCellType() == HSSFCell.CELL_TYPE_STRING){
+                    		users.setAnswer(row.getCell(5).getStringCellValue().trim());//上级工号
                     	}
                 	}else{
                 		users.setAnswer("");
                 	}
-                    
-                	if(row.getCell(5)!=null){
-                		users.setAlias(row.getCell(5).getStringCellValue().trim());//身份
-                	}else{
-                		users.setAlias("");
+                	users.setAlias("学生");
+                	EHaiUsers ss= eHaiUsersMapper.getdusername(users.getUserName());
+                	if(ss==null){
+                		 users.setStoreId(default_store_id);
+                		int nym=eHaiUsersMapper.insertSelective(users);
+                		System.out.println(nym);
                 	}
-                    
-                    users.setStoreId(default_store_id);
-                    
-                    if(StringUtils.isNotBlank(users.getUserName())){
+                	//班主任插入
+                	EHaiUsers ss1= eHaiUsersMapper.getdusername(users.getAnswer());
+                	
+                	EHaiUsers bangzhuren=new EHaiUsers();
+	                	if(row.getCell(6)!=null){
+	                		
+	                		bangzhuren.setRealname(row.getCell(6).getStringCellValue().trim());//姓名
+	                	
+	                	}else{
+	                		bangzhuren.setRealname("");
+	                	}
+	                	if(row.getCell(7)!=null){
+	                		if(row.getCell(7).getCellType() == HSSFCell.CELL_TYPE_NUMERIC){
+	                			bangzhuren.setAnswer(df.format(row.getCell(7).getNumericCellValue()).trim());//上级工号
+	                    	}else if(row.getCell(7).getCellType() == HSSFCell.CELL_TYPE_STRING){
+	                    		bangzhuren.setAnswer(row.getCell(7).getStringCellValue().trim());//上级工号
+	                    	}
+	                		
+	                	}else{
+	                		bangzhuren.setAnswer("");
+	                	}
+	                	if(ss1==null){
+	                		bangzhuren.setStoreId(default_store_id);
+	                		bangzhuren.setUserName(users.getAnswer());//工号
+	                		bangzhuren.setAlias("班主任");
+	                		int nym=eHaiUsersMapper.insertSelective(bangzhuren);
+	                		System.out.println(bangzhuren);
+	                	}
+                	//部长插入
+                	EHaiUsers bangzhuren1=new EHaiUsers();
+                	if(row.getCell(8)!=null){
+                		
+                		bangzhuren1.setRealname(row.getCell(8).getStringCellValue().trim());//姓名
+                		
+                		System.out.println(bangzhuren);
+                	}else{
+                		bangzhuren1.setRealname("");
+                	}
+                	if(row.getCell(9)!=null){
+                		if(row.getCell(9).getCellType() == HSSFCell.CELL_TYPE_NUMERIC){
+                			bangzhuren1.setAnswer(df.format(row.getCell(9).getNumericCellValue()).trim());//上级工号
+                    	}else if(row.getCell(9).getCellType() == HSSFCell.CELL_TYPE_STRING){
+                    		bangzhuren1.setAnswer(row.getCell(9).getStringCellValue().trim());//上级工号
+                    	}
+                		
+                	}else{
+                		bangzhuren1.setAnswer("");
+                	}
+                	
+                	EHaiUsers ss2= eHaiUsersMapper.getdusername(bangzhuren.getAnswer());
+                	if(ss2==null){
+                		bangzhuren1.setStoreId(default_store_id);
+                		bangzhuren1.setUserName(bangzhuren.getAnswer());//工号
+                		bangzhuren1.setAlias("部长");
+                		int nym=eHaiUsersMapper.insertSelective(bangzhuren1);
+                		System.out.println(bangzhuren1);
+                	
+                	}
+                	//学生处插入
+                	EHaiUsers bangzhuren2=new EHaiUsers();
+                	if(row.getCell(10)!=null){
+                		
+                		bangzhuren2.setRealname(row.getCell(8).getStringCellValue().trim());//姓名
+                		
+                		
+                	}else{
+                		bangzhuren2.setRealname("");
+                	}
+                	if(row.getCell(9)!=null){
+                		
+                		
+                	}else{
+                		bangzhuren2.setAnswer("");
+                	}
+                	
+                	EHaiUsers ss3= eHaiUsersMapper.getdusername(bangzhuren1.getAnswer());
+                	//
+                	if(ss3==null){
+                	    bangzhuren2.setAlias("学生处");
+                		bangzhuren2.setStoreId(default_store_id);
+                		bangzhuren2.setUserName(bangzhuren1.getAnswer());//工号
+                		int nym=eHaiUsersMapper.insertSelective(bangzhuren2);
+                		System.out.println(bangzhuren2);
+                	}
+                	
+                	
+               /*     if(StringUtils.isNotBlank(users.getUserName())){
                     	EHaiUsersExample exp = new EHaiUsersExample();
                         exp.createCriteria()
                         .andUserNameEqualTo(users.getUserName())
@@ -973,7 +1059,7 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
                         	bean.setAlias(users.getAlias());
                         	eHaiUsersMapper.updateByPrimaryKey(bean);
                         }
-                    }
+                    }*/
                     
                 }
                 

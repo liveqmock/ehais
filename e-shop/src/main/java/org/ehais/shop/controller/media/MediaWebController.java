@@ -62,16 +62,22 @@ public class MediaWebController extends CommonController{
 	
 	private void v_common(ModelMap modelMap,HttpServletRequest request) {
 		store_id = 1;
-		modelMap.addAttribute("logo", "logo");
-		modelMap.addAttribute("company", "广州城市职业学院");			
+//		modelMap.addAttribute("logo", "logo");
+//		modelMap.addAttribute("company", "广州城市职业学院");			
 //		String serverName = request.getServerName();
 //		if(serverName.equals("gjs.ehais.org") || serverName.equals("gmedia.ehais.com")) {
 //			store_id = 2;
-//			modelMap.addAttribute("logo", "g_logo");
-//			modelMap.addAttribute("company", "广东技术师范学院");
+			modelMap.addAttribute("logo", "g_logo");
+			modelMap.addAttribute("company", "广东技术师范学院");
 //		}
 		
-		
+			
+		String browser = request.getHeader( "USER-AGENT" );
+		if (browser.toLowerCase().indexOf( "msie" ) > 0) {
+			modelMap.addAttribute("browser", "ie");
+		}else {
+			modelMap.addAttribute("browser", "notie");
+		}
 	}
 
 	@RequestMapping("/index.do")
@@ -147,7 +153,6 @@ public class MediaWebController extends CommonController{
 				
 				modelMap.addAttribute("json", JSONObject.fromObject(map).toString());
 			}
-			
 			
 			return "/media/"+modal+"/index";
 			
@@ -253,11 +258,13 @@ public class MediaWebController extends CommonController{
 			
 			ae.clear();
 			ae.createCriteria()
+			.andCatIdEqualTo(cid)
 			.andStoreIdEqualTo(store_id)
 			.andOpenTypeEqualTo(Short.valueOf("1"));
 			ae.setOrderByClause("sort asc");
 			ae.setLimitStart(0);
 			ae.setLimitEnd(10);
+			
 			List<EHaiArticle> listArticleHot = eHaiArticleMapper.selectByExample(ae);
 			modelMap.addAttribute("listArticleHot", listArticleHot);
 			
@@ -321,6 +328,7 @@ public class MediaWebController extends CommonController{
 			
 			ae.clear();
 			ae.createCriteria()
+			.andCatIdEqualTo(article.getCatId())
 			.andStoreIdEqualTo(store_id)
 			.andOpenTypeEqualTo(Short.valueOf("1"));
 			ae.setOrderByClause("sort asc");
