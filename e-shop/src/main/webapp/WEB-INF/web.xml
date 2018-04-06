@@ -96,7 +96,7 @@
     </context-param> 
     
     
-    
+   <!--  
     <security-constraint>
 		<web-resource-collection>
 		<web-resource-name>fortune</web-resource-name>
@@ -113,7 +113,7 @@
 	<auth-method>BASIC</auth-method>
 	</login-config>
 
-
+ -->
 
 
 

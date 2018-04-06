@@ -12,7 +12,13 @@ import org.ehais.epublic.model.OrderStoreStatistics;
 
 public interface HaiStoreStatisticsMapper {
 	
-	
+	/**
+	 * 按商户按日期统计微信支付金额、数量与现金支付金额、数量
+	 * @param store_id
+	 * @param start_time
+	 * @param end_time
+	 * @return
+	 */
 	@Select("select store_id,"+
 			" sum(case when pay_name='微信支付' then order_amount end) as weixin_amount, "+
 			" sum(case when pay_name='现金支付' then order_amount end) as cash_amount, "+
@@ -31,6 +37,35 @@ public interface HaiStoreStatisticsMapper {
 			@Result(property="statisticsDate", column="pay_time")
 	})
 	List<HaiStoreStatistics> order_store_statistics(
+			@Param("store_id") Integer store_id,
+			@Param("start_time") String start_time,
+			@Param("end_time") String end_time
+			);
+	
+	
+	/**
+	 * 按商户按日期统计微信支付金额与现金支付金额(不包含数量)
+	 * @param store_id
+	 * @param start_time
+	 * @param end_time
+	 * @return
+	 */
+	@Select("select store_id,"+
+			" sum(case when pay_name='微信支付' then order_amount end) as weixin_amount, "+
+			" sum(case when pay_name='现金支付' then order_amount end) as cash_amount, "+
+			" DATE_FORMAT(FROM_UNIXTIME(pay_time / 1000),'%Y-%m-%d') as pay_time "+
+			" from hai_order_info where store_id = #{store_id} and order_status = 1 " + 
+			" and DATE_FORMAT(FROM_UNIXTIME(pay_time / 1000),'%Y-%m-%d') >= #{start_time} and DATE_FORMAT(FROM_UNIXTIME(pay_time / 1000),'%Y-%m-%d') <= #{end_time} " + 
+			" GROUP BY store_id, DATE_FORMAT(FROM_UNIXTIME(pay_time / 1000),'%Y-%m-%d') limit 0,1")
+	@Results(value = {
+			@Result(property="storeId", column="store_id"),
+			@Result(property="weixinAmount", column="weixin_amount"),
+			@Result(property="cashAmount", column="cash_amount"),
+//			@Result(property="weixinQuantity", column="weixin_quantity"),
+//			@Result(property="cashQuantity", column="cash_quantity"),
+			@Result(property="statisticsDate", column="pay_time")
+	})
+	HaiStoreStatistics order_store_statistics_amount(
 			@Param("store_id") Integer store_id,
 			@Param("start_time") String start_time,
 			@Param("end_time") String end_time

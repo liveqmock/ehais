@@ -19,10 +19,14 @@ public class DebugSessionController extends CommonController {
 	public String debug(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) {
 		if(this.isLocalHost(request)){
-			request.getSession().setAttribute(EConstants.SESSION_STORE_ID, 58);
+			System.out.println("设置session...");
+			request.getSession().setAttribute(EConstants.SESSION_STORE_ID, 97);
 			request.getSession().setAttribute(EConstants.SESSION_USER_ID, 125L);
 			request.getSession().setAttribute(EConstants.SESSION_OPEN_ID, "ocvLDvvaL10c2_CTwpDqlmLO3CNk");
 		}
+		
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		System.out.println(store_id);
 		
 		return "我们是做互联网的微商";
 	}
@@ -32,7 +36,7 @@ public class DebugSessionController extends CommonController {
 			HttpServletRequest request,HttpServletResponse response ) {
 		
 		if(this.isLocalHost(request)){
-			request.getSession().setAttribute(EConstants.SESSION_STORE_ID, 58);
+			request.getSession().setAttribute(EConstants.SESSION_STORE_ID, 97);
 			request.getSession().setAttribute(EConstants.SESSION_USER_ID, 125L);
 		}
 		

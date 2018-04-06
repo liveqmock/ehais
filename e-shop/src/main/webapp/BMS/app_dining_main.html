@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html ng-app="app_dining_main">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<title>商家管理后台</title>
+		
+		<link rel="stylesheet" href="/css/app_dining_main.css" />
+		
+	</head>
+	<body >
+		<div class="wrapper" ng-controller="diningMainController">
+			<div class="swiper">
+				<ul>
+					<li>
+						<img src="/images/cbd.jpg" />
+					</li>
+				</ul>
+			</div><!--轮播-->
+			<div class="amount">
+				<div>营业额：{{total}}元</div>
+				<div>可提现：{{balance}}元</div>				
+			</div><!--金额-->
+			<div class="myicon">
+				<div>
+					<i class="icon iconfont icon-dingdan1"></i>
+					营业额
+				</div>
+				<div>
+					<i class="icon iconfont icon-order"></i>
+					销售统计
+				</div>
+				<div>
+					<i class="icon iconfont icon-juxing2"></i>
+					单品统计
+				</div>
+				<div>
+					<i class="icon iconfont icon-dianpu"></i>
+					商户信息
+				</div>
+				
+				<div>
+					<i class="icon iconfont icon-jushoucang"></i>
+					台桌设置
+				</div>
+				<div>
+					<i class="iconfont icon-shengxian"></i>
+					菜品管理
+				</div>
+				<div>
+					<i class="icon iconfont icon-dingdan"></i>
+					订单信息
+				</div>
+				<div>
+					<i class="icon iconfont icon-youhuiquan"></i>
+					优惠券
+				</div>
+				
+			</div><!--功能按钮-->
+			<div></div><!--图表-->
+		</div>
+
+		<script src="http://cdn.static.runoob.com/libs/angular.js/1.4.6/angular.min.js"></script>
+		<script type="text/javascript" src="/js/dining/app_dining_main.js" ></script>
+	</body>
+</html>
