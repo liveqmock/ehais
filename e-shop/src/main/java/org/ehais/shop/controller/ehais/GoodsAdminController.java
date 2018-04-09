@@ -90,7 +90,7 @@ public class  GoodsAdminController extends EhaisCommonController {
 			@RequestParam(value = "cat_id", required = false) Integer cat_id,
 			@RequestParam(value = "goods_name", required = false) String goods_name) {
 		try{
-			ReturnObject<HaiGoods> rm = ehaisGoodsService.goods_list_json(request, condition ,cat_id , goods_name);
+			ReturnObject<HaiGoods> rm = ehaisGoodsService.goods_list_json(request, condition ,cat_id , goods_name,true);
 			return this.writeJson(rm);
 		}catch(Exception e){
 			e.printStackTrace();

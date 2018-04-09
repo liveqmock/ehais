@@ -159,7 +159,7 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 	}
 	
 	public ReturnObject<HaiGoods> goods_list_json(HttpServletRequest request,
-			EConditionObject condition,Integer cat_id , String goods_name) throws Exception{
+			EConditionObject condition,Integer cat_id , String goods_name, Boolean returnCategory) throws Exception{
 		ReturnObject<HaiGoods> rm = new ReturnObject<HaiGoods>();
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
@@ -167,7 +167,7 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		HaiGoodsExample example = new HaiGoodsExample();
 		HaiGoodsExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
-		if(cat_id > 0)c.andCatIdEqualTo(cat_id);
+		if(cat_id != null && cat_id > 0)c.andCatIdEqualTo(cat_id);
 		if(StringUtils.isNotEmpty(goods_name))c.andGoodsNameLike("%"+goods_name+"%");
 		example.setLimitStart(condition.getStart());
 		example.setLimitEnd(condition.getRows());
@@ -178,13 +178,15 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		rm.setRows(list);
 		rm.setTotal(total);
 		
+		if(returnCategory) {
+			HaiCategoryExample categoryExample = new HaiCategoryExample();
+			categoryExample.createCriteria().andStoreIdEqualTo(store_id);
+			List<HaiCategory> categoryList = haiCategoryMapper.selectByExample(categoryExample);
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("categoryList", categoryList);
+			rm.setMap(map);
+		}
 		
-		HaiCategoryExample categoryExample = new HaiCategoryExample();
-		categoryExample.createCriteria().andStoreIdEqualTo(store_id);
-		List<HaiCategory> categoryList = haiCategoryMapper.selectByExample(categoryExample);
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("categoryList", categoryList);
-		rm.setMap(map);
 		
 		return rm;
 	}
@@ -336,6 +338,24 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		return rm;
 	}
 	
+	
+	public ReturnObject<HaiGoodsWithBLOBs> goods_insert_submit(HttpServletRequest request,HaiGoodsWithBLOBs model)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+		
+		ReturnObject<HaiGoodsWithBLOBs> rm = new ReturnObject<HaiGoodsWithBLOBs>();
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		model.setStoreId(store_id);
+		int code = haiGoodsMapper.insertSelective(model);
+		
+
+		rm.setCode(code);
+		rm.setMsg("添加成功");
+		return rm;
+	}
+	
+	
 	public ReturnObject<HaiGoodsWithBLOBs> goods_insert_submit(HttpServletRequest request,HaiGoodsWithBLOBs model,String[] gallery)
 			throws Exception {
 		// TODO Auto-generated method stub
@@ -481,6 +501,38 @@ public class GoodsServiceImpl  extends EShopCommonServiceImpl implements GoodsSe
 		rm.setAction("edit");
 		return rm;
 	}
+	
+	
+	public ReturnObject<HaiGoodsWithBLOBs> goods_update_submit(HttpServletRequest request,HaiGoodsWithBLOBs model)
+			throws Exception {
+		// TODO Auto-generated method stub
+		ReturnObject<HaiGoodsWithBLOBs> rm = new ReturnObject<HaiGoodsWithBLOBs>();
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		HaiGoodsExample example = new HaiGoodsExample();
+		HaiGoodsExample.Criteria c = example.createCriteria();
+		
+		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+		c.andGoodsIdEqualTo(model.getGoodsId());
+		if(model.getIsAloneSale() == null)model.setIsAloneSale(false);
+		if(model.getIsBest() == null)model.setIsBest(false);
+		if(model.getIsDelete() == null)model.setIsDelete(false);
+		if(model.getIsHot() == null)model.setIsHot(false);
+		if(model.getIsNew() == null)model.setIsNew(false);
+		if(model.getIsOnSale() == null)model.setIsOnSale(false);
+		if(model.getIsPromote() == null)model.setIsPromote(false);
+		if(model.getIsShipping() == null)model.setIsShipping(false);
+		if(model.getIsSpecial() == null)model.setIsSpecial(false);
+		if(model.getIsReal() == null)model.setIsReal(Byte.valueOf("0"));
+		
+		int code = haiGoodsMapper.updateByExampleSelective(model, example);
+		
+		
+		
+		rm.setCode(code);
+		rm.setMsg("编辑成功");
+		return rm;
+	}
+	
 	
 	public ReturnObject<HaiGoodsWithBLOBs> goods_update_submit(HttpServletRequest request,HaiGoodsWithBLOBs model,String[] gallery)
 			throws Exception {

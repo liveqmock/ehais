@@ -120,6 +120,11 @@
 		</mvc:interceptor>
 		
 		<mvc:interceptor>
+			<mvc:mapping path="/ebms/**"/>
+			<ref bean="ebmsInterceptor"/>
+		</mvc:interceptor>
+		
+		<mvc:interceptor>
 			<mvc:mapping path="/dining/**"/>
 			<ref bean="diningInterceptor"/>
 		</mvc:interceptor>
@@ -188,6 +193,8 @@
 	</bean>
 	
 	<bean id="apiInterceptor" class="org.ehais.interceptor.EApiInterceptor"></bean>
+	
+	<bean id="ebmsInterceptor" class="org.ehais.interceptor.EBMSInterceptor"></bean>
 	
 	<bean id="h5Interceptor" class="org.ehais.interceptor.H5Interceptor">
 		<property name="loginUrl" value="/m/login"/>
