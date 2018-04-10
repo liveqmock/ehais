@@ -40,6 +40,7 @@
 	</#if>
 	
 	<div class="page">
+		<#if (total > 0) >
 		<ul class="pagination fr">
         	<#if (currentPage > 1)>
 				<li class="p_first">
@@ -99,5 +100,6 @@
             
 	        
 	     </ul>
+	     </#if>
     </div>
 </#macro>

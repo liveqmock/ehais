@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>${company}</title>
+		
+		<script type="text/javascript" src="/js/jquery-1.8.3.min.js" ></script>
+		<script type="text/javascript" src="/js/media/web.js" ></script>
+		<script type="text/javascript" src="/js/media/vod.js" ></script>
+		
+		<link rel="stylesheet" href="css/pclive.css" />
+		
+		<#include "/include/pager.html">
+		
+	</head>
+	
+	<body>
+	
+	
+		<div class="w">
+		<div class="main">
+			<#include "header.html">
+			
+			
+			<div class="live pt10">
+				
+				
+				
+				<!-- 校园电视台 start -->
+				<div class="module all">
+					<div class="title">
+						<img class="icon" src="img/1366/icon5.png"/>
+						<h3>搜索结果</h3>
+					</div>
+					<ul>
+						
+						
+						<#if (listArticle?? && listArticle?size > 0) >
+						<#list listArticle as a >
+						<li class="play" val="${a.articleId}">
+							<div>
+								<div class="limg">
+									<img src="${video_url_website}${a.articleThumb!''}" />
+									<div>${a.articleLabel!''}</div>
+									<img src="img/1366/play.png" style="display:none;"/>
+								</div>
+								<div class="ltitle">${a.title!''}</div>
+							</div>
+						</li>
+						</#list>
+						</#if>
+						
+						
+					</ul>
+					
+					
+					
+				</div>
+				
+				
+				
+				
+			</div>
+			
+			<@pager ReturnObject=rm maxShowPageCount=40 />
+			
+			<#include "footer.html">
+		
+		</div>
+		</div>
+	</body>
+</html>

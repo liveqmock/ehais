@@ -68,7 +68,7 @@ public class MediaWebController extends CommonController{
 //		if(serverName.equals("gjs.ehais.org") || serverName.equals("gmedia.ehais.com")) {
 //			store_id = 2;
 			modelMap.addAttribute("logo", "g_logo");
-			modelMap.addAttribute("company", "广东技术师范学院");
+			modelMap.addAttribute("company", "广师视频网");
 //		}
 		
 			
@@ -78,6 +78,10 @@ public class MediaWebController extends CommonController{
 		}else {
 			modelMap.addAttribute("browser", "notie");
 		}
+		
+		//访问量
+		modelMap.addAttribute("visit", this.visit(request));
+		
 	}
 
 	@RequestMapping("/index.do")
@@ -129,6 +133,7 @@ public class MediaWebController extends CommonController{
 			ae.setOrderByClause("sort asc");
 			ae.setLimitStart(0);
 			ae.setLimitEnd(hot_len);
+			ae.setOrderByClause("sort asc");
 			List<EHaiArticle> listArticleIndex = eHaiArticleMapper.selectByExample(ae);
 			modelMap.addAttribute("listArticleIndex", listArticleIndex);
 			
@@ -136,7 +141,10 @@ public class MediaWebController extends CommonController{
 			//分类
 			for (EHaiArticleCat c : listArticleCat) {
 				ae.clear();
-				ae.createCriteria().andStoreIdEqualTo(store_id).andCatIdEqualTo(c.getCatId());
+				ae.createCriteria()
+				.andStoreIdEqualTo(store_id)
+				.andIsHotEqualTo(true)
+				.andCatIdEqualTo(c.getCatId());
 				ae.setOrderByClause("sort asc");
 				ae.setLimitStart(0);
 				ae.setLimitEnd(len);
@@ -260,7 +268,8 @@ public class MediaWebController extends CommonController{
 			ae.createCriteria()
 			.andCatIdEqualTo(cid)
 			.andStoreIdEqualTo(store_id)
-			.andOpenTypeEqualTo(Short.valueOf("1"));
+			.andIsHotEqualTo(true);
+//			.andOpenTypeEqualTo(Short.valueOf("1"));
 			ae.setOrderByClause("sort asc");
 			ae.setLimitStart(0);
 			ae.setLimitEnd(10);
@@ -304,15 +313,22 @@ public class MediaWebController extends CommonController{
 			.andArticleIdEqualTo(id);
 			ae.setLimitStart(0);
 			ae.setLimitEnd(1);
-			List<EHaiArticle> listArticle = eHaiArticleMapper.selectByExample(ae);
+			ae.setOrderByClause("sort asc");
+//			List<EHaiArticle> listArticle = eHaiArticleMapper.selectByExample(ae);
 			
-			if(listArticle == null || listArticle.size() == 0){
+//			if(listArticle == null || listArticle.size() == 0){
+//				return this.errorJump(modelMap, "空数据");
+//			}
+			
+//			EHaiArticle article =  listArticle.get(0);
+			
+			
+			Long count = eHaiArticleMapper.countByExample(ae);
+			if(count == 0){
 				return this.errorJump(modelMap, "空数据");
 			}
 			
-			EHaiArticle article =  listArticle.get(0);
-			
-			
+			EHaiArticle article =  eHaiArticleMapper.selectByPrimaryKey(id);
 			
 			String videoUrl = article.getVideoUrl();
 			if(StringUtils.isNotBlank(videoUrl) && videoUrl.indexOf("mp4") > 0){
@@ -323,14 +339,15 @@ public class MediaWebController extends CommonController{
 				modelMap.addAttribute("playHtml", "");
 			}
 			
-			modelMap.addAttribute("currentNav", listArticle.get(0).getCatId().toString());
+			modelMap.addAttribute("currentNav", article.getCatId().toString());
 			
 			
 			ae.clear();
 			ae.createCriteria()
 			.andCatIdEqualTo(article.getCatId())
 			.andStoreIdEqualTo(store_id)
-			.andOpenTypeEqualTo(Short.valueOf("1"));
+			.andIsHotEqualTo(true);
+//			.andOpenTypeEqualTo(Short.valueOf("1"));
 			ae.setOrderByClause("sort asc");
 			ae.setLimitStart(0);
 			ae.setLimitEnd(4);
@@ -389,6 +406,7 @@ public class MediaWebController extends CommonController{
 	
 	
 	
+	
 	@RequestMapping("/live.lv")
 	public String live(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response){
@@ -411,6 +429,116 @@ public class MediaWebController extends CommonController{
 		
 	}
 
+	
+	
+	@RequestMapping("/search___{search}.lv")
+	public String search(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@PathVariable(value = "search") String search,
+			@RequestParam(value = "page", required = false) Integer page){
+		
+		int len40 = 40;
+		modelMap.addAttribute("video_url_website", video_url_website);
+		this.v_common(modelMap,request);
+		
+		try{
+			modal = "web";
+			if(isWeiXin(request) || JudgeIsMoblie(request))modal = "h5";
+			if(page == null)page = 1;
+			
+			EHaiArticleCatExample ace = new EHaiArticleCatExample();
+			ace.createCriteria().andStoreIdEqualTo(store_id);
+			ace.setOrderByClause("sort_order asc");
+			List<EHaiArticleCat> listArticleCat = eHaiArticleCatMapper.selectByExample(ace);
+			modelMap.addAttribute("listArticleCat", listArticleCat);
+			
+			
+			modelMap.addAttribute("search", search);
+			
+			EHaiArticleExample ae = new EHaiArticleExample();
+			ae.createCriteria().andStoreIdEqualTo(store_id)
+			.andTitleLike("%"+search+"%");
+			
+			ae.setOrderByClause("sort asc,article_id desc");
+			ae.setLimitStart(( page - 1 ) * len40);
+			ae.setLimitEnd(len40);
+			List<EHaiArticle> listArticle = eHaiArticleMapper.selectByExample(ae);
+			
+			modelMap.addAttribute("listArticle", listArticle);
+			
+			Long count = eHaiArticleMapper.countByExample(ae);
+			
+			ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
+			rm.setRows(listArticle);
+			rm.setTotal(count);
+			rm.setAction("search___"+search+".lv");
+			rm.setPageSize(len40);
+			rm.setCurrentPage(page);
+			modelMap.addAttribute("rm", rm);
+			
+			
+			
+			return "/media/"+modal+"/search";
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("article", e);
+			return this.errorJump(modelMap, e.getMessage());
+		}
+	    
+		
+		
+	}
+	
+	
+	/**
+	 * 访问
+	 * @param request
+	 */
+	private long visit(HttpServletRequest request) {
+		String s_encode = (String) request.getSession().getAttribute(EConstants.SESSION_SHOP_ENCODE);
+		
+		HaiCartExample cartExample = new HaiCartExample();
+		cartExample.createCriteria()
+		.andSessionIdEqualTo(s_encode)
+		.andExtensionCodeEqualTo("visit");
+		Long c = haiCartMapper.countByExample(cartExample);
+		if(c == 0){//访问数量
+			HaiCartWithBLOBs cart = new HaiCartWithBLOBs();
+			cart.setSessionId(s_encode);
+			cart.setExtensionCode("visit");
+			cart.setUserId(0L);
+			cart.setGoodsId(0L);
+			cart.setGoodsName("");
+			cart.setMarketPrice(0);
+			cart.setGoodsPrice(0);
+			cart.setGoodsNumber(0);
+			cart.setGoodsSn("");
+			
+			cart.setGoodsAttr("");
+			cart.setStoreId(store_id);
+			cart.setParentUserId(0L);//来源分销的用户
+			cart.setAgencyId(0);
+			cart.setProductId(0L);
+			cart.setIsReal(true);
+			cart.setParentId(0L);
+			cart.setRecType(true);
+			cart.setIsGift(Short.parseShort("0"));
+			cart.setIsShipping(true);
+			cart.setCanHandsel(Byte.valueOf("0"));
+			
+			haiCartMapper.insert(cart);
+			c++;
+		}
+		
+		
+		cartExample.clear();
+		cartExample.createCriteria()
+		.andExtensionCodeEqualTo("visit");
+		c = haiCartMapper.countByExample(cartExample);
+		
+		return c;
+	}
+	
 	
 }
 

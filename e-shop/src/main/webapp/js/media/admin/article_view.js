@@ -392,9 +392,10 @@ function mediaArticleAddDetail(){
 	getSelectCat();
 	//初始化值
 	$("input,textarea").val("");
-//	ue.setContent("");
+	ue.setContent("");
 	mediaDetailModal.modal("show");	
 	
+	$("#sort").val(50);
 	
 	$("#mediaDetailFormModal").attr("action","add");
 }
@@ -421,7 +422,7 @@ function mediaArticleEditDetail(articleId){
 			
 			if(!isBlank(result.model.articleThumb))show_articleThumb_pic(result.model.articleThumb);
 			if(!isBlank(result.model.videoUrl))show_videoUpload_pic("/images/video.png");
-//			ue.setContent(result.model.content);
+			ue.setContent(result.model.content);
 			
 			mediaDetailModal.modal("show");
 			$("#mediaDetailFormModal").attr("action","edit");
@@ -477,7 +478,8 @@ function getFTP() {
 
 //切换表格列表
 function switchTable(id){
-	$("#bsMainTable,#adMainTable,#adminMainTable").hide();
+	
+	$("#bsMainTable,#adMainTable,#adminMainTable,#adminMainTablezhibo").hide();
 	$("#"+id).show();
 }
 

@@ -28,10 +28,10 @@ public class AdminInterceptor extends HandlerInterceptorAdapter{
 //		response.addHeader("Set-Cookie", "key=value; HttpOnly");
 //		response.addHeader("Content-Type", "text/html;charset:utf-8;");
 		
-		String http = request.getScheme();
-		if(http.toLowerCase().equals("http")) {
-			response.sendRedirect("https://" + request.getServerName()+loginUrl);
-		}
+//		String http = request.getScheme();
+//		if(http.toLowerCase().equals("http")) {
+//			response.sendRedirect("https://" + request.getServerName()+loginUrl);
+//		}
 		
 		//获取当前请求URL
 		String url = request.getRequestURI().toString();

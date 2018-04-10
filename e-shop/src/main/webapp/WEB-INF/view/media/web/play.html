@@ -20,6 +20,10 @@
 		 
 		 <script type="text/javascript">
 		　　videojs.options.flash.swf = '/js/video/video-js.swf';
+		$(function(){
+			
+	
+		})
 		</script>
 
 	</head>
@@ -29,27 +33,18 @@
 			<#include "header.html">
 			
 			<div class="wrapper">
+				<div class="wmain">
 				<div class="content">
 					<div class="playwra">
 						<div class="title">${article.title}</div>
 						<div class="p" style="background:url(${video_url_website}${article.articleThumb})">
 
-
-<!-- 
-<video id="video_id" class="jwplayer" 
-controls="controls" preload="none" 
-autoplay="autoplay" width="640" height="400"  data-setup="{}"
-src="${video_transfer_website}/${article.videoUrl}" poster="${video_url_website}${article.articleThumb}" >
-</video>
- -->
- 
-<video class="video-js vjs-default-skin vjs-big-play-centered" autoplay  width="640" height="400" controls data-setup='{"techOrder": ["flash", "html5"]}' >
-　　<source src="${video_transfer_website}/${article.videoUrl}" type="video/mp4">
-</video>
-
-
+							<video class="video-js vjs-default-skin vjs-big-play-centered" autoplay  width="640" height="400" controls data-setup='{"techOrder": ["flash", "html5"]}' >
+							　　<source src="${video_transfer_website}/${article.videoUrl}" type="video/mp4">
+							</video>
 
 						</div>
+						<div class="article_content">${article.content!''}</div>
 					</div>
 					
 					<div class="recom">
@@ -81,7 +76,9 @@ src="${video_transfer_website}/${article.videoUrl}" poster="${video_url_website}
 						</ul>
 					</div>
 				</div>
+				</div>
 			</div>
+
 			
 			<#include "footer.html">
 			
