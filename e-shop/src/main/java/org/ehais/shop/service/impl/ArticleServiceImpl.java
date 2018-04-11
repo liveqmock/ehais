@@ -82,8 +82,8 @@ public class ArticleServiceImpl  extends CommonServiceImpl implements ArticleSer
 		EHaiArticleExample.Criteria c = example.createCriteria();
 		c.andStoreIdEqualTo(store_id);
 		c.andModuleEqualTo(moduleEnum);
-		if(cat_id > 0)c.andCatIdEqualTo(cat_id);
-		if(cat_id == 0)c.andIsHotEqualTo(true);
+		if(cat_id != null && cat_id > 0)c.andCatIdEqualTo(cat_id);
+		if(cat_id != null && cat_id == 0)c.andIsHotEqualTo(true);
 		example.setLimitStart(condition.getStart());
 		example.setLimitEnd(condition.getRows());
 		List<EHaiArticle> list = eHaiArticleMapper.selectByExample(example);
@@ -136,7 +136,7 @@ public class ArticleServiceImpl  extends CommonServiceImpl implements ArticleSer
 		EHaiArticleExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
 		c.andModuleEqualTo(moduleEnum);
-		if(cat_id > 0)c.andCatIdEqualTo(cat_id);
+		if(cat_id != null && cat_id > 0)c.andCatIdEqualTo(cat_id);
 		if(StringUtils.isNotEmpty(title))c.andTitleLike("%"+title+"%");
 		example.setLimitStart(condition.getStart());
 		example.setLimitEnd(condition.getRows());
