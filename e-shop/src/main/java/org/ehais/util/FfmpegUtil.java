@@ -41,6 +41,33 @@ public class FfmpegUtil {
         command.add(mediaPicSize);  
         command.add(codcFilePath);  
         
+        
+        
+//        commend.add("E:/ffmpeg.exe");  
+//        commend.add("-i");  
+////      commend.add("E:\\server\\red5-0.8.0-java5\\webapps\\webcam\\streams\\"+filename+".flv");  
+//        commend.add("E:/test.flv");  
+//        commend.add("-s");  
+//        commend.add("320x240");  
+//        commend.add("-r");  
+//        commend.add("30000/1001");  
+//        commend.add("-b");  
+//        commend.add("200k");  
+//        commend.add("-vcodec");  
+//        commend.add("libx264");  
+//        commend.add("-acodec");  
+//        commend.add("libvo_aacenc");  
+//        commend.add("-ac");  
+//        commend.add("2");  
+//        commend.add("-ar");  
+//        commend.add("48000");  
+//        commend.add("-ab");  
+//        commend.add("192k");  
+//        commend.add("-y");  
+////      commend.add("E:\\server\\apache-tomcat-6.0.37\\webapps\\czwx-web\\resources\\download\\"+filename+".mp4");  
+//        commend.add("E:/test.mp4"); 
+        
+        
         for (String string : command) {
 			System.out.print(string+" ");
 		}
