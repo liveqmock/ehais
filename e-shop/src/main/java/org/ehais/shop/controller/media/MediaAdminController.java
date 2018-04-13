@@ -730,7 +730,7 @@ public class MediaAdminController extends CommonController{
 			) {
 		try{
 			
-			ReturnObject<HaiShopConfig> rm = shopconfigService.shopconfig_update_submit(request);
+			ReturnObject<HaiShopConfig> rm = shopconfigService.shopconfig_update_submit(request,false);
 			return this.writeJson(rm);
 		}catch(Exception e){
 			e.printStackTrace();

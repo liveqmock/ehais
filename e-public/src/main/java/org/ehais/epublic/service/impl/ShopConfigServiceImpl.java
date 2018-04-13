@@ -36,7 +36,7 @@ public class ShopConfigServiceImpl  extends CommonServiceImpl implements ShopCon
 	private HaiShopConfigMapper haiShopConfigMapper;
 	
 	
-	public ReturnObject<HaiShopConfig> shopconfig_update_submit(HttpServletRequest request)
+	public ReturnObject<HaiShopConfig> shopconfig_update_submit(HttpServletRequest request,boolean setEmptyValue)
 			throws Exception {
 		// TODO Auto-generated method stub  ,HaiShopConfig model
 		ReturnObject<HaiShopConfig> rm = new ReturnObject<HaiShopConfig>();

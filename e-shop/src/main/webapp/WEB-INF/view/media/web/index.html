@@ -18,13 +18,14 @@
 		<script type="text/javascript">
 		$(function(){
 			$('#slide').slideBox({
+				width:"100%",
 				direction : 'left',//left,top#方向
 				duration : 0.3,//滚动持续时间，单位：秒
 				easing : 'linear',//swing,linear//滚动特效
 				delay : 5,//滚动延迟时间，单位：秒
-				hideClickBar : true,//不自动隐藏点选按键
+				hideClickBar : false,//不自动隐藏点选按键
 				clickBarRadius : 10,
-				hideBottomBar : false//隐藏底栏
+				hideBottomBar : true//隐藏底栏
 			});
 		});
 		</script>
@@ -32,13 +33,14 @@
 		
 	</head>
 	<body>
-		
-		<div class="main">
+		<div class="w">
+			<div class="mhead">
+				<#include "header.html" />
+			</div>
 			
-			<#include "header.html">
 			
 			<div class="ad">
-				<div id="slide" class="slideBox">
+				<div id="slide" class="slideBox adwrap">
 					<ul class="items">
 						<#if (adList?? && adList?size > 0)>
 							
@@ -62,7 +64,26 @@
 				</div>
 				
 				 
+				 <#if (adList?? && adList?size > 0)>
+				 <div class="nav">
+					<ul>
+						<#list adList as ad>
+						<li class="active">
+							<div>${ad.adName!''}</div>
+							<div>${ad.adCode!''}</div>
+						</li>
+						</#list>
+					</ul>
+				</div>
+				</#if>
+				 
 			</div>
+			
+		</div>
+		<div class="main">
+			
+			
+			
 			<div class="recommend">
 				
 					<#if (listArticleIndex?? && listArticleIndex?size > 0)>
@@ -140,9 +161,11 @@
 				
 				
 			</div>
-			<#include "footer.html">
+			
 		
 		</div>
+		
+		<div class="w"><#include "footer.html"></div>
 		
 	</body>
 </html>

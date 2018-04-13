@@ -69,7 +69,7 @@ public class  EShopConfigController extends CommonController {
 			) {
 		try{
 			
-			ReturnObject<HaiShopConfig> rm = shopconfigService.shopconfig_update_submit(request);
+			ReturnObject<HaiShopConfig> rm = shopconfigService.shopconfig_update_submit(request,true);
 			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "setting");
 		}catch(Exception e){
 			e.printStackTrace();

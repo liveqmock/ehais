@@ -29,13 +29,19 @@
 	</head>
 	<body>
 		
-		<div class="main">
-			<#include "header.html">
+		<div class="w">
+			<div class="mhead">
+				<#include "header.html" />
+			</div>
+		</div>
+		
+		<div class="w">
 			
-			<div class="wrapper">
-				<div class="wmain">
+			
+			<div class="main list">
+				
 				<div class="content">
-					<div class="playwra">
+					<div class="left">
 						<div class="title">${article.title}</div>
 						<div class="p" style="background:url(${video_url_website}${article.articleThumb})">
 
@@ -47,7 +53,7 @@
 						<div class="article_content">${article.content!''}</div>
 					</div>
 					
-					<div class="recom">
+					<div class="right">
 						<div class="head">
 							热门视频
 						</div>
@@ -56,7 +62,7 @@
 							<#if (listArticleHot?? && listArticleHot?size > 0)>
 							<#list listArticleHot as a>
 							<li class="play" val="${a.articleId}">
-								<div>
+								<div class="img">
 									<img src="${video_url_website}${a.articleThumb!''}" />
 									<div>${a.articleLabel!''}</div>
 									<img src="img/1366/play.png" style="display:none;"/>
@@ -76,11 +82,12 @@
 						</ul>
 					</div>
 				</div>
-				</div>
+				
 			</div>
+		</div>
 
 			
-			<#include "footer.html">
+			<div class="w"><#include "footer.html"></div>
 			
 		</div>
 	</body>
