@@ -33,7 +33,7 @@ public class ArticleWSController extends ArticleIController{
 		rm.setCode(0);
 		try {
 			Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
-			int c = eCommonMapper.commonUpdateBooleanValue("hai_article", "is_hot", hot.toString(), "article_id", articleId.toString(), store_id);
+			int c = eCommonMapper.commonUpdateBooleanValueAndNowDate("hai_article", "is_hot", hot.toString(), "article_id", articleId.toString(),"update_date", store_id);
 			
 			rm.setCode(1);
 			rm.setMsg("success");
@@ -60,7 +60,7 @@ public class ArticleWSController extends ArticleIController{
 		rm.setCode(0);
 		try {
 			Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
-			int c = eCommonMapper.commonUpdateBooleanValue("hai_article", "open_type", open_type.toString(), "article_id", articleId.toString(), store_id);
+			int c = eCommonMapper.commonUpdateBooleanValueAndNowDate("hai_article", "open_type", open_type.toString(), "article_id", articleId.toString(),"update_date", store_id);
 			
 			rm.setCode(1);
 			rm.setMsg("success");

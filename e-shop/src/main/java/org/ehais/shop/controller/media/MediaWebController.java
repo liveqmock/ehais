@@ -133,7 +133,7 @@ public class MediaWebController extends CommonController{
 			ae.setOrderByClause("sort asc");
 			ae.setLimitStart(0);
 			ae.setLimitEnd(hot_len);
-			ae.setOrderByClause("sort asc");
+			ae.setOrderByClause("update_date desc");
 			List<EHaiArticle> listArticleIndex = eHaiArticleMapper.selectByExample(ae);
 			modelMap.addAttribute("listArticleIndex", listArticleIndex);
 			
@@ -145,7 +145,7 @@ public class MediaWebController extends CommonController{
 				.andStoreIdEqualTo(store_id)
 				.andIsHotEqualTo(true)
 				.andCatIdEqualTo(c.getCatId());
-				ae.setOrderByClause("sort asc");
+				ae.setOrderByClause("sort asc,update_date desc");
 				ae.setLimitStart(0);
 				ae.setLimitEnd(len);
 				List<EHaiArticle> listArticle = eHaiArticleMapper.selectByExample(ae);
@@ -247,7 +247,7 @@ public class MediaWebController extends CommonController{
 			
 			EHaiArticleExample ae = new EHaiArticleExample();
 			ae.createCriteria().andStoreIdEqualTo(store_id).andCatIdEqualTo(cid);
-			ae.setOrderByClause("sort asc,article_id desc");
+			ae.setOrderByClause("sort asc,update_date desc,article_id desc");
 			ae.setLimitStart(( page - 1 ) * len);
 			ae.setLimitEnd(len);
 			List<EHaiArticle> listArticle = eHaiArticleMapper.selectByExample(ae);
@@ -270,7 +270,7 @@ public class MediaWebController extends CommonController{
 			.andStoreIdEqualTo(store_id)
 			.andIsHotEqualTo(true);
 //			.andOpenTypeEqualTo(Short.valueOf("1"));
-			ae.setOrderByClause("sort asc");
+			ae.setOrderByClause("sort asc,update_date desc");
 			ae.setLimitStart(0);
 			ae.setLimitEnd(10);
 			
@@ -313,7 +313,7 @@ public class MediaWebController extends CommonController{
 			.andArticleIdEqualTo(id);
 			ae.setLimitStart(0);
 			ae.setLimitEnd(1);
-			ae.setOrderByClause("sort asc");
+			ae.setOrderByClause("sort asc,update_date desc");
 //			List<EHaiArticle> listArticle = eHaiArticleMapper.selectByExample(ae);
 			
 //			if(listArticle == null || listArticle.size() == 0){
