@@ -51,6 +51,18 @@
 
 						</div>
 						<div class="article_content">${article.content!''}</div>
+						<div class="article_content">
+							<div class="fl">
+								<#if pre_article??>
+								<a href="javascript:;" class="play" val="${pre_article.articleId}">上一篇：${pre_article.title!''}</a>
+								</#if>
+							</div>
+							<div class="fr">
+								<#if next_article??>
+								<a href="javascript:;" class="play" val="${next_article.articleId}">下一篇：${next_article.title!''}</a>
+								</#if>
+							</div>
+						</div>
 					</div>
 					
 					<div class="right">

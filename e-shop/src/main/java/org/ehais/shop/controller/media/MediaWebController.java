@@ -130,7 +130,6 @@ public class MediaWebController extends CommonController{
 			ae.createCriteria()
 			.andStoreIdEqualTo(store_id)
 			.andOpenTypeEqualTo(Short.valueOf("1"));
-			ae.setOrderByClause("sort asc");
 			ae.setLimitStart(0);
 			ae.setLimitEnd(hot_len);
 			ae.setOrderByClause("update_date desc");
@@ -314,13 +313,6 @@ public class MediaWebController extends CommonController{
 			ae.setLimitStart(0);
 			ae.setLimitEnd(1);
 			ae.setOrderByClause("sort asc,update_date desc");
-//			List<EHaiArticle> listArticle = eHaiArticleMapper.selectByExample(ae);
-			
-//			if(listArticle == null || listArticle.size() == 0){
-//				return this.errorJump(modelMap, "空数据");
-//			}
-			
-//			EHaiArticle article =  listArticle.get(0);
 			
 			
 			Long count = eHaiArticleMapper.countByExample(ae);
@@ -395,6 +387,39 @@ public class MediaWebController extends CommonController{
 			
 			modelMap.addAttribute("article", article);
 			modelMap.addAttribute("video_transfer_website", video_transfer_website);
+			
+			
+			//上一篇
+			ae.clear();
+			ae.createCriteria()
+			.andArticleIdLessThan(article.getArticleId())
+			.andCatIdEqualTo(article.getCatId())
+			.andStoreIdEqualTo(store_id);
+			ae.setOrderByClause("article_id asc");
+			ae.setLimitStart(0);
+			ae.setLimitEnd(1);
+			List<EHaiArticle> listArticlePre = eHaiArticleMapper.selectByExample(ae);
+			if(listArticlePre!=null && listArticlePre.size() > 0) {
+				modelMap.addAttribute("pre_article", listArticlePre.get(0));
+			}
+			
+			
+			
+			//下一篇
+			ae.clear();
+			ae.createCriteria()
+			.andArticleIdGreaterThan(article.getArticleId())
+			.andCatIdEqualTo(article.getCatId())
+			.andStoreIdEqualTo(store_id);
+			ae.setOrderByClause("article_id asc");
+			ae.setLimitStart(0);
+			ae.setLimitEnd(1);
+			List<EHaiArticle> listArticleNext = eHaiArticleMapper.selectByExample(ae);
+			if(listArticleNext!=null && listArticleNext.size() > 0) {
+				modelMap.addAttribute("next_article", listArticleNext.get(0));
+			}
+			
+			
 			
 			return "/media/"+modal+"/play";
 		}catch(Exception e){
