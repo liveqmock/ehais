@@ -13,14 +13,16 @@ import org.ehais.controller.CommonController;
 import org.ehais.epublic.mapper.EHaiAdMapper;
 import org.ehais.epublic.mapper.EHaiArticleCatMapper;
 import org.ehais.epublic.mapper.EHaiArticleMapper;
+import org.ehais.epublic.mapper.HaiShopConfigMapper;
 import org.ehais.epublic.model.EHaiAd;
 import org.ehais.epublic.model.EHaiAdExample;
 import org.ehais.epublic.model.EHaiArticle;
 import org.ehais.epublic.model.EHaiArticleCat;
 import org.ehais.epublic.model.EHaiArticleCatExample;
 import org.ehais.epublic.model.EHaiArticleExample;
+import org.ehais.epublic.model.HaiShopConfig;
+import org.ehais.epublic.model.HaiShopConfigExample;
 import org.ehais.shop.mapper.HaiCartMapper;
-import org.ehais.shop.model.HaiCart;
 import org.ehais.shop.model.HaiCartExample;
 import org.ehais.shop.model.HaiCartWithBLOBs;
 import org.ehais.tools.ReturnObject;
@@ -33,7 +35,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 
@@ -49,6 +50,8 @@ public class MediaWebController extends CommonController{
 	private HaiCartMapper haiCartMapper;
 	@Autowired
 	private EHaiAdMapper eHaiAdMapper;
+	@Autowired
+	private HaiShopConfigMapper haiShopConfigMapper;
 	
 	
 	protected String video_transfer_website = ResourceUtil.getProValue("video.transfer.website");
@@ -448,8 +451,25 @@ public class MediaWebController extends CommonController{
 		
 		modelMap.addAttribute("currentNav", "index");
 		modelMap.addAttribute("video_url_website", video_url_website);
-	    
-	    
+//		List<EHaiArticleCat> list=eHaiArticleCatMapper.hai_article_cat_list_zhibo();
+//		modelMap.addAttribute("list", list);
+//		System.out.println(list.get(0).getImages());
+		
+		
+		HaiShopConfigExample example = new HaiShopConfigExample();
+		HaiShopConfigExample.Criteria c = example.createCriteria();
+		c.andStoreIdEqualTo(store_id);
+		c.andIsvoidEqualTo("1");
+//		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+		List<HaiShopConfig> list = haiShopConfigMapper.selectByExampleWithBLOBs(example);
+		
+		for (HaiShopConfig haiShopConfig : list) {
+			modelMap.addAttribute( haiShopConfig.getCode() + "_icon", haiShopConfig.getValue());
+			modelMap.addAttribute( haiShopConfig.getCode() + "_text", haiShopConfig.getCodeText());
+		}
+		
+		
+		
 		return "/media/web/live";
 		
 	}

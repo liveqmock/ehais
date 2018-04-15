@@ -759,6 +759,12 @@ function show_${id}_pic(path){
 	"</div>");
 }
 
+function init_${id}_pic(){
+	$("#qiniu_image_${id}").remove();
+	$("#eq_preview_wrapper_${id}").addClass("hide");
+	$("#${id}").val("");
+}
+
 function trash_${id}_pic(imgId){
 	if(confirm("确认要删除?")){
 		$("#qiniu_image_"+imgId).remove();
