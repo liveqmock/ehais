@@ -10,7 +10,7 @@
 		<link rel="stylesheet" href="js/elay/elay.css" />
 		<script type="text/javascript" src="js/elay/elay.js" ></script>
 		
-		<link rel="stylesheet" href="css/begoff.css?1" />
+		<link rel="stylesheet" href="css/begoff.css?3" />
 	</head>
 	<body>
 		
@@ -19,6 +19,11 @@
 				<div>恩平广播电视大学</div>
 				<div>请假列表</div>
 			</header>
+			<#if (listBegOffUser?? && listBegOffUser?size > 0)>
+			<div class="batch_div">
+				<button class="batch">点击批量通过</button>
+			</div>
+			</#if>
 			<ul class="begapprove_ul">
 				<#if (listBegOffUser?? && listBegOffUser?size > 0)>
 				<#list listBegOffUser as l>
@@ -34,5 +39,6 @@
 				
 			</ul>
 		</div>
+		<script type="text/javascript" src="js/ep_school/approve_batch.js"></script>
 	</body>
 </html>

@@ -196,7 +196,7 @@ public class QRCodeJunit {
 
 	public static void main(String[] args) throws Exception {
 		File qrcFile = new File("D:/","index.jpg");
-		QRCodeJunit.writeToFile("http://q.ehais.com/hlj/index.html", "jpg", qrcFile);
+		QRCodeJunit.writeToFile("http://esurvey.9351p.com/index.php" , "jpg", qrcFile);
 //		QRCodeJunit.pressText("华乐街广东国际大厦党员服务中心\r\n广州易海司团队", qrcFile, 2, Color.RED, 10);
 //		QRCodeJunit.pressText("华乐街广东国际大厦党员服务中心\r\n广州易海司团队", qrcFile, 2, Color.RED, 10);
 		 
