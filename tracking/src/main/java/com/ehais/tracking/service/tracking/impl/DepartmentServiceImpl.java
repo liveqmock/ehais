@@ -7,7 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.model.BootStrapModel;
 import org.ehais.service.impl.CommonServiceImpl;
 import org.ehais.tools.ReturnObject;
@@ -45,7 +45,7 @@ public class DepartmentServiceImpl  extends CommonServiceImpl implements Departm
 	public ReturnObject<Department> department_list_json(HttpServletRequest request,Integer school_id,
 			Integer page, Integer len) throws Exception {
 		// TODO Auto-generated method stub
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		Map<String,Object> map = new HashMap<String,Object>();
 		if(school_id != null)map.put("schoolId", school_id);
@@ -67,7 +67,7 @@ public class DepartmentServiceImpl  extends CommonServiceImpl implements Departm
 	public ReturnObject<Department> department_insert_submit(HttpServletRequest request,Department model)
 			throws Exception {
 		// TODO Auto-generated method stub
-		Integer user_id = (Integer)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+		Integer user_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 		
 		ReturnObject<Department> rm = new ReturnObject<Department>();
 		model.setSchoolId(user_id);
@@ -80,7 +80,7 @@ public class DepartmentServiceImpl  extends CommonServiceImpl implements Departm
 	public ReturnObject<Department> department_update(HttpServletRequest request,Integer key)
 			throws Exception {
 		// TODO Auto-generated method stub
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		ReturnObject<Department> rm = new ReturnObject<Department>();
 		
@@ -95,7 +95,7 @@ public class DepartmentServiceImpl  extends CommonServiceImpl implements Departm
 	public ReturnObject<Department> department_update_submit(HttpServletRequest request,Department model)
 			throws Exception {
 		// TODO Auto-generated method stub
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		ReturnObject<Department> rm = new ReturnObject<Department>();
 		departmentDao.update(model);
@@ -107,7 +107,7 @@ public class DepartmentServiceImpl  extends CommonServiceImpl implements Departm
 	public ReturnObject<Department> department_find(HttpServletRequest request,Integer key)
 			throws Exception {
 		// TODO Auto-generated method stub
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		ReturnObject<Department> rm = new ReturnObject<Department>();
 		
@@ -123,7 +123,7 @@ public class DepartmentServiceImpl  extends CommonServiceImpl implements Departm
 	public ReturnObject<Department> department_delete(HttpServletRequest request,Integer key)
 			throws Exception {
 		// TODO Auto-generated method stub
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		ReturnObject<Department> rm = new ReturnObject<Department>();
 		departmentDao.delete(Department.class, key);

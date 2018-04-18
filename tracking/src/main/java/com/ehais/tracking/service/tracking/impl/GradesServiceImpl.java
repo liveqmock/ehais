@@ -7,7 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.model.BootStrapModel;
 import org.ehais.service.impl.CommonServiceImpl;
 import org.ehais.tools.ReturnObject;
@@ -45,7 +45,7 @@ public class GradesServiceImpl  extends CommonServiceImpl implements GradesServi
 	public ReturnObject<Grades> grades_list_json(HttpServletRequest request,Integer professional_id,
 			Integer page, Integer len) throws Exception {
 		// TODO Auto-generated method stub
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		Map<String,Object> map = new HashMap<String,Object>();
 		if(professional_id != null)map.put("professionalId", professional_id);
@@ -67,7 +67,7 @@ public class GradesServiceImpl  extends CommonServiceImpl implements GradesServi
 	public ReturnObject<Grades> grades_insert_submit(HttpServletRequest request,Grades model)
 			throws Exception {
 		// TODO Auto-generated method stub
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		ReturnObject<Grades> rm = new ReturnObject<Grades>();
 //		model.setSchoolId(store_id);
@@ -80,7 +80,7 @@ public class GradesServiceImpl  extends CommonServiceImpl implements GradesServi
 	public ReturnObject<Grades> grades_update(HttpServletRequest request,Integer key)
 			throws Exception {
 		// TODO Auto-generated method stub
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		ReturnObject<Grades> rm = new ReturnObject<Grades>();
 		
@@ -95,7 +95,7 @@ public class GradesServiceImpl  extends CommonServiceImpl implements GradesServi
 	public ReturnObject<Grades> grades_update_submit(HttpServletRequest request,Grades model)
 			throws Exception {
 		// TODO Auto-generated method stub
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		ReturnObject<Grades> rm = new ReturnObject<Grades>();
 		gradesDao.update(model);
@@ -107,7 +107,7 @@ public class GradesServiceImpl  extends CommonServiceImpl implements GradesServi
 	public ReturnObject<Grades> grades_find(HttpServletRequest request,Integer key)
 			throws Exception {
 		// TODO Auto-generated method stub
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		ReturnObject<Grades> rm = new ReturnObject<Grades>();
 		
@@ -123,7 +123,7 @@ public class GradesServiceImpl  extends CommonServiceImpl implements GradesServi
 	public ReturnObject<Grades> grades_delete(HttpServletRequest request,Integer key)
 			throws Exception {
 		// TODO Auto-generated method stub
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		ReturnObject<Grades> rm = new ReturnObject<Grades>();
 		gradesDao.delete(Grades.class, key);

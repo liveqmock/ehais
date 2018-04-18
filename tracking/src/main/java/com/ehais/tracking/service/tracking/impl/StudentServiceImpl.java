@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.model.BootStrapModel;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.DateUtil;
@@ -246,7 +246,7 @@ public class StudentServiceImpl  extends TrackingCommonServiceImpl implements St
 		InputStream is = new FileInputStream(json.getString("msg"));
 		
 		XSSFWorkbook xssfWorkbook = new XSSFWorkbook(is);
-		Integer schoolId = (Integer)request.getSession().getAttribute(Constants.SESSION_SCHOOL_ID);
+		Integer schoolId = (Integer)request.getSession().getAttribute(EConstants.SESSION_SCHOOL_ID);
 		List<School> schoolList = schoolDao.selectAll(School.class, null);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("schoolId", schoolId);
@@ -345,7 +345,7 @@ public class StudentServiceImpl  extends TrackingCommonServiceImpl implements St
 			String mobile, String email) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<Student> rm = new ReturnObject<Student>();
-		Integer sid = (Integer)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+		Integer sid = (Integer)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 //		if(sid == null || sid == 0 || qid == null || qid == 0 || sid != qid){
 //			rm.setCode(10);rm.setMsg("非法学生用户");return rm;
 //		}

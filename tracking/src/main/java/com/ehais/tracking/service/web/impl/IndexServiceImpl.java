@@ -53,24 +53,25 @@ public class IndexServiceImpl extends CommonServiceImpl implements IndexService{
 		EHaiArticleCatExample articleCatExample = new EHaiArticleCatExample();
 		EHaiArticleCatExample.Criteria aCC = articleCatExample.createCriteria();
 		articleCatExample.CriteriaStoreId(aCC, co);
-		articleCatExample.setStart(0);
-		articleCatExample.setLen(5);
+		articleCatExample.setLimitStart(0);
+		articleCatExample.setLimitEnd(5);
+		
 		List<EHaiArticleCat> listArticleCat = eHaiArticleCatMapper.selectByExample(articleCatExample);
 		
 		//查找资讯
 		EHaiArticleExample articleExample = new EHaiArticleExample();
 		EHaiArticleExample.Criteria aC = articleExample.createCriteria();
 		articleExample.CriteriaStoreId(aC, co);
-		articleExample.setStart(0);
-		articleExample.setLen(5);
+		articleExample.setLimitStart(0);
+		articleExample.setLimitEnd(5);
 		List<EHaiArticle> listArticle = eHaiArticleMapper.selectByExample(articleExample);
 		
 		//查找广告
 		EHaiAdExample adExample = new EHaiAdExample();
 		EHaiAdExample.Criteria adC = adExample.createCriteria();
 		adExample.CriteriaStoreId(adC, co);
-		adExample.setStart(0);
-		adExample.setLen(5);
+		adExample.setLimitStart(0);
+		adExample.setLimitEnd(5);
 		List<EHaiAd> listAd = eHaiAdMapper.selectByExampleWithBLOBs(adExample);
 		
 		//查找最新问卷

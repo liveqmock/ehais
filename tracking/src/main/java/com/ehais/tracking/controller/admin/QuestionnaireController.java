@@ -3,7 +3,7 @@ package com.ehais.tracking.controller.admin;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.ehais.tools.ReturnObject;
 import org.slf4j.Logger;
@@ -52,7 +52,7 @@ public class QuestionnaireController extends CommonController{
 			@RequestParam(value = "page", required = true) Integer page,
 			@RequestParam(value = "len", required = true) Integer len) {
 		try{
-			Integer user_id = (Integer)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			Integer user_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			ReturnObject<Questionnaire> rm = questionnaireService.questionnaire_list_json(request,user_id, page, len);
 			return this.writeJson(rm);
 		}catch(Exception e){
@@ -87,7 +87,7 @@ public class QuestionnaireController extends CommonController{
 			@RequestParam(value = "id", required = true) Integer id
 			) {
 		try{
-			Integer user_id = (Integer)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			Integer user_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			ReturnObject<Questionnaire> rm = questionnaireService.questionnaire_update(user_id, id);
 			modelMap.addAttribute("className","main");
 			modelMap.addAttribute("rm", rm);
@@ -104,7 +104,7 @@ public class QuestionnaireController extends CommonController{
 			@RequestParam(value = "id", required = true) Integer id
 			) {
 		try{
-			Integer user_id = (Integer)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			Integer user_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			ReturnObject<Questionnaire> rm = questionnaireService.questionnaire_update(user_id, id);
 			modelMap.addAttribute("className","mainReport");
 			modelMap.addAttribute("rm", rm);
@@ -142,7 +142,7 @@ public class QuestionnaireController extends CommonController{
 			@RequestParam(value = "code", required = false) String code
 			) {
 		try{
-			Integer user_id = (Integer)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			Integer user_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			ReturnObject<Questionnaire> rm = questionnaireService.questionnaire_delete(user_id, id);
 			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "questionnaire_list");
 		}catch(Exception e){
@@ -158,7 +158,7 @@ public class QuestionnaireController extends CommonController{
 			@RequestParam(value = "id", required = true) Integer id
 			) {
 		try{
-			Integer user_id = (Integer)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			Integer user_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			ReturnObject<QuestionGroup> rm = questionnaireService.question_group_list(user_id, id);
 			
 			modelMap.addAttribute("questionsBSML", rm.getModel().getQuestionsBSML());

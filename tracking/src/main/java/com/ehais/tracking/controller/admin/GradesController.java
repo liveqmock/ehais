@@ -3,7 +3,7 @@ package com.ehais.tracking.controller.admin;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.ehais.tools.ReturnObject;
 import org.slf4j.Logger;
@@ -35,7 +35,7 @@ public class  GradesController extends CommonController {
 	@RequestMapping("/grades_list")
 	public String grades_list(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) {	
-		Integer user_id = (Integer)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+		Integer user_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 		try{
 			modelMap.addAttribute("wxid", user_id);
 			modelMap.addAttribute("action", "grades_list_json");

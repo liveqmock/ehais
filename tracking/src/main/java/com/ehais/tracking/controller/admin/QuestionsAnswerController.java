@@ -3,7 +3,7 @@ package com.ehais.tracking.controller.admin;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.ehais.tools.ReturnObject;
 import org.slf4j.Logger;
@@ -39,7 +39,7 @@ public class  QuestionsAnswerController extends CommonController {
 			HttpServletRequest request,HttpServletResponse response
 			) {
 		try{
-			Integer user_id = (Integer)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			Integer user_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			ReturnObject<QuestionsAnswer> rm = questionsAnswerService.questions_answer_insert(user_id);
 			modelMap.addAttribute("bootStrapList", rm.getBootStrapList());
 		}catch(Exception e){
@@ -55,7 +55,7 @@ public class  QuestionsAnswerController extends CommonController {
 			@RequestParam(value = "extend", required = true) String extend
 			) {
 		try{
-			Integer user_id = (Integer)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			Integer user_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 //			questions_answer.setStoreId(user_id);
 			ReturnObject<QuestionsAnswer> rm = questionsAnswerService.questions_answer_save_submit(user_id,extend);
 			return this.writeJson(rm);
@@ -73,7 +73,7 @@ public class  QuestionsAnswerController extends CommonController {
 			@RequestParam(value = "code", required = false) String code
 			) {
 		try{
-			Integer user_id = (Integer)request.getSession().getAttribute(Constants.SESSION_USER_ID);
+			Integer user_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
 			ReturnObject<QuestionsAnswer> rm = questionsAnswerService.questions_answer_delete(user_id, keyId);
 			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "questions_answer_list");
 		}catch(Exception e){

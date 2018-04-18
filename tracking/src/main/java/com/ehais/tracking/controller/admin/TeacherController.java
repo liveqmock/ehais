@@ -3,7 +3,7 @@ package com.ehais.tracking.controller.admin;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.ehais.tools.ReturnObject;
 import org.slf4j.Logger;
@@ -34,7 +34,7 @@ public class  TeacherController extends CommonController {
 	@RequestMapping("/teacher_list")
 	public String teacher_list(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) {	
-		Integer school_id = (Integer)request.getSession().getAttribute(Constants.SESSION_SCHOOL_ID);
+		Integer school_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_SCHOOL_ID);
 		try{
 			modelMap.addAttribute("wxid", school_id);
 			modelMap.addAttribute("action", "teacher_list_json");
@@ -66,7 +66,7 @@ public class  TeacherController extends CommonController {
 			HttpServletRequest request,HttpServletResponse response
 			) {
 		try{
-			Integer school_id = (Integer)request.getSession().getAttribute(Constants.SESSION_SCHOOL_ID);
+			Integer school_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_SCHOOL_ID);
 			ReturnObject<Teacher> rm = teacherService.teacher_insert(school_id);
 			rm.setAction("teacher_insert_submit");
 			modelMap.addAttribute("rm", rm);
@@ -82,7 +82,7 @@ public class  TeacherController extends CommonController {
 			@ModelAttribute Teacher teacher
 			) {
 		try{
-			Integer school_id = (Integer)request.getSession().getAttribute(Constants.SESSION_SCHOOL_ID);
+			Integer school_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_SCHOOL_ID);
 			teacher.setSchoolId(school_id);
 			ReturnObject<Teacher> rm = teacherService.teacher_insert_submit(teacher);
 			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "teacher_insert");
@@ -98,7 +98,7 @@ public class  TeacherController extends CommonController {
 			@RequestParam(value = "keyId", required = true) Integer keyId
 			) {
 		try{
-			Integer school_id = (Integer)request.getSession().getAttribute(Constants.SESSION_SCHOOL_ID);
+			Integer school_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_SCHOOL_ID);
 			ReturnObject<Teacher> rm = teacherService.teacher_update(school_id, keyId);
 			rm.setAction("teacher_update_submit");
 			modelMap.addAttribute("rm", rm);
@@ -114,7 +114,7 @@ public class  TeacherController extends CommonController {
 			@ModelAttribute Teacher teacher
 			) {
 		try{
-			Integer school_id = (Integer)request.getSession().getAttribute(Constants.SESSION_SCHOOL_ID);
+			Integer school_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_SCHOOL_ID);
 			teacher.setSchoolId(school_id);
 			ReturnObject<Teacher> rm = teacherService.teacher_update_submit(teacher);
 			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "teacher_list");
@@ -132,7 +132,7 @@ public class  TeacherController extends CommonController {
 			@RequestParam(value = "code", required = false) String code
 			) {
 		try{
-			Integer school_id = (Integer)request.getSession().getAttribute(Constants.SESSION_SCHOOL_ID);
+			Integer school_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_SCHOOL_ID);
 			ReturnObject<Teacher> rm = teacherService.teacher_delete(school_id, keyId);
 			return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "teacher_list");
 		}catch(Exception e){

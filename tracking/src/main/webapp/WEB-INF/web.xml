@@ -7,7 +7,7 @@
   
   <context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath:spring/spring.xml,classpath:hibernate/hibernate.xml,classpath:mybatis/mybatis.xml</param-value>
+		<param-value>classpath:spring/spring.xml,classpath:hibernate/hibernate.xml</param-value>
 	</context-param>
 
 	<filter>

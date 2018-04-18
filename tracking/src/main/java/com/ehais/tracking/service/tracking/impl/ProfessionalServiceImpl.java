@@ -7,7 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.model.BootStrapModel;
 import org.ehais.service.impl.CommonServiceImpl;
 import org.ehais.tools.ReturnObject;
@@ -66,7 +66,7 @@ public class ProfessionalServiceImpl  extends CommonServiceImpl implements Profe
 	public ReturnObject<Professional> professional_insert_submit(HttpServletRequest request,Professional model)
 			throws Exception {
 		// TODO Auto-generated method stub
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		ReturnObject<Professional> rm = new ReturnObject<Professional>();
 //		model.setSchoolId(store_id);
@@ -79,7 +79,7 @@ public class ProfessionalServiceImpl  extends CommonServiceImpl implements Profe
 	public ReturnObject<Professional> professional_update(HttpServletRequest request,Integer key)
 			throws Exception {
 		// TODO Auto-generated method stub
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		ReturnObject<Professional> rm = new ReturnObject<Professional>();
 		
@@ -94,7 +94,7 @@ public class ProfessionalServiceImpl  extends CommonServiceImpl implements Profe
 	public ReturnObject<Professional> professional_update_submit(HttpServletRequest request,Professional model)
 			throws Exception {
 		// TODO Auto-generated method stub
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		ReturnObject<Professional> rm = new ReturnObject<Professional>();
 		professionalDao.update(model);
@@ -106,7 +106,7 @@ public class ProfessionalServiceImpl  extends CommonServiceImpl implements Profe
 	public ReturnObject<Professional> professional_find(HttpServletRequest request,Integer key)
 			throws Exception {
 		// TODO Auto-generated method stub
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		ReturnObject<Professional> rm = new ReturnObject<Professional>();
 		
@@ -122,7 +122,7 @@ public class ProfessionalServiceImpl  extends CommonServiceImpl implements Profe
 	public ReturnObject<Professional> professional_delete(HttpServletRequest request,Integer key)
 			throws Exception {
 		// TODO Auto-generated method stub
-		Integer store_id = (Integer)request.getSession().getAttribute(Constants.SESSION_STORE_ID);
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		
 		ReturnObject<Professional> rm = new ReturnObject<Professional>();
 		professionalDao.delete(Professional.class, key);

@@ -59,6 +59,12 @@
 		</dependency>
  -->
 
+		<dependency>  
+            <groupId>xml-apis</groupId>  
+            <artifactId>xml-apis</artifactId>  
+            <version>1.4.01</version>  
+        </dependency>  
+        
 		<!-- mysql连接 -->
 		<dependency>
 			<groupId>mysql</groupId>
@@ -323,29 +329,6 @@
 			</resource>
 		</resources>
 		<plugins>
-			<!-- Run the JUnit unit tests in an isolated classloader -->
-			<!-- <plugin> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-maven-plugin</artifactId> 
-				<version>${spring.boot.version}</version> <executions> <execution> <goals> 
-				<goal>repackage</goal> </goals> </execution> </executions> </plugin> -->
-			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-surefire-plugin</artifactId> 
-				<version>2.4.2</version> <configuration> <skipTests>true</skipTests> </configuration> 
-				</plugin> -->
-
-			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-war-plugin</artifactId> 
-				<version>2.3</version> <configuration> <webXml>src/main/webapp/WEB-INF/web.xml</webXml> 
-				</configuration> </plugin> -->
-			<!-- generate java doc -->
-			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-javadoc-plugin</artifactId> 
-				<version>2.9.1</version> <configuration> <javadocDirectory>target/javadoc</javadocDirectory> 
-				<reportOutputDirectory>target/javadoc</reportOutputDirectory> <charset>UTF-8</charset> 
-				<encoding>UTF-8</encoding> <docencoding>UTF-8</docencoding> <show>private</show> 
-				</configuration> </plugin> -->
-			<!-- 部署至本机 -->
-			<!-- <plugin> <groupId>org.codehaus.cargo</groupId> <artifactId>cargo-maven2-plugin</artifactId> 
-				<version>1.0</version> <configuration> <container> <containerId>tomcat6x</containerId> 
-				<home>D:\WebServer\apache-tomcat-6.0.39</home> </container> <configuration> 
-				<type>existing</type> <home>D:\WebServer\apache-tomcat-6.0.39</home> </configuration> 
-				</configuration> </plugin> -->
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -390,6 +373,7 @@
 
 	</build>
 
+<!-- 	
 	<profiles>
 		<profile>
 			<id>dev</id>
@@ -404,5 +388,5 @@
 			</properties>
 		</profile>
 	</profiles>
-
+ -->
 </project>

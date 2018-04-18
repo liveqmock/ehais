@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -30,7 +30,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter{
 			}
 		}
 		//登录类型：admin,teacher,student,school
-		String login_type = (String) request.getSession().getAttribute(Constants.SESSION_ROLE_TYPE);
+		String login_type = (String) request.getSession().getAttribute(EConstants.SESSION_ROLE_TYPE);
 		
 		//如果session中用户名为空，则跳转到登录页面
 		if (login_type == null || "".equals(login_type)) {

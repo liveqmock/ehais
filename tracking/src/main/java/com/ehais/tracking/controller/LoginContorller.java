@@ -3,7 +3,7 @@ package com.ehais.tracking.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.ehais.tools.ReturnObject;
 import org.slf4j.Logger;
@@ -72,47 +72,47 @@ public class LoginContorller extends CommonController {
 				ReturnObject<HaiAdminUser> rm = haiAdminUserService.admin_login(username,password);
 				if(rm.getCode() == 1){
 					HaiAdminUser admin = rm.getModel();
-					request.getSession().setAttribute(Constants.SESSION_ADMIN_ID,admin.getAdminId());
-					request.getSession().setAttribute(Constants.SESSION_ADMIN_NAME,username);
-					request.getSession().setAttribute(Constants.SESSION_ROLE_TYPE,login_type);
+					request.getSession().setAttribute(EConstants.SESSION_ADMIN_ID,admin.getAdminId());
+					request.getSession().setAttribute(EConstants.SESSION_ADMIN_NAME,username);
+					request.getSession().setAttribute(EConstants.SESSION_ROLE_TYPE,login_type);
 				}
 				return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "/admin/index");
 			}else if(login_type.equals("student")){
 				ReturnObject<Student> rm = studentService.student_login(username,password);
 				if(rm.getCode() == 1){
 					Student student = rm.getModel();
-					request.getSession().setAttribute(Constants.SESSION_USER_ID,student.getId());
-					request.getSession().setAttribute(Constants.SESSION_USER_NAME,username);
-					request.getSession().setAttribute(Constants.SESSION_ROLE_TYPE,login_type);
-					request.getSession().setAttribute(Constants.SESSION_SCHOOL_ID,student.getSchoolId());
+					request.getSession().setAttribute(EConstants.SESSION_USER_ID,student.getId());
+					request.getSession().setAttribute(EConstants.SESSION_USER_NAME,username);
+					request.getSession().setAttribute(EConstants.SESSION_ROLE_TYPE,login_type);
+					request.getSession().setAttribute(EConstants.SESSION_SCHOOL_ID,student.getSchoolId());
 				}
 				return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "/admin/index");
 			}else if(login_type.equals("teacher")){
 				ReturnObject<Teacher> rm = teacherService.teacher_login(username,password);
 				if(rm.getCode() == 1){
 					Teacher teacher = rm.getModel();
-					request.getSession().setAttribute(Constants.SESSION_USER_ID,teacher.getId());
-					request.getSession().setAttribute(Constants.SESSION_USER_NAME,username);
-					request.getSession().setAttribute(Constants.SESSION_ROLE_TYPE,login_type);
-					request.getSession().setAttribute(Constants.SESSION_SCHOOL_ID,teacher.getSchoolId());
+					request.getSession().setAttribute(EConstants.SESSION_USER_ID,teacher.getId());
+					request.getSession().setAttribute(EConstants.SESSION_USER_NAME,username);
+					request.getSession().setAttribute(EConstants.SESSION_ROLE_TYPE,login_type);
+					request.getSession().setAttribute(EConstants.SESSION_SCHOOL_ID,teacher.getSchoolId());
 				}
 				return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "/admin/index");
 			}else if(login_type.equals("school")){
 				ReturnObject<School> rm = schoolService.school_login(username,password);
 				if(rm.getCode() == 1){
 					School school = rm.getModel();
-					request.getSession().setAttribute(Constants.SESSION_USER_ID,school.getId());
-					request.getSession().setAttribute(Constants.SESSION_USER_NAME,username);
-					request.getSession().setAttribute(Constants.SESSION_ROLE_TYPE,login_type);
+					request.getSession().setAttribute(EConstants.SESSION_USER_ID,school.getId());
+					request.getSession().setAttribute(EConstants.SESSION_USER_NAME,username);
+					request.getSession().setAttribute(EConstants.SESSION_ROLE_TYPE,login_type);
 				}
 				return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "/admin/index");
 			}else if(login_type.equals("leader")){
 				ReturnObject<Leader> rm = leaderService.leader_login(request,username,password);
 				if(rm.getCode() == 1){
 					Leader leader = rm.getModel();
-					request.getSession().setAttribute(Constants.SESSION_USER_ID,leader.getLeaderId());
-					request.getSession().setAttribute(Constants.SESSION_USER_NAME,username);
-					request.getSession().setAttribute(Constants.SESSION_ROLE_TYPE,login_type);
+					request.getSession().setAttribute(EConstants.SESSION_USER_ID,leader.getLeaderId());
+					request.getSession().setAttribute(EConstants.SESSION_USER_NAME,username);
+					request.getSession().setAttribute(EConstants.SESSION_ROLE_TYPE,login_type);
 				}
 				return this.ReturnJump(modelMap, rm.getCode(), rm.getMsg(), "/admin/index");
 			}else{
@@ -133,7 +133,7 @@ public class LoginContorller extends CommonController {
 			) {
 		try{
 			
-			request.getSession().removeAttribute(Constants.SESSION_ROLE_TYPE);
+			request.getSession().removeAttribute(EConstants.SESSION_ROLE_TYPE);
 			return this.ReturnJump(modelMap, 1, "退出成功", "/login");
 		}catch(Exception e){
 			e.printStackTrace();

@@ -11,7 +11,7 @@ import java.util.ResourceBundle;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.ehais.common.Constants;
+import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.HTMLSpirit;
@@ -198,7 +198,7 @@ public class QuestionnaireWebController extends CommonController{
 			log.info( "openid:" + openid );
 			System.out.println("system openid : " + openid);
 			AccessToken accessToken = WeiXinUtil.getAccessToken(wxid,weixin_appid, weixin_appsecret);
-			WeiXinUserInfo userInfo = WeiXinUtil.getUserInfo(accessToken.getToken(),openid);
+			WeiXinUserInfo userInfo = WeiXinUtil.getUserInfo(accessToken.getAccess_token(),openid);
 			map.put("userInfo", userInfo);		
 			if(userInfo == null){
 				
@@ -219,7 +219,7 @@ public class QuestionnaireWebController extends CommonController{
 			
 			//保存session
 			Integer studentId = rm.getModel().getId();
-			request.getSession().setAttribute(Constants.SESSION_USER_ID, studentId);
+			request.getSession().setAttribute(EConstants.SESSION_USER_ID, studentId);
 			request.getSession().setAttribute("openid", openid);
 			request.getSession().setAttribute("wxid", wxid);
 			request.getSession().setAttribute("qid", qid);
