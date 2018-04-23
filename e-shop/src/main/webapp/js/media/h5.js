@@ -8,7 +8,7 @@ var scroll_y = {0:0};//记录前位置
 var jroll = {};
 var cat_id = 0;
 var loaded;
-var defaultimg = "http://eg.ehais.com/images/eICON.png";
+var defaultimg = "/images/eICON.png";
 
 $(function(){
 	
@@ -143,9 +143,15 @@ function articleItem(d,catId){
 	
 	imgRefresh(catId);
 	
+	
 }
 
 function imgRefresh(catId){
+	
+	
+	
+	
+	
 	$("img").unbind();
 	var num = $("img").length;
 	$("img").load(function() {
@@ -159,6 +165,7 @@ function imgRefresh(catId){
 		jroll[catId].refresh();
 	});
 	num = null;
+	
 }
 
 function article_list_cat_id(){
