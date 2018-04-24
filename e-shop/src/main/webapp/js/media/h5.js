@@ -34,6 +34,8 @@ $(function(){
 	
 	jrollCat(cat_id);
 	var offLeft = 0;
+	
+	
 	$("#cate_bor ul li").each(function() {
 		$(this).attr("left",offLeft);
 		culw += parseFloat($(this).outerWidth()) + 1;
@@ -45,6 +47,22 @@ $(function(){
 	
 	jcate = new JRoll("#cate_bor", {scrollX : true ,scrollY : false , scrollBarX:false});
 
+	
+	$(".more").click(function(){
+		var _cid = $(this).attr("cat_id");
+		$("#cate_bor ul li").each(function() {
+			if( $(this).attr("cat_id") == _cid){
+				$(this).click();
+			}
+		});
+		
+		if(parseFloat($("#cate_bor ul li.active").attr("left")) > $(window).outerWidth() - $(".nav").width() - $("#cate_bor ul li.active").width()){
+			var left = parseFloat($("#cate_bor ul li.active").attr("left")) + $(".nav").width() - $(window).outerWidth() + $("#cate_bor ul li.active").width();
+			jcate.scrollTo(-left  , 0, 200);
+		}
+		
+	});
+	
 	$("#cate_bor ul li").click(function(){
 		
 		if(parseInt(cat_id) != parseInt($(this).attr("cat_id"))){
@@ -150,8 +168,6 @@ function imgRefresh(catId){
 	
 	
 	
-	
-	
 	$("img").unbind();
 	var num = $("img").length;
 	$("img").load(function() {
@@ -199,11 +215,11 @@ function article_list_cat_id(){
 
 
 function bind_play_click(){
-	$(".play").unbind();
-	$(".play").on("click",function(e){
-		
-		window.location.href = "play"+$(this).attr("val")+".lv";
-	});
+//	$(".play").unbind();
+//	$(".play").on("click",function(e){
+//		
+//		window.location.href = "play"+$(this).attr("val")+".lv";
+//	});
 }
 
 
