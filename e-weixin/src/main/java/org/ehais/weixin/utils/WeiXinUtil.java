@@ -24,6 +24,7 @@ import org.ehais.weixin.model.JsApiTicket;
 import org.ehais.weixin.model.OpenidInfo;
 import org.ehais.weixin.model.WeiXinArticlesItem;
 import org.ehais.weixin.model.WeiXinDownloadBill;
+import org.ehais.weixin.model.WeiXinGetSignKey;
 import org.ehais.weixin.model.WeiXinImage;
 import org.ehais.weixin.model.WeiXinMPNews;
 import org.ehais.weixin.model.WeiXinNotifyPay;
@@ -646,6 +647,36 @@ public class WeiXinUtil {
 		
 		System.out.println(content);
 		return EHttpClientUtil.httpPostEntity(WXConstants.downloadbill, content);
+		
+	}
+	
+	//微信环境验证
+	public static String getSignKey(String mch_id,String secret) throws Exception {
+		WeiXinGetSignKey gsk = new WeiXinGetSignKey();		
+		gsk.setMch_id(mch_id);
+		gsk.setNonce_str(ECommon.nonceStr(32));
+		String sign = SignUtil.getSign(gsk, secret);
+		gsk.setSign(sign);
+		
+		String content = XStreamUtil.toXml(gsk);
+		
+		System.out.println(content);
+		return EHttpClientUtil.httpPostEntity(WXConstants.getsignkey, content);
+		
+	}
+	
+	public static void main(String[] args) {
+		try {
+//			String mch_id = "1480510742";
+//			String secret = "EhaisTylerEllen123456789LGJ628ok";
+			String mch_id = "1340156101";
+			String secret = "EhaisZkef1234567890oktylerokokok";
+			
+			String res = WeiXinUtil.getSignKey(mch_id, secret);
+			System.out.println(res);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 		
 	}
 	

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="css/pclive.css" />
+		
+		<link rel="stylesheet" type="text/css" href="/js/video/video-js.min.css">
+		
+		<script type="text/javascript" src="/js/jquery-1.8.3.min.js" ></script>
+		<script type="text/javascript" src="/js/media/play.js" ></script>	
+		<script type="text/javascript" src="/js/media/vod.js" ></script>	
+		
+		<script type="text/javascript" src="/js/ckplayer/ckplayer.js" charset="UTF-8"></script>
+
+
+	</head>
+	<body>
+
+		<div class="w">
+			<div class="mhead">
+				<#include "header.html" />
+			</div>
+		</div>
+		
+		<div class="w">
+
+
+			<div class="main list">
+
+				<div class="content">
+					<div class="left">
+						<div class="title">${article.title}</div>
+						<div class="p" style="background:url(${video_url_website}${article.articleThumb})">
+							
+							<div id="video" class="video-js"></div>
+
+						</div>
+						<div class="article_content">${article.content!''}</div>
+						<div class="article_content">
+							<div class="fl">
+								<#if pre_article??>
+								<a href="javascript:;" class="play" val="${pre_article.articleId}">上一篇：${pre_article.title!''}</a>
+								</#if>
+							</div>
+							<div class="fr">
+								<#if next_article??>
+								<a href="javascript:;" class="play" val="${next_article.articleId}">下一篇：${next_article.title!''}</a>
+								</#if>
+							</div>
+						</div>
+					</div>
+
+
+					<div class="right">
+						<div class="head">热门视频</div>
+						<ul>
+							
+							<#if (listArticleHot?? && listArticleHot?size > 0)>
+							<#list listArticleHot as a>
+							<li class="play" val="${a.articleId}">
+								<div class="img">
+									<img src="${video_url_website}${a.articleThumb!''}" />
+									<div>${a.articleLabel!''}</div>
+									<img src="img/1366/play.png" style="display:none;"/>
+								</div>
+								<div class="mtitle">${a.title!''}</div>
+								<div class="mprop">
+									<div class="date">${(a.articleDate?string('yyyy-MM-dd'))!''}</div>
+									<div class="counts">${a.readCount!'0'}次</div>
+								</div>
+							</li>							
+							
+							</#list>
+							</#if>
+							
+							
+							
+						</ul>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+
+		
+		
+		<div class="w"><#include "footer.html"></div>
+		
+
+	<script type="text/javascript">
+		$(function() {
+
+			var videoObject = {
+					//playerID:'ckplayer01',//播放器ID，第一个字符不能是数字，用来在使用多个播放器时监听到的函数将在所有参数最后添加一个参数用来获取播放器的内容
+					container: '#video', //容器的ID或className
+					variable: 'player', //播放函数名称
+					loaded: 'loadedHandler', //当播放器加载后执行的函数
+					
+					config: '', //指定配置函数
+					debug: true, //是否开启调试模式
+					//flashplayer: true, //强制使用flashplayer
+					drag: 'start', //拖动的属性
+					seek: 0, //默认跳转的时间
+					
+				};
+			var player = new ckplayer(videoObject);
+			
+			
+			function loadedHandler() {
+				player.addListener('error', errorHandler); //监听视频加载出错
+				player.addListener('loadedmetadata', loadedMetaDataHandler); //监听元数据
+				player.addListener('duration', durationHandler); //监听播放时间
+				player.addListener('time', timeHandler); //监听播放时间
+				player.addListener('play', playHandler); //监听暂停播放
+				player.addListener('pause', pauseHandler); //监听暂停播放
+				player.addListener('buffer', bufferHandler); //监听缓冲状态
+				player.addListener('seek', seekHandler); //监听跳转播放完成
+				player.addListener('seekTime', seekTimeHandler); //监听跳转播放完成
+				player.addListener('volume', volumeChangeHandler); //监听音量改变
+				player.addListener('full', fullHandler); //监听全屏/非全屏切换
+				player.addListener('ended', endedHandler); //监听播放结束
+				player.addListener('screenshot', screenshotHandler); //监听截图功能
+				player.addListener('mouse', mouseHandler); //监听鼠标坐标
+				player.addListener('frontAd', frontAdHandler); //监听前置广告的动作
+				player.addListener('wheel', wheelHandler); //监听视频放大缩小
+				player.addListener('controlBar', controlBarHandler); //监听控制栏显示隐藏事件
+				player.addListener('clickEvent', clickEventHandler); //监听点击事件
+				player.addListener('definitionChange', definitionChangeHandler); //监听清晰度切换事件
+				player.addListener('speed', speedHandler); //监听加载速度
+			}
+			function errorHandler() {
+				console.log('出错')
+				changeText('.playerstate', '状态：视频加载错误，停止执行其它动作，等待其它操作');
+			}
+
+			function loadedMetaDataHandler() {
+				var metaData = player.getMetaDate();
+				//console.log(metaData)
+				var html = ''
+				//console.log(metaData);
+				if(parseInt(metaData['videoWidth']) > 0) {
+					changeText('.playerstate', '状态：获取到元数据信息，如果数据错误，可以使用延迟获取');
+					html += '总时间：' + metaData['duration'] + '秒，';
+					html += '音量：' + metaData['volume'] + '（范围0-1），';
+					html += '播放器的宽度：' + metaData['width'] + 'px，';
+					html += '播放器的高度：' + metaData['height'] + 'px，';
+					html += '视频宽度：' + metaData['videoWidth'] + 'px，';
+					html += '视频高度：' + metaData['videoHeight'] + 'px，';
+					html += '视频原始宽度：' + metaData['streamWidth'] + 'px，';
+					html += '视频原始高度：' + metaData['streamHeight'] + 'px，';
+					html += '是否暂停状态：' + metaData['paused'];
+				} else {
+					changeText('.playerstate', '状态：未正确获取到元数据信息');
+					html = '没有获取到元数据';
+				}
+				changeText('.metadata', html);
+			}
+			function playHandler() {
+				//player.animateResume();//继续播放所有弹幕
+				changeText('.playstate', getHtml('.playstate') + ' 播放');
+				window.setTimeout(function() {
+					loadedMetaDataHandler();
+				}, 1000);
+				loadedMetaDataHandler();
+			}
+
+			function pauseHandler() {
+				//player.animatePause();//暂停所有弹幕
+				changeText('.playstate', getHtml('.playstate') + ' 暂停');
+				loadedMetaDataHandler();
+			}
+
+			function timeHandler(time) {
+				changeText('.currenttimestate', '当前播放时间（秒）：' + time);
+			}
+
+			function durationHandler(duration) {
+				changeText('.duration', '总时间（秒）：' + duration);
+			}
+
+			function seekHandler(state) {
+				changeText('.seekstate', getHtml('.seekstate') + ' ' + state);
+			}
+
+			function seekTimeHandler(time) {
+				changeText('.seekstate', getHtml('.seekstate') + ' seekTime:' + time);
+			}
+
+			function bufferHandler(buffer) {
+				//console.log(buffer);
+				changeText('.bufferstate', '缓冲：' + buffer);
+			}
+
+			function volumeChangeHandler(vol) {
+				changeText('.volumechangestate', '当前音量：' + vol);
+			}
+			function speedHandler(n) {
+				changeText('.speed', '当前加载速率：' + n);
+			}
+			function screenshotHandler(obj) {
+				changeText('.screenshot', '图片名称：' + obj['name'] + ',截图对象：' + obj['object'] + ',是否用户保存：' + obj['save'] + ',图片：<img src="' + obj['base64'] + '">');
+			}
+
+			function fullHandler(b) {
+				if(b) {
+					html = ' 全屏';
+				} else {
+					html = ' 否';
+				}
+				changeText('.fullstate', getHtml('.fullstate') + html);
+				
+			}
+
+			function endedHandler() {
+				changeText('.endedstate', '播放结束');
+			}
+
+			function mouseHandler(obj) {
+				changeText('.mouse', '鼠标位置，x：' + obj['x'] + '，y：' + obj['y']);
+			}
+
+			function frontAdHandler(status) {
+				changeText('.frontad', getHtml('.frontad') + ' ' + status);
+			}
+			var zoomNow = 1;
+
+			function wheelHandler(n) {
+				if(n > 0) {
+					if(zoomNow < 5) {
+						zoomNow += 0.1;
+					}
+				} else {
+					if(zoomNow > 0) {
+						zoomNow -= 0.1;
+					}
+				}
+				player.videoZoom(zoomNow);//支持鼠标滚轮控制放大缩小
+			}
+			function controlBarHandler(show){
+				if(show) {
+					html = ' 显示';
+				} else {
+					html = ' 隐藏';
+				}
+				changeText('.controlBar', getHtml('.controlBar') + html);
+			}
+			function clickEventHandler(eve){
+				changeText('.clickEvent', getHtml('.clickEvent') + ' '+eve);
+			}
+			function definitionChangeHandler(num){
+				changeText('.definitionChange', getHtml('.definitionChange') + ',切换清晰度编号'+num);
+			}
+			var videoChangeNum = 0;
+
+			function seekTime() {
+				var time = parseInt(player.getByElement('.seektime').value);
+				var metaData = player.getMetaDate();
+				var duration = metaData['duration'];
+				if(time < 0) {
+					alert('请填写大于0的数字');
+					return;
+				}
+				if(time > duration) {
+					alert('请填写小于' + duration + '的数字');
+					return;
+				}
+				player.videoSeek(time);
+			}
+
+			function changeVolume() {
+				var volume = player.getByElement('.changevolume').value;
+				volume = Math.floor(volume * 100) / 100
+				if(volume < 0) {
+					alert('请填写大于0的数字');
+					return;
+				}
+				if(volume > 1) {
+					alert('请填写小于1的数字');
+					return;
+				}
+				player.changeVolume(volume);
+			}
+
+			function changeSize() {
+				player.changeSize(w, h)
+			}
+
+			
+			
+			function changeVideo(videoUrl) {
+				if(player == null) {
+					return;
+				}
+
+				var newVideoObject = {
+					container: '#video', //容器的ID
+					variable: 'player',
+					autoplay: true, //是否自动播放
+					loaded: 'loadedHandler', //当播放器加载后执行的函数
+					video: videoUrl
+				}
+				//判断是需要重新加载播放器还是直接换新地址
+
+				if(player.playerType == 'html5video') {
+					if(player.getFileExt(videoUrl) == '.flv' || player.getFileExt(videoUrl) == '.m3u8' || player.getFileExt(videoUrl) == '.f4v' || videoUrl.substr(0, 4) == 'rtmp') {
+						player.removeChild();
+
+						player = null;
+						player = new ckplayer();
+						player.embed(newVideoObject);
+					} else {
+						player.newVideo(newVideoObject);
+					}
+				} else {
+					if(player.getFileExt(videoUrl) == '.mp4' || player.getFileExt(videoUrl) == '.webm' || player.getFileExt(videoUrl) == '.ogg') {
+						player = null;
+						player = new ckplayer();
+						player.embed(newVideoObject);
+					} else {
+						player.newVideo(newVideoObject);
+					}
+				}
+			}
+			
+			
+			changeVideo("${video_transfer_website}/${article.videoUrl}");
+			
+			
+		});
+	</script>
+
+
+		
+	</body>
+</html>

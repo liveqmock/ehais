@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+
+		<#include "/include.html"/>
+		<#include "/FreemarkerMacro.html"/>
+
+<title>Insert title here</title>
+</head>
+<body>
+<div class="header">
+	<div class="nav">
+		<a href="javascript:;" id="back" class="icon fa fa-arrow-left ">&nbsp;</a>
+		<div class="nav0">投票</div>
+		<div class="nav1">信息编辑</div>
+	</div>
+</div>
+<div style="width: 100%;height: 40px;"></div>
+<div class="container-fluid">
+<form id="myForm" name="myForm" class="form-horizontal" action="${rm.action?default('')}" method="post">
+
+
+<input type="hidden" class="form-control" id="voteId" name="voteId" value="${rm.model.voteId!''}" >
+<div class="form-group">
+<label class="col-sm-2 control-label">vote_name</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="voteName" name="voteName" value="${rm.model.voteName!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">vote_desc</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="voteDesc" name="voteDesc" placeholder="">${rm.model.voteDesc!''}</textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">vote_content</label>
+<div class="col-sm-8">
+	<@ueditorPicker id="voteContent" value="${rm.model.voteContent!''}" />
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">vote_icon</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="voteIcon" name="voteIcon" placeholder="">${rm.model.voteIcon!''}</textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">vote_pic</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="votePic" name="votePic" placeholder="">${rm.model.votePic!''}</textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">start_time</label>
+<div class="col-sm-8">
+	<@bsDatePicker id="startTime" value="${((rm.model.startTime?string('yyyy-MM-dd'))!'')}" />
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">end_time</label>
+<div class="col-sm-8">
+	<@bsDatePicker id="endTime" value="${((rm.model.endTime?string('yyyy-MM-dd'))!'')}" />
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">can_multi</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="canMulti" name="canMulti" value="${rm.model.canMulti!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">vote_count</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="voteCount" name="voteCount" value="${rm.model.voteCount!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">store_id</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="storeId" name="storeId" value="${rm.model.storeId!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">create_date</label>
+<div class="col-sm-8">
+	<@bsDatePicker id="createDate" value="${((rm.model.createDate?string('yyyy-MM-dd'))!'')}" />
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">update_date</label>
+<div class="col-sm-8">
+	<@bsDatePicker id="updateDate" value="${((rm.model.updateDate?string('yyyy-MM-dd'))!'')}" />
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">last_date</label>
+<div class="col-sm-8">
+	<@bsDatePicker id="lastDate" value="${((rm.model.lastDate?string('yyyy-MM-dd'))!'')}" />
+</div>
+</div>
+
+
+
+
+
+<div class="form-group">
+	<div class="col-sm-3"></div>
+	<div class="col-sm-6"><button id="saveSubmit" type="button" class="btn btn-primary">提交信息</button></div>
+</div>
+       
+
+
+
+
+</form>
+</div>    
+
+
+<script type="text/javascript" src="/js/admin/vote/detail.js" ></script>             
+
+
+</body>
+</html>

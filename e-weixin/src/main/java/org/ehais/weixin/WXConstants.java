@@ -94,7 +94,8 @@ public class WXConstants {
 	//下载对帐单
 	public static String downloadbill = "https://api.mch.weixin.qq.com/pay/downloadbill";
 	
-	
+//	调用微信支付沙箱环境的API接口验证 
+	public static String getsignkey = "https://apitest.mch.weixin.qq.com/sandboxnew/pay/getsignkey";
 	
 	/**
 	 * 商户银行类接口

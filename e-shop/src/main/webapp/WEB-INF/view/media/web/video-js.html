@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="css/pclive.css" />
+		
+		<link rel="stylesheet" type="text/css" href="/js/video/video-js.min.css">
+		
+		<script type="text/javascript" src="/js/jquery-1.8.3.min.js" ></script>
+		<script type="text/javascript" src="/js/media/play.js" ></script>	
+		<script type="text/javascript" src="/js/media/vod.js" ></script>	
+		
+		<script type="text/javascript" src="/js/video/ie8/videojs-ie8.min.js"></script>
+		<script type="text/javascript" src="/js/video/video.min.js"></script>
+
+
+<script type="text/javascript">
+	videojs.options.flash.swf = '/js/video/video-js.swf';
+</script>
+
+	</head>
+	<body>
+
+		<div class="w">
+			<div class="mhead">
+				<#include "header.html" />
+			</div>
+		</div>
+		
+		<div class="w">
+
+
+			<div class="main list">
+
+				<div class="content">
+					<div class="left">
+						<div class="title">${article.title}</div>
+						<div class="p" style="background:url(${video_url_website}${article.articleThumb})">
+
+							<video class="video-js vjs-default-skin vjs-big-play-centered" autoplay  controls data-setup='{"techOrder": ["flash", "html5"]}' >
+							　　<source src="${video_transfer_website}/${article.videoUrl}" type="video/mp4">
+							</video>
+
+						</div>
+						<div class="article_content">${article.content!''}</div>
+						<div class="article_content">
+							<div class="fl">
+								<#if pre_article??>
+								<a href="javascript:;" class="play" val="${pre_article.articleId}">上一篇：${pre_article.title!''}</a>
+								</#if>
+							</div>
+							<div class="fr">
+								<#if next_article??>
+								<a href="javascript:;" class="play" val="${next_article.articleId}">下一篇：${next_article.title!''}</a>
+								</#if>
+							</div>
+						</div>
+					</div>
+
+
+					<div class="right">
+						<div class="head">热门视频</div>
+						<ul>
+							
+							<#if (listArticleHot?? && listArticleHot?size > 0)>
+							<#list listArticleHot as a>
+							<li class="play" val="${a.articleId}">
+								<div class="img">
+									<img src="${video_url_website}${a.articleThumb!''}" />
+									<div>${a.articleLabel!''}</div>
+									<img src="img/1366/play.png" style="display:none;"/>
+								</div>
+								<div class="mtitle">${a.title!''}</div>
+								<div class="mprop">
+									<div class="date">${(a.articleDate?string('yyyy-MM-dd'))!''}</div>
+									<div class="counts">${a.readCount!'0'}次</div>
+								</div>
+							</li>							
+							
+							</#list>
+							</#if>
+							
+							
+							
+						</ul>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+
+		
+		
+		<div class="w"><#include "footer.html"></div>
+	</body>
+</html>
