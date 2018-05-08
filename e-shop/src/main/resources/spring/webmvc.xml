@@ -295,6 +295,22 @@
         </list>
     </property>
 </bean>
+
+    <bean id="contentNegotiationManager"  class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+       <property name="favorParameter" value="true"/>
+       <property name="parameterName" value="format"/>
+       <property name="ignoreAcceptHeader" value="false"/>
+       <property name="mediaTypes">
+           <value>
+                json=application/json
+                xml=application/xml
+                html=text/html
+            </value>
+       </property>
+       <property name="defaultContentType" value="text/html"/>
+    </bean>  
+    
+    
 <mvc:annotation-driven>
     <mvc:message-converters>
         <ref bean="stringHttpMessageConverter" />

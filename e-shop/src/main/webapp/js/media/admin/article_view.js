@@ -463,7 +463,7 @@ function getFTP() {
 				});
 				
 				$(".media_ftp_list li span").click(function(){
-					$("#videoUrl").val($(this).parent().attr("val"));
+					$("#videoUrl").val("ftp:"+$(this).parent().attr("val"));
 					$(".ftp_main").removeClass("show");
 				});
 			}

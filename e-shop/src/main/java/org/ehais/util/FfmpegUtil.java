@@ -1,5 +1,7 @@
 package org.ehais.util;
 
+import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,23 +25,82 @@ public class FfmpegUtil {
             String mediaPicPath,String mediaPicSize,boolean isVideoChange,boolean isPicChange) throws Exception {
         // 创建一个List集合来保存转换视频文件为flv格式的命令
         
+    	int type = checkContentType(upFilePath);
+
+    	List<String> command = new ArrayList<String>();  
         
-        List<String> command = new ArrayList<String>();  
-        command.add(ffmpegPath);  
-        command.add("-i");  
-        command.add(upFilePath);  
-        command.add("-y");
-        command.add("-ab");  
-        command.add("56");  
-        command.add("-ar");  
-        command.add("22050");  
-        command.add("-qscale");  
-        command.add("8");  
-        command.add("-r");
-        command.add("25");  
-        command.add("-s");  
-        command.add(mediaPicSize);  
-        command.add(codcFilePath);  
+        if (type == 1) {  
+        	command.add(ffmpegPath);  
+        	command.add("-i");  
+        	command.add(upFilePath);  
+        	command.add("-y");
+        	command.add("-c:v");  
+        	command.add("libx264");  
+        	command.add("-x264opts");  
+        	command.add("force-cfr=1");  
+        	command.add("-c:a");  
+        	command.add("mp2");  
+        	command.add("-b:a");  
+        	command.add("256k");  
+        	command.add("-vsync");  
+        	command.add("cfr");  
+        	command.add("-f");  
+        	command.add("mpegts");  
+        	command.add(codcFilePath);  
+        } else if(type==0){  
+        	command.add(ffmpegPath);  
+        	command.add("-i");  
+        	command.add(upFilePath);  
+        	command.add("-y");
+        	command.add("-c:v");  
+        	command.add("libx264");  
+        	command.add("-x264opts");  
+        	command.add("force-cfr=1");  
+        	command.add("-vsync");  
+        	command.add("cfr");  
+        	command.add("-vf");  
+        	command.add("idet,yadif=deint=interlaced");  
+        	command.add("-filter_complex");  
+        	command.add("aresample=async=1000");  
+        	command.add("-c:a");  
+        	command.add("libmp3lame");  
+        	command.add("-b:a");  
+        	command.add("192k");  
+        	command.add("-pix_fmt");  
+        	command.add("yuv420p");  
+        	command.add("-f");  
+        	command.add("mpegts");  
+        	command.add(codcFilePath);  
+        } else if(type==2){
+        	command.add(ffmpegPath);  
+        	command.add("-i");  
+        	command.add(upFilePath); 
+        	command.add("-y");
+        	command.add("-vcodec");  
+        	command.add("copy");  
+        	command.add("-acodec");  
+        	command.add("copy");  
+        	command.add(codcFilePath); 
+    	}else{  
+    		 return false;
+    	} 
+    
+        
+//        command.add(ffmpegPath);  
+//        command.add("-i");  
+//        command.add(upFilePath);  
+//        command.add("-y");
+//        command.add("-ab");  
+//        command.add("56");  
+//        command.add("-ar");  
+//        command.add("22050");  
+//        command.add("-qscale");  
+//        command.add("8");  
+//        command.add("-r");
+//        command.add("25");  
+//        command.add("-s");  
+//        command.add(mediaPicSize);  
+//        command.add(codcFilePath);  
         
         
         
@@ -67,10 +128,17 @@ public class FfmpegUtil {
 ////      commend.add("E:\\server\\apache-tomcat-6.0.37\\webapps\\czwx-web\\resources\\download\\"+filename+".mp4");  
 //        commend.add("E:/test.mp4"); 
         
-        
+        StringBuilder sb = new StringBuilder();
         for (String string : command) {
 			System.out.print(string+" ");
+			sb.append(string + " " );
 		}
+        File ffmpeg_cmd_file = new File(codcFilePath+".txt");
+        if(ffmpeg_cmd_file.exists()) {//存在的话，就删除
+        	ffmpeg_cmd_file.delete();
+        }
+        FSO.WriteTextFile(codcFilePath+".txt", sb.toString());
+        
         
         System.out.println(" & ");
 
@@ -121,8 +189,11 @@ public class FfmpegUtil {
             		Process videoProcess = new ProcessBuilder(command)
             				.redirectErrorStream(true).start();
             		
-            		new PrintStream(videoProcess.getErrorStream()).start();
-            		new PrintStream(videoProcess.getInputStream()).start();
+            		InputStream error = videoProcess.getErrorStream();  
+                    InputStream is = videoProcess.getInputStream(); 
+                    
+            		new PrintStream(error).start();
+            		new PrintStream(is).start();
             		            
             		videoProcess.waitFor();
             		
@@ -140,6 +211,37 @@ public class FfmpegUtil {
             e.printStackTrace();
         }
         return mark;
+    }
+    
+    
+    
+    private static int checkContentType(String inputPath) {  
+    	String type =inputPath.substring(inputPath.lastIndexOf(".") + 1,inputPath.length()).toLowerCase();  
+    	//ffmpeg能解析的格式：（asx，asf，mpg，wmv，3gp，mp4，mov，avi，flv等）  
+    	if (type.equals("avi")) {  
+    		return 1;  
+    	} else if (type.equals("mpg")){  
+    		return 1;  
+    	} else if (type.equals("wmv")){  
+    		return 1;  
+    	} else if (type.equals("3gp")){  
+    		return 1;  
+    	} else if (type.equals("mov")){  
+    		return 1;  
+    	} else if (type.equals("mp4")){  
+    		return 1;  
+    	} else if(type.equals("mkv")){  
+    		return 1;  
+    	}else if (type.equals("asf")){  
+    		return 0;  
+    	} else if (type.equals("flv")){  
+    		return 2;  
+    	}else if (type.equals("rm")){  
+    		return 0;  
+    	} else if (type.equals("rmvb")){  
+    		return 1;  
+    	}  
+    		return 9;  
     }
     
     
