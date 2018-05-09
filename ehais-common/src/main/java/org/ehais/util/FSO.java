@@ -237,7 +237,7 @@ public class FSO {
 						list.add(filepath);
 						k++;
 					} else if (readfile.isDirectory()) {
-						ReadfileList(list,filepath + "\\" + filelist[i]);
+						ReadfileList(list,filepath + "/" + filelist[i]);
 					}
 				}
 

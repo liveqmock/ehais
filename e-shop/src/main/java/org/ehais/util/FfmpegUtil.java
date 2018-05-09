@@ -128,16 +128,19 @@ public class FfmpegUtil {
 ////      commend.add("E:\\server\\apache-tomcat-6.0.37\\webapps\\czwx-web\\resources\\download\\"+filename+".mp4");  
 //        commend.add("E:/test.mp4"); 
         
-        StringBuilder sb = new StringBuilder();
-        for (String string : command) {
-			System.out.print(string+" ");
-			sb.append(string + " " );
-		}
-        File ffmpeg_cmd_file = new File(codcFilePath+".txt");
-        if(ffmpeg_cmd_file.exists()) {//存在的话，就删除
-        	ffmpeg_cmd_file.delete();
+        if(upFilePath.indexOf(".mp4") < 0) {
+        	StringBuilder sb = new StringBuilder();
+            for (String string : command) {
+    			System.out.print(string+" ");
+    			sb.append(string + " " );
+    		}
+            File ffmpeg_cmd_file = new File(codcFilePath+".txt");
+            if(ffmpeg_cmd_file.exists()) {//存在的话，就删除
+            	ffmpeg_cmd_file.delete();
+            }
+            FSO.WriteTextFile(codcFilePath +".txt"+"_"+ System.currentTimeMillis()/1000, sb.toString());
+            
         }
-        FSO.WriteTextFile(codcFilePath+".txt", sb.toString());
         
         
         System.out.println(" & ");
@@ -183,7 +186,7 @@ public class FfmpegUtil {
         	
         	//是否转视频
         	if(isVideoChange && !FSO.TextFileExists(codcFilePath)) {
-        		if(upFilePath.indexOf("mp4") < 0) {
+        		if(upFilePath.indexOf(".mp4") < 0) {
 //            		Process videoProcess = new ProcessBuilder(command).redirectErrorStream(true).start();
             		
             		Process videoProcess = new ProcessBuilder(command)
@@ -211,6 +214,19 @@ public class FfmpegUtil {
             e.printStackTrace();
         }
         return mark;
+    }
+    
+    
+    public static void FfmpegMp4Task(List<String> cmd) throws Exception {
+    	Process videoProcess = new ProcessBuilder(cmd).redirectErrorStream(true).start();
+		
+		InputStream error = videoProcess.getErrorStream();  
+        InputStream is = videoProcess.getInputStream(); 
+        
+		new PrintStream(error).start();
+		new PrintStream(is).start();
+		            
+		videoProcess.waitFor();
     }
     
     
