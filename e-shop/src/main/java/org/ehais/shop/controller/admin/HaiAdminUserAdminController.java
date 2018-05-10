@@ -201,6 +201,42 @@ public class  HaiAdminUserAdminController extends CommonController {
 	
 	
 
+	
+	/**
+	 * 修改密码
+	 * @param modelMap
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	@RequestMapping("/eHaiModifyPassword")
+	public String modify_password(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response ) {	
+		return "/admin/adminuser/modify_password";
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping("/eHaiModifyPasswordSubmit")
+	public String modifyPasswordSubmit(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "old_password", required = true) String old_password,
+			@RequestParam(value = "new_password", required = true) String new_password,
+			@RequestParam(value = "confirmed_password", required = true) String confirmed_password
+			) {	
+		try{
+			
+			ReturnObject<EHaiAdminUser> rm = haiAdminUserService.adminuser_modify_password(request, old_password, new_password, confirmed_password);
+			return this.writeJson(rm);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+		
+	}
+	
+	
 
 }
 

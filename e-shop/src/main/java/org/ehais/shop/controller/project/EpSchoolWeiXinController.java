@@ -108,7 +108,7 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 	private String DRIVE_NAME = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 	
 	
-	//http://ff1bbfc4.ngrok.io/ep_school_bind
+	//http://442b4df3.ngrok.io/ep_school_bind
 	@RequestMapping("/ep_school_bind")
 	public String bind(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -198,7 +198,7 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 	}
 	
 	
-	//http://ff1bbfc4.ngrok.io/ep_school_begoff
+	//http://442b4df3.ngrok.io/ep_school_begoff
 	@RequestMapping("/ep_school_begoff")
 	public String begoff(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -228,6 +228,12 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 						return "/ep_school/web/begbind";
 					}
 					modelMap.addAttribute("users", users);
+					System.out.println("用户身份："+users.getAlias());
+					if(!users.getAlias().equals("学生")) {
+						return "/ep_school/web/begbind";
+					}
+					
+					
 					
 					HaiBegOffExample exp = new HaiBegOffExample();
 					exp.createCriteria()
@@ -383,7 +389,7 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 	}
 	
 	
-	//http://ff1bbfc4.ngrok.io/ep_school_begapprove_list
+	//http://442b4df3.ngrok.io/ep_school_begapprove_list
 	/**
 	 * 班主任，部长，学生处的用户查看针对自己的请假信息
 	 * @param modelMap
@@ -425,7 +431,11 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 					//判断用户身份
 					String alias = users.getAlias();
 					if(StringUtils.isBlank(alias)){//身份为空，则不是合法用户
-						return "/ep_school/web/subscribe";
+						return "/ep_school/web/begbind";
+					}
+					System.out.println("用户身份："+users.getAlias());
+					if(users.getAlias().equals("学生")) {
+						return "/ep_school/web/begbind";
 					}
 					//查找对应身份的未审批请假信息
 					HaiBegOffExample exp = new HaiBegOffExample();
@@ -435,8 +445,13 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 					if(alias.equals("班主任")){
 						boe.andTeacherUserIdEqualTo(users.getUserId()).andTeacherApproveIsNull();
 					}else if(alias.equals("部长")){
+						boe.andTeacherApproveEqualTo(1);
+						boe.andNumberGreaterThan(1);
 						boe.andDepartmentUserIdEqualTo(users.getUserId()).andDepartmentApproveIsNull();
 					}else if(alias.equals("学生处")){
+						boe.andTeacherApproveEqualTo(1);
+						boe.andDepartmentApproveEqualTo(1);
+						boe.andNumberGreaterThan(2);
 						boe.andLeaderUserIdEqualTo(users.getUserId()).andLeaderApproveIsNull();
 					}else{
 						return "/ep_school/web/subscribe";//非法身份进入
@@ -715,10 +730,8 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 							""
 							, "请假审批通知", map, "");
 					
-					if(approve == 1){
-						//通知开闸
-						this.approve_open_door(request, student);
-					}
+					//通知开闸
+					this.approve_open_door(request, student);
 				}else{
 					//大于3天通知部长审批
 					EHaiUsers leader = eHaiUsersMapper.userNameByStore(default_store_id, users.getAnswer());
@@ -776,10 +789,8 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 						""
 						, "请假审批通知", map, "");
 				
-				if(approve == 1){
-					//通知开闸
-					this.approve_open_door(request, student);
-				}
+				//通知开闸
+				this.approve_open_door(request, student);
 			}
 		}
 		

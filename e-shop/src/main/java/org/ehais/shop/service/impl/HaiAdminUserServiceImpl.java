@@ -469,8 +469,12 @@ bean.setPartnerId(model.getPartnerId());
 		new_password = EncryptUtils.md5(new_password);
 		adminUser.setPassword(new_password);
 		
+		haiAdminUserMapper.updateByPrimaryKey(adminUser);
+		
 		rm.setCode(1);
 		rm.setMsg("密码更换成功");
+		
+		
 		
 		return rm;
 	}

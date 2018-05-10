@@ -15,17 +15,17 @@ public class WXConstants {
 	public static String wxdev_token = "ehais_wxdev";//ResourceUtil.getProValue("wxdev_token");
 
 	// 组成可以获取授权的链接
-	public static String authorize = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect";
-//	public static String authorize = "http://mg.ehais.com/connect/oauth2/authorize?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect";
+//	public static String authorize = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect";
+	public static String authorize = "http://mg.ehais.com/connect/oauth2/authorize?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect";
 		
 		
 		
 	// 获取access_token的接口地址（GET） 限200（次/天）
-	public static String access_token_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
-//	public static String access_token_url = "http://mg.ehais.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET&store_id=STORE_ID";
+//	public static String access_token_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
+	public static String access_token_url = "http://mg.ehais.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET&store_id=STORE_ID";
 	// 获取getJsApiTicket
-	public static String get_jsapi_url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?type=jsapi&access_token=ACCESS_TOKEN&type=jsapi";
-//	public static String get_jsapi_url = "http://mg.ehais.com/cgi-bin/ticket/getticket?type=jsapi&access_token=ACCESS_TOKEN&type=jsapi&store_id=STORE_ID";
+//	public static String get_jsapi_url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?type=jsapi&access_token=ACCESS_TOKEN&type=jsapi";
+	public static String get_jsapi_url = "http://mg.ehais.com/cgi-bin/ticket/getticket?type=jsapi&access_token=ACCESS_TOKEN&type=jsapi&store_id=STORE_ID";
 		
 	// 菜单创建（POST） 限100（次/天）
 	public static String menu_create_url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN";
