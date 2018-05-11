@@ -1300,7 +1300,7 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
             String sql = "insert into ThirdPartyTempAccess(CardHolderName,StudentNumberColumnName,StudentNumber,StartTime,EndTime,AccessLevelID,ProcessFlag)values(?,?,?,?,?,?,?);";
             PreparedStatement psstmt = conn.prepareStatement(sql);// 加载sql
             psstmt.setString(1, student.getRealname());
-            psstmt.setString(2, "");
+            psstmt.setString(2, "Note1");
             psstmt.setString(3, student.getUserName());
             java.sql.Date sdate = new java.sql.Date(System.currentTimeMillis());
             psstmt.setDate(4, sdate);
@@ -1309,8 +1309,11 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
             psstmt.setInt(6, 4);
             psstmt.setInt(7, 0);
             int rowN = psstmt.executeUpdate();// 执行sql
+            
             if (rowN == 1) {// 执行成功时
-            	
+            	log.info("======对接成功======================");
+            }else {
+            	log.info("======对接失败======================");
             }
 		}catch(Exception e){
 			e.printStackTrace();

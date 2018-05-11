@@ -146,12 +146,12 @@ public class HaiVoteServiceImpl  extends CommonServiceImpl implements HaiVoteSer
 		HaiVoteExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
 		c.andVoteIdEqualTo(voteId);
-		List<HaiVote> list = haiVoteMapper.selectByExample(example);
-		if(list == null || list.size() == 0){
+		long count = haiVoteMapper.countByExample(example);
+		if(count == 0){
 			rm.setMsg("记录不存在");
 			return rm;
 		}
-		HaiVote model = list.get(0);
+		HaiVote model = haiVoteMapper.selectByPrimaryKey(voteId);
 
 
 		Map<String, Object> map = new HashMap<String, Object>();

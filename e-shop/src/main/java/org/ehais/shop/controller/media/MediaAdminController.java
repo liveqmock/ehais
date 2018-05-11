@@ -73,6 +73,7 @@ public class MediaAdminController extends CommonController{
 	protected String video_ffmpeg_path = ResourceUtil.getProValue("video.ffmpeg.path");
 	//ftp的地址
 	protected String video_ftp_path = ResourceUtil.getProValue("video.ftp.folder");
+	public final static String MEDIA = "media";//视频
 	//ffmpeg转码图片的地址
 	private String images_path ;
 			
