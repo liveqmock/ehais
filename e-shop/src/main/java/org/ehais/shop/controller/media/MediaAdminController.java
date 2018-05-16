@@ -35,6 +35,8 @@ import org.ehais.shop.service.HaiAdminUserService;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.DateUtil;
+import org.ehais.util.ECommon;
+import org.ehais.util.EncryptUtils;
 import org.ehais.util.FSO;
 import org.ehais.util.FfmpegUtil;
 import org.ehais.util.ResourceUtil;
@@ -222,18 +224,21 @@ public class MediaAdminController extends CommonController{
 			
 			
 			ReturnObject<EHaiArticle> rm = mediaArticleService.article_insert_submit(request,EArticleModuleEnum.MEDIA, article,goodsId);
-			if(StringUtils.isNotBlank(article.getVideoUrl()) && article.getVideoUrl().indexOf("mp4")<0){
+//			if(StringUtils.isNotBlank(article.getVideoUrl()) && article.getVideoUrl().indexOf("mp4")<0){
+//				FfmpegThread ft = new FfmpegThread(article.getArticleId() ,article.getVideoUrl());
+//				ft.start();
+//			}else {
+//				String media_filename = video_path + article.getVideoUrl();
+//				String ftp_filename = video_ftp_path + article.getVideoUrl();
+//				if(!FSO.TextFileExists(media_filename) && FSO.TextFileExists(ftp_filename)) {
+//					FSO.copyFile(ftp_filename, media_filename);
+//				}
+//			}
+			
+			if(StringUtils.isNotBlank(article.getVideoUrl())){
 				FfmpegThread ft = new FfmpegThread(article.getArticleId() ,article.getVideoUrl());
 				ft.start();
-			}else {
-				String media_filename = video_path + article.getVideoUrl();
-				String ftp_filename = video_ftp_path + article.getVideoUrl();
-				if(!FSO.TextFileExists(media_filename) && FSO.TextFileExists(ftp_filename)) {
-					FSO.copyFile(ftp_filename, media_filename);
-				}
 			}
-			
-			
 			
 			
 			return this.writeJson(rm);
@@ -289,16 +294,22 @@ public class MediaAdminController extends CommonController{
 			
 			
 			ReturnObject<EHaiArticle> rm = mediaArticleService.article_update_submit(request,EArticleModuleEnum.MEDIA,article,goodsId);
-			if(StringUtils.isNotBlank(article.getVideoUrl()) && article.getVideoUrl().indexOf("mp4")<0){
+//			if(StringUtils.isNotBlank(article.getVideoUrl()) && article.getVideoUrl().indexOf(".mp4")<0){
+//				FfmpegThread ft = new FfmpegThread(article.getArticleId() ,article.getVideoUrl());
+//				ft.start();
+//				
+//			}else {
+//				String media_filename = video_path + article.getVideoUrl();
+//				String ftp_filename = video_ftp_path + article.getVideoUrl();
+//				if(!FSO.TextFileExists(media_filename) && FSO.TextFileExists(ftp_filename)) {
+//					FSO.copyFile(ftp_filename, media_filename);
+//				}
+//			}
+			
+			if(StringUtils.isNotBlank(article.getVideoUrl())){
 				FfmpegThread ft = new FfmpegThread(article.getArticleId() ,article.getVideoUrl());
 				ft.start();
 				
-			}else {
-				String media_filename = video_path + article.getVideoUrl();
-				String ftp_filename = video_ftp_path + article.getVideoUrl();
-				if(!FSO.TextFileExists(media_filename) && FSO.TextFileExists(ftp_filename)) {
-					FSO.copyFile(ftp_filename, media_filename);
-				}
 			}
 			
 			return this.writeJson(rm);
@@ -752,11 +763,16 @@ public class MediaAdminController extends CommonController{
 			HttpServletResponse response){
 		ReturnObject<String> rm = new ReturnObject<String>();
 		List<String> list = new ArrayList<String>();
+		List<String> listftp = new ArrayList<String>();
 		
 		try {
 			FSO.ReadfileList(list, video_ftp_path);
+			for (String string : list) {
+				string = string.replace(video_ftp_path, "");
+				listftp.add(string);
+			}
 			
-			rm.setRows(list);
+			rm.setRows(listftp);
 			rm.setCode(1);
 			rm.setToken(video_ftp_path);
 			
@@ -782,17 +798,25 @@ public class MediaAdminController extends CommonController{
 	    		
 	    		System.out.println(video_ffmpeg_path);
 	    		System.out.println(video_path+videoUrl);
-	    		System.out.println(video_path+videoUrl.substring(0, videoUrl.indexOf("."))+"mp4");
+	    		System.out.println(video_path+videoUrl.substring(0, videoUrl.indexOf("."))+".mp4");
 	    		System.out.println(images_path+"/"+String.valueOf(System.currentTimeMillis())+".png");
 	    		System.out.println(video_pic_size);
 	    		
 	    		String article_video = videoUrl.substring(0, videoUrl.indexOf("."))+".mp4";
 	    		String article_images = String.valueOf(System.currentTimeMillis())+".png";
+	    		String file_profix = videoUrl.substring(videoUrl.lastIndexOf(".") + 1 );
 	    		
 	    		boolean isftp = (videoUrl.indexOf("ftp:")==0) ? true : false;
 	    		if(isftp) {
 	    			article_video = article_video.replace("ftp:", "");
 	    			videoUrl = videoUrl.replace("ftp:", "");
+	    			if(ECommon.isContainChinese(videoUrl)) {
+	    				String name = EncryptUtils.md5(videoUrl);
+	    				FSO.copyFile(video_ftp_path +videoUrl, video_path + "/" + name+"." + file_profix);
+	    				videoUrl = name+"." + file_profix;
+	    				article_video = name+".mp4";
+	    				isftp = false;
+	    			}
 	    		}
 	    		
 				FfmpegUtil.executeCodecs(video_ffmpeg_path, 

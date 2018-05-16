@@ -459,7 +459,7 @@ function getFTP() {
 				$(".media_ftp_list li").remove();
 				$.each(result.rows,function(k,v){
 					var file_name = v.replace(result.token+"\\","");
-					$(".media_ftp_list").append("<li val='/"+file_name+"'>"+file_name+"<span>确定</span></li>");
+					$(".media_ftp_list").append("<li val='"+file_name+"'>"+file_name+"<span>确定</span></li>");
 				});
 				
 				$(".media_ftp_list li span").click(function(){
