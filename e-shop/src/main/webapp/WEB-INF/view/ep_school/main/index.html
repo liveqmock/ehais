@@ -65,6 +65,16 @@
 						</li>
 						
 						
+						<#if ( session_admin_name == 'admin' ) >
+						<li class="list-group-item active">
+							<a data-addtab="admin_user" data-url="haiAdminUserView">
+								<i class="glyphicon glyphicon-lock"></i>
+								管理员信息
+							</a>
+						</li>
+						</#if>
+						
+						
 						<li class="list-group-item active">
 							<a data-addtab=eHaiModifyPassword data-url="eHaiModifyPassword">
 								<i class="glyphicon glyphicon-sound-dolby"></i>

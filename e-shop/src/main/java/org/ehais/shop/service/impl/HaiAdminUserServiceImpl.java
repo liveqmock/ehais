@@ -145,6 +145,10 @@ public class HaiAdminUserServiceImpl  extends CommonServiceImpl implements HaiAd
 		// TODO Auto-generated method stub
 		ReturnObject<EHaiAdminUserWithBLOBs> rm = new ReturnObject<EHaiAdminUserWithBLOBs>();
 		rm.setCode(0);
+		if(model.getUserName().equals("admin")) {
+			rm.setMsg("用户名不能使用admin");
+			return rm;
+		}
 
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		model.setStoreId(store_id);

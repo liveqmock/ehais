@@ -50,7 +50,7 @@ public class  HaiAdminUserAdminController extends CommonController {
 		try{
 			ReturnObject<EHaiAdminUser> rm = haiAdminUserService.adminuser_list(request);
 			modelMap.addAttribute("rm", rm);
-			return "/"+this.getAdminProjectFolder(request)+"/adminuser/view";
+			return this.view(request,"/adminuser/view");
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("adminuser", e);
@@ -88,7 +88,7 @@ public class  HaiAdminUserAdminController extends CommonController {
 		try{
 			ReturnObject<EHaiAdminUserWithBLOBs> rm = haiAdminUserService.adminuser_insert(request);
 			modelMap.addAttribute("rm", rm);
-			return "/"+this.getAdminProjectFolder(request)+"/adminuser/detail";
+			return this.view(request,"/adminuser/detail");
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -154,7 +154,7 @@ public class  HaiAdminUserAdminController extends CommonController {
 		try{
 			ReturnObject<EHaiAdminUserWithBLOBs> rm = haiAdminUserService.adminuser_update(request,adminId);
 			modelMap.addAttribute("rm", rm);
-			return "/"+this.getAdminProjectFolder(request)+"/adminuser/detail";
+			return this.view(request,"/adminuser/detail");
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("adminuser", e);

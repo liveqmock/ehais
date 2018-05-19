@@ -61,15 +61,24 @@ $(function(){
 		    field: 'userName',
 		    title: '用户名'
 		},{
+		    field: 'lastIp',
+		    title: '手机号'
+		},{
 		    field: 'email',
 		    title: '邮箱'
+		},{
+		    field: 'langType',
+		    title: '身份标识'
 		},{
             field: 'adminId',
             title: '操作',
             formatter : function(value,row,index){
-            	var a = "<a href ='haiAdminUserEditDetail?adminId="+value+"'  class='glyphicon glyphicon-pencil'></a>";
-            	var b = "&nbsp;&nbsp;<a href ='javascript:;' onclick='haiAdminUserDelete("+value+");' class='glyphicon glyphicon-trash'></a>";
-            	return a+b;
+            	if(row.userName != 'admin'){
+            		var a = "<a href ='haiAdminUserEditDetail?adminId="+value+"'  class='glyphicon glyphicon-pencil'></a>";
+                	var b = "&nbsp;&nbsp;<a href ='javascript:;' onclick='haiAdminUserDelete("+value+");' class='glyphicon glyphicon-trash'></a>";
+                	return a+b;
+            	}
+            	
             }
         }
         

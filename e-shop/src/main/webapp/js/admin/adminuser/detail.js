@@ -8,7 +8,7 @@ $(function(){
 function haiAdminUserAddSubmit(){
 	
 	if($("#userName").val() == undefined || $("#userName").val().length == 0){
-		layer.msg("请输入user_name");return ;
+		layer.msg("请输入用户名");return ;
 	}
 	if($("#email").val() == undefined || $("#email").val().length == 0){
 		layer.msg("请输入email");return ;
@@ -46,14 +46,12 @@ function haiAdminUserAddSubmit(){
 function haiAdminUserEditSubmit(){
 	
 	if($("#userName").val() == undefined || $("#userName").val().length == 0){
-		layer.msg("请输入user_name");return ;
+		layer.msg("请输入用户名");return ;
 	}
 	if($("#email").val() == undefined || $("#email").val().length == 0){
 		layer.msg("请输入email");return ;
 	}
-	if($("#password").val() == undefined || $("#password").val().length == 0){
-		layer.msg("请输入password");return ;
-	}
+
 
 	
 	
