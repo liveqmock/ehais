@@ -9,31 +9,39 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.hpsf.SummaryInformation;
+import org.apache.poi.hssf.usermodel.DVConstraint;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
 import org.apache.poi.hssf.usermodel.HSSFComment;
+import org.apache.poi.hssf.usermodel.HSSFDataValidation;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFPatriarch;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.ss.util.CellRangeAddressList;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -41,6 +49,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.ehais.annotation.ExcelVOAttribute;
 
 
 
@@ -49,6 +58,18 @@ public class ExcelUtils<E> {
     public static String NO_DEFINE = "no_define";//未定义的字段
     public static String DEFAULT_DATE_PATTERN="yyyy年MM月dd日";//默认日期格式
     public static int DEFAULT_COLOUMN_WIDTH = 17;
+    
+    
+    private Class<E> clazz;  
+    public ExcelUtils() {  
+    } 
+    
+    public ExcelUtils(Class<E> clazz) {  
+        this.clazz = clazz;  
+    } 
+    
+    
+    
     /**
      * 导出Excel 97(.xls)格式 ，少量数据
      * @param title 标题行 
@@ -340,6 +361,356 @@ public class ExcelUtils<E> {
             e.printStackTrace();
         }
     }
+    
+    
+//    第二版
+    public List<E> importExcel(String sheetName, InputStream input) {  
+        int maxCol = 0;  
+        List<E> list = new ArrayList<E>();  
+        try {  
+            HSSFWorkbook workbook = new HSSFWorkbook(input);  
+            HSSFSheet sheet = workbook.getSheet(sheetName);  
+            if (!sheetName.trim().equals("")) {  
+                sheet = workbook.getSheet(sheetName);// 如果指定sheet名,则取指定sheet中的内容.  
+            }  
+            if (sheet == null) {  
+                sheet = workbook.getSheetAt(0); // 如果传入的sheet名不存在则默认指向第1个sheet.  
+            }  
+            int rows = sheet.getPhysicalNumberOfRows();  
+
+            if (rows > 0) {// 有数据时才处理  
+                // Field[] allFields = clazz.getDeclaredFields();// 得到类的所有field.  
+                List<Field> allFields = getMappedFiled(clazz, null);  
+
+                Map<Integer, Field> fieldsMap = new HashMap<Integer, Field>();// 定义一个map用于存放列的序号和field.  
+                for (Field field : allFields) {  
+                    // 将有注解的field存放到map中.  
+                    if (field.isAnnotationPresent(ExcelVOAttribute.class)) {  
+                        ExcelVOAttribute attr = field  
+                                .getAnnotation(ExcelVOAttribute.class);  
+                        int col = getExcelCol(attr.column());// 获得列号  
+                        maxCol = Math.max(col, maxCol);  
+                        // System.out.println(col + "====" + field.getName());  
+                        field.setAccessible(true);// 设置类的私有字段属性可访问.  
+                        fieldsMap.put(col, field);  
+                    }  
+                }  
+                for (int i = 1; i < rows; i++) {// 从第2行开始取数据,默认第一行是表头.  
+                    HSSFRow row = sheet.getRow(i);  
+                    // int cellNum = row.getPhysicalNumberOfCells();  
+                    // int cellNum = row.getLastCellNum();  
+                    int cellNum = maxCol;  
+                    E entity = null;  
+                    for (int j = 0; j < cellNum; j++) {  
+                        HSSFCell cell = row.getCell(j);  
+                        if (cell == null) {  
+                            continue;  
+                        }  
+                        int cellType = cell.getCellType();  
+                        String c = "";  
+                        if (cellType == HSSFCell.CELL_TYPE_NUMERIC) {  
+                            c = String.valueOf(cell.getNumericCellValue());  
+                        } else if (cellType == HSSFCell.CELL_TYPE_BOOLEAN) {  
+                            c = String.valueOf(cell.getBooleanCellValue());  
+                        } else {  
+                            c = cell.getStringCellValue();  
+                        }  
+                        if (c == null || c.equals("")) {  
+                            continue;  
+                        }  
+                        entity = (entity == null ? clazz.newInstance() : entity);// 如果不存在实例则新建.  
+                        // System.out.println(cells[j].getContents());  
+                        Field field = fieldsMap.get(j);// 从map中得到对应列的field.  
+                        if (field==null) {  
+                            continue;  
+                        }  
+                        // 取得类型,并根据对象类型设置值.  
+                        Class<?> fieldType = field.getType();  
+                        if (String.class == fieldType) {  
+                            field.set(entity, String.valueOf(c));  
+                        } else if ((Integer.TYPE == fieldType)  
+                                || (Integer.class == fieldType)) {  
+                            field.set(entity, Integer.parseInt(c));  
+                        } else if ((Long.TYPE == fieldType)  
+                                || (Long.class == fieldType)) {  
+                            field.set(entity, Long.valueOf(c));  
+                        } else if ((Float.TYPE == fieldType)  
+                                || (Float.class == fieldType)) {  
+                            field.set(entity, Float.valueOf(c));  
+                        } else if ((Short.TYPE == fieldType)  
+                                || (Short.class == fieldType)) {  
+                            field.set(entity, Short.valueOf(c));  
+                        } else if ((Double.TYPE == fieldType)  
+                                || (Double.class == fieldType)) {  
+                            field.set(entity, Double.valueOf(c));  
+                        } else if (Character.TYPE == fieldType) {  
+                            if ((c != null) && (c.length() > 0)) {  
+                                field.set(entity, Character  
+                                        .valueOf(c.charAt(0)));  
+                            }  
+                        }  
+
+                    }  
+                    if (entity != null) {  
+                        list.add(entity);  
+                    }  
+                }  
+            }  
+
+        } catch (IOException e) {  
+            e.printStackTrace();  
+        } catch (InstantiationException e) {  
+            e.printStackTrace();  
+        } catch (IllegalAccessException e) {  
+            e.printStackTrace();  
+        } catch (IllegalArgumentException e) {  
+            e.printStackTrace();  
+        }  
+        return list;  
+    }  
+    
+    
+    
+    /** 
+     * 对list数据源将其里面的数据导入到excel表单 
+     *  
+     * @param sheetName 
+     *            工作表的名称 
+     * @param output 
+     *            java输出流 
+     */  
+    public boolean exportExcel(List<E> lists[], String sheetNames[],  
+            OutputStream output) {  
+        if (lists.length != sheetNames.length) {  
+            System.out.println("数组长度不一致");  
+            return false;  
+        }  
+
+        HSSFWorkbook workbook = new HSSFWorkbook();// 产生工作薄对象  
+
+        for (int ii = 0; ii < lists.length; ii++) {  
+            List<E> list = lists[ii];  
+            String sheetName = sheetNames[ii];  
+
+            List<Field> fields = getMappedFiled(clazz, null);  
+
+            HSSFSheet sheet = workbook.createSheet();// 产生工作表对象  
+
+            workbook.setSheetName(ii, sheetName);  
+
+            HSSFRow row;  
+            HSSFCell cell;// 产生单元格  
+            HSSFCellStyle style = workbook.createCellStyle();  
+            style.setFillForegroundColor(HSSFColor.SKY_BLUE.index);  
+            style.setFillBackgroundColor(HSSFColor.GREY_40_PERCENT.index);  
+            row = sheet.createRow(0);// 产生一行  
+            // 写入各个字段的列头名称  
+            for (int i = 0; i < fields.size(); i++) {  
+                Field field = fields.get(i);  
+                ExcelVOAttribute attr = field  
+                        .getAnnotation(ExcelVOAttribute.class);  
+                int col = getExcelCol(attr.column());// 获得列号  
+                cell = row.createCell(col);// 创建列  
+                cell.setCellType(HSSFCell.CELL_TYPE_STRING);// 设置列中写入内容为String类型  
+                cell.setCellValue(attr.name());// 写入列名  
+
+                // 如果设置了提示信息则鼠标放上去提示.  
+                if (!attr.prompt().trim().equals("")) {  
+                    setHSSFPrompt(sheet, "", attr.prompt(), 1, 100, col, col);// 这里默认设了2-101列提示.  
+                }  
+                // 如果设置了combo属性则本列只能选择不能输入  
+                if (attr.combo().length > 0) {  
+                    setHSSFValidation(sheet, attr.combo(), 1, 100, col, col);// 这里默认设了2-101列只能选择不能输入.  
+                }  
+                cell.setCellStyle(style);  
+            }  
+
+            int startNo = 0;  
+            int endNo = list.size();  
+            // 写入各条记录,每条记录对应excel表中的一行  
+            for (int i = startNo; i < endNo; i++) {  
+                row = sheet.createRow(i + 1 - startNo);  
+                E vo = (E) list.get(i); // 得到导出对象.  
+                for (int j = 0; j < fields.size(); j++) {  
+                    Field field = fields.get(j);// 获得field.  
+                    field.setAccessible(true);// 设置实体类私有属性可访问  
+                    ExcelVOAttribute attr = field  
+                            .getAnnotation(ExcelVOAttribute.class);  
+                    try {  
+                        // 根据ExcelVOAttribute中设置情况决定是否导出,有些情况需要保持为空,希望用户填写这一列.  
+                        if (attr.isExport()) {  
+                            cell = row.createCell(getExcelCol(attr.column()));// 创建cell  
+                            cell.setCellType(HSSFCell.CELL_TYPE_STRING);  
+                            cell.setCellValue(field.get(vo) == null ? ""  
+                                    : String.valueOf(field.get(vo)));// 如果数据存在就填入,不存在填入空格.  
+                        }  
+                    } catch (IllegalArgumentException e) {  
+                        e.printStackTrace();  
+                    } catch (IllegalAccessException e) {  
+                        e.printStackTrace();  
+                    }  
+                }  
+            }  
+        }  
+
+        try {  
+            output.flush();  
+            workbook.write(output);  
+            output.close();  
+            return true;  
+        } catch (IOException e) {  
+            e.printStackTrace();  
+            System.out.println("Output is closed ");  
+            return false;  
+        }  
+
+    }  
+
+    /** 
+     * 对list数据源将其里面的数据导入到excel表单 
+     *  
+     * @param sheetName 
+     *            工作表的名称 
+     * @param sheetSize 
+     *            每个sheet中数据的行数,此数值必须小于65536 
+     * @param output 
+     *            java输出流 
+     * @throws IOException 
+     */  
+    @SuppressWarnings("unchecked")
+    public boolean exportExcel(List<E> list, String sheetName,  
+    		HttpServletResponse response) throws IOException {
+    	
+    	OutputStream output = response.getOutputStream();
+    	response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"); 
+        response.setHeader("Content-Disposition", "attachment;filename="+ new String((sheetName+".xls").getBytes(), "iso-8859-1"));
+          
+        //此处 对类型进行转换
+        List<E> ilist = new ArrayList<>();
+        for (E t : list) {
+            ilist.add(t);
+        }
+        List<E>[] lists = new ArrayList[1];  
+        lists[0] = ilist;  
+
+        String[] sheetNames = new String[1];  
+        sheetNames[0] = sheetName;  
+
+        return exportExcel(lists, sheetNames, output);  
+    }  
+
+    /** 
+     * 将EXCEL中A,B,C,D,E列映射成0,1,2,3 
+     *  
+     * @param col 
+     */  
+    public static int getExcelCol(String col) {  
+        col = col.toUpperCase();  
+        // 从-1开始计算,字母重1开始运算。这种总数下来算数正好相同。  
+        int count = -1;  
+        char[] cs = col.toCharArray();  
+        for (int i = 0; i < cs.length; i++) {  
+            count += (cs[i] - 64) * Math.pow(26, cs.length - 1 - i);  
+        }  
+        return count;  
+    }  
+
+    /** 
+     * 设置单元格上提示 
+     *  
+     * @param sheet 
+     *            要设置的sheet. 
+     * @param promptTitle 
+     *            标题 
+     * @param promptContent 
+     *            内容 
+     * @param firstRow 
+     *            开始行 
+     * @param endRow 
+     *            结束行 
+     * @param firstCol 
+     *            开始列 
+     * @param endCol 
+     *            结束列 
+     * @return 设置好的sheet. 
+     */  
+    public static HSSFSheet setHSSFPrompt(HSSFSheet sheet, String promptTitle,  
+            String promptContent, int firstRow, int endRow, int firstCol,  
+            int endCol) {  
+        // 构造constraint对象  
+        DVConstraint constraint = DVConstraint  
+                .createCustomFormulaConstraint("DD1");  
+        // 四个参数分别是：起始行、终止行、起始列、终止列  
+        CellRangeAddressList regions = new CellRangeAddressList(firstRow, endRow, firstCol, endCol);  
+        // 数据有效性对象  
+        HSSFDataValidation data_validation_view = new HSSFDataValidation( regions, constraint);  
+        data_validation_view.createPromptBox(promptTitle, promptContent);  
+        sheet.addValidationData(data_validation_view);  
+        return sheet;  
+    }  
+
+    /** 
+     * 设置某些列的值只能输入预制的数据,显示下拉框. 
+     *  
+     * @param sheet 
+     *            要设置的sheet. 
+     * @param textlist 
+     *            下拉框显示的内容 
+     * @param firstRow 
+     *            开始行 
+     * @param endRow 
+     *            结束行 
+     * @param firstCol 
+     *            开始列 
+     * @param endCol 
+     *            结束列 
+     * @return 设置好的sheet. 
+     */  
+    public static HSSFSheet setHSSFValidation(HSSFSheet sheet,  
+            String[] textlist, int firstRow, int endRow, int firstCol,  
+            int endCol) {  
+        // 加载下拉列表内容  
+        DVConstraint constraint = DVConstraint  
+                .createExplicitListConstraint(textlist);  
+        // 设置数据有效性加载在哪个单元格上,四个参数分别是：起始行、终止行、起始列、终止列  
+        CellRangeAddressList regions = new CellRangeAddressList(firstRow,  
+                endRow, firstCol, endCol);  
+        // 数据有效性对象  
+        HSSFDataValidation data_validation_list = new HSSFDataValidation(  
+                regions, constraint);  
+        sheet.addValidationData(data_validation_list);  
+        return sheet;  
+    }  
+
+    /** 
+     * 得到实体类所有通过注解映射了数据表的字段 
+     *  
+     * @param map 
+     * @return 
+     */  
+    @SuppressWarnings("rawtypes")
+    private List<Field> getMappedFiled(Class clazz, List<Field> fields) {  
+        if (fields == null) {  
+            fields = new ArrayList<Field>();  
+        }  
+
+        Field[] allFields = clazz.getDeclaredFields();// 得到所有定义字段  
+        // 得到所有field并存放到一个list中.  
+        for (Field field : allFields) {  
+            if (field.isAnnotationPresent(ExcelVOAttribute.class)) {  
+                fields.add(field);  
+            }  
+        }  
+        if (clazz.getSuperclass() != null  
+                && !clazz.getSuperclass().equals(Object.class)) {  
+            getMappedFiled(clazz.getSuperclass(), fields);  
+        }  
+
+        return fields;  
+    }  
+    
+    
+    
     public static void main(String[] args) throws IOException {
         int count = 100000;
         JSONArray ja = new JSONArray();
@@ -380,290 +751,5 @@ public class ExcelUtils<E> {
     }
     
     
-//	private E e;
-//    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//    private int etimes = 0;
-// 
-//    public ExcelUtils(E e) {
-//        this.e = e;
-//    }
-// 
-//    @SuppressWarnings("unchecked")
-//    public E get() throws InstantiationException, IllegalAccessException {
-//        return (E) e.getClass().newInstance();
-//    }
-//    
-//    /**
-//     * 将数据写入到Excel文件
-//     * 
-//     * @param filePath
-//     *            文件路径
-//     * @param sheetName
-//     *            工作表名称
-//     * @param title
-//     *            工作表标题栏
-//     * @param data
-//     *            工作表数据
-//     * @throws FileNotFoundException
-//     *             文件不存在异常
-//     * @throws IOException
-//     *             IO异常
-//     */
-//    public static void writeToFile(String filePath, String[] sheetName, List<? extends Object[]> title, List<? extends List<? extends Object[]>> data) throws FileNotFoundException, IOException {
-//        // 创建并获取工作簿对象
-//        Workbook wb = getWorkBook(sheetName, title, data);
-//        // 写入到文件
-//        FileOutputStream out = new FileOutputStream(filePath);
-//        wb.write(out);
-//        out.close();
-//    }
-// 
-//    /**
-//     * 创建工作簿对象<br>
-//     * <font color="red">工作表名称，工作表标题，工作表数据最好能够对应起来</font><br>
-//     * 比如三个不同或相同的工作表名称，三组不同或相同的工作表标题，三组不同或相同的工作表数据<br>
-//     * <b> 注意：<br>
-//     * 需要为每个工作表指定<font color="red">工作表名称，工作表标题，工作表数据</font><br>
-//     * 如果工作表的数目大于工作表数据的集合，那么首先会根据顺序一一创建对应的工作表名称和数据集合，然后创建的工作表里面是没有数据的<br>
-//     * 如果工作表的数目小于工作表数据的集合，那么多余的数据将不会写入工作表中 </b>
-//     * 
-//     * @param sheetName
-//     *            工作表名称的数组
-//     * @param title
-//     *            每个工作表名称的数组集合
-//     * @param data
-//     *            每个工作表数据的集合的集合
-//     * @return Workbook工作簿
-//     * @throws FileNotFoundException
-//     *             文件不存在异常
-//     * @throws IOException
-//     *             IO异常
-//     */
-//    public static Workbook getWorkBook(String[] sheetName, List<? extends Object[]> title, List<? extends List<? extends Object[]>> data) throws FileNotFoundException, IOException {
-// 
-//        // 创建工作簿
-//        Workbook wb = new SXSSFWorkbook();
-//        // 创建一个工作表sheet
-//        Sheet sheet = null;
-//        // 申明行
-//        Row row = null;
-//        // 申明单元格
-//        Cell cell = null;
-//        // 单元格样式
-//        CellStyle titleStyle = wb.createCellStyle();
-//        CellStyle cellStyle = wb.createCellStyle();
-//        // 字体样式
-//        Font font = wb.createFont();
-//        // 粗体
-//        font.setBoldweight(XSSFFont.BOLDWEIGHT_BOLD);
-//        titleStyle.setFont(font);
-//        // 水平居中
-//        titleStyle.setAlignment(CellStyle.ALIGN_CENTER);
-//        // 垂直居中
-//        titleStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-// 
-//        // 水平居中
-//        cellStyle.setAlignment(CellStyle.ALIGN_CENTER);
-//        // 垂直居中
-//        cellStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-// 
-//        cellStyle.setFillBackgroundColor(HSSFColor.BLUE.index);
-// 
-//        // 标题数据
-//        Object[] title_temp = null;
-// 
-//        // 行数据
-//        Object[] rowData = null;
-// 
-//        // 工作表数据
-//        List<? extends Object[]> sheetData = null;
-// 
-//        // 遍历sheet
-//        for (int sheetNumber = 0; sheetNumber < sheetName.length; sheetNumber++) {
-//            // 创建工作表
-//            sheet = wb.createSheet();
-//            // 设置默认列宽
-//            sheet.setDefaultColumnWidth(18);
-//            // 设置工作表名称
-//            wb.setSheetName(sheetNumber, sheetName[sheetNumber]);
-//            // 设置标题
-//            title_temp = title.get(sheetNumber);
-//            row = sheet.createRow(0);
-// 
-//            // 写入标题
-//            for (int i = 0; i < title_temp.length; i++) {
-//                cell = row.createCell(i);
-//                cell.setCellStyle(titleStyle);
-//                cell.setCellValue(title_temp[i].toString());
-//            }
-// 
-//            try {
-//                sheetData = data.get(sheetNumber);
-//            } catch (Exception e) {
-//                continue;
-//            }
-//            // 写入行数据
-//            for (int rowNumber = 0; rowNumber < sheetData.size(); rowNumber++) {
-//                // 如果没有标题栏，起始行就是0，如果有标题栏，行号就应该为1
-//                row = sheet.createRow(title_temp == null ? rowNumber : (rowNumber + 1));
-//                rowData = sheetData.get(rowNumber);
-//                for (int columnNumber = 0; columnNumber < rowData.length; columnNumber++) {
-//                    cell = row.createCell(columnNumber);
-//                    cell.setCellStyle(cellStyle);
-//                    cell.setCellValue(rowData[columnNumber] + "");
-//                }
-//            }
-//        }
-//        return wb;
-//    }
-// 
-//    /**
-//     * 将数据写入到EXCEL文档
-//     * 
-//     * @param list
-//     *            数据集合
-//     * @param edf
-//     *            数据格式化，比如有些数字代表的状态，像是0:女，1：男，或者0：正常，1：锁定，变成可读的文字
-//     *            该字段仅仅针对Boolean,Integer两种类型作处理
-//     * @param filePath
-//     *            文件路径
-//     * @throws Exception
-//     */
-//    public static <T> void writeToFile(List<T> list, ExcelDataFormatter edf, String filePath) throws Exception {
-//        // 创建并获取工作簿对象
-//        Workbook wb = getWorkBook(list, edf);
-//        // 写入到文件
-//        FileOutputStream out = new FileOutputStream(filePath);
-//        wb.write(out);
-//        out.close();
-//    }
-// 
-//    /**
-//     * 获得Workbook对象
-//     * 
-//     * @param list
-//     *            数据集合
-//     * @return Workbook
-//     * @throws Exception
-//     */
-//    public static <T> Workbook getWorkBook(List<T> list, ExcelDataFormatter edf) throws Exception {
-//        // 创建工作簿
-//        Workbook wb = new SXSSFWorkbook();
-// 
-//        if (list == null || list.size() == 0)
-//            return wb;
-// 
-//        // 创建一个工作表sheet
-//        Sheet sheet = wb.createSheet();
-//        // 申明行
-//        Row row = sheet.createRow(0);
-//        // 申明单元格
-//        Cell cell = null;
-// 
-//        CreationHelper createHelper = wb.getCreationHelper();
-// 
-//        Field[] fields = ReflectUtils.getClassFieldsAndSuperClassFields(list.get(0).getClass());
-// 
-//        XSSFCellStyle titleStyle = (XSSFCellStyle) wb.createCellStyle();
-//        titleStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
-//        // 设置前景色
-//        titleStyle.setFillForegroundColor(new XSSFColor(new java.awt.Color(159, 213, 183)));
-//        titleStyle.setAlignment(CellStyle.ALIGN_CENTER);
-// 
-//        Font font = wb.createFont();
-//        font.setColor(HSSFColor.BROWN.index);
-//        font.setBoldweight(Font.BOLDWEIGHT_BOLD);
-//        // 设置字体
-//        titleStyle.setFont(font);
-// 
-//        int columnIndex = 0;
-//        Excel excel = null;
-//        for (Field field : fields) {
-//            field.setAccessible(true);
-//            excel = field.getAnnotation(Excel.class);
-//            if (excel == null || excel.skip() == true) {
-//                continue;
-//            }
-//            // 列宽注意乘256
-//            sheet.setColumnWidth(columnIndex, excel.width() * 256);
-//            // 写入标题
-//            cell = row.createCell(columnIndex);
-//            cell.setCellStyle(titleStyle);
-//            cell.setCellValue(excel.name());
-// 
-//            columnIndex++;
-//        }
-// 
-//        int rowIndex = 1;
-// 
-//        CellStyle cs = wb.createCellStyle();
-// 
-//        for (T t : list) {
-//            row = sheet.createRow(rowIndex);
-//            columnIndex = 0;
-//            Object o = null;
-//            for (Field field : fields) {
-// 
-//                field.setAccessible(true);
-// 
-//                // 忽略标记skip的字段
-//                excel = field.getAnnotation(Excel.class);
-//                if (excel == null || excel.skip() == true) {
-//                    continue;
-//                }
-//                // 数据
-//                cell = row.createCell(columnIndex);
-// 
-//                o = field.get(t);
-//                // 如果数据为空，跳过
-//                if (o == null)
-//                    continue;
-// 
-//                // 处理日期类型
-//                if (o instanceof Date) {
-//                    cs.setDataFormat(createHelper.createDataFormat().getFormat("yyyy-MM-dd HH:mm:ss"));
-//                    cell.setCellStyle(cs);
-//                    cell.setCellValue((Date) field.get(t));
-//                } else if (o instanceof Double || o instanceof Float) {
-//                    cell.setCellValue((Double) field.get(t));
-//                } else if (o instanceof Boolean) {
-//                    Boolean bool = (Boolean) field.get(t);
-//                    if (edf == null) {
-//                        cell.setCellValue(bool);
-//                    } else {
-//                        Map<String, String> map = edf.get(field.getName());
-//                        if (map == null) {
-//                            cell.setCellValue(bool);
-//                        } else {
-//                            cell.setCellValue(map.get(bool.toString().toLowerCase()));
-//                        }
-//                    }
-// 
-//                } else if (o instanceof Integer) {
-// 
-//                    Integer intValue = (Integer) field.get(t);
-// 
-//                    if (edf == null) {
-//                        cell.setCellValue(intValue);
-//                    } else {
-//                        Map<String, String> map = edf.get(field.getName());
-//                        if (map == null) {
-//                            cell.setCellValue(intValue);
-//                        } else {
-//                            cell.setCellValue(map.get(intValue.toString()));
-//                        }
-//                    }
-//                } else {
-//                    cell.setCellValue(field.get(t).toString());
-//                }
-// 
-//                columnIndex++;
-//            }
-// 
-//            rowIndex++;
-//        }
-// 
-//        return wb;
-//    }
     
 }

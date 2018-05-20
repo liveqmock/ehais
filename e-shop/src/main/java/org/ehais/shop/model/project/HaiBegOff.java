@@ -3,6 +3,8 @@ package org.ehais.shop.model.project;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.ehais.annotation.ExcelVOAttribute;
+
 public class HaiBegOff implements Serializable {
     /**
      *
@@ -29,6 +31,7 @@ public class HaiBegOff implements Serializable {
      *
      * @mbg.generated Sat Nov 04 19:16:59 CST 2017
      */
+    @ExcelVOAttribute(name = "请假天数", column = "C", isExport = true) 
     private Integer number;
 
     /**
@@ -38,6 +41,7 @@ public class HaiBegOff implements Serializable {
      *
      * @mbg.generated Sat Nov 04 19:16:59 CST 2017
      */
+    @ExcelVOAttribute(name = "请假理由", column = "D", isExport = true) 
     private String reason;
 
     /**

@@ -17,9 +17,11 @@ import org.ehais.service.impl.CommonServiceImpl;
 import org.ehais.shop.mapper.project.HaiBegOffMapper;
 import org.ehais.shop.model.project.HaiBegOff;
 import org.ehais.shop.model.project.HaiBegOffExample;
+import org.ehais.shop.model.project.HaiBegOffUser;
 import org.ehais.shop.service.ProjectBegOffService;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
+import org.ehais.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -98,6 +100,85 @@ public class ProjectBegOffServiceImpl  extends CommonServiceImpl implements Proj
 		rm.setCode(1);
 		rm.setRows(list);
 		rm.setTotal(total);
+		
+		
+		return rm;
+	}
+	
+	
+	public ReturnObject<HaiBegOffUser> begoff_list_json(HttpServletRequest request,Integer store_id,
+			String start_date, 
+			String end_date) throws Exception{
+		ReturnObject<HaiBegOffUser> rm = new ReturnObject<HaiBegOffUser>();
+		rm.setCode(0);
+		
+		Date startDate = DateUtil.formatDate(start_date, DateUtil.FORMATSTR_3);
+		Date endDate = DateUtil.formatDate(end_date, DateUtil.FORMATSTR_3);
+		
+		
+		HaiBegOffExample example = new HaiBegOffExample();
+		HaiBegOffExample.Criteria c = example.createCriteria();
+		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+		c.andCreateDateGreaterThanOrEqualTo(startDate).andCreateDateLessThanOrEqualTo(endDate);
+		
+		example.setOrderByClause("create_date asc");
+		
+		List<HaiBegOffUser> boList = new ArrayList<HaiBegOffUser>();
+		List<HaiBegOff> list = HaiBegOffMapper.selectByExample(example);
+
+		List<Long> userIds = new ArrayList<Long>();
+		for (HaiBegOff haiBegOff : list) {
+			HaiBegOffUser b = new HaiBegOffUser();
+			userIds.add(haiBegOff.getUserId());
+			if(haiBegOff.getTeacherUserId() != null && haiBegOff.getTeacherUserId() > 0) {
+				userIds.add(haiBegOff.getTeacherUserId());
+				b.setTeacherUserId(haiBegOff.getTeacherUserId());
+			}
+			if(haiBegOff.getDepartmentUserId() != null && haiBegOff.getDepartmentUserId() > 0) {
+				userIds.add(haiBegOff.getDepartmentUserId());
+				b.setDepartmentUserId(haiBegOff.getDepartmentUserId());
+			}
+			if(haiBegOff.getLeaderUserId() != null && haiBegOff.getLeaderUserId() > 0) {
+				userIds.add(haiBegOff.getLeaderUserId());
+				b.setLeaderUserId(haiBegOff.getLeaderUserId());
+			}
+			
+			b.setUserId(haiBegOff.getUserId());
+			b.setBegoffId(haiBegOff.getBegoffId());
+			b.setNumber(haiBegOff.getNumber());
+			b.setReason(haiBegOff.getReason());
+			b.setBegOffDate(DateUtil.formatDate(haiBegOff.getCreateDate(), DateUtil.FORMATSTR_3));
+			
+			boList.add(b);
+		}
+		
+		
+		
+		if(userIds.size() > 0){
+			List<EHaiUsers> user_list =  eHaiUsersMapper.inUserIdList(StringUtils.join(userIds.toArray(), ","));
+			for (HaiBegOffUser b : boList) {
+				for (EHaiUsers u : user_list) {
+					if(b.getUserId().longValue() == u.getUserId().longValue()) {
+						b.setRealname(u.getRealname());
+						b.setClassName(u.getQuestion());
+						b.setUsername(u.getUserName());
+					}
+					if(b.getTeacherUserId() != null && b.getTeacherUserId().longValue() == u.getUserId().longValue()) {
+						b.setTeacherName(u.getRealname());
+					}
+					if(b.getDepartmentUserId() != null && b.getDepartmentUserId().longValue() == u.getUserId().longValue()) {
+						b.setDepartmentName(u.getRealname());
+					}
+					if(b.getLeaderUserId() != null && b.getLeaderUserId().longValue() == u.getUserId().longValue()) {
+						b.setLeaderName(u.getRealname());
+					}
+				}
+			}
+		}
+
+
+		rm.setCode(1);
+		rm.setRows(boList);
 		
 		
 		return rm;

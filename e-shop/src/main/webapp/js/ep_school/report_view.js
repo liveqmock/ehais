@@ -60,7 +60,11 @@ $(function(){
     
     
     $("#btnDownload").click(function(){
-    	$("#statisticsBegOffExport").submit();
+    	$("#statisticsBegOffExport").attr("action","statisticsBegOffExport").submit();
+    });
+    
+    $("#btnRecordDownload").click(function(){
+    	$("#statisticsBegOffExport").attr("action","recordBegOffExport").submit();
     });
     
 });

@@ -4,12 +4,16 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.ehais.service.CommonService;
 import org.ehais.shop.model.project.HaiBegOff;
+import org.ehais.shop.model.project.HaiBegOffUser;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
 
 public interface ProjectBegOffService extends CommonService{
 	public ReturnObject<HaiBegOff> begoff_list(HttpServletRequest request) throws Exception;
 	public ReturnObject<HaiBegOff> begoff_list_json(HttpServletRequest request,EConditionObject condition,Integer keySubId,String begOffName) throws Exception;
+	public ReturnObject<HaiBegOffUser> begoff_list_json(HttpServletRequest request,Integer store_id,
+			String start_date, 
+			String end_date) throws Exception;
 	public ReturnObject<HaiBegOff> begoff_insert(HttpServletRequest request) throws Exception;
 	public ReturnObject<HaiBegOff> begoff_insert_submit(HttpServletRequest request,HaiBegOff model) throws Exception;
 	public ReturnObject<HaiBegOff> begoff_update(HttpServletRequest request,Integer begOffId) throws Exception;

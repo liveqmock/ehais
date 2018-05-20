@@ -1432,6 +1432,29 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 		
 	}
 	
+	@RequestMapping(value="/admin/recordBegOffExport",method=RequestMethod.POST)
+	public void recordBegOffExport(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "startDate", required = true) String startDate,
+			@RequestParam(value = "endDate", required = true) String endDate
+			) {	
+		try{
+			ReturnObject<HaiBegOffUser> rm = projectBegOffService.begoff_list_json(request, default_store_id, startDate, endDate);
+			HaiBegOffUser bo = new HaiBegOffUser();
+			ExcelUtils<HaiBegOffUser> eu = new ExcelUtils<HaiBegOffUser>(HaiBegOffUser.class);
+			
+			  
+			eu.exportExcel(rm.getRows(), "请假记录", response);
+			
+			rm.setCode(1);
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("report", e);
+		}
+		
+	}
+	
+	
 	
 	//通过学号/工号找用户
 	private EHaiUsers getUserByStudentNo(String user_name){
