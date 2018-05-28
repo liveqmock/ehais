@@ -665,6 +665,11 @@ public class WeiXinUtil {
 		
 	}
 	
+	//微信提现发送
+	public static String transfers(String content) throws Exception {
+		return EHttpClientUtil.httpPostEntity(WXConstants.transfers, content);
+	}
+	
 	public static void main(String[] args) {
 		try {
 //			String mch_id = "1480510742";

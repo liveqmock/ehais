@@ -152,6 +152,31 @@ public interface HaiOrderInfoMapper {
 			@Param("end_time") Long end_time
 			);
 	
+	
+	
+	@Select("select "+
+			" sum(case when pay_name='微信支付' then order_amount end) as weixin_amount, "+
+			" sum(case when pay_name='现金支付' then order_amount end) as cash_amount, "+
+			" count(case when pay_name='微信支付' then order_id end) as weixin_quantity, "+
+			" count(case when pay_name='现金支付' then order_id end) as cash_quantity, "+
+			" DATE_FORMAT(FROM_UNIXTIME(pay_time / 1000),'%Y-%m-%d') as pay_time "+
+			" from hai_order_info where store_id = #{store_id} and order_status = 1 " + 
+			" and pay_time >= #{start_time} and pay_time < #{end_time} " + 
+			" GROUP BY DATE_FORMAT(FROM_UNIXTIME(pay_time / 1000),'%Y-%m-%d')")
+	@Results(value = {
+			@Result(property="weixinAmount", column="weixin_amount"),
+			@Result(property="cashAmount", column="cash_amount"),
+			@Result(property="weixinQuantity", column="weixin_quantity"),
+			@Result(property="cashQuantity", column="cash_quantity"),
+			@Result(property="payTime", column="pay_time")
+	})
+	List<OrderStoreStatistics> order_store_statistics(
+			@Param("store_id") Integer store_id,
+			@Param("start_time") Long start_time,
+			@Param("end_time") Long end_time
+			);
+	
+	
 
 	@Select(
 			"select count(*) as count , 'order_0' as ostatus from hai_order_info where order_status = 0 and user_id = #{user_id} "+

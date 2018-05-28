@@ -8,13 +8,12 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
+import org.ehais.epublic.mapper.HaiWithdrawDepositMapper;
+import org.ehais.epublic.model.HaiWithdrawDeposit;
+import org.ehais.epublic.model.HaiWithdrawDepositExample;
 import org.ehais.model.BootStrapModel;
 import org.ehais.service.impl.CommonServiceImpl;
-import org.ehais.shop.mapper.HaiWithdrawDepositMapper;
-import org.ehais.shop.model.HaiWithdrawDeposit;
-import org.ehais.shop.model.HaiWithdrawDepositExample;
 import org.ehais.shop.service.HaiWithdrawDepositService;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
@@ -181,7 +180,7 @@ public class HaiWithdrawDepositServiceImpl  extends CommonServiceImpl implements
 
 bean.setUserId(model.getUserId());
 bean.setCreateDate(model.getCreateDate());
-bean.setWithdrawDeposit(model.getWithdrawDeposit());
+//bean.setWithdrawDeposit(model.getWithdrawDeposit());
 bean.setIsSuccess(model.getIsSuccess());
 bean.setSuccessDate(model.getSuccessDate());
 bean.setReturnMessage(model.getReturnMessage());

@@ -60,4 +60,19 @@ public interface WeiXinPayService {
 	public WxUnifiedorderResult toWxUnifiedorderResult(WeiXinUnifiedOrderResult model);
 	
 	
+	/**
+	 * 提现金额
+	 * @param request
+	 * @param money
+	 * @param classify
+	 */
+	public ReturnObject<Object> transfers(HttpServletRequest request,String money,String classify,String prefix_order_transfers) throws Exception;
+	
+	/**
+	 * 计划任务处理提现
+	 * @return
+	 * @throws Exception
+	 */
+	public ReturnObject<Object> transfersTask() throws Exception;
+	
 }

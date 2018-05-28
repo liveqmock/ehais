@@ -203,6 +203,22 @@ public class EhaisCommonController extends CommonController{
 		return this.saveUserOpen(request, open , wxUser , null);
 	}
 	
+	protected EHaiUsers getUserByOpenIdInfo(HttpServletRequest request,String code,Integer store_id) throws Exception{
+		WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
+		OpenidInfo open = WeiXinUtil.getOpenid(code,wp.getAppid(),wp.getSecret());
+		if(open == null || open.getOpenid() == null) return null;
+		
+		EHaiUsersExample userExp = new EHaiUsersExample();
+		EHaiUsersExample.Criteria userC = userExp.createCriteria();
+		userC.andOpenidEqualTo(open.getOpenid());
+		List<EHaiUsers> list = eHaiUsersMapper.selectByExample(userExp);
+
+		if(list != null && list.size() > 0){//用户不存在，入库
+			return list.get(0);
+		}
+		return null;
+	}
+	
 	
 	//跳转微信认证
 	protected String redirect_wx_authorize(HttpServletRequest request ,String appid , String path ) throws Exception {

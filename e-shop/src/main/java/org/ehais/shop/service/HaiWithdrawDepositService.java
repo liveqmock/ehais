@@ -2,8 +2,8 @@ package org.ehais.shop.service;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.ehais.epublic.model.HaiWithdrawDeposit;
 import org.ehais.service.CommonService;
-import org.ehais.shop.model.HaiWithdrawDeposit;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
 

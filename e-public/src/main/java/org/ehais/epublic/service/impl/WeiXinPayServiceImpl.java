@@ -1,5 +1,6 @@
 package org.ehais.epublic.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -7,20 +8,33 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.ehais.common.EConstants;
 import org.ehais.enums.EOrderClassifyEnum;
 import org.ehais.enums.EOrderStatusEnum;
 import org.ehais.enums.EPayStatusEnum;
+import org.ehais.enums.EWithdrawDepositStatusEnum;
+import org.ehais.epublic.mapper.EHaiStoreMapper;
+import org.ehais.epublic.mapper.EHaiUsersMapper;
 import org.ehais.epublic.mapper.HaiOrderInfoMapper;
 import org.ehais.epublic.mapper.HaiStoreStatisticsMapper;
+import org.ehais.epublic.mapper.HaiWithdrawDepositMapper;
 import org.ehais.epublic.mapper.weixin.WxNotifyPayMapper;
+import org.ehais.epublic.mapper.weixin.WxTransfersMapper;
+import org.ehais.epublic.mapper.weixin.WxTransfersResultMapper;
 import org.ehais.epublic.mapper.weixin.WxUnifiedorderMapper;
 import org.ehais.epublic.mapper.weixin.WxUnifiedorderResultMapper;
 import org.ehais.epublic.model.EHaiStore;
-import org.ehais.epublic.model.HaiOrderInfo;
+import org.ehais.epublic.model.EHaiUsers;
+import org.ehais.epublic.model.EHaiUsersExample;
 import org.ehais.epublic.model.HaiOrderInfoWithBLOBs;
 import org.ehais.epublic.model.HaiStoreStatistics;
+import org.ehais.epublic.model.HaiWithdrawDeposit;
+import org.ehais.epublic.model.HaiWithdrawDepositExample;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.epublic.model.weixin.WxNotifyPay;
+import org.ehais.epublic.model.weixin.WxTransfers;
+import org.ehais.epublic.model.weixin.WxTransfersExample;
+import org.ehais.epublic.model.weixin.WxTransfersResult;
 import org.ehais.epublic.model.weixin.WxUnifiedorder;
 import org.ehais.epublic.model.weixin.WxUnifiedorderResult;
 import org.ehais.epublic.service.EStoreService;
@@ -32,6 +46,7 @@ import org.ehais.util.DateUtil;
 import org.ehais.util.ECommon;
 import org.ehais.util.IpUtil;
 import org.ehais.util.SignUtil;
+import org.ehais.util.XStreamUtil;
 import org.ehais.weixin.model.WeiXinNotifyPay;
 import org.ehais.weixin.model.WeiXinTemplateMessage;
 import org.ehais.weixin.model.WeiXinUnifiedOrder;
@@ -65,6 +80,17 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 	private EStoreService eStoreService;
 	@Autowired
 	private HaiStoreStatisticsMapper haiStoreStatisticsMapper;
+	@Autowired
+	private EHaiUsersMapper eHaiUsersMapper;
+	@Autowired
+	private EHaiStoreMapper haiStoreMapper;
+	@Autowired
+	private HaiWithdrawDepositMapper haiWithdrawDepositMapper;
+	@Autowired
+	private WxTransfersMapper wxTransfersMapper;
+	@Autowired
+	private WxTransfersResultMapper wxTransfersResultMapper;
+	
 		
 	/**
 	 * 微信支付需要的js参数通过此方法返回
@@ -482,7 +508,243 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 		
 		
 	}
+
+
+	@Override
+	public ReturnObject<Object> transfers(HttpServletRequest request, 
+			String money, 
+			String classify,
+			String prefix_order_transfers) throws Exception {
+		// TODO Auto-generated method stub
+		ReturnObject<Object> rm = new ReturnObject<Object>();
+		rm.setCode(0);
+		//验证金额
+		if(!ECommon.isMoney(money)) {
+			rm.setMsg("金额类型不正确");
+			return rm;
+		}
+		//判断身份合法性
+		Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
+		String openid = (String)request.getSession().getAttribute(EConstants.SESSION_OPEN_ID);
+		
+		if(user_id == null || user_id == 0 || user_id.longValue() == 0) {
+			rm.setMsg("请重新登录");
+			return rm;
+		}
+		EHaiUsers users = eHaiUsersMapper.selectByPrimaryKey(user_id);
+		if(users == null ) {
+			rm.setMsg("不存在此用户");
+			return rm;
+		}
+		if(users.getUserType() == null) {
+			rm.setMsg("用户无权限提现");
+			return rm;
+		}
+		
+		if(users.getStoreId() == null || users.getStoreId() == 0 || users.getStoreId().intValue() == 0) {
+			rm.setMsg("非法商家，无权限提现");
+			return rm;
+		}
+		//判断是否存在多个同商家类型，要查证
+		Integer store_id = users.getStoreId();
+		EHaiUsersExample ue = new EHaiUsersExample();
+		ue.createCriteria().andStoreIdEqualTo(store_id).andUserTypeGreaterThan(Short.valueOf("0"));
+		Long count_user = eHaiUsersMapper.countByExample(ue);
+		if(count_user > 0) {
+			rm.setMsg("商家数据有误");
+			this.transfersErrorManagerTemplateMessage(request, store_id+"的商家信息存在多个管理员");
+			return rm;
+		}
+		
+		EHaiStore eStore = eStoreService.getEStore(store_id);
+		if(eStore == null) {
+			rm.setMsg("商家不存在001");
+			return rm;
+		}
+		WpPublicWithBLOBs wpPublic = eWPPublicService.getWpPublic(store_id);
+		if(wpPublic == null) {
+			rm.setMsg("商家配置不正确，请微信留言");
+			return rm;
+		}
+		EHaiStore store = haiStoreMapper.selectByPrimaryKey(store_id);
+		if(store == null) {
+			rm.setMsg("商家不存在");
+			return rm;
+		}
+		if(store.getBalance() == null || store.getBalance() == 0 || store.getBalance().intValue() == 0) {
+			rm.setMsg("金额不足");
+			return rm;
+		}
+		if(store.getOwnerName() == null || store.getOwnerName().equals("")) {
+			rm.setMsg("用户未在平台认证");
+			return rm;
+		}
+		Float fMoney = Float.valueOf(money);
+		Integer iMoney = fMoney.intValue() * 100;
+		if(iMoney.intValue() > store.getBalance().intValue()) {
+			rm.setMsg("提现金额大于余额");
+			return rm;
+		}
+		//判断是否存在未提现成功的操作
+		HaiWithdrawDepositExample wde = new HaiWithdrawDepositExample();
+		wde.createCriteria().andUserIdEqualTo(user_id).andStatusEqualTo(EWithdrawDepositStatusEnum.INIT);
+		wde.or().andUserIdEqualTo(user_id).andStatusEqualTo(EWithdrawDepositStatusEnum.CONTINUED);
+		Long countic = haiWithdrawDepositMapper.countByExample(wde);
+		if(countic > 0) {
+			rm.setMsg("提现正在进行中，不能重复提现");
+			return rm;
+		}
+		
+		//插入提现表
+		HaiWithdrawDeposit wd = new HaiWithdrawDeposit();
+		wd.setUserId(user_id);
+		wd.setStoreId(store_id);
+		wd.setOpenid(openid);
+		wd.setRealname(users.getRealname());
+		wd.setCreateDate(new Date());
+		wd.setAmount(iMoney);
+		wd.setWithdrawDesc("提现");
+		wd.setClassify(classify);
+		wd.setStatus(EWithdrawDepositStatusEnum.INIT);
+		
+		int i = haiWithdrawDepositMapper.insert(wd);
+		if(i != 1) {
+			rm.setMsg("提现操作有误，请微信留言给管理员");
+			return rm;
+		}
+		
+		Date date = new Date();
+		
+		WxTransfers wxt = new WxTransfers();
+		
+		wxt.setMchAppid(wpPublic.getAppid());
+		wxt.setMchid(wpPublic.getMchId());
+		wxt.setDeviceInfo(null);
+		wxt.setNonceStr(ECommon.nonceStr(32));
+		String orderSn = prefix_order_transfers + DateUtil.formatDate(date, DateUtil.FORMATSTR_4) + users.getUserId() + ECommon.nonceInt(4);
+		wxt.setPartnerTradeNo(orderSn);
+		wxt.setOpenid(openid);
+		wxt.setCheckName("FORCE_CHECK");
+		wxt.setReUserName(store.getOwnerName());
+		wxt.setAmount(iMoney);
+		wxt.setDesc(classify+"提现");
+		String ip = IpUtil.getIpAddrV2(request);
+		if(ip.indexOf(",") > 0) {
+			String[] ips = ip.split(",");
+			ip = ips[0];
+		}
+		wxt.setSpbillCreateIp(ip);
+		String sign = SignUtil.getSign(wxt, wpPublic.getSecret());
+		wxt.setSign(sign);
+		
+		wxt.setWdId(wd.getWdId());
+		i = wxTransfersMapper.insert(wxt);
+		
+		String content = XStreamUtil.toXml(wxt);
+		
+		String result = WeiXinUtil.transfers(content);
+		
+		WxTransfersResult wxtr = XStreamUtil.toBean(result, WxTransfersResult.class);
+		wxtr.setWdId(wd.getWdId());
+		i = wxTransfersResultMapper.insert(wxtr);
+		
+		if(wxtr.getReturnCode().toUpperCase().equals("FAIL")) {
+			wd.setStatus(EWithdrawDepositStatusEnum.INVALID);
+			wd.setIsSuccess(false);
+			wd.setReturnMessage("return:"+wxtr.getReturnMsg());
+			wd.setSuccessDate(date);
+			haiWithdrawDepositMapper.updateByPrimaryKey(wd);
+			rm.setMsg("提现返回失败，请微信留言给管理员");
+			this.transfersErrorManagerTemplateMessage(request, "客户提现失败，客户编号："+store_id+"，提现金额："+money+"；return:"+wxtr.getReturnMsg());
+			return rm;
+		}
+		
+		if(wxtr.getResultCode().toUpperCase().equals("FAIL")) {
+			wd.setStatus(EWithdrawDepositStatusEnum.CONTINUED);
+			wd.setIsSuccess(false);
+			wd.setReturnMessage("result:"+wxtr.getErrCode()+"|"+wxtr.getErrCodeDes());
+			wd.setSuccessDate(date);
+			haiWithdrawDepositMapper.updateByPrimaryKey(wd);
+			rm.setMsg("提现过程处理中，请耐心等待2~4个小时");
+			return rm;
+		}
+		
+		
+		wd.setStatus(EWithdrawDepositStatusEnum.SUCCESS);
+		wd.setIsSuccess(true);
+		wd.setReturnMessage("result:"+wxtr.getErrCode()+"|"+wxtr.getErrCodeDes());
+		wd.setSuccessDate(date);
+		haiWithdrawDepositMapper.updateByPrimaryKey(wd);
+		
+		rm.setCode(1);
+		rm.setMsg("提现过程处理中，请耐心等待2~4个小时");
+		return rm ;
+	}
+
 	
+	@Override
+	public ReturnObject<Object> transfersTask() throws Exception {
+		// TODO Auto-generated method stub
+		ReturnObject<Object> rm = new ReturnObject<Object>();
+		HaiWithdrawDepositExample wde = new HaiWithdrawDepositExample();
+		wde.createCriteria().andStatusEqualTo(EWithdrawDepositStatusEnum.CONTINUED);
+		List<HaiWithdrawDeposit> list = haiWithdrawDepositMapper.selectByExample(wde);
+		if(list == null || list.size() == 0)return rm;
+		List<Integer> wdids = new ArrayList<Integer>();
+		for (HaiWithdrawDeposit haiWithdrawDeposit : list) {
+			wdids.add(haiWithdrawDeposit.getWdId());
+		}
+		if(wdids.size() == 0)return rm;
+		WxTransfersExample wte = new WxTransfersExample();
+		wte.createCriteria().andWdIdIn(wdids);
+		List<WxTransfers> listWxTransfers = wxTransfersMapper.selectByExample(wte);
+		for (WxTransfers wxTransfers : listWxTransfers) {
+			String content = XStreamUtil.toXml(wxTransfers);
+			
+			String result = WeiXinUtil.transfers(content);
+			
+			WxTransfersResult wxtr = XStreamUtil.toBean(result, WxTransfersResult.class);
+			wxtr.setWdId(wxTransfers.getWdId());
+			wxTransfersResultMapper.insert(wxtr);
+			
+			
+			if(wxtr.getReturnCode() != null && wxtr.getResultCode()!=null && wxtr.getReturnCode().toUpperCase().equals("SUCCESS") && wxtr.getResultCode().toUpperCase().equals("SUCCESS")) {
+				for (HaiWithdrawDeposit wd : list) {
+					if(wxTransfers.getWdId().intValue() == wd.getWdId().intValue()) {
+						Date date = new Date();
+						wd.setStatus(EWithdrawDepositStatusEnum.SUCCESS);
+						wd.setIsSuccess(true);
+						wd.setReturnMessage("result:"+wxtr.getErrCode()+"|"+wxtr.getErrCodeDes());
+						wd.setSuccessDate(date);
+						haiWithdrawDepositMapper.updateByPrimaryKey(wd);
+					}
+				}
+				
+			}
+			
+		}
+		
+		return rm;
+	}
+	
+	
+	/**
+	 * 提现提示信息，待完善
+	 * @param request
+	 * @param wp
+	 * @param store
+	 * @param msg
+	 * @return
+	 * @throws Exception
+	 */
+	private String transfersErrorManagerTemplateMessage(HttpServletRequest request,
+			String msg) throws Exception{
+		
+		return "";
+	}
+
+
+
 	
 
 }

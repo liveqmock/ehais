@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
-import org.ehais.shop.model.HaiWithdrawDeposit;
+import org.ehais.epublic.model.HaiWithdrawDeposit;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.DateUtil;
 import org.slf4j.Logger;

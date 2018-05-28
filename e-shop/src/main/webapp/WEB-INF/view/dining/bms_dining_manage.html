@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<title>商家数据营销后台</title>
+		
+		<link rel="stylesheet" href="../css/app_dining_bms.css?1" />
+		
+	</head>
+	<body >
+		<div class="wrapper" >
+			<div class="swiper">
+				<ul>
+					<li>
+						<img src="../images/cbd.jpg" />
+					</li>
+				</ul>
+			</div><!--轮播-->
+			
+			<div class="title"><i class="icon iconfont icon-tubiao88"></i>当天营业概况</div>
+			
+			<div class="amount">
+				
+				<div>交易金额</div>
+				<div class="t"><i></i><span id="total">${weixinAmount!0 / 100 + cashAmount!0 / 100}</span></div>
+				<div class="items">
+					<div>
+						<div>微信支付</div>
+						<div>
+							<i></i><span>${weixinAmount!0 / 100}</span>
+						</div>
+						<div class="s">${weixinQuantity!0}笔</div>
+					</div>
+					<div>
+						<div>现金支付</div>
+						<div>
+							<i></i><span>${cashAmount!0 / 100}</span>
+						</div>
+						<div class="s">${cashQuantity!0}笔</div>
+					</div>
+					<div>
+						<div>可提现<i class="fr icon iconfont icon-xiangyoujiantou"></i></div>
+						<div class="b"><span id="balance">${balance!0 / 100}</span></div>
+					</div>
+				</div>
+			</div><!--金额-->
+			
+			
+			<footer style="font-size:0.14rem;">
+				数据价值研究事业部 & 餐饮事业部
+				<br>
+				广州易海司信息科技有限公司
+			</footer>
+		</div>
+		
+		<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+		
+	</body>
+</html>
