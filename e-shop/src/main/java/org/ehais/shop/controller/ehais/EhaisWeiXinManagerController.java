@@ -34,7 +34,7 @@ public class EhaisWeiXinManagerController extends EhaisCommonController{
 	private HaiOrderInfoMapper haiOrderInfoMapper;
 
 	
-	//http://2e436b0f.ngrok.io/weixin_manager
+	//http://6a0e4a53.ngrok.io/weixin_manager
 	@RequestMapping("/weixin_manager")
 	public String weixin_manager(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -91,6 +91,7 @@ public class EhaisWeiXinManagerController extends EhaisCommonController{
 		Date endDate = DateUtil.addDate(today_date, 1);
 		Long start_time = today_date.getTime();
 		Long end_time = endDate.getTime();
+		System.out.println(start_time+"--"+end_time);
 		List<OrderStoreStatistics> listOSS = haiOrderInfoMapper.order_store_statistics(user.getStoreId(),start_time,end_time);
 		if(listOSS != null && listOSS.size() > 0) {
 			OrderStoreStatistics oss = listOSS.get(0);

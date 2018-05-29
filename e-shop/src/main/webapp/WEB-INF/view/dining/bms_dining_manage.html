@@ -23,25 +23,25 @@
 			<div class="amount">
 				
 				<div>交易金额</div>
-				<div class="t"><i></i><span id="total">${weixinAmount!0 / 100 + cashAmount!0 / 100}</span></div>
+				<div class="t"><i></i><span id="total">${(((weixinAmount!0) + (cashAmount!0)) / 100)?string("#.##")}</span></div>
 				<div class="items">
 					<div>
 						<div>微信支付</div>
 						<div>
-							<i></i><span>${weixinAmount!0 / 100}</span>
+							<i></i><span>${((weixinAmount!0) / 100)?string("#.##")}</span>
 						</div>
 						<div class="s">${weixinQuantity!0}笔</div>
 					</div>
 					<div>
 						<div>现金支付</div>
 						<div>
-							<i></i><span>${cashAmount!0 / 100}</span>
+							<i></i><span>${((cashAmount!0) / 100)?string("#.##")}</span>
 						</div>
 						<div class="s">${cashQuantity!0}笔</div>
 					</div>
 					<div>
 						<div>可提现<i class="fr icon iconfont icon-xiangyoujiantou"></i></div>
-						<div class="b"><span id="balance">${balance!0 / 100}</span></div>
+						<div class="b"><span id="balance">${((balance!0) / 100)?string("#.##")}</span></div>
 					</div>
 				</div>
 			</div><!--金额-->
