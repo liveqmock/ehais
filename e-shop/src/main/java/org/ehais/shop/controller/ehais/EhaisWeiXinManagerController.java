@@ -59,6 +59,8 @@ public class EhaisWeiXinManagerController extends EhaisCommonController{
 				} else {
 					return this.weixin_manager_value(modelMap, request, response, user_id,null);
 				}
+			}else {
+				return this.weixin_manager_value(modelMap, request, response, 1615L,null);//--测试使用
 			}
 		}catch(Exception e){
 			e.printStackTrace();

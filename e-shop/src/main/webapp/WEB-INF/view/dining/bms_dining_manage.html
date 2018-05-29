@@ -44,7 +44,22 @@
 						<div class="b"><span id="balance">${((balance!0) / 100)?string("#.##")}</span></div>
 					</div>
 				</div>
+				
+				
+				<div class="withdraw_warpper" v-show="withdrawSH">
+					<div class="bg"></div>
+					<div class="wmain">
+						<div>可提现金额</div>
+						<div class="money">${((balance!0) / 100)?string("#.##")}</div>
+						<div><input id="withdraw_deposit" name="withdraw_deposit" v-model="withdraw_deposit" type="number" size="8" maxlength="8" placeholder="提现金额" v-bind:class="withdraw_warn_class" balance="${((balance!0) / 100)?string('#.##')}" ></div>
+						<div class="warn" v-show="withdraw_warn">{{withdraw_warn_txt}}</div>
+						<div><button v-on:click="withdraw_submit">提现</button></div>
+					</div>
+				</div>
+				
+				
 			</div><!--金额-->
+			
 			
 			
 			<footer style="font-size:0.14rem;">
@@ -54,7 +69,10 @@
 			</footer>
 		</div>
 		
-		<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+		<script src="js/vue.js"></script>
+		<script src="js/axios.min.js"></script>
+		<script src="js/dining/bms_dining_manager.js"></script>
+		
 		
 	</body>
 </html>
