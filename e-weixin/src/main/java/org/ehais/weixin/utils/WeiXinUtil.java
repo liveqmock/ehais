@@ -666,8 +666,8 @@ public class WeiXinUtil {
 	}
 	
 	//微信提现发送
-	public static String transfers(String content) throws Exception {
-		return EHttpClientUtil.httpPostEntity(WXConstants.transfers, content);
+	public static String transfers(String content,String weixin_p12_path, String weixin_mch_id) throws Exception {
+		return EHttpClientUtil.ClientCustomSSL(WXConstants.transfers, content,weixin_p12_path,weixin_mch_id);
 	}
 	
 	public static void main(String[] args) {

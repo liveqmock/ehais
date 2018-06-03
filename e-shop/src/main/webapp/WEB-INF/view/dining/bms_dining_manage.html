@@ -5,11 +5,11 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
 		<title>商家数据营销后台</title>
 		
-		<link rel="stylesheet" href="../css/app_dining_bms.css?1" />
+		<link rel="stylesheet" href="../css/app_dining_bms.css" />
 		
 	</head>
 	<body >
-		<div class="wrapper" >
+		<div class="wrapper" id="app">
 			<div class="swiper">
 				<ul>
 					<li>
@@ -39,39 +39,39 @@
 						</div>
 						<div class="s">${cashQuantity!0}笔</div>
 					</div>
-					<div>
+					<div v-on:click="withdraw">
 						<div>可提现<i class="fr icon iconfont icon-xiangyoujiantou"></i></div>
-						<div class="b"><span id="balance">${((balance!0) / 100)?string("#.##")}</span></div>
+						<div class="b"><span id="balance" >${((balance!0) / 100)?string("#.##")}</span></div>
 					</div>
 				</div>
-				
-				
-				<div class="withdraw_warpper" v-show="withdrawSH">
-					<div class="bg"></div>
-					<div class="wmain">
-						<div>可提现金额</div>
-						<div class="money">${((balance!0) / 100)?string("#.##")}</div>
-						<div><input id="withdraw_deposit" name="withdraw_deposit" v-model="withdraw_deposit" type="number" size="8" maxlength="8" placeholder="提现金额" v-bind:class="withdraw_warn_class" balance="${((balance!0) / 100)?string('#.##')}" ></div>
-						<div class="warn" v-show="withdraw_warn">{{withdraw_warn_txt}}</div>
-						<div><button v-on:click="withdraw_submit">提现</button></div>
-					</div>
-				</div>
-				
 				
 			</div><!--金额-->
 			
+			<div class="withdraw_warpper" v-show="withdrawSH">
+				<div class="bg"></div>
+				<div class="wmain">
+					<div>可提现金额</div>
+					<div class="money">${((balance!0) / 100)?string("#.##")}</div>
+					<div><input id="withdraw_deposit" name="withdraw_deposit" v-model="withdraw_deposit" type="number" size="8" maxlength="8" placeholder="提现金额" v-bind:class="withdraw_warn_class" balance="${((balance!0) / 100)?string("#.##")}" ></div>
+					<div class="warn" v-show="withdraw_warn">{{withdraw_warn_txt}}</div>
+					<div><button v-on:click="withdraw_submit">提现</button></div>
+					<div class="close" v-on:click="withdraw_close">X</div>
+				</div>
+			</div>
 			
-			
-			<footer style="font-size:0.14rem;">
+			<footer>
 				数据价值研究事业部 & 餐饮事业部
 				<br>
 				广州易海司信息科技有限公司
 			</footer>
 		</div>
-		
-		<script src="js/vue.js"></script>
-		<script src="js/axios.min.js"></script>
-		<script src="js/dining/bms_dining_manager.js"></script>
+		<script type="text/javascript">
+			var balance = ${((balance!0) / 100)?string("#.##")};
+			var countic = ${countic};
+		</script>
+		<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+		<script src="../js/dining/bms_dining_manager.js"></script>
 		
 		
 	</body>

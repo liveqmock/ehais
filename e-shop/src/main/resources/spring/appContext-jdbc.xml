@@ -82,6 +82,37 @@
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage" value="org.ehais.shop.mapper,org.ehais.epublic.mapper" />
 	</bean>
-	
+
+
+
+    <tx:advice id="userTxAdvice" transaction-manager="transactionManager">  
+        <tx:attributes>  
+            <tx:method name="remove*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.Exception" no-rollback-for="java.lang.RuntimeException" />  
+            <tx:method name="delete*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.Exception" no-rollback-for="java.lang.RuntimeException" />  
+            <tx:method name="add*" propagation="REQUIRED" read-only="false"  rollback-for="java.lang.RuntimeException" />  
+            <tx:method name="insert*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.RuntimeException" />  
+            <tx:method name="save*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.RuntimeException" />  
+            <tx:method name="update*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.Exception" />  
+            <tx:method name="publish*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.Exception" />  
+            <tx:method name="get*" propagation="SUPPORTS" read-only="true" />  
+            <tx:method name="list*" propagation="SUPPORTS" read-only="true" />  
+            <tx:method name="query*" propagation="SUPPORTS" read-only="true" />  
+            <tx:method name="find*" propagation="SUPPORTS" read-only="true" />  
+            <tx:method name="page*" propagation="SUPPORTS" read-only="true" />  
+            
+            <tx:method name="transfers" propagation="REQUIRED" read-only="false" rollback-for="java.lang.RuntimeException" />
+            
+            
+        </tx:attributes>  
+    </tx:advice>
+    
+    <tx:annotation-driven transaction-manager="transactionManager"/>  
+    
+    <aop:config>  
+        <aop:pointcut id="pc" expression="execution(public * org.ehais.epublic.*.service.*.*(..))" />  
+        <aop:advisor pointcut-ref="pc" advice-ref="userTxAdvice" />  
+    </aop:config> 
+    
+    
 </beans>
 

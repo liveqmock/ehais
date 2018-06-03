@@ -285,8 +285,7 @@ public class EHttpClientUtil {
 		String resData = null;
 		try {
 			KeyStore keyStore = KeyStore.getInstance("PKCS12");
-			FileInputStream instream = new FileInputStream(new File(
-					weixin_p12_path));
+			FileInputStream instream = new FileInputStream(new File(weixin_p12_path));
 			try {
 				keyStore.load(instream, weixin_mch_id.toCharArray());
 			} finally {

@@ -78,7 +78,7 @@ public class EhaisCommonController extends CommonController{
 	protected String weixin_share_description = ResourceUtil.getProValue("weixin.share.description");
 	protected String weixin_coupons_title = ResourceUtil.getProValue("weixin.coupons.title");//商家优惠券标题
 	protected String weixin_coupons_desc = ResourceUtil.getProValue("weixin.coupons.desc");//商家优惠券描述
-	
+	protected String weixin_cert_p12 = ResourceUtil.getProValue("weixin.cert.p12");//证书路径
 	
 	protected static String accessKey = ResourceUtil.getProValue("qiniu.accesskey");
 	protected static String secretKey = ResourceUtil.getProValue("qiniu.secretkey");

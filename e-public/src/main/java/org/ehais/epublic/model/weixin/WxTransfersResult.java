@@ -3,6 +3,10 @@ package org.ehais.epublic.model.weixin;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
+
+@XStreamAlias("xml") 
 public class WxTransfersResult implements Serializable {
     /**
      *
@@ -38,6 +42,7 @@ public class WxTransfersResult implements Serializable {
      *
      * @mbg.generated Mon May 28 09:27:35 CST 2018
      */
+    @XStreamAlias("return_code")
     private String returnCode;
 
     /**
@@ -47,6 +52,7 @@ public class WxTransfersResult implements Serializable {
      *
      * @mbg.generated Mon May 28 09:27:35 CST 2018
      */
+    @XStreamAlias("return_msg")
     private String returnMsg;
 
     /**
@@ -56,6 +62,7 @@ public class WxTransfersResult implements Serializable {
      *
      * @mbg.generated Mon May 28 09:27:35 CST 2018
      */
+    @XStreamAlias("mch_appid")
     private String mchAppid;
 
     /**
@@ -65,6 +72,7 @@ public class WxTransfersResult implements Serializable {
      *
      * @mbg.generated Mon May 28 09:27:35 CST 2018
      */
+    @XStreamAlias("mchid")
     private String mchid;
 
     /**
@@ -74,6 +82,7 @@ public class WxTransfersResult implements Serializable {
      *
      * @mbg.generated Mon May 28 09:27:35 CST 2018
      */
+    @XStreamAlias("device_info")
     private String deviceInfo;
 
     /**
@@ -83,6 +92,7 @@ public class WxTransfersResult implements Serializable {
      *
      * @mbg.generated Mon May 28 09:27:35 CST 2018
      */
+    @XStreamAlias("nonce_str")
     private String nonceStr;
 
     /**
@@ -92,6 +102,7 @@ public class WxTransfersResult implements Serializable {
      *
      * @mbg.generated Mon May 28 09:27:35 CST 2018
      */
+    @XStreamAlias("result_code")
     private String resultCode;
 
     /**
@@ -101,6 +112,7 @@ public class WxTransfersResult implements Serializable {
      *
      * @mbg.generated Mon May 28 09:27:35 CST 2018
      */
+    @XStreamAlias("err_code")
     private String errCode;
 
     /**
@@ -110,6 +122,7 @@ public class WxTransfersResult implements Serializable {
      *
      * @mbg.generated Mon May 28 09:27:35 CST 2018
      */
+    @XStreamAlias("err_code_des")
     private String errCodeDes;
 
     /**
@@ -119,6 +132,7 @@ public class WxTransfersResult implements Serializable {
      *
      * @mbg.generated Mon May 28 09:27:35 CST 2018
      */
+    @XStreamAlias("partner_trade_no")
     private String partnerTradeNo;
 
     /**
@@ -128,6 +142,7 @@ public class WxTransfersResult implements Serializable {
      *
      * @mbg.generated Mon May 28 09:27:35 CST 2018
      */
+    @XStreamAlias("payment_no")
     private String paymentNo;
 
     /**
@@ -137,6 +152,7 @@ public class WxTransfersResult implements Serializable {
      *
      * @mbg.generated Mon May 28 09:27:35 CST 2018
      */
+    @XStreamAlias("payment_time")
     private String paymentTime;
 
     /**

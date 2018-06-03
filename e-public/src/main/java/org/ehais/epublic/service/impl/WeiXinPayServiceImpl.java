@@ -1,5 +1,6 @@
 package org.ehais.epublic.service.impl;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -44,6 +45,7 @@ import org.ehais.tools.ReturnObject;
 import org.ehais.util.Bean2Utils;
 import org.ehais.util.DateUtil;
 import org.ehais.util.ECommon;
+import org.ehais.util.EncryptUtils;
 import org.ehais.util.IpUtil;
 import org.ehais.util.SignUtil;
 import org.ehais.util.XStreamUtil;
@@ -514,10 +516,12 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 	public ReturnObject<Object> transfers(HttpServletRequest request, 
 			String money, 
 			String classify,
-			String prefix_order_transfers) throws Exception {
+			String prefix_order_transfers,
+			String weixin_cert_p12) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<Object> rm = new ReturnObject<Object>();
 		rm.setCode(0);
+		System.out.println("money:"+money);
 		//验证金额
 		if(!ECommon.isMoney(money)) {
 			rm.setMsg("金额类型不正确");
@@ -550,37 +554,38 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 		EHaiUsersExample ue = new EHaiUsersExample();
 		ue.createCriteria().andStoreIdEqualTo(store_id).andUserTypeGreaterThan(Short.valueOf("0"));
 		Long count_user = eHaiUsersMapper.countByExample(ue);
-		if(count_user > 0) {
-			rm.setMsg("商家数据有误");
-			this.transfersErrorManagerTemplateMessage(request, store_id+"的商家信息存在多个管理员");
+		System.out.println("count_user:"+count_user);
+		if(count_user > 1) {
+			rm.setMsg("商家数据有误，请微信公众号留言给管理员");
+//			this.transfersErrorManagerTemplateMessage(request,users,null,money, store_id+"的商家信息存在多个管理员");
 			return rm;
 		}
 		
 		EHaiStore eStore = eStoreService.getEStore(store_id);
 		if(eStore == null) {
-			rm.setMsg("商家不存在001");
+			rm.setMsg("商家不存在001，请微信公众号留言给管理员");
 			return rm;
 		}
 		WpPublicWithBLOBs wpPublic = eWPPublicService.getWpPublic(store_id);
 		if(wpPublic == null) {
-			rm.setMsg("商家配置不正确，请微信留言");
+			rm.setMsg("商家配置不正确，请微信公众号留言给管理员");
 			return rm;
 		}
 		EHaiStore store = haiStoreMapper.selectByPrimaryKey(store_id);
 		if(store == null) {
-			rm.setMsg("商家不存在");
+			rm.setMsg("商家不存在，请微信公众号留言给管理员");
 			return rm;
 		}
 		if(store.getBalance() == null || store.getBalance() == 0 || store.getBalance().intValue() == 0) {
-			rm.setMsg("金额不足");
+			rm.setMsg("余额不足");
 			return rm;
 		}
 		if(store.getOwnerName() == null || store.getOwnerName().equals("")) {
-			rm.setMsg("用户未在平台认证");
+			rm.setMsg("用户未在平台认证，请微信公众号留言给管理员");
 			return rm;
 		}
 		Float fMoney = Float.valueOf(money);
-		Integer iMoney = fMoney.intValue() * 100;
+		Integer iMoney = Float.valueOf(fMoney.floatValue() * 100).intValue();
 		if(iMoney.intValue() > store.getBalance().intValue()) {
 			rm.setMsg("提现金额大于余额");
 			return rm;
@@ -595,13 +600,14 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 			return rm;
 		}
 		
+		Date date = new Date();
 		//插入提现表
 		HaiWithdrawDeposit wd = new HaiWithdrawDeposit();
 		wd.setUserId(user_id);
 		wd.setStoreId(store_id);
 		wd.setOpenid(openid);
 		wd.setRealname(users.getRealname());
-		wd.setCreateDate(new Date());
+		wd.setCreateDate(date);
 		wd.setAmount(iMoney);
 		wd.setWithdrawDesc("提现");
 		wd.setClassify(classify);
@@ -613,39 +619,43 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 			return rm;
 		}
 		
-		Date date = new Date();
 		
 		WxTransfers wxt = new WxTransfers();
 		
 		wxt.setMchAppid(wpPublic.getAppid());
 		wxt.setMchid(wpPublic.getMchId());
 		wxt.setDeviceInfo(null);
-		wxt.setNonceStr(ECommon.nonceStr(32));
+		wxt.setNonceStr(ECommon.nonceStr(32).toUpperCase());
 		String orderSn = prefix_order_transfers + DateUtil.formatDate(date, DateUtil.FORMATSTR_4) + users.getUserId() + ECommon.nonceInt(4);
 		wxt.setPartnerTradeNo(orderSn);
 		wxt.setOpenid(openid);
 		wxt.setCheckName("FORCE_CHECK");
 		wxt.setReUserName(store.getOwnerName());
 		wxt.setAmount(iMoney);
-		wxt.setDesc(classify+"提现");
+		wxt.setDesc(store.getStoreName()+"提现");
 		String ip = IpUtil.getIpAddrV2(request);
 		if(ip.indexOf(",") > 0) {
 			String[] ips = ip.split(",");
 			ip = ips[0];
 		}
+		ip = "116.22.33.8";
 		wxt.setSpbillCreateIp(ip);
-		String sign = SignUtil.getSign(wxt, wpPublic.getSecret());
+		wxt.setWdId(wd.getWdId());
+		wxt.setCreateDate(date);
+		String sign = this.signTransfers(wxt, wpPublic);
 		wxt.setSign(sign);
 		
-		wxt.setWdId(wd.getWdId());
+		
 		i = wxTransfersMapper.insert(wxt);
 		
 		String content = XStreamUtil.toXml(wxt);
 		
-		String result = WeiXinUtil.transfers(content);
-		
+		System.out.println(content);
+		String result = WeiXinUtil.transfers(content,weixin_cert_p12,wpPublic.getMchId());
+		System.out.println("result:"+result);
 		WxTransfersResult wxtr = XStreamUtil.toBean(result, WxTransfersResult.class);
 		wxtr.setWdId(wd.getWdId());
+		wxtr.setTransfersId(wxt.getTransfersId());
 		i = wxTransfersResultMapper.insert(wxtr);
 		
 		if(wxtr.getReturnCode().toUpperCase().equals("FAIL")) {
@@ -655,26 +665,38 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 			wd.setSuccessDate(date);
 			haiWithdrawDepositMapper.updateByPrimaryKey(wd);
 			rm.setMsg("提现返回失败，请微信留言给管理员");
-			this.transfersErrorManagerTemplateMessage(request, "客户提现失败，客户编号："+store_id+"，提现金额："+money+"；return:"+wxtr.getReturnMsg());
+			this.transfersErrorManagerTemplateMessage(request,users,store,money,wpPublic, "客户提现失败，客户编号："+store_id+"，提现金额："+money+"；return:"+wxtr.getReturnMsg());
 			return rm;
 		}
 		
 		if(wxtr.getResultCode().toUpperCase().equals("FAIL")) {
-			wd.setStatus(EWithdrawDepositStatusEnum.CONTINUED);
+			if(wxtr.getErrCode().toUpperCase().equals("NOTENOUGH")) {
+				wd.setStatus(EWithdrawDepositStatusEnum.CONTINUED);
+				rm.setMsg("提现过程处理中，请耐心等待2~4个小时");
+			}else {
+				wd.setStatus(EWithdrawDepositStatusEnum.INVALID);
+				rm.setMsg("提现失败提示："+wxtr.getErrCodeDes());
+			}			
 			wd.setIsSuccess(false);
 			wd.setReturnMessage("result:"+wxtr.getErrCode()+"|"+wxtr.getErrCodeDes());
 			wd.setSuccessDate(date);
 			haiWithdrawDepositMapper.updateByPrimaryKey(wd);
-			rm.setMsg("提现过程处理中，请耐心等待2~4个小时");
+			this.transfersErrorManagerTemplateMessage(request,users,store,money,wpPublic, "客户提现失败，客户编号："+store_id+"，提现金额："+money+"；return:"+wxtr.getErrCode()+"|"+wxtr.getErrCodeDes());
+			
 			return rm;
 		}
 		
 		
 		wd.setStatus(EWithdrawDepositStatusEnum.SUCCESS);
 		wd.setIsSuccess(true);
-		wd.setReturnMessage("result:"+wxtr.getErrCode()+"|"+wxtr.getErrCodeDes());
+		wd.setReturnMessage("result:"+wxtr.getPartnerTradeNo()+"|"+wxtr.getPaymentNo()+"|"+wxtr.getPaymentTime());
 		wd.setSuccessDate(date);
 		haiWithdrawDepositMapper.updateByPrimaryKey(wd);
+		
+		//更新余额
+		store.setBalance(store.getBalance() - iMoney);
+		haiStoreMapper.updateByPrimaryKey(store);
+		
 		
 		rm.setCode(1);
 		rm.setMsg("提现过程处理中，请耐心等待2~4个小时");
@@ -683,7 +705,7 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 
 	
 	@Override
-	public ReturnObject<Object> transfersTask() throws Exception {
+	public ReturnObject<Object> transfersTask(String weixin_cert_p12) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<Object> rm = new ReturnObject<Object>();
 		HaiWithdrawDepositExample wde = new HaiWithdrawDepositExample();
@@ -701,7 +723,7 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 		for (WxTransfers wxTransfers : listWxTransfers) {
 			String content = XStreamUtil.toXml(wxTransfers);
 			
-			String result = WeiXinUtil.transfers(content);
+			String result = WeiXinUtil.transfers(content,weixin_cert_p12,wxTransfers.getMchid());
 			
 			WxTransfersResult wxtr = XStreamUtil.toBean(result, WxTransfersResult.class);
 			wxtr.setWdId(wxTransfers.getWdId());
@@ -738,9 +760,72 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 	 * @throws Exception
 	 */
 	private String transfersErrorManagerTemplateMessage(HttpServletRequest request,
+			EHaiUsers users,
+			EHaiStore store,
+			String money,
+			WpPublicWithBLOBs wpPublic,
 			String msg) throws Exception{
+		WeiXinTemplateMessage templateStore = new WeiXinTemplateMessage();
+		templateStore.setTemplate_id("_LGbFNlNyA7z9_RnwUCfY4jqwSvcS2XGICvKid9cgZ8");//订单支付成功通知
 		
-		return "";
+		templateStore.setTouser("oiGBot1K1vYJA2DFv2B-0W2xL9O0");//错误通知指定Tyler接收处理
+//		templateStore.setUrl(request.getScheme()+"://"+request.getServerName()+"/dining_store_order_detail!"+SignUtil.setOid(Integer.valueOf(map.get("store_id").toString()), orderInfo.getOrderId(), orderInfo.getOrderSn(), orderInfo.getUserId(), notifyPay.getOpenid(), wp.getToken()));
+		templateStore.setTopcolor("#FF0000");
+		
+		Map<String,Object> mapTemplateStore = new HashMap<String,Object>();
+        
+		Map<String,String> firstStore = new HashMap<String,String>();
+		firstStore.put("value", "提现通知");
+		firstStore.put("color", "#173177");
+		mapTemplateStore.put("first", firstStore);
+		
+		Map<String,String> keyword1Store = new HashMap<String,String>();
+		keyword1Store.put("value", users.getRealname());
+		keyword1Store.put("color", "#173177");
+		mapTemplateStore.put("keyword1", keyword1Store);
+		
+		Map<String,String> keyword2Store = new HashMap<String,String>();
+		keyword2Store.put("value", (store == null) ? (users.getUserName() + users.getRealname()) :  store.getStoreName());
+		keyword2Store.put("color", "#173177");
+		mapTemplateStore.put("keyword2", keyword2Store);
+		
+		Date date = new Date();
+		Map<String,String> keyword3Store = new HashMap<String,String>();
+		keyword3Store.put("value", DateUtil.formatDate(date, DateUtil.FORMATSTR_1));
+		keyword3Store.put("color", "#173177");
+		mapTemplateStore.put("keyword3", keyword3Store);
+		
+	
+		Map<String,String> remarkStore = new HashMap<String,String>();
+		remarkStore.put("value", msg);
+		remarkStore.put("color", "#173177");
+		mapTemplateStore.put("remark", remarkStore);
+		
+		templateStore.setData(mapTemplateStore);
+		
+		return WeiXinUtil.TemplateSend(WeiXinUtil.getAccessToken(Integer.valueOf(users.getStoreId()), wpPublic.getAppid(), wpPublic.getSecret()).getAccess_token(), templateStore);
+		
+		
+	}
+	
+	
+	
+	private String signTransfers(WxTransfers transfers,WpPublicWithBLOBs wpPublic) throws Exception {
+		StringBuilder sb = new StringBuilder();
+//		spbillCreateIp=127.0.0.1&key=8cc41d74df2d897ad9085f32388f0a5e
+		sb.append("amount="+transfers.getAmount()+"&");
+		sb.append("check_name="+transfers.getCheckName()+"&");
+		sb.append("desc="+transfers.getDesc()+"&");
+		sb.append("mch_appid="+transfers.getMchAppid()+"&");
+		sb.append("mchid="+transfers.getMchid()+"&");
+		sb.append("nonce_str="+transfers.getNonceStr()+"&");
+		sb.append("openid="+transfers.getOpenid()+"&");
+		sb.append("partner_trade_no="+transfers.getPartnerTradeNo()+"&");
+		sb.append("re_user_name="+transfers.getReUserName()+"&");
+		sb.append("spbill_create_ip="+transfers.getSpbillCreateIp()+"&");
+		sb.append("key="+wpPublic.getMchSecret());
+		System.out.println(sb.toString());
+		return EncryptUtils.md5(sb.toString()).toUpperCase();
 	}
 
 
