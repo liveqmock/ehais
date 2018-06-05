@@ -762,6 +762,22 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 						wd.setReturnMessage("result:"+wxtr.getErrCode()+"|"+wxtr.getErrCodeDes());
 						wd.setSuccessDate(date);
 						haiWithdrawDepositMapper.updateByPrimaryKey(wd);
+						
+						for (EHaiUsers users : listUsers) {
+							if(wd.getUserId().longValue() == users.getUserId().longValue()) {
+								for (EHaiStore store : listStore) {
+									if(wd.getStoreId().intValue() == store.getStoreId().intValue()) {
+										//更新余额
+										store.setBalance(store.getBalance() - wd.getAmount());
+										haiStoreMapper.updateByPrimaryKey(store);
+										break;
+									}
+								}
+								break;
+							}
+						}
+						
+						
 					}
 				}
 				
@@ -781,11 +797,11 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 										this.transfersErrorManagerTemplateMessage(users,store,wd.getAmount().toString(),wpPublic, "计划任务：客户提现失败，客户编号："+store.getStoreId()+"，提现金额："+wd.getAmount()+"；return:"+wxtr.getErrCode()+"|"+wxtr.getErrCodeDes());
 									}
 									
-									continue;
+									break;
 								}
 							}
 						}
-						continue;
+						break;
 					}
 					
 					
