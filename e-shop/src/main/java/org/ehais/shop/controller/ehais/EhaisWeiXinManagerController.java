@@ -46,7 +46,7 @@ public class EhaisWeiXinManagerController extends EhaisCommonController{
 	private HaiWithdrawDepositMapper haiWithdrawDepositMapper;
 
 	
-	//http://df316559.ngrok.io/weixin_manager
+	//http://eg.ehais.com/weixin_manager
 	@RequestMapping("/weixin_manager")
 	public String weixin_manager(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -100,6 +100,8 @@ public class EhaisWeiXinManagerController extends EhaisCommonController{
 		
 		EHaiStore store = eHaiStoreMapper.selectByPrimaryKey(user.getStoreId());
 		if(store == null) return "redirect:"+website;//如果非商家，即跳转商城
+		
+		modelMap.addAttribute("store", store);
 		
 		//可提现金额
 		Integer balance = store.getBalance() == null ? 0 : store.getBalance();

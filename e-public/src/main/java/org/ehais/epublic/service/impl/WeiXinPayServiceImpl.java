@@ -25,12 +25,14 @@ import org.ehais.epublic.mapper.weixin.WxTransfersResultMapper;
 import org.ehais.epublic.mapper.weixin.WxUnifiedorderMapper;
 import org.ehais.epublic.mapper.weixin.WxUnifiedorderResultMapper;
 import org.ehais.epublic.model.EHaiStore;
+import org.ehais.epublic.model.EHaiStoreExample;
 import org.ehais.epublic.model.EHaiUsers;
 import org.ehais.epublic.model.EHaiUsersExample;
 import org.ehais.epublic.model.HaiOrderInfoWithBLOBs;
 import org.ehais.epublic.model.HaiStoreStatistics;
 import org.ehais.epublic.model.HaiWithdrawDeposit;
 import org.ehais.epublic.model.HaiWithdrawDepositExample;
+import org.ehais.epublic.model.WpPublic;
 import org.ehais.epublic.model.WpPublicWithBLOBs;
 import org.ehais.epublic.model.weixin.WxNotifyPay;
 import org.ehais.epublic.model.weixin.WxTransfers;
@@ -638,7 +640,7 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 			String[] ips = ip.split(",");
 			ip = ips[0];
 		}
-		ip = "116.22.33.8";
+		
 		wxt.setSpbillCreateIp(ip);
 		wxt.setWdId(wd.getWdId());
 		wxt.setCreateDate(date);
@@ -665,7 +667,7 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 			wd.setSuccessDate(date);
 			haiWithdrawDepositMapper.updateByPrimaryKey(wd);
 			rm.setMsg("提现返回失败，请微信留言给管理员");
-			this.transfersErrorManagerTemplateMessage(request,users,store,money,wpPublic, "客户提现失败，客户编号："+store_id+"，提现金额："+money+"；return:"+wxtr.getReturnMsg());
+			this.transfersErrorManagerTemplateMessage(users,store,money,wpPublic, "客户提现失败，客户编号："+store_id+"，提现金额："+money+"；return:"+wxtr.getReturnMsg());
 			return rm;
 		}
 		
@@ -673,6 +675,10 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 			if(wxtr.getErrCode().toUpperCase().equals("NOTENOUGH")) {
 				wd.setStatus(EWithdrawDepositStatusEnum.CONTINUED);
 				rm.setMsg("提现过程处理中，请耐心等待2~4个小时");
+				
+				//更新余额，余额不足，同样先扣除余额
+//				store.setBalance(store.getBalance() - iMoney);
+//				haiStoreMapper.updateByPrimaryKey(store);
 			}else {
 				wd.setStatus(EWithdrawDepositStatusEnum.INVALID);
 				rm.setMsg("提现失败提示："+wxtr.getErrCodeDes());
@@ -681,7 +687,7 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 			wd.setReturnMessage("result:"+wxtr.getErrCode()+"|"+wxtr.getErrCodeDes());
 			wd.setSuccessDate(date);
 			haiWithdrawDepositMapper.updateByPrimaryKey(wd);
-			this.transfersErrorManagerTemplateMessage(request,users,store,money,wpPublic, "客户提现失败，客户编号："+store_id+"，提现金额："+money+"；return:"+wxtr.getErrCode()+"|"+wxtr.getErrCodeDes());
+			this.transfersErrorManagerTemplateMessage(users,store,money,wpPublic, "客户提现失败，客户编号："+store_id+"，提现金额："+money+"；return:"+wxtr.getErrCode()+"|"+wxtr.getErrCodeDes());
 			
 			return rm;
 		}
@@ -713,14 +719,31 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 		List<HaiWithdrawDeposit> list = haiWithdrawDepositMapper.selectByExample(wde);
 		if(list == null || list.size() == 0)return rm;
 		List<Integer> wdids = new ArrayList<Integer>();
+		List<Long> userIds = new ArrayList<Long>();
+		List<Integer> storeIds = new ArrayList<Integer>();
 		for (HaiWithdrawDeposit haiWithdrawDeposit : list) {
 			wdids.add(haiWithdrawDeposit.getWdId());
+			userIds.add(haiWithdrawDeposit.getUserId());
+			storeIds.add(haiWithdrawDeposit.getStoreId());
 		}
 		if(wdids.size() == 0)return rm;
+		
+		
+		EHaiUsersExample exampleUsers = new EHaiUsersExample();
+		exampleUsers.createCriteria().andUserIdIn(userIds);
+		List<EHaiUsers> listUsers = eHaiUsersMapper.selectByExample(exampleUsers);
+		
+		
+		EHaiStoreExample exampleStore = new EHaiStoreExample();
+		exampleStore.createCriteria().andStoreIdIn(storeIds);
+		List<EHaiStore> listStore = haiStoreMapper.selectByExample(exampleStore);
+		
+		
 		WxTransfersExample wte = new WxTransfersExample();
 		wte.createCriteria().andWdIdIn(wdids);
 		List<WxTransfers> listWxTransfers = wxTransfersMapper.selectByExample(wte);
 		for (WxTransfers wxTransfers : listWxTransfers) {
+			System.out.println("提现计划任务："+wxTransfers.getTransfersId());
 			String content = XStreamUtil.toXml(wxTransfers);
 			
 			String result = WeiXinUtil.transfers(content,weixin_cert_p12,wxTransfers.getMchid());
@@ -742,6 +765,32 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 					}
 				}
 				
+			}else {
+				for (HaiWithdrawDeposit wd : list) {
+					
+					for (EHaiUsers users : listUsers) {
+						if(wd.getUserId().longValue() == users.getUserId().longValue()) {
+							for (EHaiStore store : listStore) {
+								if(wd.getStoreId().intValue() == store.getStoreId().intValue()) {
+									WpPublicWithBLOBs wpPublic = eWPPublicService.getWpPublic(store.getStoreId());
+									if(wxtr.getReturnCode().toUpperCase().equals("FAIL")) {
+										this.transfersErrorManagerTemplateMessage(users,store,wd.getAmount().toString(),wpPublic, "计划任务：客户提现失败，客户编号："+store.getStoreId()+"，提现金额："+wd.getAmount()+"；return:"+wxtr.getReturnMsg());
+									}
+									
+									if(wxtr.getResultCode().toUpperCase().equals("FAIL")) {
+										this.transfersErrorManagerTemplateMessage(users,store,wd.getAmount().toString(),wpPublic, "计划任务：客户提现失败，客户编号："+store.getStoreId()+"，提现金额："+wd.getAmount()+"；return:"+wxtr.getErrCode()+"|"+wxtr.getErrCodeDes());
+									}
+									
+									continue;
+								}
+							}
+						}
+						continue;
+					}
+					
+					
+				}
+				
 			}
 			
 		}
@@ -759,7 +808,7 @@ public class WeiXinPayServiceImpl implements WeiXinPayService{
 	 * @return
 	 * @throws Exception
 	 */
-	private String transfersErrorManagerTemplateMessage(HttpServletRequest request,
+	private String transfersErrorManagerTemplateMessage(
 			EHaiUsers users,
 			EHaiStore store,
 			String money,
