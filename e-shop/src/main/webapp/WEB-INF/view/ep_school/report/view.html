@@ -34,6 +34,15 @@
 			<@bsGroupDatePicker id="statistics_date" startId="startDate" endId="endDate" startDate="${startDate}" endDate="${endDate}" />
 			</form>
 			</div>
+			<div>
+				<select class="control">
+					<#if (className?? && className?size > 0 )>
+					<#list className as c>
+						<option value="${c}">${c}</option>
+					</#list>
+					</#if>
+				</select>
+			</div>
 			<div><button id="btnSearch" class="fa fa-search btn btn-default control">搜索</button></div>
 			<div><button id="btnDownload" class="fa fa-cloud-download btn btn-default control">导出统计结果</button></div>
 			<div><button id="btnRecordDownload" class="fa fa-cloud-download btn btn-default control">导出请假记录</button></div>

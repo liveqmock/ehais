@@ -21,5 +21,6 @@ public @interface EPermissionController {
     String name() default ""; 
     String type() default "url"; 
     String intro() default ""; 
+    String sort() default "1";
     
 }

@@ -17,4 +17,6 @@ public @interface EPermissionMethod {
     String type() default "url"; 
     String intro() default "";//描述，用于系统操作日志的描述 
     String relation() default "";
+    String sort() default "1";
+    
 }

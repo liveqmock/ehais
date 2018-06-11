@@ -1368,7 +1368,13 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 			String endDate =  DateUtil.formatDate(date, DateUtil.FORMATSTR_3);
 			modelMap.addAttribute("startDate", startDate);
 			modelMap.addAttribute("endDate", endDate);
+			//统计班级
+			List<String> className = eHaiUsersMapper.distinctUsers(default_store_id, "question");
+			for (String string : className) {
+				System.out.println("string:"+string);
+			}
 			
+			modelMap.addAttribute("className", className);
 			
 			return "/ep_school/report/view";
 		}catch(Exception e){
@@ -1385,7 +1391,8 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 	public String statisticsBegOffJSON(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "start_date", required = true) String start_date,
-			@RequestParam(value = "end_date", required = true) String end_date
+			@RequestParam(value = "end_date", required = true) String end_date,
+			@RequestParam(value = "className", required = false) String className
 			) {	
 		ReturnObject<HaiBegOffStatistics> rm = new ReturnObject<HaiBegOffStatistics>();
 		rm.setCode(0);

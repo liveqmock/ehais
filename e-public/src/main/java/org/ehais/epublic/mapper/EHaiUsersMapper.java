@@ -11,6 +11,10 @@ import org.ehais.epublic.model.EHaiUsersExample;
 public interface EHaiUsersMapper {
 	
 	
+	@Select("SELECT DISTINCT(${field}) from hai_users where store_id = #{store_id} and ifnull(${field},'') != ''")
+	public List<String> distinctUsers(@Param("store_id") Integer store_id,@Param("field") String field);
+	
+	
 	@Select("select * from hai_users where user_name = #{userName}")
 	@ResultMap(value = "ResultMapWithBLOBs")
     EHaiUsers getdusername(@Param("userName") String userName);
