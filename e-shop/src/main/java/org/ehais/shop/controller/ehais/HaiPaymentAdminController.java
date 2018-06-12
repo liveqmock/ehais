@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 
-@EPermissionController(intro="支付管理功能",value="haiPaymentController")
+@EPermissionController(intro="支付管理功能",value="ehaisPaymentController")
 @Controller
 @RequestMapping("/ehais")
 public class  HaiPaymentAdminController extends CommonController {

@@ -27,9 +27,11 @@ function haiBusinessTypeAddDetail(){
 
 function haiBusinessTypeEditDetail(businessTypeId){
 	$("#haiBusinessTypeForm").attr("action","edit");
+	layer.load(0, {shade: false});
 	$.ajax({
 		url : "haiBusinessTypeEditDetail",type:"post",dataType:"json",data:{businessTypeId:businessTypeId},
 		success:function(result){
+			layer.closeAll();
 			haiBusinessTypeModal.modal("show");
 			$.each(result.model,function(id,ele){
 				$("#"+id).val(ele);

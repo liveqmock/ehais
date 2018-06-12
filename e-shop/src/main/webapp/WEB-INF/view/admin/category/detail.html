@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+
+		<#include "/include.html"/>
+		<#include "/FreemarkerMacro.html"/>
+
+<title>Insert title here</title>
+</head>
+<body>
+<div class="header">
+	<div class="nav">
+		<a href="javascript:;" id="back" class="icon fa fa-arrow-left ">&nbsp;</a>
+		<div class="nav0">商品分类</div>
+		<div class="nav1">信息编辑</div>
+	</div>
+</div>
+<div style="width: 100%;height: 40px;"></div>
+<div class="container-fluid">
+<form id="haiCategoryForm" name="haiCategoryForm" class="form-horizontal" action="${rm.action?default('')}" method="post">
+
+
+<input type="hidden" class="form-control" id="catId" name="catId" value="${rm.model.catId!''}" >
+<div class="form-group">
+<label class="col-sm-2 control-label">简码</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="catCode" name="catCode" value="${rm.model.catCode!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">名称</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="catName" name="catName" value="${rm.model.catName!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">keywords</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="keywords" name="keywords" placeholder="">${rm.model.keywords!''}</textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">sub_cat_name</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="subCatName" name="subCatName" value="${rm.model.subCatName!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">cat_desc</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="catDesc" name="catDesc" placeholder="">${rm.model.catDesc!''}</textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">parent_id</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="parentId" name="parentId" value="${rm.model.parentId!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">sort_order</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="sortOrder" name="sortOrder" value="${rm.model.sortOrder!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">template_file</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="templateFile" name="templateFile" value="${rm.model.templateFile!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">measure_unit</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="measureUnit" name="measureUnit" value="${rm.model.measureUnit!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">show_in_nav</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="showInNav" name="showInNav" value="${rm.model.showInNav!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">style</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="style" name="style" value="${rm.model.style!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">is_show</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="isShow" name="isShow" value="${rm.model.isShow!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">grade</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="grade" name="grade" value="${rm.model.grade!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">筛选属性编号</label>
+<div class="col-sm-8">
+	<@ueditorPicker id="filterAttr" value="${rm.model.filterAttr!''}" />
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">子分类的编号</label>
+<div class="col-sm-8">
+	<@ueditorPicker id="subParentId" value="${rm.model.subParentId!''}" />
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">品牌编号</label>
+<div class="col-sm-8">
+	<@ueditorPicker id="brandId" value="${rm.model.brandId!''}" />
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">缩略图</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="thumb" name="thumb" value="${rm.model.thumb!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">图片</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="image" name="image" value="${rm.model.image!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">user_id</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="userId" name="userId" value="${rm.model.userId!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">推荐类型</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="recommend" name="recommend" value="${rm.model.recommend!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">category_url</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="categoryUrl" name="categoryUrl" value="${rm.model.categoryUrl!''}" placeholder="">
+</div>
+</div>
+
+
+
+
+
+<div class="form-group">
+	<div class="col-sm-3"></div>
+	<div class="col-sm-6"><button id="saveSubmit" type="button" class="btn btn-primary">提交信息</button></div>
+</div>
+       
+
+
+
+
+</form>
+</div>    
+
+
+<script type="text/javascript" src="/js/admin/category/detail.js" ></script>             
+
+
+</body>
+</html>

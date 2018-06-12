@@ -48,7 +48,7 @@ public class PaymentServiceImpl  extends CommonServiceImpl implements PaymentSer
 //		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
 		example.setLimitStart(start);
 		example.setLimitEnd(len);
-		List<HaiPayment> list = haiPaymentMapper.hai_payment_list_by_example(example);
+		List<HaiPayment> list = haiPaymentMapper.selectByExample(example);
 		long total = haiPaymentMapper.countByExample(example);
 		rm.setCode(1);
 		rm.setRows(list);

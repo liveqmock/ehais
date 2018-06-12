@@ -410,7 +410,7 @@ public class ShoppingServiceImpl extends CommonServiceImpl implements ShoppingSe
 		HaiPayment payment = null;
 		//支付方式不为空的情况，检验支付方式是否正确
 		if(order_done.getPay_id()!=null && order_done.getPay_id()!=0){
-			payment = haiPaymentMapper.payment_info(order_done.getStore_id(), order_done.getPay_id());
+			payment = haiPaymentMapper.get_hai_payment_info(order_done.getStore_id(), order_done.getPay_id());
 //			if(payment != null){
 //				rm.setMsg("支付方式错误");return rm;
 //			}

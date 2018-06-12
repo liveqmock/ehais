@@ -19,6 +19,7 @@ public interface HaiPaymentService extends CommonService{
 	public ReturnObject<HaiPayment> payment_delete(HttpServletRequest request,Integer payId) throws Exception;
 	
 
+
 	
 
 }

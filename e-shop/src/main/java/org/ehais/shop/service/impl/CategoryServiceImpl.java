@@ -244,7 +244,7 @@ public class CategoryServiceImpl  extends EShopCommonServiceImpl implements Cate
 		// TODO Auto-generated method stub
 		ReturnObject<HaiCategoryWithBLOBs> rm = new ReturnObject<HaiCategoryWithBLOBs>();
 		
-		HaiCategoryWithBLOBs model = haiCategoryMapper.get_hai_category_info(store_id, catId);
+		HaiCategoryWithBLOBs model = haiCategoryMapper.get_hai_category_info(catId , store_id);
 		
 		rm.setCode(1);
 		rm.setModel(model);
