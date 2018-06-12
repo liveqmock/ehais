@@ -10,9 +10,9 @@
 		
 		<script type="text/javascript">
 			var bootstrap_table_url = 'haiPaymentListJson';
-			var payName = null;
+			var paymentName = null;
 			var query_parames = {
-                payName : payName
+                paymentName : paymentName
 			};
 			var columns =  [
 				{
@@ -26,7 +26,7 @@
     title: '名称'
 },
 		        {
-					field: 'payId',
+					field: 'paymentId',
 		            title: '操作',
 					align:"center",
 			        formatter:function(value,row,index){
@@ -47,7 +47,7 @@
 		</script>
 		<script type="text/javascript" src="/js/e_bootstrap_table.js"></script>
     	<script type="text/javascript" src="/js/admin/payment/paymentView.js" ></script> 
-		<title>结算方式</title>
+		<title>结帐方式信息</title>
 		
 	</head>
 	<body>
@@ -56,14 +56,14 @@
 			<dl class="enav">
 				<dt>当前位置:</dt>
 				<dd>总系统</dd>
-				<dd>结算方式</dd>
+				<dd>结帐方式信息</dd>
 				<dd class="fr">快捷键提示</dd>
 			</dl>
 			
 			<div class="ctr form-inline">
 				  <div class="form-group">
 				    <label >搜索信息</label>
-				    <input id="key_payName" name="key_payName" class="form-control" >
+				    <input id="key_paymentName" name="key_paymentName" class="form-control" >
 				  </div>
 				  				  
 				  
@@ -87,7 +87,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">结算方式</h4>
+        <h4 class="modal-title">结帐方式信息</h4>
       </div>
       <div class="modal-body">
         <form id="haiPaymentForm" name="haiPaymentForm" class="form-horizontal" action="add" method="post">

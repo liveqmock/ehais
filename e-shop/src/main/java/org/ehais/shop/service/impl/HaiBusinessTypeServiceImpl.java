@@ -143,7 +143,10 @@ public class HaiBusinessTypeServiceImpl  extends CommonServiceImpl implements Ha
 		// TODO Auto-generated method stub
 		ReturnObject<HaiBusinessType> rm = new ReturnObject<HaiBusinessType>();
 		rm.setCode(0);
+
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+
+/**
 		HaiBusinessTypeExample example = new HaiBusinessTypeExample();
 		HaiBusinessTypeExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
@@ -154,7 +157,12 @@ public class HaiBusinessTypeServiceImpl  extends CommonServiceImpl implements Ha
 			return rm;
 		}
 		HaiBusinessType model = haiBusinessTypeMapper.selectByPrimaryKey(businessTypeId);
-
+**/
+		HaiBusinessType model = haiBusinessTypeMapper.get_hai_business_type_info(businessTypeId,store_id);
+		if(model == null){
+			rm.setMsg("记录不存在");
+			return rm;
+		}
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		rm.setMap(map);
@@ -189,6 +197,7 @@ public class HaiBusinessTypeServiceImpl  extends CommonServiceImpl implements Ha
 bean.setBusinessTypeCode(model.getBusinessTypeCode());
 bean.setBusinessTypeName(model.getBusinessTypeName());
 bean.setBusinessTypeParentId(model.getBusinessTypeParentId());
+bean.setRemark(model.getRemark());
 bean.setClassify(model.getClassify());
 
 
@@ -212,6 +221,8 @@ bean.setClassify(model.getClassify());
 		ReturnObject<HaiBusinessType> rm = new ReturnObject<HaiBusinessType>();
 		rm.setCode(0);
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		
+		/**
 		HaiBusinessTypeExample example = new HaiBusinessTypeExample();
 		HaiBusinessTypeExample.Criteria c = example.createCriteria();
 		c.andBusinessTypeIdEqualTo(businessTypeId);
@@ -222,6 +233,14 @@ bean.setClassify(model.getClassify());
 			return rm;
 		}
 		HaiBusinessType model = list.get(0);
+		**/
+
+		HaiBusinessType model = haiBusinessTypeMapper.get_hai_business_type_info(businessTypeId,store_id);
+		if(model == null){
+			rm.setMsg("记录不存在");
+			return rm;
+		}
+
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		rm.setMap(map);
@@ -239,6 +258,8 @@ bean.setClassify(model.getClassify());
 		rm.setCode(0);
 		
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+
+		/**
 		HaiBusinessTypeExample example = new HaiBusinessTypeExample();
 		HaiBusinessTypeExample.Criteria c = example.createCriteria();
 		c.andBusinessTypeIdEqualTo(businessTypeId);
@@ -249,6 +270,14 @@ bean.setClassify(model.getClassify());
 			return rm;
 		}
 		HaiBusinessType model = list.get(0);
+		**/
+
+		HaiBusinessType model = haiBusinessTypeMapper.get_hai_business_type_info(businessTypeId,store_id);
+		if(model == null){
+			rm.setMsg("记录不存在");
+			return rm;
+		}
+
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		rm.setMap(map);

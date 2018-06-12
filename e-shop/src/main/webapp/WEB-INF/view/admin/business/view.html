@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		
+		<#include "/include.html"/>
+		<#include "/FreemarkerMacro.html"/>
+		
+	</head>
+	<body>
+		<div class="header">
+			<div class="nav">
+				<i class="icon fa fa-home">&nbsp;</i>
+				<div class="nav0">往来单位信息信息管理</div>
+			</div>
+		</div>
+		<div class="body">
+			<div class="container_box">
+				
+				<div class="col_side dn">
+					<h4>
+						<i class="fa fa-cubes"></i>
+						往来单位信息分类
+						<i id="deleteCate" class="fr fa fa-trash-o"></i>
+						<i id="editCate" class="fr fa fa-edit"></i>
+						<i id="addCate" class="fr fa fa-plus"></i>
+						
+					</h4>
+					<div class="category">
+						<div id="tree"></div>
+					</div>
+				</div>
+				
+				
+				<div class="col_main body">
+					<h4>
+						<i class="fa fa-list"></i>
+						往来单位信息信息列表
+						<a href="haiBusinessAddDetail" class="fa fa-plus btn btn-primary" >添加</a>
+					</h4>			
+					<div class="panel panel-default">
+						<div class="panel-heading">搜索条件</div>
+						<div class="panel-body single">					    
+							<div><label>标题：</label><input id="businessName" class="control"/></div>
+							<div><button id="btnSearch" class="fa fa-search btn btn-default control">搜索</button></div>
+						</div>
+					</div>
+					
+					
+					<div class="main_table">
+						<table id="bsTable" data-show-columns="false"></table>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+
+<div class="modal fade" id="haiTempSublateModal" tabindex="-1" role="dialog" aria-labelledby="haiTempSublateLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="haiTempSublateLabel">往来单位信息分类管理</h4>
+            </div>
+            <div class="modal-body">
+            	<form id="haiTempSublateFormModal" name="haiTempSublateFormModal" class="form-horizontal" method="post">
+
+
+
+            	</form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="haiTempSublateFormSubmit">提交</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div><!-- /.modal end -->
+
+		
+		<script type="text/javascript" src="/js/admin/business/view.js" ></script>
+	</body>
+</html>

@@ -13,9 +13,6 @@ function haiUnitAddSubmit(){
 	if($("#unitName").val() == undefined || $("#unitName").val().length == 0){
 		layer.msg("请输入名称");return ;
 	}
-	if($("#storeId").val() == undefined || $("#storeId").val().length == 0){
-		layer.msg("请输入store_id");return ;
-	}
 
 	
 	
@@ -50,9 +47,6 @@ function haiUnitEditSubmit(){
 	}
 	if($("#unitName").val() == undefined || $("#unitName").val().length == 0){
 		layer.msg("请输入名称");return ;
-	}
-	if($("#storeId").val() == undefined || $("#storeId").val().length == 0){
-		layer.msg("请输入store_id");return ;
 	}
 
 	

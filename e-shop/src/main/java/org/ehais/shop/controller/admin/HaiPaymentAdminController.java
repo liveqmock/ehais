@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @EPermissionModuleGroup(name="模组")
 
-@EPermissionController(name="结算方式管理",value="haiPaymentController")
+@EPermissionController(name="结帐方式信息管理",value="haiPaymentController")
 @Controller
 @RequestMapping("/admin")
 public class  HaiPaymentAdminController extends CommonController {
@@ -43,7 +43,7 @@ public class  HaiPaymentAdminController extends CommonController {
 	private HaiPaymentService haiPaymentService;
 	
 	
-	@EPermissionMethod(name="查询",intro="打开结算方式页面",value="haiPaymentView",relation="haiPaymentListJson",type=PermissionProtocol.URL,sort="1")
+	@EPermissionMethod(name="查询",intro="打开结帐方式信息页面",value="haiPaymentView",relation="haiPaymentListJson",type=PermissionProtocol.URL,sort="1")
 	@RequestMapping("/haiPaymentView")
 	public String haiPaymentView(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) {	
@@ -66,15 +66,15 @@ public class  HaiPaymentAdminController extends CommonController {
 	
 
 	@ResponseBody
-	@EPermissionMethod(intro="返回结算方式数据",value="haiPaymentListJson",type=PermissionProtocol.JSON)
+	@EPermissionMethod(intro="返回结帐方式信息数据",value="haiPaymentListJson",type=PermissionProtocol.JSON)
 	@RequestMapping(value="/haiPaymentListJson",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String haiPaymentListJson(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@ModelAttribute EConditionObject condition,
 			@RequestParam(value = "keySubId", required = false) Integer keySubId,
-			@RequestParam(value = "payName", required = false) String payName) {
+			@RequestParam(value = "paymentName", required = false) String paymentName) {
 		try{
-			ReturnObject<HaiPayment> rm = haiPaymentService.payment_list_json(request, condition,keySubId,payName);
+			ReturnObject<HaiPayment> rm = haiPaymentService.payment_list_json(request, condition,keySubId,paymentName);
 			return this.writeJson(rm);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -85,7 +85,7 @@ public class  HaiPaymentAdminController extends CommonController {
 	
 	
 	
-	@EPermissionMethod(name="新增",intro="新增结算方式",value="haiPaymentAddDetail",relation="haiPaymentAddSubmit",type=PermissionProtocol.BUTTON,sort="2")
+	@EPermissionMethod(name="新增",intro="新增结帐方式信息",value="haiPaymentAddDetail",relation="haiPaymentAddSubmit",type=PermissionProtocol.BUTTON,sort="2")
 	@RequestMapping(value="/haiPaymentAddDetail",method=RequestMethod.GET)
 	public String haiPaymentAddDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response
@@ -106,7 +106,7 @@ public class  HaiPaymentAdminController extends CommonController {
 	
 	
 	@ResponseBody
-	@EPermissionMethod(intro="新增提交结算方式",value="haiPaymentAddSubmit",type=PermissionProtocol.DATA)
+	@EPermissionMethod(intro="新增提交结帐方式信息",value="haiPaymentAddSubmit",type=PermissionProtocol.DATA)
 	@RequestMapping(value="/haiPaymentAddSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String haiPaymentAddSubmit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -128,14 +128,14 @@ public class  HaiPaymentAdminController extends CommonController {
 	
 
 	@ResponseBody
-	@EPermissionMethod(name="编辑",intro="编辑结算方式",value="haiPaymentEditDetail",relation="haiPaymentEditSubmit",type=PermissionProtocol.BUTTON,sort="3")
+	@EPermissionMethod(name="编辑",intro="编辑结帐方式信息",value="haiPaymentEditDetail",relation="haiPaymentEditSubmit",type=PermissionProtocol.BUTTON,sort="3")
 	@RequestMapping(value="/haiPaymentEditDetail",method=RequestMethod.POST)
 	public String haiPaymentEditDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
-			@RequestParam(value = "payId", required = true) Integer payId
+			@RequestParam(value = "paymentId", required = true) Integer paymentId
 			) {
 		try{
-			ReturnObject<HaiPayment> rm = haiPaymentService.payment_update(request,payId);
+			ReturnObject<HaiPayment> rm = haiPaymentService.payment_update(request,paymentId);
 			return this.writeJson(rm);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -146,14 +146,14 @@ public class  HaiPaymentAdminController extends CommonController {
 	}
 
 	/**
-	@EPermissionMethod(name="编辑",intro="编辑结算方式",value="haiPaymentEditDetail",relation="haiPaymentEditSubmit",type=PermissionProtocol.BUTTON,sort="3")
+	@EPermissionMethod(name="编辑",intro="编辑结帐方式信息",value="haiPaymentEditDetail",relation="haiPaymentEditSubmit",type=PermissionProtocol.BUTTON,sort="3")
 	@RequestMapping(value="/haiPaymentEditDetail",method=RequestMethod.GET)
 	public String haiPaymentEditDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
-			@RequestParam(value = "payId", required = true) Integer payId
+			@RequestParam(value = "paymentId", required = true) Integer paymentId
 			) {
 		try{
-			ReturnObject<HaiPayment> rm = haiPaymentService.payment_update(request,payId);
+			ReturnObject<HaiPayment> rm = haiPaymentService.payment_update(request,paymentId);
 			modelMap.addAttribute("rm", rm);
 			//return "/"+this.getAdminProjectFolder(request)+"/payment/detail";
 			return this.view(request, "/payment/detail");
@@ -168,7 +168,7 @@ public class  HaiPaymentAdminController extends CommonController {
 	
 	
 	@ResponseBody
-	@EPermissionMethod(intro="编辑提交结算方式",value="haiPaymentEditSubmit",type=PermissionProtocol.DATA)
+	@EPermissionMethod(intro="编辑提交结帐方式信息",value="haiPaymentEditSubmit",type=PermissionProtocol.DATA)
 	@RequestMapping(value="/haiPaymentEditSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String haiPaymentEditSubmit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -187,14 +187,14 @@ public class  HaiPaymentAdminController extends CommonController {
 	
 	
 	@ResponseBody
-	@EPermissionMethod(name="删除",intro="删除结算方式",value="haiPaymentDelete",type=PermissionProtocol.BUTTON,sort="4")
+	@EPermissionMethod(name="删除",intro="删除结帐方式信息",value="haiPaymentDelete",type=PermissionProtocol.BUTTON,sort="4")
 	@RequestMapping(value="/haiPaymentDelete",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String haiPaymentDelete(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
-			@RequestParam(value = "payId", required = true) Integer payId
+			@RequestParam(value = "paymentId", required = true) Integer paymentId
 			) {
 		try{
-			return this.writeJson(haiPaymentService.payment_delete(request, payId));
+			return this.writeJson(haiPaymentService.payment_delete(request, paymentId));
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("payment", e);

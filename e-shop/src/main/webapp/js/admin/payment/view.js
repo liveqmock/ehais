@@ -4,7 +4,7 @@ var haiTempSublateModal ;
 
 
 var bsTable ;
-var payName = "";
+var paymentName = "";
 
 
 
@@ -21,7 +21,7 @@ $(function(){
 	
 	
 	
-    $("#btnSearch").click(function(){payName = $.trim($("#payName").val());bsTable.bootstrapTable('refresh', { query : {keySubId : keySubId , payName : payName , page : 1} });});
+    $("#btnSearch").click(function(){paymentName = $.trim($("#paymentName").val());bsTable.bootstrapTable('refresh', { query : {keySubId : keySubId , paymentName : paymentName , page : 1} });});
     
     bsTable = $('#bsTable').bootstrapTable({
     	contentType: "application/x-www-form-urlencoded",
@@ -47,21 +47,30 @@ $(function(){
                 sort: params.sort,  //排序列名  
                 sortOrder: params.order,//排位命令（desc，asc）
                 keySubId : keySubId,
-                payName : payName
+                paymentName : paymentName
 	        }
 	    },
         sidePagination: "server", //服务端处理分页
-        uniqueId: 'payId',//每一行的唯一标识，一般为主键列
+        uniqueId: 'paymentId',//每一行的唯一标识，一般为主键列
         columns: [
 
-
+{
+    field: 'payId',
+    title: '编号'
+},{
+    field: 'payCode',
+    title: '简码'
+},{
+    field: 'payName',
+    title: '名称'
+},
 
         {
-            field: 'payId',
+            field: 'paymentId',
             title: '操作',
             formatter : function(value,row,index){
 				var opt = "";
-            	opt += "<a href ='haiPaymentEditDetail?payId="+value+"'  class='glyphicon glyphicon-edit'></a>";
+            	opt += "<a href ='haiPaymentEditDetail?paymentId="+value+"'  class='glyphicon glyphicon-edit'></a>";
             	opt += "&nbsp;&nbsp;<a href ='javascript:;' onclick='haiPaymentDelete("+value+");' class='glyphicon glyphicon-trash'></a>";
             	return opt;
             }
@@ -90,12 +99,12 @@ $(function(){
 
 
 
-function haiPaymentDelete(payId){
+function haiPaymentDelete(paymentId){
 	layer.confirm('您确定要删除此项吗？',{
 		btn: ['确定删除','不删除'] //按钮
 	}, function(){
 		$.ajax({
-			url : "haiPaymentDelete",type:"post",dataType:"json",data:{payId:payId},
+			url : "haiPaymentDelete",type:"post",dataType:"json",data:{paymentId:paymentId},
 			success:function(result){
 				layer.msg(result.msg);
 				bsTable.bootstrapTable('refresh');
@@ -119,7 +128,7 @@ function getTree() {
 			
 		    $('#tree').treeview({
 		        data: [{
-			        text: "结算方式分类",
+			        text: "结帐方式信息分类",
 			        nodes: nodes
 			    }],
 		        levels: 5,
@@ -130,7 +139,7 @@ function getTree() {
 		        	}else{
 		        		keySubId = data.id;
 		        	}
-		        	$("#payName").val("");payName = "";
+		        	$("#paymentName").val("");paymentName = "";
 		        	bsTable.bootstrapTable('refresh', { query : {keySubId : keySubId , page : 1} });
 		        }
 		    });
@@ -237,7 +246,7 @@ function editCateSubmit(){
 function deleteCate(){
 	var node = $('#tree').treeview('getSelected');	
 	if(node == null || node.length == 0 || node[0].nodeId == 0){
-		layer.msg("请选择结算方式分类");
+		layer.msg("请选择结帐方式信息分类");
 		return ;
 	}
 	var keySubId = node[0].id;

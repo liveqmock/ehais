@@ -12,7 +12,7 @@
 <div class="header">
 	<div class="nav">
 		<a href="javascript:;" id="back" class="icon fa fa-arrow-left ">&nbsp;</a>
-		<div class="nav0">往来单位</div>
+		<div class="nav0">往来单位分类信息</div>
 		<div class="nav1">信息编辑</div>
 	</div>
 </div>
@@ -21,6 +21,7 @@
 <form id="haiBusinessTypeForm" name="haiBusinessTypeForm" class="form-horizontal" action="${rm.action?default('')}" method="post">
 
 
+<input type="hidden" class="form-control" id="businessTypeId" name="businessTypeId" value="${rm.model.businessTypeId!''}" >
 <div class="form-group">
 <label class="col-sm-2 control-label">商业/往来单位简码</label>
 <div class="col-sm-5">
@@ -39,6 +40,13 @@
 <label class="col-sm-2 control-label">商业/往来单位上级编号</label>
 <div class="col-sm-5">
 	<input type="text" class="form-control" id="businessTypeParentId" name="businessTypeParentId" value="${rm.model.businessTypeParentId!''}" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">remark</label>
+<div class="col-sm-8">
+	<@ueditorPicker id="remark" value="${rm.model.remark!''}" />
 </div>
 </div>
 

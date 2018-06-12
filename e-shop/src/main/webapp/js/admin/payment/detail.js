@@ -8,10 +8,10 @@ $(function(){
 function haiPaymentAddSubmit(){
 	
 	if($("#payCode").val() == undefined || $("#payCode").val().length == 0){
-		layer.msg("请输入pay_code");return ;
+		layer.msg("请输入简码");return ;
 	}
 	if($("#payName").val() == undefined || $("#payName").val().length == 0){
-		layer.msg("请输入pay_name");return ;
+		layer.msg("请输入名称");return ;
 	}
 
 	
@@ -43,10 +43,10 @@ function haiPaymentAddSubmit(){
 function haiPaymentEditSubmit(){
 	
 	if($("#payCode").val() == undefined || $("#payCode").val().length == 0){
-		layer.msg("请输入pay_code");return ;
+		layer.msg("请输入简码");return ;
 	}
 	if($("#payName").val() == undefined || $("#payName").val().length == 0){
-		layer.msg("请输入pay_name");return ;
+		layer.msg("请输入名称");return ;
 	}
 
 	

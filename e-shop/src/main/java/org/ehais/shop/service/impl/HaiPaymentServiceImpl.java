@@ -24,8 +24,8 @@ import org.springframework.stereotype.Service;
 //model里面对应的日期添加的 @DateTimeFormat( pattern = "yyyy-MM-dd" )
 
 /**
-@NotBlank(message = "pay_code不能为空")//pay_code
-@NotBlank(message = "pay_name不能为空")//pay_name
+@NotBlank(message = "简码不能为空")//pay_code
+@NotBlank(message = "名称不能为空")//pay_name
 
 **/
 /**
@@ -52,7 +52,7 @@ public class HaiPaymentServiceImpl  extends CommonServiceImpl implements HaiPaym
 		return rm;
 	}
 
-	public ReturnObject<HaiPayment> payment_list_json(HttpServletRequest request,EConditionObject condition,Integer keySubId,String payName) throws Exception {
+	public ReturnObject<HaiPayment> payment_list_json(HttpServletRequest request,EConditionObject condition,Integer keySubId,String paymentName) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiPayment> rm = new ReturnObject<HaiPayment>();
 		rm.setCode(0);
@@ -66,7 +66,7 @@ public class HaiPaymentServiceImpl  extends CommonServiceImpl implements HaiPaym
 		example.setLimitEnd(condition.getRows());
 		example.setOrderByClause("last_update_date desc");
 		
-		if(StringUtils.isNotEmpty(payName))c.andPayNameLike("%"+payName+"%");
+		if(StringUtils.isNotEmpty(paymentName))c.andPayNameLike("%"+paymentName+"%");
 		List<HaiPayment> list = haiPaymentMapper.selectByExample(example);
 		long total = haiPaymentMapper.countByExample(example);
 
@@ -150,7 +150,7 @@ public class HaiPaymentServiceImpl  extends CommonServiceImpl implements HaiPaym
 		HaiPaymentExample example = new HaiPaymentExample();
 		HaiPaymentExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
-		c.andPayIdEqualTo(payId);
+		c.andPaymentIdEqualTo(payId);
 		long count = haiPaymentMapper.countByExample(example);
 		if(count == 0){
 			rm.setMsg("记录不存在");
@@ -231,7 +231,7 @@ bean.setClassname(model.getClassname());
 		/**
 		HaiPaymentExample example = new HaiPaymentExample();
 		HaiPaymentExample.Criteria c = example.createCriteria();
-		c.andPayIdEqualTo(payId);
+		c.andPaymentIdEqualTo(payId);
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
 		List<HaiPayment> list = haiPaymentMapper.selectByExample(example);
 		if(list == null || list.size() == 0){
@@ -268,7 +268,7 @@ bean.setClassname(model.getClassname());
 		/**
 		HaiPaymentExample example = new HaiPaymentExample();
 		HaiPaymentExample.Criteria c = example.createCriteria();
-		c.andPayIdEqualTo(payId);
+		c.andPaymentIdEqualTo(payId);
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
 		List<HaiPayment> list = haiPaymentMapper.selectByExample(example);
 		if(list == null || list.size() == 0){

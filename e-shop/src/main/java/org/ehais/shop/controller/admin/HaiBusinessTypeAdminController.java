@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @EPermissionModuleGroup(name="模组")
 
-@EPermissionController(name="往来单位管理",value="haiBusinessTypeController")
+@EPermissionController(name="往来单位分类信息管理",value="haiBusinessTypeController")
 @Controller
 @RequestMapping("/admin")
 public class  HaiBusinessTypeAdminController extends CommonController {
@@ -43,7 +43,7 @@ public class  HaiBusinessTypeAdminController extends CommonController {
 	private HaiBusinessTypeService haiBusinessTypeService;
 	
 	
-	@EPermissionMethod(name="查询",intro="打开往来单位页面",value="haiBusinessTypeView",relation="haiBusinessTypeListJson",type=PermissionProtocol.URL,sort="1")
+	@EPermissionMethod(name="查询",intro="打开往来单位分类信息页面",value="haiBusinessTypeView",relation="haiBusinessTypeListJson",type=PermissionProtocol.URL,sort="1")
 	@RequestMapping("/haiBusinessTypeView")
 	public String haiBusinessTypeView(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) {	
@@ -66,7 +66,7 @@ public class  HaiBusinessTypeAdminController extends CommonController {
 	
 
 	@ResponseBody
-	@EPermissionMethod(intro="返回往来单位数据",value="haiBusinessTypeListJson",type=PermissionProtocol.JSON)
+	@EPermissionMethod(intro="返回往来单位分类信息数据",value="haiBusinessTypeListJson",type=PermissionProtocol.JSON)
 	@RequestMapping(value="/haiBusinessTypeListJson",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String haiBusinessTypeListJson(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -85,7 +85,7 @@ public class  HaiBusinessTypeAdminController extends CommonController {
 	
 	
 	
-	@EPermissionMethod(name="新增",intro="新增往来单位",value="haiBusinessTypeAddDetail",relation="haiBusinessTypeAddSubmit",type=PermissionProtocol.BUTTON,sort="2")
+	@EPermissionMethod(name="新增",intro="新增往来单位分类信息",value="haiBusinessTypeAddDetail",relation="haiBusinessTypeAddSubmit",type=PermissionProtocol.BUTTON,sort="2")
 	@RequestMapping(value="/haiBusinessTypeAddDetail",method=RequestMethod.GET)
 	public String haiBusinessTypeAddDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response
@@ -106,7 +106,7 @@ public class  HaiBusinessTypeAdminController extends CommonController {
 	
 	
 	@ResponseBody
-	@EPermissionMethod(intro="新增提交往来单位",value="haiBusinessTypeAddSubmit",type=PermissionProtocol.DATA)
+	@EPermissionMethod(intro="新增提交往来单位分类信息",value="haiBusinessTypeAddSubmit",type=PermissionProtocol.DATA)
 	@RequestMapping(value="/haiBusinessTypeAddSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String haiBusinessTypeAddSubmit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -128,7 +128,7 @@ public class  HaiBusinessTypeAdminController extends CommonController {
 	
 
 	@ResponseBody
-	@EPermissionMethod(name="编辑",intro="编辑往来单位",value="haiBusinessTypeEditDetail",relation="haiBusinessTypeEditSubmit",type=PermissionProtocol.BUTTON,sort="3")
+	@EPermissionMethod(name="编辑",intro="编辑往来单位分类信息",value="haiBusinessTypeEditDetail",relation="haiBusinessTypeEditSubmit",type=PermissionProtocol.BUTTON,sort="3")
 	@RequestMapping(value="/haiBusinessTypeEditDetail",method=RequestMethod.POST)
 	public String haiBusinessTypeEditDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -146,7 +146,7 @@ public class  HaiBusinessTypeAdminController extends CommonController {
 	}
 
 	/**
-	@EPermissionMethod(name="编辑",intro="编辑往来单位",value="haiBusinessTypeEditDetail",relation="haiBusinessTypeEditSubmit",type=PermissionProtocol.BUTTON,sort="3")
+	@EPermissionMethod(name="编辑",intro="编辑往来单位分类信息",value="haiBusinessTypeEditDetail",relation="haiBusinessTypeEditSubmit",type=PermissionProtocol.BUTTON,sort="3")
 	@RequestMapping(value="/haiBusinessTypeEditDetail",method=RequestMethod.GET)
 	public String haiBusinessTypeEditDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -168,7 +168,7 @@ public class  HaiBusinessTypeAdminController extends CommonController {
 	
 	
 	@ResponseBody
-	@EPermissionMethod(intro="编辑提交往来单位",value="haiBusinessTypeEditSubmit",type=PermissionProtocol.DATA)
+	@EPermissionMethod(intro="编辑提交往来单位分类信息",value="haiBusinessTypeEditSubmit",type=PermissionProtocol.DATA)
 	@RequestMapping(value="/haiBusinessTypeEditSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String haiBusinessTypeEditSubmit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -187,7 +187,7 @@ public class  HaiBusinessTypeAdminController extends CommonController {
 	
 	
 	@ResponseBody
-	@EPermissionMethod(name="删除",intro="删除往来单位",value="haiBusinessTypeDelete",type=PermissionProtocol.BUTTON,sort="4")
+	@EPermissionMethod(name="删除",intro="删除往来单位分类信息",value="haiBusinessTypeDelete",type=PermissionProtocol.BUTTON,sort="4")
 	@RequestMapping(value="/haiBusinessTypeDelete",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String haiBusinessTypeDelete(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -201,7 +201,7 @@ public class  HaiBusinessTypeAdminController extends CommonController {
 			return this.errorJSON(e);
 		}
 	}
-	
+
 	
 
 

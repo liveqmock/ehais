@@ -182,8 +182,8 @@ public class  HaiPurchaseAdminController extends CommonController {
 
 
 
-	@EPermissionMethod(intro="打开进货管理页面",value="haiWarehouseView",type=PermissionProtocol.URL)
-	@RequestMapping("/haiWarehouseView")
+//	@EPermissionMethod(intro="打开进货管理页面",value="haiWarehouseView",type=PermissionProtocol.URL)
+//	@RequestMapping("/haiWarehouseView")
 	public String haiWarehouseView(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) {	
 		try{
@@ -199,9 +199,9 @@ public class  HaiPurchaseAdminController extends CommonController {
 	}
 	
 
-	@ResponseBody
-	@EPermissionMethod(intro="返回进货管理数据",value="haiWarehouseListJson",type=PermissionProtocol.JSON)
-	@RequestMapping(value="/haiWarehouseListJson",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
+//	@ResponseBody
+//	@EPermissionMethod(intro="返回进货管理数据",value="haiWarehouseListJson",type=PermissionProtocol.JSON)
+//	@RequestMapping(value="/haiWarehouseListJson",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String haiWarehouseListJson(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@ModelAttribute EConditionObject condition,
@@ -218,8 +218,8 @@ public class  HaiPurchaseAdminController extends CommonController {
 	
 	
 	
-	@EPermissionMethod(name="新增",intro="新增进货管理",value="haiWarehouseAddDetail",type=PermissionProtocol.BUTTON)
-	@RequestMapping(value="/haiWarehouseAddDetail",method=RequestMethod.GET)
+//	@EPermissionMethod(name="新增",intro="新增进货管理",value="haiWarehouseAddDetail",type=PermissionProtocol.BUTTON)
+//	@RequestMapping(value="/haiWarehouseAddDetail",method=RequestMethod.GET)
 	public String haiWarehouseAddDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response
 			) {
@@ -237,9 +237,9 @@ public class  HaiPurchaseAdminController extends CommonController {
 	}
 	
 	
-	@ResponseBody
-	@EPermissionMethod(intro="新增提交进货管理",value="haiWarehouseAddSubmit",type=PermissionProtocol.DATA)
-	@RequestMapping(value="/haiWarehouseAddSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
+//	@ResponseBody
+//	@EPermissionMethod(intro="新增提交进货管理",value="haiWarehouseAddSubmit",type=PermissionProtocol.DATA)
+//	@RequestMapping(value="/haiWarehouseAddSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String haiWarehouseAddSubmit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@Validated({EInsertValidator.class,EUniqueValidator.class})  @ModelAttribute("warehouse") HaiWarehouse warehouse,
@@ -260,8 +260,8 @@ public class  HaiPurchaseAdminController extends CommonController {
 	
 
 	
-	@EPermissionMethod(name="编辑",intro="编辑进货管理",value="haiWarehouseEditDetail",type=PermissionProtocol.BUTTON)
-	@RequestMapping(value="/haiWarehouseEditDetail",method=RequestMethod.GET)
+//	@EPermissionMethod(name="编辑",intro="编辑进货管理",value="haiWarehouseEditDetail",type=PermissionProtocol.BUTTON)
+//	@RequestMapping(value="/haiWarehouseEditDetail",method=RequestMethod.GET)
 	public String haiWarehouseEditDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "warehouseId", required = true) Integer warehouseId
@@ -278,9 +278,9 @@ public class  HaiPurchaseAdminController extends CommonController {
 		
 	}
 	
-	@ResponseBody
-	@EPermissionMethod(intro="编辑提交进货管理",value="haiWarehouseEditSubmit",type=PermissionProtocol.DATA)
-	@RequestMapping(value="/haiWarehouseEditSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
+//	@ResponseBody
+//	@EPermissionMethod(intro="编辑提交进货管理",value="haiWarehouseEditSubmit",type=PermissionProtocol.DATA)
+//	@RequestMapping(value="/haiWarehouseEditSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String haiWarehouseEditSubmit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@Validated({EUpdateValidator.class}) @ModelAttribute("warehouse") HaiWarehouse warehouse,
@@ -297,9 +297,9 @@ public class  HaiPurchaseAdminController extends CommonController {
 	}
 	
 	
-	@ResponseBody
-	@EPermissionMethod(name="删除",intro="删除进货管理",value="haiWarehouseDelete",type=PermissionProtocol.BUTTON)
-	@RequestMapping(value="/haiWarehouseDelete",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
+//	@ResponseBody
+//	@EPermissionMethod(name="删除",intro="删除进货管理",value="haiWarehouseDelete",type=PermissionProtocol.BUTTON)
+//	@RequestMapping(value="/haiWarehouseDelete",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String haiWarehouseDelete(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "warehouseId", required = true) Integer warehouseId

@@ -128,7 +128,7 @@ function getTree() {
 			
 		    $('#tree').treeview({
 		        data: [{
-			        text: "计量单位分类",
+			        text: "计量单位信息分类",
 			        nodes: nodes
 			    }],
 		        levels: 5,
@@ -246,7 +246,7 @@ function editCateSubmit(){
 function deleteCate(){
 	var node = $('#tree').treeview('getSelected');	
 	if(node == null || node.length == 0 || node[0].nodeId == 0){
-		layer.msg("请选择计量单位分类");
+		layer.msg("请选择计量单位信息分类");
 		return ;
 	}
 	var keySubId = node[0].id;

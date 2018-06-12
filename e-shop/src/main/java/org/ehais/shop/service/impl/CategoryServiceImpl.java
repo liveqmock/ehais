@@ -51,7 +51,7 @@ public class CategoryServiceImpl  extends EShopCommonServiceImpl implements Cate
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
 		example.setLimitStart(start);
 		example.setLimitEnd(len);
-		List<HaiCategory> list = haiCategoryMapper.hai_category_list_by_example(example);
+		List<HaiCategory> list = haiCategoryMapper.selectByExample(example);
 		long total = haiCategoryMapper.countByExample(example);
 		rm.setCode(1);
 		rm.setRows(list);
@@ -229,7 +229,7 @@ public class CategoryServiceImpl  extends EShopCommonServiceImpl implements Cate
 		HaiCategoryExample.Criteria c = example.createCriteria();
 		c.andStoreIdEqualTo(store_id);
 		c.andParentIdEqualTo(parent_id);
-		List<HaiCategory> list = haiCategoryMapper.hai_category_list_by_example(example);
+		List<HaiCategory> list = haiCategoryMapper.selectByExample(example);
 		
 		rm.setCode(1);
 		rm.setRows(list);
@@ -272,7 +272,7 @@ public class CategoryServiceImpl  extends EShopCommonServiceImpl implements Cate
 		HaiCategoryExample example = new HaiCategoryExample();
 		HaiCategoryExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
-		List<HaiCategory> categoryList = haiCategoryMapper.hai_category_list_by_example(example);
+		List<HaiCategory> categoryList = haiCategoryMapper.selectByExample(example);
 		for (HaiCategory haiCategory : categoryList) {
 			treeList.add(new TreeModel(haiCategory.getCatId().intValue(), haiCategory.getCatName(), haiCategory.getParentId().intValue(), 0,haiCategory.getCatCode(), null));
 		}

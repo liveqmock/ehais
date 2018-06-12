@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8">
+		
+		<#include "/include.v2.html"/>
+		<#include "/FreemarkerMacro.html"/>
+		
+		
+		
+		<script type="text/javascript">
+			var bootstrap_table_url = 'haiEmployeeListJson';
+			var employeeName = null;
+			var query_parames = {
+                employeeName : employeeName
+			};
+			var columns =  [
+				{
+    field: 'employeeId',
+    title: '编号'
+},{
+    field: 'employeeCode',
+    title: '简码'
+},{
+    field: 'employeeName',
+    title: '名称'
+},{
+    field: 'phone',
+    title: '手机号码'
+},
+		        {
+					field: 'employeeId',
+		            title: '操作',
+					align:"center",
+			        formatter:function(value,row,index){
+			        	var opt = "";
+			        	
+			        	<@permission url="haiEmployeeEditDetail">
+			            opt += "<a href ='javascript:;' onclick='haiEmployeeEditDetail("+value+");'  class='glyphicon glyphicon-edit'></a>";
+			            </@permission>
+			            
+			            <@permission url="haiEmployeeDelete">
+			            opt += "&nbsp;&nbsp;<a href ='javascript:;' onclick='haiEmployeeDelete("+value+");' class='glyphicon glyphicon-trash'></a>";
+			            </@permission>
+			            
+		            	return opt;
+			        }
+		        }
+        	];
+		</script>
+		<script type="text/javascript" src="/js/e_bootstrap_table.js"></script>
+    	<script type="text/javascript" src="/js/admin/employee/employeeView.js" ></script> 
+		<title>员工信息</title>
+		
+	</head>
+	<body>
+		<div class="container-fluid" id="wrapper" tabindex="-1">
+			
+			<dl class="enav">
+				<dt>当前位置:</dt>
+				<dd>总系统</dd>
+				<dd>员工信息</dd>
+				<dd class="fr">快捷键提示</dd>
+			</dl>
+			
+			<div class="ctr form-inline">
+				  <div class="form-group">
+				    <label >搜索信息</label>
+				    <input id="key_employeeName" name="key_employeeName" class="form-control" >
+				  </div>
+				  				  
+				  
+				  <button id="haiEmployeeSearch" type="button" class="btn btn-primary glyphicon glyphicon-search">查询</button>
+				  
+				  <@permission url="haiEmployeeAddDetail">
+				  <button id="haiEmployeeAddDetail" type="button" class="btn btn-info glyphicon glyphicon-plus fr">新增</button>
+				  </@permission>
+			</div>
+			
+			<div class="elist">
+				<table class="table table-striped table-bordered table-hover" id="bsTable"></table> 
+			</div>
+			
+		</div>
+
+
+
+<div id="haiEmployeeModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" >
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">员工信息</h4>
+      </div>
+      <div class="modal-body">
+        <form id="haiEmployeeForm" name="haiEmployeeForm" class="form-horizontal" action="add" method="post">
+        
+        <input type="hidden" class="form-control" id="employeeId" name="employeeId" value="" >
+<div class="form-group">
+<label class="col-sm-2 control-label">简码</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="employeeCode" name="employeeCode" value="" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">名称</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="employeeName" name="employeeName" value="" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">手机号码</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="phone" name="phone" value="" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">remark</label>
+<div class="col-sm-8">
+	<@ueditorPicker id="remark" value="" />
+</div>
+</div>
+
+
+        
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button id="haiEmployeeSaveSubmit" type="button" class="btn btn-primary">保存</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+<script type="text/javascript">
+	var eData = {};
+		
+	$(function(){
+				
+
+	});
+	
+	
+</script>
+
+	</body>
+</html>

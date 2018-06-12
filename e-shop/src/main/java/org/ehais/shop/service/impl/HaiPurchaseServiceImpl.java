@@ -448,7 +448,7 @@ bean.setUpdateDate(model.getUpdateDate());
 		HaiWarehouse bean = haiWarehouseMapper.selectByPrimaryKey(model.getWarehouseId());
 
 		bean.setWarehouseName(model.getWarehouseName());
-bean.setSort(model.getSort());
+bean.setWarehouseCode(model.getWarehouseCode());
 bean.setStoreId(model.getStoreId());
 bean.setCreateDate(model.getCreateDate());
 bean.setUpdateDate(model.getUpdateDate());

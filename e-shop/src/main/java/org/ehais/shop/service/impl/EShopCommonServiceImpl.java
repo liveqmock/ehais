@@ -32,7 +32,7 @@ public class EShopCommonServiceImpl extends CommonServiceImpl{
 		HaiCategoryExample example = new HaiCategoryExample();
 		HaiCategoryExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
-		List<HaiCategory> categoryList = haiCategoryMapper.hai_category_list_by_example(example);
+		List<HaiCategory> categoryList = haiCategoryMapper.selectByExample(example);
 		for (HaiCategory haiCategory : categoryList) {
 			treeList.add(new TreeModel(haiCategory.getCatId().intValue(), haiCategory.getCatName(), haiCategory.getParentId().intValue(), 0,haiCategory.getCatCode(), null));
 		}

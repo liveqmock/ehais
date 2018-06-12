@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @EPermissionModuleGroup(name="模组")
 
-@EPermissionController(name="计量单位管理",value="haiUnitController")
+@EPermissionController(name="计量单位信息管理",value="haiUnitController")
 @Controller
 @RequestMapping("/admin")
 public class  HaiUnitAdminController extends CommonController {
@@ -43,7 +43,7 @@ public class  HaiUnitAdminController extends CommonController {
 	private HaiUnitService haiUnitService;
 	
 	
-	@EPermissionMethod(name="查询",intro="打开计量单位页面",value="haiUnitView",relation="haiUnitListJson",type=PermissionProtocol.URL,sort="1")
+	@EPermissionMethod(name="查询",intro="打开计量单位信息页面",value="haiUnitView",relation="haiUnitListJson",type=PermissionProtocol.URL,sort="1")
 	@RequestMapping("/haiUnitView")
 	public String haiUnitView(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) {	
@@ -66,7 +66,7 @@ public class  HaiUnitAdminController extends CommonController {
 	
 
 	@ResponseBody
-	@EPermissionMethod(intro="返回计量单位数据",value="haiUnitListJson",type=PermissionProtocol.JSON)
+	@EPermissionMethod(intro="返回计量单位信息数据",value="haiUnitListJson",type=PermissionProtocol.JSON)
 	@RequestMapping(value="/haiUnitListJson",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String haiUnitListJson(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -85,7 +85,7 @@ public class  HaiUnitAdminController extends CommonController {
 	
 	
 	
-	@EPermissionMethod(name="新增",intro="新增计量单位",value="haiUnitAddDetail",relation="haiUnitAddSubmit",type=PermissionProtocol.BUTTON,sort="2")
+	@EPermissionMethod(name="新增",intro="新增计量单位信息",value="haiUnitAddDetail",relation="haiUnitAddSubmit",type=PermissionProtocol.BUTTON,sort="2")
 	@RequestMapping(value="/haiUnitAddDetail",method=RequestMethod.GET)
 	public String haiUnitAddDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response
@@ -106,7 +106,7 @@ public class  HaiUnitAdminController extends CommonController {
 	
 	
 	@ResponseBody
-	@EPermissionMethod(intro="新增提交计量单位",value="haiUnitAddSubmit",type=PermissionProtocol.DATA)
+	@EPermissionMethod(intro="新增提交计量单位信息",value="haiUnitAddSubmit",type=PermissionProtocol.DATA)
 	@RequestMapping(value="/haiUnitAddSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String haiUnitAddSubmit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -128,7 +128,7 @@ public class  HaiUnitAdminController extends CommonController {
 	
 
 	@ResponseBody
-	@EPermissionMethod(name="编辑",intro="编辑计量单位",value="haiUnitEditDetail",relation="haiUnitEditSubmit",type=PermissionProtocol.BUTTON,sort="3")
+	@EPermissionMethod(name="编辑",intro="编辑计量单位信息",value="haiUnitEditDetail",relation="haiUnitEditSubmit",type=PermissionProtocol.BUTTON,sort="3")
 	@RequestMapping(value="/haiUnitEditDetail",method=RequestMethod.POST)
 	public String haiUnitEditDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -146,7 +146,7 @@ public class  HaiUnitAdminController extends CommonController {
 	}
 
 	/**
-	@EPermissionMethod(name="编辑",intro="编辑计量单位",value="haiUnitEditDetail",relation="haiUnitEditSubmit",type=PermissionProtocol.BUTTON,sort="3")
+	@EPermissionMethod(name="编辑",intro="编辑计量单位信息",value="haiUnitEditDetail",relation="haiUnitEditSubmit",type=PermissionProtocol.BUTTON,sort="3")
 	@RequestMapping(value="/haiUnitEditDetail",method=RequestMethod.GET)
 	public String haiUnitEditDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -168,7 +168,7 @@ public class  HaiUnitAdminController extends CommonController {
 	
 	
 	@ResponseBody
-	@EPermissionMethod(intro="编辑提交计量单位",value="haiUnitEditSubmit",type=PermissionProtocol.DATA)
+	@EPermissionMethod(intro="编辑提交计量单位信息",value="haiUnitEditSubmit",type=PermissionProtocol.DATA)
 	@RequestMapping(value="/haiUnitEditSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String haiUnitEditSubmit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -187,7 +187,7 @@ public class  HaiUnitAdminController extends CommonController {
 	
 	
 	@ResponseBody
-	@EPermissionMethod(name="删除",intro="删除计量单位",value="haiUnitDelete",type=PermissionProtocol.BUTTON,sort="4")
+	@EPermissionMethod(name="删除",intro="删除计量单位信息",value="haiUnitDelete",type=PermissionProtocol.BUTTON,sort="4")
 	@RequestMapping(value="/haiUnitDelete",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String haiUnitDelete(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,

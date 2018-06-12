@@ -26,7 +26,6 @@ import org.springframework.stereotype.Service;
 /**
 @NotBlank(message = "简码不能为空")//unit_code
 @NotBlank(message = "名称不能为空")//unit_name
-@NotBlank(message = "store_id不能为空")//store_id
 
 **/
 /**
@@ -144,7 +143,10 @@ public class HaiUnitServiceImpl  extends CommonServiceImpl implements HaiUnitSer
 		// TODO Auto-generated method stub
 		ReturnObject<HaiUnit> rm = new ReturnObject<HaiUnit>();
 		rm.setCode(0);
+
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+
+/**
 		HaiUnitExample example = new HaiUnitExample();
 		HaiUnitExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
@@ -155,7 +157,12 @@ public class HaiUnitServiceImpl  extends CommonServiceImpl implements HaiUnitSer
 			return rm;
 		}
 		HaiUnit model = haiUnitMapper.selectByPrimaryKey(unitId);
-
+**/
+		HaiUnit model = haiUnitMapper.get_hai_unit_info(unitId,store_id);
+		if(model == null){
+			rm.setMsg("记录不存在");
+			return rm;
+		}
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		rm.setMap(map);
@@ -189,6 +196,7 @@ public class HaiUnitServiceImpl  extends CommonServiceImpl implements HaiUnitSer
 
 bean.setUnitCode(model.getUnitCode());
 bean.setUnitName(model.getUnitName());
+bean.setRemark(model.getRemark());
 
 
 		Date date = new Date();
@@ -211,6 +219,8 @@ bean.setUnitName(model.getUnitName());
 		ReturnObject<HaiUnit> rm = new ReturnObject<HaiUnit>();
 		rm.setCode(0);
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		
+		/**
 		HaiUnitExample example = new HaiUnitExample();
 		HaiUnitExample.Criteria c = example.createCriteria();
 		c.andUnitIdEqualTo(unitId);
@@ -221,6 +231,14 @@ bean.setUnitName(model.getUnitName());
 			return rm;
 		}
 		HaiUnit model = list.get(0);
+		**/
+
+		HaiUnit model = haiUnitMapper.get_hai_unit_info(unitId,store_id);
+		if(model == null){
+			rm.setMsg("记录不存在");
+			return rm;
+		}
+
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		rm.setMap(map);
@@ -238,6 +256,8 @@ bean.setUnitName(model.getUnitName());
 		rm.setCode(0);
 		
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+
+		/**
 		HaiUnitExample example = new HaiUnitExample();
 		HaiUnitExample.Criteria c = example.createCriteria();
 		c.andUnitIdEqualTo(unitId);
@@ -248,6 +268,14 @@ bean.setUnitName(model.getUnitName());
 			return rm;
 		}
 		HaiUnit model = list.get(0);
+		**/
+
+		HaiUnit model = haiUnitMapper.get_hai_unit_info(unitId,store_id);
+		if(model == null){
+			rm.setMsg("记录不存在");
+			return rm;
+		}
+
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		rm.setMap(map);

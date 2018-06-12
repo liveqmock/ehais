@@ -1,5 +1,5 @@
 var haiPaymentModal ;
-var key_payName = "";
+var key_paymentName = "";
 $(function(){
 	haiPaymentModal = $("#haiPaymentModal").modal({ keyboard: false , show : false });
 	
@@ -8,8 +8,8 @@ $(function(){
 	});
 	
 	$("#haiPaymentSearch").click(function(){
-		key_payName = $.trim($("#key_payName").val());
-		bsTable.bootstrapTable('refresh', { query : { payName : key_payName , page : 1} });
+		key_paymentName = $.trim($("#key_paymentName").val());
+		bsTable.bootstrapTable('refresh', { query : { paymentName : key_paymentName , page : 1} });
 	});
     
 	
@@ -25,11 +25,11 @@ function haiPaymentAddDetail(){
 }
 
 
-function haiPaymentEditDetail(payId){
+function haiPaymentEditDetail(paymentId){
 	$("#haiPaymentForm").attr("action","edit");
 	layer.load(0, {shade: false});
 	$.ajax({
-		url : "haiPaymentEditDetail",type:"post",dataType:"json",data:{payId:payId},
+		url : "haiPaymentEditDetail",type:"post",dataType:"json",data:{paymentId:paymentId},
 		success:function(result){
 			layer.closeAll();
 			haiPaymentModal.modal("show");
@@ -45,10 +45,10 @@ function haiPaymentEditDetail(payId){
 function haiPaymentAddSubmit(){
 	
 	if($("#payCode").val() == undefined || $("#payCode").val().length == 0){
-		layer.msg("请输入pay_code");return ;
+		layer.msg("请输入简码");return ;
 	}
 	if($("#payName").val() == undefined || $("#payName").val().length == 0){
-		layer.msg("请输入pay_name");return ;
+		layer.msg("请输入名称");return ;
 	}
 
 	
@@ -81,10 +81,10 @@ function haiPaymentAddSubmit(){
 function haiPaymentEditSubmit(){
 	
 	if($("#payCode").val() == undefined || $("#payCode").val().length == 0){
-		layer.msg("请输入pay_code");return ;
+		layer.msg("请输入简码");return ;
 	}
 	if($("#payName").val() == undefined || $("#payName").val().length == 0){
-		layer.msg("请输入pay_name");return ;
+		layer.msg("请输入名称");return ;
 	}
 
 	
@@ -113,12 +113,12 @@ function haiPaymentEditSubmit(){
 
 
 
-function haiPaymentDelete(payId){
+function haiPaymentDelete(paymentId){
 	layer.confirm('您确定要删除此项吗？',{
 		btn: ['确定删除','不删除'] //按钮
 	}, function(){
 		$.ajax({
-			url : "haiPaymentDelete",type:"post",dataType:"json",data:{payId:payId},
+			url : "haiPaymentDelete",type:"post",dataType:"json",data:{paymentId:paymentId},
 			success:function(result){
 				layer.msg(result.msg);
 				bsTable.bootstrapTable('refresh');
