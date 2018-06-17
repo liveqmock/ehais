@@ -15,7 +15,8 @@ $(function(){
 	
 	$("#haiLabourSaveSubmit").click(function(){$("#haiLabourForm").attr("action") == "add" ? haiLabourAddSubmit() : haiLabourEditSubmit() ;});
 
-	
+	//设置自动简码
+	$("#labourName").setPinyin({"code":"labourCode"});
 });
 
 function haiLabourAddDetail(){

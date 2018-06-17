@@ -15,7 +15,8 @@ $(function(){
 	
 	$("#haiAccountingSaveSubmit").click(function(){$("#haiAccountingForm").attr("action") == "add" ? haiAccountingAddSubmit() : haiAccountingEditSubmit() ;});
 
-	
+	//设置自动简码
+	$("#accountingName").setPinyin({"code":"accountingCode"});
 });
 
 function haiAccountingAddDetail(){

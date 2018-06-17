@@ -26,7 +26,7 @@
     title: '名称'
 },
 		        {
-					field: 'paymentId',
+					field: 'payId',
 		            title: '操作',
 					align:"center",
 			        formatter:function(value,row,index){
@@ -93,12 +93,7 @@
         <form id="haiPaymentForm" name="haiPaymentForm" class="form-horizontal" action="add" method="post">
         
         <input type="hidden" class="form-control" id="payId" name="payId" value="" >
-<div class="form-group">
-<label class="col-sm-2 control-label">简码</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="payCode" name="payCode" value="" placeholder="">
-</div>
-</div>
+
 
 <div class="form-group">
 <label class="col-sm-2 control-label">名称</label>
@@ -107,69 +102,21 @@
 </div>
 </div>
 
+
 <div class="form-group">
-<label class="col-sm-2 control-label">pay_fee</label>
+<label class="col-sm-2 control-label">简码</label>
 <div class="col-sm-5">
-	<input type="text" class="form-control" id="payFee" name="payFee" value="" placeholder="">
+	<input type="text" class="form-control" id="payCode" name="payCode" value="" placeholder="">
 </div>
 </div>
 
+
 <div class="form-group">
-<label class="col-sm-2 control-label">pay_desc</label>
+<label class="col-sm-2 control-label">备注</label>
 <div class="col-sm-8">
-	<textarea class="form-control" id="payDesc" name="payDesc" placeholder=""></textarea>
+	<@commonTextarea id="payDesc" value="" />
 </div>
 </div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">pay_order</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="payOrder" name="payOrder" value="" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">pay_config</label>
-<div class="col-sm-8">
-	<textarea class="form-control" id="payConfig" name="payConfig" placeholder=""></textarea>
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">enabled</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="enabled" name="enabled" value="" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">is_default</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="isDefault" name="isDefault" value="" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">is_cod</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="isCod" name="isCod" value="" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">is_online</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="isOnline" name="isOnline" value="" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">样式名称</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="className" name="className" value="" placeholder="">
-</div>
-</div>
-
 
         
         </form>

@@ -15,7 +15,8 @@ $(function(){
 	
 	$("#haiIncomeSaveSubmit").click(function(){$("#haiIncomeForm").attr("action") == "add" ? haiIncomeAddSubmit() : haiIncomeEditSubmit() ;});
 
-	
+	//设置自动简码
+	$("#incomeName").setPinyin({"code":"incomeCode"});
 });
 
 function haiIncomeAddDetail(){

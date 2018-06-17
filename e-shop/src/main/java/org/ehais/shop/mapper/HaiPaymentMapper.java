@@ -15,7 +15,7 @@ public interface HaiPaymentMapper {
      * @mbg.generated Tue Jun 12 17:22:45 CST 2018
      */
     @Select("select * from hai_payment where pay_id = ${pay_id} and store_id = ${store_id} ")
-    @ResultMap(value = "ResultMapWithBLOBs") //BaseResultMap  ResultMapWithBLOBs
+    @ResultMap(value = "BaseResultMap") //BaseResultMap  ResultMapWithBLOBs
     HaiPayment get_hai_payment_info(@Param("pay_id") Integer pay_id, @Param("store_id") Integer store_id);
 
     /**

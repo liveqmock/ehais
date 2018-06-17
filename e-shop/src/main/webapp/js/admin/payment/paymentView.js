@@ -15,7 +15,8 @@ $(function(){
 	
 	$("#haiPaymentSaveSubmit").click(function(){$("#haiPaymentForm").attr("action") == "add" ? haiPaymentAddSubmit() : haiPaymentEditSubmit() ;});
 
-	
+	//设置自动简码
+	$("#payName").setPinyin({"code":"payCode"});
 });
 
 function haiPaymentAddDetail(){
@@ -25,11 +26,11 @@ function haiPaymentAddDetail(){
 }
 
 
-function haiPaymentEditDetail(paymentId){
+function haiPaymentEditDetail(payId){
 	$("#haiPaymentForm").attr("action","edit");
 	layer.load(0, {shade: false});
 	$.ajax({
-		url : "haiPaymentEditDetail",type:"post",dataType:"json",data:{paymentId:paymentId},
+		url : "haiPaymentEditDetail",type:"post",dataType:"json",data:{payId:payId},
 		success:function(result){
 			layer.closeAll();
 			haiPaymentModal.modal("show");
@@ -113,12 +114,12 @@ function haiPaymentEditSubmit(){
 
 
 
-function haiPaymentDelete(paymentId){
+function haiPaymentDelete(payId){
 	layer.confirm('您确定要删除此项吗？',{
 		btn: ['确定删除','不删除'] //按钮
 	}, function(){
 		$.ajax({
-			url : "haiPaymentDelete",type:"post",dataType:"json",data:{paymentId:paymentId},
+			url : "haiPaymentDelete",type:"post",dataType:"json",data:{payId:payId},
 			success:function(result){
 				layer.msg(result.msg);
 				bsTable.bootstrapTable('refresh');

@@ -96,12 +96,7 @@
         <form id="haiEmployeeForm" name="haiEmployeeForm" class="form-horizontal" action="add" method="post">
         
         <input type="hidden" class="form-control" id="employeeId" name="employeeId" value="" >
-<div class="form-group">
-<label class="col-sm-2 control-label">简码</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="employeeCode" name="employeeCode" value="" placeholder="">
-</div>
-</div>
+
 
 <div class="form-group">
 <label class="col-sm-2 control-label">名称</label>
@@ -109,6 +104,15 @@
 	<input type="text" class="form-control" id="employeeName" name="employeeName" value="" placeholder="">
 </div>
 </div>
+
+
+<div class="form-group">
+<label class="col-sm-2 control-label">简码</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="employeeCode" name="employeeCode" value="" placeholder="">
+</div>
+</div>
+
 
 <div class="form-group">
 <label class="col-sm-2 control-label">手机号码</label>
@@ -118,9 +122,9 @@
 </div>
 
 <div class="form-group">
-<label class="col-sm-2 control-label">remark</label>
+<label class="col-sm-2 control-label">备注</label>
 <div class="col-sm-8">
-	<@ueditorPicker id="remark" value="" />
+	<@commonTextarea id="remark" value="" />
 </div>
 </div>
 

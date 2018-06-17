@@ -15,7 +15,8 @@ $(function(){
 	
 	$("#haiExpensesSaveSubmit").click(function(){$("#haiExpensesForm").attr("action") == "add" ? haiExpensesAddSubmit() : haiExpensesEditSubmit() ;});
 
-	
+	//设置自动简码
+	$("#expensesName").setPinyin({"code":"expensesCode"});
 });
 
 function haiExpensesAddDetail(){

@@ -15,7 +15,8 @@ $(function(){
 	
 	$("#haiPropertySaveSubmit").click(function(){$("#haiPropertyForm").attr("action") == "add" ? haiPropertyAddSubmit() : haiPropertyEditSubmit() ;});
 
-	
+	//设置自动简码
+	$("#propertyName").setPinyin({"code":"propertyCode"});
 });
 
 function haiPropertyAddDetail(){

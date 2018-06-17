@@ -16,6 +16,9 @@ $(function(){
 	$("#haiAccountSaveSubmit").click(function(){$("#haiAccountForm").attr("action") == "add" ? haiAccountAddSubmit() : haiAccountEditSubmit() ;});
 
 	
+	//设置自动简码
+	$("#accountName").setPinyin({"code":"accountCode"});
+	
 });
 
 function haiAccountAddDetail(){

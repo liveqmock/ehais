@@ -16,6 +16,7 @@ $(function(){
 	$("#haiUnitSaveSubmit").click(function(){$("#haiUnitForm").attr("action") == "add" ? haiUnitAddSubmit() : haiUnitEditSubmit() ;});
 
 	
+	$("#unitName").setPinyin({"code":"unitCode"});
 });
 
 function haiUnitAddDetail(){

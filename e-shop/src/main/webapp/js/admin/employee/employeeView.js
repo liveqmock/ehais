@@ -15,7 +15,8 @@ $(function(){
 	
 	$("#haiEmployeeSaveSubmit").click(function(){$("#haiEmployeeForm").attr("action") == "add" ? haiEmployeeAddSubmit() : haiEmployeeEditSubmit() ;});
 
-	
+	//设置自动简码
+	$("#employeeName").setPinyin({"code":"employeeCode"});
 });
 
 function haiEmployeeAddDetail(){

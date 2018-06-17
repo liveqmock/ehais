@@ -93,19 +93,9 @@
         <form id="haiBusinessForm" name="haiBusinessForm" class="form-horizontal" action="add" method="post">
         
         <input type="hidden" class="form-control" id="businessId" name="businessId" value="" >
-<div class="form-group">
-<label class="col-sm-2 control-label">简码</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="businessCode" name="businessCode" value="" placeholder="">
-</div>
-</div>
 
-<div class="form-group">
-<label class="col-sm-2 control-label">user_id</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="userId" name="userId" value="" placeholder="">
-</div>
-</div>
+
+
 
 <div class="form-group">
 <label class="col-sm-2 control-label">企业名称</label>
@@ -114,17 +104,20 @@
 </div>
 </div>
 
+
 <div class="form-group">
-<label class="col-sm-2 control-label">行业编号</label>
+<label class="col-sm-2 control-label">简码</label>
 <div class="col-sm-5">
-	<input type="text" class="form-control" id="sectorsId" name="sectorsId" value="" placeholder="">
+	<input type="text" class="form-control" id="businessCode" name="businessCode" value="" placeholder="">
 </div>
 </div>
 
+
+
 <div class="form-group">
-<label class="col-sm-2 control-label">remark</label>
+<label class="col-sm-2 control-label">备注</label>
 <div class="col-sm-8">
-	<@ueditorPicker id="remark" value="" />
+	<@commonTextarea id="remark" value="" />
 </div>
 </div>
 

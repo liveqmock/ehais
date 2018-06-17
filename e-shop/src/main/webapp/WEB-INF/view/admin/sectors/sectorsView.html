@@ -84,52 +84,28 @@
         <form id="haiSectorsForm" name="haiSectorsForm" class="form-horizontal" action="add" method="post">
         
         <input type="hidden" class="form-control" id="sectorsId" name="sectorsId" value="" >
-<div class="form-group">
-<label class="col-sm-2 control-label">sectors_code</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="sectorsCode" name="sectorsCode" value="" placeholder="">
-</div>
-</div>
+
 
 <div class="form-group">
-<label class="col-sm-2 control-label">sectors_name</label>
+<label class="col-sm-2 control-label">行业名称</label>
 <div class="col-sm-5">
 	<input type="text" class="form-control" id="sectorsName" name="sectorsName" value="" placeholder="">
 </div>
 </div>
 
+
 <div class="form-group">
-<label class="col-sm-2 control-label">parent_id</label>
+<label class="col-sm-2 control-label">简码</label>
 <div class="col-sm-5">
-	<input type="text" class="form-control" id="parentId" name="parentId" value="" placeholder="">
+	<input type="text" class="form-control" id="sectorsCode" name="sectorsCode" value="" placeholder="">
 </div>
 </div>
 
-<div class="form-group">
-<label class="col-sm-2 control-label">是否热门榜单</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="isTop" name="isTop" value="" placeholder="">
-</div>
-</div>
 
 <div class="form-group">
-<label class="col-sm-2 control-label">排序</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="order" name="order" value="" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">parent_id为0时，此值为1就是显示在header上面</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="isHeader" name="isHeader" value="" placeholder="">
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">remark</label>
+<label class="col-sm-2 control-label">备注</label>
 <div class="col-sm-8">
-	<@ueditorPicker id="remark" value="" />
+	<@commonTextarea id="remark" value="" />
 </div>
 </div>
 

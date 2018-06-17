@@ -15,7 +15,8 @@ $(function(){
 	
 	$("#haiCategorySaveSubmit").click(function(){$("#haiCategoryForm").attr("action") == "add" ? haiCategoryAddSubmit() : haiCategoryEditSubmit() ;});
 
-	
+	//设置自动简码
+	$("#catName").setPinyin({"code":"catCode"});
 });
 
 function haiCategoryAddDetail(){

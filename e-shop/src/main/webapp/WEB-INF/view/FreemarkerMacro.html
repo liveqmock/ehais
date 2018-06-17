@@ -82,6 +82,11 @@ $(function(){
 </#macro>
 
 
+<#macro commonTextarea id value >
+<textarea  id="${id}" name="${id}" class="textarea" >${value!''}</textarea>
+</#macro>
+
+
 <!-- 数字控件：< @ quantityPicker id="a" value="b" /> -->
 <#macro quantityPicker id value >
 	<div class="input-group spinner" data-trigger="spinner">

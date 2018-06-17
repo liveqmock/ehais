@@ -132,10 +132,10 @@ public class  HaiPaymentAdminController extends CommonController {
 	@RequestMapping(value="/haiPaymentEditDetail",method=RequestMethod.POST)
 	public String haiPaymentEditDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
-			@RequestParam(value = "paymentId", required = true) Integer paymentId
+			@RequestParam(value = "payId", required = true) Integer payId
 			) {
 		try{
-			ReturnObject<HaiPayment> rm = haiPaymentService.payment_update(request,paymentId);
+			ReturnObject<HaiPayment> rm = haiPaymentService.payment_update(request,payId);
 			return this.writeJson(rm);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -150,10 +150,10 @@ public class  HaiPaymentAdminController extends CommonController {
 	@RequestMapping(value="/haiPaymentEditDetail",method=RequestMethod.GET)
 	public String haiPaymentEditDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
-			@RequestParam(value = "paymentId", required = true) Integer paymentId
+			@RequestParam(value = "payId", required = true) Integer payId
 			) {
 		try{
-			ReturnObject<HaiPayment> rm = haiPaymentService.payment_update(request,paymentId);
+			ReturnObject<HaiPayment> rm = haiPaymentService.payment_update(request,payId);
 			modelMap.addAttribute("rm", rm);
 			//return "/"+this.getAdminProjectFolder(request)+"/payment/detail";
 			return this.view(request, "/payment/detail");
@@ -191,10 +191,10 @@ public class  HaiPaymentAdminController extends CommonController {
 	@RequestMapping(value="/haiPaymentDelete",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String haiPaymentDelete(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
-			@RequestParam(value = "paymentId", required = true) Integer paymentId
+			@RequestParam(value = "payId", required = true) Integer payId
 			) {
 		try{
-			return this.writeJson(haiPaymentService.payment_delete(request, paymentId));
+			return this.writeJson(haiPaymentService.payment_delete(request, payId));
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("payment", e);

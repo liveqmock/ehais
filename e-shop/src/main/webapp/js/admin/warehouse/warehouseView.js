@@ -15,7 +15,8 @@ $(function(){
 	
 	$("#haiWarehouseSaveSubmit").click(function(){$("#haiWarehouseForm").attr("action") == "add" ? haiWarehouseAddSubmit() : haiWarehouseEditSubmit() ;});
 
-	
+	//设置自动简码
+	$("#warehouseName").setPinyin({"code":"warehouseCode"});
 });
 
 function haiWarehouseAddDetail(){

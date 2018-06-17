@@ -15,7 +15,8 @@ $(function(){
 	
 	$("#haiBusinessTypeSaveSubmit").click(function(){$("#haiBusinessTypeForm").attr("action") == "add" ? haiBusinessTypeAddSubmit() : haiBusinessTypeEditSubmit() ;});
 
-	
+	//设置自动简码
+	$("#businessTypeName").setPinyin({"code":"businessTypeCode"});
 });
 
 function haiBusinessTypeAddDetail(){

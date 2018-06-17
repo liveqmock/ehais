@@ -15,7 +15,8 @@ $(function(){
 	
 	$("#haiSectorsSaveSubmit").click(function(){$("#haiSectorsForm").attr("action") == "add" ? haiSectorsAddSubmit() : haiSectorsEditSubmit() ;});
 
-	
+	//设置自动简码
+	$("#sectorsName").setPinyin({"code":"sectorsCode"});
 });
 
 function haiSectorsAddDetail(){
