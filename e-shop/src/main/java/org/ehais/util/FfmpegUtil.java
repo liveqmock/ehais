@@ -76,10 +76,10 @@ public class FfmpegUtil {
         	command.add("-i");  
         	command.add(upFilePath); 
         	command.add("-y");
-        	command.add("-vcodec");  
-        	command.add("copy");  
-        	command.add("-acodec");  
-        	command.add("copy");  
+        	command.add("-c:v");  
+        	command.add("libx264");  
+        	command.add("-strict");  
+        	command.add("-2");
         	command.add(codcFilePath); 
     	}else{  
     		 return false;
@@ -128,7 +128,7 @@ public class FfmpegUtil {
 ////      commend.add("E:\\server\\apache-tomcat-6.0.37\\webapps\\czwx-web\\resources\\download\\"+filename+".mp4");  
 //        commend.add("E:/test.mp4"); 
         
-        if(upFilePath.indexOf(".mp4") < 0) {
+//        if(upFilePath.indexOf(".mp4") < 0) {
         	StringBuilder sb = new StringBuilder();
             for (String string : command) {
     			System.out.print(string+" ");
@@ -140,7 +140,7 @@ public class FfmpegUtil {
             }
             FSO.WriteTextFile(codcFilePath +".txt"+"_"+ System.currentTimeMillis()/1000, sb.toString());
             
-        }
+//        }
         
         
         System.out.println(" & ");
