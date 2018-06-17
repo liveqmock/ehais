@@ -29,49 +29,49 @@ public class FfmpegUtil {
 
     	List<String> command = new ArrayList<String>();  
         
-        if (type == 1) {  
-        	command.add(ffmpegPath);  
-        	command.add("-i");  
-        	command.add(upFilePath);  
-        	command.add("-y");
-        	command.add("-c:v");  
-        	command.add("libx264");  
-        	command.add("-x264opts");  
-        	command.add("force-cfr=1");  
-        	command.add("-c:a");  
-        	command.add("mp2");  
-        	command.add("-b:a");  
-        	command.add("256k");  
-        	command.add("-vsync");  
-        	command.add("cfr");  
-        	command.add("-f");  
-        	command.add("mpegts");  
-        	command.add(codcFilePath);  
-        } else if(type==0){  
-        	command.add(ffmpegPath);  
-        	command.add("-i");  
-        	command.add(upFilePath);  
-        	command.add("-y");
-        	command.add("-c:v");  
-        	command.add("libx264");  
-        	command.add("-x264opts");  
-        	command.add("force-cfr=1");  
-        	command.add("-vsync");  
-        	command.add("cfr");  
-        	command.add("-vf");  
-        	command.add("idet,yadif=deint=interlaced");  
-        	command.add("-filter_complex");  
-        	command.add("aresample=async=1000");  
-        	command.add("-c:a");  
-        	command.add("libmp3lame");  
-        	command.add("-b:a");  
-        	command.add("192k");  
-        	command.add("-pix_fmt");  
-        	command.add("yuv420p");  
-        	command.add("-f");  
-        	command.add("mpegts");  
-        	command.add(codcFilePath);  
-        } else if(type==2){
+//        if (type == 1) {  
+//        	command.add(ffmpegPath);  
+//        	command.add("-i");  
+//        	command.add(upFilePath);  
+//        	command.add("-y");
+//        	command.add("-c:v");  
+//        	command.add("libx264");  
+//        	command.add("-x264opts");  
+//        	command.add("force-cfr=1");  
+//        	command.add("-c:a");  
+//        	command.add("mp2");  
+//        	command.add("-b:a");  
+//        	command.add("256k");  
+//        	command.add("-vsync");  
+//        	command.add("cfr");  
+//        	command.add("-f");  
+//        	command.add("mpegts");  
+//        	command.add(codcFilePath);  
+//        } else if(type==0){  
+//        	command.add(ffmpegPath);  
+//        	command.add("-i");  
+//        	command.add(upFilePath);  
+//        	command.add("-y");
+//        	command.add("-c:v");  
+//        	command.add("libx264");  
+//        	command.add("-x264opts");  
+//        	command.add("force-cfr=1");  
+//        	command.add("-vsync");  
+//        	command.add("cfr");  
+//        	command.add("-vf");  
+//        	command.add("idet,yadif=deint=interlaced");  
+//        	command.add("-filter_complex");  
+//        	command.add("aresample=async=1000");  
+//        	command.add("-c:a");  
+//        	command.add("libmp3lame");  
+//        	command.add("-b:a");  
+//        	command.add("192k");  
+//        	command.add("-pix_fmt");  
+//        	command.add("yuv420p");  
+//        	command.add("-f");  
+//        	command.add("mpegts");  
+//        	command.add(codcFilePath);  
+//        } else if(type==2){
         	command.add(ffmpegPath);  
         	command.add("-i");  
         	command.add(upFilePath); 
@@ -81,9 +81,9 @@ public class FfmpegUtil {
         	command.add("-strict");  
         	command.add("-2");
         	command.add(codcFilePath); 
-    	}else{  
-    		 return false;
-    	} 
+//    	}else{  
+//    		 return false;
+//    	} 
     
         
 //        command.add(ffmpegPath);  
