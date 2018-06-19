@@ -16,43 +16,7 @@
     <script src="/lib/layui/layui.js" charset="utf-8"></script>
     <script type="text/javascript" src="/js/xadmin.js"></script>
 <style type="text/css">
-.left-nav{
-	background-color: #20222a;
-}
-.sub-menu{
-	background-color: rgba(0,0,0,.3) !important;
-}
-.left-nav #nav li a {color: rgba(255,255,255,.7);}
-.left-nav #nav li a:hover,.left-nav #nav li.open ul.sub-menu li a:hover{color: #fff;}
-.left-nav #nav li {
-	border-bottom: 1px solid #20222a;
-}
-.left-nav #nav li.open{
-	background-color: #2b2e37;
-}
-.left-nav #nav li a:hover{
-	background-color: #4e5465;
-}
-.fr{float: right;}
-.icon-xiangxiajiantou{font-size: 12px;}
-.layui-nav .layui-nav-item a{padding:0 8px}
 
-
-.left-nav::-webkit-scrollbar-track-piece { /**滚动条凹槽的颜色，还可以设置边框属性**/
-background-color:#bbb;
-}
-.left-nav::-webkit-scrollbar {/**滚动条的宽度**/
-width:9px;
-height:9px;
-}
-.left-nav::-webkit-scrollbar-thumb {/**滚动条的设置**/
-background-color:#bbb;
-background-clip:padding-box;
-min-height:28px;
-}
-.left-nav::-webkit-scrollbar-thumb:hover {
-background-color:#bbb;
-}
 
 
 </style>
@@ -109,12 +73,20 @@ background-color:#bbb;
       <div id="side-nav">
         <ul id="nav">
             <li>
+            	<@permission url="haiSectorsView">
+                <a _href="haiSectorsView">
+                    <i class="icon iconfont icon-tuandui"></i>
+                    <cite>行业设置(内)</cite>
+                </a>
+                </@permission>
+            </li>
+            <li>
                 <a href="javascript:;">
                     <i class="icon iconfont icon-tuandui"></i>
                     <cite>开帐设置</cite>
-                    <i class="icon fr iconfont icon-xiangxiajiantou"></i>
                 </a>
-                <ul class="sub-menu">
+                
+                <!-- <div class="sub-menu">
                     <li>
                         <a _href="member-list.html">
                             <i class="icon iconfont icon-tuandui"></i>
@@ -122,109 +94,12 @@ background-color:#bbb;
                             
                         </a>
                     </li >
-                    <li>
-                        <a _href="member-del.html">
-                            <i class="icon iconfont icon-tuandui"></i>
-                            <cite>基础资料设置</cite>
-                            <i class="icon fr iconfont icon-xiangxiajiantou"></i>
-                        </a>
-                        <ul class="sub-menu">
-                            <li>
-                                <a _href="xxx.html">
-                                    <i class="icon iconfont icon-tuandui"></i>
-                                    <cite>基础资料</cite> 
-                                    <i class="icon fr iconfont icon-xiangxiajiantou"></i>                                   
-                                </a>
-                                <ul class="sub-menu">
-		                            <li>
-		                                <a _href="xxx.html">
-		                                    <i class="icon iconfont icon-tuandui"></i>
-		                                    <cite>客户资料</cite>		                                    
-		                                </a>
-		                            </li >
-		                            <li>
-		                                <a _href="xx.html">
-		                                    <i class="icon iconfont icon-tuandui"></i>
-		                                    <cite>供应商资料</cite>		                                    
-		                                </a>
-		                            </li>
-		                            <li>
-		                                <a _href="xx.html">
-		                                    <i class="icon iconfont icon-tuandui"></i>
-		                                    <cite>商品资料</cite>		                                    
-		                                </a>
-		                            </li>
-		                            <@permission url="haiLabourView">
-		                            <li>
-		                                <a _href="haiLabourView">
-		                                    <i class="icon iconfont icon-tuandui"></i>
-		                                    <cite>劳务信息</cite>		                                    
-		                                </a>
-		                            </li>
-		                            </@permission>
-		                            <@permission url="haiWarehouseView">
-		                            <li>
-		                                <a _href="haiWarehouseView">
-		                                    <i class="icon iconfont icon-tuandui"></i>
-		                                    <cite>仓库资料</cite>		                                    
-		                                </a>
-		                            </li>
-		                            </@permission>
-		                            <@permission url="haiEmployeeView">
-		                            <li>
-		                                <a _href="haiEmployeeView">
-		                                    <i class="icon iconfont icon-tuandui"></i>
-		                                    <cite>职员资料</cite>		                                    
-		                                </a>
-		                            </li>
-		                            </@permission>
-		                            <@permission url="haiAccountView">
-		                            <li>
-		                                <a _href="haiAccountView">
-		                                    <i class="icon iconfont icon-tuandui"></i>
-		                                    <cite>帐户资料</cite>		                                    
-		                                </a>
-		                            </li>
-		                            </@permission>
-		                            <@permission url="haiIncomeView">
-		                            <li>
-		                                <a _href="haiIncomeView">
-		                                    <i class="icon iconfont icon-tuandui"></i>
-		                                    <cite>收入资料</cite>		                                    
-		                                </a>
-		                            </li>
-		                            </@permission>
-		                            <@permission url="haiExpensesView">
-		                            <li>
-		                                <a _href="haiExpensesView">
-		                                    <i class="icon iconfont icon-tuandui"></i>
-		                                    <cite>费用资料</cite>		                                    
-		                                </a>
-		                            </li>
-		                            </@permission>
-		                            <@permission url="haiPropertyView">
-		                            <li>
-		                                <a _href="haiPropertyView">
-		                                    <i class="icon iconfont icon-tuandui"></i>
-		                                    <cite>固定资产信息</cite>		                                    
-		                                </a>
-		                            </li>
-		                            </@permission>
-		                            <@permission url="haiAccountingView">
-		                            <li>
-		                                <a _href="haiAccountingView">
-		                                    <i class="icon iconfont icon-tuandui"></i>
-		                                    <cite>会计科目</cite>		                                    
-		                                </a>
-		                            </li>
-		                            </@permission>                            
-		                        </ul>
-                            </li >
+                    
                             <li>
                                 <a _href="javascript:;">
                                     <i class="icon iconfont icon-tuandui"></i>
                                     <cite>辅助资料</cite>
-                                    <i class="icon fr iconfont icon-xiangxiajiantou"></i>
+                                    <i class="icon nav_right iconfont icon-xiangxiajiantou"></i>
                                 </a>
                                 <ul class="sub-menu">
 		                            <@permission url="haiCustomerTypeView">
@@ -277,7 +152,7 @@ background-color:#bbb;
                         <a href="javascript:;">
                             <i class="icon iconfont icon-tuandui"></i>
                             <cite>系统配置信息</cite>
-                            <i class="icon fr iconfont icon-xiangxiajiantou"></i>
+                            <i class="icon nav_right iconfont icon-xiangxiajiantou"></i>
                         </a>
                         <ul class="sub-menu">
                             <li>
@@ -311,7 +186,7 @@ background-color:#bbb;
                         <a href="javascript:;">
                             <i class="icon iconfont icon-tuandui"></i>
                             <cite>期初数据设置</cite>
-                            <i class="icon fr iconfont icon-xiangxiajiantou"></i>
+                            <i class="icon nav_right iconfont icon-xiangxiajiantou"></i>
                         </a>
                         <ul class="sub-menu">
                             <li>
@@ -363,248 +238,382 @@ background-color:#bbb;
                     	<a href="javascript:;">
                             <i class="icon iconfont icon-tuandui"></i>
                             <cite>系统开帐</cite>
-                            <i class="icon fr iconfont icon-xiangxiajiantou"></i>
+                            <i class="icon nav_right iconfont icon-xiangxiajiantou"></i>
                         </a>
                     </li>
                     
-                </ul>
+                </div> -->
             </li>
             <li>
                 <a href="javascript:;">
                     <i class="icon iconfont icon-tuandui"></i>
                     <cite>销售管理</cite>
-                    <i class="icon fr iconfont icon-xiangxiajiantou"></i>
+                    <!-- <i class="icon nav_right iconfont icon-xiangxiajiantou"></i> -->
                 </a>
-                <ul class="sub-menu">
-                    <li>
-                        <a _href="order-list.html">
-                            <i class="icon iconfont icon-tuandui"></i>
-                            <cite>销售单</cite>
-                        </a>
-                    </li >
-                    <li>
-                        <a _href="order-list.html">
-                            <i class="icon iconfont icon-tuandui"></i>
-                            <cite>销售退货单</cite>
-                        </a>
-                    </li >
-                </ul>
+                <div class="sub-menu">
+                    <dl>
+                    	<dt>销售管理</dt>
+                    	<dd>
+	                        <a _href="order-list.html">
+	                           	 销售单
+	                        </a>
+	                    </dd >
+	                    <dd>
+	                        <a _href="order-list.html">
+	                            销售退货单
+	                        </a>
+	                    </dd >
+                    </dl>
+                    
+                    
+                </div>
             </li>
             <li>
                 <a href="javascript:;">
                     <i class="icon iconfont icon-tuandui"></i>
                     <cite>采购管理</cite>
-                    <i class="icon fr iconfont icon-xiangxiajiantou"></i>
+                    <!-- <i class="icon nav_right iconfont icon-xiangxiajiantou"></i> -->
                 </a>
-                <ul class="sub-menu">
-                    <li>
-                        <a _href="cate.html">
-                            <i class="icon iconfont icon-tuandui"></i>
-                            <cite>采购单</cite>
-                        </a>
-                    </li >
-                    <li>
-                        <a _href="cate.html">
-                            <i class="icon iconfont icon-tuandui"></i>
-                            <cite>采购退货单</cite>
-                        </a>
-                    </li >
-                </ul>
+                <div class="sub-menu">
+                    <dl>
+                    	<dt>采购管理</dt>
+                    	<dd>
+	                        <a _href="cate.html">
+	                            采购单
+	                        </a>
+	                    </dd >
+	                    <dd>
+	                        <a _href="cate.html">
+	                            采购退货单
+	                        </a>
+	                    </dd >
+                    </dl>
+                    
+                </div>
             </li>
             <li>
                 <a href="javascript:;">
                     <i class="icon iconfont icon-tuandui"></i>
                     <cite>账务处理</cite>
-                    <i class="icon fr iconfont icon-xiangxiajiantou"></i>
+                    <!-- <i class="icon nav_right iconfont icon-xiangxiajiantou"></i> -->
                 </a>
-                <ul class="sub-menu">
-                    <li>
-                        <a _href="city.html">
-                            <i class="icon iconfont icon-tuandui"></i>
-                            <cite>业务草稿</cite>
-                        </a>
-                    </li >
-                    <li>
-                        <a _href="city.html">
-                            <i class="icon iconfont icon-tuandui"></i>
-                            <cite>经营历程</cite>
-                        </a>
-                    </li >
-                    <li>
-                        <a _href="city.html">
-                            <i class="icon iconfont icon-tuandui"></i>
-                            <cite>语音句子</cite>
-                        </a>
-                    </li >
-                    <li>
-                        <a _href="city.html">
-                            <i class="icon iconfont icon-tuandui"></i>
-                            <cite>会计凭证</cite>
-                        </a>
-                    </li >
-                </ul>
+                <div class="sub-menu">
+                    <dl>
+                    	<dt>财务管理</dt>
+                    	<dd>
+	                        <a _href="city.html">
+	                            业务草稿
+	                        </a>
+	                    </dd >
+	                    <dd>
+	                        <a _href="city.html">
+	                            经营历程
+	                        </a>
+	                    </dd >
+	                    <dd>
+	                        <a _href="city.html">
+	                            语音句子
+	                        </a>
+	                    </dd >
+	                    <dd>
+	                        <a _href="city.html">
+	                            会计凭证
+	                        </a>
+	                    </dd >
+                    </dl>
+                    
+                </div>
             </li>
             <li>
                 <a href="javascript:;">
                     <i class="icon iconfont icon-tuandui"></i>
                     <cite>仓库管理</cite>
-                    <i class="icon fr iconfont icon-xiangxiajiantou"></i>
+                    <!-- <i class="icon nav_right iconfont icon-xiangxiajiantou"></i> -->
                 </a>
-                <ul class="sub-menu">
-                    <li>
-                        <a _href="admin-list.html">
-                            <i class="icon iconfont icon-tuandui"></i>
-                            <cite>调拨单</cite>
-                        </a>
-                    </li >
-                    <li>
-                        <a _href="admin-role.html">
-                            <i class="icon iconfont icon-tuandui"></i>
-                            <cite>盘点</cite>
-                        </a>
-                    </li >
-                    <li>
-                        <a _href="admin-cate.html">
-                            <i class="icon iconfont icon-tuandui"></i>
-                            <cite>库存状况表</cite>
-                        </a>
-                    </li >
-                </ul>
+                <div class="sub-menu">
+                    <dl>
+                    	<dt>仓库管理</dt>
+                    	<dd>
+	                        <a _href="admin-list.html">
+	                            调拨单
+	                        </a>
+	                    </dd >
+	                    <dd>
+	                        <a _href="admin-role.html">
+	                            盘点
+	                        </a>
+	                    </dd >
+	                    <dd>
+	                        <a _href="admin-cate.html">
+	                            库存状况表
+	                        </a>
+	                    </dd >
+                    </dl>
+                    
+                </div>
             </li>
             <li>
                 <a href="javascript:;">
                     <i class="icon iconfont icon-tuandui"></i>
                     <cite>往来管理</cite>
-                    <i class="icon fr iconfont icon-xiangxiajiantou"></i>
+                    <!-- <i class="icon nav_right iconfont icon-xiangxiajiantou"></i> -->
                 </a>
-                <ul class="sub-menu">
-                    <li>
-                        <a _href="echarts1.html">
-                            <i class="icon iconfont icon-tuandui"></i>
-                            <cite>应收查询</cite>
-                        </a>
-                    </li >
-                    <li>
-                        <a _href="echarts1.html">
-                            <i class="icon iconfont icon-tuandui"></i>
-                            <cite>应付查询</cite>
-                        </a>
-                    </li >
-                    <li>
-                        <a _href="echarts1.html">
-                            <i class="icon iconfont icon-tuandui"></i>
-                            <cite>组合单据</cite>
-                        </a>
-                    </li >
+                <div class="sub-menu">
+                    <dl>
+                    	<dt>往来管理</dt>
+                    	
+                    	<dd>
+	                        <a _href="echarts1.html">
+	                            应收查询
+	                        </a>
+	                    </dd >
+	                    <dd>
+	                        <a _href="echarts1.html">
+	                            应付查询
+	                        </a>
+	                    </dd >
+	                    <dd>
+	                        <a _href="echarts1.html">
+	                            组合单据
+	                        </a>
+	                    </dd >
+	                    
+                    </dl>
                     
-                </ul>
+                    
+                    
+                </div>
             </li>
             <li>
                 <a href="javascript:;">
                     <i class="icon iconfont icon-tuandui"></i>
                     <cite>财务管理</cite>
-                    <i class="icon fr iconfont icon-xiangxiajiantou"></i>
+                    <!-- <i class="icon nav_right iconfont icon-xiangxiajiantou"></i> -->
                 </a>
-                <ul class="sub-menu">
-                    <li>
-                        <a _href="unicode.html">
-                            <i class="icon iconfont icon-tuandui"></i>
-                            <cite>收款单</cite>
-                        </a>
-                    </li>
-                    <li>
-                        <a _href="unicode.html">
-                            <i class="icon iconfont icon-tuandui"></i>
-                            <cite>付款单</cite>
-                        </a>
-                    </li>
-                </ul>
+                <div class="sub-menu">
+                    <dl>
+                    	<dt>财务管理</dt>
+                    	<dd>
+	                        <a _href="unicode.html">
+	                            收款单
+	                        </a>
+	                    </dd>
+	                    <dd>
+	                        <a _href="unicode.html">
+	                            付款单
+	                        </a>
+	                    </dd>
+                    </dl>
+                    
+                    
+                </div>
             </li>
             <li>
                 <a href="javascript:;">
                     <i class="icon iconfont icon-tuandui"></i>
                     <cite>报表</cite>
-                    <i class="icon fr iconfont icon-xiangxiajiantou"></i>
+                    <!-- <i class="icon nav_right iconfont icon-xiangxiajiantou"></i> -->
                 </a>
-                <ul class="sub-menu">
-                    <li>
-                        <a _href="unicode.html">
-                            <i class="icon iconfont icon-tuandui"></i>
-                            <cite>资金报表</cite>
-                        </a>
-                    </li>
-                    <li>
-                        <a _href="unicode.html">
-                            <i class="icon iconfont icon-tuandui"></i>
-                            <cite>商品销售统计报表</cite>
-                        </a>
-                    </li>
-                    <li>
-                        <a _href="unicode.html">
-                            <i class="icon iconfont icon-tuandui"></i>
-                            <cite>客户销售统计报表</cite>
-                        </a>
-                    </li>
-                    <li>
-                        <a _href="unicode.html">
-                            <i class="icon iconfont icon-tuandui"></i>
-                            <cite>收入费用报表</cite>
-                        </a>
-                    </li>
-                    <li>
-                        <a _href="unicode.html">
-                            <i class="icon iconfont icon-tuandui"></i>
-                            <cite>利润表</cite>
-                        </a>
-                    </li>
-                    <li>
-                        <a _href="unicode.html">
-                            <i class="icon iconfont icon-tuandui"></i>
-                            <cite>资产负债表</cite>
-                        </a>
-                    </li>
-                </ul>
+                <div class="sub-menu">
+                    <dl>
+                    	<dt>报表</dt>
+                    	
+                    	<dd>
+	                        <a _href="unicode.html">
+	                            资金报表
+	                        </a>
+	                    </dd>
+	                    <dd>
+	                        <a _href="unicode.html">
+	                            商品销售统计报表
+	                        </a>
+	                    </dd>
+	                    <dd>
+	                        <a _href="unicode.html">
+	                            客户销售统计报表
+	                        </a>
+	                    </dd>
+	                    <dd>
+	                        <a _href="unicode.html">
+	                            收入费用报表
+	                        </a>
+	                    </dd>
+	                    <dd>
+	                        <a _href="unicode.html">
+	                            利润表
+	                        </a>
+	                    </dd>
+	                    <dd>
+	                        <a _href="unicode.html">
+	                            资产负债表
+	                        </a>
+	                    </dd>
+	                    
+                    
+                    </dl>
+                    
+                    
+                </div>
             </li>
-            
+            <li>
+            	<a href="javascript:;">
+                    <i class="icon iconfont icon-tuandui"></i>
+                    <cite>基础资料</cite>
+                    <!-- <i class="icon nav_right iconfont icon-xiangxiajiantou"></i> -->
+                </a>
+                <div class="sub-menu x2">
+                	<dl>
+                		<dt>基础资料</dt>
+                		<dd>
+						<a _href="xxx.html"> 客户资料	</a>
+						</dd >
+						<dd>
+						<a _href="xx.html">
+						    供应商资料	                                    
+						</a>
+						</dd>
+						<dd>
+						<a _href="xx.html">
+						    商品资料		                                    
+						</a>
+						</dd>
+						<@permission url="haiLabourView">
+						<dd>
+						<a _href="haiLabourView">
+						    劳务信息		                                    
+						</a>
+						</dd>
+						</@permission>
+						<@permission url="haiWarehouseView">
+						<dd>
+						<a _href="haiWarehouseView">
+						    仓库资料		                                    
+						</a>
+						</dd>
+						</@permission>
+						<@permission url="haiEmployeeView">
+						<dd>
+						<a _href="haiEmployeeView">
+						    职员资料		                                    
+						</a>
+						</dd>
+						</@permission>
+						<@permission url="haiAccountView">
+						<dd>
+						<a _href="haiAccountView">
+						    帐户资料	                                    
+						</a>
+						</dd>
+						</@permission>
+						<@permission url="haiIncomeView">
+						<dd>
+						<a _href="haiIncomeView">
+						    收入资料		                                    
+						</a>
+						</dd>
+						</@permission>
+						<@permission url="haiExpensesView">
+						<dd>
+						<a _href="haiExpensesView">
+						    费用资料	                                    
+						</a>
+						</dd>
+						</@permission>
+						<@permission url="haiPropertyView">
+						<dd>
+						<a _href="haiPropertyView">
+						    固定资产信息	                                    
+						</a>
+						</dd>
+						</@permission>
+						<@permission url="haiAccountingView">
+						<dd>
+						<a _href="haiAccountingView">
+						    会计科目		                                    
+						</a>
+						</dd>
+						</@permission> 
+                	</dl>
+                	
+                	<dl>
+                		<dt>辅助资料</dt>
+                		<@permission url="haiCustomerTypeView">
+						<dd>
+						<a _href="haiCustomerTypeView">
+						    客户类别		                                    
+						</a>
+						</dd >
+						</@permission>
+						<@permission url="haiSupplierTypeView">
+						<dd>
+						<a _href="haiSupplierTypeView">
+						    供应商类别		                                    
+						</a>
+						</dd>
+						</@permission>
+						<@permission url="haiCategoryView">
+						<dd>
+						<a _href="haiCategoryView">
+						    商品类别	                                    
+						</a>
+						</dd>
+						</@permission>
+						<@permission url="haiUnitView">
+						<dd>
+						<a _href="haiUnitView">
+						    计量单位		                                    
+						</a>
+						</dd>
+						</@permission>
+						<@permission url="haiPaymentView">
+						<dd>
+						<a _href="haiPaymentView">
+						    结算方式		                                    
+						</a>
+						</dd>
+						</@permission>   
+                	</dl>
+                </div>
+            </li>
             <li>
                 <a href="javascript:;">
                     <i class="icon iconfont icon-tuandui"></i>
                     <cite>系统设置</cite>
-                    <i class="icon fr iconfont icon-xiangxiajiantou"></i>
+                    <!-- <i class="icon nav_right iconfont icon-xiangxiajiantou"></i> -->
                 </a>
-                <ul class="sub-menu">
-                    <li>
-                        <a _href="unicode.html">
-                            <i class="icon iconfont icon-tuandui"></i>
-                            <cite>用户信息设置</cite>
-                        </a>
-                    </li>
-                    <li>
-                        <a _href="unicode.html">
-                            <i class="icon iconfont icon-tuandui"></i>
-                            <cite>修改密码</cite>
-                        </a>
-                    </li>
-                    <li>
-                        <a _href="unicode.html">
-                            <i class="icon iconfont icon-tuandui"></i>
-                            <cite>操作日志</cite>
-                        </a>
-                    </li>
-                    <li>
-                        <a _href="unicode.html">
-                            <i class="icon iconfont icon-tuandui"></i>
-                            <cite>系统配置信息</cite>
-                        </a>
-                    </li>
-                    <li>
-                        <a _href="unicode.html">
-                            <i class="icon iconfont icon-tuandui"></i>
-                            <cite>操作员权限设置</cite>
-                        </a>
-                    </li>
+                <div class="sub-menu">
+                    <dl>
+                    	<dt>系统设置</dt>
+                    	
+                    	<dd>
+						<a _href="unicode.html">
+						    用户信息设置
+						</a>
+						</dd>
+						<dd>
+						<a _href="unicode.html">
+						    修改密码
+						</a>
+						</dd>
+						<dd>
+						<a _href="unicode.html">
+						    操作日志
+						</a>
+						</dd>
+						<dd>
+						<a _href="unicode.html">
+						    系统配置信息
+						</a>
+						</dd>
+						<dd>
+						<a _href="unicode.html">
+						    操作员权限设置
+						</a>
+						</dd>
+						
+                    </dl>
                     
-                </ul>
+                </div>
             </li>
             <li>
                 <a href="javascript:;">

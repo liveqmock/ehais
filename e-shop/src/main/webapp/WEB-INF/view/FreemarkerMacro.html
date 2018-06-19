@@ -223,16 +223,29 @@ $(function(){
 	<select class="form-control" id="${id}" name="${id}" >
 		<option value="${defaultValue!'0'}">${defaultText!'--请选择分类--'}</option>		
 		<#if (list?? && list?size > 0) >
-		<#if list?is_hash_ex>
-			<#local keys=list?keys/>
-			<#list keys as key>
-				<option value="${key}" <#if  (key == (value!'0')) >selected="selected"</#if> >${list[key]}</option>
-			</#list>
-		<#else>
+			<#if list?is_hash_ex>
+				<#local keys=list?keys/>
+				<#list keys as key>
+					<option value="${key}" <#if  (key == (value!'0')) >selected="selected"</#if> >${list[key]}</option>
+				</#list>
+			<#else>
 			<#list list as item>
 				<option value="${item[key]!0}" <#if  (item[key]?string('') == (value!'0')) >selected="selected"</#if> >${item[text]!''}</option>
 			</#list>
 			</#if>
+		</#if>
+	</select>
+</#macro>
+
+
+<!-- 树状下拉菜单控件：< @ treeSelectPicker id="" list={} value=((null?string(''))!'') defaultValue="" defaultText="" /> -->
+<#macro treeSelectPicker id="" list={} value="" defaultValue="" defaultText="">
+	<select class="form-control" id="${id}" name="${id}" >
+		<option value="${defaultValue!'0'}">${defaultText!'--请选择分类--'}</option>		
+		<#if (list?? && list?size > 0) >
+			<#list list as item>
+				<option value="${item[key]!0}" <#if  (item[key]?string('') == (value!'0')) >selected="selected"</#if> >${item[text]!''}</option>
+			</#list>
 		</#if>
 	</select>
 </#macro>

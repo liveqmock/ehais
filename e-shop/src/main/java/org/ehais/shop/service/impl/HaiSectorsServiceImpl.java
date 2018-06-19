@@ -196,7 +196,7 @@ bean.setSectorsCode(model.getSectorsCode());
 bean.setSectorsName(model.getSectorsName());
 bean.setParentId(model.getParentId());
 bean.setIsTop(model.getIsTop());
-bean.setOrder(model.getOrder());
+bean.setSortOrder(model.getSortOrder());
 bean.setIsHeader(model.getIsHeader());
 bean.setRemark(model.getRemark());
 
