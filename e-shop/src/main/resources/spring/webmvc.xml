@@ -115,6 +115,11 @@
 		</mvc:interceptor>
 		
 		<mvc:interceptor>
+			<mvc:mapping path="/openapi/**"/>
+			<ref bean="openApiInterceptor"/>
+		</mvc:interceptor>
+		
+		<mvc:interceptor>
 			<mvc:mapping path="/m/**"/>
 			<ref bean="h5Interceptor"/>
 		</mvc:interceptor>
@@ -267,7 +272,7 @@
 		<!-- <property name="securityPolicy" value="10.0.10.220"/> -->
 	</bean>
 	
-	
+	<bean id="openApiInterceptor" class="org.ehais.interceptor.OpenApiInterceptor"></bean>
 	
 
 

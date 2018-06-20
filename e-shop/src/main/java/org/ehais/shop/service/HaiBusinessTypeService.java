@@ -9,7 +9,7 @@ import org.ehais.tools.ReturnObject;
 
 public interface HaiBusinessTypeService extends CommonService{
 	public ReturnObject<HaiBusinessType> businesstype_list(HttpServletRequest request) throws Exception;
-	public ReturnObject<HaiBusinessType> businesstype_list_json(HttpServletRequest request,EConditionObject condition,Integer keySubId,String businessTypeName) throws Exception;
+	public ReturnObject<HaiBusinessType> businesstype_list_json(HttpServletRequest request,EConditionObject condition,Integer keySubId,String businessTypeName,String classify) throws Exception;
 	public ReturnObject<HaiBusinessType> businesstype_insert(HttpServletRequest request) throws Exception;
 	public ReturnObject<HaiBusinessType> businesstype_insert_submit(HttpServletRequest request,HaiBusinessType model) throws Exception;
 	public ReturnObject<HaiBusinessType> businesstype_update(HttpServletRequest request,Integer businessTypeId) throws Exception;

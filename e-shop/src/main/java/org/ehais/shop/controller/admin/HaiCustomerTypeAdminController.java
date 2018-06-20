@@ -43,16 +43,16 @@ public class  HaiCustomerTypeAdminController extends CommonController {
 	private HaiBusinessTypeService haiBusinessTypeService;
 	
 	
-	@EPermissionMethod(name="查询",intro="打开往来单位页面",value="haiBusinessTypeView",relation="haiBusinessTypeListJson",type=PermissionProtocol.URL,sort="1")
+	@EPermissionMethod(name="查询",intro="打开客户类型页面",value="haiBusinessTypeView",relation="haiBusinessTypeListJson",type=PermissionProtocol.URL,sort="1")
 	@RequestMapping("/haiCustomerTypeView")
 	public String haiCustomerTypeView(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response ) {	
 		try{
 			ReturnObject<HaiBusinessType> rm = haiBusinessTypeService.businesstype_list(request);
 			modelMap.addAttribute("rm", rm);
-			//return "/"+this.getAdminProjectFolder(request)+"/businesstype/view";
-			//return this.view(request, "/businesstype/view");
-			return this.view(request, "/businesstype/businesstypeView");
+			//return "/"+this.getAdminProjectFolder(request)+"/customertype/view";
+			//return this.view(request, "/customertype/view");
+			return this.view(request, "/customertype/customerTypeView");
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("businesstype", e);
@@ -66,7 +66,7 @@ public class  HaiCustomerTypeAdminController extends CommonController {
 	
 
 	@ResponseBody
-	@EPermissionMethod(intro="返回往来单位数据",value="haiCustomerTypeListJson",type=PermissionProtocol.JSON)
+	@EPermissionMethod(intro="返回客户类别数据",value="haiCustomerTypeListJson",type=PermissionProtocol.JSON)
 	@RequestMapping(value="/haiCustomerTypeListJson",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String haiCustomerTypeListJson(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -74,7 +74,7 @@ public class  HaiCustomerTypeAdminController extends CommonController {
 			@RequestParam(value = "keySubId", required = false) Integer keySubId,
 			@RequestParam(value = "businessTypeName", required = false) String businessTypeName) {
 		try{
-			ReturnObject<HaiBusinessType> rm = haiBusinessTypeService.businesstype_list_json(request, condition,keySubId,businessTypeName);
+			ReturnObject<HaiBusinessType> rm = haiBusinessTypeService.businesstype_list_json(request, condition,keySubId,businessTypeName,"customer");
 			return this.writeJson(rm);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -85,7 +85,7 @@ public class  HaiCustomerTypeAdminController extends CommonController {
 	
 	
 	
-	@EPermissionMethod(name="新增",intro="新增往来单位",value="haiCustomerTypeAddDetail",relation="haiCustomerTypeAddSubmit",type=PermissionProtocol.BUTTON,sort="2")
+	@EPermissionMethod(name="新增",intro="新增客户类别",value="haiCustomerTypeAddDetail",relation="haiCustomerTypeAddSubmit",type=PermissionProtocol.BUTTON,sort="2")
 	@RequestMapping(value="/haiCustomerTypeAddDetail",method=RequestMethod.GET)
 	public String haiCustomerTypeAddDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response
@@ -93,8 +93,8 @@ public class  HaiCustomerTypeAdminController extends CommonController {
 		try{
 			ReturnObject<HaiBusinessType> rm = haiBusinessTypeService.businesstype_insert(request);
 			modelMap.addAttribute("rm", rm);
-			//return "/"+this.getAdminProjectFolder(request)+"/businesstype/detail";
-			return this.view(request, "/businesstype/detail");
+			//return "/"+this.getAdminProjectFolder(request)+"/customertype/detail";
+			return this.view(request, "/customertype/detail");
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -106,7 +106,7 @@ public class  HaiCustomerTypeAdminController extends CommonController {
 	
 	
 	@ResponseBody
-	@EPermissionMethod(intro="新增提交往来单位",value="haiCustomerTypeAddSubmit",type=PermissionProtocol.DATA)
+	@EPermissionMethod(intro="新增提交客户类别",value="haiCustomerTypeAddSubmit",type=PermissionProtocol.DATA)
 	@RequestMapping(value="/haiCustomerTypeAddSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String haiCustomerTypeAddSubmit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -115,7 +115,7 @@ public class  HaiCustomerTypeAdminController extends CommonController {
 			) {
 			if(result.hasErrors())return this.writeBindingResult(result);
 		try{
-			
+			businesstype.setClassify("customer");
 			ReturnObject<HaiBusinessType> rm = haiBusinessTypeService.businesstype_insert_submit(request, businesstype);
 			return this.writeJson(rm);
 			
@@ -128,7 +128,7 @@ public class  HaiCustomerTypeAdminController extends CommonController {
 	
 
 	@ResponseBody
-	@EPermissionMethod(name="编辑",intro="编辑往来单位",value="haiCustomerTypeEditDetail",relation="haiCustomerTypeEditSubmit",type=PermissionProtocol.BUTTON,sort="3")
+	@EPermissionMethod(name="编辑",intro="编辑客户类别",value="haiCustomerTypeEditDetail",relation="haiCustomerTypeEditSubmit",type=PermissionProtocol.BUTTON,sort="3")
 	@RequestMapping(value="/haiCustomerTypeEditDetail",method=RequestMethod.POST)
 	public String haiCustomerTypeEditDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -146,7 +146,7 @@ public class  HaiCustomerTypeAdminController extends CommonController {
 	}
 
 	/**
-	@EPermissionMethod(name="编辑",intro="编辑往来单位",value="haiCustomerTypeEditDetail",relation="haiCustomerTypeEditSubmit",type=PermissionProtocol.BUTTON,sort="3")
+	@EPermissionMethod(name="编辑",intro="编辑客户类别",value="haiCustomerTypeEditDetail",relation="haiCustomerTypeEditSubmit",type=PermissionProtocol.BUTTON,sort="3")
 	@RequestMapping(value="/haiCustomerTypeEditDetail",method=RequestMethod.GET)
 	public String haiCustomerTypeEditDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -155,8 +155,8 @@ public class  HaiCustomerTypeAdminController extends CommonController {
 		try{
 			ReturnObject<HaiBusinessType> rm = haiBusinessTypeService.businesstype_update(request,businessTypeId);
 			modelMap.addAttribute("rm", rm);
-			//return "/"+this.getAdminProjectFolder(request)+"/businesstype/detail";
-			return this.view(request, "/businesstype/detail");
+			//return "/"+this.getAdminProjectFolder(request)+"/customertype/detail";
+			return this.view(request, "/customertype/detail");
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("businesstype", e);
@@ -168,7 +168,7 @@ public class  HaiCustomerTypeAdminController extends CommonController {
 	
 	
 	@ResponseBody
-	@EPermissionMethod(intro="编辑提交往来单位",value="haiCustomerTypeEditSubmit",type=PermissionProtocol.DATA)
+	@EPermissionMethod(intro="编辑提交客户类别",value="haiCustomerTypeEditSubmit",type=PermissionProtocol.DATA)
 	@RequestMapping(value="/haiCustomerTypeEditSubmit",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String haiCustomerTypeEditSubmit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
@@ -177,6 +177,7 @@ public class  HaiCustomerTypeAdminController extends CommonController {
 			) {
 			if(result.hasErrors())return this.writeBindingResult(result);
 		try{
+			businesstype.setClassify("customer");
 			return this.writeJson(haiBusinessTypeService.businesstype_update_submit(request,businesstype));
 		}catch(Exception e){
 			e.printStackTrace();
@@ -187,7 +188,7 @@ public class  HaiCustomerTypeAdminController extends CommonController {
 	
 	
 	@ResponseBody
-	@EPermissionMethod(name="删除",intro="删除往来单位",value="haiCustomerTypeDelete",type=PermissionProtocol.BUTTON,sort="4")
+	@EPermissionMethod(name="删除",intro="删除客户类别",value="haiCustomerTypeDelete",type=PermissionProtocol.BUTTON,sort="4")
 	@RequestMapping(value="/haiCustomerTypeDelete",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String haiCustomerTypeDelete(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,

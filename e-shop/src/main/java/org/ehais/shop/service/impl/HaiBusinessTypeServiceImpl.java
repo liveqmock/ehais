@@ -52,7 +52,7 @@ public class HaiBusinessTypeServiceImpl  extends CommonServiceImpl implements Ha
 		return rm;
 	}
 
-	public ReturnObject<HaiBusinessType> businesstype_list_json(HttpServletRequest request,EConditionObject condition,Integer keySubId,String businessTypeName) throws Exception {
+	public ReturnObject<HaiBusinessType> businesstype_list_json(HttpServletRequest request,EConditionObject condition,Integer keySubId,String businessTypeName,String classify) throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiBusinessType> rm = new ReturnObject<HaiBusinessType>();
 		rm.setCode(0);
@@ -62,6 +62,7 @@ public class HaiBusinessTypeServiceImpl  extends CommonServiceImpl implements Ha
 		HaiBusinessTypeExample example = new HaiBusinessTypeExample();
 		HaiBusinessTypeExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+		c.andClassifyEqualTo(classify);
 		example.setLimitStart(condition.getStart());
 		example.setLimitEnd(condition.getRows());
 		example.setOrderByClause("last_update_date desc");

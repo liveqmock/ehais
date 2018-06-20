@@ -8,6 +8,13 @@ public class TreeModel {
 	private Integer level;
 	private String code;
 	private String extend;
+	public TreeModel(Integer id,String code, String title, Integer parent_id) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.parent_id = parent_id;
+		this.code = code;
+	}
 	public TreeModel(Integer id, String title, Integer parent_id,
 			Integer level, String code, String extend) {
 		super();

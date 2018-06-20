@@ -341,6 +341,51 @@ xblock{
 .left-nav #nav li .sub-menu.x3{
 	width: 600px;
 }
+.left-nav #nav li .sub-menu.tf10{
+	top: -10px;
+}
+.left-nav #nav li .sub-menu.tf20{
+	top: -20px;
+}
+.left-nav #nav li .sub-menu.tf30{
+	top: -30px;
+}
+.left-nav #nav li .sub-menu.tf40{
+	top: -40px;
+}
+.left-nav #nav li .sub-menu.tf50{
+	top: -50px;
+}
+.left-nav #nav li .sub-menu.tf60{
+	top: -60px;
+}
+.left-nav #nav li .sub-menu.tf70{
+	top: -70px;
+}
+.left-nav #nav li .sub-menu.tf80{
+	top: -80px;
+}
+.left-nav #nav li .sub-menu.tf90{
+	top: -90px;
+}
+.left-nav #nav li .sub-menu.tf100{
+	top: -100px;
+}
+.left-nav #nav li .sub-menu.tf110{
+	top: -110px;
+}
+.left-nav #nav li .sub-menu.tf120{
+	top: -120px;
+}
+.left-nav #nav li .sub-menu.tf130{
+	top: -130px;
+}
+.left-nav #nav li .sub-menu.tf140{
+	top: -140px;
+}
+.left-nav #nav li .sub-menu.tf150{
+	top: -150px;
+}
 .left-nav #nav li .sub-menu > dl{
 	float: left;width: 200px;border-right: 1px dashed #ccc;letter-spacing: 1px;margin-right: -1px;
 }

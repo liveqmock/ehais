@@ -74,7 +74,7 @@ public class  HaiBusinessTypeAdminController extends CommonController {
 			@RequestParam(value = "keySubId", required = false) Integer keySubId,
 			@RequestParam(value = "businessTypeName", required = false) String businessTypeName) {
 		try{
-			ReturnObject<HaiBusinessType> rm = haiBusinessTypeService.businesstype_list_json(request, condition,keySubId,businessTypeName);
+			ReturnObject<HaiBusinessType> rm = haiBusinessTypeService.businesstype_list_json(request, condition,keySubId,businessTypeName,"");
 			return this.writeJson(rm);
 		}catch(Exception e){
 			e.printStackTrace();
