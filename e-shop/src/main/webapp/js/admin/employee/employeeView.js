@@ -1,7 +1,8 @@
 var haiEmployeeModal ;
 var key_employeeName = "";
+var validform = null;
 $(function(){
-	haiEmployeeModal = $("#haiEmployeeModal").modal({ keyboard: false , show : false });
+	haiEmployeeModal = $("#haiEmployeeModal").modal({backdrop: 'static', keyboard: false , show : false });
 	
 	$("#haiEmployeeAddDetail").click(function(){
 		haiEmployeeAddDetail();
@@ -52,7 +53,7 @@ function haiEmployeeAddSubmit(){
 		layer.msg("请输入名称");return ;
 	}
 
-	
+	if(!validform.form())return ;
 	
 	$.ajax({
 		url : "haiEmployeeAddSubmit",
@@ -88,7 +89,7 @@ function haiEmployeeEditSubmit(){
 		layer.msg("请输入名称");return ;
 	}
 
-	
+	if(!validform.form())return ;
 	
 	$.ajax({
 		url : "haiEmployeeEditSubmit",

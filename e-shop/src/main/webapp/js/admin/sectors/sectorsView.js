@@ -1,7 +1,8 @@
 var haiSectorsModal ;
 var key_sectorsName = "";
+var validform = null;
 $(function(){
-	haiSectorsModal = $("#haiSectorsModal").modal({ keyboard: false , show : false });
+	haiSectorsModal = $("#haiSectorsModal").modal({backdrop: 'static', keyboard: false , show : false });
 	
 	$("#haiSectorsAddDetail").click(function(){
 		haiSectorsAddDetail();
@@ -17,12 +18,16 @@ $(function(){
 
 	//设置自动简码
 	$("#sectorsName").setPinyin({"code":"sectorsCode"});
+	
+	validform = $("#haiSectorsForm").validate({rules:{},messages:{}});
+	
 });
 
 function haiSectorsAddDetail(){
 	haiSectorsModal.modal("show");
 	$("#haiSectorsForm").attr("action","add");
 	$('#haiSectorsForm')[0].reset();
+	select_reset_parentId();
 }
 
 
@@ -37,6 +42,8 @@ function haiSectorsEditDetail(sectorsId){
 			$.each(result.model,function(id,ele){
 				$("#"+id).val(ele);
 			});
+			
+			select_reset_parentId();
 		}
 	});
 }
@@ -45,8 +52,7 @@ function haiSectorsEditDetail(sectorsId){
 
 function haiSectorsAddSubmit(){
 	
-
-	
+	if(!validform.form())return ;
 	
 	$.ajax({
 		url : "haiSectorsAddSubmit",
@@ -62,11 +68,13 @@ function haiSectorsAddSubmit(){
 				}, function(){
 				  //继续添加
 					layer.closeAll();
+					select_ajax_parentId();
 				}, function(){
 				  //返回列表
 					layer.closeAll();
 					haiSectorsModal.modal("hide");
 					bsTable.bootstrapTable('refresh', { query : {  page : 1} });
+					select_ajax_parentId();
 				});
 			}
 		}
@@ -75,7 +83,7 @@ function haiSectorsAddSubmit(){
 
 function haiSectorsEditSubmit(){
 	
-
+	if(!validform.form())return ;
 	
 	
 	$.ajax({
@@ -94,6 +102,7 @@ function haiSectorsEditSubmit(){
 					layer.closeAll();
 					haiSectorsModal.modal("hide");
 					bsTable.bootstrapTable('refresh', { query : {  page : 1} });
+					select_ajax_parentId();
 				});
 			}
 		}

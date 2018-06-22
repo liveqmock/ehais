@@ -11,7 +11,7 @@ var storeName = "";
 $(function(){
 	
 	<#if (!="" )>
-	haiTempSublateModal = $("#haiTempSublateModal").modal({ keyboard: false , show : false });
+	haiTempSublateModal = $("#haiTempSublateModal").modal({backdrop: 'static', keyboard: false , show : false });
 	
 	getTree();
 	

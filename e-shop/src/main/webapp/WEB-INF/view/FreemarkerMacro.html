@@ -82,8 +82,8 @@ $(function(){
 </#macro>
 
 
-<#macro commonTextarea id value >
-<textarea  id="${id}" name="${id}" class="textarea" >${value!''}</textarea>
+<#macro commonTextarea id value placeholder="">
+<textarea  id="${id}" name="${id}" class="textarea" placeholder="${placeholder}">${value!''}</textarea>
 </#macro>
 
 
@@ -238,16 +238,37 @@ $(function(){
 </#macro>
 
 
-<!-- 树状下拉菜单控件：< @ treeSelectPicker id="" list={} value=((null?string(''))!'') defaultValue="" defaultText="" /> -->
-<#macro treeSelectPicker id="" list={} value="" defaultValue="" defaultText="">
-	<select class="form-control" id="${id}" name="${id}" >
+<!-- 树状下拉菜单控件：< @ treeSelectAjaxPicker id="" value=((null?string(''))!'') defaultValue="" defaultText="" /> -->
+<#macro treeSelectAjaxPicker id="" value="" defaultValue="" defaultText="" url="">
+	<select class="form-control" id="select_${id}" name="select_${id}" >
 		<option value="${defaultValue!'0'}">${defaultText!'--请选择分类--'}</option>		
-		<#if (list?? && list?size > 0) >
-			<#list list as item>
-				<option value="${item[key]!0}" <#if  (item[key]?string('') == (value!'0')) >selected="selected"</#if> >${item[text]!''}</option>
-			</#list>
-		</#if>
+		
 	</select>
+	
+	<input type="hidden" id="${id}" name="${id}" value="${value}">
+	<script type="text/javascript">
+	$(function(){
+		select_ajax_${id}();
+		$("#select_${id}").change(function(){
+			$("#${id}").val($(this).val());
+		});
+	});
+	function select_ajax_${id}(){
+		$("#select_${id} option").remove();
+		$.ajax({
+			url : "${url}",type:"post",dataType:"json",data:{},success:function(result){
+				if(result.rows == null)return ;
+				$.each(result.rows,function(k,ele){
+					$("#select_${id}").append("<option value='"+ele.id+"' parent_id='"+ele.parent_id+"' class='level_"+ele.level+"'>"+ele.title+"</option>");
+				});
+			}
+		});
+	}
+	function select_reset_${id}(){
+		$("#select_${id}").val($("#${id}").val());
+	}
+	
+	</script>
 </#macro>
 
 

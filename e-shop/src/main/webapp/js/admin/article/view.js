@@ -11,7 +11,7 @@ var articleName = "";
 $(function(){
 	
 	
-	haiArticleCatModal = $("#haiArticleCatModal").modal({ keyboard: false , show : false });
+	haiArticleCatModal = $("#haiArticleCatModal").modal({backdrop: 'static', keyboard: false , show : false });
 	
 	//getTree();
 	

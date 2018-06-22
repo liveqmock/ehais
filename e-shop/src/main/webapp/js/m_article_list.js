@@ -117,7 +117,7 @@ $(function(){
         }]
     });
     
-    myArticleCateModal = $("#myArticleCateModal").modal({ keyboard: false , show : false });
+    myArticleCateModal = $("#myArticleCateModal").modal({backdrop: 'static', keyboard: false , show : false });
     
     
     $("#addCate").click(function(){addCate();});

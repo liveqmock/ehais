@@ -1,6 +1,7 @@
 package org.ehais.shop.service.impl;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -13,8 +14,11 @@ import org.ehais.common.EConstants;
 import org.ehais.model.BootStrapModel;
 import org.ehais.service.impl.CommonServiceImpl;
 import org.ehais.shop.mapper.HaiBusinessMapper;
+import org.ehais.shop.mapper.HaiBusinessTypeMapper;
 import org.ehais.shop.model.HaiBusiness;
 import org.ehais.shop.model.HaiBusinessExample;
+import org.ehais.shop.model.HaiBusinessType;
+import org.ehais.shop.model.HaiBusinessTypeExample;
 import org.ehais.shop.model.HaiBusinessWithBLOBs;
 import org.ehais.shop.service.HaiBusinessService;
 import org.ehais.tools.EConditionObject;
@@ -40,6 +44,8 @@ public class HaiBusinessServiceImpl  extends CommonServiceImpl implements HaiBus
 	
 	@Autowired
 	private HaiBusinessMapper haiBusinessMapper;
+	@Autowired
+	private HaiBusinessTypeMapper haiBusinessTypeMapper;
 
 
 	public ReturnObject<HaiBusiness> business_list(HttpServletRequest request) throws Exception{
@@ -70,9 +76,21 @@ public class HaiBusinessServiceImpl  extends CommonServiceImpl implements HaiBus
 		List<HaiBusiness> list = haiBusinessMapper.selectByExample(example);
 		long total = haiBusinessMapper.countByExample(example);
 
-
-
 		Map<String, Object> map = new HashMap<String, Object>();
+		
+		
+		List<Integer> businessTypeIds = new ArrayList<Integer>(); 
+		for (HaiBusiness b : list) {
+			businessTypeIds.add(b.getBusinessTypeId());
+		}
+		
+		if(businessTypeIds.size()>0) {
+			HaiBusinessTypeExample btExp = new HaiBusinessTypeExample();
+			btExp.createCriteria().andBusinessTypeIdIn(businessTypeIds);
+			List<HaiBusinessType> listType = haiBusinessTypeMapper.selectByExample(btExp);
+			map.put("listType", listType);
+		}
+		
 		rm.setMap(map);
 
 
@@ -103,7 +121,7 @@ public class HaiBusinessServiceImpl  extends CommonServiceImpl implements HaiBus
 		return rm;
 	}
 	
-	public ReturnObject<HaiBusinessWithBLOBs> business_insert_submit(HttpServletRequest request,HaiBusinessWithBLOBs model)
+	public ReturnObject<HaiBusinessWithBLOBs> business_insert_submit(HttpServletRequest request,HaiBusinessWithBLOBs model,String classify,String linkManJson)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiBusinessWithBLOBs> rm = new ReturnObject<HaiBusinessWithBLOBs>();
@@ -119,11 +137,12 @@ public class HaiBusinessServiceImpl  extends CommonServiceImpl implements HaiBus
 		Long admin_id = (Long)request.getSession().getAttribute(EConstants.SESSION_ADMIN_ID);
 		model.setCreateAdminId(admin_id);
 		model.setLastUpdateAdminId(admin_id);
-
+		model.setClassify(classify);
 
 		HaiBusinessExample example = new HaiBusinessExample();
 		HaiBusinessExample.Criteria c = example.createCriteria();
 		c.andBusinessNameEqualTo(model.getBusinessName());
+		c.andClassifyEqualTo(classify);
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
 		long count = haiBusinessMapper.countByExample(example);
 		if(count > 0){
@@ -133,6 +152,13 @@ public class HaiBusinessServiceImpl  extends CommonServiceImpl implements HaiBus
 
 
 		int code = haiBusinessMapper.insertSelective(model);
+		
+		/**** tyler
+		 * gson 解释 linkManJson
+		 * 在这里保存联系人信息入haiBusinessLinkMan表 
+		 */
+		
+		
 		rm.setCode(code);
 		rm.setMsg("添加成功");
 		return rm;
@@ -173,7 +199,7 @@ public class HaiBusinessServiceImpl  extends CommonServiceImpl implements HaiBus
 		return rm;
 	}
 	
-	public ReturnObject<HaiBusinessWithBLOBs> business_update_submit(HttpServletRequest request,HaiBusinessWithBLOBs model)
+	public ReturnObject<HaiBusinessWithBLOBs> business_update_submit(HttpServletRequest request,HaiBusinessWithBLOBs model,String classify,String linkManJson)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiBusinessWithBLOBs> rm = new ReturnObject<HaiBusinessWithBLOBs>();
@@ -183,6 +209,7 @@ public class HaiBusinessServiceImpl  extends CommonServiceImpl implements HaiBus
 		HaiBusinessExample.Criteria c = example.createCriteria();
 		
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+		c.andClassifyEqualTo(classify);
 		c.andBusinessIdEqualTo(model.getBusinessId());
 		//c.andStoreIdEqualTo(store_id);
 
@@ -219,6 +246,7 @@ bean.setCity(model.getCity());
 bean.setCounty(model.getCounty());
 bean.setDistrict(model.getDistrict());
 bean.setStreet(model.getStreet());
+bean.setBusinessTypeId(model.getBusinessTypeId());
 
 
 		Date date = new Date();
@@ -230,6 +258,16 @@ bean.setStreet(model.getStreet());
 		bean.setLastUpdateAdminId(admin_id);
 
 		int code = haiBusinessMapper.updateByExampleSelective(bean, example);
+		
+		/**** tyler
+		 * gson 解释 linkManJson
+		 * 在这里更新联系人信息入haiBusinessLinkMan表  tyler
+		 * 如果存在同样的businessLinkManId，更新信息
+		 * 如果businessLinkManId不存在，则删除
+		 * 如果有新增，则增加
+		 */
+		
+		
 		rm.setCode(code);
 		rm.setMsg("编辑成功");
 		return rm;

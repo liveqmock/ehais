@@ -1,7 +1,8 @@
 var haiPaymentModal ;
 var key_paymentName = "";
+var validform = null;
 $(function(){
-	haiPaymentModal = $("#haiPaymentModal").modal({ keyboard: false , show : false });
+	haiPaymentModal = $("#haiPaymentModal").modal({backdrop: 'static', keyboard: false , show : false });
 	
 	$("#haiPaymentAddDetail").click(function(){
 		haiPaymentAddDetail();
@@ -52,7 +53,7 @@ function haiPaymentAddSubmit(){
 		layer.msg("请输入名称");return ;
 	}
 
-	
+	if(!validform.form())return ;
 	
 	$.ajax({
 		url : "haiPaymentAddSubmit",
@@ -88,7 +89,7 @@ function haiPaymentEditSubmit(){
 		layer.msg("请输入名称");return ;
 	}
 
-	
+	if(!validform.form())return ;
 	
 	$.ajax({
 		url : "haiPaymentEditSubmit",

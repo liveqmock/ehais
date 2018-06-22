@@ -1,7 +1,8 @@
 var haiBusinessModal ;
 var key_businessName = "";
+var validform = null;
 $(function(){
-	haiBusinessModal = $("#haiBusinessModal").modal({ keyboard: false , show : false });
+	haiBusinessModal = $("#haiBusinessModal").modal({backdrop: 'static', keyboard: false , show : false });
 	
 	$("#haiBusinessAddDetail").click(function(){
 		haiBusinessAddDetail();
@@ -49,7 +50,7 @@ function haiBusinessAddSubmit(){
 		layer.msg("请输入企业名称");return ;
 	}
 
-	
+	if(!validform.form())return ;
 	
 	$.ajax({
 		url : "haiBusinessAddSubmit",
@@ -82,7 +83,7 @@ function haiBusinessEditSubmit(){
 		layer.msg("请输入企业名称");return ;
 	}
 
-	
+	if(!validform.form())return ;
 	
 	$.ajax({
 		url : "haiBusinessEditSubmit",

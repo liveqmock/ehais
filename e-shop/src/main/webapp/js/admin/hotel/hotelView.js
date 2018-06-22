@@ -1,7 +1,8 @@
 var haiHotelModal ;
 var key_hotelName = "";
+var validform = null;
 $(function(){
-	haiHotelModal = $("#haiHotelModal").modal({ keyboard: false , show : false });
+	haiHotelModal = $("#haiHotelModal").modal({backdrop: 'static', keyboard: false , show : false });
 	
 	$("#haiHotelAddDetail").click(function(){
 		haiHotelAddDetail();
@@ -45,7 +46,7 @@ function haiHotelEditDetail(hotelId){
 function haiHotelAddSubmit(){
 	
 
-	
+	if(!validform.form())return ;
 	
 	$.ajax({
 		url : "haiHotelAddSubmit",
@@ -75,7 +76,7 @@ function haiHotelAddSubmit(){
 function haiHotelEditSubmit(){
 	
 
-	
+	if(!validform.form())return ;
 	
 	$.ajax({
 		url : "haiHotelEditSubmit",

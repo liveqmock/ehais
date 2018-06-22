@@ -11,6 +11,7 @@ import org.ehais.model.TreeModel;
 import org.ehais.shop.mapper.HaiSectorsMapper;
 import org.ehais.shop.model.HaiSectors;
 import org.ehais.tools.ReturnObject;
+import org.ehais.util.TreeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -36,9 +37,12 @@ public class TreeDataAdminController extends CommonController{
 		try {
 			List<HaiSectors> list = haiSectorsMapper.selectByExample(null);
 			for (HaiSectors haiSectors : list) {
-				tree.add(new TreeModel(haiSectors.getSectorsId(),haiSectors.getSectorsCode(),haiSectors.getSectorsName(),haiSectors.getParentId()));
+				tree.add(new TreeModel(haiSectors.getSectorsId(),haiSectors.getSectorsCode(),haiSectors.getSectorsName(),haiSectors.getParentId() == null ? 0 : haiSectors.getParentId()));
 			}
-			rm.setRows(tree);
+			TreeUtil treeUtil = new TreeUtil();
+			treeUtil.setTreeList(tree);
+			treeUtil.getTree(0);			
+			rm.setRows(treeUtil.getTreeNewList());
 			rm.setCode(1);
 		}catch(Exception e) {
 			e.printStackTrace();

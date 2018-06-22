@@ -1,7 +1,8 @@
 var haiExpensesModal ;
 var key_expensesName = "";
+var validform = null;
 $(function(){
-	haiExpensesModal = $("#haiExpensesModal").modal({ keyboard: false , show : false });
+	haiExpensesModal = $("#haiExpensesModal").modal({backdrop: 'static', keyboard: false , show : false });
 	
 	$("#haiExpensesAddDetail").click(function(){
 		haiExpensesAddDetail();
@@ -52,7 +53,7 @@ function haiExpensesAddSubmit(){
 		layer.msg("请输入名称");return ;
 	}
 
-	
+	if(!validform.form())return ;
 	
 	$.ajax({
 		url : "haiExpensesAddSubmit",
@@ -88,7 +89,7 @@ function haiExpensesEditSubmit(){
 		layer.msg("请输入名称");return ;
 	}
 
-	
+	if(!validform.form())return ;
 	
 	$.ajax({
 		url : "haiExpensesEditSubmit",

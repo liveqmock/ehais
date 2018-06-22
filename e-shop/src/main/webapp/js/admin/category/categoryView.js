@@ -1,7 +1,8 @@
 var haiCategoryModal ;
 var key_catName = "";
+var validform = null;
 $(function(){
-	haiCategoryModal = $("#haiCategoryModal").modal({ keyboard: false , show : false });
+	haiCategoryModal = $("#haiCategoryModal").modal({backdrop: 'static', keyboard: false , show : false });
 	
 	$("#haiCategoryAddDetail").click(function(){
 		haiCategoryAddDetail();
@@ -52,7 +53,7 @@ function haiCategoryAddSubmit(){
 		layer.msg("请输入名称");return ;
 	}
 
-	
+	if(!validform.form())return ;
 	
 	$.ajax({
 		url : "haiCategoryAddSubmit",
@@ -88,7 +89,7 @@ function haiCategoryEditSubmit(){
 		layer.msg("请输入名称");return ;
 	}
 
-	
+	if(!validform.form())return ;
 	
 	$.ajax({
 		url : "haiCategoryEditSubmit",

@@ -11,7 +11,7 @@ var hotelName = "";
 $(function(){
 	
 	
-	haiHotelRoomModal = $("#haiHotelRoomModal").modal({ keyboard: false , show : false });
+	haiHotelRoomModal = $("#haiHotelRoomModal").modal({backdrop: 'static', keyboard: false , show : false });
 	
 	//getTree();
 	

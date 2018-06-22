@@ -1,7 +1,8 @@
 var haiAccountingModal ;
 var key_accountingName = "";
+var validform = null;
 $(function(){
-	haiAccountingModal = $("#haiAccountingModal").modal({ keyboard: false , show : false });
+	haiAccountingModal = $("#haiAccountingModal").modal({backdrop: 'static', keyboard: false , show : false });
 	
 	$("#haiAccountingAddDetail").click(function(){
 		haiAccountingAddDetail();
@@ -52,7 +53,7 @@ function haiAccountingAddSubmit(){
 		layer.msg("请输入名称");return ;
 	}
 
-	
+	if(!validform.form())return ;
 	
 	$.ajax({
 		url : "haiAccountingAddSubmit",
@@ -88,7 +89,7 @@ function haiAccountingEditSubmit(){
 		layer.msg("请输入名称");return ;
 	}
 
-	
+	if(!validform.form())return ;
 	
 	$.ajax({
 		url : "haiAccountingEditSubmit",

@@ -1,7 +1,8 @@
 var haiCustomerTypeModal ;
 var key_businessTypeName = "";
+var validform = null;
 $(function(){
-	haiCustomerTypeModal = $("#haiCustomerTypeModal").modal({ keyboard: false , show : false });
+	haiCustomerTypeModal = $("#haiCustomerTypeModal").modal({backdrop: 'static', keyboard: false , show : false });
 	
 	$("#haiCustomerTypeAddDetail").click(function(){
 		haiCustomerTypeAddDetail();
@@ -52,7 +53,7 @@ function haiCustomerTypeAddSubmit(){
 		layer.msg("请输入名称");return ;
 	}
 
-	
+	if(!validform.form())return ;
 	
 	$.ajax({
 		url : "haiCustomerTypeAddSubmit",
@@ -88,7 +89,7 @@ function haiCustomerTypeEditSubmit(){
 		layer.msg("请输入名称");return ;
 	}
 
-	
+	if(!validform.form())return ;
 	
 	$.ajax({
 		url : "haiCustomerTypeEditSubmit",

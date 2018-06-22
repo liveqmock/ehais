@@ -1,7 +1,8 @@
 var haiAccountModal ;
 var key_accountName = "";
+var validform = null;
 $(function(){
-	haiAccountModal = $("#haiAccountModal").modal({ keyboard: false , show : false });
+	haiAccountModal = $("#haiAccountModal").modal({backdrop: 'static', keyboard: false , show : false });
 	
 	$("#haiAccountAddDetail").click(function(){
 		haiAccountAddDetail();
@@ -54,7 +55,7 @@ function haiAccountAddSubmit(){
 		layer.msg("请输入名称");return ;
 	}
 
-	
+	if(!validform.form())return ;
 	
 	$.ajax({
 		url : "haiAccountAddSubmit",
@@ -90,7 +91,7 @@ function haiAccountEditSubmit(){
 		layer.msg("请输入名称");return ;
 	}
 
-	
+	if(!validform.form())return ;
 	
 	$.ajax({
 		url : "haiAccountEditSubmit",

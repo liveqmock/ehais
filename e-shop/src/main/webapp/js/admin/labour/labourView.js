@@ -1,7 +1,8 @@
 var haiLabourModal ;
 var key_labourName = "";
+var validform = null;
 $(function(){
-	haiLabourModal = $("#haiLabourModal").modal({ keyboard: false , show : false });
+	haiLabourModal = $("#haiLabourModal").modal({backdrop: 'static', keyboard: false , show : false });
 	
 	$("#haiLabourAddDetail").click(function(){
 		haiLabourAddDetail();
@@ -52,7 +53,7 @@ function haiLabourAddSubmit(){
 		layer.msg("请输入名称");return ;
 	}
 
-	
+	if(!validform.form())return ;
 	
 	$.ajax({
 		url : "haiLabourAddSubmit",
@@ -88,7 +89,7 @@ function haiLabourEditSubmit(){
 		layer.msg("请输入名称");return ;
 	}
 
-	
+	if(!validform.form())return ;
 	
 	$.ajax({
 		url : "haiLabourEditSubmit",

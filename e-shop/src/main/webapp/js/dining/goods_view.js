@@ -5,7 +5,7 @@ var categoryModal ;
 
 $(function(){
 	
-	categoryModal = $("#categoryModal").modal({ keyboard: false , show : false });
+	categoryModal = $("#categoryModal").modal({backdrop: 'static', keyboard: false , show : false });
 	
 	getTree();
 	

@@ -1,7 +1,8 @@
 var haiPropertyModal ;
 var key_propertyName = "";
+var validform = null;
 $(function(){
-	haiPropertyModal = $("#haiPropertyModal").modal({ keyboard: false , show : false });
+	haiPropertyModal = $("#haiPropertyModal").modal({backdrop: 'static', keyboard: false , show : false });
 	
 	$("#haiPropertyAddDetail").click(function(){
 		haiPropertyAddDetail();
@@ -52,7 +53,7 @@ function haiPropertyAddSubmit(){
 		layer.msg("请输入名称");return ;
 	}
 
-	
+	if(!validform.form())return ;
 	
 	$.ajax({
 		url : "haiPropertyAddSubmit",
@@ -88,7 +89,7 @@ function haiPropertyEditSubmit(){
 		layer.msg("请输入名称");return ;
 	}
 
-	
+	if(!validform.form())return ;
 	
 	$.ajax({
 		url : "haiPropertyEditSubmit",

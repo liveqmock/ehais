@@ -1,7 +1,8 @@
 var haiUnitModal ;
 var key_unitName = "";
+var validform = null;
 $(function(){
-	haiUnitModal = $("#haiUnitModal").modal({ keyboard: false , show : false });
+	haiUnitModal = $("#haiUnitModal").modal({backdrop: 'static', keyboard: false , show : false });
 	
 	$("#haiUnitAddDetail").click(function(){
 		haiUnitAddDetail();
@@ -52,7 +53,7 @@ function haiUnitAddSubmit(){
 		layer.msg("请输入名称");return ;
 	}
 
-	
+	if(!validform.form())return ;
 	
 	$.ajax({
 		url : "haiUnitAddSubmit",
@@ -88,7 +89,7 @@ function haiUnitEditSubmit(){
 		layer.msg("请输入名称");return ;
 	}
 
-	
+	if(!validform.form())return ;
 	
 	$.ajax({
 		url : "haiUnitEditSubmit",

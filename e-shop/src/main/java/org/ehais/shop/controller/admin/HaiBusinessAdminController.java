@@ -2,10 +2,12 @@ package org.ehais.shop.controller.admin;
 
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.ehais.annotation.EPermissionController;
 import org.ehais.annotation.EPermissionMethod;
 import org.ehais.annotation.EPermissionModuleGroup;
 import org.ehais.controller.CommonController;
@@ -13,7 +15,10 @@ import org.ehais.epublic.validator.EInsertValidator;
 import org.ehais.epublic.validator.EUniqueValidator;
 import org.ehais.epublic.validator.EUpdateValidator;
 import org.ehais.protocol.PermissionProtocol;
+import org.ehais.shop.mapper.HaiBusinessLinkmanMapper;
 import org.ehais.shop.model.HaiBusiness;
+import org.ehais.shop.model.HaiBusinessLinkman;
+import org.ehais.shop.model.HaiBusinessLinkmanExample;
 import org.ehais.shop.model.HaiBusinessWithBLOBs;
 import org.ehais.shop.service.HaiBusinessService;
 import org.ehais.tools.EConditionObject;
@@ -33,7 +38,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @EPermissionModuleGroup(name="模组")
 
-@EPermissionController(name="往来单位信息管理",value="haiBusinessController")
+//@EPermissionController(name="往来单位信息管理",value="haiBusinessController")
 @Controller
 @RequestMapping("/admin")
 public class  HaiBusinessAdminController extends CommonController {
@@ -42,6 +47,39 @@ public class  HaiBusinessAdminController extends CommonController {
 
 	@Autowired
 	private HaiBusinessService haiBusinessService;
+	@Autowired
+	private HaiBusinessLinkmanMapper haiBusinessLinkmanMapper;
+	
+	
+	@ResponseBody
+//	@EPermissionMethod(name="查询",intro="打开往来单位信息页面",value="haiBusinessLinkManView",relation="haiBusinessListJson",type=PermissionProtocol.URL,sort="1")
+	@RequestMapping(value="/haiBusinessLinkManJson",method=RequestMethod.POST)
+	public String haiBusinessLinkManJson(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "action", required = true) String action,
+			@RequestParam(value = "businessId", required = true) Integer businessId) {	
+		ReturnObject<HaiBusinessLinkman> rm = new ReturnObject<HaiBusinessLinkman>();
+		List<HaiBusinessLinkman> list = null;
+		try {
+			if(action.equals("add")) {
+				list = new ArrayList<HaiBusinessLinkman>();
+				for(int i = 0 ; i < 5 ; i++) {
+					HaiBusinessLinkman b = new HaiBusinessLinkman();
+					list.add(b);
+				}
+				
+			}else if(action.equals("edit")) {
+				HaiBusinessLinkmanExample exp = new HaiBusinessLinkmanExample();
+				exp.createCriteria().andBusinessIdEqualTo(businessId);
+				list = haiBusinessLinkmanMapper.selectByExample(exp);
+			}
+			rm.setRows(list);
+			rm.setCode(1);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return this.writeJson(rm);
+	}
 	
 	
 	@EPermissionMethod(name="查询",intro="打开往来单位信息页面",value="haiBusinessView",relation="haiBusinessListJson",type=PermissionProtocol.URL,sort="1")
@@ -112,12 +150,13 @@ public class  HaiBusinessAdminController extends CommonController {
 	public String haiBusinessAddSubmit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@Validated({EInsertValidator.class,EUniqueValidator.class})  @ModelAttribute("business") HaiBusinessWithBLOBs business,
-			BindingResult result
+			BindingResult result,
+			@RequestParam(value = "linkManJson", required = true) String linkManJson
 			) {
 			if(result.hasErrors())return this.writeBindingResult(result);
 		try{
 			
-			ReturnObject<HaiBusinessWithBLOBs> rm = haiBusinessService.business_insert_submit(request, business);
+			ReturnObject<HaiBusinessWithBLOBs> rm = haiBusinessService.business_insert_submit(request, business,"",linkManJson);
 			return this.writeJson(rm);
 			
 		}catch(Exception e){
@@ -174,11 +213,12 @@ public class  HaiBusinessAdminController extends CommonController {
 	public String haiBusinessEditSubmit(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@Validated({EUpdateValidator.class}) @ModelAttribute("business") HaiBusinessWithBLOBs business,
-			BindingResult result
+			BindingResult result,
+			@RequestParam(value = "linkManJson", required = true) String linkManJson
 			) {
 			if(result.hasErrors())return this.writeBindingResult(result);
 		try{
-			return this.writeJson(haiBusinessService.business_update_submit(request,business));
+			return this.writeJson(haiBusinessService.business_update_submit(request,business,"",linkManJson));
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("business", e);

@@ -35,7 +35,12 @@
             
             column.formatter = function(value, row, index) {
             	var result = column._formatter ? column._formatter(value, row, index) : value;
-				return '<div id="' + column.field + '_'+index + '" value="'+value+'" code="'+(row[column.field+"_code"]=="undefined" || row[column.field+"_code"] == null ? "" : row[column.field+"_code"])+'" name="'+(row[column.field+"_name"] == "undefined" || row[column.field+"_name"] == null ? "" : row[column.field+"_name"])+'" type="'+column.editable.type+'" url="'+column.editable.url+'" class="editable-list-ehais" index="'+index+'" ></div>';
+            	if(column.editable.url != null && column.editable.url != ""){
+            		return '<div id="' + column.field + '_'+index + '" value="'+value+'" code="'+(row[column.field+"_code"]=="undefined" || row[column.field+"_code"] == null ? "" : row[column.field+"_code"])+'" name="'+(row[column.field+"_name"] == "undefined" || row[column.field+"_name"] == null ? "" : row[column.field+"_name"])+'" type="'+column.editable.type+'" url="'+column.editable.url+'" class="editable-list-ehais" index="'+index+'" ></div>';
+            	}else{
+            		return '<div id="div_' + column.field + '_'+index + '"><input id="' + column.field + '_'+index + '" name="' + column.field + '_'+index + '" value="'+value+'" class="form-control"></div>';
+            	}
+				
             }
             
             

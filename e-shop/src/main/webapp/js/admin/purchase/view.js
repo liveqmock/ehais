@@ -5,7 +5,7 @@ var haiWarehouseModal ;
 
 
 $(function(){
-	haiWarehouseModal = $("#haiWarehouseModal").modal({ keyboard: false , show : false });
+	haiWarehouseModal = $("#haiWarehouseModal").modal({backdrop: 'static', keyboard: false , show : false });
 	
 	getTree();
 	

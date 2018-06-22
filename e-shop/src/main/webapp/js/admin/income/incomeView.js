@@ -1,7 +1,8 @@
 var haiIncomeModal ;
 var key_incomeName = "";
+var validform = null;
 $(function(){
-	haiIncomeModal = $("#haiIncomeModal").modal({ keyboard: false , show : false });
+	haiIncomeModal = $("#haiIncomeModal").modal({backdrop: 'static', keyboard: false , show : false });
 	
 	$("#haiIncomeAddDetail").click(function(){
 		haiIncomeAddDetail();
@@ -52,7 +53,7 @@ function haiIncomeAddSubmit(){
 		layer.msg("请输入名称");return ;
 	}
 
-	
+	if(!validform.form())return ;
 	
 	$.ajax({
 		url : "haiIncomeAddSubmit",
@@ -88,7 +89,7 @@ function haiIncomeEditSubmit(){
 		layer.msg("请输入名称");return ;
 	}
 
-	
+	if(!validform.form())return ;
 	
 	$.ajax({
 		url : "haiIncomeEditSubmit",

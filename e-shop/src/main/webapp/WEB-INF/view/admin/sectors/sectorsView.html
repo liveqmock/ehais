@@ -16,9 +16,6 @@
 			};
 			var columns =  [
 				{
-				    field: 'sectorsId',
-				    title: '编号'
-				},{
 				    field: 'sectorsCode',
 				    title: '简码'
 				},{
@@ -98,7 +95,7 @@
 <div class="form-group">
 <label class="col-sm-2 control-label">行业名称</label>
 <div class="col-sm-5">
-	<input type="text" class="form-control" id="sectorsName" name="sectorsName" value="" placeholder="">
+	<input type="text" class="form-control" id="sectorsName" name="sectorsName" value="" placeholder=""  data-rule-required="true" data-msg-required="请输入行业名称">
 </div>
 </div>
 
@@ -106,7 +103,15 @@
 <div class="form-group">
 <label class="col-sm-2 control-label">简码</label>
 <div class="col-sm-5">
-	<input type="text" class="form-control" id="sectorsCode" name="sectorsCode" value="" placeholder="">
+	<input type="text" class="form-control required" id="sectorsCode" name="sectorsCode" value="" placeholder="">
+</div>
+</div>
+
+
+<div class="form-group">
+<label class="col-sm-2 control-label">隶属级别</label>
+<div class="col-sm-5">
+	<@treeSelectAjaxPicker id="parentId" value="0" defaultValue="0" defaultText="--选择上级行业--" url ="/admin/sectors.api"/>
 </div>
 </div>
 

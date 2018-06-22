@@ -11,7 +11,7 @@ var begOffName = "";
 $(function(){
 	
 	
-	projectTempSublateModal = $("#projectTempSublateModal").modal({ keyboard: false , show : false });
+	projectTempSublateModal = $("#projectTempSublateModal").modal({backdrop: 'static', keyboard: false , show : false });
 	
 
 	

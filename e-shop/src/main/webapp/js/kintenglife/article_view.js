@@ -7,7 +7,7 @@ var articleCatModal = null;
 $(function(){
 //	getTree();
 	
-	articleCatModal = $("#articleCatModal").modal({ keyboard: false , show : false });
+	articleCatModal = $("#articleCatModal").modal({backdrop: 'static', keyboard: false , show : false });
 	
 	$("#addCate").click(function(){addCate();});
 	$("#editCate").click(function(){editCate();});

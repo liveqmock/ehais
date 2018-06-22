@@ -28,6 +28,7 @@ $(function(){
         clickToSelect: true,//是否启用点击选中行
         sidePagination: "server", //服务端处理分页
 //      uniqueId: 'Id',//每一行的唯一标识，一般为主键列
-        columns: columns 
+        columns: columns ,
+        responseHandler : (typeof(responseHandler) === "function" ? responseHandler : function(res){return res;})
     });
 })

@@ -1,7 +1,8 @@
 var haiWarehouseModal ;
 var key_warehouseName = "";
+var validform = null;
 $(function(){
-	haiWarehouseModal = $("#haiWarehouseModal").modal({ keyboard: false , show : false });
+	haiWarehouseModal = $("#haiWarehouseModal").modal({backdrop: 'static', keyboard: false , show : false });
 	
 	$("#haiWarehouseAddDetail").click(function(){
 		haiWarehouseAddDetail();
@@ -52,7 +53,7 @@ function haiWarehouseAddSubmit(){
 		layer.msg("请输入名称");return ;
 	}
 
-	
+	if(!validform.form())return ;
 	
 	$.ajax({
 		url : "haiWarehouseAddSubmit",
@@ -88,7 +89,7 @@ function haiWarehouseEditSubmit(){
 		layer.msg("请输入名称");return ;
 	}
 
-	
+	if(!validform.form())return ;
 	
 	$.ajax({
 		url : "haiWarehouseEditSubmit",

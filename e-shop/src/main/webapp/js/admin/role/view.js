@@ -11,7 +11,7 @@ var name = "";
 $(function(){
 	
 	
-	thinkTempSublateModal = $("#thinkTempSublateModal").modal({ keyboard: false , show : false });
+	thinkTempSublateModal = $("#thinkTempSublateModal").modal({backdrop: 'static', keyboard: false , show : false });
 	
 	//getTree();
 	
