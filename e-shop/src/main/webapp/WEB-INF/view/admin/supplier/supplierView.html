@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8">
+		
+		<#include "/include.v2.html"/>
+		<#include "/FreemarkerMacro.html"/>
+		
+		
+		
+		<script type="text/javascript">
+			var bootstrap_table_url = 'haiBusinessListJson';
+			var businessName = null;
+			var query_parames = {
+                businessName : businessName
+			};
+			var columns =  [
+				{
+    field: 'businessId',
+    title: '企业编号'
+},{
+    field: 'businessCode',
+    title: '简码'
+},{
+    field: 'businessName',
+    title: '企业名称'
+},
+		        {
+					field: 'businessId',
+		            title: '操作',
+					align:"center",
+			        formatter:function(value,row,index){
+			        	var opt = "";
+			        	
+			        	<@permission url="haiBusinessEditDetail">
+			            opt += "<a href ='javascript:;' onclick='haiBusinessEditDetail("+value+");'  class='glyphicon glyphicon-edit'></a>";
+			            </@permission>
+			            
+			            <@permission url="haiBusinessDelete">
+			            opt += "&nbsp;&nbsp;<a href ='javascript:;' onclick='haiBusinessDelete("+value+");' class='glyphicon glyphicon-trash'></a>";
+			            </@permission>
+			            
+		            	return opt;
+			        }
+		        }
+        	];
+			
+			var responseHandler = function(res){//返回数据整合
+				if(res.map.listType != null){
+					var businessTypeList = res.map.listType ;
+		        	var businessTypeObj = {};
+		        	for(var i = 0 ; i < businessTypeList.length ; i ++){
+		        		businessTypeObj[businessTypeList[i].businessTypeId] = businessTypeList[i].businessTypeName;
+		        	}
+		        	var rows = res.rows;
+		        	for(var i = 0 ; i < rows.length ; i++){
+		        		rows[i].businessTypeName = businessTypeObj[rows[i].businessTypeId];
+		        	}
+				}
+				
+				return res;
+			}
+			
+		</script>
+		<script type="text/javascript" src="/js/e_bootstrap_table.js"></script>
+    	<script type="text/javascript" src="/js/admin/business/businessView.js" ></script> 
+		<title>客户信息</title>
+		
+	</head>
+	<body>
+		<div class="container-fluid" id="wrapper" tabindex="-1">
+			
+			<dl class="enav">
+				<dt>当前位置:</dt>
+				<dd>总系统</dd>
+				<dd>往来单位信息</dd>
+				<dd class="fr">快捷键提示</dd>
+			</dl>
+			
+			<div class="ctr form-inline">
+				  <div class="form-group">
+				    <label >搜索信息</label>
+				    <input id="key_businessName" name="key_businessName" class="form-control" >
+				  </div>
+				  				  
+				  
+				  <button id="haiBusinessSearch" type="button" class="btn btn-primary glyphicon glyphicon-search">查询</button>
+				  
+				  <@permission url="haiBusinessAddDetail">
+				  <button id="haiBusinessAddDetail" type="button" class="btn btn-info glyphicon glyphicon-plus fr">新增</button>
+				  </@permission>
+			</div>
+			
+			<div class="elist">
+				<table class="table table-striped table-bordered table-hover" id="bsTable"></table> 
+			</div>
+			
+		</div>
+
+
+
+<div id="haiBusinessModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" >
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">往来单位信息</h4>
+      </div>
+      <div class="modal-body">
+        <form id="haiBusinessForm" name="haiBusinessForm" class="form-horizontal" action="add" method="post">
+        
+        <input type="hidden" class="form-control" id="businessId" name="businessId" value="" >
+
+
+
+
+<div class="form-group">
+<label class="col-sm-2 control-label">企业名称</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="businessName" name="businessName" value="" placeholder="">
+</div>
+</div>
+
+
+<div class="form-group">
+<label class="col-sm-2 control-label">简码</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="businessCode" name="businessCode" value="" placeholder="">
+</div>
+</div>
+
+
+
+<div class="form-group">
+<label class="col-sm-2 control-label">备注</label>
+<div class="col-sm-8">
+	<@commonTextarea id="remark" value="" />
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">法人</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="legalPerson" name="legalPerson" value="" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">联系人</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="linkman" name="linkman" value="" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">电话</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="tel" name="tel" value="" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">传真</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="fax" name="fax" value="" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">邮箱</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="email" name="email" value="" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">联系地址</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="address" name="address" value="" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">经度</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="longitude" name="longitude" value="" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">纬度</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="latitude" name="latitude" value="" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">is_void</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="isVoid" name="isVoid" value="" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">简介</label>
+<div class="col-sm-8">
+	<@ueditorPicker id="intro" value="" />
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">logo</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="logo" name="logo" value="" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">网址</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="website" name="website" value="" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">classify</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="classify" name="classify" value="" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">拼音</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="pinyin" name="pinyin" value="" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">country</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="country" name="country" value="" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">province</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="province" name="province" value="" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">city</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="city" name="city" value="" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">county</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="county" name="county" value="" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">district</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="district" name="district" value="" placeholder="">
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">street</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="street" name="street" value="" placeholder="">
+</div>
+</div>
+
+
+        
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button id="haiBusinessSaveSubmit" type="button" class="btn btn-primary">保存</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+<script type="text/javascript">
+	var eData = {};
+		
+	$(function(){
+				
+
+	});
+	
+	
+</script>
+
+	</body>
+</html>

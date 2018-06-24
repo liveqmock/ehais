@@ -1,0 +1,564 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+
+		<#include "/include.html"/>
+		<#include "/FreemarkerMacro.html"/>
+
+<title>Insert title here</title>
+</head>
+<body>
+<div class="header">
+	<div class="nav">
+		<a href="javascript:;" id="back" class="icon fa fa-arrow-left ">&nbsp;</a>
+		<div class="nav0">订单信息</div>
+		<div class="nav1">信息编辑</div>
+	</div>
+</div>
+<div style="width: 100%;height: 40px;"></div>
+<div class="container-fluid">
+<form id="haiOrderInfoForm" name="haiOrderInfoForm" class="form-horizontal" action="${rm.action?default('')}" method="post">
+
+
+<input type="hidden" class="form-control" id="orderId" name="orderId" value="${rm.model.orderId!''}" >
+<div class="form-group">
+<label class="col-sm-2 control-label">order_sn</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="orderSn" name="orderSn" value="${rm.model.orderSn!''}" placeholder="" data-rule-required="true" data-msg-required="请输入order_sn" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">user_id</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="userId" name="userId" value="${rm.model.userId!''}" placeholder="" data-rule-required="true" data-msg-required="请输入user_id" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">order_status</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="orderStatus" name="orderStatus" value="${rm.model.orderStatus!''}" placeholder="" data-rule-required="true" data-msg-required="请输入order_status" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">shipping_status</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="shippingStatus" name="shippingStatus" value="${rm.model.shippingStatus!''}" placeholder="" data-rule-required="true" data-msg-required="请输入shipping_status" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">pay_status</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="payStatus" name="payStatus" value="${rm.model.payStatus!''}" placeholder="" data-rule-required="true" data-msg-required="请输入pay_status" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">consignee</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="consignee" name="consignee" value="${rm.model.consignee!''}" placeholder="" data-rule-required="true" data-msg-required="请输入consignee" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">country</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="country" name="country" value="${rm.model.country!''}" placeholder="" data-rule-required="true" data-msg-required="请输入country" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">province</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="province" name="province" value="${rm.model.province!''}" placeholder="" data-rule-required="true" data-msg-required="请输入province" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">city</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="city" name="city" value="${rm.model.city!''}" placeholder="" data-rule-required="true" data-msg-required="请输入city" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">county</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="county" name="county" value="${rm.model.county!''}" placeholder="" data-rule-required="true" data-msg-required="请输入county" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">district</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="district" name="district" value="${rm.model.district!''}" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">street</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="street" name="street" value="${rm.model.street!''}" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">address</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="address" name="address" placeholder=""  data-rule-required="true" data-msg-required="请输入address">${rm.model.address!''}</textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">zipcode</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="zipcode" name="zipcode" value="${rm.model.zipcode!''}" placeholder="" data-rule-required="true" data-msg-required="请输入zipcode" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">tel</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="tel" name="tel" value="${rm.model.tel!''}" placeholder="" data-rule-required="true" data-msg-required="请输入tel" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">mobile</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="mobile" name="mobile" value="${rm.model.mobile!''}" placeholder="" data-rule-required="true" data-msg-required="请输入mobile" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">email</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="email" name="email" value="${rm.model.email!''}" placeholder="" data-rule-required="true" data-msg-required="请输入email" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">best_time</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="bestTime" name="bestTime" value="${rm.model.bestTime!''}" placeholder="" data-rule-required="true" data-msg-required="请输入best_time" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">sign_building</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="signBuilding" name="signBuilding" value="${rm.model.signBuilding!''}" placeholder="" data-rule-required="true" data-msg-required="请输入sign_building" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">postscript</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="postscript" name="postscript" placeholder=""  data-rule-required="true" data-msg-required="请输入postscript">${rm.model.postscript!''}</textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">shipping_id</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="shippingId" name="shippingId" value="${rm.model.shippingId!''}" placeholder="" data-rule-required="true" data-msg-required="请输入shipping_id" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">shipping_name</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="shippingName" name="shippingName" value="${rm.model.shippingName!''}" placeholder="" data-rule-required="true" data-msg-required="请输入shipping_name" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">shipping_number</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="shippingNumber" name="shippingNumber" value="${rm.model.shippingNumber!''}" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">pay_id</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="payId" name="payId" value="${rm.model.payId!''}" placeholder="" data-rule-required="true" data-msg-required="请输入pay_id" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">pay_name</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="payName" name="payName" value="${rm.model.payName!''}" placeholder="" data-rule-required="true" data-msg-required="请输入pay_name" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">how_oos</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="howOos" name="howOos" value="${rm.model.howOos!''}" placeholder="" data-rule-required="true" data-msg-required="请输入how_oos" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">how_surplus</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="howSurplus" name="howSurplus" value="${rm.model.howSurplus!''}" placeholder="" data-rule-required="true" data-msg-required="请输入how_surplus" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">pack_name</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="packName" name="packName" value="${rm.model.packName!''}" placeholder="" data-rule-required="true" data-msg-required="请输入pack_name" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">card_name</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="cardName" name="cardName" value="${rm.model.cardName!''}" placeholder="" data-rule-required="true" data-msg-required="请输入card_name" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">card_message</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="cardMessage" name="cardMessage" placeholder=""  data-rule-required="true" data-msg-required="请输入card_message">${rm.model.cardMessage!''}</textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">inv_payee</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="invPayee" name="invPayee" value="${rm.model.invPayee!''}" placeholder="" data-rule-required="true" data-msg-required="请输入inv_payee" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">inv_content</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="invContent" name="invContent" value="${rm.model.invContent!''}" placeholder="" data-rule-required="true" data-msg-required="请输入inv_content" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">goods_amount</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="goodsAmount" name="goodsAmount" value="${rm.model.goodsAmount!''}" placeholder="" data-rule-required="true" data-msg-required="请输入goods_amount" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">shipping_fee</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="shippingFee" name="shippingFee" value="${rm.model.shippingFee!''}" placeholder="" data-rule-required="true" data-msg-required="请输入shipping_fee" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">insure_fee</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="insureFee" name="insureFee" value="${rm.model.insureFee!''}" placeholder="" data-rule-required="true" data-msg-required="请输入insure_fee" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">pay_fee</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="payFee" name="payFee" value="${rm.model.payFee!''}" placeholder="" data-rule-required="true" data-msg-required="请输入pay_fee" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">pack_fee</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="packFee" name="packFee" value="${rm.model.packFee!''}" placeholder="" data-rule-required="true" data-msg-required="请输入pack_fee" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">card_fee</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="cardFee" name="cardFee" value="${rm.model.cardFee!''}" placeholder="" data-rule-required="true" data-msg-required="请输入card_fee" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">money_paid</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="moneyPaid" name="moneyPaid" value="${rm.model.moneyPaid!''}" placeholder="" data-rule-required="true" data-msg-required="请输入money_paid" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">surplus</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="surplus" name="surplus" value="${rm.model.surplus!''}" placeholder="" data-rule-required="true" data-msg-required="请输入surplus" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">integral</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="integral" name="integral" value="${rm.model.integral!''}" placeholder="" data-rule-required="true" data-msg-required="请输入integral" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">integral_money</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="integralMoney" name="integralMoney" value="${rm.model.integralMoney!''}" placeholder="" data-rule-required="true" data-msg-required="请输入integral_money" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">bonus</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="bonus" name="bonus" value="${rm.model.bonus!''}" placeholder="" data-rule-required="true" data-msg-required="请输入bonus" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">order_amount</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="orderAmount" name="orderAmount" value="${rm.model.orderAmount!''}" placeholder="" data-rule-required="true" data-msg-required="请输入order_amount" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">from_ad</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="fromAd" name="fromAd" value="${rm.model.fromAd!''}" placeholder="" data-rule-required="true" data-msg-required="请输入from_ad" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">referer</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="referer" name="referer" placeholder=""  data-rule-required="true" data-msg-required="请输入referer">${rm.model.referer!''}</textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">add_time</label>
+<div class="col-sm-8">
+	<@bsDatePicker id="addTime" value="${((rm.model.addTime?string('yyyy-MM-dd'))!'')}"  />
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">confirm_time</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="confirmTime" name="confirmTime" value="${rm.model.confirmTime!''}" placeholder="" data-rule-required="true" data-msg-required="请输入confirm_time" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">pay_time</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="payTime" name="payTime" value="${rm.model.payTime!''}" placeholder="" data-rule-required="true" data-msg-required="请输入pay_time" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">shipping_time</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="shippingTime" name="shippingTime" value="${rm.model.shippingTime!''}" placeholder="" data-rule-required="true" data-msg-required="请输入shipping_time" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">pack_id</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="packId" name="packId" value="${rm.model.packId!''}" placeholder="" data-rule-required="true" data-msg-required="请输入pack_id" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">card_id</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="cardId" name="cardId" value="${rm.model.cardId!''}" placeholder="" data-rule-required="true" data-msg-required="请输入card_id" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">bonus_id</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="bonusId" name="bonusId" value="${rm.model.bonusId!''}" placeholder="" data-rule-required="true" data-msg-required="请输入bonus_id" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">invoice_no</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="invoiceNo" name="invoiceNo" placeholder=""  data-rule-required="true" data-msg-required="请输入invoice_no">${rm.model.invoiceNo!''}</textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">extension_code</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="extensionCode" name="extensionCode" value="${rm.model.extensionCode!''}" placeholder="" data-rule-required="true" data-msg-required="请输入extension_code" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">extension_id</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="extensionId" name="extensionId" value="${rm.model.extensionId!''}" placeholder="" data-rule-required="true" data-msg-required="请输入extension_id" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">to_buyer</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="toBuyer" name="toBuyer" placeholder=""  data-rule-required="true" data-msg-required="请输入to_buyer">${rm.model.toBuyer!''}</textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">pay_note</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="payNote" name="payNote" placeholder=""  data-rule-required="true" data-msg-required="请输入pay_note">${rm.model.payNote!''}</textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">agency_id</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="agencyId" name="agencyId" value="${rm.model.agencyId!''}" placeholder="" data-rule-required="true" data-msg-required="请输入agency_id" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">inv_type</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="invType" name="invType" value="${rm.model.invType!''}" placeholder="" data-rule-required="true" data-msg-required="请输入inv_type" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">tax</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="tax" name="tax" value="${rm.model.tax!''}" placeholder="" data-rule-required="true" data-msg-required="请输入tax" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">is_separate</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="isSeparate" name="isSeparate" value="${rm.model.isSeparate!''}" placeholder="" data-rule-required="true" data-msg-required="请输入is_separate" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">parent_id</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="parentId" name="parentId" value="${rm.model.parentId!''}" placeholder="" data-rule-required="true" data-msg-required="请输入parent_id" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">discount</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="discount" name="discount" value="${rm.model.discount!''}" placeholder="" data-rule-required="true" data-msg-required="请输入discount" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">备注</label>
+<div class="col-sm-8">
+	<@ueditorPicker id="remark" value="${rm.model.remark!''}" />
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">is_void</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="isVoid" name="isVoid" value="${rm.model.isVoid!''}" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">订单来源【微信】</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="orderSource" name="orderSource" value="${rm.model.orderSource!''}" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">goods_desc</label>
+<div class="col-sm-8">
+	<@ueditorPicker id="goodsDesc" value="${rm.model.goodsDesc!''}" />
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">classify</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="classify" name="classify" value="${rm.model.classify!''}" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">sid</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="sid" name="sid" value="${rm.model.sid!''}" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">是否有评论</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="hasForum" name="hasForum" value="${rm.model.hasForum!''}" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">每天流水号</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="daySerialNumber" name="daySerialNumber" value="${rm.model.daySerialNumber!''}" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">用户领取优惠券ID</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="couponsUserId" name="couponsUserId" value="${rm.model.couponsUserId!''}" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">优惠券ID</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="couponsId" name="couponsId" value="${rm.model.couponsId!''}" placeholder=""  >
+</div>
+</div>
+
+
+
+
+
+<div class="form-group">
+	<div class="col-sm-3"></div>
+	<div class="col-sm-6"><button id="saveSubmit" type="button" class="btn btn-primary">提交信息</button></div>
+</div>
+       
+
+
+
+
+</form>
+</div>    
+
+
+<script type="text/javascript" src="/js/admin/orderinfo/detail.js" ></script>             
+
+
+</body>
+</html>

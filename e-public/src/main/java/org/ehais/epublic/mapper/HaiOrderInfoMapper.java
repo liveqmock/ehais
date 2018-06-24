@@ -19,6 +19,10 @@ import org.ehais.epublic.model.OrderStoreStatistics;
 
 public interface HaiOrderInfoMapper {
 	
+    @Select("select * from hai_order_info where order_id = ${order_id} and store_id = ${store_id} ")
+    @ResultMap(value = "ResultMapWithBLOBs") //BaseResultMap  ResultMapWithBLOBs
+    HaiOrderInfoWithBLOBs get_hai_order_info_info_v2(@Param("order_id") Long order_id, @Param("store_id") Integer store_id);
+
 	
 	@ResultMap(value = "ResultMapWithBLOBs")
 	@Select("select * from hai_order_info where DATE_FORMAT(add_time ,'%Y-%m-%d') = #{bill_date}")

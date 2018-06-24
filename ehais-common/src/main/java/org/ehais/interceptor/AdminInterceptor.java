@@ -1,5 +1,6 @@
 package org.ehais.interceptor;
 
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 
@@ -7,9 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.ehais.annotation.EPermissionMethod;
 import org.ehais.cache.ERolePermissionCacheManager;
 import org.ehais.common.EConstants;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -32,6 +34,8 @@ public class AdminInterceptor extends HandlerInterceptorAdapter{
 //		if(http.toLowerCase().equals("http")) {
 //			response.sendRedirect("https://" + request.getServerName()+loginUrl);
 //		}
+		
+
 		
 		//获取当前请求URL
 		String url = request.getRequestURI().toString();
@@ -82,6 +86,18 @@ public class AdminInterceptor extends HandlerInterceptorAdapter{
 		for (String string : result) {
 //			System.out.println("role : "+ string);
 			if(ERolePermissionCacheManager.checkRolePermission(Integer.valueOf(string), url)){
+				/*
+				//插入数据库的操作就在这里实现
+			    HandlerMethod handlerMethod = (HandlerMethod) handler;  
+			    System.out.println("=========:"+handlerMethod.getMethod());  
+			    Method method = handlerMethod.getMethod();
+			    
+		        if(method.isAnnotationPresent(EPermissionMethod.class)){
+		        	EPermissionMethod permiss = method.getAnnotation(EPermissionMethod.class);
+		        	System.out.println(permiss.name()+"=="+permiss.intro());
+		        }
+		        */
+		        
 				return true;
 			}
 		}

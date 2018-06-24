@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8">
+		
+		<#include "/include.v2.html"/>
+		<#include "/FreemarkerMacro.html"/>
+		
+		
+		
+		<script type="text/javascript">
+			var bootstrap_table_url = 'haiCustomerListJson';
+			var businessName = null;
+			var query_parames = {
+                businessName : businessName
+			};
+			var columns =  [
+				{
+				    field: 'businessCode',
+				    title: '简码'
+				},{
+				    field: 'businessName',
+				    title: '客户名称'
+				},{
+				    field: 'businessTypeName',
+				    title: '客户类型'
+				},
+		        {
+					field: 'businessId',
+		            title: '操作',
+					align:"center",
+			        formatter:function(value,row,index){
+			        	var opt = "";
+			        	
+			        	<@permission url="haiCustomerEditDetail">
+			            opt += "<a href ='javascript:;' onclick='haiCustomerEditDetail("+value+");'  class='glyphicon glyphicon-edit'></a>";
+			            </@permission>
+			            
+			            <@permission url="haiCustomerDelete">
+			            opt += "&nbsp;&nbsp;<a href ='javascript:;' onclick='haiCustomerDelete("+value+");' class='glyphicon glyphicon-trash'></a>";
+			            </@permission>
+			            
+		            	return opt;
+			        }
+		        }
+        	];
+			var responseHandler = function(res){//返回数据整合
+				if(res.map.listType != null){
+					var businessTypeList = res.map.listType ;
+		        	var businessTypeObj = {};
+		        	for(var i = 0 ; i < businessTypeList.length ; i ++){
+		        		businessTypeObj[businessTypeList[i].businessTypeId] = businessTypeList[i].businessTypeName;
+		        	}
+		        	var rows = res.rows;
+		        	for(var i = 0 ; i < rows.length ; i++){
+		        		rows[i].businessTypeName = businessTypeObj[rows[i].businessTypeId];
+		        	}
+				}
+				
+				return res;
+			}
+		</script>
+		<script type="text/javascript" src="/js/e_bootstrap_table.js"></script>
+    	<script type="text/javascript" src="/js/admin/customer/customerView.js" ></script> 
+		<title>往来单位信息</title>
+		
+	</head>
+	<body>
+		<div class="container-fluid" id="wrapper" tabindex="-1">
+			
+			<dl class="enav">
+				<dt>当前位置:</dt>
+				<dd>总系统</dd>
+				<dd>往来单位信息</dd>
+				<dd class="fr">快捷键提示</dd>
+			</dl>
+			
+			<div class="ctr form-inline">
+				  <div class="form-group">
+				    <label >搜索信息</label>
+				    <input id="key_businessName" name="key_businessName" class="form-control" >
+				  </div>
+				  				  
+				  
+				  <button id="haiCustomerSearch" type="button" class="btn btn-primary glyphicon glyphicon-search">查询</button>
+				  
+				  <@permission url="haiCustomerAddDetail">
+				  <button id="haiCustomerAddDetail" type="button" class="btn btn-info glyphicon glyphicon-plus fr">新增</button>
+				  </@permission>
+			</div>
+			
+			<div class="elist">
+				<table class="table table-striped table-bordered table-hover" id="bsTable"></table> 
+			</div>
+			
+		</div>
+
+
+
+<div id="haiCustomerModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" >
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">往来单位信息</h4>
+      </div>
+      <div class="modal-body">
+        <form id="haiCustomerForm" name="haiCustomerForm" class="form-horizontal" action="add" method="post">
+        
+        <input type="hidden" class="form-control" id="businessId" name="businessId" value="" >
+
+
+
+
+<div class="form-group">
+<label class="col-sm-2 control-label">企业名称</label>
+<div class="col-sm-4">
+	<input type="text" class="form-control" id="businessName" name="businessName" value="" placeholder="">
+</div>
+
+<label class="col-sm-2 control-label">简码</label>
+<div class="col-sm-4">
+	<input type="text" class="form-control" id="businessCode" name="businessCode" value="" placeholder="">
+</div>
+</div>
+
+
+<div class="form-group">
+<label class="col-sm-2 control-label">客户类别</label>
+<div class="col-sm-4">
+	<@treeSelectAjaxPicker id="" value="" defaultValue="0" defaultText="--选择类别--" url=""/>
+</div>
+
+<label class="col-sm-2 control-label">销售人员</label>
+<div class="col-sm-4">
+	<input type="text" class="form-control" id="linkman" name="linkman" value="" placeholder="">
+</div>
+</div>
+
+
+<div class="form-group" style="padding:0 10px;">
+	<table class="table table-striped table-bordered table-hover" id="bsLinkManTable"></table>  
+	<button id="addRow" type="button">新增联系人</button>
+</div>
+
+
+<div class="form-group">
+<div class="col-sm-12">
+	<@commonTextarea id="remark" value="" placeholder="请输入备注" />
+</div>
+</div>
+
+
+
+        
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button id="haiCustomerSaveSubmit" type="button" class="btn btn-primary">保存</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+<script type="text/javascript">
+	var eData = {};
+	var action = "add";
+	var businessId = 0;
+	$(function(){
+				
+		//初始化表格  
+	    $('#bsLinkManTable').bootstrapTable({  
+	    	
+	    	contentType: "application/x-www-form-urlencoded",
+	        dataType: "json",
+	        sortable: false,//是否启用排序
+	        sidePagination: "server", //服务端处理分页
+	        method: 'post',
+	        url:"haiBusinessLinkManJson",  
+	        editable:true,//开启编辑模式  
+	        clickToSelect: true,  
+	        cache: false,  
+	        showToggle:false, //显示切换按钮来切换表/卡片视图。  
+	        showPaginationSwitch:false, //显示分页切换按钮  
+	        pagination: false,  
+	        pageList: [10,25,50,100],  
+	        pageSize:10,  
+	        pageNumber:1,  
+	        uniqueId: 'index', //将index列设为唯一索引  
+	        //striped: false,  
+	        search: false,  
+	        showRefresh: false,  
+	        minimumCountColumns: 2,  
+	        smartDisplay:true, 
+	        queryParams:function(params){
+	        	return {action:action,businessId:businessId};
+	        },	    
+	        columns: [  
+	            [  
+	                {field:"linkman",title:"联系人姓名",align:"center",editable:{}},  
+	                {field:"phone",title:"电话号码",align:"left",editable:{}},
+	                {field:"tel",title:"公司电话",align:"center",editable:{}},
+	                {field:"weixin",title:"微信",align:"center",editable:{}}
+	            ]  
+	        ]  ,onEditableHidden: function(field, row, $el, reason) { // 当编辑状态被隐藏时触发
+	            if(reason === 'save') {
+	                var $td = $el.closest('tr').children();
+	                $td.eq(-1).html((row.price*row.number).toFixed(2));
+	                $el.closest('tr').next().find('.editable').editable('show'); //编辑状态向下一行移动
+	            } else if(reason === 'nochange') {
+	                $el.closest('tr').next().find('.editable').editable('show');
+	            }
+	        },
+	        onEditableSave: function (field, row, oldValue, $el) {
+	              $table = $('#reportTable1').bootstrapTable({});
+	              $table.bootstrapTable('updateRow', {index: row.rowId, row: row});
+	        }
+	    
+	    });
+	  
+	    /** 
+	     * add a new row 
+	     */  
+	    $('#addRow').click(function(){	    
+			var eData = $('#bsLinkManTable').bootstrapTable('getData');
+			
+		    var params = {index:eData.length, row:{"businessId":0,"linkman":"","phone":"","tel":"","weixin":""} };
+		    
+		    $('#bsLinkManTable').bootstrapTable('insertRow', params);
+		    
+	    }); 
+	    
+	    
+	});
+	
+	
+</script>
+
+	</body>
+</html>

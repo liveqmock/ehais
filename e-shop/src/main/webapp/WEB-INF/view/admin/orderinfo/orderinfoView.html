@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8">
+		
+		<#include "/include.v2.html"/>
+		<#include "/FreemarkerMacro.html"/>
+		
+		
+		
+		<script type="text/javascript">
+			var bootstrap_table_url = 'haiOrderInfoListJson';
+			var orderName = null;
+			var query_parames = {
+                orderName : orderName
+			};
+			var columns =  [
+				
+		        {
+					field: 'orderId',
+		            title: '操作',
+					align:"center",
+			        formatter:function(value,row,index){
+			        	var opt = "";
+			        	
+			        	<@permission url="haiOrderInfoEditDetail">
+			            opt += "<a href ='javascript:;' onclick='haiOrderInfoEditDetail("+value+");'  class='glyphicon glyphicon-edit'></a>";
+			            </@permission>
+			            
+			            <@permission url="haiOrderInfoDelete">
+			            opt += "&nbsp;&nbsp;<a href ='javascript:;' onclick='haiOrderInfoDelete("+value+");' class='glyphicon glyphicon-trash'></a>";
+			            </@permission>
+			            
+		            	return opt;
+			        }
+		        }
+        	];
+		</script>
+		<script type="text/javascript" src="/js/e_bootstrap_table.js"></script>
+    	<script type="text/javascript" src="/js/admin/orderinfo/orderinfoView.js" ></script> 
+		<title>订单信息</title>
+		
+	</head>
+	<body>
+		<div class="container-fluid" id="wrapper" tabindex="-1">
+			
+			<dl class="enav">
+				<dt>当前位置:</dt>
+				<dd>总系统</dd>
+				<dd>订单信息</dd>
+				<dd class="fr">快捷键提示</dd>
+			</dl>
+			
+			<div class="ctr form-inline">
+				  <div class="form-group">
+				    <label >搜索信息</label>
+				    <input id="key_orderName" name="key_orderName" class="form-control" >
+				  </div>
+				  				  
+				  
+				  <button id="haiOrderInfoSearch" type="button" class="btn btn-primary glyphicon glyphicon-search">查询</button>
+				  
+				  <@permission url="haiOrderInfoAddDetail">
+				  <button id="haiOrderInfoAddDetail" type="button" class="btn btn-info glyphicon glyphicon-plus fr">新增</button>
+				  </@permission>
+			</div>
+			
+			<div class="elist">
+				<table class="table table-striped table-bordered table-hover" id="bsTable"></table> 
+			</div>
+			
+		</div>
+
+
+
+<div id="haiOrderInfoModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" >
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">订单信息</h4>
+      </div>
+      <div class="modal-body">
+        <form id="haiOrderInfoForm" name="haiOrderInfoForm" class="form-horizontal" action="add" method="post">
+        
+        <input type="hidden" class="form-control" id="orderId" name="orderId" value="" >
+<div class="form-group">
+<label class="col-sm-2 control-label">order_sn</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="orderSn" name="orderSn" value="" placeholder="" data-rule-required="true" data-msg-required="请输入order_sn" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">user_id</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="userId" name="userId" value="" placeholder="" data-rule-required="true" data-msg-required="请输入user_id" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">order_status</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="orderStatus" name="orderStatus" value="" placeholder="" data-rule-required="true" data-msg-required="请输入order_status" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">shipping_status</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="shippingStatus" name="shippingStatus" value="" placeholder="" data-rule-required="true" data-msg-required="请输入shipping_status" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">pay_status</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="payStatus" name="payStatus" value="" placeholder="" data-rule-required="true" data-msg-required="请输入pay_status" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">consignee</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="consignee" name="consignee" value="" placeholder="" data-rule-required="true" data-msg-required="请输入consignee" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">country</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="country" name="country" value="" placeholder="" data-rule-required="true" data-msg-required="请输入country" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">province</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="province" name="province" value="" placeholder="" data-rule-required="true" data-msg-required="请输入province" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">city</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="city" name="city" value="" placeholder="" data-rule-required="true" data-msg-required="请输入city" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">county</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="county" name="county" value="" placeholder="" data-rule-required="true" data-msg-required="请输入county" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">district</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="district" name="district" value="" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">street</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="street" name="street" value="" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">address</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="address" name="address" placeholder="" data-rule-required="true" data-msg-required="请输入address"></textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">zipcode</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="zipcode" name="zipcode" value="" placeholder="" data-rule-required="true" data-msg-required="请输入zipcode" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">tel</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="tel" name="tel" value="" placeholder="" data-rule-required="true" data-msg-required="请输入tel" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">mobile</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="mobile" name="mobile" value="" placeholder="" data-rule-required="true" data-msg-required="请输入mobile" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">email</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="email" name="email" value="" placeholder="" data-rule-required="true" data-msg-required="请输入email" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">best_time</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="bestTime" name="bestTime" value="" placeholder="" data-rule-required="true" data-msg-required="请输入best_time" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">sign_building</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="signBuilding" name="signBuilding" value="" placeholder="" data-rule-required="true" data-msg-required="请输入sign_building" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">postscript</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="postscript" name="postscript" placeholder="" data-rule-required="true" data-msg-required="请输入postscript"></textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">shipping_id</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="shippingId" name="shippingId" value="" placeholder="" data-rule-required="true" data-msg-required="请输入shipping_id" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">shipping_name</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="shippingName" name="shippingName" value="" placeholder="" data-rule-required="true" data-msg-required="请输入shipping_name" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">shipping_number</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="shippingNumber" name="shippingNumber" value="" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">pay_id</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="payId" name="payId" value="" placeholder="" data-rule-required="true" data-msg-required="请输入pay_id" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">pay_name</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="payName" name="payName" value="" placeholder="" data-rule-required="true" data-msg-required="请输入pay_name" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">how_oos</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="howOos" name="howOos" value="" placeholder="" data-rule-required="true" data-msg-required="请输入how_oos" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">how_surplus</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="howSurplus" name="howSurplus" value="" placeholder="" data-rule-required="true" data-msg-required="请输入how_surplus" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">pack_name</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="packName" name="packName" value="" placeholder="" data-rule-required="true" data-msg-required="请输入pack_name" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">card_name</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="cardName" name="cardName" value="" placeholder="" data-rule-required="true" data-msg-required="请输入card_name" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">card_message</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="cardMessage" name="cardMessage" placeholder="" data-rule-required="true" data-msg-required="请输入card_message"></textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">inv_payee</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="invPayee" name="invPayee" value="" placeholder="" data-rule-required="true" data-msg-required="请输入inv_payee" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">inv_content</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="invContent" name="invContent" value="" placeholder="" data-rule-required="true" data-msg-required="请输入inv_content" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">goods_amount</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="goodsAmount" name="goodsAmount" value="" placeholder="" data-rule-required="true" data-msg-required="请输入goods_amount" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">shipping_fee</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="shippingFee" name="shippingFee" value="" placeholder="" data-rule-required="true" data-msg-required="请输入shipping_fee" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">insure_fee</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="insureFee" name="insureFee" value="" placeholder="" data-rule-required="true" data-msg-required="请输入insure_fee" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">pay_fee</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="payFee" name="payFee" value="" placeholder="" data-rule-required="true" data-msg-required="请输入pay_fee" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">pack_fee</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="packFee" name="packFee" value="" placeholder="" data-rule-required="true" data-msg-required="请输入pack_fee" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">card_fee</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="cardFee" name="cardFee" value="" placeholder="" data-rule-required="true" data-msg-required="请输入card_fee" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">money_paid</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="moneyPaid" name="moneyPaid" value="" placeholder="" data-rule-required="true" data-msg-required="请输入money_paid" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">surplus</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="surplus" name="surplus" value="" placeholder="" data-rule-required="true" data-msg-required="请输入surplus" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">integral</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="integral" name="integral" value="" placeholder="" data-rule-required="true" data-msg-required="请输入integral" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">integral_money</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="integralMoney" name="integralMoney" value="" placeholder="" data-rule-required="true" data-msg-required="请输入integral_money" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">bonus</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="bonus" name="bonus" value="" placeholder="" data-rule-required="true" data-msg-required="请输入bonus" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">order_amount</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="orderAmount" name="orderAmount" value="" placeholder="" data-rule-required="true" data-msg-required="请输入order_amount" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">from_ad</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="fromAd" name="fromAd" value="" placeholder="" data-rule-required="true" data-msg-required="请输入from_ad" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">referer</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="referer" name="referer" placeholder="" data-rule-required="true" data-msg-required="请输入referer"></textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">add_time</label>
+<div class="col-sm-8">
+	<@bsDatePicker id="addTime" value="" />
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">confirm_time</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="confirmTime" name="confirmTime" value="" placeholder="" data-rule-required="true" data-msg-required="请输入confirm_time" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">pay_time</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="payTime" name="payTime" value="" placeholder="" data-rule-required="true" data-msg-required="请输入pay_time" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">shipping_time</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="shippingTime" name="shippingTime" value="" placeholder="" data-rule-required="true" data-msg-required="请输入shipping_time" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">pack_id</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="packId" name="packId" value="" placeholder="" data-rule-required="true" data-msg-required="请输入pack_id" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">card_id</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="cardId" name="cardId" value="" placeholder="" data-rule-required="true" data-msg-required="请输入card_id" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">bonus_id</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="bonusId" name="bonusId" value="" placeholder="" data-rule-required="true" data-msg-required="请输入bonus_id" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">invoice_no</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="invoiceNo" name="invoiceNo" placeholder="" data-rule-required="true" data-msg-required="请输入invoice_no"></textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">extension_code</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="extensionCode" name="extensionCode" value="" placeholder="" data-rule-required="true" data-msg-required="请输入extension_code" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">extension_id</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="extensionId" name="extensionId" value="" placeholder="" data-rule-required="true" data-msg-required="请输入extension_id" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">to_buyer</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="toBuyer" name="toBuyer" placeholder="" data-rule-required="true" data-msg-required="请输入to_buyer"></textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">pay_note</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="payNote" name="payNote" placeholder="" data-rule-required="true" data-msg-required="请输入pay_note"></textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">agency_id</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="agencyId" name="agencyId" value="" placeholder="" data-rule-required="true" data-msg-required="请输入agency_id" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">inv_type</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="invType" name="invType" value="" placeholder="" data-rule-required="true" data-msg-required="请输入inv_type" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">tax</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="tax" name="tax" value="" placeholder="" data-rule-required="true" data-msg-required="请输入tax" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">is_separate</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="isSeparate" name="isSeparate" value="" placeholder="" data-rule-required="true" data-msg-required="请输入is_separate" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">parent_id</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="parentId" name="parentId" value="" placeholder="" data-rule-required="true" data-msg-required="请输入parent_id" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">discount</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="discount" name="discount" value="" placeholder="" data-rule-required="true" data-msg-required="请输入discount" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">备注</label>
+<div class="col-sm-8">
+	<@ueditorPicker id="remark" value="" />
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">is_void</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="isVoid" name="isVoid" value="" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">订单来源【微信】</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="orderSource" name="orderSource" value="" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">goods_desc</label>
+<div class="col-sm-8">
+	<@ueditorPicker id="goodsDesc" value="" />
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">classify</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="classify" name="classify" value="" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">sid</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="sid" name="sid" value="" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">是否有评论</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="hasForum" name="hasForum" value="" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">每天流水号</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="daySerialNumber" name="daySerialNumber" value="" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">用户领取优惠券ID</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="couponsUserId" name="couponsUserId" value="" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">优惠券ID</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="couponsId" name="couponsId" value="" placeholder=""  >
+</div>
+</div>
+
+
+        
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button id="haiOrderInfoSaveSubmit" type="button" class="btn btn-primary">保存</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+<script type="text/javascript">
+	var eData = {};
+		
+	$(function(){
+				
+
+	});
+	
+	
+</script>
+
+	</body>
+</html>

@@ -5,6 +5,14 @@ import java.util.List;
 
 import org.ehais.model.TreeModel;
 
+/**
+ * 	TreeUtil treeUtil = new TreeUtil();
+	treeUtil.setTreeList(tree);
+	treeUtil.getTree(0);			
+	treeUtil.getTreeNewList()
+ * @author Administrator
+ *
+ */
 public class TreeUtil {
 
 	private List<TreeModel> treeList;
