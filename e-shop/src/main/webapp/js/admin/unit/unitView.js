@@ -18,6 +18,8 @@ $(function(){
 
 	
 	$("#unitName").setPinyin({"code":"unitCode"});
+	
+	validform = $("#haiUnitForm").validate({rules:{},messages:{}});
 });
 
 function haiUnitAddDetail(){

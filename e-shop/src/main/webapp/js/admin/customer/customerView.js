@@ -18,6 +18,8 @@ $(function(){
 
 	//设置自动简码
 	$("#businessName").setPinyin({"code":"businessCode"});
+	
+	validform = $("#haiCustomerForm").validate({rules:{},messages:{}});
 });
 
 function haiCustomerAddDetail(){

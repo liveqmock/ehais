@@ -18,6 +18,8 @@ $(function(){
 
 	//设置自动简码
 	$("#catName").setPinyin({"code":"catCode"});
+	
+	validform = $("#haiCategoryForm").validate({rules:{},messages:{}});
 });
 
 function haiCategoryAddDetail(){

@@ -18,6 +18,8 @@ $(function(){
 
 	//设置自动简码
 	$("#propertyName").setPinyin({"code":"propertyCode"});
+	
+	validform = $("#haiPropertyForm").validate({rules:{},messages:{}});
 });
 
 function haiPropertyAddDetail(){

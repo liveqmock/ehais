@@ -18,6 +18,9 @@ $(function(){
 
 	//设置自动简码
 	$("#accountingName").setPinyin({"code":"accountingCode"});
+	
+	validform = $("#haiAccountingForm").validate({rules:{},messages:{}});
+	
 });
 
 function haiAccountingAddDetail(){

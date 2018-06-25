@@ -16,6 +16,15 @@ public class EIDCodeNameModel implements Serializable {
 	private String name;
 	private Integer store_id;
 	
+	
+	public EIDCodeNameModel(String id, String code, String name, Integer store_id) {
+		super();
+		this.id = id;
+		this.code = code;
+		this.name = name;
+		this.store_id = store_id;
+	}
+	
 	public String getId() {
 		return id;
 	}

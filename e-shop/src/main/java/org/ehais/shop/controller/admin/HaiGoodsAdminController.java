@@ -4,21 +4,28 @@ package org.ehais.shop.controller.admin;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
+
+import org.ehais.annotation.EPermissionController;
+import org.ehais.annotation.EPermissionMethod;
+import org.ehais.annotation.EPermissionModuleGroup;
+import org.ehais.controller.CommonController;
 import org.ehais.epublic.validator.EInsertValidator;
 import org.ehais.epublic.validator.EUniqueValidator;
 import org.ehais.epublic.validator.EUpdateValidator;
-import org.ehais.annotation.EPermissionController;
-import org.ehais.annotation.EPermissionMethod;
-import org.ehais.controller.CommonController;
 import org.ehais.protocol.PermissionProtocol;
+import org.ehais.shop.model.HaiGoods;
+import org.ehais.shop.model.HaiGoodsAttr;
+import org.ehais.shop.model.HaiGoodsWithBLOBs;
+import org.ehais.shop.service.HaiGoodsService;
 import org.ehais.tools.EConditionObject;
+import org.ehais.tools.ReturnObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -127,7 +134,7 @@ public class  HaiGoodsAdminController extends CommonController {
 	@RequestMapping(value="/haiGoodsEditDetail",method=RequestMethod.POST)
 	public String haiGoodsEditDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
-			@RequestParam(value = "goodsId", required = true) Integer goodsId
+			@RequestParam(value = "goodsId", required = true) Long goodsId
 			) {
 		try{
 			ReturnObject<HaiGoodsWithBLOBs> rm = haiGoodsService.goods_update(request,goodsId);
@@ -145,7 +152,7 @@ public class  HaiGoodsAdminController extends CommonController {
 	@RequestMapping(value="/haiGoodsEditDetail",method=RequestMethod.GET)
 	public String haiGoodsEditDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
-			@RequestParam(value = "goodsId", required = true) Integer goodsId
+			@RequestParam(value = "goodsId", required = true) Long goodsId
 			) {
 		try{
 			ReturnObject<HaiGoodsWithBLOBs> rm = haiGoodsService.goods_update(request,goodsId);
@@ -186,7 +193,7 @@ public class  HaiGoodsAdminController extends CommonController {
 	@RequestMapping(value="/haiGoodsDelete",method=RequestMethod.POST,produces={"application/json;charset=UTF-8"})
 	public String haiGoodsDelete(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
-			@RequestParam(value = "goodsId", required = true) Integer goodsId
+			@RequestParam(value = "goodsId", required = true) Long goodsId
 			) {
 		try{
 			return this.writeJson(haiGoodsService.goods_delete(request, goodsId));

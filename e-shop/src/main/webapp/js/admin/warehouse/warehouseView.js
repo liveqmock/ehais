@@ -18,6 +18,8 @@ $(function(){
 
 	//设置自动简码
 	$("#warehouseName").setPinyin({"code":"warehouseCode"});
+	
+	validform = $("#haiWarehouseForm").validate({rules:{},messages:{}});
 });
 
 function haiWarehouseAddDetail(){

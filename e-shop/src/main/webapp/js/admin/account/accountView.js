@@ -20,6 +20,7 @@ $(function(){
 	//设置自动简码
 	$("#accountName").setPinyin({"code":"accountCode"});
 	
+	validform = $("#haiAccountForm").validate({rules:{},messages:{}});
 });
 
 function haiAccountAddDetail(){

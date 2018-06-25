@@ -18,6 +18,8 @@ $(function(){
 
 	//设置自动简码
 	$("#businessTypeName").setPinyin({"code":"businessTypeCode"});
+	
+	validform = $("#haiSupplierTypeForm").validate({rules:{},messages:{}});
 });
 
 function haiSupplierTypeAddDetail(){

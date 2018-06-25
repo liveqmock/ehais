@@ -18,6 +18,8 @@ $(function(){
 
 	//设置自动简码
 	$("#labourName").setPinyin({"code":"labourCode"});
+	
+	validform = $("#haiLabourForm").validate({rules:{},messages:{}});
 });
 
 function haiLabourAddDetail(){

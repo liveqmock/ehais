@@ -18,6 +18,8 @@ $(function(){
 
 	//设置自动简码
 	$("#expensesName").setPinyin({"code":"expensesCode"});
+	
+	validform = $("#haiExpensesForm").validate({rules:{},messages:{}});
 });
 
 function haiExpensesAddDetail(){

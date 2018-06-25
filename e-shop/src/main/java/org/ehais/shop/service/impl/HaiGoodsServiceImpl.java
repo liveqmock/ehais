@@ -1,20 +1,29 @@
 package org.ehais.shop.service.impl;
 
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
 import org.ehais.model.BootStrapModel;
+import org.ehais.service.impl.CommonServiceImpl;
+import org.ehais.shop.mapper.HaiGoodsAttrMapper;
+import org.ehais.shop.mapper.HaiGoodsMapper;
+import org.ehais.shop.model.HaiGoods;
+import org.ehais.shop.model.HaiGoodsAttr;
+import org.ehais.shop.model.HaiGoodsAttrExample;
+import org.ehais.shop.model.HaiGoodsExample;
+import org.ehais.shop.model.HaiGoodsWithBLOBs;
+import org.ehais.shop.service.HaiGoodsService;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.ehais.service.impl.CommonServiceImpl;
 
 //model里面对应的日期添加的 @DateTimeFormat( pattern = "yyyy-MM-dd" )
 
@@ -101,7 +110,7 @@ public class HaiGoodsServiceImpl  extends CommonServiceImpl implements HaiGoodsS
 		example.setLimitStart(condition.getStart());
 		example.setLimitEnd(condition.getRows());
 		example.setOrderByClause("last_update_date desc");
-		if(goodsAttrId > 0 ) c.andGoodsAttrIdEqualTo(goodsAttrId);
+//		if(goodsAttrId > 0 ) c.andGoodsAttrIdEqualTo(goodsAttrId);
 		if(StringUtils.isNotEmpty(goodsName))c.andGoodsNameLike("%"+goodsName+"%");
 		List<HaiGoods> list = haiGoodsMapper.selectByExample(example);
 		long total = haiGoodsMapper.countByExample(example);
@@ -176,7 +185,7 @@ public class HaiGoodsServiceImpl  extends CommonServiceImpl implements HaiGoodsS
 		return rm;
 	}
 
-	public ReturnObject<HaiGoodsWithBLOBs> goods_update(HttpServletRequest request,Integer goodsId)
+	public ReturnObject<HaiGoodsWithBLOBs> goods_update(HttpServletRequest request,Long goodsId)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiGoodsWithBLOBs> rm = new ReturnObject<HaiGoodsWithBLOBs>();
@@ -196,7 +205,7 @@ public class HaiGoodsServiceImpl  extends CommonServiceImpl implements HaiGoodsS
 		}
 		HaiGoodsWithBLOBs model = haiGoodsMapper.selectByPrimaryKey(goodsId);
 **/
-		HaiGoodsWithBLOBs model = haiGoodsMapper.get_hai_goods_info(goodsId,store_id);
+		HaiGoodsWithBLOBs model = haiGoodsMapper.get_hai_goods_info_v2(goodsId,store_id);
 		if(model == null){
 			rm.setMsg("记录不存在");
 			return rm;
@@ -284,10 +293,10 @@ bean.setTbIid(model.getTbIid());
 bean.setTbData(model.getTbData());
 bean.setIsExport(model.getIsExport());
 bean.setUserId(model.getUserId());
-bean.setExchangeRate(model.getExchangeRate());
+bean.setExchangerate(model.getExchangerate());
 bean.setProfit(model.getProfit());
 bean.setShipping(model.getShipping());
-bean.setProfitType(model.getProfitType());
+bean.setProfittype(model.getProfittype());
 bean.setCurrency(model.getCurrency());
 bean.setGoodsUrl(model.getGoodsUrl());
 bean.setTabbox(model.getTabbox());
@@ -310,7 +319,7 @@ bean.setClassify(model.getClassify());
 		return rm;
 	}
 
-	public ReturnObject<HaiGoodsWithBLOBs> goods_info(HttpServletRequest request,Integer goodsId)
+	public ReturnObject<HaiGoodsWithBLOBs> goods_info(HttpServletRequest request,Long goodsId)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiGoodsWithBLOBs> rm = new ReturnObject<HaiGoodsWithBLOBs>();
@@ -330,7 +339,7 @@ bean.setClassify(model.getClassify());
 		HaiGoodsWithBLOBs model = list.get(0);
 		**/
 
-		HaiGoodsWithBLOBs model = haiGoodsMapper.get_hai_goods_info(goodsId,store_id);
+		HaiGoodsWithBLOBs model = haiGoodsMapper.get_hai_goods_info_v2(goodsId,store_id);
 		if(model == null){
 			rm.setMsg("记录不存在");
 			return rm;
@@ -347,7 +356,7 @@ bean.setClassify(model.getClassify());
 	}
 
 
-	public ReturnObject<HaiGoodsWithBLOBs> goods_find(HttpServletRequest request,Integer goodsId)
+	public ReturnObject<HaiGoodsWithBLOBs> goods_find(HttpServletRequest request,Long goodsId)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiGoodsWithBLOBs> rm = new ReturnObject<HaiGoodsWithBLOBs>();
@@ -368,7 +377,7 @@ bean.setClassify(model.getClassify());
 		HaiGoodsWithBLOBs model = list.get(0);
 		**/
 
-		HaiGoodsWithBLOBs model = haiGoodsMapper.get_hai_goods_info(goodsId,store_id);
+		HaiGoodsWithBLOBs model = haiGoodsMapper.get_hai_goods_info_v2(goodsId,store_id);
 		if(model == null){
 			rm.setMsg("记录不存在");
 			return rm;
@@ -384,7 +393,7 @@ bean.setClassify(model.getClassify());
 		return rm;
 	}
 
-	public ReturnObject<HaiGoods> goods_delete(HttpServletRequest request,Integer goodsId)
+	public ReturnObject<HaiGoods> goods_delete(HttpServletRequest request,Long goodsId)
 			throws Exception {
 		// TODO Auto-generated method stub
 		ReturnObject<HaiGoods> rm = new ReturnObject<HaiGoods>();
@@ -430,7 +439,7 @@ bean.setClassify(model.getClassify());
 		
 		HaiGoodsAttrExample example = new HaiGoodsAttrExample();
 		HaiGoodsAttrExample.Criteria c = example.createCriteria();
-		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+//		c.andGoodsIdEqualTo(value)
 		List<HaiGoodsAttr> list = haiGoodsAttrMapper.selectByExample(example);
 		
 		return list;
@@ -456,10 +465,10 @@ bean.setClassify(model.getClassify());
 		
 		HaiGoodsAttrExample example = new HaiGoodsAttrExample();
 		HaiGoodsAttrExample.Criteria c = example.createCriteria();
-		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+//		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
 		example.setLimitStart(condition.getStart());
 		example.setLimitEnd(condition.getRows());
-		if(StringUtils.isNotEmpty(attrValue ))c.andAttrValue Like("%"+attrValue +"%");
+//		if(StringUtils.isNotEmpty(attrValue ))c.andAttrValue Like("%"+attrValue +"%");
 		List<HaiGoodsAttr> list = haiGoodsAttrMapper.selectByExample(example);
 		long total = haiGoodsAttrMapper.countByExample(example);
 		rm.setCode(1);
@@ -495,12 +504,12 @@ bean.setClassify(model.getClassify());
 		rm.setCode(0);
 
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
-		model.setStoreId(store_id);
+//		model.setStoreId(store_id);
 
 		HaiGoodsAttrExample example = new HaiGoodsAttrExample();
 		HaiGoodsAttrExample.Criteria c = example.createCriteria();
-		c.andAttrValue EqualTo(model.getAttrValue ());
-		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+		c.andAttrValueEqualTo(model.getAttrValue ());
+//		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
 		long count = haiGoodsAttrMapper.countByExample(example);
 		if(count > 0){
 			rm.setMsg("存在相同的记录");
@@ -522,8 +531,8 @@ bean.setClassify(model.getClassify());
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiGoodsAttrExample example = new HaiGoodsAttrExample();
 		HaiGoodsAttrExample.Criteria c = example.createCriteria();
-		c.andGoodsAttrIdEqualTo(goodsAttrId);
-		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+//		c.andGoodsAttrIdEqualTo(goodsAttrId);
+//		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
 		List<HaiGoodsAttr> list = haiGoodsAttrMapper.selectByExample(example);
 		if(list == null || list.size() == 0){
 			rm.setMsg("记录不存在");
@@ -552,9 +561,9 @@ bean.setClassify(model.getClassify());
 		HaiGoodsAttrExample example = new HaiGoodsAttrExample();
 		HaiGoodsAttrExample.Criteria c = example.createCriteria();
 		
-		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+//		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
 		c.andGoodsAttrIdEqualTo(model.getGoodsAttrId());
-		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+//		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
 
 		long count = haiGoodsAttrMapper.countByExample(example);
 		if(count == 0){
@@ -586,8 +595,8 @@ bean.setAttrPic(model.getAttrPic());
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiGoodsAttrExample example = new HaiGoodsAttrExample();
 		HaiGoodsAttrExample.Criteria c = example.createCriteria();
-		c.andGoodsAttrIdEqualTo(goodsAttrId);
-		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+//		c.andGoodsAttrIdEqualTo(goodsAttrId);
+//		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
 		List<HaiGoodsAttr> list = haiGoodsAttrMapper.selectByExample(example);
 		if(list == null || list.size() == 0){
 			rm.setMsg("记录不存在");
@@ -609,8 +618,8 @@ bean.setAttrPic(model.getAttrPic());
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiGoodsAttrExample example = new HaiGoodsAttrExample();
 		HaiGoodsAttrExample.Criteria c = example.createCriteria();
-		c.andGoodsAttrIdEqualTo(goodsAttrId);
-		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+//		c.andGoodsAttrIdEqualTo(goodsAttrId);
+//		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
 		List<HaiGoodsAttr> list = haiGoodsAttrMapper.selectByExample(example);
 		if(list == null || list.size() == 0){
 			rm.setMsg("记录不存在");
@@ -631,8 +640,8 @@ bean.setAttrPic(model.getAttrPic());
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		HaiGoodsAttrExample example = new HaiGoodsAttrExample();
 		HaiGoodsAttrExample.Criteria c = example.createCriteria();
-		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
-		c.andGoodsAttrIdEqualTo(goodsAttrId);
+//		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+//		c.andGoodsAttrIdEqualTo(goodsAttrId);
 
 		long count = haiGoodsAttrMapper.countByExample(example);
 		if(count == 0){
@@ -643,7 +652,7 @@ bean.setAttrPic(model.getAttrPic());
 
 		HaiGoodsExample exampleCheck = new HaiGoodsExample();
 		HaiGoodsExample.Criteria cCheck = exampleCheck.createCriteria();
-		cCheck.andGoodsAttrIdEqualTo(goodsAttrId);
+//		cCheck.andGoodsAttrIdEqualTo(goodsAttrId);
 		exampleCheck.CriteriaStoreId(cCheck, this.storeIdCriteriaObject(request));
 		long countCheck = haiGoodsMapper.countByExample(exampleCheck);
 		if(countCheck > 0){

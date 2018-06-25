@@ -18,6 +18,8 @@ $(function(){
 
 	//设置自动简码
 	$("#incomeName").setPinyin({"code":"incomeCode"});
+	
+	validform = $("#haiIncomeForm").validate({rules:{},messages:{}});
 });
 
 function haiIncomeAddDetail(){

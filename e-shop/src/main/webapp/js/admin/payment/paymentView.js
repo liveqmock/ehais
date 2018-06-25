@@ -18,6 +18,7 @@ $(function(){
 
 	//设置自动简码
 	$("#payName").setPinyin({"code":"payCode"});
+	validform = $("#haiPaymentForm").validate({rules:{},messages:{}});
 });
 
 function haiPaymentAddDetail(){
