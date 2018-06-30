@@ -184,6 +184,7 @@
 			
 		},ajax_function:function(){//请求数据
 			var eThat = this;
+			if($("#name-"+eThat.id).val() == null || $.trim($("#name-"+eThat.id).val()) == "")return ;
 			$.ajax({
 				url:this.options.url,
 				type:this.options.type,
