@@ -7,16 +7,16 @@ html,body,.mylayout{
 	overflow: hidden;
 }
 .mylayout{position: relative;}
-.mylayout > .north {position: absolute;top: 0;left: 0;right: 0;
+.mylayout > .north {position: fixed;top: 0;left: 0;right: 0;
 	width: 100%;height: 50px;float: left;background: #438eb9;
 }
-.mylayout > .south {position: absolute;bottom: 0;left: 0;right: 0;
+.mylayout > .south {position: fixed;bottom: 0;left: 0;right: 0;
 	width: 100%;height: 20px;float: left;text-align: center;border-top: 1px solid #e5e5e5;
 }
-.mylayout > .west {position: absolute;
+.mylayout > .west {position: fixed;
 	top: 50px;left: 0;bottom: 20px;width: 200px;float: left;display: inline;border-right: 1px solid #e5e5e5;overflow-y: scroll;
 }
-.mylayout > .center {position: absolute;float: left;display: inline;
+.mylayout > .center {position: fixed;float: left;display: inline;
 	top: 50px;left: 200px;bottom: 20px;right: 0;
 }
 .mylayout .list-group-item:first-child{border-top-left-radius:0;border-top-right-radius:0;}
