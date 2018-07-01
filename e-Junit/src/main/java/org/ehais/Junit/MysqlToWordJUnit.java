@@ -35,7 +35,7 @@ public class MysqlToWordJUnit {
     
     
 	public static void main(String[] args) throws Exception {
-		String[] field_arr = {"hai_accounting","hai_account","hai_ad","hai_ad_position","hai_business_linkman","hai_business_type","hai_business","hai_category","hai_employee","hai_expenses","hai_goods","hai_goods_attr","hai_income","hai_labour","hai_order_goods","hai_order_info","hai_payment","hai_property","hai_purchase","hai_sectors","hai_store_setting","hai_unit","hai_user_address","hai_warehouse"};
+		String[] field_arr = {"hai_shop_config","hai_accounting","hai_account","hai_ad","hai_ad_position","hai_business_linkman","hai_business_type","hai_business","hai_category","hai_employee","hai_expenses","hai_goods","hai_goods_attr","hai_income","hai_labour","hai_order_goods","hai_order_info","hai_payment","hai_property","hai_purchase","hai_sectors","hai_store_setting","hai_unit","hai_user_address","hai_warehouse"};
 		
 		// Blank Document
 		XWPFDocument document = new XWPFDocument();
@@ -50,7 +50,7 @@ public class MysqlToWordJUnit {
 		titleParagraphRun.setColor("000000");
 		titleParagraphRun.setFontSize(20);
 		
-		
+		document.createParagraph();
 		
 		
 		String all_table_sql = "select * from information_schema.tables where table_schema='"+db+"' and table_type='base table';";
@@ -65,7 +65,7 @@ public class MysqlToWordJUnit {
         while(ret_all_table.next()){
         	int index = Arrays.binarySearch(field_arr,ret_all_table.getString("TABLE_NAME"));
         	if(index < 0) continue;
-        	
+        	document.createParagraph();
         	XWPFParagraph firstParagraph = document.createParagraph();
     		XWPFRun run = firstParagraph.createRun();
     		run.setText("表名："+ret_all_table.getString("TABLE_NAME")+"【"+ret_all_table.getString("TABLE_COMMENT")+"】");
