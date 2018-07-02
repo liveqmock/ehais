@@ -120,6 +120,11 @@
 		</mvc:interceptor>
 		
 		<mvc:interceptor>
+			<mvc:mapping path="/weixinapp/**"/>
+			<ref bean="openApiInterceptor"/>
+		</mvc:interceptor>
+		
+		<mvc:interceptor>
 			<mvc:mapping path="/m/**"/>
 			<ref bean="h5Interceptor"/>
 		</mvc:interceptor>
