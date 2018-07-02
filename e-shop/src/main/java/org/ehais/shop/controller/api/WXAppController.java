@@ -1,5 +1,6 @@
 package org.ehais.shop.controller.api;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +21,7 @@ import org.ehais.shop.model.HaiAd;
 import org.ehais.shop.model.HaiAdExample;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
+import org.ehais.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -48,7 +50,7 @@ public class WXAppController extends CommonController{
 			@RequestParam(value = "parent_id", required = true) Integer parent_id){
 		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
 		try {
-			Map<String,Object> map = new HashedMap<String,Object>();
+			Map<String,Object> map = new HashMap<String,Object>();
 			
 			EHaiArticleCatExample expCat = new EHaiArticleCatExample();
 			expCat.createCriteria().andStoreIdEqualTo(store_id).andParentIdEqualTo(parent_id).andModuleEqualTo(EArticleModuleEnum.ARTICLE);
@@ -89,7 +91,6 @@ public class WXAppController extends CommonController{
 			@ModelAttribute EConditionObject condition){
 		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
 		try {
-			System.out.println(condition.getStart()+"--"+condition.getRows());
 			EHaiArticleExample expArt = new EHaiArticleExample();
 			expArt.createCriteria().andCatIdEqualTo(catId).andStoreIdEqualTo(condition.getStore_id()).andModuleEqualTo(EArticleModuleEnum.ARTICLE);
 			expArt.setLimitStart(condition.getStart());
@@ -112,12 +113,26 @@ public class WXAppController extends CommonController{
 			@RequestParam(value = "articleId", required = true) Integer articleId){
 		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
 		try {
+			Map<String,Object> map = new HashMap<String,Object>();
 			EHaiArticleExample expArt = new EHaiArticleExample();
 			expArt.createCriteria().andArticleIdEqualTo(articleId).andStoreIdEqualTo(store_id).andModuleEqualTo(EArticleModuleEnum.ARTICLE);
 			List<EHaiArticle> articleList = eHaiArticleMapper.selectByExampleWithBLOBs(expArt);
 			if(articleList.size()>0) {
-				rm.setModel(articleList.get(0));
+				
+				map.put("title", articleList.get(0).getTitle());
+				map.put("content", articleList.get(0).getContent());
+				map.put("date", articleList.get(0).getArticleDate()!=null ? DateUtil.formatDate(articleList.get(0).getArticleDate(), DateUtil.FORMATSTR_3):"");
+				
+				Integer catId = articleList.get(0).getCatId();
+				EHaiArticleCatExample expCat = new EHaiArticleCatExample();
+				expCat.createCriteria().andStoreIdEqualTo(store_id).andCatIdEqualTo(catId).andModuleEqualTo(EArticleModuleEnum.ARTICLE);
+				List<EHaiArticleCat> catList = eHaiArticleCatMapper.selectByExample(expCat);
+				if(catList.size() > 0) {
+					map.put("catName", catList.get(0).getCatName());
+				}
+				
 			}
+			rm.setMap(map);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
