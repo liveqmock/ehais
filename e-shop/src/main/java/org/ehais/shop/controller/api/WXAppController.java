@@ -1,5 +1,6 @@
 package org.ehais.shop.controller.api;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,7 +8,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.collections4.map.HashedMap;
 import org.ehais.controller.CommonController;
 import org.ehais.enums.EArticleModuleEnum;
 import org.ehais.epublic.mapper.EHaiArticleCatMapper;
@@ -17,8 +17,19 @@ import org.ehais.epublic.model.EHaiArticleCat;
 import org.ehais.epublic.model.EHaiArticleCatExample;
 import org.ehais.epublic.model.EHaiArticleExample;
 import org.ehais.shop.mapper.HaiAdMapper;
+import org.ehais.shop.mapper.HaiCategoryMapper;
+import org.ehais.shop.mapper.HaiGoodsAttrMapper;
+import org.ehais.shop.mapper.HaiGoodsGalleryMapper;
+import org.ehais.shop.mapper.HaiGoodsMapper;
 import org.ehais.shop.model.HaiAd;
 import org.ehais.shop.model.HaiAdExample;
+import org.ehais.shop.model.HaiCategory;
+import org.ehais.shop.model.HaiCategoryExample;
+import org.ehais.shop.model.HaiGoods;
+import org.ehais.shop.model.HaiGoodsExample;
+import org.ehais.shop.model.HaiGoodsGallery;
+import org.ehais.shop.model.HaiGoodsGalleryExample;
+import org.ehais.shop.model.HaiGoodsWithBLOBs;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
 import org.ehais.util.DateUtil;
@@ -40,11 +51,19 @@ public class WXAppController extends CommonController{
 	private EHaiArticleMapper eHaiArticleMapper;
 	@Autowired
 	private HaiAdMapper haiAdMapper;
+	@Autowired
+	private HaiCategoryMapper haiCategoryMapper;
+	@Autowired
+	private HaiGoodsMapper haiGoodsMapper;
+	@Autowired
+	private HaiGoodsGalleryMapper haiGoodsGalleryMapper;
+	@Autowired
+	private HaiGoodsAttrMapper haiGoodsAttrMapper;
 	
 	
 	@ResponseBody
-	@RequestMapping("/wxapp.v1")
-	public String wxappv1(ModelMap modelMap,
+	@RequestMapping("/wxapp.article.v1")
+	public String wxapp_article_v1(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "store_id", required = true) Integer store_id,
 			@RequestParam(value = "parent_id", required = true) Integer parent_id){
@@ -60,7 +79,7 @@ public class WXAppController extends CommonController{
 				EHaiArticleExample expArt = new EHaiArticleExample();
 				expArt.createCriteria().andCatIdEqualTo(catList.get(0).getCatId()).andStoreIdEqualTo(store_id).andModuleEqualTo(EArticleModuleEnum.ARTICLE);
 				expArt.setLimitStart(0);
-				expArt.setLimitEnd(5);
+				expArt.setLimitEnd(10);
 				List<EHaiArticle> articleList = eHaiArticleMapper.selectByExample(expArt);
 				map.put("articleList", articleList);
 			}else {
@@ -84,8 +103,8 @@ public class WXAppController extends CommonController{
 	
 	
 	@ResponseBody
-	@RequestMapping("/wxapp.article.v1")
-	public String wxapp_article_v1(ModelMap modelMap,
+	@RequestMapping("/wxapp.article.list.v1")
+	public String wxapp_article_list_v1(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "catId", required = true) Integer catId,
 			@ModelAttribute EConditionObject condition){
@@ -140,6 +159,122 @@ public class WXAppController extends CommonController{
 		}
 		return this.writeJson(rm);
 	}
+	
+	
+	
+	@ResponseBody
+	@RequestMapping("/wxapp.goods.v1")
+	public String wxapp_goods_v1(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "store_id", required = true) Integer store_id,
+			@RequestParam(value = "parent_id", required = true) Integer parent_id){
+		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
+		try {
+			Map<String,Object> map = new HashMap<String,Object>();
+			
+			HaiCategoryExample expCat = new HaiCategoryExample();
+			expCat.createCriteria().andStoreIdEqualTo(store_id).andParentIdEqualTo(parent_id);
+			List<HaiCategory> catList = haiCategoryMapper.selectByExample(expCat);
+			map.put("catList", catList);
+			
+			if(catList!=null && catList.size() > 0) {
+				HaiGoodsExample expGoods = new HaiGoodsExample();
+				expGoods.createCriteria().andCatIdEqualTo(catList.get(0).getCatId()).andStoreIdEqualTo(store_id);
+				expGoods.setLimitStart(0);
+				expGoods.setLimitEnd(10);
+				List<HaiGoods> goodsList = haiGoodsMapper.selectByExample(expGoods);
+				map.put("goodsList", goodsList);
+			}else {
+				map.put("goodsList", null);
+			}
+			
+			HaiAdExample expAd = new HaiAdExample();
+			expAd.createCriteria().andStoreIdEqualTo(store_id).andAdPicIsNotNull();
+			List<HaiAd> adList = haiAdMapper.selectByExample(expAd);
+			map.put("adList", adList);
+			
+			rm.setMap(map);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			log.error("error :", e);
+		}
+		return this.writeJson(rm);
+	}
+	
+	
+
+	@ResponseBody
+	@RequestMapping("/wxapp.goods.list.v1")
+	public String wxapp_goods_list_v1(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "catId", required = true) Integer catId,
+			@ModelAttribute EConditionObject condition){
+		ReturnObject<HaiGoods> rm = new ReturnObject<HaiGoods>();
+		try {
+			HaiGoodsExample expGoods = new HaiGoodsExample();
+			expGoods.createCriteria().andCatIdEqualTo(catId).andStoreIdEqualTo(condition.getStore_id());
+			expGoods.setLimitStart(condition.getStart());
+			expGoods.setLimitEnd(condition.getRows());
+			List<HaiGoods> goodsList = haiGoodsMapper.selectByExample(expGoods);
+			rm.setRows(goodsList);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			log.error("error :", e);
+		}
+		return this.writeJson(rm);
+	}
+	
+	
+	
+	@ResponseBody
+	@RequestMapping("/wxapp.goods.view.v1")
+	public String wxapp_goods_view_v1(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "store_id", required = true) Integer store_id,
+			@RequestParam(value = "goodsId", required = true) Long goodsId){
+		ReturnObject<HaiGoods> rm = new ReturnObject<HaiGoods>();
+		try {
+			Map<String,Object> map = new HashMap<String,Object>();
+			HaiGoodsExample expGoods = new HaiGoodsExample();
+			expGoods.createCriteria().andGoodsIdEqualTo(goodsId).andStoreIdEqualTo(store_id);
+			List<HaiGoodsWithBLOBs> goodsList = haiGoodsMapper.selectByExampleWithBLOBs(expGoods);
+			if(goodsList.size()>0) {
+				rm.setModel(goodsList.get(0));
+				map.put("goodsName", goodsList.get(0).getGoodsName());
+				map.put("shopPrice", goodsList.get(0).getShopPrice());
+				map.put("goodsDesc", goodsList.get(0).getGoodsDesc());
+				
+				Integer catId = goodsList.get(0).getCatId();
+				HaiCategoryExample expCat = new HaiCategoryExample();
+				expCat.createCriteria().andStoreIdEqualTo(store_id).andCatIdEqualTo(catId);
+				List<HaiCategory> catList = haiCategoryMapper.selectByExample(expCat);
+				if(catList.size() > 0) {
+					map.put("catName", catList.get(0).getCatName());
+				}
+				
+				
+				HaiGoodsGalleryExample gexp = new HaiGoodsGalleryExample();
+				gexp.createCriteria().andGoodsIdEqualTo(goodsList.get(0).getGoodsId());
+				List<HaiGoodsGallery> gList = haiGoodsGalleryMapper.selectByExample(gexp);
+				List<String> galleryList = new ArrayList<String>();
+				for (HaiGoodsGallery g : gList) {
+					galleryList.add(g.getThumbUrl());
+				}
+				map.put("galleryList", galleryList);
+				
+			}
+			rm.setMap(map);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			log.error("error :", e);
+		}
+		return this.writeJson(rm);
+	}
+	
 	
 	
 }
