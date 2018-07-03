@@ -4,7 +4,7 @@ var projectTempSublateModal ;
 
 
 var bsTable ;
-var begOffName = "";
+var className = "";
 
 
 
@@ -16,7 +16,7 @@ $(function(){
 
 	
 	
-    $("#btnSearch").click(function(){begOffName = $.trim($("#begOffName").val());bsTable.bootstrapTable('refresh', { query : {keySubId : keySubId , begOffName : begOffName , page : 1} });});
+    $("#btnSearch").click(function(){className = $.trim($("#className").val());bsTable.bootstrapTable('refresh', { query : {keySubId : keySubId , className : className , page : 1,startDate:$("#startDate").val(),endDate:$("#endDate").val()} });});
     
     bsTable = $('#bsTable').bootstrapTable({
     	contentType: "application/x-www-form-urlencoded",
@@ -42,7 +42,7 @@ $(function(){
                 sort: params.sort,  //排序列名  
                 sortOrder: params.order,//排位命令（desc，asc）
                 keySubId : keySubId,
-                begOffName : begOffName
+                className : className
 	        }
 	    },
         sidePagination: "server", //服务端处理分页
@@ -181,7 +181,7 @@ function getTree() {
 		        	}else{
 		        		keySubId = data.id;
 		        	}
-		        	$("#begOffName").val("");begOffName = "";
+		        	$("#className").val("");className = "";
 		        	bsTable.bootstrapTable('refresh', { query : {keySubId : keySubId , page : 1} });
 		        }
 		    });

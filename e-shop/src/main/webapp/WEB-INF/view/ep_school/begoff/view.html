@@ -6,13 +6,31 @@
 		
 		<#include "/include.html"/>
 		<#include "/FreemarkerMacro.html"/>
-		
+		<link rel="stylesheet" href="/js/bootstrap/datetimepicker/css/daterangepicker-bs3.css" />
+		<script type="text/javascript" src="/js/bootstrap/datetimepicker/js/moment.js" ></script>
+		<script type="text/javascript" src="/js/bootstrap/datetimepicker/js/daterangepicker.js" ></script>
+	
+	
 	</head>
 	<body>
 		<div class="header">
 			<div class="nav">
 				<i class="icon fa fa-home">&nbsp;</i>
 				<div class="nav0">请假信息明细列表</div>
+				<div>
+					<@bsGroupDatePicker id="statistics_date" startId="startDate" endId="endDate" startDate="${startDate}" endDate="${endDate}" />
+				</div>
+				<div>
+					<select class="control" id="className" name="className">
+						<option value="">--班级--</option>
+						<#if (className?? && className?size > 0 )>
+						<#list className as c>
+							<option value="${c}">${c}</option>
+						</#list>
+						</#if>
+					</select>
+				</div>
+				<div><button id="btnSearch" class="fa fa-search btn btn-default control">搜索</button></div>
 			</div>
 		</div>
 		<div class="body">

@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
 import org.ehais.epublic.mapper.EHaiUsersMapper;
 import org.ehais.epublic.model.EHaiUsers;
+import org.ehais.epublic.model.EHaiUsersExample;
 import org.ehais.service.impl.CommonServiceImpl;
 import org.ehais.shop.mapper.project.HaiBegOffMapper;
 import org.ehais.shop.model.project.HaiBegOff;
@@ -61,10 +62,25 @@ public class ProjectBegOffServiceImpl  extends CommonServiceImpl implements Proj
 		rm.setCode(0);
 		if(condition.getStore_id() == null)condition.setStore_id((Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID));
 		
+		List<Long> usersList = new ArrayList<Long>();
+		if(StringUtils.isNotBlank(begOffName)) {
+			EHaiUsersExample userExp = new EHaiUsersExample();
+			userExp.createCriteria().andQuestionEqualTo(begOffName).andStoreIdEqualTo(condition.getStore_id());
+			List<EHaiUsers> uList = eHaiUsersMapper.selectByExample(userExp);
+			for (EHaiUsers eHaiUsers : uList) {
+				usersList.add(eHaiUsers.getUserId());
+			}
+		}
 		
 		HaiBegOffExample example = new HaiBegOffExample();
 		HaiBegOffExample.Criteria c = example.createCriteria();
 		example.CriteriaStoreId(c, this.storeIdCriteriaObject(request));
+		
+		if(usersList.size() > 0)c.andUserIdIn(usersList);
+		
+		if(condition.getStartDate()!=null && condition.getEndDate() != null)
+			c.andCreateDateBetween(condition.getStartDate(), DateUtil.addDate(condition.getEndDate(), 1));
+		
 		example.setLimitStart(condition.getStart());
 		example.setLimitEnd(condition.getRows());
 		example.setOrderByClause("create_date desc");

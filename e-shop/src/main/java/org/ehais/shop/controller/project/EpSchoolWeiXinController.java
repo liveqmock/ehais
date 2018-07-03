@@ -1328,6 +1328,17 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 		try{
 			ReturnObject<HaiBegOff> rm = projectBegOffService.begoff_list(request);
 			modelMap.addAttribute("rm", rm);
+			
+			Date date = new Date();
+			String startDate =  DateUtil.formatDate(DateUtils.addDays(date, -30), DateUtil.FORMATSTR_3);
+			String endDate =  DateUtil.formatDate(date, DateUtil.FORMATSTR_3);
+			modelMap.addAttribute("startDate", startDate);
+			modelMap.addAttribute("endDate", endDate);
+			//统计班级
+			List<String> className = eHaiUsersMapper.distinctUsers(default_store_id, "question");
+			modelMap.addAttribute("className", className);
+			
+			
 			return "/ep_school/begoff/view";
 		}catch(Exception e){
 			e.printStackTrace();
@@ -1344,10 +1355,9 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 	public String projectBegOffListJson(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@ModelAttribute EConditionObject condition,
-			@RequestParam(value = "keySubId", required = false) Integer keySubId,
-			@RequestParam(value = "begOffName", required = false) String begOffName) {
+			@RequestParam(value = "className", required = false) String className) {
 		try{
-			ReturnObject<HaiBegOff> rm = projectBegOffService.begoff_list_json(request, condition,keySubId,begOffName);
+			ReturnObject<HaiBegOff> rm = projectBegOffService.begoff_list_json(request, condition,null,className);
 			return this.writeJson(rm);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -1370,10 +1380,6 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 			modelMap.addAttribute("endDate", endDate);
 			//统计班级
 			List<String> className = eHaiUsersMapper.distinctUsers(default_store_id, "question");
-			for (String string : className) {
-				System.out.println("string:"+string);
-			}
-			
 			modelMap.addAttribute("className", className);
 			
 			return "/ep_school/report/view";
