@@ -22,6 +22,8 @@
 
 
 <input type="hidden" class="form-control" id="brandId" name="brandId" value="${rm.model.brandId!''}" >
+<input type="hidden" class="form-control" id="brandDesc" name="brandDesc" value="Hello" >
+
 <div class="form-group">
 <label class="col-sm-2 control-label">品牌名称</label>
 <div class="col-sm-5">
@@ -37,12 +39,7 @@
 </div>
 </div>
 
-<div class="form-group">
-<label class="col-sm-2 control-label">品牌描述</label>
-<div class="col-sm-8">
-	<@ueditorPicker id="brandDesc" value="${rm.model.brandDesc!''}" />
-</div>
-</div>
+
 
 <div class="form-group">
 <label class="col-sm-2 control-label">品牌链接</label>

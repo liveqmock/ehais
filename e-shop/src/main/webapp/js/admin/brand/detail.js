@@ -13,9 +13,9 @@ function haiBrandAddSubmit(){
 	if($("#brandLogo").val() == undefined || $("#brandLogo").val().length == 0){
 		layer.msg("请输入LOGO");return ;
 	}
-	if($("#brandDesc").val() == undefined || $("#brandDesc").val().length == 0){
-		layer.msg("请输入品牌描述");return ;
-	}
+//	if($("#brandDesc").val() == undefined || $("#brandDesc").val().length == 0){
+//		layer.msg("请输入品牌描述");return ;
+//	}
 	if($("#siteUrl").val() == undefined || $("#siteUrl").val().length == 0){
 		layer.msg("请输入描述地址");return ;
 	}
