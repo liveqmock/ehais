@@ -347,6 +347,32 @@ public class WeiXinUtil {
 		return info;
 	}
 	
+	public static OpenidInfo getJsCode2SessionOpenid(String code,String weixin_appid,String weixin_appsecret) throws Exception {
+		//code从这里来https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9439cbf94f9235f0&redirect_uri=http://www.gz96833.com/test.jsp&response_type=code&scope=snsapi_base&state=123#wechat_redirect
+		OpenidInfo info = null;
+		if(StringUtil.NullOrEqual(weixin_appsecret) || StringUtil.NullOrEqual(weixin_appid) || StringUtil.NullOrEqual(code) ){
+			return null;
+		}
+		String requestUrl = WXConstants.jscode2session.replace("APPID", weixin_appid).replace("SECRET", weixin_appsecret).replace("JSCODE", code);
+		log.info("请求jscode2session.openid:"+requestUrl);
+		String request = EHttpClientUtil.methodGet(requestUrl);
+		log.info("获取jscode2session.openid"+request);
+		JSONObject jsonObject = JSONObject.fromObject(request);
+		if(null != jsonObject){
+			try {
+				info = new OpenidInfo();
+				info.setOpenid(jsonObject.getString("openid"));
+				info.setSession_key(jsonObject.getString("session_key"));
+				info.setUnionid(jsonObject.getString("unionid"));
+			} catch (Exception e) {
+				// 获取token失败
+				log.error("获取openid失败 errcode:{} errmsg:{}", jsonObject.getInt("errcode"), jsonObject.getString("errmsg"));
+			}
+		}
+		
+		return info;
+	}
+	
 	public static WeiXinUserInfo getUserInfo(String access_token,String openid) throws Exception {
 		WeiXinUserInfo userinfo = null;//new WeiXinUserInfo();
 		String requestUrl = WXConstants.get_user_info.replace("ACCESS_TOKEN", access_token).replace("OPENID", openid);

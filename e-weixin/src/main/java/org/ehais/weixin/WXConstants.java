@@ -112,6 +112,12 @@ public class WXConstants {
 	//用于企业向微信用户个人付款
 	public static String transfers = "https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers";
 	
+	
+	//小程序登录接口
+	public static String jscode2session = "https://api.weixin.qq.com/sns/jscode2session?appid=APPID&secret=SECRET&js_code=JSCODE&grant_type=authorization_code";
+	
+	
+	
 }
 
 

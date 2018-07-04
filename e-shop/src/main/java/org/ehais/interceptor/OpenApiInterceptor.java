@@ -12,6 +12,13 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 public class OpenApiInterceptor extends HandlerInterceptorAdapter{
 
 	private String securityPolicy;
+	private String loginUrl;
+	public String getLoginUrl() {
+		return loginUrl;
+	}
+	public void setLoginUrl(String loginUrl) {
+		this.loginUrl = loginUrl;
+	}
 	
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
@@ -21,6 +28,12 @@ public class OpenApiInterceptor extends HandlerInterceptorAdapter{
         	response.getWriter().write("{'code':2,'msg':'你认为你是帅哥吗?'}");
         	return false;
         }
+		
+		String url = request.getRequestURI().toString();
+		System.out.println(url);
+		if (url.equals(loginUrl)) {
+			return true;
+		}
 		
 	    response.addHeader("Access-Control-Allow-Origin","*");
 	    response.addHeader("Access-Control-Allow-Methods","*");

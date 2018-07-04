@@ -277,7 +277,9 @@
 		<!-- <property name="securityPolicy" value="10.0.10.220"/> -->
 	</bean>
 	
-	<bean id="openApiInterceptor" class="org.ehais.interceptor.OpenApiInterceptor"></bean>
+	<bean id="openApiInterceptor" class="org.ehais.interceptor.OpenApiInterceptor">
+		<property name="loginUrl" value="/weixinapp/wxapp.jscode2session"/>
+	</bean>
 	
 
 

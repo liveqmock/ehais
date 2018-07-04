@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.ehais.controller.CommonController;
 import org.ehais.enums.EArticleModuleEnum;
@@ -16,6 +17,10 @@ import org.ehais.epublic.model.EHaiArticle;
 import org.ehais.epublic.model.EHaiArticleCat;
 import org.ehais.epublic.model.EHaiArticleCatExample;
 import org.ehais.epublic.model.EHaiArticleExample;
+import org.ehais.epublic.model.EHaiStore;
+import org.ehais.epublic.model.WpPublicWithBLOBs;
+import org.ehais.epublic.service.EStoreService;
+import org.ehais.epublic.service.EWPPublicService;
 import org.ehais.shop.mapper.HaiAdMapper;
 import org.ehais.shop.mapper.HaiCategoryMapper;
 import org.ehais.shop.mapper.HaiGoodsAttrMapper;
@@ -32,7 +37,11 @@ import org.ehais.shop.model.HaiGoodsGalleryExample;
 import org.ehais.shop.model.HaiGoodsWithBLOBs;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
+import org.ehais.util.Bean2Utils;
 import org.ehais.util.DateUtil;
+import org.ehais.util.ECommon;
+import org.ehais.weixin.model.OpenidInfo;
+import org.ehais.weixin.utils.WeiXinUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -59,7 +68,41 @@ public class WXAppController extends CommonController{
 	private HaiGoodsGalleryMapper haiGoodsGalleryMapper;
 	@Autowired
 	private HaiGoodsAttrMapper haiGoodsAttrMapper;
+	@Autowired
+	protected EWPPublicService eWPPublicService;
+	@Autowired
+	protected EStoreService eStoreService;
 	
+	@ResponseBody
+	@RequestMapping("/wxapp.jscode2session")
+	public String wxapp_jscode2session(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "store_id", required = true) Integer store_id,
+			@RequestParam(value = "code", required = true) String code){
+		System.out.println(code);
+		ReturnObject<Object> rm = new ReturnObject<Object>();
+		Map<String, Object> map = new HashMap<String,Object>();
+		try {
+			EHaiStore store = eStoreService.getEStore(store_id);
+			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
+			OpenidInfo openInfo = WeiXinUtil.getJsCode2SessionOpenid(code, wp.getAppid(), wp.getSecret());
+			Bean2Utils.printEntity(openInfo);
+			HttpSession session = request.getSession();
+			map.put("sessionId", session.getId());
+			session.setAttribute("openid", openInfo.getOpenid());
+			session.setAttribute("key3rd", openInfo.getSession_key()+"|"+openInfo.getOpenid());
+			String token = ECommon.nonceStr(4);
+			
+			System.out.println(token);
+			
+			session.setAttribute("token", token);
+			rm.setMap(map);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return this.writeJson(rm);
+	}
 	
 	@ResponseBody
 	@RequestMapping("/wxapp.article.v1")
@@ -70,7 +113,7 @@ public class WXAppController extends CommonController{
 		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
 		try {
 			Map<String,Object> map = new HashMap<String,Object>();
-			
+			System.out.println("token:"+request.getSession().getAttribute("token"));
 			EHaiArticleCatExample expCat = new EHaiArticleCatExample();
 			expCat.createCriteria().andStoreIdEqualTo(store_id).andParentIdEqualTo(parent_id).andModuleEqualTo(EArticleModuleEnum.ARTICLE);
 			List<EHaiArticleCat> catList = eHaiArticleCatMapper.selectByExample(expCat);
@@ -109,6 +152,7 @@ public class WXAppController extends CommonController{
 			@RequestParam(value = "catId", required = true) Integer catId,
 			@ModelAttribute EConditionObject condition){
 		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
+		System.out.println("token:"+request.getSession().getAttribute("token"));
 		try {
 			EHaiArticleExample expArt = new EHaiArticleExample();
 			expArt.createCriteria().andCatIdEqualTo(catId).andStoreIdEqualTo(condition.getStore_id()).andModuleEqualTo(EArticleModuleEnum.ARTICLE);
@@ -131,6 +175,7 @@ public class WXAppController extends CommonController{
 			@RequestParam(value = "store_id", required = true) Integer store_id,
 			@RequestParam(value = "articleId", required = true) Integer articleId){
 		ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
+		System.out.println("token:"+request.getSession().getAttribute("token"));
 		try {
 			Map<String,Object> map = new HashMap<String,Object>();
 			EHaiArticleExample expArt = new EHaiArticleExample();
