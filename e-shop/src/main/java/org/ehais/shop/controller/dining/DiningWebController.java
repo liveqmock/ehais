@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
+import org.ehais.enums.EAdMediaTypeEnum;
 import org.ehais.enums.ECouponsTypeEnum;
 import org.ehais.enums.EOrderClassifyEnum;
 import org.ehais.enums.EOrderSourceEnum;
@@ -209,7 +210,7 @@ public class DiningWebController extends EhaisCommonController{
 		HaiAdExample adExample = new HaiAdExample();
 		HaiAdExample.Criteria c = adExample.createCriteria();
 		c.andIsMobileEqualTo(1)
-		.andIsVoidEqualTo(1);
+		.andIsVoidEqualTo(1).andMediaTypeEqualTo(EAdMediaTypeEnum.carousel_mobile);
 		//如果存在代理有广告，就使用代理的广告
 		if(store.getPartnerId() != null && store.getPartnerId() > 0){
 			c.andPartnerIdEqualTo(store.getPartnerId());
@@ -971,9 +972,98 @@ public class DiningWebController extends EhaisCommonController{
 		return this.writeJson(rm) ;
 	}
 	
+	
+	@RequestMapping("/e_shop_vue_jroll!{cid}")
+	public String e_shop_vue_jroll(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@PathVariable(value = "cid") String cid	,
+			@RequestParam(value = "code", required = false) String code ) {	
+		
+		System.out.println("request.getRequestURL():"+request.getRequestURL());
+		System.out.println("IP address : "+IpUtil.getIpAddrV2(request));
+		
+		log.info("request.getRequestURL():"+request.getRequestURL());
+		log.info("IP address : "+IpUtil.getIpAddrV2(request));
+		
+		Integer store_id = SignUtil.getUriStoreId(cid);
+		if(store_id == 0){
+			return "redirect:"+website; //错误的链接，跳转商城
+		}
+		request.getSession().setAttribute(EConstants.SESSION_STORE_ID, store_id);
+		
+		
+		try{
+			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
+			EHaiStore store = eStoreService.getEStore(store_id);
+			modelMap.addAttribute("store_id", store.getStoreId());
+			modelMap.addAttribute("payModule", store.getPayModule());
+			
+			if(store == null){
+				return "redirect:"+website; //错误的链接，跳转商城
+			}
+			Map<String,Object> map = SignUtil.getCid(cid,wp.getToken());
+			if(map == null){
+			    return "redirect:"+website; //错误的链接，跳转商城
+			}
+			Long user_id = (Long)request.getSession().getAttribute(EConstants.SESSION_USER_ID);
+			modelMap.addAttribute("sidMap", map);
+			if(this.isWeiXin(request)){//微信端登录
+				if((user_id == null || user_id == 0 ) && StringUtils.isEmpty(code)){
+					return this.redirect_wx_authorize(request , wp.getAppid() , "/e_shop_vue_jroll!"+cid);
+				}else if(StringUtils.isNotEmpty(code)){
+					System.out.println(code);
+					EHaiUsers user = this.saveUserByOpenIdInfo(request, code, map,false);
+					String newSid = SignUtil.setDiningId(store_id,Integer.valueOf(map.get("agencyId").toString()),Long.valueOf(map.get("userId").toString()), user.getUserId(),map.get("tableNo").toString(), wp.getToken());
+					String link = request.getScheme() + "://" + request.getServerName() + "/e_shop_vue_jroll!"+newSid;
+					System.out.println("code:"+link);
+					return "redirect:"+link;
+				}else if(user_id > 0 && Long.valueOf(map.get("userId").toString()).longValue() == user_id.longValue()){//经过code获取用户信息跳回自己的链接中来
+//					this.dining(modelMap, request, response,wp,store,store_id, sid);
+				}else if(Long.valueOf(map.get("userId").toString()).longValue() != user_id.longValue()){
+					System.out.println("user_id != map.userId condition is worng");
+//					request.getSession().removeAttribute(EConstants.SESSION_USER_ID);
+//					根据user_id重置sid
+					cid = SignUtil.setCid(store_id, Integer.valueOf(map.get("agencyId").toString()), Long.valueOf(map.get("parentId").toString()), user_id, wp.getToken());
+				    return this.redirect_wx_authorize(request,wp.getAppid(), "/e_shop_vue_jroll!"+cid);
+				}else{
+					System.out.println(cid+" condition is worng");
+					return "redirect:"+website; //错误的链接，跳转商城
+				}
+				
+				String link = request.getScheme() + "://" + request.getServerName() + "/diningStore!"+cid;
+				
+				String partnerName = "";
+				if(store.getPartnerId()!=null && store.getPartnerId() > 0){
+					HaiPartner partner = ePartnerService.getEPartner(store.getPartnerId());
+					partnerName = "["+partner.getPartnerName()+"]";
+				}
+				
+				this.shareWeiXin(modelMap, request, response, wp, store_id, store.getStoreName() + partnerName, link, store.getDescription(), store.getStoreLogo());
+
+				request.getSession().setAttribute("sessionId", request.getSession().getId());
+				modelMap.addAttribute("cid", cid);
+				
+				return "/"+this.webThemes(store, store.getTheme())+"/e_shop_vue_jroll";
+				
+			}else {
+				return "redirect:"+website; //错误的链接，跳转商城
+			}
+			
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			log.error("dining", e);
+			return this.errorJump(modelMap, e.getMessage());
+		}
+		
+//		return "/dining/diningStore";
+		
+	}
+	
+	
 	public static void main(String[] args) {
 		try {
-			String newSid = SignUtil.setOid(58, 23L , "101201709151143535159125", 125L, "oiGBot1K1vYJA2DFv2B-0W2xL9O0", "ehais_wxdev");
+			String newSid = SignUtil.setCid(1,1,1L,1L, "ehais_wxdev");
 			System.out.println(newSid);
 			
 			String pid = SignUtil.setPartnerId(58, 1, 23L, 125L, "ehais_wxdev");
