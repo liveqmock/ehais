@@ -109,10 +109,10 @@
 <label class="col-sm-2 control-label">封面图片</label>
 <div class="col-sm-5">
 
-<@bsQiniuImagesPicker id="articleImages" value="${rm.model.articleImages!''}" domain="${domain}" uptoken="${uptoken}" />
+<@bsQiniuImagesPicker id="articleThumb" value="${rm.model.articleThumb!''}" domain="${domain}" uptoken="${uptoken}" />
 
 <br>
-请上传正方形的图片，尺寸建议使用640*640
+请上传正方形的图片，尺寸建议使用500*300
 </div>
 </div>
 
@@ -121,7 +121,7 @@
 <label class="col-sm-2 control-label">视频链接</label>
 <div class="col-sm-6">
 	<#include "videoUpload.html"/>
-	<input type="text" class="form-control" id="videoUrl" name="videoUrl" value="" placeholder="网站外部链接手动录入">
+	<input type="text" class="form-control" id="videoUrl" name="videoUrl" value="${rm.model.videoUrl!''}" placeholder="网站外部链接手动录入">
 </div>
 </div>
 
