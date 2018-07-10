@@ -946,6 +946,9 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 	public String user_list(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response) {
 		
+		//统计班级
+		List<String> className = eHaiUsersMapper.distinctUsers(default_store_id, "question");
+		modelMap.addAttribute("className", className);
 		
 		return "/ep_school/user/user_list";
 	}
@@ -956,7 +959,8 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 	public String user_list_json(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@ModelAttribute EConditionObject condition,
-			@RequestParam(value = "keyword", required = false) String keyword
+			@RequestParam(value = "keyword", required = false) String keyword,
+			@RequestParam(value = "className", required = false) String className
 			) {
 		ReturnObject<EHaiUsers> rm = new ReturnObject<EHaiUsers>();
 		rm.setCode(0);
