@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
 import org.ehais.enums.EAdminClassifyEnum;
+import org.ehais.enums.EStoreStateEnum;
 import org.ehais.enums.EUserTypeEnum;
 import org.ehais.epublic.mapper.EHaiAdminUserMapper;
 import org.ehais.epublic.mapper.EHaiStoreMapper;
@@ -140,7 +141,7 @@ public class HaiStoreServiceImpl  extends CommonServiceImpl implements HaiStoreS
 		model.setTheme(EAdminClassifyEnum.dining);
 		model.setPartnerId(partner_id);
 		model.setPublicId(default_public_id);
-		model.setState(true);
+		model.setState(EStoreStateEnum.valid);
 		
 		int code = haiStoreMapper.insertSelective(model);
 		
@@ -457,7 +458,7 @@ public class HaiStoreServiceImpl  extends CommonServiceImpl implements HaiStoreS
 			store.setAddTime(addTime);
 			store.setPartnerId(partnerId);
 			store.setPublicId(default_public_id);
-			store.setState(true);
+			store.setState(EStoreStateEnum.valid);
 			store.setPayModule(partner.getPayModule());//继承代理的默认支付模式
 			eHaiStoreMapper.insert(store);
 			

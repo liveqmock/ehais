@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
 import org.ehais.controller.CommonController;
 import org.ehais.enums.EAdminClassifyEnum;
+import org.ehais.enums.EStoreStateEnum;
 import org.ehais.epublic.mapper.EHaiAdminUserMapper;
 import org.ehais.epublic.mapper.EHaiStoreMapper;
 import org.ehais.epublic.mapper.ThinkRoleAdminMapper;
@@ -73,7 +74,7 @@ public class GzhmtController extends CommonController {
 				store.setTheme(EAdminClassifyEnum.company);
 				store.setAddTime(addTime);
 				store.setPublicId(wp.getId());
-				store.setState(true);
+				store.setState(EStoreStateEnum.valid);
 				eHaiStoreMapper.insert(store);
 				
 				model.setUserName(username);

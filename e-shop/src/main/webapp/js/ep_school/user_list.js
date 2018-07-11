@@ -1,7 +1,7 @@
 var catId = 0;
 var bsTable ;
 var keyword = "";
-
+var className = "";
 $(function(){
 
 	$("#upload_file_users").fileupload({
@@ -35,7 +35,11 @@ $(function(){
 	});
 	
 
-    $("#btnSearch").click(function(){keyword = $.trim($("#keyword").val());bsTable.bootstrapTable('refresh', { query : { keyword : keyword , page : 1} });});
+    $("#btnSearch").click(function(){
+    	keyword = $.trim($("#keyword").val());
+    	className = $.trim($("#className").val());
+    	bsTable.bootstrapTable('refresh', { query : { keyword : keyword , className : className , page : 1} });
+    });
     
     bsTable = $('#bsTable').bootstrapTable({
     	contentType: "application/x-www-form-urlencoded",
@@ -61,6 +65,7 @@ $(function(){
                 sort: params.sort,  //排序列名  
                 sortOrder: params.order,//排位命令（desc，asc）
                 keyword : keyword,
+                className : className,
 	        }
 	    },
         sidePagination: "server", //服务端处理分页

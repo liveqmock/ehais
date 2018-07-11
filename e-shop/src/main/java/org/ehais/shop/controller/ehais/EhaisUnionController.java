@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
 import org.ehais.enums.EAdminClassifyEnum;
 import org.ehais.enums.EOrderStatusEnum;
+import org.ehais.enums.EStoreStateEnum;
 import org.ehais.enums.EUserTypeEnum;
 import org.ehais.epublic.mapper.EHaiAdminUserMapper;
 import org.ehais.epublic.mapper.EHaiStoreMapper;
@@ -230,7 +231,7 @@ public class EhaisUnionController extends EhaisCommonController{
 			store.setTel(mobile);
 			store.setAddTime(addTime);
 			store.setPublicId(default_public_id);
-			store.setState(true);
+			store.setState(EStoreStateEnum.valid);
 			if(map.get("partnerId")!=null)store.setPartnerId(Integer.valueOf(map.get("partnerId").toString()));
 //			store.setPayModule(partner.getPayModule());//继承代理的默认支付模式
 			eHaiStoreMapper.insert(store);

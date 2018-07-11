@@ -36,6 +36,16 @@
 						<div class="panel-heading">搜索条件</div>
 						<div class="panel-body single">					    
 							<div><label>学号/卡号/姓名：</label><input id="keyword" class="control"/></div>
+							<div>
+								<select class="control" id="className" name="className">
+									<option value="">--班级--</option>
+									<#if (className?? && className?size > 0 )>
+									<#list className as c>
+										<option value="${c}">${c}</option>
+									</#list>
+									</#if>
+								</select>
+							</div>
 							<div><button id="btnSearch" class="fa fa-search btn btn-default control">搜索</button></div>
 						</div>
 					</div>

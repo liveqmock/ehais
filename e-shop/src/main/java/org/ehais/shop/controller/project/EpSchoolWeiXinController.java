@@ -965,8 +965,11 @@ public class EpSchoolWeiXinController extends EhaisCommonController {
 		ReturnObject<EHaiUsers> rm = new ReturnObject<EHaiUsers>();
 		rm.setCode(0);
 		try{
-			List<EHaiUsers> list = eHaiUsersMapper.selectUsersLike(default_store_id, keyword, "user_id desc", condition.getStart(), condition.getRows());
-			Integer total = eHaiUsersMapper.selectUsersLikeCount(default_store_id, keyword);
+			if(StringUtils.isBlank(keyword)) keyword = null;
+			if(StringUtils.isBlank(className)) className = null;
+			
+			List<EHaiUsers> list = eHaiUsersMapper.selectUsersLike(default_store_id, keyword,className, "user_id desc", condition.getStart(), condition.getRows());
+			Integer total = eHaiUsersMapper.selectUsersLikeCount(default_store_id, keyword,className);
 			rm.setCode(1);
 			rm.setRows(list);
 			rm.setTotal(total);

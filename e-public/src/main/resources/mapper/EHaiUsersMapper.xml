@@ -1257,6 +1257,9 @@
      	or office_phone like CONCAT('%',#{keyword},'%')
      	)
      </if>
+     <if test="question != null" >
+     	and question = #{question}
+     </if>
      <if test="orderByClause != null" >
       <![CDATA[ order by ${orderByClause}  ]]>
     </if>
@@ -1280,6 +1283,9 @@
      	or home_phone like CONCAT('%',#{keyword},'%')
      	or office_phone like CONCAT('%',#{keyword},'%')
      	)
+     </if>
+     <if test="question != null" >
+     	and question = #{question}
      </if>
   </select>
   

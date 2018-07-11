@@ -134,12 +134,12 @@ public class WXAppController extends CommonController{
 		try {
 			EHaiStore store = eStoreService.getEStore(store_id);
 			WpPublicWithBLOBs wp = eWPPublicService.getWpPublic(store_id);
-			OpenidInfo openInfo = WeiXinUtil.getJsCode2SessionOpenid(code, wp.getAppid(), wp.getSecret());
-			Bean2Utils.printEntity(openInfo);
+//			OpenidInfo openInfo = WeiXinUtil.getJsCode2SessionOpenid(code, wp.getAppid(), wp.getSecret());
+//			Bean2Utils.printEntity(openInfo);
 			HttpSession session = request.getSession();
 			map.put("sessionId", session.getId());
-			session.setAttribute("openid", openInfo.getOpenid());
-			session.setAttribute("key3rd", openInfo.getSession_key()+"|"+openInfo.getOpenid());
+//			session.setAttribute("openid", openInfo.getOpenid());
+//			session.setAttribute("key3rd", openInfo.getSession_key()+"|"+openInfo.getOpenid());
 			String token = ECommon.nonceStr(4);
 			
 			System.out.println(token);
