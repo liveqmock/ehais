@@ -326,7 +326,7 @@ public class ShoppingServiceImpl extends CommonServiceImpl implements ShoppingSe
 		order.setDiscount(0);
 //		order.setStoreId(0);
 		order.setRemark("");
-		order.setIsVoid("1");
+		order.setValid(true);
 		
 		order.setConfirmTime(0);
 		order.setPayTime(0l);

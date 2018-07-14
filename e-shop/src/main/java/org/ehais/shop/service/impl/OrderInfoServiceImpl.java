@@ -233,7 +233,7 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 			return rm;
 		}
 		HaiOrderInfo order = list.get(0);
-		order.setIsVoid("0");
+		order.setValid(false);
 		haiOrderInfoMapper.updateByPrimaryKey(order);
 		
 		rm.setCode(1);
@@ -264,7 +264,7 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 		if(shipping_status != null && shipping_status > 0)c.andShippingStatusEqualTo(shipping_status);
 		if(forum_status != null)c.andHasForumEqualTo(forum_status);
 		if(StringUtils.isNotBlank(order_sn))c.andOrderSnLike("%"+order_sn+"%");
-		c.andIsVoidEqualTo("1");
+		c.andValidEqualTo(true);
 		example.setLimitStart(condition.getStart());
 		example.setLimitEnd(condition.getRows());
 		example.setOrderByClause("add_time desc");
@@ -383,7 +383,7 @@ public class OrderInfoServiceImpl  extends CommonServiceImpl implements OrderInf
 		orderInfo.setIsSeparate(0);//'0，未分成或等待分成；1，已分成；2，取消分成；',
 		orderInfo.setParentId(0L);// '能获得推荐分成的用户id，id取值于表ecs_users',
 		orderInfo.setDiscount(0);//'折扣金额',
-		orderInfo.setIsVoid(EIsVoidEnum.valid);
+		orderInfo.setValid(true);
 		orderInfo.setRemark("");
 	}
 	

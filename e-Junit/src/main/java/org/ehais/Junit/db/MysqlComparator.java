@@ -12,24 +12,30 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class MysqlComparator {
 
 	public static String url1 = "jdbc:mysql://127.0.0.1:3306/sqlehaismall";  
-    public static String url2 = "jdbc:mysql://183.240.153.79:3306/sqlehaismall";  
+    public static String url2 = "jdbc:mysql://183.240.153.79:3306/finance";  
     public static String USERNAME1 = "root";  
     public static String PASSWORD1 = "Ehais42016048ok!";  
     public static String USERNAME2 = "lgj628";  
     public static String PASSWORD2 = "Ehais42016048ok!";
-    public static String db = "sqlehaismall";
+    public static String db1 = "sqlehaismall";
+    public static String db2 = "finance";
       
     public static void main(String[] args) throws Exception{   
     	MysqlComparator com = new MysqlComparator();  
         Connection con1 = com.getConnection(url1,USERNAME1,PASSWORD1);  
         Connection con2 = com.getConnection(url2,USERNAME2,PASSWORD2);  
         System.out.println("已连接到两个数据库...将以数据库1为主数据库进行比较");  
-        String sql = "select * from information_schema.tables where table_schema='"+db+"' and table_type='base table';";
+        String sql = "select * from information_schema.tables where table_schema='"+db1+"' and table_type='base table';";
         System.out.println(sql);
         List list1 = com.Rs2List(com.getRsBySQL(sql, con1));  
+        
+        sql = "select * from information_schema.tables where table_schema='"+db2+"' and table_type='base table';";
+        System.out.println(sql);
         List list2 = com.Rs2List(com.getRsBySQL(sql, con2));  
         com.compare(list1, list2,con1,con2);  
         System.out.println("比较完成....");  
@@ -44,27 +50,44 @@ public class MysqlComparator {
             }  
         }  
     }  
-    private void TableCompare(String name,Connection con1,Connection con2) throws Exception {  
-        String sql = "SELECT column_name,data_type,character_maximum_length,numeric_precision,numeric_scale,column_key,is_nullable,CASE WHEN extra = 'auto_increment' THEN 1 ELSE 0 END AS 'auto_increment',column_default ,column_comment  FROM Information_schema.columns WHERE table_Name='"+name+"' and table_schema='"+db+"' ;";  
+    private void TableCompare(String name,Connection con1,Connection con2) throws Exception { 
+    	
+        String sql = "SELECT column_name,data_type,character_maximum_length,numeric_precision,numeric_scale,column_key,is_nullable,CASE WHEN extra = 'auto_increment' THEN 1 ELSE 0 END AS 'auto_increment',column_default ,column_comment  FROM Information_schema.columns WHERE table_Name='"+name+"' and table_schema='"+db1+"' ;";  
         Map<String,String> map1 = this.parseColumnList(this.getRsBySQL(sql, con1));  
-        Map<String,String> map2 = this.parseColumnList(this.getRsBySQL(sql, con2));  
+        
+        sql = "SELECT column_name,data_type,character_maximum_length,numeric_precision,numeric_scale,column_key,is_nullable,CASE WHEN extra = 'auto_increment' THEN 1 ELSE 0 END AS 'auto_increment',column_default ,column_comment  FROM Information_schema.columns WHERE table_Name='"+name+"' and table_schema='"+db2+"' ;";
+        Map<String,String> map2 = this.parseColumnList(this.getRsBySQL(sql, con2));
+        
         Set set = map1.keySet();  
         for (Iterator iterator = set.iterator(); iterator.hasNext();) {  
-            String cname = (String) iterator.next();  
+            String cname = (String) iterator.next(); 
+//            System.out.println(cname);
             if(map2.containsKey(cname)){  
                 if(!map2.get(cname).equals(map1.get(cname))){  
-                    System.out.println("数据库2的 "+name+" 表中的字段:"+cname+" 与数据库1中数据类型不一致");  
-                }  
+                	if(cname.indexOf("_data_type") < 0) {
+                		System.out.println("数据库2的 "+name+" 表中的字段:"+cname.replaceAll("_data_type", "")+" 与数据库1中数据类型不一致");
+                	}else {
+                		System.out.println("数据库2的 "+name+" 表中的字段长度:"+cname.replaceAll("_data_type", "")+" 与数据库1中数据类型长度不一致");
+                	}                      
+                } 
+                
             }else{  
-                System.out.println("数据库2的 "+name+" 表中，缺少字段:"+cname);  
+                System.out.println("数据库2的 "+name+" 表中，缺少字段:"+cname.replaceAll("_data_type", ""));  
             }  
         }  
     } 
 	
-    private Map parseColumnList(ResultSet rs1) throws Exception {  
-        Map map = new HashMap();  
+    private Map<String,String> parseColumnList(ResultSet rs1) throws Exception {  
+        Map<String,String> map = new HashMap<String,String>();  
         while(rs1.next()){  
-            map.put(rs1.getString("column_name"), rs1.getString("data_type"));  
+            map.put(rs1.getString("column_name"), rs1.getString("data_type"));
+            
+            String str = StringUtils.isNotBlank(rs1.getString("character_maximum_length"))?
+            		rs1.getString("character_maximum_length"):
+            			(StringUtils.isNotBlank(rs1.getString("numeric_precision"))?rs1.getString("numeric_precision"):"0");
+            	
+            map.put(rs1.getString("column_name")+"_data_type", str)  ;
+            	
         }  
         return map;  
     }  

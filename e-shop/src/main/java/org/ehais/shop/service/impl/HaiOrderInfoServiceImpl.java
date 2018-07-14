@@ -341,7 +341,7 @@ bean.setIsSeparate(model.getIsSeparate());
 bean.setParentId(model.getParentId());
 bean.setDiscount(model.getDiscount());
 bean.setRemark(model.getRemark());
-bean.setIsVoid(model.getIsVoid());
+bean.setValid(true);
 bean.setOrderSource(model.getOrderSource());
 bean.setGoodsDesc(model.getGoodsDesc());
 bean.setClassify(model.getClassify());
