@@ -48,9 +48,10 @@
 <div class="container-fluid">
 <form id="myForm" name="myForm" class="form-horizontal" action="${rm.action?default('')}" method="post">
 
-<input type="hidden" class="form-control" id="articleId" name="articleId" value="${rm.model.articleId!'0'}" placeholder="">
-<input type="hidden" class="form-control" id="module" name="module" value="${module!''}" placeholder="">
 
+<input type="hidden" id="articleId" name="articleId" value="${rm.model.articleId!'0'}">
+<input type="hidden" id="module" name="module" value="${module!''}">
+<input type="hidden" id="classify" name="classify" value="${classify}">
 
 
 

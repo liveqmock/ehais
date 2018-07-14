@@ -69,6 +69,14 @@ public class ArticleController extends CommonController{
 		try{
 			ReturnObject<EHaiArticle> rm = ehaisArticleService.article_list(request,module);
 			modelMap.addAttribute("rm", rm);
+			
+			if((StringUtils.isNotBlank(single) && single.equals("true"))) {
+				modelMap.addAttribute("classify", "single");
+			}else {
+				modelMap.addAttribute("classify", "list");
+			}
+			
+			
 			return this.view(request, "/article/view");
 		}catch(Exception e){
 			e.printStackTrace();
@@ -116,6 +124,13 @@ public class ArticleController extends CommonController{
 			modelMap.addAttribute("rm", rm);
 			modelMap.addAttribute("uptoken", QiniuUtil.getUpToken(accessKey,secretKey,bucket));
 			modelMap.addAttribute("domain", domain);
+			
+			if((StringUtils.isNotBlank(single) && single.equals("true"))) {
+				modelMap.addAttribute("classify", "single");
+			}else {
+				modelMap.addAttribute("classify", "list");
+			}
+			
 			return this.view(request, "/article/detail");
 		}catch(Exception e){
 			e.printStackTrace();
@@ -168,6 +183,13 @@ public class ArticleController extends CommonController{
 			modelMap.addAttribute("rm", rm);
 			modelMap.addAttribute("uptoken", QiniuUtil.getUpToken(accessKey,secretKey,bucket));
 			modelMap.addAttribute("domain", domain);
+			
+			if((StringUtils.isNotBlank(single) && single.equals("true"))) {
+				modelMap.addAttribute("classify", "single");
+			}else {
+				modelMap.addAttribute("classify", "list");
+			}
+			
 			return this.view(request, "/article/detail");
 		}catch(Exception e){
 			e.printStackTrace();

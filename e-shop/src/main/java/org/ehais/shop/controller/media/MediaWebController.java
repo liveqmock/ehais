@@ -132,7 +132,7 @@ public class MediaWebController extends CommonController{
 			//推荐的
 			ae.createCriteria()
 			.andStoreIdEqualTo(store_id)
-			.andOpenTypeEqualTo(Short.valueOf("1"));
+			.andOpenTypeEqualTo(true);
 			ae.setLimitStart(0);
 			ae.setLimitEnd(hot_len);
 			ae.setOrderByClause("update_date desc");
