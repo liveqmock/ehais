@@ -1,0 +1,688 @@
+*{box-sizing: content-box;}
+html,body{padding: 0;margin: 0;font-family:"MicrosoftYaHei / Regular";font-size: 14px;}
+ul,li{list-style: none;padding: 0;margin: 0;}
+
+.center-vertical{
+    position: relative;
+	top: 50%;
+    transform: translateY(-50%);
+}
+
+.wrapper{
+    width: 100%;
+    min-width: 1280px;
+    _width:1280px;
+    
+    >div{
+        width: 100%;float: left;
+    }
+}
+.fl{float: left;}.fr{float: right;}
+.main{
+    width: 1280px;
+    margin: 0 auto;
+    .fl,.fr{
+        >div{float: left;}
+    }
+}
+.topBar{
+    background: #E5E5E5;
+    .main{height: 30px;line-height: 30px;}
+    .line{margin: 5px 10px 0;width: 1px;background: #333;height: 20px;}
+}
+.icon{
+    width: 20px;height: 20px;margin-top: 5px;
+}
+.index.icon{
+  
+    background-size: 100% 100%;
+    -ms-filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(src='C:/ehais/projects/long/img/index.png',sizingMethod='scale')";
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='C:/ehais/projects/long/img/index.png',sizingMethod='scale');
+    margin-right: 30px;
+    img{
+        width: 100%;
+        height: 100%;
+    }
+}
+.mobile.icon{
+  
+    background-size: contain;
+    -ms-filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(src='C:/ehais/projects/long/img/mobile.png',sizingMethod='scale')";
+    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='C:/ehais/projects/long/img/mobile.png',sizingMethod='scale');
+    background-repeat:no-repeat;
+    img{
+        width: 100%;
+        height: 100%;
+    }
+}
+.user.icon{
+    background-size: contain;
+    background-repeat:no-repeat;
+    margin-left: 20px;
+    img{
+        width: 100%;
+        height: 100%;
+    }
+}
+.tel.icon{
+   background-size: contain;
+   background-repeat:no-repeat;
+    // margin-right: 30px;
+    img{
+        width: 100%;
+        height: 100%;
+    }
+}
+.login_txt{
+    margin-right: 10px;
+
+}
+.register_txt{
+    margin-left: 10px;
+}
+
+.nav{height: 110px;background: #1B1C20;font-size:12px;
+    .main{
+        height: 100%;
+    }
+    ul{
+        padding-left: 65px;
+        float: left;
+        li{
+            float: left;color: #fff;margin-top: 54px;margin-right: 38px;
+        }
+    }
+    li.active{
+        color: #D4BD87;
+    }
+    .search{
+        width: 155px;height: 30px;
+        background: #fff;
+        -moz-border-radius: 14px; /* Firefox */
+        -webkit-border-radius: 14px; /* Safari 和 Chrome */
+        border-radius: 14px; /* Opera 10.5+, 以及使用了IE-CSS3的IE浏览器 */
+        behavior: url(/ie-css3.htc); /* 通知IE浏览器调用脚本作用于'box'类 */
+        position: relative;
+        margin-top: 42px;
+        padding: 0 20px;
+        input{border:none;width: 90%;height: 96%;background: none;outline:none; }
+        button{
+            position: absolute;right: 2px;background: url(../img/search.png);border: none;top: 1px;
+            width: 25px;height: 25px;
+            background-repeat:no-repeat;background-size: 25px 25px;
+            outline:none; 
+        }
+    }
+}
+.logo{width: 376px;height: 49px;background: url(../img/logo.png);margin-top: 30px;float: left;}
+.ad{
+    height: 600px;
+    *{padding: 0;margin: 0;}
+    li{
+        width: 100%;height: 100%;
+    }
+    .swiper,ul,li{
+        width: 100%;height: 100%;
+    }
+}
+.bar{
+    text-align: center;height: 180px;color: #D4C085;
+    background: #1B1C20;
+    .zh{
+        font-size: 48px;
+        margin-top: 30px;
+    }
+    .en{
+        font-size: 24px;margin-top: 20px;
+    }
+}
+.new_car{
+    padding: 90px 0;
+    .main{width: 1146px;}
+    .prev,.next{
+        width: 70px;height: 70px;margin-top: 166px;
+    }
+    .prev{
+        background: url(../img/left_arr.png);margin-right: 53px;
+    }
+    .next{
+        background: url(../img/right_arr.png);
+    }
+    ul li {
+        float: left;
+        width: 255px;
+        height: 479px;
+        background-color: #ffffff;
+        border: solid 1px #1b1c20;
+        margin-right: 60px;
+        position: relative;
+        vertical-align:middle;
+        text-align: center;
+        img{vertical-align: middle;
+        position: absolute;
+            top:50%; 
+            left:50%;
+            margin-top: -45px;
+            margin-left: -114px;
+//          transform: translate(-50%,-50%);
+        }
+        
+    }
+    .intro{
+        width: 100%;
+        height: 75px;
+        background-color: #1b1c20;
+        position: absolute;
+        bottom: 0;
+        color: #fff;
+        padding-top: 23px;
+        div{
+            padding-bottom: 5px;
+        }
+    }
+    .new{
+        position: absolute;top: 0;left: 0;z-index: 100;width: 94px;height: 93px;
+        background: url(../img/new.png);
+    }
+}
+
+.news{
+    padding: 90px 0;
+    .main{width: 1280px;}
+    .detail{
+        width: 600px;
+        .title{margin-top: 32px;font-size: 20px;color: #1b1c20;}
+        .desc{margin-top: 16px;font-size: 16px;color: #1b1c20;}
+    }
+    ul{
+        width: 650px;
+        li{
+            width: 100%;height: 110px;font-size: 36px;color: #1b1c20;line-height: 110px;
+            div{float: left;}
+            .num{font-size: 65px;margin-right: 46px;margin-left: 23px;}
+        }
+        li.active,li:hover{
+            background-color: #1b1c20;color: #fff;
+        }
+    }
+}
+.brand{
+    padding: 85px 0;
+    .main{
+        width: 1280px;height: 420px;
+        position: relative;
+        img{width: 955px;height: 354px;
+            position: absolute;top: 0;left: 0;
+        }
+        .desc{
+            width: 557px;font-size: 24px;color: #1b1c20;
+            position: absolute;right: 0;bottom: 0;
+            font-family: 'MicrosoftYaHeiLight ';
+            font-size: 24px;
+            line-height: 36px;
+            color: #454445;
+        }
+    }
+}
+.footer{
+    height: 280px;background: #000;
+    .main{
+        width: 1280px;margin-top: 66px;
+        .fl{
+            width: 40%;
+            margin-left: 126px;
+            img{float: left;}
+            .copy{color: #fff;width: 100%;margin-top: 21px;}
+        }
+        .fr{
+            margin-right: 220px;
+
+            img{
+                float: none;
+            }
+            .attention{float: none;
+                margin-top: 12;color: #fff;
+            }
+        }
+        
+    }
+}
+
+
+
+// 商城
+#shop{
+    width: 100%;
+    .shop_mainbody{
+        width: 1280px;
+        height: auto;
+        margin: 0 auto;
+        color: rgb(27,28,32);
+    }
+}
+
+.shop_navlist{
+    margin-top: 10px;
+    font-size: 16px;
+   
+}
+
+.shop_carshow{
+    font-size: 18px;
+    margin-bottom: 446px;
+    .carImg,.carOthers{
+        float: left;
+    }
+    .carImg{
+        img{
+            margin: 138px 0 100px 97px;
+            width: 533px;
+            height: 208px;
+        }
+    }
+    .brandContent{
+        // width: 15%;
+        margin: 158px 0 0 169px;
+        
+    }
+    .model{
+        // width: 15%;
+        margin: 41px 0 0 169px;
+
+    }
+    .price{
+        // width: 15%;
+        margin: 34px 0 0 169px;
+        .icon{
+            color: #FF0000;
+            font-size: 10px;
+        }
+        .number{
+            font-family: 'Impact';
+            color: #FF0000;
+            font-size: 24px;
+        }
+    }
+
+}
+
+.shop_detaillist{
+    width: 100%;
+    height: 60px;
+    background: #1b1c20;
+    
+    ul{
+        height: 100%;
+        color: white;
+        li{
+            // padding: 10px 20px;
+            margin: 0 0 0 42px;
+            line-height: 60px;
+            float: left;
+            // margin-left: -50%;
+        }
+        li:nth-child(1){
+            color: #D5BF86;
+        }
+        .verLine{
+            .center-vertical;
+            width: 1px;
+            height: 42px;
+            background: white;
+        }
+    }
+}
+
+.shop_detail{
+    width: 100%;
+    height: 932px;
+    margin-bottom: 90px;
+    overflow-y:scroll;
+    -moz-box-shadow: 0 5px 10px #888888; /* 老的 Firefox */
+    box-shadow:0 5px 10px #888888;
+    .shop_configuration{
+        height: 100%;
+        overflow: auto;
+        p{
+            margin-left: 60px;
+            width: 3em;
+            line-height: 40px;
+        }
+    }
+}
+
+
+// 评估中心
+#evaluate{
+    width: 100%;
+    .evaluate_mainbody{
+        position: relative;
+        width: 100%;
+        height: 833px;
+        background-image: url('../img/evaluate_car.png');
+        // background-position: 0 -100px;
+        -moz-background-size:100% 833px; /* 老版本的 Firefox */
+        background-size:100% 833px;
+        -ms-filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(src='C:/ehais/projects/long/img/evaluate_car.png',sizingMethod='scale')";
+        filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='C:/ehais/projects/long/img/evaluate_car.png',sizingMethod='scale');
+        background-repeat:no-repeat;
+        .cenetr{
+            position: absolute;
+            float: right;
+            top:46px;
+            
+            right: 367px;
+            width: 462px;
+            height: 725px;
+            background: #F4F4F4;
+            font-size:15px;
+            color:#87858B;
+
+            .point{
+                color: red;
+            }
+
+            >div{
+                margin-left: 45px;
+                margin-right: 45px;
+                margin-bottom: 20px;
+                border: 1px solid #B9B9B9;
+                width: 80%;
+                height: 44px;
+                line-height: 44px;
+            }
+
+            .header{
+                margin-top: 42px;
+                margin-bottom: 56px;
+                width: 80%;
+                border: none;
+                text-align: center;
+                font-size: 26.7px;
+                color: #1F2024;
+            }
+            
+            .note{
+                border:none;
+                height: auto;
+                margin-bottom: 0;
+                line-height: 18px;
+            }
+
+            .time{
+                float: left;
+                width: 50%;
+                .timeInput{
+                    float: right;
+                    margin-right: 10px;
+                }
+            }
+
+            .mileage{
+                float: left;
+                width: 50%;
+                .mileInput{
+                    float: right;
+                    margin-right: 10px;
+                }
+            }
+
+            .accident{
+                .radioItem{
+                    margin-left: 20px;
+                }
+            }
+
+            .colorItems{
+                .radioItem{
+                    margin-left: 15px;
+                }
+            }
+
+            .check{
+                width: 40%;
+            }
+
+            .centerText{
+                margin-top: 45px;
+                width: auto;
+                height: 41px;
+                line-height: 41px;
+                background: #1B1C20;
+                font-size: 20px;
+                color: white;
+                text-align: center;
+
+            }
+
+        }
+    }
+}
+
+
+
+//新闻
+#news{
+    width: 100%;
+    .news_mainbody{
+        width: 1280px;
+        height: auto;
+        margin: 0 auto;
+        color: rgb(27,28,32);
+    }
+}
+
+.news_navlist{
+    margin-top: 10px;
+    font-size: 16px;
+   
+}
+
+.news_mainbody .content{
+    margin-top: 11px;
+    width: 100%;
+    height: auto;
+    ul{
+        width: 100%;
+        li{
+            margin-bottom: 80px;
+            width: 100%;
+            height:232px;
+            >div{
+                float: left;
+            }
+        }
+    }
+}
+.content{
+   
+    .itemImg{
+        margin-top: 40px;
+        img{
+            width: 274px;
+            height: 168px;
+        }
+    }
+    .title{
+        margin-top: 50px;
+        margin-left: 33px;
+        font-size: 20px;
+    }
+
+    .text{
+        margin: 20px 33px 0 33px;
+        font-size: 16px;
+    
+    }
+
+    #itemRight{
+        float: right;
+        p{
+            margin: 0;
+        }
+        .time{
+            float: right;
+            margin-top: 57px;
+        }
+    
+        .more{
+            width: 127px;
+            height: 34px;
+            line-height: 34px;
+            text-align: center;
+            margin-top: 130px;
+            background: #1B1C20;
+            color: white;
+
+        }
+    }
+    
+   
+    
+}
+
+
+
+//关于
+#about{
+    width: 100%;
+    .about_mainbody{
+        width: 1280px;
+        height: auto;
+        margin: 0 auto;
+        color: rgb(27,28,32);
+    }
+}
+
+.about_navlist{
+    margin-top: 27px;
+    font-size: 16px;
+    ul{
+        width: 100%;
+        height: 60px;
+        background: #1B1C20;
+        li{
+            float: left;
+            width: 24.9%;
+            height: 60px;
+            line-height: 60px;
+            text-align: center;
+            font-size: 16px;
+            color:white;
+        }
+        li.active{
+            color: #D4BD87;
+        }
+        .verLine{
+            width: 1px;
+            height: 100%;
+            background: white;
+        }
+    }
+}
+
+
+.about_navlist .content{
+    width: 100%;
+    height: 687px;
+    .connect{
+        width: 100%;
+        height:100%;
+        >div{
+            float: left;
+        }
+        .map{
+            width: 817px;
+            height:516px;
+            margin: 68px 0 0 59px;
+            padding: 20px;
+            background: #B9B9B9;
+        }
+        .company{
+            margin: 145px 0 0 44px;
+            p{
+                margin: 0;
+            }
+            .name{
+                font-size: 20px;
+
+            }
+            .tel{
+                margin: 28px 0 13px 0;
+                font-size: 16px;
+                
+            }
+            .addr{
+                font-size: 16px;
+
+            }
+        }
+    }
+}
+
+//售后
+#service{
+    width: 100%;
+    .service_mainbody{
+        width: 1280px;
+        height: auto;
+        margin: 0 auto;
+        color: rgb(27,28,32);
+    }
+}
+.service_navlist{
+    margin-top: 27px;
+    font-size: 16px;
+    ul{
+        width: 100%;
+        height: 60px;
+        background: #1B1C20;
+        li{
+            float: left;
+            width: 24.9%;
+            height: 60px;
+            line-height: 60px;
+            text-align: center;
+            font-size: 16px;
+            color:white;
+        }
+        li.active{
+            color: #D4BD87;
+        }
+        .verLine{
+            width: 1px;
+            height: 100%;
+            background: white;
+        }
+    }
+}
+
+.service_mainbody .serviceItem{
+    padding: 46px 55px;
+    .roadAid{
+        >p{
+            text-align: center;
+            font-size: 20px;
+            margin-bottom: 46px;
+        }
+    
+      
+        .itemImg,.itemText{
+            float: left;
+            margin-bottom: 50px;
+            img{
+                width: 163px;
+                height: 247px;
+            }
+           
+        }
+        .itemText{
+            margin-left: 33px;
+            p{
+                margin: 0;
+                margin-bottom: 20px;
+            }
+        }
+        
+    }
+}

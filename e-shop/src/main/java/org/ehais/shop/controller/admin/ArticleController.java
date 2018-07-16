@@ -370,6 +370,8 @@ public class ArticleController extends CommonController{
 			modelMap.addAttribute("uptoken", QiniuUtil.getUpToken(accessKey,secretKey,bucket));
 			modelMap.addAttribute("domain", domain);
 			
+			modelMap.addAttribute("classify", "single");
+			
 			return this.view(request, "/article/module");
 		}catch(Exception e){
 			e.printStackTrace();

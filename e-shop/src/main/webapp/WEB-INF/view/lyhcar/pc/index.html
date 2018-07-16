@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" href="css/style.css" />
+		<link rel="stylesheet" href="/js/slideBox/css/jquery.slideBox.css" />
+		<script type="text/javascript" src="/js/jquery-2.1.4.min.js"></script>
+		<script type="text/javascript" src="/js/slideBox/js/jquery.slideBox.min.js"></script>
+	</head>
+	<body>
+		<div class="wrapper">
+			
+			<#include "header.html">
+			
+			<div class="ad">
+				<div id="ad" class="swiper slideBox">
+					<ul class="items">
+						<#list ad_list as ad>
+						<li style="background: url(${ad.adPic}) no-repeat center center;">
+							<a href="javascript:;" title=""><img src="${ad.adPic}" style="display:none;"></a>
+						</li>
+						</#list>
+					</ul>
+				</div>
+			</div>
+			<div class="bar">
+				<div class="main">
+					<div class="zh">新车推荐</div>
+					<div class="en">NEW &nbsp; &nbsp; ARRIVALS</div>
+				</div>
+			</div>
+			
+			<div class="new_car">
+				<div class="main">
+					<div class="prev fl"></div>
+					<ul class="fl">
+					
+						<#list new_goods_list as goods>
+						<li>
+							<img src="${goods.goodsThumb}">
+							<div class="intro">
+								<div>型号：${goods.goodsSn}</div>
+								<div>零售价：${goods.shopPrice / 100}</div>
+							</div>
+							<div class="new"></div>
+						</li>
+						</#list>
+						
+					</ul>
+					<div class="next fl"></div>
+				</div>
+			</div>
+			
+			<div class="bar">
+				<div class="main">
+					<div class="zh">新闻动态</div>
+					<div class="en">NEW &nbsp; &nbsp; ARRIVALS</div>
+				</div>
+			</div>
+			
+			<div class="news">
+				<div class="main">
+					
+					<div class="fl detail">
+						<#list article_list as article>
+						<#if (article_index == 0 ) >
+						<img id="article_thumb" src="${article.articleThumb}">
+						<div class="title" id="article_title">${article.title}</div>
+						<div class="desc" id="article_description">${article.description}</div>
+						</#if>
+						</#list>
+					</div>
+					
+					<ul class="fr" id="article_ul">
+					
+						<#list article_list as article>
+						<li <#if (article_index == 0 ) >class="active"</#if>>
+							<div class="num">0${article_index+1}</div>
+							<div class="title" >${article.title}</div>
+							<div class="description" style="display:none;">${article.description}</div>
+							<div class="thumb" style="display:none;">${article.articleThumb}</div>
+						</li>
+						</#list>
+						
+						
+						
+					</ul>
+				</div>
+			</div>
+			
+			<div class="bar">
+				<div class="main">
+					<div class="zh">品牌介绍</div>
+					<div class="en">BRAND &nbsp; &nbsp; STORY</div>
+				</div>
+			</div>
+			
+			<div class="brand">
+				<div class="main">
+					<img src="${brand.articleThumb!''}" />
+					<div class="desc">${brand.description!''}</div>
+				</div>
+			</div>
+			
+			<#include "footer.html"/>
+			
+		</div>
+		
+<script type="text/javascript">
+$(function(){
+	$('#ad').slideBox();
+	$("#article_ul > li").mouseover(function(){
+		$("#article_ul > li").removeClass("active");
+		$(this).addClass("active");
+		
+		var title = $(this).children(".title").html();
+		var description = $(this).children(".description").html();
+		var thumb = $(this).children(".thumb").html();
+		
+		$("#article_title").html(title);
+		$("#article_description").html(description);
+		$("#article_thumb").attr("src",thumb);
+		
+	}).mouseout(function(){
+		
+	});
+});
+</script>	
+	
+	</body>
+</html>

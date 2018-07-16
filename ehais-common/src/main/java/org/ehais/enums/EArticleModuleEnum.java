@@ -15,5 +15,6 @@ public class EArticleModuleEnum {
 	public final static String BRANDSTORY = "brand_story"; //品牌故事
 	public final static String DISTRIBUTIONINTRO = "distribution_intro"; //分销介绍
 	public final static String MEDIA = "media";//视频
+	public final static String DISCOUNTS = "discounts";//促销优惠信息
 	
 }
