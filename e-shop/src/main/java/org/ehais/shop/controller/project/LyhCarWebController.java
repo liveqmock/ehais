@@ -136,9 +136,9 @@ public class LyhCarWebController extends CommonController{
 			artExp.setLimitEnd(1);
 			List<EHaiArticle> article_list = eHaiArticleMapper.selectByExample(artExp);
 			if(article_list.size() > 0) {
-				modelMap.addAttribute("article_list", article_list.get(0));
+				modelMap.addAttribute("article", article_list.get(0));
 			}else {
-				modelMap.addAttribute("article_list", new EHaiArticle());
+				modelMap.addAttribute("article", new EHaiArticle());
 			}
 			
 		}catch(Exception e) {
