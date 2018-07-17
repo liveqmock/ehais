@@ -5,112 +5,50 @@
     <meta charset="utf-8" />
     <title></title>
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="/css/page.css" />
 </head>
 
 <body>
+
+<#include "/include/pager.html">
+
     <div class="wrapper">
-        <div class="topBar">
-            <div class="main">
-                <div class="fl">
-                    <div class="index icon">
-                        <img src="./img/index.png" alt="">
-
-                    </div>
-                    <div class="mobile icon">
-                        <img src="./img/mobile.png" alt="">
-
-                    </div>
-                    <div class="mobile_txt">手机版</div>
-                </div>
-                <div class="fr">
-                    <div class="tel icon">
-                        <img src="./img/tel.png" alt="">
-
-                    </div>
-                    <div class="tel_txt">24/7 客服热线400-025-7585</div>
-                    <div class="user icon">
-                        <img src="./img/user.png" alt="">
-
-                    </div>
-                    <div class="login_txt">登录</div>
-                    <div class="line"></div>
-                    <div class="register_txt">注册</div>
-                </div>
-            </div>
-        </div>
-        <div class="nav">
-            <div class="main">
-                <div class="logo"></div>
-                <ul>
-                    <li class="active">首页</li>
-                    <li>汽车商城</li>
-                    <li>优惠促销</li>
-                    <li>售后服务</li>
-                    <li>评估中心</li>
-                    <li>新闻动态</li>
-                    <li>关于我们</li>
-                </ul>
-                <div class="search fr">
-                    <input type="text" id="search" name="search" placeholder="搜索车型" />
-                    <button type="button" class="search_btn"></button>
-                </div>
-            </div>
-        </div>
+    
+        <#include "header.html">
 
         <div id="news">
             <div class="news_mainbody">
                 <div class="news_navlist">
                     <span>首页</span>
                     <span>>></span>
-                    <span>新闻动态</span>
+                    <span>${nav!''}</span>
                     
                 </div>
 
                 <div class="content">
                     <ul>
+                        <#list article_list as article>
                         <li>
                             <div class="itemImg">
-                                <img src="./img/news.png" alt="">
+                                <img src="${article.articleThumb!''}" alt="">
                             </div>
                             <div class="newsBody">
-                                <p class="title">莅临指导工作</p>
-                                <p class="text">莅临指导工作莅临指导工作莅临指导工作莅临指导工作莅临指导工作莅临指导工作莅临指导工作</p>
+                                <p class="title">${article.title!''}</p>
+                                <p class="text">${article.description!''}</p>
                             </div>
                             <div id="itemRight">
-                                <p class="time">2017-12-05</p>
-                                <p class="more">查看详情</p>
+                                <p class="time">${(article.articleDate?string("yyyy-MM-dd"))!''}</p>
+                                <p class="more"><a href="article_detail_${article.articleId}.html">查看详情</a></p>
                             </div>
                         </li>
-                        <li>
-                            <div class="itemImg">
-                                <img src="./img/news.png" alt="">
-                            </div>
-                            <div class="newsBody">
-                                <p class="title">莅临指导工作</p>
-                                <p class="text">莅临指导工作莅临指导工作莅临指导工作莅临指导工作莅临指导工作莅临指导工作莅临指导工作</p>
-                            </div>
-                            <div id="itemRight">
-                                <p class="time">2017-12-05</p>
-                                <p class="more">查看详情</p>
-                        </li>
-                        <li>
-                            <div class="itemImg">
-                                <img src="./img/news.png" alt="">
-                            </div>
-                            <div class="newsBody">
-                                <p class="title">莅临指导工作</p>
-                                <p class="text">莅临指导工作莅临指导工作莅临指导工作莅临指导工作莅临指导工作莅临指导工作莅临指导工作</p>
-                            </div>
-                            <div id="itemRight">
-                                <p class="time">2017-12-05</p>
-                                <p class="more">查看详情</p>
-                        </li>
+                        </#list>
+                        
                     </ul>
+                    
+                    <@pager ReturnObject=rm maxShowPageCount=4 />
+                    
                 </div>
 
-
-
-               
 
 
             </div>
@@ -121,18 +59,7 @@
 
 
 
-        <div class="footer">
-            <div class="main">
-                <div class="fl">
-                    <img src="img/logo.png" />
-                    <div class="copy">2015-2020广州龙粤行汽车发展有限公司版权所有 粤ICP备15057833号-1</div>
-                </div>
-                <div class="fr">
-                    <img src="img/menu.png" />
-                    <div class="attention">关注我们</div>
-                </div>
-            </div>
-        </div>
+        <#include "footer.html"/>
 
     </div>
 </body>

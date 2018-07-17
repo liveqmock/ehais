@@ -18,14 +18,14 @@
                     <ul>
                         
                         <#list cat_list as cat>
-                        <li>${cat.title}</li>
+                        <li <#if (menu?? && menu == cat.module)>class="active"</#if> ><a href="information-${cat.module}.html">${cat.title!''}</a></li>
                         <li class="verLine"></li>
                         </#list>
                         
                         
                     </ul>
                     <div class="content">
-                        ${article.content}
+                        ${article.content!''}
                     </div>
                     
                 </div>

@@ -22,13 +22,13 @@ import org.ehais.shop.model.HaiAdExample;
 import org.ehais.shop.model.HaiGoods;
 import org.ehais.shop.model.HaiGoodsExample;
 import org.ehais.tools.EConditionObject;
+import org.ehais.tools.ReturnObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/lyh")
@@ -75,7 +75,7 @@ public class LyhCarWebController extends CommonController{
 			EHaiArticleExample artExp = new EHaiArticleExample();
 			artExp.createCriteria().andStoreIdEqualTo(store_id)
 			.andClassifyEqualTo(EArticleClassifyEnum.LIST)
-			.andModuleEqualTo(EArticleModuleEnum.ARTICLE)
+			.andModuleEqualTo(EArticleModuleEnum.NEWS)
 			.andIsHotEqualTo(true);
 			artExp.setOrderByClause("article_date desc");
 			artExp.setLimitStart(0);
@@ -99,7 +99,7 @@ public class LyhCarWebController extends CommonController{
 			}
 			
 			
-			
+			modelMap.addAttribute("menu", "index");
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -107,8 +107,8 @@ public class LyhCarWebController extends CommonController{
 	}
 	
 	//单页面
-	@RequestMapping("/article_{module}.html")
-	public String article(ModelMap modelMap,
+	@RequestMapping("/information-{module}.html")
+	public String information(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@PathVariable(value = "module") String module) {
 		
@@ -141,6 +141,8 @@ public class LyhCarWebController extends CommonController{
 				modelMap.addAttribute("article", new EHaiArticle());
 			}
 			
+			modelMap.addAttribute("menu", module);
+			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -157,6 +159,9 @@ public class LyhCarWebController extends CommonController{
 				browser = "mobile";
 			}
 			
+			
+			
+			modelMap.addAttribute("menu", "evaluate");
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -164,44 +169,61 @@ public class LyhCarWebController extends CommonController{
 	}
 	
 	//新闻中心&服务中心&促销优惠
-	@RequestMapping("/article_{module}_{cid}.html")
+	@RequestMapping("/article-{module}-{cid}.html")
 	public String news(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@PathVariable(value = "cid") Integer cid,
 			@PathVariable(value = "module") String module,
 			@ModelAttribute EConditionObject condition) {
 		String browser = "pc";
+		String html = "news";
 		try {
 			if(isWeiXin(request) || JudgeIsMoblie(request)){
 				browser = "mobile";
 			}
 			
 			
-			//查找分类列表
-			EHaiArticleCatExample catExp = new EHaiArticleCatExample();
-			catExp.createCriteria().andStoreIdEqualTo(store_id).andModuleEqualTo(module);
-			List<EHaiArticleCat> cat_list = eHaiArticleCatMapper.selectByExample(catExp);
-			modelMap.addAttribute("cat_list", cat_list);
+			if(cid > 0) {
+				//查找分类列表
+				EHaiArticleCatExample catExp = new EHaiArticleCatExample();
+				catExp.createCriteria().andStoreIdEqualTo(store_id).andModuleEqualTo(module);
+				List<EHaiArticleCat> cat_list = eHaiArticleCatMapper.selectByExample(catExp);
+				modelMap.addAttribute("cat_list", cat_list);
+				html = "service";
+			}
+			
 			
 			
 			//查找资讯列表
 			EHaiArticleExample artExp = new EHaiArticleExample();
-			artExp.createCriteria().andStoreIdEqualTo(store_id)
+			EHaiArticleExample.Criteria c = artExp.createCriteria();
+			c.andStoreIdEqualTo(store_id)
 			.andClassifyEqualTo(EArticleClassifyEnum.LIST)
-			.andModuleEqualTo(module)
-			.andCatIdEqualTo(cid);
+			.andModuleEqualTo(module);
+			if(cid > 0) c.andCatIdEqualTo(cid);
 			artExp.setOrderByClause("article_date desc");
 			artExp.setLimitStart(condition.getStart());
 			artExp.setLimitEnd(condition.getRows());
 			List<EHaiArticle> article_list = eHaiArticleMapper.selectByExample(artExp);
 			modelMap.addAttribute("article_list", article_list);
 			
+			Long count = eHaiArticleMapper.countByExample(artExp);
 			
+			ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
+			rm.setRows(article_list);
+			rm.setTotal(count);
+			rm.setAction("article-"+module+"-"+cid+".html");
+			rm.setCurrentPage(condition.getPage());
+			modelMap.addAttribute("rm", rm);
+			modelMap.addAttribute("pageCount", condition.getRows());
 			
+			modelMap.addAttribute("nav", EArticleModuleEnum.getArticleModuleEnum().getModuleName(module));
+			
+			modelMap.addAttribute("menu", module);
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		return "/"+folder+"/"+browser+"/article_list";
+		return "/"+folder+"/"+browser+"/"+html;
 	}
 	
 //	@RequestMapping("/service")
@@ -229,6 +251,7 @@ public class LyhCarWebController extends CommonController{
 				browser = "mobile";
 			}
 			
+			modelMap.addAttribute("menu", "shop");
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -244,7 +267,7 @@ public class LyhCarWebController extends CommonController{
 			if(isWeiXin(request) || JudgeIsMoblie(request)){
 				browser = "mobile";
 			}
-			
+			modelMap.addAttribute("menu", "shop");
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
