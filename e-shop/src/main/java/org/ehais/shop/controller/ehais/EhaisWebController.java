@@ -422,7 +422,7 @@ public class EhaisWebController extends EhaisCommonController {
 		mapData.put("adList", adList);
 		//读取分类
 		EHaiArticleCatExample acatExample = new EHaiArticleCatExample();
-		acatExample.createCriteria().andStoreIdEqualTo(store_id).andIsValidEqualTo(true).andModuleEqualTo(EArticleModuleEnum.ARTICLE);
+		acatExample.createCriteria().andStoreIdEqualTo(store_id).andValidEqualTo(true).andModuleEqualTo(EArticleModuleEnum.ARTICLE);
 		acatExample.setOrderByClause("sort_order asc");
 		List<EHaiArticleCatSimple> articleCatList = eHaiArticleCatMapper.mySelectByExample(acatExample);
 		mapData.put("articleCatList", articleCatList);

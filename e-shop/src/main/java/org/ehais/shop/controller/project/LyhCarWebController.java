@@ -169,29 +169,16 @@ public class LyhCarWebController extends CommonController{
 	}
 	
 	//新闻中心&服务中心&促销优惠
-	@RequestMapping("/article-{module}-{cid}.html")
+	@RequestMapping("/article-{module}.html")
 	public String news(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
-			@PathVariable(value = "cid") Integer cid,
 			@PathVariable(value = "module") String module,
 			@ModelAttribute EConditionObject condition) {
 		String browser = "pc";
-		String html = "news";
 		try {
 			if(isWeiXin(request) || JudgeIsMoblie(request)){
 				browser = "mobile";
 			}
-			
-			
-			if(cid > 0) {
-				//查找分类列表
-				EHaiArticleCatExample catExp = new EHaiArticleCatExample();
-				catExp.createCriteria().andStoreIdEqualTo(store_id).andModuleEqualTo(module);
-				List<EHaiArticleCat> cat_list = eHaiArticleCatMapper.selectByExample(catExp);
-				modelMap.addAttribute("cat_list", cat_list);
-				html = "service";
-			}
-			
 			
 			
 			//查找资讯列表
@@ -200,7 +187,6 @@ public class LyhCarWebController extends CommonController{
 			c.andStoreIdEqualTo(store_id)
 			.andClassifyEqualTo(EArticleClassifyEnum.LIST)
 			.andModuleEqualTo(module);
-			if(cid > 0) c.andCatIdEqualTo(cid);
 			artExp.setOrderByClause("article_date desc");
 			artExp.setLimitStart(condition.getStart());
 			artExp.setLimitEnd(condition.getRows());
@@ -212,7 +198,7 @@ public class LyhCarWebController extends CommonController{
 			ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
 			rm.setRows(article_list);
 			rm.setTotal(count);
-			rm.setAction("article-"+module+"-"+cid+".html");
+			rm.setAction("article-"+module+".html");
 			rm.setCurrentPage(condition.getPage());
 			modelMap.addAttribute("rm", rm);
 			modelMap.addAttribute("pageCount", condition.getRows());
@@ -223,23 +209,70 @@ public class LyhCarWebController extends CommonController{
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		return "/"+folder+"/"+browser+"/"+html;
+		return "/"+folder+"/"+browser+"/news";
 	}
 	
-//	@RequestMapping("/service")
-//	public String service(ModelMap modelMap,
-//			HttpServletRequest request,HttpServletResponse response) {
-//		String browser = "pc";
-//		try {
-//			if(isWeiXin(request) || JudgeIsMoblie(request)){
-//				browser = "mobile";
-//			}
-//			
-//		}catch(Exception e) {
-//			e.printStackTrace();
-//		}
-//		return "/"+folder+"/"+browser+"/service";
-//	}
+	@RequestMapping("/service-{module}.html")
+	public String service(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@PathVariable(value = "module") String module,
+			@ModelAttribute EConditionObject condition) {
+		String browser = "pc";
+		try {
+			if(isWeiXin(request) || JudgeIsMoblie(request)){
+				browser = "mobile";
+			}
+			
+			
+			//查找分类列表
+			EHaiArticleCatExample catExp = new EHaiArticleCatExample();
+			catExp.createCriteria().andStoreIdEqualTo(store_id);
+			List<EHaiArticleCat> cat_list = eHaiArticleCatMapper.selectByExample(catExp);
+			modelMap.addAttribute("cat_list", cat_list);
+			EHaiArticleCat article_cat = null;
+			for (EHaiArticleCat eHaiArticleCat : cat_list) {
+				if(eHaiArticleCat.getModule().equals(module)) {
+					article_cat = eHaiArticleCat;
+				}
+			}
+			
+			
+			if(article_cat == null) article_cat = new EHaiArticleCat();
+			
+			
+			modelMap.addAttribute("article_cat", article_cat);
+			modelMap.addAttribute("nav", article_cat.getCatName());
+			
+			
+			//查找资讯列表
+			EHaiArticleExample artExp = new EHaiArticleExample();
+			EHaiArticleExample.Criteria c = artExp.createCriteria();
+			c.andStoreIdEqualTo(store_id)
+			.andClassifyEqualTo(EArticleClassifyEnum.TOPIC)
+			.andModuleEqualTo(module);
+			artExp.setOrderByClause("article_date desc");
+			artExp.setLimitStart(condition.getStart());
+			artExp.setLimitEnd(condition.getRows());
+			List<EHaiArticle> article_list = eHaiArticleMapper.selectByExample(artExp);
+			modelMap.addAttribute("article_list", article_list);
+			
+			Long count = eHaiArticleMapper.countByExample(artExp);
+			
+			ReturnObject<EHaiArticle> rm = new ReturnObject<EHaiArticle>();
+			rm.setRows(article_list);
+			rm.setTotal(count);
+			rm.setAction("service-"+module+".html");
+			rm.setCurrentPage(condition.getPage());
+			modelMap.addAttribute("rm", rm);
+			modelMap.addAttribute("pageCount", condition.getRows());
+			
+			
+			modelMap.addAttribute("menu", module);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return "/"+folder+"/"+browser+"/service";
+	}
 	
 	
 	@RequestMapping("/shop")

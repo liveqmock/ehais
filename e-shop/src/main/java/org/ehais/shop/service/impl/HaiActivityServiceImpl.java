@@ -498,7 +498,7 @@ bean.setStoreId(model.getStoreId());
 bean.setCode(model.getCode());
 bean.setUserId(model.getUserId());
 bean.setImages(model.getImages());
-bean.setIsValid(model.getIsValid());
+bean.setValid(model.getValid());
 
 
 		int code = haiArticleCatMapper.updateByExampleSelective(bean, example);

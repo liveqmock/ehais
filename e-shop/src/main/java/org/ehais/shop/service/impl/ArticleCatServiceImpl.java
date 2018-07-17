@@ -180,7 +180,7 @@ public class ArticleCatServiceImpl extends CommonServiceImpl implements ArticleC
 			return rm;
 		}
 
-		model.setIsValid(true);
+		model.setValid(true);
 
 		int code = eHaiArticleCatMapper.insertSelective(model);
 		rm.setCode(code);
@@ -253,7 +253,7 @@ bean.setStoreId(model.getStoreId());
 bean.setCode(model.getCode());
 bean.setUserId(model.getUserId());
 bean.setImages(model.getImages());
-bean.setIsValid(true);
+bean.setValid(true);
 
 		int code = eHaiArticleCatMapper.updateByExampleSelective(bean, example);
 		rm.setCode(code);
@@ -393,7 +393,7 @@ bean.setIsValid(true);
 				ac.setParentId(0);
 				ac.setStoreId(store_id);
 				ac.setModule(EArticleModuleEnum.ARTICLE);
-				ac.setIsValid(true);ac.setCatType(1);ac.setKeywords("");ac.setCatDesc("");ac.setSortOrder(1);ac.setShowInNav(true);ac.setParentId(0);
+				ac.setValid(true);ac.setCatType(1);ac.setKeywords("");ac.setCatDesc("");ac.setSortOrder(1);ac.setShowInNav(true);ac.setParentId(0);
 				eHaiArticleCatMapper.insert(ac);
 				parent_cat_id = ac.getCatId();
 			}
@@ -421,7 +421,7 @@ bean.setIsValid(true);
 			}else {
 				cate.setModule(cate.getModule());
 			}
-			cate.setIsValid(true);cate.setCatType(1);cate.setKeywords("");cate.setCatDesc("");cate.setSortOrder(1);cate.setShowInNav(true);
+			cate.setValid(true);cate.setCatType(1);cate.setKeywords("");cate.setCatDesc("");cate.setSortOrder(1);cate.setShowInNav(true);
 			eHaiArticleCatMapper.insert(cate);
 		}else{System.out.println(cate.getCatName()+"&&&&&&&&&&&&&&&&&&&&"+parent_cat_id);
 			cate = articleCatList.get(0);

@@ -25,10 +25,6 @@ public class EOrderClassifyEnum {
 	public static String inventory = "inventory";//库存，盘点
 	public static String capital = "capital";//期初资本设置
 	
-	
-	
-	
-	
 	public static Map<String,Map<String,Object>> map = new HashMap<String,Map<String,Object>>();
 	
 
