@@ -2,6 +2,8 @@
 html,body{padding: 0;margin: 0;font-family:"MicrosoftYaHei / Regular";font-size: 14px;}
 ul,li{list-style: none;padding: 0;margin: 0;}
 
+@bgcolor:#1B1C20;
+@white:#FFFFFF;
 .center-vertical{
     position: relative;
 	top: 50%;
@@ -35,9 +37,9 @@ ul,li{list-style: none;padding: 0;margin: 0;}
 }
 .index.icon{
   
-    background-size: 100% 100%;
-    -ms-filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(src='C:/ehais/projects/long/img/index.png',sizingMethod='scale')";
-    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='C:/ehais/projects/long/img/index.png',sizingMethod='scale');
+    // background-size: 100% 100%;
+    // -ms-filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(src='C:/ehais/projects/long/img/index.png',sizingMethod='scale')";
+    // filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='C:/ehais/projects/long/img/index.png',sizingMethod='scale');
     margin-right: 30px;
     img{
         width: 100%;
@@ -46,10 +48,10 @@ ul,li{list-style: none;padding: 0;margin: 0;}
 }
 .mobile.icon{
   
-    background-size: contain;
-    -ms-filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(src='C:/ehais/projects/long/img/mobile.png',sizingMethod='scale')";
-    filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='C:/ehais/projects/long/img/mobile.png',sizingMethod='scale');
-    background-repeat:no-repeat;
+    // background-size: contain;
+    // -ms-filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(src='C:/ehais/projects/long/img/mobile.png',sizingMethod='scale')";
+    // filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='C:/ehais/projects/long/img/mobile.png',sizingMethod='scale');
+    // background-repeat:no-repeat;
     img{
         width: 100%;
         height: 100%;
@@ -89,28 +91,72 @@ ul,li{list-style: none;padding: 0;margin: 0;}
         padding-left: 65px;
         float: left;
         li{
-            float: left;color: #fff;margin-top: 54px;margin-right: 38px;
+            float: left;margin-top: 54px;margin-right: 38px;
+            a{
+                color: blue ;
+                text-decoration: none;
+            }
+            a.active{
+                color: purple !important;
+            }
+
+            a:link{
+                // color: blue ;
+            }
+            a:visited{
+                // color: purple;
+
+            }
+            a:hover{
+                // color: #D4BD87;
+            }
+            a:active{
+                // color: purple;
+            }
+            
         }
     }
     li.active{
-        color: #D4BD87;
+        // color: #D4BD87;
+
     }
     .search{
-        width: 155px;height: 30px;
+        position: relative;
+        width: 155px;
+        height: 30px;
         background: #fff;
         -moz-border-radius: 14px; /* Firefox */
         -webkit-border-radius: 14px; /* Safari 和 Chrome */
         border-radius: 14px; /* Opera 10.5+, 以及使用了IE-CSS3的IE浏览器 */
-        behavior: url(/ie-css3.htc); /* 通知IE浏览器调用脚本作用于'box'类 */
-        position: relative;
+        behavior: url(./ie-css3.htc); /* 通知IE浏览器调用脚本作用于'box'类 */
         margin-top: 42px;
         padding: 0 20px;
-        input{border:none;width: 90%;height: 96%;background: none;outline:none; }
+        input{
+            border:none;width: 90%;
+            height: 100%;
+            background: none;
+            outline:none; }
         button{
-            position: absolute;right: 2px;background: url(../img/search.png);border: none;top: 1px;
-            width: 25px;height: 25px;
-            background-repeat:no-repeat;background-size: 25px 25px;
+            position: absolute;
+            right: 12px;
+            top:5px;
+            border: none;
+            padding: 0;
+            // top: 1px;
+            width: 20px;
+            height: 20px;
+            // background: url(../img/search.png) no-repeat center;
+            // // background-repeat:no-repeat;
+            // background-size: 100% 100%;
+            // filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='C:/ehais/projects/long/img/search.png',sizingMethod='scale');
+            // -ms-filter:"progid:DXImageTransform.Microsoft.AlphaImageLoader(src='C:/ehais/projects/long/img/search.png',sizingMethod='scale')";
+            // behavior: url(./PIE.htc); /* 通知IE浏览器调用脚本作用于'box'类 */
             outline:none; 
+            background: @white;
+            img{
+                width: 100%;
+                height: 100%;
+            }
         }
     }
 }
@@ -184,6 +230,58 @@ ul,li{list-style: none;padding: 0;margin: 0;}
         position: absolute;top: 0;left: 0;z-index: 100;width: 94px;height: 93px;
         background: url(../img/new.png);
     }
+    .swiper-container{
+        height: 520px;
+    }
+    .swiper-wrapper{
+        // width: 50% !important;
+        height: auto;
+        justify-content: center;
+    }
+    .swiper-slide{
+        // width: 255px !important;
+        height: 479px !important;
+        // margin-right: 30px;
+        .item{
+            width: 255px;
+            height: 479px;
+            margin: 0 auto;
+        }
+    }
+    .swiper-slide .top{
+        width: 100%;
+        height: 381px;
+        img{
+            display: block;
+        }
+        .new_icon{
+            width: 94px;
+            height: 94px;
+        }
+        .car_img{
+            width: 228px;
+            height: 89px;
+            margin: 69px auto 128px auto;
+        }
+    }
+    .swiper-slide .bottom{
+        width: 100%;
+        height: 98px;
+        font-size: 18px;
+        background: @bgcolor;
+        color: @white;
+        // padding-top: 23px;
+        .model{
+            margin: 0 0 0 49px;
+            padding-top: 23px;
+            
+        }
+        .price{
+            margin: 0 0 0 49px;            
+        }
+    }
+
+
 }
 
 .news{
@@ -249,9 +347,115 @@ ul,li{list-style: none;padding: 0;margin: 0;}
 }
 
 
+//商城
+#shop_detail{
+    width: 100%;
+    .shop_mainbody{
+        width: 1280px;
+        height: auto;
+        margin: 0 auto;
+        .shop_navlist{
+            margin: 10px 0;
+            font-size: 16px;
+           
+        }
+    }
+}
+.shop_mainbody .nav_banner{
+    width: 1020px;
+    height: 116px;
+    background: @bgcolor;
+    padding: 52px 130px;
+    
+}
 
-// 商城
-#shop{
+.shop_mainbody{
+    .models{
+        width: 100%;
+        height: auto;
+        background: #D4BD87;
+        // margin-bottom:15px; 
+        li{
+            float: left;
+            width: 125px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            font-size: 16px;
+            color: @white;
+            border:1px solid @white;
+            margin-right: -1px;
+           
+        }
+        .active{
+            background:#D4BD87;
+            color: #000; 
+        }
+    }
+    .brand_logo,.all_model,.model_detail{
+        float: left;
+    }
+    .brand_logo{
+        img{
+            margin-top: 15px;
+            width: 60px;
+            height: 60px;
+        }
+    }
+}
+
+.shop_mainbody .all_model{
+    margin-left: 22px;
+    margin-top: 58px;
+    font-size: 16px;
+    color: @white;
+}
+
+.shop_mainbody .model_detail{
+    margin-top: 58px;
+    li{
+        float: left;
+        padding-left: 10px;
+        font-size: 16px;
+        color: @white;
+    }    
+}
+
+.shop_mainbody .items{
+    margin: 25px 130px 10px 130px;
+    width: 1020px;
+    height: auto;
+    // background: #000;
+}
+.shop_mainbody .item_list{
+    width: 100%;
+    li{
+        float: left;
+        width: 33.3%;
+        margin: 85px 0 67px 0;
+        img{
+            display: block;
+            width: 228px;
+            height: 89px;
+            margin: 0 auto;
+            padding-bottom: 35px;
+        }
+        .model,.price{
+            font-size: 18px;
+            margin-left: 80px;
+            color: @bgcolor;
+            span{
+                display: inline;
+                text-align: center;
+            }
+        }
+    }
+}
+
+
+
+// 商城详情
+#shop_detail{
     width: 100%;
     .shop_mainbody{
         width: 1280px;
@@ -371,7 +575,7 @@ ul,li{list-style: none;padding: 0;margin: 0;}
             float: right;
             top:46px;
             
-            right: 367px;
+            right: 15%;
             width: 462px;
             height: 725px;
             background: #F4F4F4;
@@ -596,7 +800,11 @@ ul,li{list-style: none;padding: 0;margin: 0;}
             height:516px;
             margin: 68px 0 0 59px;
             padding: 20px;
-            background: #B9B9B9;
+            // background: #B9B9B9;
+            img{
+                width: 817px;
+                height:516px;
+            }
         }
         .company{
             margin: 145px 0 0 44px;

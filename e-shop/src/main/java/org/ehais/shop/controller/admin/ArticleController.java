@@ -61,20 +61,32 @@ public class ArticleController extends CommonController{
 	public String ehaisArticleView(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "module", required = false) String module,
-			@RequestParam(value = "single", required = false) String single) {
+			@RequestParam(value = "single", required = false) String single,
+			@RequestParam(value = "classify", required = false) String classify) {
 		
 		modelMap.addAttribute("module",module);
 		if(StringUtils.isBlank(module))module = EArticleModuleEnum.ARTICLE;
 		modelMap.addAttribute("single", (StringUtils.isNotBlank(single) && single.equals("true"))?"true":"false");
+		
+		modelMap.addAttribute("module_name",EArticleModuleEnum.getArticleModuleEnum().getModuleName(module));
+		
+		if(StringUtils.isBlank(classify)) {
+			modelMap.addAttribute("classify", "list");
+		}else {
+			modelMap.addAttribute("classify", classify);
+		}
+		
+		
 		try{
 			ReturnObject<EHaiArticle> rm = ehaisArticleService.article_list(request,module);
 			modelMap.addAttribute("rm", rm);
 			
-			if((StringUtils.isNotBlank(single) && single.equals("true"))) {
-				modelMap.addAttribute("classify", "single");
-			}else {
-				modelMap.addAttribute("classify", "list");
-			}
+			
+//			if((StringUtils.isNotBlank(single) && single.equals("true"))) {
+//				modelMap.addAttribute("classify", "single");
+//			}else {
+//				modelMap.addAttribute("classify", "list");
+//			}
 			
 			
 			return this.view(request, "/article/view");
@@ -95,7 +107,8 @@ public class ArticleController extends CommonController{
 			@RequestParam(value = "module", required = false) String module,
 			@ModelAttribute EConditionObject condition,
 			@RequestParam(value = "cat_id", required = false) Integer cat_id,
-			@RequestParam(value = "title", required = false) String title) {
+			@RequestParam(value = "title", required = false) String title,
+			@RequestParam(value = "classify", required = false) String classify) {
 		if(StringUtils.isBlank(module))module = EArticleModuleEnum.ARTICLE;
 		try{
 			ReturnObject<EHaiArticle> rm = ehaisArticleService.article_list_json(request,module, condition , cat_id , title);
@@ -114,22 +127,25 @@ public class ArticleController extends CommonController{
 	public String ehaisArticleAddDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "module", required = false) String module,
-			@RequestParam(value = "single", required = false) String single
+			@RequestParam(value = "single", required = false) String single,
+			@RequestParam(value = "classify", required = false) String classify
 			) {
 		modelMap.addAttribute("module",module);
 		if(StringUtils.isBlank(module))module = EArticleModuleEnum.ARTICLE;
 		modelMap.addAttribute("single", (StringUtils.isNotBlank(single) && single.equals("true"))?"true":"false");
+		
+		if(StringUtils.isBlank(classify)) {
+			modelMap.addAttribute("classify", "list");
+		}else {
+			modelMap.addAttribute("classify", classify);
+		}
+		
 		try{
 			ReturnObject<EHaiArticle> rm = ehaisArticleService.article_insert(request,module);
 			modelMap.addAttribute("rm", rm);
 			modelMap.addAttribute("uptoken", QiniuUtil.getUpToken(accessKey,secretKey,bucket));
 			modelMap.addAttribute("domain", domain);
 			
-			if((StringUtils.isNotBlank(single) && single.equals("true"))) {
-				modelMap.addAttribute("classify", "single");
-			}else {
-				modelMap.addAttribute("classify", "list");
-			}
 			
 			return this.view(request, "/article/detail");
 		}catch(Exception e){
@@ -173,22 +189,30 @@ public class ArticleController extends CommonController{
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "module", required = false) String module,
 			@RequestParam(value = "single", required = false) String single,
-			@RequestParam(value = "articleId", required = true) Integer articleId
+			@RequestParam(value = "articleId", required = true) Integer articleId,
+			@RequestParam(value = "classify", required = false) String classify
 			) {
 		modelMap.addAttribute("module",module);
 		if(StringUtils.isBlank(module))module = EArticleModuleEnum.ARTICLE;
 		modelMap.addAttribute("single", (StringUtils.isNotBlank(single) && single.equals("true"))?"true":"false");
+		
+		if(StringUtils.isBlank(classify)) {
+			modelMap.addAttribute("classify", "list");
+		}else {
+			modelMap.addAttribute("classify", classify);
+		}
+		
 		try{
 			ReturnObject<EHaiArticle> rm = ehaisArticleService.article_update(request,module,articleId);
 			modelMap.addAttribute("rm", rm);
 			modelMap.addAttribute("uptoken", QiniuUtil.getUpToken(accessKey,secretKey,bucket));
 			modelMap.addAttribute("domain", domain);
 			
-			if((StringUtils.isNotBlank(single) && single.equals("true"))) {
-				modelMap.addAttribute("classify", "single");
-			}else {
-				modelMap.addAttribute("classify", "list");
-			}
+//			if((StringUtils.isNotBlank(single) && single.equals("true"))) {
+//				modelMap.addAttribute("classify", "single");
+//			}else {
+//				modelMap.addAttribute("classify", "list");
+//			}
 			
 			return this.view(request, "/article/detail");
 		}catch(Exception e){

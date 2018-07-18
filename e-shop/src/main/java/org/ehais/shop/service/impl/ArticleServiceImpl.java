@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.ehais.common.EConstants;
+import org.ehais.enums.EArticleClassifyEnum;
 import org.ehais.enums.EArticleModuleEnum;
 import org.ehais.enums.EWXMediaTypeEnum;
 import org.ehais.epublic.mapper.EHaiArticleCatMapper;
@@ -727,6 +728,7 @@ bean.setArticleSource(model.getArticleSource());//网络来源
 		EHaiArticleExample.Criteria c = example.createCriteria();
 		c.andStoreIdEqualTo(store_id);
 		c.andModuleEqualTo(moduleEnum);
+		c.andClassifyEqualTo(EArticleClassifyEnum.SINGLE);
 		List<EHaiArticle> list = eHaiArticleMapper.selectByExampleWithBLOBs(example);
 		EHaiArticle model = null;
 		if(list == null || list.size() == 0){
@@ -734,6 +736,7 @@ bean.setArticleSource(model.getArticleSource());//网络来源
 			model.setModule(moduleEnum);
 			model.setStoreId(store_id);
 			model.setContent("");
+			model.setClassify(EArticleClassifyEnum.SINGLE);
 			eHaiArticleMapper.insertSelective(model);
 		}else{
 			model = list.get(0);

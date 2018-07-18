@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/lyh")
 public class LyhCarWebController extends CommonController{
 	
-	private Integer store_id = 106;
+	private Integer store_id = 10064;
 	private String folder = "lyhcar";
 	@Autowired
 	private HaiAdMapper haiAdMapper;
@@ -121,7 +121,7 @@ public class LyhCarWebController extends CommonController{
 			//读取所有单文章列表
 			EHaiArticleExample artCatExp = new EHaiArticleExample();
 			artCatExp.createCriteria().andStoreIdEqualTo(store_id)
-			.andClassifyEqualTo(EArticleClassifyEnum.SINGLE);
+			.andClassifyEqualTo(EArticleClassifyEnum.SINGLE).andIsOpenEqualTo(true);
 			List<EHaiArticle> cat_list = eHaiArticleMapper.selectByExample(artCatExp);
 			modelMap.addAttribute("cat_list", cat_list);
 			
@@ -134,14 +134,15 @@ public class LyhCarWebController extends CommonController{
 			artExp.setOrderByClause("article_date desc");
 			artExp.setLimitStart(0);
 			artExp.setLimitEnd(1);
-			List<EHaiArticle> article_list = eHaiArticleMapper.selectByExample(artExp);
+			List<EHaiArticle> article_list = eHaiArticleMapper.selectByExampleWithBLOBs(artExp);
 			if(article_list.size() > 0) {
 				modelMap.addAttribute("article", article_list.get(0));
 			}else {
 				modelMap.addAttribute("article", new EHaiArticle());
 			}
 			
-			modelMap.addAttribute("menu", module);
+			modelMap.addAttribute("menu", "about");
+			modelMap.addAttribute("sub_menu", module);
 			
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -187,6 +188,7 @@ public class LyhCarWebController extends CommonController{
 			c.andStoreIdEqualTo(store_id)
 			.andClassifyEqualTo(EArticleClassifyEnum.LIST)
 			.andModuleEqualTo(module);
+			
 			artExp.setOrderByClause("article_date desc");
 			artExp.setLimitStart(condition.getStart());
 			artExp.setLimitEnd(condition.getRows());
@@ -267,7 +269,9 @@ public class LyhCarWebController extends CommonController{
 			modelMap.addAttribute("pageCount", condition.getRows());
 			
 			
-			modelMap.addAttribute("menu", module);
+			modelMap.addAttribute("menu", "service");
+			modelMap.addAttribute("sub_menu", module);
+			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}

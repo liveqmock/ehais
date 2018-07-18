@@ -17,7 +17,7 @@
                     <ul>
                                                 
                         <#list cat_list as cat>
-                        <li <#if (menu?? && menu == cat.module)>class="active"</#if> ><a href="service-${cat.module}.html">${cat.catName!''}</a></li>
+                        <li <#if (sub_menu?? && sub_menu == cat.module)>class="active"</#if> ><a href="service-${cat.module}.html">${cat.catName!''}</a></li>
                         <li class="verLine"></li>
                         </#list>
                         

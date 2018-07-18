@@ -29,7 +29,7 @@
 		<div class="header">
 			<div class="nav">
 				<i class="icon fa fa-home">&nbsp;</i>
-				<div class="nav0">栏目资讯</div>
+				<div class="nav0">${module_name!'栏目资讯'}</div>
 			</div>
 		</div>
 		<div class="body">
@@ -50,7 +50,7 @@
 				<div class="col_main <#if (single?? && single=='true')>body</#if>">
 					<h4>
 						<i class="fa fa-list"></i>
-						资讯列表
+						${module_name!'栏目资讯'}列表
 						<a href="ehaisArticleAddDetail?module=${module!''}&single=${single!''}&classify=${classify!''}" class="fa fa-plus btn btn-primary" >添加资讯</a>
 					</h4>				
 					<div class="panel panel-default">
