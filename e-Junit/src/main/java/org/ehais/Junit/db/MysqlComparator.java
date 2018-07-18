@@ -24,7 +24,20 @@ public class MysqlComparator {
     public static String PASSWORD2 = "Ehais42016048ok!";
     public static String db1 = "sqlehaismall";
     public static String db2 = "finance";
-      
+    
+    
+    
+    
+//    public static String url1 = "jdbc:mysql://183.240.153.79:3306/finance";  
+//    public static String url2 = "jdbc:mysql://127.0.0.1:3306/sqlehaismall";  
+//    public static String USERNAME1 = "lgj628";  
+//    public static String PASSWORD1 = "Ehais42016048ok!";  
+//    public static String USERNAME2 = "root";  
+//    public static String PASSWORD2 = "Ehais42016048ok!";
+//    public static String db1 = "finance";
+//    public static String db2 = "sqlehaismall";
+    
+    
     public static void main(String[] args) throws Exception{   
     	MysqlComparator com = new MysqlComparator();  
         Connection con1 = com.getConnection(url1,USERNAME1,PASSWORD1);  
