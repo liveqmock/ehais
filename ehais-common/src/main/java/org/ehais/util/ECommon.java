@@ -343,6 +343,15 @@ public class ECommon {
 		if(num == null) return def;
 		return num;
 	}
+	public static Float formatNumberToFloat(Integer num) {
+		if(num == null)return 0F;
+		return num.floatValue();
+	}
+	public static Float formatNumberToFloat(Integer num,Integer def) {
+		if(def == null) def = 0;
+		if(num == null) return def.floatValue();
+		return num.floatValue();
+	}
 
 	public static void main(String[] args) {
 
