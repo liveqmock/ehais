@@ -58,7 +58,7 @@ public class  HaiAdAdminController extends CommonController {
 		try{
 			ReturnObject<HaiAd> rm = haiAdService.ad_list(request);
 			modelMap.addAttribute("rm", rm);
-			return "/admin/ad/view";
+			return this.view(request, "/ad/view");
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("ad", e);
@@ -98,8 +98,7 @@ public class  HaiAdAdminController extends CommonController {
 			modelMap.addAttribute("rm", rm);
 			modelMap.addAttribute("uptoken", QiniuUtil.getUpToken(accessKey,secretKey,bucket));
 			modelMap.addAttribute("domain", domain);
-			return "/admin/ad/detail";
-			
+			return this.view(request, "/ad/detail");
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("ad", e);
@@ -143,7 +142,7 @@ public class  HaiAdAdminController extends CommonController {
 			modelMap.addAttribute("rm", rm);
 			modelMap.addAttribute("uptoken", QiniuUtil.getUpToken(accessKey,secretKey,bucket));
 			modelMap.addAttribute("domain", domain);
-			return "/admin/ad/detail";
+			return this.view(request, "/ad/detail");
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("ad", e);
@@ -201,7 +200,7 @@ public class  HaiAdAdminController extends CommonController {
 		try{
 			ReturnObject<HaiAdPosition> rm = haiAdService.adposition_list(request);
 			modelMap.addAttribute("rm", rm);
-			return "/admin/ad/adposition_view";
+			return this.view(request, "/ad/adposition_view");
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("adposition", e);
@@ -238,8 +237,7 @@ public class  HaiAdAdminController extends CommonController {
 		try{
 			ReturnObject<HaiAdPosition> rm = haiAdService.adposition_insert(request);
 			modelMap.addAttribute("rm", rm);
-			return "/admin/ad/adposition_detail";
-			
+			return this.view(request, "/ad/adposition_view");
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("adposition", e);
@@ -281,8 +279,6 @@ public class  HaiAdAdminController extends CommonController {
 		try{
 			ReturnObject<HaiAdPosition> rm = haiAdService.adposition_update(request,positionId);
 			return this.writeJson(rm);
-//			modelMap.addAttribute("rm", rm);
-//			return "/admin/ad/adposition_detail";
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("adposition", e);

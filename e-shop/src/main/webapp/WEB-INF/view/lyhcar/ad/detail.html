@@ -30,6 +30,7 @@
 <script type="text/javascript" src="/js/bootstrap/spinner/jquery.spinner.js" ></script>
 
 <#include "/FreemarkerMacro.html"/>
+<#include "/uploadfile.html"/>
 
 <title>Insert title here</title>
 </head>
@@ -79,21 +80,24 @@
 <div class="form-group">
 <label class="col-sm-2 control-label">图片</label>
 <div class="col-sm-5">
-	<@bsQiniuImagesPicker id="adPic" value="${rm.model.adPic!''}" domain="${domain}" uptoken="${uptoken}"/>
+	<@uploadImagesPicker id="adPic" value="${rm.model.adPic!''}" />
+	PC图片：1920*650,移动端图片:640*400
 </div>
 </div>
 
 <div class="form-group">
 <label class="col-sm-2 control-label">是否生效</label>
 <div class="col-sm-2">
-	<@checkboxIntegerPicker id="isVoid" value="${(rm.model.isVoid?string(''))!'1'}" />
+	<@checkboxIntegerPicker id="isVoid" value="${(rm.model.valid?string(''))!'1'}" />
 </div>
 </div>
 
 <div class="form-group">
-<label class="col-sm-2 control-label">是否生效</label>
+<label class="col-sm-2 control-label">使用终端</label>
 <div class="col-sm-2">
-	<@BSRadioIntPicker id="isVoid" value="${(rm.model.isVoid?string(''))!'1'}" />
+	
+	<@selectPicker id="mediaType" key="key" text="value" list={'1':'PC','2':'移动端'} value=((rm.model.mediaType?string(''))!'') defaultValue="1" defaultText="PC" />
+	
 </div>
 </div>
 
