@@ -5,129 +5,70 @@
     <meta charset="utf-8" />
     <title></title>
     <link rel="stylesheet" href="/themes/lyh/css/style.css" />
+	<link rel="stylesheet" href="/themes/lyh/ie8.css">
+
 </head>
 
 <body>
     <div class="wrapper">
-        <div class="topBar">
-            <div class="main">
-                <div class="fl">
-                    <div class="index icon">
-                        <img src="./img/index.png" alt="">
+        <#include "header.html">
 
-                    </div>
-                    <div class="mobile icon">
-                        <img src="./img/mobile.png" alt="">
-
-                    </div>
-                    <div class="mobile_txt">手机版</div>
-                </div>
-                <div class="fr">
-                    <div class="tel icon">
-                        <img src="./img/tel.png" alt="">
-
-                    </div>
-                    <div class="tel_txt">24/7 客服热线400-025-7585</div>
-                    <div class="user icon">
-                        <img src="./img/user.png" alt="">
-
-                    </div>
-                    <div class="login_txt">登录</div>
-                    <div class="line"></div>
-                    <div class="register_txt">注册</div>
-                </div>
-            </div>
-        </div>
-        <div class="nav">
-            <div class="main">
-                <div class="logo"></div>
-                <ul>
-                    <li class="active">首页</li>
-                    <li>汽车商城</li>
-                    <li>优惠促销</li>
-                    <li>售后服务</li>
-                    <li>评估中心</li>
-                    <li>新闻动态</li>
-                    <li>联系我们</li>
-                </ul>
-                <div class="search fr">
-                    <input type="text" id="search" name="search" placeholder="搜索车型" />
-                    <button type="button" class="search_btn"></button>
-                </div>
-            </div>
-        </div>
-
-        <div id="shop">
+        <div id="shop_detail">
             <div class="shop_mainbody">
                 <div class="shop_navlist">
                     <span>首页</span>
                     <span>>></span>
                     <span>汽车商城</span>
-                    <span>>></span>
-                    <span>宝马</span>
-                    <span>>></span>
-                    <span>BMW GT</span>
+                    
                 </div>
-
-                <div class="shop_carshow">
-                    <div class="carImg">
-                        <img src="./img/new_car.png" alt="">
+                <div class="nav_banner">
+                    <ul class="models">
+                        <#list cat_list as cat>
+                        <#if (cat.parentId == 0)>
+                        <li <#if (cat_index == 0)>class="active"</#if> thumb="${cat.thumb!''}" >${cat.catName!''}</li>
+                        </#if>
+                        </#list>
+                        
+                    </ul>
+                    <div class="brand_logo">
+                    	<#list cat_list as cat>
+                    	<#if (cat_index == 0)>
+                        <img src="${cat.thumb!''}" alt="">
+                        </#if>
+                        </#list>
                     </div>
-                    <div class="carOthers">
-                        <div class="brandContent">
-                            <span>品牌：</span>
-                            <span>宝马</span>
-                        </div>
-                        <div class="model">
-                            <span>型号：</span>
-                            <span>BMW GT</span>
-
-                        </div>
-                        <div class="price">
-                            <span>零售价：</span>
-                            <span class="icon">￥</span>
-                            <span class="number">19990029</span>
-                        </div>
+                    <div class="all_model">
+                       	 所有车型：
                     </div>
+                    <!-- <div class=""> -->
+                    <ul class="model_detail">
+                        <#list cat_list as cat>
+                        <#if (cat.parentId > 0)>
+                        <li >${cat.catName!''}</li>
+                        </#if>
+                        </#list>
+                        
+                    </ul>
+                    <!-- </div> -->
                 </div>
-
-                <div style="clear: both;zoom: 1;"></div>
-                <div class="shop_detaillist">
-                    <ul>
-                        <li>参数</li>
-                        <li class="verLine"></li>
-                        <li>亮点</li>
-                        <li class="verLine"></li>
-                        <li>实拍</li>
-                        <li class="verLine"></li>
+                <div class="items">
+                    <ul class="item_list">
+                        <#list goods_list as goods>
+                        <li>
+                            <img src="${goods.goodsThumb!''}" alt="">
+                            <div class="model">
+                                <span>型号：</span>
+                                <span>${goods.goodsName!''}</span>
+                            </div>
+                            <div class="price">
+                                <span>零售价：</span>
+                                <span>￥</span>
+                                <span>${goods.shopPrice!''}</span>
+                            </div>
+                        </li>
+                        </#list>
                     </ul>
                 </div>
-                <div class="shop_detail">
-                    <div class="shop_configuration">
-                        <p style="font-size: 28px;">配置表</p>
-                        <p>技术</p>
-                        <p style="font-size: 16px;margin-top: 20px">
-                            发动机 
-                            发动机 
-                            发动机 发动机 
-                            发动机 发动机 
-                            发动机 
-                            发动机
-                            发动机 发动机 
-                            发动机发动机 发动机
-                            发动机 发动机 发动机 
-                            发动机 
-                            发动机
-                            发动机 
-                            发动机
-                            发动机
-
-
-                        </p>
-                    </div>
-                    <div></div>
-                    <div></div>
-                </div>
 
 
             </div>
@@ -138,18 +79,7 @@
 
 
 
-        <div class="footer">
-            <div class="main">
-                <div class="fl">
-                    <img src="img/logo.png" />
-                    <div class="copy">2015-2020广州龙粤行汽车发展有限公司版权所有 粤ICP备15057833号-1</div>
-                </div>
-                <div class="fr">
-                    <img src="img/menu.png" />
-                    <div class="attention">关注我们</div>
-                </div>
-            </div>
-        </div>
+        <#include "footer.html"/>
 
     </div>
 </body>

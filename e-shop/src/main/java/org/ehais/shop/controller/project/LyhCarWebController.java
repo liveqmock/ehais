@@ -16,9 +16,12 @@ import org.ehais.epublic.model.EHaiArticleCat;
 import org.ehais.epublic.model.EHaiArticleCatExample;
 import org.ehais.epublic.model.EHaiArticleExample;
 import org.ehais.shop.mapper.HaiAdMapper;
+import org.ehais.shop.mapper.HaiCategoryMapper;
 import org.ehais.shop.mapper.HaiGoodsMapper;
 import org.ehais.shop.model.HaiAd;
 import org.ehais.shop.model.HaiAdExample;
+import org.ehais.shop.model.HaiCategory;
+import org.ehais.shop.model.HaiCategoryExample;
 import org.ehais.shop.model.HaiGoods;
 import org.ehais.shop.model.HaiGoodsExample;
 import org.ehais.tools.EConditionObject;
@@ -44,6 +47,9 @@ public class LyhCarWebController extends CommonController{
 	private EHaiArticleMapper eHaiArticleMapper;
 	@Autowired
 	private HaiGoodsMapper haiGoodsMapper;
+	@Autowired
+	private HaiCategoryMapper haiCategoryMapper;
+	
 	
 	@RequestMapping("/index.html")
 	public String index(ModelMap modelMap,
@@ -289,6 +295,21 @@ public class LyhCarWebController extends CommonController{
 			}
 			
 			modelMap.addAttribute("menu", "shop");
+			
+			HaiCategoryExample catExp = new HaiCategoryExample();
+			HaiCategoryExample.Criteria c = catExp.createCriteria();
+			c.andStoreIdEqualTo(store_id);
+			List<HaiCategory> cat_list = haiCategoryMapper.selectByExample(catExp);
+			modelMap.addAttribute("cat_list", cat_list);
+			
+			
+			HaiGoodsExample goodsExp = new HaiGoodsExample();
+			HaiGoodsExample.Criteria g = goodsExp.createCriteria();
+			g.andStoreIdEqualTo(store_id);
+			List<HaiGoods> goods_list = haiGoodsMapper.selectByExample(goodsExp);
+			modelMap.addAttribute("goods_list", goods_list);
+			
+			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
