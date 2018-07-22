@@ -146,10 +146,10 @@ public class  HaiCategoryAdminController extends CommonController {
 		
 	}
 
-	/**
+	
 	@EPermissionMethod(name="编辑",intro="编辑商品分类",value="haiCategoryEditDetail",relation="haiCategoryEditSubmit",type=PermissionProtocol.BUTTON,sort="3")
-	@RequestMapping(value="/haiCategoryEditDetail",method=RequestMethod.GET)
-	public String haiCategoryEditDetail(ModelMap modelMap,
+	@RequestMapping(value="/getHaiCategoryEditDetail",method=RequestMethod.GET)
+	public String getHaiCategoryEditDetail(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "catId", required = true) Integer catId
 			) {
@@ -165,7 +165,7 @@ public class  HaiCategoryAdminController extends CommonController {
 		}
 		
 	}
-	**/
+	
 	
 	
 	@ResponseBody

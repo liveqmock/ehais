@@ -65,7 +65,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/baseapi/")
+@RequestMapping("/admin/baseapi/")
 public class TreeDataAdminController extends CommonController{
 	
 	
@@ -202,6 +202,44 @@ public class TreeDataAdminController extends CommonController{
 			List<HaiCategory> list = haiCategoryMapper.selectByExample(exp);
 			for (HaiCategory m : list) {
 				icnList.add(new EIDCodeNameModel(m.getCatId().toString(),m.getCatCode(),m.getCatName(),null));
+			}			
+			rm.setRows(icnList);
+			rm.setCode(1);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return this.writeJson(rm);
+	}
+	
+	/**
+	 * 当前cat_id是排除条件
+	 * @param modelMap
+	 * @param request
+	 * @param response
+	 * @param cat_id
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/admin_category.api")
+	public String admin_category_api(ModelMap modelMap,
+			HttpServletRequest request,HttpServletResponse response,
+			@RequestParam(value = "cat_id", required = false) Integer cat_id,
+			@RequestParam(value = "parent_id", required = false) Integer parent_id) {
+		ReturnObject<TreeModel> rm = new ReturnObject<TreeModel>();
+		rm.setCode(0);
+		List<TreeModel> icnList = new ArrayList<TreeModel>();
+		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
+		try {
+			HaiCategoryExample exp = new HaiCategoryExample();
+			HaiCategoryExample.Criteria c = exp.createCriteria();
+			c.andStoreIdEqualTo(store_id);
+//			if(cat_id > 0) {
+//				c.andCatIdNotEqualTo(cat_id);
+//				c.andParentIdNotEqualTo(cat_id);
+//			}
+			List<HaiCategory> list = haiCategoryMapper.selectByExample(exp);
+			for (HaiCategory m : list) {
+				icnList.add(new TreeModel(m.getCatId(),m.getCatCode(),m.getCatName(),m.getParentId()));
 			}			
 			rm.setRows(icnList);
 			rm.setCode(1);
