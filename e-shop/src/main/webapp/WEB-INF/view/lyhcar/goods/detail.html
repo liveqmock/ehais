@@ -27,6 +27,9 @@
 <script type="text/javascript" src="/js/qiniu/moxie.min.js" ></script>
 
 <#include "/FreemarkerMacro.html"/>
+<#include "/ModuleMacro.html"/>
+<#include "/uploadfile.html"/>
+
 
 <title>Insert title here</title>
 </head>
@@ -43,38 +46,28 @@
 <form id="myForm" name="myForm" class="form-horizontal" action="${rm.action?default('')}" method="post">
 
 <input type="hidden" class="form-control" id="goodsId" name="goodsId" value="${rm.model.goodsId!''}" placeholder="">
+<input type="hidden" class="form-control" id="goodsSn" name="goodsSn" value="AA" placeholder="">
 
 <div class="form-group">
-<label class="col-sm-2 control-label">商品名称</label>
+<label class="col-sm-2 control-label">型号</label>
 <div class="col-sm-5">
 	<input type="text" class="form-control" id="goodsName" name="goodsName" value="${rm.model.goodsName!''}" placeholder="">
 </div>
 </div>
 
 <div class="form-group">
-<label class="col-sm-2 control-label">商品分类</label>
+<label class="col-sm-2 control-label">车型</label>
 <div class="col-sm-3">
+	<@categorySelectPicker id="catId" value=(rm.model.catId!0) defaultValue="0" defaultText="--汽车分类--" module="all" />
 	
-	<select id="catId" name="catId" class="form-control">
-		<option value="0">--选择商品分类--</option>
-		<#if rm.map?? && rm.map.catList?? && rm.map.catList?size gt 0>
-		<#list rm.map.catList as dc>
-		<option value="${dc.catId!0}" <#if dc.catId == rm.model.catId!0 >selected="selected"</#if> >${dc.catName!''}</option>
-		</#list>
-		</#if>
-	</select>
+	
 </div>
 </div>
 
-<div class="form-group">
-<label class="col-sm-2 control-label">商品编码</label>
-<div class="col-sm-3">
-	<input type="text" class="form-control" id="goodsSn" name="goodsSn" value="${rm.model.goodsSn!''}" placeholder="">
-</div>
-</div>
+
 
 <div class="form-group">
-<label class="col-sm-2 control-label">出售价格</label>
+<label class="col-sm-2 control-label">价格</label>
 <div class="col-sm-2">
 	<@currencyPicker id="shopPriceFloat" value="${(rm.model.shopPrice!0) / 100}" />
 </div>
@@ -83,28 +76,8 @@
 
 
 
-<#if rm.map.goodsAgencyPrice??>
-<#list rm.map.goodsAgencyPrice as map> 
-
 <div class="form-group">
-<label class="col-sm-2 control-label">${map["agencyName"]} 取货价</label>
-<div class="col-sm-2">
-	<@currencyPicker id="agencyPrice_${map['agencyId']}" value="${(map['price']!0) / 100}" />
-</div>
-</div>
-
-</#list>
-</#if>
-<div class="form-group">
-<label class="col-sm-2 control-label">库存数量</label>
-<div class="col-sm-2">
-	<@quantityPicker id="goodsNumber" value="${rm.model.goodsNumber!100}" />
-</div>
-</div>
-
-
-<div class="form-group">
-<label class="col-sm-2 control-label">上架</label>
+<label class="col-sm-2 control-label">显示</label>
 <div class="col-sm-1">
 	<@checkboxPicker id="isOnSale" value="${(rm.model.isOnSale!false)?string('yes', 'no')}" />
 </div>
@@ -117,30 +90,16 @@
 </div>
 </div>
 
-<div class="form-group">
-<label class="col-sm-2 control-label">促销</label>
-<div class="col-sm-1">
-	<@checkboxPicker id="isPromote" value="${(rm.model.isPromote!false)?string('yes', 'no')}" />
-</div>
-</div>
 
 
 <div class="form-group">
 <label class="col-sm-2 control-label">图片</label>
 <div class="col-sm-4">
 	
-	<@bsQiniuImagesPicker id="originalImg" value="${rm.model.originalImg!''}" domain="${domain}" uptoken="${uptoken}" />
+	<@uploadImagesPicker id="originalImg" value="${rm.model.originalImg!''}" />
 	
 </div>
 </div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">相册图片</label>
-<div class="col-sm-8">
-	<@bsQiniuGalleryPicker id="imgOriginal" gallery=rm.map.gallery domain="${domain}" uptoken="${uptoken}"/>
-</div>
-</div>
-
 
 
 
@@ -163,7 +122,7 @@
 </div>    
 
 
-<script type="text/javascript" src="/js/lyhcar/goods_detail.js" ></script>             
+<script type="text/javascript" src="/js/lyhcar/goods/goods_detail.js" ></script>             
 
 
 </body>

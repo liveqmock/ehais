@@ -6,7 +6,8 @@
 		<#include "/include.html"/>
 		<#include "/FreemarkerMacro.html"/>
 		<#include "/ModuleMacro.html"/>
-
+		<#include "/uploadfile.html"/>
+		
 <title>Insert title here</title>
 </head>
 <body>
@@ -27,20 +28,31 @@
 
 
 <div class="form-group">
-<label class="col-sm-2 control-label">名称</label>
+<label class="col-sm-2 control-label">品牌/车型名称</label>
 <div class="col-sm-5">
 	<input type="text" class="form-control" id="catName" name="catName" value="${rm.model.catName!''}" placeholder="">
 </div>
 </div>
 
 
-
 <div class="form-group">
 <label class="col-sm-2 control-label">上级分类</label>
-<div class="col-sm-3">
+<div class="col-sm-4">
 	<@categorySelectPicker id="parentId" value=(rm.model.parentId!0) defaultValue="0" defaultText="--汽车分类--" module="all" />
+	一级分类为品牌，二级分类为车型
 </div>
 </div>
+
+
+<div class="form-group">
+<label class="col-sm-2 control-label">图标</label>
+<div class="col-sm-5">
+<@uploadImagesPicker id="thumb" value="${rm.model.thumb!''}" />
+<br>
+请上传正方形的图片，尺寸建议使用80*80
+</div>
+</div>
+
 
 <div class="form-group">
 <label class="col-sm-2 control-label">排序</label>

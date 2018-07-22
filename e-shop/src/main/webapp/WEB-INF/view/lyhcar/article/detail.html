@@ -33,7 +33,9 @@
 
 
 <#include "/FreemarkerMacro.html"/>
-		
+<#include "/uploadfile.html"/>
+
+
 <title>Insert title here</title>
 </head>
 <body>
@@ -110,7 +112,8 @@
 <label class="col-sm-2 control-label">封面图片</label>
 <div class="col-sm-5">
 
-<@bsQiniuImagesPicker id="articleImages" value="${rm.model.articleImages!''}" domain="${domain}" uptoken="${uptoken}" />
+<@uploadImagesPicker id="articleImages" value="${rm.model.articleImages!''}" />
+
 
 <br>
 请上传正方形的图片，尺寸建议使用640*640
@@ -136,21 +139,6 @@
 </div>
 </div>
 
-<div class="form-group">
-<label class="col-sm-2 control-label">网络来源</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="articleSource" name="articleSource" value="${rm.model.articleSource!''}" placeholder="">
-	如非原创资讯，请注明转载来源
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">来源网址</label>
-<div class="col-sm-5">
-	<input type="text" class="form-control" id="link" name="link" value="${rm.model.link!''}" placeholder="">
-	如来源网络的资讯，请注册来源的网址
-</div>
-</div>
 
 
 

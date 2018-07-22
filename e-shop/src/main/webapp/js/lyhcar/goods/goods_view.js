@@ -46,14 +46,11 @@ $(function(){
         columns: [
 			
 			{
-			    field: 'goodsId',
-			    title: '编号'
-			},{
 			    field: 'goodsName',
-			    title: '商品名称'
+			    title: '型号'
 			},{
 			    field: 'shopPrice',
-			    title: '出售价格',formatter : function(value,rows,index){
+			    title: '价格',formatter : function(value,rows,index){
 			    	if(value != null && value != ""){
 			    		return (parseFloat(value) / 100 ).toFixed(2);
 			    	}else{
@@ -75,10 +72,9 @@ $(function(){
             field: 'goodsId',
             title: '操作',
             formatter : function(value,row,index){
-            	var c = "<a href='javascript:;' onclick='qrformPost("+value+");' class='iconfont icon-erweima'></a>";
-            	var a = "&nbsp;|&nbsp;<a href ='ehaisGoodsEditDetail?goodsId="+value+"' class='iconfont icon-edit'></a>";
+            	var a = "<a href ='ehaisGoodsEditDetail?goodsId="+value+"' class='iconfont icon-edit'></a>";
             	var b = "&nbsp;|&nbsp;<a href ='javascript:;' onclick='ehaisGoodsDelete("+value+");' class='iconfont icon-lajixiang'></a>";
-            	return c+a+b;
+            	return a+b;
             }
         }
         
