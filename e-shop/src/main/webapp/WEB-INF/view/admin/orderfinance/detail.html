@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+
+		<#include "/include.html"/>
+		<#include "/FreemarkerMacro.html"/>
+
+<title>Insert title here</title>
+</head>
+<body>
+<div class="header">
+	<div class="nav">
+		<a href="javascript:;" id="back" class="icon fa fa-arrow-left ">&nbsp;</a>
+		<div class="nav0">总表管理</div>
+		<div class="nav1">信息编辑</div>
+	</div>
+</div>
+<div style="width: 100%;height: 40px;"></div>
+<div class="container-fluid">
+<form id="haiOrderFinanceForm" name="haiOrderFinanceForm" class="form-horizontal" action="${rm.action?default('')}" method="post">
+
+
+<input type="hidden" class="form-control" id="financeId" name="financeId" value="${rm.model.financeId!''}" >
+<div class="form-group">
+<label class="col-sm-2 control-label">关联订单编号</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="orderId" name="orderId" value="${rm.model.orderId!''}" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">订单日期</label>
+<div class="col-sm-8">
+	<@bsDatePicker id="orderDate" value="${((rm.model.orderDate?string('yyyy-MM-dd'))!'')}"  />
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">用户类型</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="userType" name="userType" value="${rm.model.userType!''}" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">记帐习惯</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="habit" name="habit" value="${rm.model.habit!''}" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">帐单类型</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="docType" name="docType" value="${rm.model.docType!''}" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">商品编号</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="goodsId" name="goodsId" value="${rm.model.goodsId!''}" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">商品名称</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="goodsName" name="goodsName" value="${rm.model.goodsName!''}" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">数量</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="quantity" name="quantity" value="${rm.model.quantity!''}" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">销售价格</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="sellPrice" name="sellPrice" value="${rm.model.sellPrice!''}" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">成本价格</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="costPrice" name="costPrice" value="${rm.model.costPrice!''}" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">移动平均价</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="averagePrice" name="averagePrice" value="${rm.model.averagePrice!''}" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">总价格</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="totalAmount" name="totalAmount" value="${rm.model.totalAmount!''}" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">帐户编号</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="accountId" name="accountId" value="${rm.model.accountId!''}" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">帐户名称</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="accountName" name="accountName" value="${rm.model.accountName!''}" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">金额</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="money" name="money" value="${rm.model.money!''}" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">客户编号</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="businessId" name="businessId" value="${rm.model.businessId!''}" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">客户名称</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="clientName" name="clientName" value="${rm.model.clientName!''}" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">备注</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="remark" name="remark" placeholder=""  >${rm.model.remark!''}</textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">音频路径</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="videoPath" name="videoPath" placeholder=""  >${rm.model.videoPath!''}</textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">语音转义</label>
+<div class="col-sm-8">
+	<@ueditorPicker id="videoToText" value="${rm.model.videoToText!''}" />
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">valid</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="valid" name="valid" value="${rm.model.valid!''}" placeholder=""  >
+</div>
+</div>
+
+
+
+
+
+<div class="form-group">
+	<div class="col-sm-3"></div>
+	<div class="col-sm-6"><button id="saveSubmit" type="button" class="btn btn-primary">提交信息</button></div>
+</div>
+       
+
+
+
+
+</form>
+</div>    
+
+
+<script type="text/javascript" src="/js/admin/orderfinance/detail.js" ></script>             
+
+
+</body>
+</html>

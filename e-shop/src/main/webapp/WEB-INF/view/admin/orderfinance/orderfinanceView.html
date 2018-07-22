@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8">
+		
+		<#include "/include.v2.html"/>
+		<#include "/FreemarkerMacro.html"/>
+		
+		
+		
+		<script type="text/javascript">
+			var bootstrap_table_url = 'haiOrderFinanceListJson';
+			var financeName = null;
+			var query_parames = {
+                financeName : financeName
+			};
+			var columns =  [
+				{
+    field: 'orderDate',
+    title: '订单日期'
+},{
+    field: 'userType',
+    title: '用户类型'
+},{
+    field: 'habit',
+    title: '记帐习惯'
+},{
+    field: 'docType',
+    title: '帐单类型'
+},{
+    field: 'goodsName',
+    title: '商品名称'
+},{
+    field: 'quantity',
+    title: '数量'
+},{
+    field: 'sellPrice',
+    title: '销售价格'
+},{
+    field: 'costPrice',
+    title: '成本价格'
+},{
+    field: 'averagePrice',
+    title: '移动平均价'
+},{
+    field: 'totalAmount',
+    title: '总价格'
+},{
+    field: 'accountName',
+    title: '帐户名称'
+},{
+    field: 'money',
+    title: '金额'
+},{
+    field: 'clientName',
+    title: '客户名称'
+},{
+    field: 'remark',
+    title: '备注'
+},
+		        {
+					field: 'financeId',
+		            title: '操作',
+					align:"center",
+			        formatter:function(value,row,index){
+			        	var opt = "";
+			        	
+			        	<@permission url="haiOrderFinanceEditDetail">
+			            opt += "<a href ='javascript:;' onclick='haiOrderFinanceEditDetail("+value+");'  class='glyphicon glyphicon-edit'></a>";
+			            </@permission>
+			            
+			            <@permission url="haiOrderFinanceDelete">
+			            opt += "&nbsp;&nbsp;<a href ='javascript:;' onclick='haiOrderFinanceDelete("+value+");' class='glyphicon glyphicon-trash'></a>";
+			            </@permission>
+			            
+		            	return opt;
+			        }
+		        }
+        	];
+			
+			var responseHandler = function(res){//返回数据整合
+				/**
+				if(res.map.catList != null){
+					var catList = res.map.catList ;
+		        	var catObj = {};
+		        	for(var i = 0 ; i < catList.length ; i ++){
+		        		catObj[catList[i].catId] = catList[i].catName;
+		        	}
+		        	var rows = res.rows;
+		        	for(var i = 0 ; i < rows.length ; i++){
+		        		rows[i].catName = catObj[rows[i].catId];
+		        	}
+				}
+				**/
+				return res;
+			}
+			
+		</script>
+		<script type="text/javascript" src="/js/e_bootstrap_table.js"></script>
+    	<script type="text/javascript" src="/js/admin/orderfinance/orderfinanceView.js" ></script> 
+		<title>总表管理</title>
+		
+	</head>
+	<body>
+		<div class="container-fluid" id="wrapper" tabindex="-1">
+			
+			<dl class="enav">
+				<dt>当前位置:</dt>
+				<dd>总系统</dd>
+				<dd>总表管理</dd>
+				<dd class="fr">快捷键提示</dd>
+			</dl>
+			
+			<div class="ctr form-inline">
+				  <div class="form-group">
+				    <label >搜索信息</label>
+				    <input id="key_financeName" name="key_financeName" class="form-control" >
+				  </div>
+				  				  
+				  
+				  <button id="haiOrderFinanceSearch" type="button" class="btn btn-primary glyphicon glyphicon-search">查询</button>
+				  
+				  <@permission url="haiOrderFinanceAddDetail">
+				  <button id="haiOrderFinanceAddDetail" type="button" class="btn btn-info glyphicon glyphicon-plus fr">新增</button>
+				  </@permission>
+			</div>
+			
+			<div class="elist">
+				<table class="table table-striped table-bordered table-hover" id="bsTable"></table> 
+			</div>
+			
+		</div>
+
+
+
+<div id="haiOrderFinanceModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" >
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">总表管理</h4>
+      </div>
+      <div class="modal-body">
+        <form id="haiOrderFinanceForm" name="haiOrderFinanceForm" class="form-horizontal" action="add" method="post">
+        
+        <input type="hidden" class="form-control" id="financeId" name="financeId" value="" >
+<div class="form-group">
+<label class="col-sm-2 control-label">关联订单编号</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="orderId" name="orderId" value="" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">订单日期</label>
+<div class="col-sm-8">
+	<@bsDatePicker id="orderDate" value="" />
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">用户类型</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="userType" name="userType" value="" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">记帐习惯</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="habit" name="habit" value="" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">帐单类型</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="docType" name="docType" value="" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">商品编号</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="goodsId" name="goodsId" value="" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">商品名称</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="goodsName" name="goodsName" value="" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">数量</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="quantity" name="quantity" value="" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">销售价格</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="sellPrice" name="sellPrice" value="" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">成本价格</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="costPrice" name="costPrice" value="" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">移动平均价</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="averagePrice" name="averagePrice" value="" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">总价格</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="totalAmount" name="totalAmount" value="" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">帐户编号</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="accountId" name="accountId" value="" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">帐户名称</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="accountName" name="accountName" value="" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">金额</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="money" name="money" value="" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">客户编号</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="businessId" name="businessId" value="" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">客户名称</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="clientName" name="clientName" value="" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">备注</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="remark" name="remark" placeholder="" ></textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">音频路径</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="videoPath" name="videoPath" placeholder="" ></textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">语音转义</label>
+<div class="col-sm-8">
+	<@ueditorPicker id="videoToText" value="" />
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">valid</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="valid" name="valid" value="" placeholder=""  >
+</div>
+</div>
+
+
+        
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button id="haiOrderFinanceSaveSubmit" type="button" class="btn btn-primary">保存</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+<script type="text/javascript">
+	var eData = {};
+		
+	$(function(){
+				
+
+	});
+	
+	
+</script>
+
+	</body>
+</html>

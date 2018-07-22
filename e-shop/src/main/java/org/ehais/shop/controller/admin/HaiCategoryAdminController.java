@@ -52,8 +52,8 @@ public class  HaiCategoryAdminController extends CommonController {
 			ReturnObject<HaiCategory> rm = haiCategoryService.category_list(request);
 			modelMap.addAttribute("rm", rm);
 			//return "/"+this.getAdminProjectFolder(request)+"/category/view";
-			//return this.view(request, "/category/view");
-			return this.view(request, "/category/categoryView");
+			return this.view(request, "/category/view");
+//			return this.view(request, "/category/categoryView");
 		}catch(Exception e){
 			e.printStackTrace();
 			log.error("category", e);

@@ -16,14 +16,26 @@ import org.apache.commons.lang3.StringUtils;
 
 public class MysqlComparator {
 
+	//本地对阿里
 	public static String url1 = "jdbc:mysql://127.0.0.1:3306/sqlehaismall";  
-    public static String url2 = "jdbc:mysql://183.240.153.79:3306/finance";  
+    public static String url2 = "jdbc:mysql://39.108.129.44:3306/sqlehaismall";  
     public static String USERNAME1 = "root";  
     public static String PASSWORD1 = "Ehais42016048ok!";  
     public static String USERNAME2 = "lgj628";  
     public static String PASSWORD2 = "Ehais42016048ok!";
     public static String db1 = "sqlehaismall";
-    public static String db2 = "finance";
+    public static String db2 = "sqlehaismall";
+    
+    
+    //本地对财务
+//	public static String url1 = "jdbc:mysql://127.0.0.1:3306/sqlehaismall";  
+//    public static String url2 = "jdbc:mysql://183.240.153.79:3306/finance";  
+//    public static String USERNAME1 = "root";  
+//    public static String PASSWORD1 = "Ehais42016048ok!";  
+//    public static String USERNAME2 = "lgj628";  
+//    public static String PASSWORD2 = "Ehais42016048ok!";
+//    public static String db1 = "sqlehaismall";
+//    public static String db2 = "finance";
     
     
     
