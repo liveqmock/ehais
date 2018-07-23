@@ -19,7 +19,14 @@ public class EArticleModuleEnum {
 	public final static String BRANDSTORY = "brand_story"; //品牌故事
 	public final static String DISTRIBUTIONINTRO = "distribution_intro"; //分销介绍
 	public final static String MEDIA = "media";//视频
-	public final static String DISCOUNTS = "discounts";//促销优惠信息
+	
+	public final static String DISCOUNTS = "discounts";//优惠促销
+	public final static String APPOINTMENT = "appointment";//预约维修
+	public final static String RESCUE = "rescue";//道路救援
+	public final static String SKILL = "skill";//用车技巧
+	public final static String FEATURE = "feature";//特色服务
+	
+	
 	
 	public static Map<String,Map<String,Object>> map = new HashMap<String,Map<String,Object>>();
 	
@@ -44,6 +51,12 @@ public class EArticleModuleEnum {
     		initAME.createMap(DISTRIBUTIONINTRO, "分销介绍");
     		initAME.createMap(MEDIA, "视频");
     		initAME.createMap(DISCOUNTS, "优惠促销");
+    		
+    		initAME.createMap(APPOINTMENT, "预约维修");
+    		initAME.createMap(RESCUE, "道路救援");
+    		initAME.createMap(SKILL, "用车技巧");
+    		initAME.createMap(FEATURE, "特色服务");
+    		
     		System.out.println("初始化 Article Module 信息 **********");
         }
 		

@@ -74,19 +74,10 @@
 </div>
 
 
-
-
 <div class="form-group">
-<label class="col-sm-2 control-label">显示</label>
+<label class="col-sm-2 control-label">新车</label>
 <div class="col-sm-1">
-	<@checkboxPicker id="isOnSale" value="${(rm.model.isOnSale!false)?string('yes', 'no')}" />
-</div>
-</div>
-
-<div class="form-group">
-<label class="col-sm-2 control-label">热销</label>
-<div class="col-sm-1">
-	<@checkboxPicker id="isHot" value="${(rm.model.isHot!false)?string('yes', 'no')}" />
+	<@checkboxPicker id="isNew" value="${(rm.model.isNew!false)?string('yes', 'no')}" />
 </div>
 </div>
 
@@ -96,7 +87,7 @@
 <label class="col-sm-2 control-label">图片</label>
 <div class="col-sm-4">
 	
-	<@uploadImagesPicker id="originalImg" value="${rm.model.originalImg!''}" />
+	<@uploadImagesPicker id="goodsThumb" value="${rm.model.goodsThumb!''}" />
 	
 </div>
 </div>

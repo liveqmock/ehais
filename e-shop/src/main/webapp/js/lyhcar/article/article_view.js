@@ -63,7 +63,7 @@ $(function(){
             field: 'articleId',
             title: '操作',
             formatter : function(value,row,index){
-            	var a = "<a href ='ehaisArticleEditDetail?articleId="+value+"'>编辑</a>";
+            	var a = "<a href ='ehaisArticleEditDetail?articleId="+value+"&module="+module+"'>编辑</a>";
             	var b = "&nbsp;|&nbsp;<a href ='javascript:;' onclick='ehaisArticleDelete("+value+");' >删除</a>";
             	return a+b;
             }

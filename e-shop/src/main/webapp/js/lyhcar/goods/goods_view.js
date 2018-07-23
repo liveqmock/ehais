@@ -58,8 +58,8 @@ $(function(){
 			    	}
 			    }
 			}, {
-	            field: 'isHot',
-	            title: '主页推荐',
+	            field: 'isNew',
+	            title: '新车推荐',
 	            formatter : function(value,rows,index){
 	            	var c = "" ;
 	            	if(value) c = "active";
