@@ -124,7 +124,7 @@
 </div>
 </div>
 
-<#if (rm.map.goodsDistribution ?? && rm.map.goodsDistribution.distributionType?string("0")!="0")>
+<#if (rm.map?? && rm.map.goodsDistribution?? && rm.map.goodsDistribution.distributionType?? && rm.map.goodsDistribution.distributionType?string("0")!="0")>
 <div class="form-group">
 <label class="col-sm-2 control-label">参与分销</label>
 <div class="col-sm-4">
