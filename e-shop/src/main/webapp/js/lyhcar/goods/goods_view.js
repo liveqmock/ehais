@@ -64,7 +64,7 @@ $(function(){
 	            	var c = "" ;
 	            	if(value) c = "active";
 	            	
-	            	return "<i href='javascript:;' class='"+c+" iconfont icon-remai' onClick='setHot(this,"+rows.goodsId+");'></i>";
+	            	return "<i href='javascript:;' class='"+c+" iconfont icon-remai' onClick='setNew(this,"+rows.goodsId+");'></i>";
 	            }
 	        },
 
@@ -112,6 +112,23 @@ function setHot(that,id){
 		}
 	});
 }
+
+function setNew(that,id){
+	var isNew = 1;
+	if($(that).hasClass("active")){
+		isNew = 0;
+	}
+	
+	$.ajax({
+		url : "/ws/set_new_goods",data:{goodsId:id,isNew:isNew},
+		success : function(d){
+			if(d.code == 1){
+				$(that).toggleClass("active");
+			}
+		}
+	});
+}
+
 
 
 

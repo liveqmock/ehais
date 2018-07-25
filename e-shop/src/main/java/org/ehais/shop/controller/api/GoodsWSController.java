@@ -43,17 +43,17 @@ public class GoodsWSController extends GoodsIController{
 	
 	
 	@ResponseBody
-	@RequestMapping(value="/set_hot_goods",method=RequestMethod.POST)
-	public String set_hot_goods(ModelMap modelMap,
+	@RequestMapping(value="/set_new_goods",method=RequestMethod.POST)
+	public String set_new_goods(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response,
 			@RequestParam(value = "goodsId", required = true) Long goodsId,
-			@RequestParam(value = "hot", required = true) Integer hot ){
+			@RequestParam(value = "isNew", required = true) Integer isNew ){
 		
 		ReturnObject<Integer> rm = new ReturnObject<Integer>();
 		rm.setCode(0);
 		try {
 			Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
-			int c = eCommonMapper.commonUpdateBooleanValue("hai_goods", "is_hot", hot.toString(), "goods_id", goodsId.toString(), store_id);
+			int c = eCommonMapper.commonUpdateBooleanValue("hai_goods", "is_new", isNew.toString(), "goods_id", goodsId.toString(), store_id);
 			
 			rm.setCode(1);
 			rm.setMsg("success");
