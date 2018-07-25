@@ -1,0 +1,136 @@
+html,body,.mylayout{
+	width: 100%;
+	height: 100%;
+	display: table;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+.mylayout{position: relative;}
+.mylayout > .north {position: fixed;top: 0;left: 0;right: 0;
+	width: 100%;height: 50px;float: left;background: #438eb9;
+}
+.mylayout > .south {position: fixed;bottom: 0;left: 0;right: 0;
+	width: 100%;height: 20px;float: left;text-align: center;border-top: 1px solid #e5e5e5;
+}
+.mylayout > .west {position: fixed;
+	top: 50px;left: 0;bottom: 20px;width: 200px;float: left;display: inline;border-right: 1px solid #e5e5e5;overflow-y: scroll;
+}
+.mylayout > .center {position: fixed;float: left;display: inline;
+	top: 50px;left: 200px;bottom: 20px;right: 0;
+}
+.mylayout .list-group-item:first-child{border-top-left-radius:0;border-top-right-radius:0;}
+.mylayout .list-group-item:last-child{border-bottom-left-radius:0;border-bottom-right-radius:0;}
+.mylayout .list-group-item{
+	-moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: #fcfcfc currentcolor #e5e5e5;
+    border-image: none;
+    border-style: solid none;
+    border-width: 1px 0;
+    display: block;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    cursor:pointer;
+}
+.mylayout .list-group-item > a{
+	background-color: #f9f9f9;
+    color: #585858;
+    display: block;
+    font-size: 13px;
+    height: 38px;
+    line-height: 36px;
+    padding: 0 16px 0 7px;
+    text-decoration: none;
+    text-shadow: none;
+}
+.mylayout .list-group-item > a:hover{
+	background-color: #fff;
+	bottom: 0;
+	display: block;
+	padding: 0 16px 0 4px;
+	border-left: 3px solid #3382af;
+}
+.mylayout .list-group-item > a > i{
+	display: inline-block;
+    text-decoration: inherit;
+    font-size: 18px;
+    font-weight: normal;
+    margin-right: 2px;
+    min-width: 30px;
+    text-align: center;
+    vertical-align: middle;
+}
+.mylayout .list-group-item > a > b{
+	float: right;margin-top: 12px;
+}
+.mylayout .nav-tabs > li > a{
+	border-radius:0;
+}
+.mylayout .nav-tabs > li > a > i , .rightMenu > a > i{
+	margin-right: 5px;
+}
+.mylayout .nav > li > a{
+	padding: 10px 15px 8px;
+}
+.mylayout .list-group > li .submenu{
+	background-color: #fff;
+    border-top: 1px solid #e5e5e5;
+    display: none;
+    list-style: outside none none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+.mylayout .list-group li .submenu {
+    overflow: hidden;
+}
+.mylayout .list-group > li.active .submenu {
+    display: block;
+}
+.mylayout .list-group > li > .submenu::before{
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: #9dbdd6;
+    border-image: none;
+    border-style: dotted;
+    border-width: 0 0 0 1px;
+    bottom: 0;
+    content: "";
+    display: block;
+    left: 18px;
+    position: absolute;
+    top: 0;
+    z-index: 1;
+}
+.mylayout .list-group > li.active > .submenu::before {
+    border-left-color: #8eb3d0;
+}
+.mylayout .list-group > li > .submenu > li::before {
+    border-top: 1px dotted #9dbdd6;
+    content: "";
+    display: inline-block;
+    left: 20px;
+    position: absolute;
+    top: 17px;
+    width: 7px;
+}
+.mylayout .list-group > li.active > .submenu > li::before {
+    border-top-color: #8eb3d0;
+}
+.mylayout .list-group > li .submenu > li > a {
+    border-top: 1px dotted #e4e4e4;
+    color: #616161;
+    display: block;
+    margin: 0;
+    padding: 7px 0 9px 37px;
+    position: relative;
+}
+.mylayout .list-group > li > .submenu > li:first-child > a {
+    border-top: 1px solid #fafafa;
+}

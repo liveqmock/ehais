@@ -66,7 +66,7 @@
 					<div class="fl detail">
 						<#list article_list as article>
 						<#if (article_index == 0 ) >
-						<img id="article_thumb" src="${article.articleThumb}">
+						<img id="article_thumb" src="${article.articleThumb!''}">
 						<div class="title" id="article_title">${article.title}</div>
 						<div class="desc" id="article_description">${article.description}</div>
 						</#if>
@@ -99,7 +99,7 @@
 			
 			<div class="brand">
 				<div class="main">
-					<img src="${brand.articleThumb!''}" />
+					<img src="/themes/lyh/img/PC.png" />
 					<div class="desc">${brand.description!''}</div>
 				</div>
 			</div>

@@ -5,8 +5,8 @@
     <meta charset="utf-8" />
     <title></title>
     <link rel="stylesheet" href="/themes/lyh/css/style.css" />
-	<link rel="stylesheet" href="/themes/lyh/ie8.css">
-
+	<link rel="stylesheet" href="/themes/lyh/css/ie8.css">
+	<script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
 </head>
 
 <body>
@@ -25,7 +25,7 @@
                     <ul class="models">
                         <#list cat_list as cat>
                         <#if (cat.parentId == 0)>
-                        <li <#if (cat_index == 0)>class="active"</#if> thumb="${cat.thumb!''}" >${cat.catName!''}</li>
+                        <li cid="${cat.catId}" thumb="${cat.thumb!''}" >${cat.catName!''}</li>
                         </#if>
                         </#list>
                         
@@ -44,17 +44,34 @@
                     <ul class="model_detail">
                         <#list cat_list as cat>
                         <#if (cat.parentId > 0)>
-                        <li >${cat.catName!''}</li>
+                        <li class="parent_id_${cat.parentId}">${cat.catName!''}</li>
                         </#if>
                         </#list>
                         
                     </ul>
+                    <script type="text/javascript">
+                    $(function(){
+                    	$(".models li").click(function(){
+                    		$(".model_detail,.item_list").addClass("hide");
+                    		$(".models li").removeClass("active");
+                    		$(".model_detail li,.item_list li").removeClass("show");
+                    		$(this).addClass("active");
+                    		$(".parent_id_"+$(this).attr("cid")).addClass("show");
+                    	});
+                    	
+                    	$(".model_detail li").click(function(){
+                    		$(".model_detail li").removeClass("active");
+                    		$(this).addClass("active");
+                    	});
+                    	
+                    });
+                    </script>
                     <!-- </div> -->
                 </div>
                 <div class="items">
                     <ul class="item_list">
                         <#list goods_list as goods>
-                        <li>
+                        <li goods_id="${goods.goodsId}" class="goods cat_id_${goods.catId}">
                             <img src="${goods.goodsThumb!''}" alt="">
                             <div class="model">
                                 <span>型号：</span>
@@ -68,6 +85,13 @@
                         </li>
                         </#list>
                     </ul>
+                    <script type="text/javascript">
+                    $(function(){
+                    	$(".item_list li").click(function(){
+                    		window.location.href = "shop_detail_"+$(this).attr("goods_id")+".html";
+                    	});
+                    });
+                    </script>
                 </div>
 
 

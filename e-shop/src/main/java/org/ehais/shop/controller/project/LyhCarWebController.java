@@ -24,6 +24,7 @@ import org.ehais.shop.model.HaiCategory;
 import org.ehais.shop.model.HaiCategoryExample;
 import org.ehais.shop.model.HaiGoods;
 import org.ehais.shop.model.HaiGoodsExample;
+import org.ehais.shop.model.HaiGoodsWithBLOBs;
 import org.ehais.tools.EConditionObject;
 import org.ehais.tools.ReturnObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -285,7 +286,7 @@ public class LyhCarWebController extends CommonController{
 	}
 	
 	
-	@RequestMapping("/shop")
+	@RequestMapping("/shop.html")
 	public String shop(ModelMap modelMap,
 			HttpServletRequest request,HttpServletResponse response) {
 		String browser = "pc";
@@ -317,19 +318,28 @@ public class LyhCarWebController extends CommonController{
 	}
 	
 	
-	@RequestMapping("/shop_detail")
+	@RequestMapping("/shop_detail_{goodsId}.html")
 	public String shop_detail(ModelMap modelMap,
-			HttpServletRequest request,HttpServletResponse response) {
+			HttpServletRequest request,HttpServletResponse response,
+			@PathVariable(value = "goodsId") Long goodsId) {
 		String browser = "pc";
 		try {
 			if(isWeiXin(request) || JudgeIsMoblie(request)){
 				browser = "mobile";
 			}
 			modelMap.addAttribute("menu", "shop");
+			
+			HaiGoodsExample goodsExp = new HaiGoodsExample();
+			HaiGoodsExample.Criteria g = goodsExp.createCriteria();
+			g.andStoreIdEqualTo(store_id);
+			g.andGoodsIdEqualTo(goodsId);
+			List<HaiGoodsWithBLOBs> goods_list = haiGoodsMapper.selectByExampleWithBLOBs(goodsExp);
+			modelMap.addAttribute("model", goods_list.get(0));
+			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		return "/"+folder+"/"+browser+"/shop";
+		return "/"+folder+"/"+browser+"/shop_detail";
 	}
 	
 	

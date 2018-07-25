@@ -4,8 +4,8 @@
 <head>
     <meta charset="utf-8" />
     <title></title>
-    <link rel="stylesheet" href="./css/style.css" />
-	<link rel="stylesheet" href="./ie8.css">
+    <link rel="stylesheet" href="/themes/lyh/css/style.css" />
+	<link rel="stylesheet" href="/themes/lyh/css/ie8.css">
 
 </head>
 
@@ -20,14 +20,14 @@
                     <span>>></span>
                     <span>汽车商城</span>
                     <span>>></span>
-                    <span>宝马</span>
+                    <span>${model.goodsName}</span>
                     <span>>></span>
                     <span>BMW GT</span>
                 </div>
 
                 <div class="shop_carshow">
                     <div class="carImg">
-                        <img src="/themes/lyh/img/new_car.png" alt="">
+                        <img src="${model.goodsThumb}" alt="">
                     </div>
                     <div class="carOthers">
                         <div class="brandContent">
@@ -42,7 +42,7 @@
                         <div class="price">
                             <span>零售价：</span>
                             <span class="icon">￥</span>
-                            <span class="number">19990029</span>
+                            <span class="number">${model.shopPrice}</span>
                         </div>
                     </div>
                 </div>
@@ -50,35 +50,28 @@
                 <div style="clear: both;zoom: 1;"></div>
                 <div class="shop_detaillist">
                     <ul>
-                        <li>参数</li>
+                        <li class="active">参数</li>
                         <li class="verLine"></li>
                         <li>亮点</li>
                         <li class="verLine"></li>
                         <li>实拍</li>
                         <li class="verLine"></li>
                     </ul>
+                    <script type="text/javascript">
+                    $(function(){
+                    	$(".shop_detaillist ul li").click(function(){
+                    		$(".shop_detaillist ul li").removeClass("active");
+                    		$(this).addClass("active");
+                    	});
+                    });
+                    </script>
                 </div>
                 <div class="shop_detail">
                     <div class="shop_configuration">
                         <p style="font-size: 28px;">配置表</p>
                         <p>技术</p>
                         <p style="font-size: 16px;margin-top: 20px">
-                            发动机 
-                            发动机 
-                            发动机 发动机 
-                            发动机 发动机 
-                            发动机 
-                            发动机
-                            发动机 发动机 
-                            发动机发动机 发动机
-                            发动机 发动机 发动机 
-                            发动机 
-                            发动机
-                            发动机 
-                            发动机
-                            发动机
-
-
+                        ${model.goodsDesc}
                         </p>
                     </div>
                     <div></div>
