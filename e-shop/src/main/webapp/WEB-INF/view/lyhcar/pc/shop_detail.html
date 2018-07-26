@@ -21,8 +21,7 @@
                     <span>汽车商城</span>
                     <span>>></span>
                     <span>${model.goodsName}</span>
-                    <span>>></span>
-                    <span>BMW GT</span>
+                    
                 </div>
 
                 <div class="shop_carshow">
@@ -32,11 +31,11 @@
                     <div class="carOthers">
                         <div class="brandContent">
                             <span>品牌：</span>
-                            <span>宝马</span>
+                            <span>${category.catName}</span>
                         </div>
                         <div class="model">
                             <span>型号：</span>
-                            <span>BMW GT</span>
+                            <span>${model.goodsName}</span>
 
                         </div>
                         <div class="price">
@@ -50,18 +49,24 @@
                 <div style="clear: both;zoom: 1;"></div>
                 <div class="shop_detaillist">
                     <ul>
-                        <li class="active">参数</li>
+                        <li class="active" tab="0">参数</li>
                         <li class="verLine"></li>
-                        <li>亮点</li>
+                        <li tab="1">亮点</li>
                         <li class="verLine"></li>
-                        <li>实拍</li>
+                        <li tab="2">实拍</li>
                         <li class="verLine"></li>
                     </ul>
+                    <div class="goods_content">
+                    	<div class="active">${model.goodsDesc}</div>
+                    	<div >${model.goodsBrief}</div>
+                    	<div >${model.tbData}</div>
+                    </div>
                     <script type="text/javascript">
                     $(function(){
                     	$(".shop_detaillist ul li").click(function(){
-                    		$(".shop_detaillist ul li").removeClass("active");
+                    		$(".shop_detaillist ul li,.goods_content >div").removeClass("active");
                     		$(this).addClass("active");
+                    		$(".goods_content >div").eq($(this).attr("tab")).addClass("active")
                     	});
                     });
                     </script>

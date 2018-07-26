@@ -163,4 +163,20 @@ public class App {
 		System.out.println(l);
 	}
 	
+	@Test
+	public void date_t() {
+		try {
+			Date date = new Date();
+			System.out.println(date);
+			System.out.println(DateUtil.formatDate(date, DateUtil.FORMATSTR_2));
+			Date d = DateUtil.addSecond(date, 1);
+			System.out.println(DateUtil.formatDate(d, DateUtil.FORMATSTR_2));
+			
+			Date da = DateUtil.addDate(date, 1);
+			System.out.println(DateUtil.formatDate(da, DateUtil.FORMATSTR_2));
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

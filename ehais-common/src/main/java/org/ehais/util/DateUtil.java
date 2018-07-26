@@ -49,6 +49,11 @@ public class DateUtil {
 	 */
 	public static String FORMATSTR_6 = "yyyy-MM";
 	
+	/**
+	 * HH:mm:ss
+	 */
+	public static String FORMATSTR_7 = "HH:mm:ss";
+	
 	
 	
 	/**
@@ -422,6 +427,30 @@ public class DateUtil {
 		
 	}
 	
+	
+	public static Date addSecond(Date date,int second) throws ParseException{
+		SimpleDateFormat df = new SimpleDateFormat(FORMATSTR_2);
+		Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.SECOND, second);
+		return calendar.getTime();
+	} 
+	
+	public static Date addMinute(Date date,int minute) throws ParseException{
+		SimpleDateFormat df = new SimpleDateFormat(FORMATSTR_2);
+		Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.MINUTE, minute);
+		return calendar.getTime();
+	} 
+	
+	public static Date addHour(Date date,int hour) throws ParseException{
+		SimpleDateFormat df = new SimpleDateFormat(FORMATSTR_2);
+		Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.HOUR, hour);
+		return calendar.getTime();
+	} 
 
 	public static Date addDate(Date date,int day) throws ParseException{
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");

@@ -18,7 +18,7 @@
 		</#if>
 	</#list>
 	</#if>
-	<#if ReturnObject?contains("?")>
+	<#if ReturnObject.action?contains("?")>
 		<#local baseUrl = ReturnObject.action + "&" />
 	<#else>
 		<#local baseUrl = ReturnObject.action + "?" />

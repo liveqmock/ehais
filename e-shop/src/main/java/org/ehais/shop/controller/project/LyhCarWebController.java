@@ -336,6 +336,19 @@ public class LyhCarWebController extends CommonController{
 			List<HaiGoodsWithBLOBs> goods_list = haiGoodsMapper.selectByExampleWithBLOBs(goodsExp);
 			modelMap.addAttribute("model", goods_list.get(0));
 			
+			HaiCategoryExample catExp = new HaiCategoryExample();
+			catExp.createCriteria()
+			.andCatIdEqualTo(goods_list.get(0).getCatId())
+			.andStoreIdEqualTo(store_id);
+			List<HaiCategory> cat_list = haiCategoryMapper.selectByExample(catExp);
+			catExp.clear();
+			catExp.createCriteria()
+			.andCatIdEqualTo(cat_list.get(0).getParentId())
+			.andStoreIdEqualTo(store_id);
+			cat_list = haiCategoryMapper.selectByExample(catExp);
+			modelMap.addAttribute("category", cat_list.get(0));
+			
+			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
