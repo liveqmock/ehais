@@ -8,6 +8,11 @@ public class TreeModel {
 	private Integer level;
 	private String code;
 	private String extend;
+	
+	public TreeModel() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	public TreeModel(Integer id,String code, String title, Integer parent_id) {
 		super();
 		this.id = id;
