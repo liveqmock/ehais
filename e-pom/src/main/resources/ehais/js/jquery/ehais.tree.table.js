@@ -2,6 +2,9 @@
  * @author zhixin wen <wenzhixin2010@gmail.com>
  * version: 1.11.1
  * https://github.com/wenzhixin/bootstrap-table/
+ * var bsTable = $('#bsTable').ehaisBootstrapTable({});
+ * 在主属性添加   uniqueId: 'id' , parentId: 'parentId',
+ * 在columns的字段里添加   level:true
  */
 
 (function ($) {
