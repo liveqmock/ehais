@@ -123,7 +123,7 @@ $(function(){
 
 <!-- 复选项控件：< @ checkboxPicker id="XX" value="$ {(rm.model.boolean?string('yes', 'no'))!'no'}" /> -->
 <#macro checkboxPicker id value >
-	<input type="checkbox"  id="${id}" name="${id}" value="<#if value == 'yes'>1<#else>0</#if>" placeholder="" <#if value == 'yes'> checked="checked" </#if> >
+	<input type="checkbox"  id="${id}" name="${id}" value="<#if value == 'yes'>1<#else>0</#if>" placeholder="" <#if value == 'yes'> checked="checked" </#if> style="margin-top:10px;">
 <script type="text/javascript">
 $(function(){
 	$("#${id}").change(function() { 
@@ -272,8 +272,8 @@ $(function(){
 </#macro>
 
 
-<!-- bootstrap风格数字类型的单选控件：< @ BSRadioIntPicker id="" key="" text="" list={} value="0?string('')" /> -->
-<#macro BSRadioIntPicker id="" key="" text="" list={} value="" >
+<!-- bootstrap风格数字类型的单选控件：< @ BSRadioIntPicker id="" key="" text="" list=[{"key":0,"text":"PC端"},{"key":1,"text":"移动端"}] value="0?string('')" /> -->
+<#macro BSRadioIntPicker id="" key="" text="" list=[] value="" >
 	<ul class="radioPicker" id="radioPicker_${id}">
 		<#if (list?? && list?size > 0) >
 		<#if list?is_hash_ex>
@@ -300,7 +300,7 @@ $(function(){
 	</script>
 </#macro>
 
-<!-- bootstrap风格字符串的单选控件：< @ BSRadioChatPicker id="" key="" text="" list={} value="" /> -->
+<!-- bootstrap风格字符串的单选控件：< @ BSRadioChatPicker id="" key="" text="" list={"single":"单页面","list":"列表页面","gallery":"相册"} value="" /> -->
 <#macro BSRadioChatPicker id="" key="" text="" list={} value="" >
 	<ul class="radioPicker" id="radioPicker_${id}">
 		<#if (list?? && list?size > 0) >
@@ -728,7 +728,7 @@ function trash_gallery_${id}_pic(imgId,no){
 
 <input type="hidden" id="${id}" name="${id}" value="${value!''}" >
 
-<input type="file" accept="image/*" id="upload_file_${id}" multiple="" data-updateid="" data-action="add" class="item_img_input pointer" name="imgs_${id}" style="opacity : 0;">
+<input type="file" accept="image/*" id="upload_file_${id}" multiple="" data-updateid="" data-action="add" class="item_img_input pointer" name="imgs_${id}" style="opacity : 0;height:0;">
 
 			
 	<!-- /////////// -->

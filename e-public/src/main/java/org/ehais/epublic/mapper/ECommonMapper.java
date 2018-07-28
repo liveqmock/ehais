@@ -28,6 +28,42 @@ public interface ECommonMapper {
     		);
 
 	
+	@Select("select ${id} as id ,${title} as title,ifnull(${parent_id},0) as parent_id from ${tableName} where store_id = #{store_id} and module = #{module}")
+	@Results(value = 
+			{ 
+			@Result(property = "id", column = "id"), 
+			@Result(property = "title", column = "title"), 
+			@Result(property = "parent_id", column = "parent_id")
+			}
+	)
+    public List<TreeModel> commonModuleTreeData(@Param("tableName") String tableName,
+    		@Param("id") String id,
+    		@Param("title") String title, 
+    		@Param("parent_id") String parent_id, 
+    		@Param("store_id") Integer store_id,
+    		@Param("module") String module
+    		);
+	
+	
+	@Select("select ${id} as id ,${title} as title,ifnull(${parent_id},0) as parent_id from ${tableName} where store_id = #{store_id} and module = #{module} and classify = #{classify}")
+	@Results(value = 
+			{ 
+			@Result(property = "id", column = "id"), 
+			@Result(property = "title", column = "title"), 
+			@Result(property = "parent_id", column = "parent_id")
+			}
+	)
+    public List<TreeModel> commonModuleClassifyTreeData(@Param("tableName") String tableName,
+    		@Param("id") String id,
+    		@Param("title") String title, 
+    		@Param("parent_id") String parent_id, 
+    		@Param("store_id") Integer store_id,
+    		@Param("module") String module,
+    		@Param("classify") String classify
+    		);
+	
+	
+	
 	@Select("select count(*) from ${tableName} where ${field} = #{value} ")
     public int commonUnique(@Param("tableName") String tableName,@Param("field") String field, @Param("value") String value);
 

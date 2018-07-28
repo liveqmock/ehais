@@ -65,7 +65,7 @@ public class EArticleModuleEnum {
 	
 	public static String getModuleName(String str){
 		
-		return map.get(str).get("name").toString();
+		return map.get(str)==null?"未知类型":map.get(str).get("name").toString();
 	}
 	
 	private static void createMap(String module,String Name) {

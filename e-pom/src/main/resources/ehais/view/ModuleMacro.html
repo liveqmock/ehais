@@ -8,13 +8,17 @@
 	
 	<script type="text/javascript">
 		$(function(){
+			${id}TreeSelectPicker(${value!'0'});
+		});
+		function ${id}TreeSelectPicker(val){
+			$("#${id} option:not(:first)").remove();
 			$.ajax({
 				url: "baseapi/category.tree.data",type:"post",dataType:"json",
 				data:{cat_id:${value!'0'}},
 				success:function(res){
 					var data = res.rows;
 					var tree = getTreeLevel(data,0);
-					data.forEach(function (item) {
+					tree.forEach(function (item) {
 						var style = "";
 						var em = "";
 						if(item.level == 0){
@@ -28,10 +32,10 @@
 						$("#${id}").append("<option value='"+item.id+"' "+style+">"+em+item.title+"</option>");
 						style = em = null;
 					});
-					$("#${id}").val(${value!'0'});
+					$("#${id}").val(val);
 				}
 			})
-		});
+		}	
 	</script>
 </#macro>
 
@@ -47,13 +51,18 @@
 	
 	<script type="text/javascript">
 		$(function(){
+			${id}TreeSelectPicker(${value!'0'});
+		});
+		
+		function ${id}TreeSelectPicker(val){
+			$("#${id} option:not(:first)").remove();
 			$.ajax({
 				url: "baseapi/nav.tree.data",type:"post",dataType:"json",
 				data:{id:${value!'0'}},
 				success:function(res){
 					var data = res.rows;
 					var tree = getTreeLevel(data,0);
-					data.forEach(function (item) {
+					tree.forEach(function (item) {
 						var style = "";
 						var em = "";
 						if(item.level == 0){
@@ -67,12 +76,95 @@
 						$("#${id}").append("<option value='"+item.id+"' "+style+">"+em+item.title+"</option>");
 						style = em = null;
 					});
-					$("#${id}").val(${value!'0'});
+					$("#${id}").val(val);
 				}
-			})
-		});
+			});
+		}
 	</script>
 </#macro>
+
+
+
+<!-- < @ articleCatSelectPicker id="a" value="rm.model.parentId" defaultValue="0" defaultText="--请选择分类--" module="all" classify="list" />  -->
+<#macro articleCatSelectPicker id=""  value="" defaultValue="" defaultText="" module="all" classify="list">
+	<select class="form-control" id="${id}" name="${id}" >
+		<option value="${defaultValue!'0'}">${defaultText!'--请选择分类--'}</option>
+	</select>
+	
+	<script type="text/javascript">
+		$(function(){
+			${id}TreeSelectPicker(${value!'0'});
+		});
+		function ${id}TreeSelectPicker(val){
+			$("#${id} option:not(:first)").remove();
+			$.ajax({
+				url: "baseapi/article.cat.tree.data",type:"post",dataType:"json",
+				data:{cat_id:${value!'0'},module:'${module}',classify:'${classify}'},
+				success:function(res){
+					var data = res.rows;
+					var tree = getTreeLevel(data,0);
+					tree.forEach(function (item) {
+						var style = "";
+						var em = "";
+						if(item.level == 0){
+							style = "style='font-weight:bold;'";
+						}else{
+							for(var i = 0 ; i <= item.level ; i ++){
+								em+="&nbsp;&nbsp;";
+							}
+						}						
+						
+						$("#${id}").append("<option value='"+item.id+"' "+style+">"+em+item.title+"</option>");
+						style = em = null;
+					});
+					$("#${id}").val(val);
+				}
+			})
+		}	
+	</script>
+</#macro>
+
+
+<!-- < @ moduleSelectPicker id="a" value="rm.model.parentId" defaultValue="0" defaultText="--请选择分类--" module="all" classify="list" />  -->
+<#macro moduleSelectPicker id=""  value="" defaultValue="" defaultText="" >
+	<select class="form-control" id="${id}" name="${id}" >
+		<option value="${defaultValue!'0'}">${defaultText!'--请选择分类--'}</option>
+	</select>
+	
+	<script type="text/javascript">
+		$(function(){
+			${id}TreeSelectPicker(${value!'0'});
+		});
+		function ${id}TreeSelectPicker(val){
+			$("#${id} option:not(:first)").remove();
+			$.ajax({
+				url: "baseapi/module.tree.data",type:"post",dataType:"json",
+				data:{cat_id:${value!'0'}},
+				success:function(res){
+					var data = res.rows;
+					var tree = getTreeLevel(data,0);
+					tree.forEach(function (item) {
+						var style = "";
+						var em = "";
+						if(item.level == 0){
+							style = "style='font-weight:bold;'";
+						}else{
+							for(var i = 0 ; i <= item.level ; i ++){
+								em+="&nbsp;&nbsp;";
+							}
+						}						
+						
+						$("#${id}").append("<option value='"+item.id+"' "+style+">"+em+item.title+"</option>");
+						style = em = null;
+					});
+					$("#${id}").val(val);
+				}
+			})
+		}	
+	</script>
+</#macro>
+
+
 
 <script type="text/javascript">
 
