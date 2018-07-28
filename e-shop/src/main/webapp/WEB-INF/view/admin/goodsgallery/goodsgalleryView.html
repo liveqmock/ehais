@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="UTF-8">
+		
+		<#include "/include.v2.html"/>
+		<#include "/FreemarkerMacro.html"/>
+		
+		
+		
+		<script type="text/javascript">
+			var bootstrap_table_url = 'haiGoodsGalleryListJson';
+			var tableName = null;
+			var query_parames = {
+                tableName : tableName
+			};
+			var columns =  [
+				
+		        {
+					field: 'imgId',
+		            title: '操作',
+					align:"center",
+			        formatter:function(value,row,index){
+			        	var opt = "";
+			        	
+			        	<@permission url="haiGoodsGalleryEditDetail">
+			            opt += "<a href ='javascript:;' onclick='haiGoodsGalleryEditDetail("+value+");'  class='glyphicon glyphicon-edit'></a>";
+			            </@permission>
+			            
+			            <@permission url="haiGoodsGalleryDelete">
+			            opt += "&nbsp;&nbsp;<a href ='javascript:;' onclick='haiGoodsGalleryDelete("+value+");' class='glyphicon glyphicon-trash'></a>";
+			            </@permission>
+			            
+		            	return opt;
+			        }
+		        }
+        	];
+			
+			var responseHandler = function(res){//返回数据整合
+				/**
+				if(res.map.catList != null){
+					var catList = res.map.catList ;
+		        	var catObj = {};
+		        	for(var i = 0 ; i < catList.length ; i ++){
+		        		catObj[catList[i].catId] = catList[i].catName;
+		        	}
+		        	var rows = res.rows;
+		        	for(var i = 0 ; i < rows.length ; i++){
+		        		rows[i].catName = catObj[rows[i].catId];
+		        	}
+				}
+				**/
+				return res;
+			}
+			
+		</script>
+		<script type="text/javascript" src="/js/e_bootstrap_table.js"></script>
+    	<script type="text/javascript" src="/js/admin/goodsgallery/goodsgalleryView.js" ></script> 
+		<title>图片管理</title>
+		
+	</head>
+	<body>
+		<div class="container-fluid" id="wrapper" tabindex="-1">
+			
+			<dl class="enav">
+				<dt>当前位置:</dt>
+				<dd>总系统</dd>
+				<dd>图片管理</dd>
+				<dd class="fr">快捷键提示</dd>
+			</dl>
+			
+			<div class="ctr form-inline">
+				  <div class="form-group">
+				    <label >搜索信息</label>
+				    <input id="key_tableName" name="key_tableName" class="form-control" >
+				  </div>
+				  				  
+				  
+				  <button id="haiGoodsGallerySearch" type="button" class="btn btn-primary glyphicon glyphicon-search">查询</button>
+				  
+				  <@permission url="haiGoodsGalleryAddDetail">
+				  <button id="haiGoodsGalleryAddDetail" type="button" class="btn btn-info glyphicon glyphicon-plus fr">新增</button>
+				  </@permission>
+			</div>
+			
+			<div class="elist">
+				<table class="table table-striped table-bordered table-hover" id="bsTable"></table> 
+			</div>
+			
+		</div>
+
+
+
+<div id="haiGoodsGalleryModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" >
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">图片管理</h4>
+      </div>
+      <div class="modal-body">
+        <form id="haiGoodsGalleryForm" name="haiGoodsGalleryForm" class="form-horizontal" action="add" method="post">
+        
+        <input type="hidden" class="form-control" id="imgId" name="imgId" value="" >
+<div class="form-group">
+<label class="col-sm-2 control-label">user_id</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="userId" name="userId" value="" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">goods_id</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="goodsId" name="goodsId" value="" placeholder="" data-rule-required="true" data-msg-required="请输入goods_id" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">table_name</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="tableName" name="tableName" value="" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">img_url</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="imgUrl" name="imgUrl" placeholder="" data-rule-required="true" data-msg-required="请输入img_url"></textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">img_desc</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="imgDesc" name="imgDesc" placeholder="" data-rule-required="true" data-msg-required="请输入img_desc"></textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">thumb_url</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="thumbUrl" name="thumbUrl" placeholder="" data-rule-required="true" data-msg-required="请输入thumb_url"></textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">img_original</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="imgOriginal" name="imgOriginal" placeholder="" data-rule-required="true" data-msg-required="请输入img_original"></textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">相册类型</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="galleryType" name="galleryType" value="" placeholder=""  >
+</div>
+</div>
+
+
+        
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button id="haiGoodsGallerySaveSubmit" type="button" class="btn btn-primary">保存</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+<script type="text/javascript">
+	var eData = {};
+		
+	$(function(){
+				
+
+	});
+	
+	
+</script>
+
+	</body>
+</html>

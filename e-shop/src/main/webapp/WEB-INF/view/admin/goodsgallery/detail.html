@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+
+		<#include "/include.html"/>
+		<#include "/FreemarkerMacro.html"/>
+
+<title>Insert title here</title>
+</head>
+<body>
+<div class="header">
+	<div class="nav">
+		<a href="javascript:;" id="back" class="icon fa fa-arrow-left ">&nbsp;</a>
+		<div class="nav0">图片管理</div>
+		<div class="nav1">信息编辑</div>
+	</div>
+</div>
+<div style="width: 100%;height: 40px;"></div>
+<div class="container-fluid">
+<form id="haiGoodsGalleryForm" name="haiGoodsGalleryForm" class="form-horizontal" action="${rm.action?default('')}" method="post">
+
+
+<input type="hidden" class="form-control" id="imgId" name="imgId" value="${rm.model.imgId!''}" >
+<div class="form-group">
+<label class="col-sm-2 control-label">user_id</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="userId" name="userId" value="${rm.model.userId!''}" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">goods_id</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="goodsId" name="goodsId" value="${rm.model.goodsId!''}" placeholder="" data-rule-required="true" data-msg-required="请输入goods_id" >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">table_name</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="tableName" name="tableName" value="${rm.model.tableName!''}" placeholder=""  >
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">img_url</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="imgUrl" name="imgUrl" placeholder=""  data-rule-required="true" data-msg-required="请输入img_url">${rm.model.imgUrl!''}</textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">img_desc</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="imgDesc" name="imgDesc" placeholder=""  data-rule-required="true" data-msg-required="请输入img_desc">${rm.model.imgDesc!''}</textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">thumb_url</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="thumbUrl" name="thumbUrl" placeholder=""  data-rule-required="true" data-msg-required="请输入thumb_url">${rm.model.thumbUrl!''}</textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">img_original</label>
+<div class="col-sm-8">
+	<textarea class="form-control" id="imgOriginal" name="imgOriginal" placeholder=""  data-rule-required="true" data-msg-required="请输入img_original">${rm.model.imgOriginal!''}</textarea>
+</div>
+</div>
+
+<div class="form-group">
+<label class="col-sm-2 control-label">相册类型</label>
+<div class="col-sm-5">
+	<input type="text" class="form-control" id="galleryType" name="galleryType" value="${rm.model.galleryType!''}" placeholder=""  >
+</div>
+</div>
+
+
+
+
+
+<div class="form-group">
+	<div class="col-sm-3"></div>
+	<div class="col-sm-6"><button id="saveSubmit" type="button" class="btn btn-primary">提交信息</button></div>
+</div>
+       
+
+
+
+
+</form>
+</div>    
+
+
+<script type="text/javascript" src="/js/admin/goodsgallery/detail.js" ></script>             
+
+
+</body>
+</html>
