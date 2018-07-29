@@ -82,7 +82,7 @@ public class ETreeDataController extends CommonController{
 		ReturnObject<TreeModel> rm = new ReturnObject<TreeModel>();
 		Integer store_id = (Integer)request.getSession().getAttribute(EConstants.SESSION_STORE_ID);
 		try {
-			List<TreeModel> list = eCommonMapper.commonTreeData("hai_article_cat", "cat_id", "cat_name", "parent_id", store_id);
+			List<TreeModel> list = eCommonMapper.commonModuleTreeData("hai_article_cat", "cat_id", "cat_name", "parent_id", store_id);
 			rm.setRows(list);
 		} catch (Exception e) {
 			e.printStackTrace();

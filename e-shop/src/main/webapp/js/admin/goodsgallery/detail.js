@@ -7,21 +7,6 @@ $(function(){
 
 function haiGoodsGalleryAddSubmit(){
 	
-	if($("#goodsId").val() == undefined || $("#goodsId").val().length == 0){
-		layer.msg("请输入goods_id");return ;
-	}
-	if($("#imgUrl").val() == undefined || $("#imgUrl").val().length == 0){
-		layer.msg("请输入img_url");return ;
-	}
-	if($("#imgDesc").val() == undefined || $("#imgDesc").val().length == 0){
-		layer.msg("请输入img_desc");return ;
-	}
-	if($("#thumbUrl").val() == undefined || $("#thumbUrl").val().length == 0){
-		layer.msg("请输入thumb_url");return ;
-	}
-	if($("#imgOriginal").val() == undefined || $("#imgOriginal").val().length == 0){
-		layer.msg("请输入img_original");return ;
-	}
 
 	
 	
@@ -51,21 +36,6 @@ function haiGoodsGalleryAddSubmit(){
 
 function haiGoodsGalleryEditSubmit(){
 	
-	if($("#goodsId").val() == undefined || $("#goodsId").val().length == 0){
-		layer.msg("请输入goods_id");return ;
-	}
-	if($("#imgUrl").val() == undefined || $("#imgUrl").val().length == 0){
-		layer.msg("请输入img_url");return ;
-	}
-	if($("#imgDesc").val() == undefined || $("#imgDesc").val().length == 0){
-		layer.msg("请输入img_desc");return ;
-	}
-	if($("#thumbUrl").val() == undefined || $("#thumbUrl").val().length == 0){
-		layer.msg("请输入thumb_url");return ;
-	}
-	if($("#imgOriginal").val() == undefined || $("#imgOriginal").val().length == 0){
-		layer.msg("请输入img_original");return ;
-	}
 
 	
 	

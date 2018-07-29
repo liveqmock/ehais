@@ -1,13 +1,18 @@
 package org.ehais.model;
 
-public class TreeModel {
+import java.io.Serializable;
 
+public class TreeModel implements Serializable{
+
+	private static final long serialVersionUID = -1719470479981558801L;
 	private Integer id ;
 	private String title;
 	private Integer parent_id;
 	private Integer level;
 	private String code;
 	private String extend;
+	private String module;
+	private String classify;
 	
 	public TreeModel() {
 		super();
@@ -19,6 +24,14 @@ public class TreeModel {
 		this.title = title;
 		this.parent_id = parent_id;
 		this.code = code;
+	}
+	public TreeModel(Integer id, String title, Integer parent_id,String module,String classify) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.parent_id = parent_id;
+		this.module = module;
+		this.classify = classify;
 	}
 	public TreeModel(Integer id, String title, Integer parent_id,
 			Integer level, String code, String extend) {
@@ -65,6 +78,18 @@ public class TreeModel {
 	}
 	public void setCode(String code) {
 		this.code = code;
+	}
+	public String getModule() {
+		return module;
+	}
+	public void setModule(String module) {
+		this.module = module;
+	}
+	public String getClassify() {
+		return classify;
+	}
+	public void setClassify(String classify) {
+		this.classify = classify;
 	}
 	
 	

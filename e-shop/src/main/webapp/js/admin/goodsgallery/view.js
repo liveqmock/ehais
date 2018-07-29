@@ -54,7 +54,28 @@ $(function(){
         uniqueId: 'imgId',//每一行的唯一标识，一般为主键列
         columns: [
 
-
+{
+    field: 'imgUrl',
+    title: '显示图'
+},{
+    field: 'imgDesc',
+    title: '图片描述'
+},{
+    field: 'thumbUrl',
+    title: '缩略图'
+},{
+    field: 'imgOriginal',
+    title: '原图'
+},{
+    field: 'galleryName',
+    title: '相册名称'
+},{
+    field: 'imgName',
+    title: '图片名称'
+},{
+    field: 'sortOrder',
+    title: '排序'
+},
 
         {
             field: 'imgId',

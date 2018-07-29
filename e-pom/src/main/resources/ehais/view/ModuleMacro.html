@@ -128,7 +128,7 @@
 <!-- < @ moduleSelectPicker id="a" value="rm.model.parentId" defaultValue="0" defaultText="--请选择分类--" module="all" classify="list" />  -->
 <#macro moduleSelectPicker id=""  value="" defaultValue="" defaultText="" >
 	<select class="form-control" id="${id}" name="${id}" >
-		<option value="${defaultValue!'0'}">${defaultText!'--请选择分类--'}</option>
+		<option value="${defaultValue!'0'}" module="">${defaultText!'--请选择分类--'}</option>
 	</select>
 	
 	<script type="text/javascript">
@@ -154,7 +154,7 @@
 							}
 						}						
 						
-						$("#${id}").append("<option value='"+item.id+"' "+style+">"+em+item.title+"</option>");
+						$("#${id}").append("<option value='"+item.id+"' "+style+" module='"+item.module+"'>"+em+item.title+"</option>");
 						style = em = null;
 					});
 					$("#${id}").val(val);

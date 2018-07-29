@@ -28,29 +28,32 @@ public interface ECommonMapper {
     		);
 
 	
-	@Select("select ${id} as id ,${title} as title,ifnull(${parent_id},0) as parent_id from ${tableName} where store_id = #{store_id} and module = #{module}")
+	@Select("select ${id} as id ,${title} as title,ifnull(${parent_id},0) as parent_id,module,classify from ${tableName} where store_id = #{store_id} ")
 	@Results(value = 
 			{ 
 			@Result(property = "id", column = "id"), 
 			@Result(property = "title", column = "title"), 
-			@Result(property = "parent_id", column = "parent_id")
+			@Result(property = "parent_id", column = "parent_id"),
+			@Result(property = "module", column = "module"),
+			@Result(property = "classify", column = "classify")
 			}
 	)
     public List<TreeModel> commonModuleTreeData(@Param("tableName") String tableName,
     		@Param("id") String id,
     		@Param("title") String title, 
     		@Param("parent_id") String parent_id, 
-    		@Param("store_id") Integer store_id,
-    		@Param("module") String module
+    		@Param("store_id") Integer store_id
     		);
 	
 	
-	@Select("select ${id} as id ,${title} as title,ifnull(${parent_id},0) as parent_id from ${tableName} where store_id = #{store_id} and module = #{module} and classify = #{classify}")
+	@Select("select ${id} as id ,${title} as title,ifnull(${parent_id},0) as parent_id,module,classify from ${tableName} where store_id = #{store_id} and module = #{module} and classify = #{classify}")
 	@Results(value = 
 			{ 
 			@Result(property = "id", column = "id"), 
 			@Result(property = "title", column = "title"), 
-			@Result(property = "parent_id", column = "parent_id")
+			@Result(property = "parent_id", column = "parent_id"),
+			@Result(property = "module", column = "module"),
+			@Result(property = "classify", column = "classify")
 			}
 	)
     public List<TreeModel> commonModuleClassifyTreeData(@Param("tableName") String tableName,
