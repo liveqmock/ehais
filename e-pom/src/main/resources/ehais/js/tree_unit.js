@@ -52,6 +52,44 @@ function formatTree(items, parentId) {
 }
 
 
+
+
+
+function getNodeTrees(list, parentId) {
+    let items= {};
+    // 获取每个节点的直属子节点，*记住是直属，不是所有子节点
+    for (let i = 0; i < list.length; i++) {
+         let key = list[i].parentId;
+         if (items[key]) {
+             items[key].push(list[i]);
+         } else {
+             items[key] = [];
+             items[key].push(list[i]);
+         }
+     }
+     return formatNodeTree(items, parentId);
+}
+
+/**
+ * 利用递归格式化每个节点
+ */
+function formatNodeTree(items, parentId) {
+    let result = [];
+    if (!items[parentId]) {
+        return result;
+    }
+    for (let t of items[parentId]) {
+    	var o = {};
+    	o.id = t.catId;
+    	o.text = t.catName;
+        o.nodes = formatNodeTree(items, t.catId)
+        result.push(o);
+    }
+  return result;
+}
+
+
+
 function toTree(data) {
     // 删除 所有 children,以防止多次调用
     data.forEach(function (item) {

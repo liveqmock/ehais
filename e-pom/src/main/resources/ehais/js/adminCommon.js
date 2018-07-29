@@ -37,7 +37,7 @@ $.ajaxSetup({
 });
 
 $(function(){
-	$(".header .nav #back").click(function(){window.history.back();});
+	$(".header .nav #back").click(function(){window.parent.history.back();});
 });
 
 
